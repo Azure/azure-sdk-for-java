@@ -9,7 +9,8 @@ package com.azure.resourcemanager.resources.generated;
  */
 public final class DataPolicyManifestsListSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2020-09-01/examples/listDataPolicyManifests.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2020-09-01/examples/
+     * listDataPolicyManifests.json
      */
     /**
      * Sample code: List data policy manifests.
@@ -25,7 +26,8 @@ public final class DataPolicyManifestsListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2020-09-01/examples/listDataPolicyManifestsNamespaceFilter.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2020-09-01/examples/
+     * listDataPolicyManifestsNamespaceFilter.json
      */
     /**
      * Sample code: List data policy manifests with namespace filter.

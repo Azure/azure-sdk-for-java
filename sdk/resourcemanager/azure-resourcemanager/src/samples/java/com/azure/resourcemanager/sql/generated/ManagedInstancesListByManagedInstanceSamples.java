@@ -4,84 +4,67 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.sql.models.MetricType;
 import com.azure.resourcemanager.sql.models.QueryTimeGrainType;
 
-/** Samples for ManagedInstances ListByManagedInstance. */
+/**
+ * Samples for ManagedInstances ListByManagedInstance.
+ */
 public final class ManagedInstancesListByManagedInstanceSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedInstanceTopQueriesList.json
+     * x-ms-original-file:
+     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedInstanceTopQueriesList.json
      */
     /**
      * Sample code: Obtain list of instance's top resource consuming queries.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void obtainListOfInstanceSTopResourceConsumingQueries(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .sqlServers()
+    public static void
+        obtainListOfInstanceSTopResourceConsumingQueries(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.sqlServers()
             .manager()
             .serviceClient()
             .getManagedInstances()
-            .listByManagedInstance(
-                "sqlcrudtest-7398",
-                "sqlcrudtest-4645",
-                null,
-                null,
-                null,
-                null,
-                QueryTimeGrainType.PT1H,
-                null,
-                MetricType.DURATION,
-                Context.NONE);
+            .listByManagedInstance("sqlcrudtest-7398", "sqlcrudtest-4645", null, null, null, null,
+                QueryTimeGrainType.PT1H, null, MetricType.DURATION, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedInstanceTopQueriesListMax.json
+     * x-ms-original-file:
+     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedInstanceTopQueriesListMax.json
      */
     /**
      * Sample code: Obtain list of instance's top resource consuming queries. Full-blown request and response.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void obtainListOfInstanceSTopResourceConsumingQueriesFullBlownRequestAndResponse(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .sqlServers()
+        azure.sqlServers()
             .manager()
             .serviceClient()
             .getManagedInstances()
-            .listByManagedInstance(
-                "sqlcrudtest-7398",
-                "sqlcrudtest-4645",
-                null,
-                "db1,db2",
-                "2020-03-10T12:00:00Z",
-                "2020-03-12T12:00:00Z",
-                QueryTimeGrainType.P1D,
-                null,
-                MetricType.CPU,
-                Context.NONE);
+            .listByManagedInstance("sqlcrudtest-7398", "sqlcrudtest-4645", null, "db1,db2", "2020-03-10T12:00:00Z",
+                "2020-03-12T12:00:00Z", QueryTimeGrainType.P1D, null, MetricType.CPU, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedInstanceTopQueriesListMin.json
+     * x-ms-original-file:
+     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedInstanceTopQueriesListMin.json
      */
     /**
      * Sample code: Obtain list of instance's top resource consuming queries. Minimal request and response.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void obtainListOfInstanceSTopResourceConsumingQueriesMinimalRequestAndResponse(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .sqlServers()
+        azure.sqlServers()
             .manager()
             .serviceClient()
             .getManagedInstances()
-            .listByManagedInstance(
-                "sqlcrudtest-7398", "sqlcrudtest-4645", null, null, null, null, null, null, null, Context.NONE);
+            .listByManagedInstance("sqlcrudtest-7398", "sqlcrudtest-4645", null, null, null, null, null, null, null,
+                com.azure.core.util.Context.NONE);
     }
 }

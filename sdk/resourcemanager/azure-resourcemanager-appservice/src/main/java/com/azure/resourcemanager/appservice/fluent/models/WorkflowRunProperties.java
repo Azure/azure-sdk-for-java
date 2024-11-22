@@ -5,13 +5,17 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.Correlation;
 import com.azure.resourcemanager.appservice.models.ResourceReference;
 import com.azure.resourcemanager.appservice.models.WorkflowOutputParameter;
 import com.azure.resourcemanager.appservice.models.WorkflowRunTrigger;
 import com.azure.resourcemanager.appservice.models.WorkflowStatus;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
@@ -19,78 +23,65 @@ import java.util.Map;
  * The workflow run properties.
  */
 @Fluent
-public final class WorkflowRunProperties {
+public final class WorkflowRunProperties implements JsonSerializable<WorkflowRunProperties> {
     /*
      * Gets the wait end time.
      */
-    @JsonProperty(value = "waitEndTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime waitEndTime;
 
     /*
      * Gets the start time.
      */
-    @JsonProperty(value = "startTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime startTime;
 
     /*
      * Gets the end time.
      */
-    @JsonProperty(value = "endTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime endTime;
 
     /*
      * Gets the status.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private WorkflowStatus status;
 
     /*
      * Gets the code.
      */
-    @JsonProperty(value = "code", access = JsonProperty.Access.WRITE_ONLY)
     private String code;
 
     /*
      * Gets the error.
      */
-    @JsonProperty(value = "error", access = JsonProperty.Access.WRITE_ONLY)
     private Object error;
 
     /*
      * Gets the correlation id.
      */
-    @JsonProperty(value = "correlationId", access = JsonProperty.Access.WRITE_ONLY)
     private String correlationId;
 
     /*
      * The run correlation.
      */
-    @JsonProperty(value = "correlation")
     private Correlation correlation;
 
     /*
      * Gets the reference to workflow version.
      */
-    @JsonProperty(value = "workflow", access = JsonProperty.Access.WRITE_ONLY)
     private ResourceReference workflow;
 
     /*
      * Gets the fired trigger.
      */
-    @JsonProperty(value = "trigger", access = JsonProperty.Access.WRITE_ONLY)
     private WorkflowRunTrigger trigger;
 
     /*
      * Gets the outputs.
      */
-    @JsonProperty(value = "outputs", access = JsonProperty.Access.WRITE_ONLY)
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, WorkflowOutputParameter> outputs;
 
     /*
      * Gets the response of the flow run.
      */
-    @JsonProperty(value = "response", access = JsonProperty.Access.WRITE_ONLY)
     private WorkflowRunTrigger response;
 
     /**
@@ -243,5 +234,68 @@ public final class WorkflowRunProperties {
         if (response() != null) {
             response().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("correlation", this.correlation);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WorkflowRunProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WorkflowRunProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WorkflowRunProperties.
+     */
+    public static WorkflowRunProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WorkflowRunProperties deserializedWorkflowRunProperties = new WorkflowRunProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("waitEndTime".equals(fieldName)) {
+                    deserializedWorkflowRunProperties.waitEndTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedWorkflowRunProperties.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("endTime".equals(fieldName)) {
+                    deserializedWorkflowRunProperties.endTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("status".equals(fieldName)) {
+                    deserializedWorkflowRunProperties.status = WorkflowStatus.fromString(reader.getString());
+                } else if ("code".equals(fieldName)) {
+                    deserializedWorkflowRunProperties.code = reader.getString();
+                } else if ("error".equals(fieldName)) {
+                    deserializedWorkflowRunProperties.error = reader.readUntyped();
+                } else if ("correlationId".equals(fieldName)) {
+                    deserializedWorkflowRunProperties.correlationId = reader.getString();
+                } else if ("correlation".equals(fieldName)) {
+                    deserializedWorkflowRunProperties.correlation = Correlation.fromJson(reader);
+                } else if ("workflow".equals(fieldName)) {
+                    deserializedWorkflowRunProperties.workflow = ResourceReference.fromJson(reader);
+                } else if ("trigger".equals(fieldName)) {
+                    deserializedWorkflowRunProperties.trigger = WorkflowRunTrigger.fromJson(reader);
+                } else if ("outputs".equals(fieldName)) {
+                    Map<String, WorkflowOutputParameter> outputs
+                        = reader.readMap(reader1 -> WorkflowOutputParameter.fromJson(reader1));
+                    deserializedWorkflowRunProperties.outputs = outputs;
+                } else if ("response".equals(fieldName)) {
+                    deserializedWorkflowRunProperties.response = WorkflowRunTrigger.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWorkflowRunProperties;
+        });
     }
 }

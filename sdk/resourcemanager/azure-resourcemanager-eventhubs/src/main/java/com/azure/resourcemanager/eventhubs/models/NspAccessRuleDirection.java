@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.eventhubs.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
-
 import java.util.Collection;
 
 /**
@@ -25,7 +23,7 @@ public final class NspAccessRuleDirection extends ExpandableStringEnum<NspAccess
 
     /**
      * Creates a new instance of NspAccessRuleDirection value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -34,18 +32,17 @@ public final class NspAccessRuleDirection extends ExpandableStringEnum<NspAccess
 
     /**
      * Creates or finds a NspAccessRuleDirection from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding NspAccessRuleDirection.
      */
-    @JsonCreator
     public static NspAccessRuleDirection fromString(String name) {
         return fromString(name, NspAccessRuleDirection.class);
     }
 
     /**
      * Gets known NspAccessRuleDirection values.
-     *
+     * 
      * @return known NspAccessRuleDirection values.
      */
     public static Collection<NspAccessRuleDirection> values() {

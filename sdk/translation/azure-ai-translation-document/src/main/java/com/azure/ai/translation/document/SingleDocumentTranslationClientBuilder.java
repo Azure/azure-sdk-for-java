@@ -4,6 +4,7 @@
 package com.azure.ai.translation.document;
 
 import com.azure.ai.translation.document.implementation.SingleDocumentTranslationClientImpl;
+import com.azure.ai.translation.document.models.DocumentTranslationAudience;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.ConfigurationTrait;
@@ -22,8 +23,8 @@ import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
-import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.KeyCredentialPolicy;
@@ -58,6 +59,8 @@ public final class SingleDocumentTranslationClientBuilder implements HttpTrait<S
     @Generated
     private static final String SDK_VERSION = "version";
 
+    private static final String DEFAULT_SCOPE = "/.default";
+
     @Generated
     private static final String[] DEFAULT_SCOPES = new String[] { "https://cognitiveservices.azure.com/.default" };
 
@@ -67,6 +70,8 @@ public final class SingleDocumentTranslationClientBuilder implements HttpTrait<S
 
     @Generated
     private final List<HttpPipelinePolicy> pipelinePolicies;
+
+    private DocumentTranslationAudience audience;
 
     /**
      * Create an instance of the SingleDocumentTranslationClientBuilder.
@@ -156,6 +161,20 @@ public final class SingleDocumentTranslationClientBuilder implements HttpTrait<S
     @Override
     public SingleDocumentTranslationClientBuilder retryOptions(RetryOptions retryOptions) {
         this.retryOptions = retryOptions;
+        return this;
+    }
+
+    /**
+     * Sets the Authentication audience used to authorize requests sent to the
+     * service.
+     *
+     * @param audience Token Audience.
+     * @return The updated {@link SingleDocumentTranslationClientBuilder} object.
+     * @throws NullPointerException If {@code audience} is null.
+     */
+    public SingleDocumentTranslationClientBuilder audience(DocumentTranslationAudience audience) {
+        Objects.requireNonNull(audience, "'audience' cannot be null.");
+        this.audience = audience;
         return this;
     }
 
@@ -287,6 +306,12 @@ public final class SingleDocumentTranslationClientBuilder implements HttpTrait<S
     }
 
     @Generated
+    private void validateClient() {
+        // This method is invoked from 'buildInnerClient'/'buildClient' method.
+        // Developer can customize this method, to validate that the necessary conditions are met for the new client.
+        Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
+    }
+
     private HttpPipeline createHttpPipeline() {
         Configuration buildConfiguration
             = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
@@ -313,7 +338,11 @@ public final class SingleDocumentTranslationClientBuilder implements HttpTrait<S
             policies.add(new KeyCredentialPolicy("Ocp-Apim-Subscription-Key", keyCredential));
         }
         if (tokenCredential != null) {
-            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPES));
+            DocumentTranslationAudience authAudience = DocumentTranslationAudience.AZURE_PUBLIC_CLOUD;
+            if (this.audience != null) {
+                authAudience = this.audience;
+            }
+            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, authAudience + DEFAULT_SCOPE));
         }
         this.pipelinePolicies.stream()
             .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
@@ -348,11 +377,4 @@ public final class SingleDocumentTranslationClientBuilder implements HttpTrait<S
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SingleDocumentTranslationClientBuilder.class);
-
-    @Generated
-    private void validateClient() {
-        // This method is invoked from 'buildInnerClient'/'buildClient' method.
-        // Developer can customize this method, to validate that the necessary conditions are met for the new client.
-        Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
-    }
 }

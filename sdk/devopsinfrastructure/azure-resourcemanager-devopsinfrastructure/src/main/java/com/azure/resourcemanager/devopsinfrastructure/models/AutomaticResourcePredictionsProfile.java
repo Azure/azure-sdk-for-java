@@ -68,7 +68,6 @@ public final class AutomaticResourcePredictionsProfile extends ResourcePredictio
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

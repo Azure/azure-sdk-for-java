@@ -13,8 +13,8 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.exception.ManagementError;
 import com.azure.core.management.exception.ManagementException;
-import com.azure.core.management.polling.PollerFactory;
 import com.azure.core.management.polling.PollResult;
+import com.azure.core.management.polling.PollerFactory;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -59,10 +59,10 @@ import com.azure.resourcemanager.appcontainers.fluent.ManagedCertificatesClient;
 import com.azure.resourcemanager.appcontainers.fluent.ManagedEnvironmentDiagnosticsClient;
 import com.azure.resourcemanager.appcontainers.fluent.ManagedEnvironmentPrivateEndpointConnectionsClient;
 import com.azure.resourcemanager.appcontainers.fluent.ManagedEnvironmentPrivateLinkResourcesClient;
+import com.azure.resourcemanager.appcontainers.fluent.ManagedEnvironmentUsagesClient;
 import com.azure.resourcemanager.appcontainers.fluent.ManagedEnvironmentsClient;
 import com.azure.resourcemanager.appcontainers.fluent.ManagedEnvironmentsDiagnosticsClient;
 import com.azure.resourcemanager.appcontainers.fluent.ManagedEnvironmentsStoragesClient;
-import com.azure.resourcemanager.appcontainers.fluent.ManagedEnvironmentUsagesClient;
 import com.azure.resourcemanager.appcontainers.fluent.NamespacesClient;
 import com.azure.resourcemanager.appcontainers.fluent.OperationsClient;
 import com.azure.resourcemanager.appcontainers.fluent.ResourceProvidersClient;
@@ -348,34 +348,6 @@ public final class ContainerAppsApiClientImpl implements ContainerAppsApiClient 
     }
 
     /**
-     * The ContainerAppsRevisionsClient object to access its operations.
-     */
-    private final ContainerAppsRevisionsClient containerAppsRevisions;
-
-    /**
-     * Gets the ContainerAppsRevisionsClient object to access its operations.
-     * 
-     * @return the ContainerAppsRevisionsClient object.
-     */
-    public ContainerAppsRevisionsClient getContainerAppsRevisions() {
-        return this.containerAppsRevisions;
-    }
-
-    /**
-     * The ContainerAppsRevisionReplicasClient object to access its operations.
-     */
-    private final ContainerAppsRevisionReplicasClient containerAppsRevisionReplicas;
-
-    /**
-     * Gets the ContainerAppsRevisionReplicasClient object to access its operations.
-     * 
-     * @return the ContainerAppsRevisionReplicasClient object.
-     */
-    public ContainerAppsRevisionReplicasClient getContainerAppsRevisionReplicas() {
-        return this.containerAppsRevisionReplicas;
-    }
-
-    /**
      * The ContainerAppsBuildsByContainerAppsClient object to access its operations.
      */
     private final ContainerAppsBuildsByContainerAppsClient containerAppsBuildsByContainerApps;
@@ -415,6 +387,34 @@ public final class ContainerAppsApiClientImpl implements ContainerAppsApiClient 
      */
     public ContainerAppsPatchesClient getContainerAppsPatches() {
         return this.containerAppsPatches;
+    }
+
+    /**
+     * The ContainerAppsRevisionsClient object to access its operations.
+     */
+    private final ContainerAppsRevisionsClient containerAppsRevisions;
+
+    /**
+     * Gets the ContainerAppsRevisionsClient object to access its operations.
+     * 
+     * @return the ContainerAppsRevisionsClient object.
+     */
+    public ContainerAppsRevisionsClient getContainerAppsRevisions() {
+        return this.containerAppsRevisions;
+    }
+
+    /**
+     * The ContainerAppsRevisionReplicasClient object to access its operations.
+     */
+    private final ContainerAppsRevisionReplicasClient containerAppsRevisionReplicas;
+
+    /**
+     * Gets the ContainerAppsRevisionReplicasClient object to access its operations.
+     * 
+     * @return the ContainerAppsRevisionReplicasClient object.
+     */
+    public ContainerAppsRevisionReplicasClient getContainerAppsRevisionReplicas() {
+        return this.containerAppsRevisionReplicas;
     }
 
     /**
@@ -488,6 +488,20 @@ public final class ContainerAppsApiClientImpl implements ContainerAppsApiClient 
     }
 
     /**
+     * The FunctionsExtensionsClient object to access its operations.
+     */
+    private final FunctionsExtensionsClient functionsExtensions;
+
+    /**
+     * Gets the FunctionsExtensionsClient object to access its operations.
+     * 
+     * @return the FunctionsExtensionsClient object.
+     */
+    public FunctionsExtensionsClient getFunctionsExtensions() {
+        return this.functionsExtensions;
+    }
+
+    /**
      * The OperationsClient object to access its operations.
      */
     private final OperationsClient operations;
@@ -541,6 +555,20 @@ public final class ContainerAppsApiClientImpl implements ContainerAppsApiClient 
      */
     public ResourceProvidersClient getResourceProviders() {
         return this.resourceProviders;
+    }
+
+    /**
+     * The LogicAppsClient object to access its operations.
+     */
+    private final LogicAppsClient logicApps;
+
+    /**
+     * Gets the LogicAppsClient object to access its operations.
+     * 
+     * @return the LogicAppsClient object.
+     */
+    public LogicAppsClient getLogicApps() {
+        return this.logicApps;
     }
 
     /**
@@ -684,6 +712,20 @@ public final class ContainerAppsApiClientImpl implements ContainerAppsApiClient 
     }
 
     /**
+     * The ContainerAppsSessionPoolsClient object to access its operations.
+     */
+    private final ContainerAppsSessionPoolsClient containerAppsSessionPools;
+
+    /**
+     * Gets the ContainerAppsSessionPoolsClient object to access its operations.
+     * 
+     * @return the ContainerAppsSessionPoolsClient object.
+     */
+    public ContainerAppsSessionPoolsClient getContainerAppsSessionPools() {
+        return this.containerAppsSessionPools;
+    }
+
+    /**
      * The ContainerAppsSourceControlsClient object to access its operations.
      */
     private final ContainerAppsSourceControlsClient containerAppsSourceControls;
@@ -726,48 +768,6 @@ public final class ContainerAppsApiClientImpl implements ContainerAppsApiClient 
     }
 
     /**
-     * The FunctionsExtensionsClient object to access its operations.
-     */
-    private final FunctionsExtensionsClient functionsExtensions;
-
-    /**
-     * Gets the FunctionsExtensionsClient object to access its operations.
-     * 
-     * @return the FunctionsExtensionsClient object.
-     */
-    public FunctionsExtensionsClient getFunctionsExtensions() {
-        return this.functionsExtensions;
-    }
-
-    /**
-     * The LogicAppsClient object to access its operations.
-     */
-    private final LogicAppsClient logicApps;
-
-    /**
-     * Gets the LogicAppsClient object to access its operations.
-     * 
-     * @return the LogicAppsClient object.
-     */
-    public LogicAppsClient getLogicApps() {
-        return this.logicApps;
-    }
-
-    /**
-     * The ContainerAppsSessionPoolsClient object to access its operations.
-     */
-    private final ContainerAppsSessionPoolsClient containerAppsSessionPools;
-
-    /**
-     * Gets the ContainerAppsSessionPoolsClient object to access its operations.
-     * 
-     * @return the ContainerAppsSessionPoolsClient object.
-     */
-    public ContainerAppsSessionPoolsClient getContainerAppsSessionPools() {
-        return this.containerAppsSessionPools;
-    }
-
-    /**
      * Initializes an instance of ContainerAppsApiClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
@@ -784,7 +784,7 @@ public final class ContainerAppsApiClientImpl implements ContainerAppsApiClient 
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2024-02-02-preview";
+        this.apiVersion = "2024-08-02-preview";
         this.appResiliencies = new AppResilienciesClientImpl(this);
         this.containerAppsAuthConfigs = new ContainerAppsAuthConfigsClientImpl(this);
         this.availableWorkloadProfiles = new AvailableWorkloadProfilesClientImpl(this);
@@ -798,20 +798,22 @@ public final class ContainerAppsApiClientImpl implements ContainerAppsApiClient 
         this.connectedEnvironmentsDaprComponents = new ConnectedEnvironmentsDaprComponentsClientImpl(this);
         this.connectedEnvironmentsStorages = new ConnectedEnvironmentsStoragesClientImpl(this);
         this.containerApps = new ContainerAppsClientImpl(this);
-        this.containerAppsRevisions = new ContainerAppsRevisionsClientImpl(this);
-        this.containerAppsRevisionReplicas = new ContainerAppsRevisionReplicasClientImpl(this);
         this.containerAppsBuildsByContainerApps = new ContainerAppsBuildsByContainerAppsClientImpl(this);
         this.containerAppsBuilds = new ContainerAppsBuildsClientImpl(this);
         this.containerAppsPatches = new ContainerAppsPatchesClientImpl(this);
+        this.containerAppsRevisions = new ContainerAppsRevisionsClientImpl(this);
+        this.containerAppsRevisionReplicas = new ContainerAppsRevisionReplicasClientImpl(this);
         this.containerAppsDiagnostics = new ContainerAppsDiagnosticsClientImpl(this);
         this.managedEnvironmentDiagnostics = new ManagedEnvironmentDiagnosticsClientImpl(this);
         this.managedEnvironmentsDiagnostics = new ManagedEnvironmentsDiagnosticsClientImpl(this);
         this.jobs = new JobsClientImpl(this);
         this.dotNetComponents = new DotNetComponentsClientImpl(this);
+        this.functionsExtensions = new FunctionsExtensionsClientImpl(this);
         this.operations = new OperationsClientImpl(this);
         this.javaComponents = new JavaComponentsClientImpl(this);
         this.jobsExecutions = new JobsExecutionsClientImpl(this);
         this.resourceProviders = new ResourceProvidersClientImpl(this);
+        this.logicApps = new LogicAppsClientImpl(this);
         this.managedEnvironments = new ManagedEnvironmentsClientImpl(this);
         this.certificates = new CertificatesClientImpl(this);
         this.managedCertificates = new ManagedCertificatesClientImpl(this);
@@ -823,12 +825,10 @@ public final class ContainerAppsApiClientImpl implements ContainerAppsApiClient 
         this.daprComponents = new DaprComponentsClientImpl(this);
         this.daprSubscriptions = new DaprSubscriptionsClientImpl(this);
         this.managedEnvironmentsStorages = new ManagedEnvironmentsStoragesClientImpl(this);
+        this.containerAppsSessionPools = new ContainerAppsSessionPoolsClientImpl(this);
         this.containerAppsSourceControls = new ContainerAppsSourceControlsClientImpl(this);
         this.usages = new UsagesClientImpl(this);
         this.managedEnvironmentUsages = new ManagedEnvironmentUsagesClientImpl(this);
-        this.functionsExtensions = new FunctionsExtensionsClientImpl(this);
-        this.logicApps = new LogicAppsClientImpl(this);
-        this.containerAppsSessionPools = new ContainerAppsSessionPoolsClientImpl(this);
     }
 
     /**

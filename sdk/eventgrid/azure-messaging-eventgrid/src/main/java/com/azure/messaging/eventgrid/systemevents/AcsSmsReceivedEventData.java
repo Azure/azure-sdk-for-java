@@ -5,6 +5,7 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -100,6 +101,9 @@ public final class AcsSmsReceivedEventData extends AcsSmsEventBaseProperties {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -107,8 +111,10 @@ public final class AcsSmsReceivedEventData extends AcsSmsEventBaseProperties {
         jsonWriter.writeStringField("from", getFrom());
         jsonWriter.writeStringField("to", getTo());
         jsonWriter.writeStringField("message", this.message);
-        jsonWriter.writeStringField("receivedTimestamp", this.receivedTimestamp == null ? null
-            : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.receivedTimestamp));
+        jsonWriter.writeStringField("receivedTimestamp",
+            this.receivedTimestamp == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.receivedTimestamp));
         return jsonWriter.writeEndObject();
     }
 
@@ -136,8 +142,8 @@ public final class AcsSmsReceivedEventData extends AcsSmsEventBaseProperties {
                 } else if ("message".equals(fieldName)) {
                     deserializedAcsSmsReceivedEventData.message = reader.getString();
                 } else if ("receivedTimestamp".equals(fieldName)) {
-                    deserializedAcsSmsReceivedEventData.receivedTimestamp
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedAcsSmsReceivedEventData.receivedTimestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else {
                     reader.skipChildren();
                 }

@@ -13,7 +13,7 @@ import com.azure.resourcemanager.batch.models.BatchAccountRegenerateKeyParameter
 public final class BatchAccountRegenerateKeySamples {
     /*
      * x-ms-original-file:
-     * specification/batch/resource-manager/Microsoft.Batch/stable/2024-02-01/examples/BatchAccountRegenerateKey.json
+     * specification/batch/resource-manager/Microsoft.Batch/stable/2024-07-01/examples/BatchAccountRegenerateKey.json
      */
     /**
      * Sample code: BatchAccountRegenerateKey.
@@ -21,8 +21,9 @@ public final class BatchAccountRegenerateKeySamples {
      * @param manager Entry point to BatchManager.
      */
     public static void batchAccountRegenerateKey(com.azure.resourcemanager.batch.BatchManager manager) {
-        manager.batchAccounts().regenerateKeyWithResponse("default-azurebatch-japaneast", "sampleacct",
-            new BatchAccountRegenerateKeyParameters().withKeyName(AccountKeyType.PRIMARY),
-            com.azure.core.util.Context.NONE);
+        manager.batchAccounts()
+            .regenerateKeyWithResponse("default-azurebatch-japaneast", "sampleacct",
+                new BatchAccountRegenerateKeyParameters().withKeyName(AccountKeyType.PRIMARY),
+                com.azure.core.util.Context.NONE);
     }
 }

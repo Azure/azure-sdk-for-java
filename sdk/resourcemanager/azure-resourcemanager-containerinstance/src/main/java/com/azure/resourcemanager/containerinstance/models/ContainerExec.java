@@ -5,25 +5,32 @@
 package com.azure.resourcemanager.containerinstance.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The container execution command, for liveness or readiness probe. */
+/**
+ * The container execution command, for liveness or readiness probe.
+ */
 @Fluent
-public final class ContainerExec {
+public final class ContainerExec implements JsonSerializable<ContainerExec> {
     /*
      * The commands to execute within the container.
      */
-    @JsonProperty(value = "command")
     private List<String> command;
 
-    /** Creates an instance of ContainerExec class. */
+    /**
+     * Creates an instance of ContainerExec class.
+     */
     public ContainerExec() {
     }
 
     /**
      * Get the command property: The commands to execute within the container.
-     *
+     * 
      * @return the command value.
      */
     public List<String> command() {
@@ -32,7 +39,7 @@ public final class ContainerExec {
 
     /**
      * Set the command property: The commands to execute within the container.
-     *
+     * 
      * @param command the command value to set.
      * @return the ContainerExec object itself.
      */
@@ -43,9 +50,46 @@ public final class ContainerExec {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("command", this.command, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ContainerExec from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ContainerExec if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ContainerExec.
+     */
+    public static ContainerExec fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ContainerExec deserializedContainerExec = new ContainerExec();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("command".equals(fieldName)) {
+                    List<String> command = reader.readArray(reader1 -> reader1.getString());
+                    deserializedContainerExec.command = command;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedContainerExec;
+        });
     }
 }

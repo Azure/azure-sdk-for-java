@@ -1254,7 +1254,7 @@ public final class DeploymentStacksClientImpl implements InnerSupportsGet<Deploy
         UnmanageActionManagementGroupMode unmanageActionManagementGroups, Boolean bypassStackOutOfSyncError) {
         return beginDeleteAsync(resourceGroupName, deploymentStackName, unmanageActionResources,
             unmanageActionResourceGroups, unmanageActionManagementGroups, bypassStackOutOfSyncError).last()
-            .flatMap(this.client::getLroFinalResultOrError);
+                .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1276,7 +1276,7 @@ public final class DeploymentStacksClientImpl implements InnerSupportsGet<Deploy
         final Boolean bypassStackOutOfSyncError = null;
         return beginDeleteAsync(resourceGroupName, deploymentStackName, unmanageActionResources,
             unmanageActionResourceGroups, unmanageActionManagementGroups, bypassStackOutOfSyncError).last()
-            .flatMap(this.client::getLroFinalResultOrError);
+                .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1304,7 +1304,7 @@ public final class DeploymentStacksClientImpl implements InnerSupportsGet<Deploy
         Context context) {
         return beginDeleteAsync(resourceGroupName, deploymentStackName, unmanageActionResources,
             unmanageActionResourceGroups, unmanageActionManagementGroups, bypassStackOutOfSyncError, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
+                .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1910,7 +1910,7 @@ public final class DeploymentStacksClientImpl implements InnerSupportsGet<Deploy
         UnmanageActionManagementGroupMode unmanageActionManagementGroups, Boolean bypassStackOutOfSyncError) {
         return beginDeleteAtSubscriptionAsync(deploymentStackName, unmanageActionResources,
             unmanageActionResourceGroups, unmanageActionManagementGroups, bypassStackOutOfSyncError).last()
-            .flatMap(this.client::getLroFinalResultOrError);
+                .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1931,7 +1931,7 @@ public final class DeploymentStacksClientImpl implements InnerSupportsGet<Deploy
         final Boolean bypassStackOutOfSyncError = null;
         return beginDeleteAtSubscriptionAsync(deploymentStackName, unmanageActionResources,
             unmanageActionResourceGroups, unmanageActionManagementGroups, bypassStackOutOfSyncError).last()
-            .flatMap(this.client::getLroFinalResultOrError);
+                .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1958,7 +1958,7 @@ public final class DeploymentStacksClientImpl implements InnerSupportsGet<Deploy
         Context context) {
         return beginDeleteAtSubscriptionAsync(deploymentStackName, unmanageActionResources,
             unmanageActionResourceGroups, unmanageActionManagementGroups, bypassStackOutOfSyncError, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
+                .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -2592,7 +2592,7 @@ public final class DeploymentStacksClientImpl implements InnerSupportsGet<Deploy
         UnmanageActionManagementGroupMode unmanageActionManagementGroups, Boolean bypassStackOutOfSyncError) {
         return beginDeleteAtManagementGroupAsync(managementGroupId, deploymentStackName, unmanageActionResources,
             unmanageActionResourceGroups, unmanageActionManagementGroups, bypassStackOutOfSyncError).last()
-            .flatMap(this.client::getLroFinalResultOrError);
+                .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -2614,7 +2614,7 @@ public final class DeploymentStacksClientImpl implements InnerSupportsGet<Deploy
         final Boolean bypassStackOutOfSyncError = null;
         return beginDeleteAtManagementGroupAsync(managementGroupId, deploymentStackName, unmanageActionResources,
             unmanageActionResourceGroups, unmanageActionManagementGroups, bypassStackOutOfSyncError).last()
-            .flatMap(this.client::getLroFinalResultOrError);
+                .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -2642,7 +2642,7 @@ public final class DeploymentStacksClientImpl implements InnerSupportsGet<Deploy
         Context context) {
         return beginDeleteAtManagementGroupAsync(managementGroupId, deploymentStackName, unmanageActionResources,
             unmanageActionResourceGroups, unmanageActionManagementGroups, bypassStackOutOfSyncError, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
+                .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -3790,9 +3790,7 @@ public final class DeploymentStacksClientImpl implements InnerSupportsGet<Deploy
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3819,9 +3817,7 @@ public final class DeploymentStacksClientImpl implements InnerSupportsGet<Deploy
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3848,9 +3844,7 @@ public final class DeploymentStacksClientImpl implements InnerSupportsGet<Deploy
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3877,9 +3871,7 @@ public final class DeploymentStacksClientImpl implements InnerSupportsGet<Deploy
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3906,9 +3898,7 @@ public final class DeploymentStacksClientImpl implements InnerSupportsGet<Deploy
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3935,9 +3925,7 @@ public final class DeploymentStacksClientImpl implements InnerSupportsGet<Deploy
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

@@ -6,24 +6,31 @@ package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Contains the information necessary to perform a resource move (rename). */
+/**
+ * Contains the information necessary to perform a resource move (rename).
+ */
 @Fluent
-public final class ResourceMoveDefinition {
+public final class ResourceMoveDefinition implements JsonSerializable<ResourceMoveDefinition> {
     /*
      * The target ID for the resource
      */
-    @JsonProperty(value = "id", required = true)
     private String id;
 
-    /** Creates an instance of ResourceMoveDefinition class. */
+    /**
+     * Creates an instance of ResourceMoveDefinition class.
+     */
     public ResourceMoveDefinition() {
     }
 
     /**
      * Get the id property: The target ID for the resource.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -32,7 +39,7 @@ public final class ResourceMoveDefinition {
 
     /**
      * Set the id property: The target ID for the resource.
-     *
+     * 
      * @param id the id value to set.
      * @return the ResourceMoveDefinition object itself.
      */
@@ -43,16 +50,52 @@ public final class ResourceMoveDefinition {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (id() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property id in model ResourceMoveDefinition"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property id in model ResourceMoveDefinition"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ResourceMoveDefinition.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourceMoveDefinition from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourceMoveDefinition if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ResourceMoveDefinition.
+     */
+    public static ResourceMoveDefinition fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourceMoveDefinition deserializedResourceMoveDefinition = new ResourceMoveDefinition();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedResourceMoveDefinition.id = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResourceMoveDefinition;
+        });
+    }
 }

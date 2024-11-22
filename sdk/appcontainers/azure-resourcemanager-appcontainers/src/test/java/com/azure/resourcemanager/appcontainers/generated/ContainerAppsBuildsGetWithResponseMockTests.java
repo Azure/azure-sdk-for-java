@@ -20,7 +20,7 @@ public final class ContainerAppsBuildsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"buildStatus\":\"NotStarted\",\"destinationContainerRegistry\":{\"server\":\"atsdohzniucbdaom\",\"image\":\"iinj\"},\"configuration\":{\"baseOs\":\"wktlepowa\",\"platform\":\"qxua\",\"platformVersion\":\"cqwulynkgfcfd\",\"environmentVariables\":[{\"name\":\"si\",\"value\":\"xxtclhuulri\"},{\"name\":\"byokvjgbzsxe\",\"value\":\"rsltt\"},{\"name\":\"yhcdjwsuoardnag\",\"value\":\"tpufpbpgnrholhu\"},{\"name\":\"bfwxiplkys\",\"value\":\"l\"}],\"preBuildSteps\":[{\"description\":\"rxslwhdmcv\",\"scripts\":[\"bzjhfvhuwzb\"],\"httpGet\":{\"url\":\"cqzgihotjecohmx\"}}]},\"logStreamEndpoint\":\"lrrskap\"},\"id\":\"wie\",\"name\":\"xuy\",\"type\":\"derltfokyksyim\"}";
+            = "{\"properties\":{\"provisioningState\":\"Deleting\",\"buildStatus\":\"Canceled\",\"destinationContainerRegistry\":{\"server\":\"spugzfeuzjljmph\",\"image\":\"yezolgjzmicu\"},\"configuration\":{\"baseOs\":\"ccn\",\"platform\":\"hanzbuiad\",\"platformVersion\":\"atecaa\",\"environmentVariables\":[{\"name\":\"o\",\"value\":\"zn\"},{\"name\":\"ucbdaom\",\"value\":\"wiinjdllw\"},{\"name\":\"tlepowavvqxua\",\"value\":\"g\"},{\"name\":\"qwulynkgfcfdru\",\"value\":\"si\"}],\"preBuildSteps\":[{\"description\":\"clhuulriqbyokv\",\"scripts\":[\"zsxebr\",\"lttfyhc\",\"jwsuoardnag\",\"tpufpbpgnrholhu\"],\"httpGet\":{\"url\":\"fwxi\"}},{\"description\":\"kysolsyjprxs\",\"scripts\":[\"dmcvhtbbz\",\"hfvhuwzbxpcqz\"],\"httpGet\":{\"url\":\"hotjec\"}},{\"description\":\"mx\",\"scripts\":[\"rrskapbxwieexuy\",\"derltfokyksyim\"],\"httpGet\":{\"url\":\"cgrvkcxzznnuifer\"}},{\"description\":\"jegprk\",\"scripts\":[\"wrjmwv\"],\"httpGet\":{\"url\":\"tu\"}}]},\"logStreamEndpoint\":\"xximwgxq\"},\"id\":\"ekotjgxi\",\"name\":\"qfkyfhiwvjaqu\",\"type\":\"by\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class ContainerAppsBuildsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         ContainerAppsBuildResource response = manager.containerAppsBuilds()
-            .getWithResponse("mi", "uydoccnx", "hanzbuiad", com.azure.core.util.Context.NONE)
+            .getWithResponse("asualapdlndbea", "bkixvvlwyn", "bb", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

@@ -5,33 +5,24 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The object representing periodic mode backup policy.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "type",
-    defaultImpl = PeriodicModeBackupPolicy.class,
-    visible = true)
-@JsonTypeName("Periodic")
 @Fluent
 public final class PeriodicModeBackupPolicy extends BackupPolicy {
     /*
      * Describes the mode of backups.
      */
-    @JsonTypeId
-    @JsonProperty(value = "type", required = true)
     private BackupPolicyType type = BackupPolicyType.PERIODIC;
 
     /*
      * Configuration values for periodic mode backup
      */
-    @JsonProperty(value = "periodicModeProperties")
     private PeriodicModeProperties periodicModeProperties;
 
     /**
@@ -86,9 +77,55 @@ public final class PeriodicModeBackupPolicy extends BackupPolicy {
      */
     @Override
     public void validate() {
-        super.validate();
         if (periodicModeProperties() != null) {
             periodicModeProperties().validate();
         }
+        if (migrationState() != null) {
+            migrationState().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("migrationState", migrationState());
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeJsonField("periodicModeProperties", this.periodicModeProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PeriodicModeBackupPolicy from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PeriodicModeBackupPolicy if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PeriodicModeBackupPolicy.
+     */
+    public static PeriodicModeBackupPolicy fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PeriodicModeBackupPolicy deserializedPeriodicModeBackupPolicy = new PeriodicModeBackupPolicy();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("migrationState".equals(fieldName)) {
+                    deserializedPeriodicModeBackupPolicy
+                        .withMigrationState(BackupPolicyMigrationState.fromJson(reader));
+                } else if ("type".equals(fieldName)) {
+                    deserializedPeriodicModeBackupPolicy.type = BackupPolicyType.fromString(reader.getString());
+                } else if ("periodicModeProperties".equals(fieldName)) {
+                    deserializedPeriodicModeBackupPolicy.periodicModeProperties
+                        = PeriodicModeProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPeriodicModeBackupPolicy;
+        });
     }
 }

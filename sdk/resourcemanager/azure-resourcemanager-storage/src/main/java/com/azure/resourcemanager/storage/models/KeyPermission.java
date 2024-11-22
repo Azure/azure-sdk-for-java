@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.storage.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * Permissions for the key -- read-only or full permissions.
  */
@@ -36,7 +33,6 @@ public enum KeyPermission {
      * @param value the serialized value to parse.
      * @return the parsed KeyPermission object, or null if unable to parse.
      */
-    @JsonCreator
     public static KeyPermission fromString(String value) {
         if (value == null) {
             return null;
@@ -53,7 +49,6 @@ public enum KeyPermission {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

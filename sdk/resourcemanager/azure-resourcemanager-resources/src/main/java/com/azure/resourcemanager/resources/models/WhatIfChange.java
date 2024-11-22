@@ -6,48 +6,46 @@ package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Information about a single resource change predicted by What-If operation.
  */
 @Fluent
-public final class WhatIfChange {
+public final class WhatIfChange implements JsonSerializable<WhatIfChange> {
     /*
      * Resource ID
      */
-    @JsonProperty(value = "resourceId", required = true)
     private String resourceId;
 
     /*
      * Type of change that will be made to the resource when the deployment is executed.
      */
-    @JsonProperty(value = "changeType", required = true)
     private ChangeType changeType;
 
     /*
      * The explanation about why the resource is unsupported by What-If.
      */
-    @JsonProperty(value = "unsupportedReason")
     private String unsupportedReason;
 
     /*
      * The snapshot of the resource before the deployment is executed.
      */
-    @JsonProperty(value = "before")
     private Object before;
 
     /*
      * The predicted snapshot of the resource after the deployment is executed.
      */
-    @JsonProperty(value = "after")
     private Object after;
 
     /*
      * The predicted changes to resource properties.
      */
-    @JsonProperty(value = "delta")
     private List<WhatIfPropertyChange> delta;
 
     /**
@@ -196,4 +194,58 @@ public final class WhatIfChange {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(WhatIfChange.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("resourceId", this.resourceId);
+        jsonWriter.writeStringField("changeType", this.changeType == null ? null : this.changeType.toString());
+        jsonWriter.writeStringField("unsupportedReason", this.unsupportedReason);
+        jsonWriter.writeUntypedField("before", this.before);
+        jsonWriter.writeUntypedField("after", this.after);
+        jsonWriter.writeArrayField("delta", this.delta, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WhatIfChange from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WhatIfChange if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the WhatIfChange.
+     */
+    public static WhatIfChange fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WhatIfChange deserializedWhatIfChange = new WhatIfChange();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceId".equals(fieldName)) {
+                    deserializedWhatIfChange.resourceId = reader.getString();
+                } else if ("changeType".equals(fieldName)) {
+                    deserializedWhatIfChange.changeType = ChangeType.fromString(reader.getString());
+                } else if ("unsupportedReason".equals(fieldName)) {
+                    deserializedWhatIfChange.unsupportedReason = reader.getString();
+                } else if ("before".equals(fieldName)) {
+                    deserializedWhatIfChange.before = reader.readUntyped();
+                } else if ("after".equals(fieldName)) {
+                    deserializedWhatIfChange.after = reader.readUntyped();
+                } else if ("delta".equals(fieldName)) {
+                    List<WhatIfPropertyChange> delta
+                        = reader.readArray(reader1 -> WhatIfPropertyChange.fromJson(reader1));
+                    deserializedWhatIfChange.delta = delta;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWhatIfChange;
+        });
+    }
 }

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class DatabaseAccountKind extends ExpandableStringEnum<DatabaseAcco
      * @param name a name to look for.
      * @return the corresponding DatabaseAccountKind.
      */
-    @JsonCreator
     public static DatabaseAccountKind fromString(String name) {
         return fromString(name, DatabaseAccountKind.class);
     }

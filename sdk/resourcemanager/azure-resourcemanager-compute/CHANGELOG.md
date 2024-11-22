@@ -1,14 +1,46 @@
 # Release History
 
-## 2.42.0-beta.1 (Unreleased)
+## 2.45.0-beta.1 (Unreleased)
 
 ### Features Added
 
-### Breaking Changes
+- Supported `capacityReservationGroupId` and `withCapacityReservationGroup` methods for `VirtualMachine`.
+
+## 2.44.0 (2024-10-25)
+
+### Features Added
+
+- Supported creating `GalleryImageVersion` from source virtual machine by specifying `withSourceVirtualMachine`.
 
 ### Bugs Fixed
 
+- Fixed a bug that VM state not refreshed after calling `VirtualMachine.deallocate`.
+
+## 2.43.0 (2024-09-27)
+
 ### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.42.0 (2024-08-23)
+
+### Features Added
+
+- Supported enabling ultra SSD in `VirtualMachine` class.
+
+### Bugs Fixed
+
+- Fixed a bug that `ClassCastException` occurs for some Virtual Machines with extensions.
+
+### Other Changes
+
+- Replaced `Jackson` with `azure-json` for serialization/deserialization.
+
+#### Dependency Updates
+
+- Updated `api-version` of ComputeRP to `2024-07-01`.
 
 ## 2.41.0 (2024-07-25)
 

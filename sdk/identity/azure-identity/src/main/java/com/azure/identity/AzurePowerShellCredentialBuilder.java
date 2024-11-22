@@ -32,8 +32,7 @@ import java.util.List;
  *
  * <!-- src_embed com.azure.identity.credential.azurepowershellcredential.construct -->
  * <pre>
- * TokenCredential powerShellCredential = new AzurePowerShellCredentialBuilder&#40;&#41;
- *     .build&#40;&#41;;
+ * TokenCredential powerShellCredential = new AzurePowerShellCredentialBuilder&#40;&#41;.build&#40;&#41;;
  * </pre>
  * <!-- end com.azure.identity.credential.azurepowershellcredential.construct -->
  *
@@ -74,8 +73,8 @@ public class AzurePowerShellCredentialBuilder extends CredentialBuilderBase<Azur
      */
     @SuppressWarnings("unchecked")
     public AzurePowerShellCredentialBuilder additionallyAllowedTenants(String... additionallyAllowedTenants) {
-        identityClientOptions
-            .setAdditionallyAllowedTenants(IdentityUtil.resolveAdditionalTenants(Arrays.asList(additionallyAllowedTenants)));
+        identityClientOptions.setAdditionallyAllowedTenants(
+            IdentityUtil.resolveAdditionalTenants(Arrays.asList(additionallyAllowedTenants)));
         return this;
     }
 
@@ -90,15 +89,16 @@ public class AzurePowerShellCredentialBuilder extends CredentialBuilderBase<Azur
      */
     @SuppressWarnings("unchecked")
     public AzurePowerShellCredentialBuilder additionallyAllowedTenants(List<String> additionallyAllowedTenants) {
-        identityClientOptions.setAdditionallyAllowedTenants(IdentityUtil.resolveAdditionalTenants(additionallyAllowedTenants));
+        identityClientOptions
+            .setAdditionallyAllowedTenants(IdentityUtil.resolveAdditionalTenants(additionallyAllowedTenants));
         return this;
     }
 
-     /**
-     * Creates a new {@link AzurePowerShellCredential} with the current configurations.
-     *
-     * @return a {@link AzurePowerShellCredential} with the current configurations.
-     */
+    /**
+    * Creates a new {@link AzurePowerShellCredential} with the current configurations.
+    *
+    * @return a {@link AzurePowerShellCredential} with the current configurations.
+    */
     public AzurePowerShellCredential build() {
         return new AzurePowerShellCredential(tenantId, identityClientOptions);
     }

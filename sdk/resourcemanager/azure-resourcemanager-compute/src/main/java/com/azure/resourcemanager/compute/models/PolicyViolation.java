@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * A policy violation reported against a gallery artifact.
  */
 @Fluent
-public final class PolicyViolation {
+public final class PolicyViolation implements JsonSerializable<PolicyViolation> {
     /*
      * Describes the nature of the policy violation.
      */
-    @JsonProperty(value = "category")
     private PolicyViolationCategory category;
 
     /*
      * Describes specific details about why this policy violation was reported.
      */
-    @JsonProperty(value = "details")
     private String details;
 
     /**
@@ -76,5 +78,44 @@ public final class PolicyViolation {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("category", this.category == null ? null : this.category.toString());
+        jsonWriter.writeStringField("details", this.details);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PolicyViolation from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PolicyViolation if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PolicyViolation.
+     */
+    public static PolicyViolation fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PolicyViolation deserializedPolicyViolation = new PolicyViolation();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("category".equals(fieldName)) {
+                    deserializedPolicyViolation.category = PolicyViolationCategory.fromString(reader.getString());
+                } else if ("details".equals(fieldName)) {
+                    deserializedPolicyViolation.details = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPolicyViolation;
+        });
     }
 }

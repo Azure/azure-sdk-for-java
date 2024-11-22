@@ -17,7 +17,7 @@ import io.clientcore.core.implementation.ReflectiveInvoker;
 import io.clientcore.core.implementation.TypeUtil;
 import io.clientcore.core.implementation.http.UnexpectedExceptionInformation;
 import io.clientcore.core.implementation.http.serializer.MalformedValueException;
-import io.clientcore.core.implementation.util.UrlBuilder;
+import io.clientcore.core.implementation.util.UriBuilder;
 import io.clientcore.core.json.JsonSerializable;
 import io.clientcore.core.util.ClientLogger;
 import io.clientcore.core.util.binarydata.BinaryData;
@@ -26,14 +26,15 @@ import io.clientcore.core.util.serializer.ObjectSerializer;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.lang.reflect.Type;
-import java.net.URL;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 
 public abstract class RestProxyBase {
     static final ResponseConstructorsCache RESPONSE_CONSTRUCTORS_CACHE = new ResponseConstructorsCache();
-    private static final ResponseExceptionConstructorCache RESPONSE_EXCEPTION_CONSTRUCTOR_CACHE =
-        new ResponseExceptionConstructorCache();
+    private static final ResponseExceptionConstructorCache RESPONSE_EXCEPTION_CONSTRUCTOR_CACHE
+        = new ResponseExceptionConstructorCache();
 
     // RestProxy is a commonly used class, use a static logger.
     static final ClientLogger LOGGER = new ClientLogger(RestProxyBase.class);
@@ -51,7 +52,7 @@ public abstract class RestProxyBase {
      * this RestProxy "implements".
      */
     public RestProxyBase(HttpPipeline httpPipeline, ObjectSerializer serializer,
-                         SwaggerInterfaceParser interfaceParser) {
+        SwaggerInterfaceParser interfaceParser) {
         this.httpPipeline = httpPipeline;
         this.serializer = serializer;
         this.interfaceParser = interfaceParser;
@@ -59,22 +60,23 @@ public abstract class RestProxyBase {
 
     public final Object invoke(Object proxy, RequestOptions options, SwaggerMethodParser methodParser, Object[] args) {
         try {
-            HttpRequest request = createHttpRequest(methodParser, serializer, args)
-                .setRequestOptions(options)
+            HttpRequest request = createHttpRequest(methodParser, serializer, args).setRequestOptions(options)
                 .setServerSentEventListener(methodParser.setServerSentEventListener(args));
 
             return invoke(proxy, methodParser, request);
         } catch (IOException e) {
             throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
+        } catch (URISyntaxException e) {
+            throw LOGGER.logThrowableAsError(new RuntimeException(e));
         }
     }
 
     protected abstract Object invoke(Object proxy, SwaggerMethodParser methodParser, HttpRequest request);
 
     public abstract void updateRequest(RequestDataConfiguration requestDataConfiguration,
-                                       ObjectSerializer objectSerializer) throws IOException;
+        ObjectSerializer objectSerializer) throws IOException;
 
-    @SuppressWarnings({"unchecked"})
+    @SuppressWarnings({ "unchecked" })
     public Response<?> createResponseIfNecessary(Response<?> response, Type entityType, Object bodyAsObject) {
         final Class<? extends Response<?>> clazz = (Class<? extends Response<?>>) TypeUtil.getRawClass(entityType);
 
@@ -107,43 +109,43 @@ public abstract class RestProxyBase {
      * @throws IOException If the body contents cannot be serialized.
      */
     HttpRequest createHttpRequest(SwaggerMethodParser methodParser, ObjectSerializer objectSerializer, Object[] args)
-        throws IOException {
+        throws IOException, URISyntaxException {
 
-        // Sometimes people pass in a full URL for the value of their PathParam annotated argument.
-        // This definitely happens in paging scenarios. In that case, just use the full URL and
+        // Sometimes people pass in a full URI for the value of their PathParam annotated argument.
+        // This definitely happens in paging scenarios. In that case, just use the full URI and
         // ignore the Host annotation.
         final String path = methodParser.setPath(args, serializer);
-        final UrlBuilder pathUrlBuilder = UrlBuilder.parse(path);
-        final UrlBuilder urlBuilder;
+        final UriBuilder pathUriBuilder = UriBuilder.parse(path);
+        final UriBuilder uriBuilder;
 
-        if (pathUrlBuilder.getScheme() != null) {
-            urlBuilder = pathUrlBuilder;
+        if (pathUriBuilder.getScheme() != null) {
+            uriBuilder = pathUriBuilder;
         } else {
-            urlBuilder = new UrlBuilder();
+            uriBuilder = new UriBuilder();
 
-            methodParser.setSchemeAndHost(args, urlBuilder, serializer);
+            methodParser.setSchemeAndHost(args, uriBuilder, serializer);
 
             // Set the path after host, concatenating the path segment in the host.
             if (path != null && !path.isEmpty() && !"/".equals(path)) {
-                String hostPath = urlBuilder.getPath();
+                String hostPath = uriBuilder.getPath();
 
                 if (hostPath == null || hostPath.isEmpty() || "/".equals(hostPath) || path.contains("://")) {
-                    urlBuilder.setPath(path);
+                    uriBuilder.setPath(path);
                 } else {
                     if (path.startsWith("/")) {
-                        urlBuilder.setPath(hostPath + path);
+                        uriBuilder.setPath(hostPath + path);
                     } else {
-                        urlBuilder.setPath(hostPath + "/" + path);
+                        uriBuilder.setPath(hostPath + "/" + path);
                     }
                 }
             }
         }
 
-        methodParser.setEncodedQueryParameters(args, urlBuilder, serializer);
+        methodParser.setEncodedQueryParameters(args, uriBuilder, serializer);
 
-        final URL url = urlBuilder.toUrl();
-        final HttpRequest request =
-            configRequest(new HttpRequest(methodParser.getHttpMethod(), url), methodParser, objectSerializer, args);
+        final URI uri = uriBuilder.toUri();
+        final HttpRequest request
+            = configRequest(new HttpRequest(methodParser.getHttpMethod(), uri), methodParser, objectSerializer, args);
         // Headers from Swagger method arguments always take precedence over inferred headers from body types
         HttpHeaders httpHeaders = request.getHeaders();
 
@@ -153,7 +155,7 @@ public abstract class RestProxyBase {
     }
 
     private HttpRequest configRequest(HttpRequest request, SwaggerMethodParser methodParser,
-                                      ObjectSerializer objectSerializer, Object[] args) throws IOException {
+        ObjectSerializer objectSerializer, Object[] args) throws IOException {
         final Object bodyContentObject = methodParser.setBody(args, serializer);
 
         if (bodyContentObject == null) {
@@ -219,21 +221,18 @@ public abstract class RestProxyBase {
      *
      * @return The {@link HttpResponseException} created from the provided details.
      */
-    public static HttpResponseException instantiateUnexpectedException(UnexpectedExceptionInformation unexpectedExceptionInformation,
-                                                                       Response<?> response, BinaryData responseBody,
-                                                                       Object responseDecodedBody) {
-        StringBuilder exceptionMessage = new StringBuilder("Status code ")
-            .append(response.getStatusCode())
-            .append(", ");
+    public static HttpResponseException instantiateUnexpectedException(
+        UnexpectedExceptionInformation unexpectedExceptionInformation, Response<?> response, BinaryData responseBody,
+        Object responseDecodedBody) {
+        StringBuilder exceptionMessage
+            = new StringBuilder("Status code ").append(response.getStatusCode()).append(", ");
 
         final String contentType = response.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE);
 
         if ("application/octet-stream".equalsIgnoreCase(contentType)) {
             String contentLength = response.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH);
 
-            exceptionMessage.append("(")
-                .append(contentLength)
-                .append("-byte body)");
+            exceptionMessage.append("(").append(contentLength).append("-byte body)");
         } else if (responseBody == null || responseBody.toBytes().length == 0) {
             exceptionMessage.append("(empty body)");
         } else {
@@ -255,8 +254,7 @@ public abstract class RestProxyBase {
 
         HttpExceptionType exceptionType = unexpectedExceptionInformation.getExceptionType();
 
-        return new HttpResponseException(exceptionMessage.toString(), response, exceptionType,
-            responseDecodedBody);
+        return new HttpResponseException(exceptionMessage.toString(), response, exceptionType, responseDecodedBody);
     }
 
     /**

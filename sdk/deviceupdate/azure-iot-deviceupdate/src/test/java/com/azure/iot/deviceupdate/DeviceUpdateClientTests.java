@@ -4,7 +4,6 @@
 package com.azure.iot.deviceupdate;
 
 import com.azure.core.exception.HttpResponseException;
-import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.PagedFlux;
@@ -23,10 +22,9 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 public class DeviceUpdateClientTests extends TestProxyTestBase {
     private DeviceUpdateAsyncClient createClient() {
-        DeviceUpdateClientBuilder clientBuilder = new DeviceUpdateClientBuilder()
-            .endpoint(TestData.ACCOUNT_ENDPOINT)
+        DeviceUpdateClientBuilder clientBuilder = new DeviceUpdateClientBuilder().endpoint(TestData.ACCOUNT_ENDPOINT)
             .instanceId(TestData.INSTANCE_ID)
-            .httpClient(HttpClient.createDefault())
+            .httpClient(getHttpClientOrUsePlayback(getHttpClients().findFirst().orElse(null)))
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
         if (interceptorManager.isPlaybackMode()) {
             clientBuilder.httpClient(interceptorManager.getPlaybackClient());
@@ -93,7 +91,8 @@ public class DeviceUpdateClientTests extends TestProxyTestBase {
     @Test
     public void testGetUpdate() {
         DeviceUpdateAsyncClient client = createClient();
-        Response<BinaryData> response = client.getUpdateWithResponse(TestData.PROVIDER, TestData.NAME, TestData.VERSION, null).block();
+        Response<BinaryData> response
+            = client.getUpdateWithResponse(TestData.PROVIDER, TestData.NAME, TestData.VERSION, null).block();
         assertNotNull(response.getValue());
     }
 
@@ -135,7 +134,8 @@ public class DeviceUpdateClientTests extends TestProxyTestBase {
     public void testImportUpdates() {
         DeviceUpdateAsyncClient client = createClient();
 
-        PollerFlux<BinaryData, BinaryData> response = client.beginImportUpdate(BinaryData.fromString("{\"test\":\"test\"}"), null);
+        PollerFlux<BinaryData, BinaryData> response
+            = client.beginImportUpdate(BinaryData.fromString("{\"test\":\"test\"}"), null);
         BinaryData binaryData = response.last().block().getFinalResult().block();
     }
 }

@@ -11,20 +11,19 @@ import org.junit.jupiter.api.Assertions;
 public final class MetadataSyncConfigPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MetadataSyncConfigProperties model =
-            BinaryData
-                .fromString("{\"enabled\":false,\"syncIntervalInMinutes\":658652165}")
+        MetadataSyncConfigProperties model
+            = BinaryData.fromString("{\"enabled\":true,\"syncIntervalInMinutes\":1596263349}")
                 .toObject(MetadataSyncConfigProperties.class);
-        Assertions.assertEquals(false, model.enabled());
-        Assertions.assertEquals(658652165, model.syncIntervalInMinutes());
+        Assertions.assertEquals(true, model.enabled());
+        Assertions.assertEquals(1596263349, model.syncIntervalInMinutes());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MetadataSyncConfigProperties model =
-            new MetadataSyncConfigProperties().withEnabled(false).withSyncIntervalInMinutes(658652165);
+        MetadataSyncConfigProperties model
+            = new MetadataSyncConfigProperties().withEnabled(true).withSyncIntervalInMinutes(1596263349);
         model = BinaryData.fromObject(model).toObject(MetadataSyncConfigProperties.class);
-        Assertions.assertEquals(false, model.enabled());
-        Assertions.assertEquals(658652165, model.syncIntervalInMinutes());
+        Assertions.assertEquals(true, model.enabled());
+        Assertions.assertEquals(1596263349, model.syncIntervalInMinutes());
     }
 }

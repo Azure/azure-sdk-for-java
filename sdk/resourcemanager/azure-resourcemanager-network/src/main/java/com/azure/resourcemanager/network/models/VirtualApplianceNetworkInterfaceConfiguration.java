@@ -5,23 +5,26 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Represents a single NIC configuration.
  */
 @Fluent
-public final class VirtualApplianceNetworkInterfaceConfiguration {
+public final class VirtualApplianceNetworkInterfaceConfiguration
+    implements JsonSerializable<VirtualApplianceNetworkInterfaceConfiguration> {
     /*
      * NIC type. This should be either PublicNic or PrivateNic.
      */
-    @JsonProperty(value = "type")
     private NicTypeInRequest nicType;
 
     /*
      * Represents a single NIC configuration properties.
      */
-    @JsonProperty(value = "properties")
     private VirtualApplianceNetworkInterfaceConfigurationProperties properties;
 
     /**
@@ -80,5 +83,47 @@ public final class VirtualApplianceNetworkInterfaceConfiguration {
         if (properties() != null) {
             properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.nicType == null ? null : this.nicType.toString());
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualApplianceNetworkInterfaceConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualApplianceNetworkInterfaceConfiguration if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualApplianceNetworkInterfaceConfiguration.
+     */
+    public static VirtualApplianceNetworkInterfaceConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualApplianceNetworkInterfaceConfiguration deserializedVirtualApplianceNetworkInterfaceConfiguration
+                = new VirtualApplianceNetworkInterfaceConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedVirtualApplianceNetworkInterfaceConfiguration.nicType
+                        = NicTypeInRequest.fromString(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedVirtualApplianceNetworkInterfaceConfiguration.properties
+                        = VirtualApplianceNetworkInterfaceConfigurationProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualApplianceNetworkInterfaceConfiguration;
+        });
     }
 }

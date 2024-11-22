@@ -23,8 +23,8 @@ public interface SapCentralInstances {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the SAP Central Services Instance resource along with {@link Response}.
      */
-    Response<SapCentralServerInstance> getWithResponse(
-        String resourceGroupName, String sapVirtualInstanceName, String centralInstanceName, Context context);
+    Response<SapCentralServerInstance> getWithResponse(String resourceGroupName, String sapVirtualInstanceName,
+        String centralInstanceName, Context context);
 
     /**
      * Gets the SAP Central Services Instance resource.
@@ -71,8 +71,8 @@ public interface SapCentralInstances {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the current status of an async operation.
      */
-    OperationStatusResult delete(
-        String resourceGroupName, String sapVirtualInstanceName, String centralInstanceName, Context context);
+    OperationStatusResult delete(String resourceGroupName, String sapVirtualInstanceName, String centralInstanceName,
+        Context context);
 
     /**
      * Lists the SAP Central Services Instance resource for the given Virtual Instance for SAP solutions resource.
@@ -99,8 +99,8 @@ public interface SapCentralInstances {
      * @return defines the collection of SAP Central Services Instance resources as paginated response with {@link
      *     PagedIterable}.
      */
-    PagedIterable<SapCentralServerInstance> list(
-        String resourceGroupName, String sapVirtualInstanceName, Context context);
+    PagedIterable<SapCentralServerInstance> list(String resourceGroupName, String sapVirtualInstanceName,
+        Context context);
 
     /**
      * Starts the SAP Central Services Instance.
@@ -114,8 +114,8 @@ public interface SapCentralInstances {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the current status of an async operation.
      */
-    OperationStatusResult startInstance(
-        String resourceGroupName, String sapVirtualInstanceName, String centralInstanceName);
+    OperationStatusResult startInstance(String resourceGroupName, String sapVirtualInstanceName,
+        String centralInstanceName);
 
     /**
      * Starts the SAP Central Services Instance.
@@ -130,8 +130,8 @@ public interface SapCentralInstances {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the current status of an async operation.
      */
-    OperationStatusResult startInstance(
-        String resourceGroupName, String sapVirtualInstanceName, String centralInstanceName, Context context);
+    OperationStatusResult startInstance(String resourceGroupName, String sapVirtualInstanceName,
+        String centralInstanceName, Context context);
 
     /**
      * Stops the SAP Central Services Instance.
@@ -145,8 +145,8 @@ public interface SapCentralInstances {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the current status of an async operation.
      */
-    OperationStatusResult stopInstance(
-        String resourceGroupName, String sapVirtualInstanceName, String centralInstanceName);
+    OperationStatusResult stopInstance(String resourceGroupName, String sapVirtualInstanceName,
+        String centralInstanceName);
 
     /**
      * Stops the SAP Central Services Instance.
@@ -162,12 +162,8 @@ public interface SapCentralInstances {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the current status of an async operation.
      */
-    OperationStatusResult stopInstance(
-        String resourceGroupName,
-        String sapVirtualInstanceName,
-        String centralInstanceName,
-        StopRequest body,
-        Context context);
+    OperationStatusResult stopInstance(String resourceGroupName, String sapVirtualInstanceName,
+        String centralInstanceName, StopRequest body, Context context);
 
     /**
      * Gets the SAP Central Services Instance resource.

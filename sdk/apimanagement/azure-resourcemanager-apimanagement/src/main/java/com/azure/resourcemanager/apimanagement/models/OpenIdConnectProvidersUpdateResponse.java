@@ -21,12 +21,8 @@ public final class OpenIdConnectProvidersUpdateResponse
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public OpenIdConnectProvidersUpdateResponse(
-        HttpRequest request,
-        int statusCode,
-        HttpHeaders rawHeaders,
-        OpenidConnectProviderContractInner value,
-        OpenIdConnectProvidersUpdateHeaders headers) {
+    public OpenIdConnectProvidersUpdateResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders,
+        OpenidConnectProviderContractInner value, OpenIdConnectProvidersUpdateHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 

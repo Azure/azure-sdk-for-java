@@ -49,11 +49,11 @@ public class HttpClientTestsServer {
     private static final String BOM_WITH_DIFFERENT_HEADER = "/bomBytesWithDifferentHeader";
     private static final String ECHO_RESPONSE = "/echo";
 
-    private static final byte[] UTF_8_BOM = {(byte) 0xEF, (byte) 0xBB, (byte) 0xBF};
-    private static final byte[] UTF_16BE_BOM = {(byte) 0xFE, (byte) 0xFF};
-    private static final byte[] UTF_16LE_BOM = {(byte) 0xFF, (byte) 0xFE};
-    private static final byte[] UTF_32BE_BOM = {(byte) 0x00, (byte) 0x00, (byte) 0xFE, (byte) 0xFF};
-    private static final byte[] UTF_32LE_BOM = {(byte) 0xFF, (byte) 0xFE, (byte) 0x00, (byte) 0x00};
+    private static final byte[] UTF_8_BOM = { (byte) 0xEF, (byte) 0xBB, (byte) 0xBF };
+    private static final byte[] UTF_16BE_BOM = { (byte) 0xFE, (byte) 0xFF };
+    private static final byte[] UTF_16LE_BOM = { (byte) 0xFF, (byte) 0xFE };
+    private static final byte[] UTF_32BE_BOM = { (byte) 0x00, (byte) 0x00, (byte) 0xFE, (byte) 0xFF };
+    private static final byte[] UTF_32LE_BOM = { (byte) 0xFF, (byte) 0xFE, (byte) 0x00, (byte) 0x00 };
 
     private static final byte[] RETURN_BYTES = "Hello World!".getBytes(StandardCharsets.UTF_8);
     private static final String SSE_RESPONSE = "/serversentevent";
@@ -86,7 +86,7 @@ public class HttpClientTestsServer {
                 || (delete && path.startsWith("/delete"))
                 || (patch && path.startsWith("/patch"))
                 || (get && path.startsWith("/get"))) {
-                // Stub that will return a response with a body that contains the URL string as-is.
+                // Stub that will return a response with a body that contains the URI string as-is.
                 sendSimpleHttpBinResponse(req, resp, new String(requestBody, StandardCharsets.UTF_8),
                     "application/json");
             } else if (head && path.startsWith("/voideagerreadoom")) {
@@ -188,9 +188,8 @@ public class HttpClientTestsServer {
         response.flushBuffer();
     }
 
-    private static void sendBytesResponse(String urlPath, Response resp)
-        throws IOException {
-        int bodySize = Integer.parseInt(urlPath.split("/", 3)[2]);
+    private static void sendBytesResponse(String uriPath, Response resp) throws IOException {
+        int bodySize = Integer.parseInt(uriPath.split("/", 3)[2]);
         setBaseHttpHeaders(resp);
         resp.addHeader("Content-Type", ContentType.APPLICATION_OCTET_STREAM);
         resp.setContentLength(bodySize);
@@ -205,10 +204,10 @@ public class HttpClientTestsServer {
     }
 
     private static void sendSimpleHttpBinResponse(HttpServletRequest req, HttpServletResponse resp,
-                                                  String requestString, String contentType) throws IOException {
+        String requestString, String contentType) throws IOException {
         HttpBinJSON responseBody = new HttpBinJSON();
 
-        responseBody.url(cleanseUrl(req));
+        responseBody.uri(cleanseUri(req));
         responseBody.data(requestString);
 
         if (req.getHeaderNames().hasMoreElements()) {
@@ -262,7 +261,7 @@ public class HttpClientTestsServer {
         return queryParamsMap;
     }
 
-    private static String cleanseUrl(HttpServletRequest req) {
+    private static String cleanseUri(HttpServletRequest req) {
         StringBuilder builder = new StringBuilder();
         builder.append(req.getScheme())
             .append("://")

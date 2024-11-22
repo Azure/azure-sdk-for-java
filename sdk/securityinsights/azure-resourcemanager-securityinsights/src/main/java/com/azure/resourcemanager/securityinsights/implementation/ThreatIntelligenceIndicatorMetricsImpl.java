@@ -20,32 +20,28 @@ public final class ThreatIntelligenceIndicatorMetricsImpl implements ThreatIntel
 
     private final com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager;
 
-    public ThreatIntelligenceIndicatorMetricsImpl(
-        ThreatIntelligenceIndicatorMetricsClient innerClient,
+    public ThreatIntelligenceIndicatorMetricsImpl(ThreatIntelligenceIndicatorMetricsClient innerClient,
         com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
+    }
+
+    public Response<ThreatIntelligenceMetricsList> listWithResponse(String resourceGroupName, String workspaceName,
+        Context context) {
+        Response<ThreatIntelligenceMetricsListInner> inner
+            = this.serviceClient().listWithResponse(resourceGroupName, workspaceName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ThreatIntelligenceMetricsListImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public ThreatIntelligenceMetricsList list(String resourceGroupName, String workspaceName) {
         ThreatIntelligenceMetricsListInner inner = this.serviceClient().list(resourceGroupName, workspaceName);
         if (inner != null) {
             return new ThreatIntelligenceMetricsListImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<ThreatIntelligenceMetricsList> listWithResponse(
-        String resourceGroupName, String workspaceName, Context context) {
-        Response<ThreatIntelligenceMetricsListInner> inner =
-            this.serviceClient().listWithResponse(resourceGroupName, workspaceName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new ThreatIntelligenceMetricsListImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }

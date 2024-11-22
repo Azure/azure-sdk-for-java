@@ -202,8 +202,8 @@ public final class SapCentralServerProperties {
      * @param enqueueReplicationServerProperties the enqueueReplicationServerProperties value to set.
      * @return the SapCentralServerProperties object itself.
      */
-    public SapCentralServerProperties withEnqueueReplicationServerProperties(
-        EnqueueReplicationServerProperties enqueueReplicationServerProperties) {
+    public SapCentralServerProperties
+        withEnqueueReplicationServerProperties(EnqueueReplicationServerProperties enqueueReplicationServerProperties) {
         this.enqueueReplicationServerProperties = enqueueReplicationServerProperties;
         return this;
     }

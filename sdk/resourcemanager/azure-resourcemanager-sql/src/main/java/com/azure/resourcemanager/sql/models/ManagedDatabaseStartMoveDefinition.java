@@ -6,30 +6,36 @@ package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Contains the information necessary to start a managed database move. */
+/**
+ * Contains the information necessary to start a managed database move.
+ */
 @Fluent
-public final class ManagedDatabaseStartMoveDefinition {
+public final class ManagedDatabaseStartMoveDefinition implements JsonSerializable<ManagedDatabaseStartMoveDefinition> {
     /*
      * The destination managed database ID
      */
-    @JsonProperty(value = "destinationManagedDatabaseId", required = true)
     private String destinationManagedDatabaseId;
 
     /*
      * The move operation mode.
      */
-    @JsonProperty(value = "operationMode")
     private MoveOperationMode operationMode;
 
-    /** Creates an instance of ManagedDatabaseStartMoveDefinition class. */
+    /**
+     * Creates an instance of ManagedDatabaseStartMoveDefinition class.
+     */
     public ManagedDatabaseStartMoveDefinition() {
     }
 
     /**
      * Get the destinationManagedDatabaseId property: The destination managed database ID.
-     *
+     * 
      * @return the destinationManagedDatabaseId value.
      */
     public String destinationManagedDatabaseId() {
@@ -38,7 +44,7 @@ public final class ManagedDatabaseStartMoveDefinition {
 
     /**
      * Set the destinationManagedDatabaseId property: The destination managed database ID.
-     *
+     * 
      * @param destinationManagedDatabaseId the destinationManagedDatabaseId value to set.
      * @return the ManagedDatabaseStartMoveDefinition object itself.
      */
@@ -49,7 +55,7 @@ public final class ManagedDatabaseStartMoveDefinition {
 
     /**
      * Get the operationMode property: The move operation mode.
-     *
+     * 
      * @return the operationMode value.
      */
     public MoveOperationMode operationMode() {
@@ -58,7 +64,7 @@ public final class ManagedDatabaseStartMoveDefinition {
 
     /**
      * Set the operationMode property: The move operation mode.
-     *
+     * 
      * @param operationMode the operationMode value to set.
      * @return the ManagedDatabaseStartMoveDefinition object itself.
      */
@@ -69,18 +75,58 @@ public final class ManagedDatabaseStartMoveDefinition {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (destinationManagedDatabaseId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property destinationManagedDatabaseId in model"
-                            + " ManagedDatabaseStartMoveDefinition"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property destinationManagedDatabaseId in model ManagedDatabaseStartMoveDefinition"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ManagedDatabaseStartMoveDefinition.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("destinationManagedDatabaseId", this.destinationManagedDatabaseId);
+        jsonWriter.writeStringField("operationMode", this.operationMode == null ? null : this.operationMode.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedDatabaseStartMoveDefinition from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedDatabaseStartMoveDefinition if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ManagedDatabaseStartMoveDefinition.
+     */
+    public static ManagedDatabaseStartMoveDefinition fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedDatabaseStartMoveDefinition deserializedManagedDatabaseStartMoveDefinition
+                = new ManagedDatabaseStartMoveDefinition();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("destinationManagedDatabaseId".equals(fieldName)) {
+                    deserializedManagedDatabaseStartMoveDefinition.destinationManagedDatabaseId = reader.getString();
+                } else if ("operationMode".equals(fieldName)) {
+                    deserializedManagedDatabaseStartMoveDefinition.operationMode
+                        = MoveOperationMode.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagedDatabaseStartMoveDefinition;
+        });
+    }
 }

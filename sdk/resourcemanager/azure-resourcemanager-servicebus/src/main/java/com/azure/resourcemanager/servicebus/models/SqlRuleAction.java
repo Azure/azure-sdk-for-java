@@ -5,6 +5,10 @@
 package com.azure.resourcemanager.servicebus.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Represents set of actions written in SQL language-based syntax that is performed against a
@@ -12,21 +16,33 @@ import com.azure.core.annotation.Fluent;
  */
 @Fluent
 public final class SqlRuleAction extends Action {
-    /** {@inheritDoc} */
+    /**
+     * Creates an instance of SqlRuleAction class.
+     */
+    public SqlRuleAction() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SqlRuleAction withSqlExpression(String sqlExpression) {
         super.withSqlExpression(sqlExpression);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SqlRuleAction withCompatibilityLevel(Integer compatibilityLevel) {
         super.withCompatibilityLevel(compatibilityLevel);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SqlRuleAction withRequiresPreprocessing(Boolean requiresPreprocessing) {
         super.withRequiresPreprocessing(requiresPreprocessing);
@@ -35,11 +51,53 @@ public final class SqlRuleAction extends Action {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("sqlExpression", sqlExpression());
+        jsonWriter.writeNumberField("compatibilityLevel", compatibilityLevel());
+        jsonWriter.writeBooleanField("requiresPreprocessing", requiresPreprocessing());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SqlRuleAction from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SqlRuleAction if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SqlRuleAction.
+     */
+    public static SqlRuleAction fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SqlRuleAction deserializedSqlRuleAction = new SqlRuleAction();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sqlExpression".equals(fieldName)) {
+                    deserializedSqlRuleAction.withSqlExpression(reader.getString());
+                } else if ("compatibilityLevel".equals(fieldName)) {
+                    deserializedSqlRuleAction.withCompatibilityLevel(reader.getNullable(JsonReader::getInt));
+                } else if ("requiresPreprocessing".equals(fieldName)) {
+                    deserializedSqlRuleAction.withRequiresPreprocessing(reader.getNullable(JsonReader::getBoolean));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSqlRuleAction;
+        });
     }
 }

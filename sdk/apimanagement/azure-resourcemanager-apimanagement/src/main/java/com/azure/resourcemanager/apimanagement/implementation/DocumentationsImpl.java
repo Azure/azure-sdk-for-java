@@ -23,27 +23,27 @@ public final class DocumentationsImpl implements Documentations {
 
     private final com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager;
 
-    public DocumentationsImpl(
-        DocumentationsClient innerClient, com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
+    public DocumentationsImpl(DocumentationsClient innerClient,
+        com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<DocumentationContract> listByService(String resourceGroupName, String serviceName) {
-        PagedIterable<DocumentationContractInner> inner =
-            this.serviceClient().listByService(resourceGroupName, serviceName);
+        PagedIterable<DocumentationContractInner> inner
+            = this.serviceClient().listByService(resourceGroupName, serviceName);
         return Utils.mapPage(inner, inner1 -> new DocumentationContractImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<DocumentationContract> listByService(
-        String resourceGroupName, String serviceName, String filter, Integer top, Integer skip, Context context) {
-        PagedIterable<DocumentationContractInner> inner =
-            this.serviceClient().listByService(resourceGroupName, serviceName, filter, top, skip, context);
+    public PagedIterable<DocumentationContract> listByService(String resourceGroupName, String serviceName,
+        String filter, Integer top, Integer skip, Context context) {
+        PagedIterable<DocumentationContractInner> inner
+            = this.serviceClient().listByService(resourceGroupName, serviceName, filter, top, skip, context);
         return Utils.mapPage(inner, inner1 -> new DocumentationContractImpl(inner1, this.manager()));
     }
 
-    public DocumentationsGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, String documentationId, Context context) {
+    public DocumentationsGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,
+        String documentationId, Context context) {
         return this.serviceClient().getEntityTagWithResponse(resourceGroupName, serviceName, documentationId, context);
     }
 
@@ -51,15 +51,12 @@ public final class DocumentationsImpl implements Documentations {
         this.serviceClient().getEntityTag(resourceGroupName, serviceName, documentationId);
     }
 
-    public Response<DocumentationContract> getWithResponse(
-        String resourceGroupName, String serviceName, String documentationId, Context context) {
-        DocumentationsGetResponse inner =
-            this.serviceClient().getWithResponse(resourceGroupName, serviceName, documentationId, context);
+    public Response<DocumentationContract> getWithResponse(String resourceGroupName, String serviceName,
+        String documentationId, Context context) {
+        DocumentationsGetResponse inner
+            = this.serviceClient().getWithResponse(resourceGroupName, serviceName, documentationId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new DocumentationContractImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -75,10 +72,9 @@ public final class DocumentationsImpl implements Documentations {
         }
     }
 
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String serviceName, String documentationId, String ifMatch, Context context) {
-        return this
-            .serviceClient()
+    public Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String documentationId,
+        String ifMatch, Context context) {
+        return this.serviceClient()
             .deleteWithResponse(resourceGroupName, serviceName, documentationId, ifMatch, context);
     }
 
@@ -89,26 +85,18 @@ public final class DocumentationsImpl implements Documentations {
     public DocumentationContract getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String serviceName = Utils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
         String documentationId = Utils.getValueFromIdByName(id, "documentations");
         if (documentationId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'documentations'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'documentations'.", id)));
         }
         return this.getWithResponse(resourceGroupName, serviceName, documentationId, Context.NONE).getValue();
     }
@@ -116,26 +104,18 @@ public final class DocumentationsImpl implements Documentations {
     public Response<DocumentationContract> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String serviceName = Utils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
         String documentationId = Utils.getValueFromIdByName(id, "documentations");
         if (documentationId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'documentations'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'documentations'.", id)));
         }
         return this.getWithResponse(resourceGroupName, serviceName, documentationId, context);
     }
@@ -143,26 +123,18 @@ public final class DocumentationsImpl implements Documentations {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String serviceName = Utils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
         String documentationId = Utils.getValueFromIdByName(id, "documentations");
         if (documentationId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'documentations'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'documentations'.", id)));
         }
         String localIfMatch = null;
         this.deleteWithResponse(resourceGroupName, serviceName, documentationId, localIfMatch, Context.NONE);
@@ -171,26 +143,18 @@ public final class DocumentationsImpl implements Documentations {
     public Response<Void> deleteByIdWithResponse(String id, String ifMatch, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String serviceName = Utils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
         String documentationId = Utils.getValueFromIdByName(id, "documentations");
         if (documentationId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'documentations'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'documentations'.", id)));
         }
         return this.deleteWithResponse(resourceGroupName, serviceName, documentationId, ifMatch, context);
     }

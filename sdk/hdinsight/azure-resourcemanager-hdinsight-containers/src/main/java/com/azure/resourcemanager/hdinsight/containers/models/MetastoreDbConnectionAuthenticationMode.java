@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.hdinsight.containers.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -39,7 +38,6 @@ public final class MetastoreDbConnectionAuthenticationMode
      * @param name a name to look for.
      * @return the corresponding MetastoreDbConnectionAuthenticationMode.
      */
-    @JsonCreator
     public static MetastoreDbConnectionAuthenticationMode fromString(String name) {
         return fromString(name, MetastoreDbConnectionAuthenticationMode.class);
     }

@@ -46,6 +46,7 @@ public class AnalyzeAddOnLanguages {
                 Arrays.asList(DocumentAnalysisFeature.LANGUAGES),
                 null,
                 null,
+                null,
                 new AnalyzeDocumentRequest().setBase64Source(Files.readAllBytes(document.toPath())));
 
         AnalyzeResult analyzeLayoutResult = analyzeLayoutResultPoller.getFinalResult();

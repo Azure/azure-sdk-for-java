@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.appservice.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * Site load balancing.
  */
@@ -39,7 +36,12 @@ public enum SiteLoadBalancing {
     /**
      * Enum value PerSiteRoundRobin.
      */
-    PER_SITE_ROUND_ROBIN("PerSiteRoundRobin");
+    PER_SITE_ROUND_ROBIN("PerSiteRoundRobin"),
+
+    /**
+     * Enum value LeastRequestsWithTieBreaker.
+     */
+    LEAST_REQUESTS_WITH_TIE_BREAKER("LeastRequestsWithTieBreaker");
 
     /**
      * The actual serialized value for a SiteLoadBalancing instance.
@@ -56,7 +58,6 @@ public enum SiteLoadBalancing {
      * @param value the serialized value to parse.
      * @return the parsed SiteLoadBalancing object, or null if unable to parse.
      */
-    @JsonCreator
     public static SiteLoadBalancing fromString(String value) {
         if (value == null) {
             return null;
@@ -73,7 +74,6 @@ public enum SiteLoadBalancing {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

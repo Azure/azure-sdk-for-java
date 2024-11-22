@@ -11,17 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class SessionPoolSecretTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SessionPoolSecret model = BinaryData.fromString("{\"name\":\"lszerqzevx\",\"value\":\"eintxwaljglzobl\"}")
-            .toObject(SessionPoolSecret.class);
-        Assertions.assertEquals("lszerqzevx", model.name());
-        Assertions.assertEquals("eintxwaljglzobl", model.value());
+        SessionPoolSecret model
+            = BinaryData.fromString("{\"name\":\"pemtuoqu\",\"value\":\"yegq\"}").toObject(SessionPoolSecret.class);
+        Assertions.assertEquals("pemtuoqu", model.name());
+        Assertions.assertEquals("yegq", model.value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SessionPoolSecret model = new SessionPoolSecret().withName("lszerqzevx").withValue("eintxwaljglzobl");
+        SessionPoolSecret model = new SessionPoolSecret().withName("pemtuoqu").withValue("yegq");
         model = BinaryData.fromObject(model).toObject(SessionPoolSecret.class);
-        Assertions.assertEquals("lszerqzevx", model.name());
-        Assertions.assertEquals("eintxwaljglzobl", model.value());
+        Assertions.assertEquals("pemtuoqu", model.name());
+        Assertions.assertEquals("yegq", model.value());
     }
 }

@@ -5,56 +5,58 @@
 package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.synapse.models.SkuLocationInfoItem;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The Kusto SKU description of given resource type. */
+/**
+ * The Kusto SKU description of given resource type.
+ */
 @Immutable
-public final class SkuDescriptionInner {
+public final class SkuDescriptionInner implements JsonSerializable<SkuDescriptionInner> {
     /*
      * The resource type
      */
-    @JsonProperty(value = "resourceType", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceType;
 
     /*
      * The name of the SKU
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * The size of the SKU
      */
-    @JsonProperty(value = "size", access = JsonProperty.Access.WRITE_ONLY)
     private String size;
 
     /*
      * The set of locations that the SKU is available
      */
-    @JsonProperty(value = "locations", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> locations;
 
     /*
      * Locations and zones
      */
-    @JsonProperty(value = "locationInfo", access = JsonProperty.Access.WRITE_ONLY)
     private List<SkuLocationInfoItem> locationInfo;
 
     /*
      * The restrictions because of which SKU cannot be used
      */
-    @JsonProperty(value = "restrictions", access = JsonProperty.Access.WRITE_ONLY)
     private List<Object> restrictions;
 
-    /** Creates an instance of SkuDescriptionInner class. */
+    /**
+     * Creates an instance of SkuDescriptionInner class.
+     */
     public SkuDescriptionInner() {
     }
 
     /**
      * Get the resourceType property: The resource type.
-     *
+     * 
      * @return the resourceType value.
      */
     public String resourceType() {
@@ -63,7 +65,7 @@ public final class SkuDescriptionInner {
 
     /**
      * Get the name property: The name of the SKU.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -72,7 +74,7 @@ public final class SkuDescriptionInner {
 
     /**
      * Get the size property: The size of the SKU.
-     *
+     * 
      * @return the size value.
      */
     public String size() {
@@ -81,7 +83,7 @@ public final class SkuDescriptionInner {
 
     /**
      * Get the locations property: The set of locations that the SKU is available.
-     *
+     * 
      * @return the locations value.
      */
     public List<String> locations() {
@@ -90,7 +92,7 @@ public final class SkuDescriptionInner {
 
     /**
      * Get the locationInfo property: Locations and zones.
-     *
+     * 
      * @return the locationInfo value.
      */
     public List<SkuLocationInfoItem> locationInfo() {
@@ -99,7 +101,7 @@ public final class SkuDescriptionInner {
 
     /**
      * Get the restrictions property: The restrictions because of which SKU cannot be used.
-     *
+     * 
      * @return the restrictions value.
      */
     public List<Object> restrictions() {
@@ -108,12 +110,61 @@ public final class SkuDescriptionInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (locationInfo() != null) {
             locationInfo().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SkuDescriptionInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SkuDescriptionInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SkuDescriptionInner.
+     */
+    public static SkuDescriptionInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SkuDescriptionInner deserializedSkuDescriptionInner = new SkuDescriptionInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceType".equals(fieldName)) {
+                    deserializedSkuDescriptionInner.resourceType = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedSkuDescriptionInner.name = reader.getString();
+                } else if ("size".equals(fieldName)) {
+                    deserializedSkuDescriptionInner.size = reader.getString();
+                } else if ("locations".equals(fieldName)) {
+                    List<String> locations = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSkuDescriptionInner.locations = locations;
+                } else if ("locationInfo".equals(fieldName)) {
+                    List<SkuLocationInfoItem> locationInfo
+                        = reader.readArray(reader1 -> SkuLocationInfoItem.fromJson(reader1));
+                    deserializedSkuDescriptionInner.locationInfo = locationInfo;
+                } else if ("restrictions".equals(fieldName)) {
+                    List<Object> restrictions = reader.readArray(reader1 -> reader1.readUntyped());
+                    deserializedSkuDescriptionInner.restrictions = restrictions;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSkuDescriptionInner;
+        });
     }
 }

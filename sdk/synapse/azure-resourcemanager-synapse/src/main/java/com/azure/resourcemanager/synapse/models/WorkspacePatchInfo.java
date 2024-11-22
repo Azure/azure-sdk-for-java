@@ -5,40 +5,43 @@
 package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.synapse.fluent.models.WorkspacePatchProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** Workspace patch details. */
+/**
+ * Workspace patch details.
+ */
 @Fluent
-public final class WorkspacePatchInfo {
+public final class WorkspacePatchInfo implements JsonSerializable<WorkspacePatchInfo> {
     /*
      * Resource tags
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
      * The identity of the workspace
      */
-    @JsonProperty(value = "identity")
     private ManagedIdentity identity;
 
     /*
      * Workspace patch properties
      */
-    @JsonProperty(value = "properties")
     private WorkspacePatchProperties innerProperties;
 
-    /** Creates an instance of WorkspacePatchInfo class. */
+    /**
+     * Creates an instance of WorkspacePatchInfo class.
+     */
     public WorkspacePatchInfo() {
     }
 
     /**
      * Get the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -47,7 +50,7 @@ public final class WorkspacePatchInfo {
 
     /**
      * Set the tags property: Resource tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the WorkspacePatchInfo object itself.
      */
@@ -58,7 +61,7 @@ public final class WorkspacePatchInfo {
 
     /**
      * Get the identity property: The identity of the workspace.
-     *
+     * 
      * @return the identity value.
      */
     public ManagedIdentity identity() {
@@ -67,7 +70,7 @@ public final class WorkspacePatchInfo {
 
     /**
      * Set the identity property: The identity of the workspace.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the WorkspacePatchInfo object itself.
      */
@@ -78,7 +81,7 @@ public final class WorkspacePatchInfo {
 
     /**
      * Get the innerProperties property: Workspace patch properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private WorkspacePatchProperties innerProperties() {
@@ -87,7 +90,7 @@ public final class WorkspacePatchInfo {
 
     /**
      * Get the sqlAdministratorLoginPassword property: SQL administrator login password.
-     *
+     * 
      * @return the sqlAdministratorLoginPassword value.
      */
     public String sqlAdministratorLoginPassword() {
@@ -96,7 +99,7 @@ public final class WorkspacePatchInfo {
 
     /**
      * Set the sqlAdministratorLoginPassword property: SQL administrator login password.
-     *
+     * 
      * @param sqlAdministratorLoginPassword the sqlAdministratorLoginPassword value to set.
      * @return the WorkspacePatchInfo object itself.
      */
@@ -110,7 +113,7 @@ public final class WorkspacePatchInfo {
 
     /**
      * Get the managedVirtualNetworkSettings property: Managed Virtual Network Settings.
-     *
+     * 
      * @return the managedVirtualNetworkSettings value.
      */
     public ManagedVirtualNetworkSettings managedVirtualNetworkSettings() {
@@ -119,12 +122,12 @@ public final class WorkspacePatchInfo {
 
     /**
      * Set the managedVirtualNetworkSettings property: Managed Virtual Network Settings.
-     *
+     * 
      * @param managedVirtualNetworkSettings the managedVirtualNetworkSettings value to set.
      * @return the WorkspacePatchInfo object itself.
      */
-    public WorkspacePatchInfo withManagedVirtualNetworkSettings(
-        ManagedVirtualNetworkSettings managedVirtualNetworkSettings) {
+    public WorkspacePatchInfo
+        withManagedVirtualNetworkSettings(ManagedVirtualNetworkSettings managedVirtualNetworkSettings) {
         if (this.innerProperties() == null) {
             this.innerProperties = new WorkspacePatchProperties();
         }
@@ -134,7 +137,7 @@ public final class WorkspacePatchInfo {
 
     /**
      * Get the workspaceRepositoryConfiguration property: Git integration settings.
-     *
+     * 
      * @return the workspaceRepositoryConfiguration value.
      */
     public WorkspaceRepositoryConfiguration workspaceRepositoryConfiguration() {
@@ -143,12 +146,12 @@ public final class WorkspacePatchInfo {
 
     /**
      * Set the workspaceRepositoryConfiguration property: Git integration settings.
-     *
+     * 
      * @param workspaceRepositoryConfiguration the workspaceRepositoryConfiguration value to set.
      * @return the WorkspacePatchInfo object itself.
      */
-    public WorkspacePatchInfo withWorkspaceRepositoryConfiguration(
-        WorkspaceRepositoryConfiguration workspaceRepositoryConfiguration) {
+    public WorkspacePatchInfo
+        withWorkspaceRepositoryConfiguration(WorkspaceRepositoryConfiguration workspaceRepositoryConfiguration) {
         if (this.innerProperties() == null) {
             this.innerProperties = new WorkspacePatchProperties();
         }
@@ -158,7 +161,7 @@ public final class WorkspacePatchInfo {
 
     /**
      * Get the purviewConfiguration property: Purview Configuration.
-     *
+     * 
      * @return the purviewConfiguration value.
      */
     public PurviewConfiguration purviewConfiguration() {
@@ -167,7 +170,7 @@ public final class WorkspacePatchInfo {
 
     /**
      * Set the purviewConfiguration property: Purview Configuration.
-     *
+     * 
      * @param purviewConfiguration the purviewConfiguration value to set.
      * @return the WorkspacePatchInfo object itself.
      */
@@ -181,7 +184,7 @@ public final class WorkspacePatchInfo {
 
     /**
      * Get the provisioningState property: Resource provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -190,7 +193,7 @@ public final class WorkspacePatchInfo {
 
     /**
      * Get the encryption property: The encryption details of the workspace.
-     *
+     * 
      * @return the encryption value.
      */
     public EncryptionDetails encryption() {
@@ -199,7 +202,7 @@ public final class WorkspacePatchInfo {
 
     /**
      * Set the encryption property: The encryption details of the workspace.
-     *
+     * 
      * @param encryption the encryption value to set.
      * @return the WorkspacePatchInfo object itself.
      */
@@ -213,7 +216,7 @@ public final class WorkspacePatchInfo {
 
     /**
      * Get the publicNetworkAccess property: Enable or Disable public network access to workspace.
-     *
+     * 
      * @return the publicNetworkAccess value.
      */
     public WorkspacePublicNetworkAccess publicNetworkAccess() {
@@ -222,7 +225,7 @@ public final class WorkspacePatchInfo {
 
     /**
      * Set the publicNetworkAccess property: Enable or Disable public network access to workspace.
-     *
+     * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the WorkspacePatchInfo object itself.
      */
@@ -236,7 +239,7 @@ public final class WorkspacePatchInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -246,5 +249,48 @@ public final class WorkspacePatchInfo {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("identity", this.identity);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WorkspacePatchInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WorkspacePatchInfo if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WorkspacePatchInfo.
+     */
+    public static WorkspacePatchInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WorkspacePatchInfo deserializedWorkspacePatchInfo = new WorkspacePatchInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedWorkspacePatchInfo.tags = tags;
+                } else if ("identity".equals(fieldName)) {
+                    deserializedWorkspacePatchInfo.identity = ManagedIdentity.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedWorkspacePatchInfo.innerProperties = WorkspacePatchProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWorkspacePatchInfo;
+        });
     }
 }

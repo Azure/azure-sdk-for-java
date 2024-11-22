@@ -20,11 +20,7 @@ public final class ApiIssueCommentsGetEntityTagResponse
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public ApiIssueCommentsGetEntityTagResponse(
-        HttpRequest request,
-        int statusCode,
-        HttpHeaders rawHeaders,
-        Void value,
+    public ApiIssueCommentsGetEntityTagResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, Void value,
         ApiIssueCommentsGetEntityTagHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }

@@ -11,6 +11,12 @@ public class DisableBatchJobOptions extends BatchBaseOptions {
     private RequestConditions requestConditions;
 
     /**
+     * Creates an instance of {@link DisableBatchJobOptions}.
+     */
+    public DisableBatchJobOptions() {
+    }
+
+    /**
      * Gets the HTTP options for conditional requests based on modification time.
      *
      * <p>The request conditions allow you to specify conditions that must be met for the request to be processed.

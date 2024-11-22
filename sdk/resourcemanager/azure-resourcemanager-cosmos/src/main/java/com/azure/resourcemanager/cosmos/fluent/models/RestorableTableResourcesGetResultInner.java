@@ -5,29 +5,31 @@
 package com.azure.resourcemanager.cosmos.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Specific Databases to restore.
  */
 @Immutable
-public final class RestorableTableResourcesGetResultInner {
+public final class RestorableTableResourcesGetResultInner
+    implements JsonSerializable<RestorableTableResourcesGetResultInner> {
     /*
      * The unique resource identifier of the ARM resource.
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * The name of the Table.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * The type of Azure resource.
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /**
@@ -69,5 +71,45 @@ public final class RestorableTableResourcesGetResultInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RestorableTableResourcesGetResultInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RestorableTableResourcesGetResultInner if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RestorableTableResourcesGetResultInner.
+     */
+    public static RestorableTableResourcesGetResultInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RestorableTableResourcesGetResultInner deserializedRestorableTableResourcesGetResultInner
+                = new RestorableTableResourcesGetResultInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedRestorableTableResourcesGetResultInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedRestorableTableResourcesGetResultInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedRestorableTableResourcesGetResultInner.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRestorableTableResourcesGetResultInner;
+        });
     }
 }

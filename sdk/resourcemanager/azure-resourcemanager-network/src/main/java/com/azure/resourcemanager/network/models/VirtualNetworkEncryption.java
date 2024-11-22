@@ -5,23 +5,26 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Indicates if encryption is enabled on virtual network and if VM without encryption is allowed in encrypted VNet.
  */
 @Fluent
-public final class VirtualNetworkEncryption {
+public final class VirtualNetworkEncryption implements JsonSerializable<VirtualNetworkEncryption> {
     /*
      * Indicates if encryption is enabled on the virtual network.
      */
-    @JsonProperty(value = "enabled", required = true)
     private boolean enabled;
 
     /*
-     * If the encrypted VNet allows VM that does not support encryption
+     * If the encrypted VNet allows VM that does not support encryption. This field is for future support,
+     * AllowUnencrypted is the only supported value at general availability.
      */
-    @JsonProperty(value = "enforcement")
     private VirtualNetworkEncryptionEnforcement enforcement;
 
     /**
@@ -51,7 +54,8 @@ public final class VirtualNetworkEncryption {
     }
 
     /**
-     * Get the enforcement property: If the encrypted VNet allows VM that does not support encryption.
+     * Get the enforcement property: If the encrypted VNet allows VM that does not support encryption. This field is for
+     * future support, AllowUnencrypted is the only supported value at general availability.
      * 
      * @return the enforcement value.
      */
@@ -60,7 +64,8 @@ public final class VirtualNetworkEncryption {
     }
 
     /**
-     * Set the enforcement property: If the encrypted VNet allows VM that does not support encryption.
+     * Set the enforcement property: If the encrypted VNet allows VM that does not support encryption. This field is for
+     * future support, AllowUnencrypted is the only supported value at general availability.
      * 
      * @param enforcement the enforcement value to set.
      * @return the VirtualNetworkEncryption object itself.
@@ -76,5 +81,46 @@ public final class VirtualNetworkEncryption {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("enabled", this.enabled);
+        jsonWriter.writeStringField("enforcement", this.enforcement == null ? null : this.enforcement.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualNetworkEncryption from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualNetworkEncryption if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the VirtualNetworkEncryption.
+     */
+    public static VirtualNetworkEncryption fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualNetworkEncryption deserializedVirtualNetworkEncryption = new VirtualNetworkEncryption();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("enabled".equals(fieldName)) {
+                    deserializedVirtualNetworkEncryption.enabled = reader.getBoolean();
+                } else if ("enforcement".equals(fieldName)) {
+                    deserializedVirtualNetworkEncryption.enforcement
+                        = VirtualNetworkEncryptionEnforcement.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualNetworkEncryption;
+        });
     }
 }

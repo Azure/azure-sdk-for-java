@@ -18,7 +18,10 @@ public final class ContainerRegistriesDeleteSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void containerRegistriesDelete(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.springServices().manager().serviceClient().getContainerRegistries().delete("myResourceGroup",
-            "service-name", "my-container-registry", com.azure.core.util.Context.NONE);
+        azure.springServices()
+            .manager()
+            .serviceClient()
+            .getContainerRegistries()
+            .delete("myResourceGroup", "service-name", "my-container-registry", com.azure.core.util.Context.NONE);
     }
 }

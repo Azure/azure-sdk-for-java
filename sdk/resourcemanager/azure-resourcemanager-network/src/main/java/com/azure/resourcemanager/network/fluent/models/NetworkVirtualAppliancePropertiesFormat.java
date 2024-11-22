@@ -6,6 +6,10 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.DelegationProperties;
 import com.azure.resourcemanager.network.models.InternetIngressPublicIpsProperties;
 import com.azure.resourcemanager.network.models.NetworkVirtualAppliancePropertiesFormatNetworkProfile;
@@ -14,126 +18,108 @@ import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.VirtualApplianceAdditionalNicProperties;
 import com.azure.resourcemanager.network.models.VirtualApplianceNicProperties;
 import com.azure.resourcemanager.network.models.VirtualApplianceSkuProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Network Virtual Appliance definition.
  */
 @Fluent
-public final class NetworkVirtualAppliancePropertiesFormat {
+public final class NetworkVirtualAppliancePropertiesFormat
+    implements JsonSerializable<NetworkVirtualAppliancePropertiesFormat> {
     /*
      * Network Virtual Appliance SKU.
      */
-    @JsonProperty(value = "nvaSku")
     private VirtualApplianceSkuProperties nvaSku;
 
     /*
      * Address Prefix.
      */
-    @JsonProperty(value = "addressPrefix", access = JsonProperty.Access.WRITE_ONLY)
     private String addressPrefix;
 
     /*
      * BootStrapConfigurationBlobs storage URLs.
      */
-    @JsonProperty(value = "bootStrapConfigurationBlobs")
     private List<String> bootStrapConfigurationBlobs;
 
     /*
      * The Virtual Hub where Network Virtual Appliance is being deployed.
      */
-    @JsonProperty(value = "virtualHub")
     private SubResource virtualHub;
 
     /*
      * CloudInitConfigurationBlob storage URLs.
      */
-    @JsonProperty(value = "cloudInitConfigurationBlobs")
     private List<String> cloudInitConfigurationBlobs;
 
     /*
      * CloudInitConfiguration string in plain text.
      */
-    @JsonProperty(value = "cloudInitConfiguration")
     private String cloudInitConfiguration;
 
     /*
      * VirtualAppliance ASN. Microsoft private, public and IANA reserved ASN are not supported.
      */
-    @JsonProperty(value = "virtualApplianceAsn")
     private Long virtualApplianceAsn;
 
     /*
      * Public key for SSH login.
      */
-    @JsonProperty(value = "sshPublicKey")
     private String sshPublicKey;
 
     /*
      * List of Virtual Appliance Network Interfaces.
      */
-    @JsonProperty(value = "virtualApplianceNics", access = JsonProperty.Access.WRITE_ONLY)
     private List<VirtualApplianceNicProperties> virtualApplianceNics;
 
     /*
      * Network Profile containing configurations for Public and Private NIC.
      */
-    @JsonProperty(value = "networkProfile")
     private NetworkVirtualAppliancePropertiesFormatNetworkProfile networkProfile;
 
     /*
      * Details required for Additional Network Interface.
      */
-    @JsonProperty(value = "additionalNics")
     private List<VirtualApplianceAdditionalNicProperties> additionalNics;
 
     /*
      * List of Resource Uri of Public IPs for Internet Ingress Scenario.
      */
-    @JsonProperty(value = "internetIngressPublicIps")
     private List<InternetIngressPublicIpsProperties> internetIngressPublicIps;
 
     /*
      * List of references to VirtualApplianceSite.
      */
-    @JsonProperty(value = "virtualApplianceSites", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubResource> virtualApplianceSites;
 
     /*
      * List of references to VirtualApplianceConnections.
      */
-    @JsonProperty(value = "virtualApplianceConnections", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubResource> virtualApplianceConnections;
 
     /*
      * List of references to InboundSecurityRules.
      */
-    @JsonProperty(value = "inboundSecurityRules", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubResource> inboundSecurityRules;
 
     /*
      * The provisioning state of the resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * The deployment type. PartnerManaged for the SaaS NVA
      */
-    @JsonProperty(value = "deploymentType", access = JsonProperty.Access.WRITE_ONLY)
     private String deploymentType;
 
     /*
      * The delegation for the Virtual Appliance
      */
-    @JsonProperty(value = "delegation")
     private DelegationProperties delegation;
 
     /*
      * The delegation for the Virtual Appliance
      */
-    @JsonProperty(value = "partnerManagedResource")
     private PartnerManagedResourceProperties partnerManagedResource;
 
     /**
@@ -480,5 +466,116 @@ public final class NetworkVirtualAppliancePropertiesFormat {
         if (partnerManagedResource() != null) {
             partnerManagedResource().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("nvaSku", this.nvaSku);
+        jsonWriter.writeArrayField("bootStrapConfigurationBlobs", this.bootStrapConfigurationBlobs,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("virtualHub", this.virtualHub);
+        jsonWriter.writeArrayField("cloudInitConfigurationBlobs", this.cloudInitConfigurationBlobs,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("cloudInitConfiguration", this.cloudInitConfiguration);
+        jsonWriter.writeNumberField("virtualApplianceAsn", this.virtualApplianceAsn);
+        jsonWriter.writeStringField("sshPublicKey", this.sshPublicKey);
+        jsonWriter.writeJsonField("networkProfile", this.networkProfile);
+        jsonWriter.writeArrayField("additionalNics", this.additionalNics,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("internetIngressPublicIps", this.internetIngressPublicIps,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("delegation", this.delegation);
+        jsonWriter.writeJsonField("partnerManagedResource", this.partnerManagedResource);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetworkVirtualAppliancePropertiesFormat from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetworkVirtualAppliancePropertiesFormat if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NetworkVirtualAppliancePropertiesFormat.
+     */
+    public static NetworkVirtualAppliancePropertiesFormat fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetworkVirtualAppliancePropertiesFormat deserializedNetworkVirtualAppliancePropertiesFormat
+                = new NetworkVirtualAppliancePropertiesFormat();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("nvaSku".equals(fieldName)) {
+                    deserializedNetworkVirtualAppliancePropertiesFormat.nvaSku
+                        = VirtualApplianceSkuProperties.fromJson(reader);
+                } else if ("addressPrefix".equals(fieldName)) {
+                    deserializedNetworkVirtualAppliancePropertiesFormat.addressPrefix = reader.getString();
+                } else if ("bootStrapConfigurationBlobs".equals(fieldName)) {
+                    List<String> bootStrapConfigurationBlobs = reader.readArray(reader1 -> reader1.getString());
+                    deserializedNetworkVirtualAppliancePropertiesFormat.bootStrapConfigurationBlobs
+                        = bootStrapConfigurationBlobs;
+                } else if ("virtualHub".equals(fieldName)) {
+                    deserializedNetworkVirtualAppliancePropertiesFormat.virtualHub = SubResource.fromJson(reader);
+                } else if ("cloudInitConfigurationBlobs".equals(fieldName)) {
+                    List<String> cloudInitConfigurationBlobs = reader.readArray(reader1 -> reader1.getString());
+                    deserializedNetworkVirtualAppliancePropertiesFormat.cloudInitConfigurationBlobs
+                        = cloudInitConfigurationBlobs;
+                } else if ("cloudInitConfiguration".equals(fieldName)) {
+                    deserializedNetworkVirtualAppliancePropertiesFormat.cloudInitConfiguration = reader.getString();
+                } else if ("virtualApplianceAsn".equals(fieldName)) {
+                    deserializedNetworkVirtualAppliancePropertiesFormat.virtualApplianceAsn
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("sshPublicKey".equals(fieldName)) {
+                    deserializedNetworkVirtualAppliancePropertiesFormat.sshPublicKey = reader.getString();
+                } else if ("virtualApplianceNics".equals(fieldName)) {
+                    List<VirtualApplianceNicProperties> virtualApplianceNics
+                        = reader.readArray(reader1 -> VirtualApplianceNicProperties.fromJson(reader1));
+                    deserializedNetworkVirtualAppliancePropertiesFormat.virtualApplianceNics = virtualApplianceNics;
+                } else if ("networkProfile".equals(fieldName)) {
+                    deserializedNetworkVirtualAppliancePropertiesFormat.networkProfile
+                        = NetworkVirtualAppliancePropertiesFormatNetworkProfile.fromJson(reader);
+                } else if ("additionalNics".equals(fieldName)) {
+                    List<VirtualApplianceAdditionalNicProperties> additionalNics
+                        = reader.readArray(reader1 -> VirtualApplianceAdditionalNicProperties.fromJson(reader1));
+                    deserializedNetworkVirtualAppliancePropertiesFormat.additionalNics = additionalNics;
+                } else if ("internetIngressPublicIps".equals(fieldName)) {
+                    List<InternetIngressPublicIpsProperties> internetIngressPublicIps
+                        = reader.readArray(reader1 -> InternetIngressPublicIpsProperties.fromJson(reader1));
+                    deserializedNetworkVirtualAppliancePropertiesFormat.internetIngressPublicIps
+                        = internetIngressPublicIps;
+                } else if ("virtualApplianceSites".equals(fieldName)) {
+                    List<SubResource> virtualApplianceSites
+                        = reader.readArray(reader1 -> SubResource.fromJson(reader1));
+                    deserializedNetworkVirtualAppliancePropertiesFormat.virtualApplianceSites = virtualApplianceSites;
+                } else if ("virtualApplianceConnections".equals(fieldName)) {
+                    List<SubResource> virtualApplianceConnections
+                        = reader.readArray(reader1 -> SubResource.fromJson(reader1));
+                    deserializedNetworkVirtualAppliancePropertiesFormat.virtualApplianceConnections
+                        = virtualApplianceConnections;
+                } else if ("inboundSecurityRules".equals(fieldName)) {
+                    List<SubResource> inboundSecurityRules = reader.readArray(reader1 -> SubResource.fromJson(reader1));
+                    deserializedNetworkVirtualAppliancePropertiesFormat.inboundSecurityRules = inboundSecurityRules;
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedNetworkVirtualAppliancePropertiesFormat.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("deploymentType".equals(fieldName)) {
+                    deserializedNetworkVirtualAppliancePropertiesFormat.deploymentType = reader.getString();
+                } else if ("delegation".equals(fieldName)) {
+                    deserializedNetworkVirtualAppliancePropertiesFormat.delegation
+                        = DelegationProperties.fromJson(reader);
+                } else if ("partnerManagedResource".equals(fieldName)) {
+                    deserializedNetworkVirtualAppliancePropertiesFormat.partnerManagedResource
+                        = PartnerManagedResourceProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetworkVirtualAppliancePropertiesFormat;
+        });
     }
 }

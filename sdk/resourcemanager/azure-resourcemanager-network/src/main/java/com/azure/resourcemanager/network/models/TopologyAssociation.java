@@ -5,29 +5,30 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Resources that have an association with the parent resource.
  */
 @Fluent
-public final class TopologyAssociation {
+public final class TopologyAssociation implements JsonSerializable<TopologyAssociation> {
     /*
      * The name of the resource that is associated with the parent resource.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The ID of the resource that is associated with the parent resource.
      */
-    @JsonProperty(value = "resourceId")
     private String resourceId;
 
     /*
      * The association type of the child resource to the parent resource.
      */
-    @JsonProperty(value = "associationType")
     private AssociationType associationType;
 
     /**
@@ -102,5 +103,48 @@ public final class TopologyAssociation {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("resourceId", this.resourceId);
+        jsonWriter.writeStringField("associationType",
+            this.associationType == null ? null : this.associationType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TopologyAssociation from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TopologyAssociation if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TopologyAssociation.
+     */
+    public static TopologyAssociation fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TopologyAssociation deserializedTopologyAssociation = new TopologyAssociation();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedTopologyAssociation.name = reader.getString();
+                } else if ("resourceId".equals(fieldName)) {
+                    deserializedTopologyAssociation.resourceId = reader.getString();
+                } else if ("associationType".equals(fieldName)) {
+                    deserializedTopologyAssociation.associationType = AssociationType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTopologyAssociation;
+        });
     }
 }

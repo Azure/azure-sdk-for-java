@@ -5,26 +5,35 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** eventType. */
+/**
+ * eventType.
+ */
 public final class MicrosoftGraphEventType extends ExpandableStringEnum<MicrosoftGraphEventType> {
-    /** Static value singleInstance for MicrosoftGraphEventType. */
+    /**
+     * Static value singleInstance for MicrosoftGraphEventType.
+     */
     public static final MicrosoftGraphEventType SINGLE_INSTANCE = fromString("singleInstance");
 
-    /** Static value occurrence for MicrosoftGraphEventType. */
+    /**
+     * Static value occurrence for MicrosoftGraphEventType.
+     */
     public static final MicrosoftGraphEventType OCCURRENCE = fromString("occurrence");
 
-    /** Static value exception for MicrosoftGraphEventType. */
+    /**
+     * Static value exception for MicrosoftGraphEventType.
+     */
     public static final MicrosoftGraphEventType EXCEPTION = fromString("exception");
 
-    /** Static value seriesMaster for MicrosoftGraphEventType. */
+    /**
+     * Static value seriesMaster for MicrosoftGraphEventType.
+     */
     public static final MicrosoftGraphEventType SERIES_MASTER = fromString("seriesMaster");
 
     /**
      * Creates a new instance of MicrosoftGraphEventType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,18 +42,17 @@ public final class MicrosoftGraphEventType extends ExpandableStringEnum<Microsof
 
     /**
      * Creates or finds a MicrosoftGraphEventType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MicrosoftGraphEventType.
      */
-    @JsonCreator
     public static MicrosoftGraphEventType fromString(String name) {
         return fromString(name, MicrosoftGraphEventType.class);
     }
 
     /**
      * Gets known MicrosoftGraphEventType values.
-     *
+     * 
      * @return known MicrosoftGraphEventType values.
      */
     public static Collection<MicrosoftGraphEventType> values() {

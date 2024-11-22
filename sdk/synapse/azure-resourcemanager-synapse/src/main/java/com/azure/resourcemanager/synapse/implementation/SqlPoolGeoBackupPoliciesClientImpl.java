@@ -33,23 +33,28 @@ import com.azure.resourcemanager.synapse.models.GeoBackupPolicyListResult;
 import com.azure.resourcemanager.synapse.models.GeoBackupPolicyName;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in SqlPoolGeoBackupPoliciesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SqlPoolGeoBackupPoliciesClient.
+ */
 public final class SqlPoolGeoBackupPoliciesClientImpl implements SqlPoolGeoBackupPoliciesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final SqlPoolGeoBackupPoliciesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SynapseManagementClientImpl client;
 
     /**
      * Initializes an instance of SqlPoolGeoBackupPoliciesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     SqlPoolGeoBackupPoliciesClientImpl(SynapseManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(SqlPoolGeoBackupPoliciesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(SqlPoolGeoBackupPoliciesService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -60,86 +65,63 @@ public final class SqlPoolGeoBackupPoliciesClientImpl implements SqlPoolGeoBacku
     @Host("{$host}")
     @ServiceInterface(name = "SynapseManagementCli")
     public interface SqlPoolGeoBackupPoliciesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-                + "/{workspaceName}/sqlPools/{sqlPoolName}/geoBackupPolicies")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/geoBackupPolicies")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<GeoBackupPolicyListResult>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("sqlPoolName") String sqlPoolName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<GeoBackupPolicyListResult>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("sqlPoolName") String sqlPoolName, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-                + "/{workspaceName}/sqlPools/{sqlPoolName}/geoBackupPolicies/{geoBackupPolicyName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/geoBackupPolicies/{geoBackupPolicyName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<GeoBackupPolicyInner>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
+        Mono<Response<GeoBackupPolicyInner>> createOrUpdate(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
             @PathParam("sqlPoolName") String sqlPoolName,
             @PathParam("geoBackupPolicyName") GeoBackupPolicyName geoBackupPolicyName,
-            @BodyParam("application/json") GeoBackupPolicyInner parameters,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") GeoBackupPolicyInner parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-                + "/{workspaceName}/sqlPools/{sqlPoolName}/geoBackupPolicies/{geoBackupPolicyName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/geoBackupPolicies/{geoBackupPolicyName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<GeoBackupPolicyInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
+        Mono<Response<GeoBackupPolicyInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
             @PathParam("sqlPoolName") String sqlPoolName,
             @PathParam("geoBackupPolicyName") GeoBackupPolicyName geoBackupPolicyName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * List SQL pool geo backup policies
-     *
-     * <p>Get list of SQL pool geo backup policies.
-     *
+     * 
+     * Get list of SQL pool geo backup policies.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of SQL pool geo backup policies along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return list of SQL pool geo backup policies along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<GeoBackupPolicyInner>> listSinglePageAsync(
-        String resourceGroupName, String workspaceName, String sqlPoolName) {
+    private Mono<PagedResponse<GeoBackupPolicyInner>> listSinglePageAsync(String resourceGroupName,
+        String workspaceName, String sqlPoolName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -154,30 +136,18 @@ public final class SqlPoolGeoBackupPoliciesClientImpl implements SqlPoolGeoBacku
         final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            sqlPoolName,
-                            accept,
-                            context))
-            .<PagedResponse<GeoBackupPolicyInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+            .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                resourceGroupName, workspaceName, sqlPoolName, accept, context))
+            .<PagedResponse<GeoBackupPolicyInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List SQL pool geo backup policies
-     *
-     * <p>Get list of SQL pool geo backup policies.
-     *
+     * 
+     * Get list of SQL pool geo backup policies.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -185,23 +155,19 @@ public final class SqlPoolGeoBackupPoliciesClientImpl implements SqlPoolGeoBacku
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of SQL pool geo backup policies along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return list of SQL pool geo backup policies along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<GeoBackupPolicyInner>> listSinglePageAsync(
-        String resourceGroupName, String workspaceName, String sqlPoolName, Context context) {
+    private Mono<PagedResponse<GeoBackupPolicyInner>> listSinglePageAsync(String resourceGroupName,
+        String workspaceName, String sqlPoolName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -217,26 +183,17 @@ public final class SqlPoolGeoBackupPoliciesClientImpl implements SqlPoolGeoBacku
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                sqlPoolName,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+            .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+                workspaceName, sqlPoolName, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), null, null));
     }
 
     /**
      * List SQL pool geo backup policies
-     *
-     * <p>Get list of SQL pool geo backup policies.
-     *
+     * 
+     * Get list of SQL pool geo backup policies.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -246,16 +203,16 @@ public final class SqlPoolGeoBackupPoliciesClientImpl implements SqlPoolGeoBacku
      * @return list of SQL pool geo backup policies as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<GeoBackupPolicyInner> listAsync(
-        String resourceGroupName, String workspaceName, String sqlPoolName) {
+    private PagedFlux<GeoBackupPolicyInner> listAsync(String resourceGroupName, String workspaceName,
+        String sqlPoolName) {
         return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, workspaceName, sqlPoolName));
     }
 
     /**
      * List SQL pool geo backup policies
-     *
-     * <p>Get list of SQL pool geo backup policies.
-     *
+     * 
+     * Get list of SQL pool geo backup policies.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -266,16 +223,16 @@ public final class SqlPoolGeoBackupPoliciesClientImpl implements SqlPoolGeoBacku
      * @return list of SQL pool geo backup policies as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<GeoBackupPolicyInner> listAsync(
-        String resourceGroupName, String workspaceName, String sqlPoolName, Context context) {
+    private PagedFlux<GeoBackupPolicyInner> listAsync(String resourceGroupName, String workspaceName,
+        String sqlPoolName, Context context) {
         return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, workspaceName, sqlPoolName, context));
     }
 
     /**
      * List SQL pool geo backup policies
-     *
-     * <p>Get list of SQL pool geo backup policies.
-     *
+     * 
+     * Get list of SQL pool geo backup policies.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -285,16 +242,16 @@ public final class SqlPoolGeoBackupPoliciesClientImpl implements SqlPoolGeoBacku
      * @return list of SQL pool geo backup policies as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<GeoBackupPolicyInner> list(
-        String resourceGroupName, String workspaceName, String sqlPoolName) {
+    public PagedIterable<GeoBackupPolicyInner> list(String resourceGroupName, String workspaceName,
+        String sqlPoolName) {
         return new PagedIterable<>(listAsync(resourceGroupName, workspaceName, sqlPoolName));
     }
 
     /**
      * List SQL pool geo backup policies
-     *
-     * <p>Get list of SQL pool geo backup policies.
-     *
+     * 
+     * Get list of SQL pool geo backup policies.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -305,14 +262,14 @@ public final class SqlPoolGeoBackupPoliciesClientImpl implements SqlPoolGeoBacku
      * @return list of SQL pool geo backup policies as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<GeoBackupPolicyInner> list(
-        String resourceGroupName, String workspaceName, String sqlPoolName, Context context) {
+    public PagedIterable<GeoBackupPolicyInner> list(String resourceGroupName, String workspaceName, String sqlPoolName,
+        Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, workspaceName, sqlPoolName, context));
     }
 
     /**
      * Updates a SQL Pool geo backup policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -324,23 +281,16 @@ public final class SqlPoolGeoBackupPoliciesClientImpl implements SqlPoolGeoBacku
      * @return a database geo backup policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<GeoBackupPolicyInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        GeoBackupPolicyName geoBackupPolicyName,
+    private Mono<Response<GeoBackupPolicyInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String workspaceName, String sqlPoolName, GeoBackupPolicyName geoBackupPolicyName,
         GeoBackupPolicyInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -364,26 +314,15 @@ public final class SqlPoolGeoBackupPoliciesClientImpl implements SqlPoolGeoBacku
         final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            sqlPoolName,
-                            geoBackupPolicyName,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, workspaceName, sqlPoolName, geoBackupPolicyName,
+                parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Updates a SQL Pool geo backup policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -396,24 +335,16 @@ public final class SqlPoolGeoBackupPoliciesClientImpl implements SqlPoolGeoBacku
      * @return a database geo backup policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<GeoBackupPolicyInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        GeoBackupPolicyName geoBackupPolicyName,
-        GeoBackupPolicyInner parameters,
-        Context context) {
+    private Mono<Response<GeoBackupPolicyInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String workspaceName, String sqlPoolName, GeoBackupPolicyName geoBackupPolicyName,
+        GeoBackupPolicyInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -437,23 +368,13 @@ public final class SqlPoolGeoBackupPoliciesClientImpl implements SqlPoolGeoBacku
         final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                sqlPoolName,
-                geoBackupPolicyName,
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+            resourceGroupName, workspaceName, sqlPoolName, geoBackupPolicyName, parameters, accept, context);
     }
 
     /**
      * Updates a SQL Pool geo backup policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -465,20 +386,15 @@ public final class SqlPoolGeoBackupPoliciesClientImpl implements SqlPoolGeoBacku
      * @return a database geo backup policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<GeoBackupPolicyInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        GeoBackupPolicyName geoBackupPolicyName,
-        GeoBackupPolicyInner parameters) {
-        return createOrUpdateWithResponseAsync(
-                resourceGroupName, workspaceName, sqlPoolName, geoBackupPolicyName, parameters)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    private Mono<GeoBackupPolicyInner> createOrUpdateAsync(String resourceGroupName, String workspaceName,
+        String sqlPoolName, GeoBackupPolicyName geoBackupPolicyName, GeoBackupPolicyInner parameters) {
+        return createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName, geoBackupPolicyName,
+            parameters).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Updates a SQL Pool geo backup policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -491,21 +407,15 @@ public final class SqlPoolGeoBackupPoliciesClientImpl implements SqlPoolGeoBacku
      * @return a database geo backup policy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<GeoBackupPolicyInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        GeoBackupPolicyName geoBackupPolicyName,
-        GeoBackupPolicyInner parameters,
-        Context context) {
-        return createOrUpdateWithResponseAsync(
-                resourceGroupName, workspaceName, sqlPoolName, geoBackupPolicyName, parameters, context)
-            .block();
+    public Response<GeoBackupPolicyInner> createOrUpdateWithResponse(String resourceGroupName, String workspaceName,
+        String sqlPoolName, GeoBackupPolicyName geoBackupPolicyName, GeoBackupPolicyInner parameters, Context context) {
+        return createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName, geoBackupPolicyName,
+            parameters, context).block();
     }
 
     /**
      * Updates a SQL Pool geo backup policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -517,22 +427,17 @@ public final class SqlPoolGeoBackupPoliciesClientImpl implements SqlPoolGeoBacku
      * @return a database geo backup policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public GeoBackupPolicyInner createOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        GeoBackupPolicyName geoBackupPolicyName,
-        GeoBackupPolicyInner parameters) {
-        return createOrUpdateWithResponse(
-                resourceGroupName, workspaceName, sqlPoolName, geoBackupPolicyName, parameters, Context.NONE)
-            .getValue();
+    public GeoBackupPolicyInner createOrUpdate(String resourceGroupName, String workspaceName, String sqlPoolName,
+        GeoBackupPolicyName geoBackupPolicyName, GeoBackupPolicyInner parameters) {
+        return createOrUpdateWithResponse(resourceGroupName, workspaceName, sqlPoolName, geoBackupPolicyName,
+            parameters, Context.NONE).getValue();
     }
 
     /**
      * Get a SQL pool geo backup policy
-     *
-     * <p>Get the specified SQL pool geo backup policy.
-     *
+     * 
+     * Get the specified SQL pool geo backup policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -540,23 +445,19 @@ public final class SqlPoolGeoBackupPoliciesClientImpl implements SqlPoolGeoBacku
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified SQL pool geo backup policy along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the specified SQL pool geo backup policy along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<GeoBackupPolicyInner>> getWithResponseAsync(
-        String resourceGroupName, String workspaceName, String sqlPoolName, GeoBackupPolicyName geoBackupPolicyName) {
+    private Mono<Response<GeoBackupPolicyInner>> getWithResponseAsync(String resourceGroupName, String workspaceName,
+        String sqlPoolName, GeoBackupPolicyName geoBackupPolicyName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -575,27 +476,16 @@ public final class SqlPoolGeoBackupPoliciesClientImpl implements SqlPoolGeoBacku
         final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            sqlPoolName,
-                            geoBackupPolicyName,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                resourceGroupName, workspaceName, sqlPoolName, geoBackupPolicyName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get a SQL pool geo backup policy
-     *
-     * <p>Get the specified SQL pool geo backup policy.
-     *
+     * 
+     * Get the specified SQL pool geo backup policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -604,27 +494,19 @@ public final class SqlPoolGeoBackupPoliciesClientImpl implements SqlPoolGeoBacku
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified SQL pool geo backup policy along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the specified SQL pool geo backup policy along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<GeoBackupPolicyInner>> getWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        GeoBackupPolicyName geoBackupPolicyName,
-        Context context) {
+    private Mono<Response<GeoBackupPolicyInner>> getWithResponseAsync(String resourceGroupName, String workspaceName,
+        String sqlPoolName, GeoBackupPolicyName geoBackupPolicyName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -643,24 +525,15 @@ public final class SqlPoolGeoBackupPoliciesClientImpl implements SqlPoolGeoBacku
         final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                sqlPoolName,
-                geoBackupPolicyName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+            workspaceName, sqlPoolName, geoBackupPolicyName, accept, context);
     }
 
     /**
      * Get a SQL pool geo backup policy
-     *
-     * <p>Get the specified SQL pool geo backup policy.
-     *
+     * 
+     * Get the specified SQL pool geo backup policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -671,17 +544,17 @@ public final class SqlPoolGeoBackupPoliciesClientImpl implements SqlPoolGeoBacku
      * @return the specified SQL pool geo backup policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<GeoBackupPolicyInner> getAsync(
-        String resourceGroupName, String workspaceName, String sqlPoolName, GeoBackupPolicyName geoBackupPolicyName) {
+    private Mono<GeoBackupPolicyInner> getAsync(String resourceGroupName, String workspaceName, String sqlPoolName,
+        GeoBackupPolicyName geoBackupPolicyName) {
         return getWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName, geoBackupPolicyName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get a SQL pool geo backup policy
-     *
-     * <p>Get the specified SQL pool geo backup policy.
-     *
+     * 
+     * Get the specified SQL pool geo backup policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -693,21 +566,17 @@ public final class SqlPoolGeoBackupPoliciesClientImpl implements SqlPoolGeoBacku
      * @return the specified SQL pool geo backup policy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<GeoBackupPolicyInner> getWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        GeoBackupPolicyName geoBackupPolicyName,
-        Context context) {
+    public Response<GeoBackupPolicyInner> getWithResponse(String resourceGroupName, String workspaceName,
+        String sqlPoolName, GeoBackupPolicyName geoBackupPolicyName, Context context) {
         return getWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName, geoBackupPolicyName, context)
             .block();
     }
 
     /**
      * Get a SQL pool geo backup policy
-     *
-     * <p>Get the specified SQL pool geo backup policy.
-     *
+     * 
+     * Get the specified SQL pool geo backup policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -718,8 +587,8 @@ public final class SqlPoolGeoBackupPoliciesClientImpl implements SqlPoolGeoBacku
      * @return the specified SQL pool geo backup policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public GeoBackupPolicyInner get(
-        String resourceGroupName, String workspaceName, String sqlPoolName, GeoBackupPolicyName geoBackupPolicyName) {
+    public GeoBackupPolicyInner get(String resourceGroupName, String workspaceName, String sqlPoolName,
+        GeoBackupPolicyName geoBackupPolicyName) {
         return getWithResponse(resourceGroupName, workspaceName, sqlPoolName, geoBackupPolicyName, Context.NONE)
             .getValue();
     }

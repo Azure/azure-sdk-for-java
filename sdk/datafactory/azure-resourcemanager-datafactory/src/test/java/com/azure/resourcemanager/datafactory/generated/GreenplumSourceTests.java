@@ -11,19 +11,19 @@ public final class GreenplumSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GreenplumSource model = BinaryData.fromString(
-            "{\"type\":\"GreenplumSource\",\"query\":\"datauztb\",\"queryTimeout\":\"datatfmcnrgwgcsto\",\"additionalColumns\":\"dataveehmvr\",\"sourceRetryCount\":\"dataurpzry\",\"sourceRetryWait\":\"datafdhch\",\"maxConcurrentConnections\":\"datawahaxyrdlvb\",\"disableMetricsCollection\":\"datahfqsjzlckt\",\"\":{\"yhxgnlpjytle\":\"dataxtee\",\"krcohhuwzun\":\"dataymijhn\",\"b\":\"datazbdeyhwebh\",\"lynd\":\"dataocfvajmmdmb\"}}")
+            "{\"type\":\"GreenplumSource\",\"query\":\"datahndfpf\",\"queryTimeout\":\"datafdgf\",\"additionalColumns\":\"dataoeh\",\"sourceRetryCount\":\"datapkssjbw\",\"sourceRetryWait\":\"dataxdgcfcfky\",\"maxConcurrentConnections\":\"datajwxhslrbwwk\",\"disableMetricsCollection\":\"datawodhsodofsxjiky\",\"\":{\"cxdmxhuwldfa\":\"datauhuixqwogg\",\"dkbgsg\":\"datakyft\",\"ayqkg\":\"datapyckmncrutoudjm\"}}")
             .toObject(GreenplumSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GreenplumSource model = new GreenplumSource().withSourceRetryCount("dataurpzry")
-            .withSourceRetryWait("datafdhch")
-            .withMaxConcurrentConnections("datawahaxyrdlvb")
-            .withDisableMetricsCollection("datahfqsjzlckt")
-            .withQueryTimeout("datatfmcnrgwgcsto")
-            .withAdditionalColumns("dataveehmvr")
-            .withQuery("datauztb");
+        GreenplumSource model = new GreenplumSource().withSourceRetryCount("datapkssjbw")
+            .withSourceRetryWait("dataxdgcfcfky")
+            .withMaxConcurrentConnections("datajwxhslrbwwk")
+            .withDisableMetricsCollection("datawodhsodofsxjiky")
+            .withQueryTimeout("datafdgf")
+            .withAdditionalColumns("dataoeh")
+            .withQuery("datahndfpf");
         model = BinaryData.fromObject(model).toObject(GreenplumSource.class);
     }
 }

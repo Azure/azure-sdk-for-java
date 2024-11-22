@@ -5,30 +5,31 @@
 package com.azure.resourcemanager.resources.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.resources.models.TagCount;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Tag information.
  */
 @Fluent
-public final class TagValueInner {
+public final class TagValueInner implements JsonSerializable<TagValueInner> {
     /*
      * The tag value ID.
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * The tag value.
      */
-    @JsonProperty(value = "tagValue")
     private String tagValue;
 
     /*
      * The tag value count.
      */
-    @JsonProperty(value = "count")
     private TagCount count;
 
     /**
@@ -95,5 +96,46 @@ public final class TagValueInner {
         if (count() != null) {
             count().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("tagValue", this.tagValue);
+        jsonWriter.writeJsonField("count", this.count);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TagValueInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TagValueInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TagValueInner.
+     */
+    public static TagValueInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TagValueInner deserializedTagValueInner = new TagValueInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedTagValueInner.id = reader.getString();
+                } else if ("tagValue".equals(fieldName)) {
+                    deserializedTagValueInner.tagValue = reader.getString();
+                } else if ("count".equals(fieldName)) {
+                    deserializedTagValueInner.count = TagCount.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTagValueInner;
+        });
     }
 }

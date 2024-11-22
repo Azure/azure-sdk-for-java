@@ -33,6 +33,11 @@ public class JavaComponentProperties implements JsonSerializable<JavaComponentPr
     private List<JavaComponentConfigurationProperty> configurations;
 
     /*
+     * Java component scaling configurations
+     */
+    private JavaComponentPropertiesScale scale;
+
+    /*
      * List of Java Components that are bound to the Java component
      */
     private List<JavaComponentServiceBind> serviceBinds;
@@ -93,6 +98,26 @@ public class JavaComponentProperties implements JsonSerializable<JavaComponentPr
     }
 
     /**
+     * Get the scale property: Java component scaling configurations.
+     * 
+     * @return the scale value.
+     */
+    public JavaComponentPropertiesScale scale() {
+        return this.scale;
+    }
+
+    /**
+     * Set the scale property: Java component scaling configurations.
+     * 
+     * @param scale the scale value to set.
+     * @return the JavaComponentProperties object itself.
+     */
+    public JavaComponentProperties withScale(JavaComponentPropertiesScale scale) {
+        this.scale = scale;
+        return this;
+    }
+
+    /**
      * Get the serviceBinds property: List of Java Components that are bound to the Java component.
      * 
      * @return the serviceBinds value.
@@ -121,6 +146,9 @@ public class JavaComponentProperties implements JsonSerializable<JavaComponentPr
         if (configurations() != null) {
             configurations().forEach(e -> e.validate());
         }
+        if (scale() != null) {
+            scale().validate();
+        }
         if (serviceBinds() != null) {
             serviceBinds().forEach(e -> e.validate());
         }
@@ -135,6 +163,7 @@ public class JavaComponentProperties implements JsonSerializable<JavaComponentPr
         jsonWriter.writeStringField("componentType", this.componentType == null ? null : this.componentType.toString());
         jsonWriter.writeArrayField("configurations", this.configurations,
             (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("scale", this.scale);
         jsonWriter.writeArrayField("serviceBinds", this.serviceBinds, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
@@ -163,7 +192,9 @@ public class JavaComponentProperties implements JsonSerializable<JavaComponentPr
                     }
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
-                if ("SpringBootAdmin".equals(discriminatorValue)) {
+                if ("SpringCloudGateway".equals(discriminatorValue)) {
+                    return SpringCloudGatewayComponent.fromJson(readerToUse.reset());
+                } else if ("SpringBootAdmin".equals(discriminatorValue)) {
                     return SpringBootAdminComponent.fromJson(readerToUse.reset());
                 } else if ("Nacos".equals(discriminatorValue)) {
                     return NacosComponent.fromJson(readerToUse.reset());
@@ -195,6 +226,8 @@ public class JavaComponentProperties implements JsonSerializable<JavaComponentPr
                     List<JavaComponentConfigurationProperty> configurations
                         = reader.readArray(reader1 -> JavaComponentConfigurationProperty.fromJson(reader1));
                     deserializedJavaComponentProperties.configurations = configurations;
+                } else if ("scale".equals(fieldName)) {
+                    deserializedJavaComponentProperties.scale = JavaComponentPropertiesScale.fromJson(reader);
                 } else if ("serviceBinds".equals(fieldName)) {
                     List<JavaComponentServiceBind> serviceBinds
                         = reader.readArray(reader1 -> JavaComponentServiceBind.fromJson(reader1));

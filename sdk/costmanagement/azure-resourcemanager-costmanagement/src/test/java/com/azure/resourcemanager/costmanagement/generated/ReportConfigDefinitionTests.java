@@ -7,8 +7,10 @@ package com.azure.resourcemanager.costmanagement.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.costmanagement.fluent.models.ReportConfigDefinition;
 import com.azure.resourcemanager.costmanagement.models.FunctionType;
+import com.azure.resourcemanager.costmanagement.models.OperatorType;
 import com.azure.resourcemanager.costmanagement.models.QueryColumnType;
 import com.azure.resourcemanager.costmanagement.models.ReportConfigAggregation;
+import com.azure.resourcemanager.costmanagement.models.ReportConfigComparisonExpression;
 import com.azure.resourcemanager.costmanagement.models.ReportConfigDataset;
 import com.azure.resourcemanager.costmanagement.models.ReportConfigDatasetConfiguration;
 import com.azure.resourcemanager.costmanagement.models.ReportConfigFilter;
@@ -28,79 +30,173 @@ import org.junit.jupiter.api.Assertions;
 public final class ReportConfigDefinitionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ReportConfigDefinition model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"Usage\",\"timeframe\":\"Custom\",\"timePeriod\":{\"from\":\"2021-08-28T07:34:48Z\",\"to\":\"2021-08-27T18:55:51Z\"},\"dataSet\":{\"granularity\":\"Monthly\",\"configuration\":{\"columns\":[\"uertumk\",\"o\"]},\"aggregation\":{\"bjf\":{\"name\":\"whbmd\",\"function\":\"Sum\"}},\"grouping\":[{\"type\":\"Dimension\",\"name\":\"bmbexppbhtqqro\"},{\"type\":\"Dimension\",\"name\":\"p\"},{\"type\":\"Dimension\",\"name\":\"s\"}],\"sorting\":[{\"direction\":\"Ascending\",\"name\":\"uxig\"},{\"direction\":\"Descending\",\"name\":\"gzjaoyfhrtxilne\"}],\"filter\":{\"and\":[],\"or\":[]}},\"includeMonetaryCommitment\":false}")
-                .toObject(ReportConfigDefinition.class);
+        ReportConfigDefinition model = BinaryData.fromString(
+            "{\"type\":\"Usage\",\"timeframe\":\"YearToDate\",\"timePeriod\":{\"from\":\"2021-04-05T17:23:15Z\",\"to\":\"2021-10-23T04:38:56Z\"},\"dataSet\":{\"granularity\":\"Monthly\",\"configuration\":{\"columns\":[\"hbkuofqwey\",\"hmenevfyexfwhybc\"]},\"aggregation\":{\"ectehf\":{\"name\":\"yvdcsitynnaa\",\"function\":\"Sum\"},\"ypvhezrkg\":{\"name\":\"qsc\",\"function\":\"Sum\"}},\"grouping\":[{\"type\":\"Dimension\",\"name\":\"refovgmkqsleyyvx\"}],\"sorting\":[{\"direction\":\"Ascending\",\"name\":\"cattpngjcrcczsq\"},{\"direction\":\"Descending\",\"name\":\"vmdajvnysou\"},{\"direction\":\"Ascending\",\"name\":\"canoaeupf\"}],\"filter\":{\"and\":[{\"and\":[{},{}],\"or\":[{},{}],\"dimensions\":{\"name\":\"pjmcmatuokthfuiu\",\"operator\":\"Contains\",\"values\":[\"sfcpkvxodpuozm\",\"zydagfuaxbezyiuo\",\"ktwh\",\"dxwzywqsmbsurexi\"]},\"tags\":{\"name\":\"ryocfsfksymdd\",\"operator\":\"Contains\",\"values\":[\"kiiuxhqyudxor\"]}},{\"and\":[{},{},{},{}],\"or\":[{},{},{},{}],\"dimensions\":{\"name\":\"czvyifq\",\"operator\":\"In\",\"values\":[\"dvjsllrmvvdf\",\"atkpnp\"]},\"tags\":{\"name\":\"exxbczwtr\",\"operator\":\"Contains\",\"values\":[\"qzbqjvsov\",\"yokacspkw\"]}}],\"or\":[{\"and\":[{},{},{}],\"or\":[{},{},{},{}],\"dimensions\":{\"name\":\"jmflbvvnch\",\"operator\":\"Contains\",\"values\":[\"ciwwzjuqkhr\"]},\"tags\":{\"name\":\"jiwkuofoskghsau\",\"operator\":\"In\",\"values\":[\"jmvxie\",\"uugidyjrrfby\",\"osvexcsonpclhoc\",\"hslkevleggzf\"]}},{\"and\":[{},{},{}],\"or\":[{},{},{},{}],\"dimensions\":{\"name\":\"faxkffeii\",\"operator\":\"In\",\"values\":[\"vmezy\",\"shxmzsbbzoggigrx\",\"burvjxxjnspy\",\"ptkoenkoukn\"]},\"tags\":{\"name\":\"dwtiukbldngkp\",\"operator\":\"Contains\",\"values\":[\"pazyxoegukg\",\"npiucgygevqznty\",\"mrbpizcdrqj\",\"dpydn\"]}},{\"and\":[{},{}],\"or\":[{}],\"dimensions\":{\"name\":\"oejzi\",\"operator\":\"In\",\"values\":[\"fsj\",\"tgzfbishcbkh\",\"jdeyeamdpha\",\"alpbuxwgipwhon\"]},\"tags\":{\"name\":\"kgshwa\",\"operator\":\"In\",\"values\":[\"xzbinjeputt\",\"rywn\",\"zoqftiyqzrnkcqvy\",\"lwh\"]}},{\"and\":[{},{},{},{}],\"or\":[{},{}],\"dimensions\":{\"name\":\"hoqqnwvlr\",\"operator\":\"Contains\",\"values\":[\"w\",\"heun\",\"mqhgyxzkonocuk\",\"klyaxuconu\"]},\"tags\":{\"name\":\"zf\",\"operator\":\"Contains\",\"values\":[\"ypewrmjmwvvjekt\"]}}],\"dimensions\":{\"name\":\"senhwlrs\",\"operator\":\"Contains\",\"values\":[\"zpwv\",\"qdqgbi\",\"ylihkaetckt\",\"fcivfsnkym\"]},\"tags\":{\"name\":\"tqhjfbebrjcx\",\"operator\":\"In\",\"values\":[\"uwutttxfvjrbi\",\"phxepcyvahf\",\"ljkyqxjvuuj\"]}}},\"includeMonetaryCommitment\":false}")
+            .toObject(ReportConfigDefinition.class);
         Assertions.assertEquals(ReportType.USAGE, model.type());
-        Assertions.assertEquals(ReportTimeframeType.CUSTOM, model.timeframe());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-28T07:34:48Z"), model.timePeriod().from());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-27T18:55:51Z"), model.timePeriod().to());
+        Assertions.assertEquals(ReportTimeframeType.YEAR_TO_DATE, model.timeframe());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-05T17:23:15Z"), model.timePeriod().from());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-23T04:38:56Z"), model.timePeriod().to());
         Assertions.assertEquals(ReportGranularityType.MONTHLY, model.dataSet().granularity());
-        Assertions.assertEquals("uertumk", model.dataSet().configuration().columns().get(0));
-        Assertions.assertEquals("whbmd", model.dataSet().aggregation().get("bjf").name());
-        Assertions.assertEquals(FunctionType.SUM, model.dataSet().aggregation().get("bjf").function());
+        Assertions.assertEquals("hbkuofqwey", model.dataSet().configuration().columns().get(0));
+        Assertions.assertEquals("yvdcsitynnaa", model.dataSet().aggregation().get("ectehf").name());
+        Assertions.assertEquals(FunctionType.SUM, model.dataSet().aggregation().get("ectehf").function());
         Assertions.assertEquals(QueryColumnType.DIMENSION, model.dataSet().grouping().get(0).type());
-        Assertions.assertEquals("bmbexppbhtqqro", model.dataSet().grouping().get(0).name());
+        Assertions.assertEquals("refovgmkqsleyyvx", model.dataSet().grouping().get(0).name());
         Assertions.assertEquals(ReportConfigSortingType.ASCENDING, model.dataSet().sorting().get(0).direction());
-        Assertions.assertEquals("uxig", model.dataSet().sorting().get(0).name());
+        Assertions.assertEquals("cattpngjcrcczsq", model.dataSet().sorting().get(0).name());
+        Assertions.assertEquals("pjmcmatuokthfuiu", model.dataSet().filter().and().get(0).dimensions().name());
+        Assertions.assertEquals(OperatorType.CONTAINS, model.dataSet().filter().and().get(0).dimensions().operator());
+        Assertions.assertEquals("sfcpkvxodpuozm", model.dataSet().filter().and().get(0).dimensions().values().get(0));
+        Assertions.assertEquals("ryocfsfksymdd", model.dataSet().filter().and().get(0).tags().name());
+        Assertions.assertEquals(OperatorType.CONTAINS, model.dataSet().filter().and().get(0).tags().operator());
+        Assertions.assertEquals("kiiuxhqyudxor", model.dataSet().filter().and().get(0).tags().values().get(0));
+        Assertions.assertEquals("jmflbvvnch", model.dataSet().filter().or().get(0).dimensions().name());
+        Assertions.assertEquals(OperatorType.CONTAINS, model.dataSet().filter().or().get(0).dimensions().operator());
+        Assertions.assertEquals("ciwwzjuqkhr", model.dataSet().filter().or().get(0).dimensions().values().get(0));
+        Assertions.assertEquals("jiwkuofoskghsau", model.dataSet().filter().or().get(0).tags().name());
+        Assertions.assertEquals(OperatorType.IN, model.dataSet().filter().or().get(0).tags().operator());
+        Assertions.assertEquals("jmvxie", model.dataSet().filter().or().get(0).tags().values().get(0));
+        Assertions.assertEquals("senhwlrs", model.dataSet().filter().dimensions().name());
+        Assertions.assertEquals(OperatorType.CONTAINS, model.dataSet().filter().dimensions().operator());
+        Assertions.assertEquals("zpwv", model.dataSet().filter().dimensions().values().get(0));
+        Assertions.assertEquals("tqhjfbebrjcx", model.dataSet().filter().tags().name());
+        Assertions.assertEquals(OperatorType.IN, model.dataSet().filter().tags().operator());
+        Assertions.assertEquals("uwutttxfvjrbi", model.dataSet().filter().tags().values().get(0));
         Assertions.assertEquals(false, model.includeMonetaryCommitment());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ReportConfigDefinition model =
-            new ReportConfigDefinition()
-                .withType(ReportType.USAGE)
-                .withTimeframe(ReportTimeframeType.CUSTOM)
-                .withTimePeriod(
-                    new ReportConfigTimePeriod()
-                        .withFrom(OffsetDateTime.parse("2021-08-28T07:34:48Z"))
-                        .withTo(OffsetDateTime.parse("2021-08-27T18:55:51Z")))
-                .withDataSet(
-                    new ReportConfigDataset()
-                        .withGranularity(ReportGranularityType.MONTHLY)
-                        .withConfiguration(
-                            new ReportConfigDatasetConfiguration().withColumns(Arrays.asList("uertumk", "o")))
-                        .withAggregation(
-                            mapOf(
-                                "bjf", new ReportConfigAggregation().withName("whbmd").withFunction(FunctionType.SUM)))
-                        .withGrouping(
-                            Arrays
-                                .asList(
-                                    new ReportConfigGrouping()
-                                        .withType(QueryColumnType.DIMENSION)
-                                        .withName("bmbexppbhtqqro"),
-                                    new ReportConfigGrouping().withType(QueryColumnType.DIMENSION).withName("p"),
-                                    new ReportConfigGrouping().withType(QueryColumnType.DIMENSION).withName("s")))
-                        .withSorting(
-                            Arrays
-                                .asList(
-                                    new ReportConfigSorting()
-                                        .withDirection(ReportConfigSortingType.ASCENDING)
-                                        .withName("uxig"),
-                                    new ReportConfigSorting()
-                                        .withDirection(ReportConfigSortingType.DESCENDING)
-                                        .withName("gzjaoyfhrtxilne")))
-                        .withFilter(new ReportConfigFilter().withAnd(Arrays.asList()).withOr(Arrays.asList())))
-                .withIncludeMonetaryCommitment(false);
+        ReportConfigDefinition model = new ReportConfigDefinition().withType(ReportType.USAGE)
+            .withTimeframe(ReportTimeframeType.YEAR_TO_DATE)
+            .withTimePeriod(new ReportConfigTimePeriod().withFrom(OffsetDateTime.parse("2021-04-05T17:23:15Z"))
+                .withTo(OffsetDateTime.parse("2021-10-23T04:38:56Z")))
+            .withDataSet(new ReportConfigDataset().withGranularity(ReportGranularityType.MONTHLY)
+                .withConfiguration(
+                    new ReportConfigDatasetConfiguration().withColumns(Arrays.asList("hbkuofqwey", "hmenevfyexfwhybc")))
+                .withAggregation(mapOf("ectehf",
+                    new ReportConfigAggregation().withName("yvdcsitynnaa").withFunction(FunctionType.SUM), "ypvhezrkg",
+                    new ReportConfigAggregation().withName("qsc").withFunction(FunctionType.SUM)))
+                .withGrouping(Arrays.asList(
+                    new ReportConfigGrouping().withType(QueryColumnType.DIMENSION).withName("refovgmkqsleyyvx")))
+                .withSorting(Arrays.asList(
+                    new ReportConfigSorting().withDirection(ReportConfigSortingType.ASCENDING)
+                        .withName("cattpngjcrcczsq"),
+                    new ReportConfigSorting().withDirection(ReportConfigSortingType.DESCENDING).withName("vmdajvnysou"),
+                    new ReportConfigSorting().withDirection(ReportConfigSortingType.ASCENDING).withName("canoaeupf")))
+                .withFilter(
+                    new ReportConfigFilter()
+                        .withAnd(Arrays.asList(
+                            new ReportConfigFilter()
+                                .withAnd(Arrays.asList(new ReportConfigFilter(), new ReportConfigFilter()))
+                                .withOr(Arrays.asList(new ReportConfigFilter(), new ReportConfigFilter()))
+                                .withDimensions(new ReportConfigComparisonExpression().withName("pjmcmatuokthfuiu")
+                                    .withOperator(OperatorType.CONTAINS)
+                                    .withValues(Arrays.asList("sfcpkvxodpuozm", "zydagfuaxbezyiuo", "ktwh",
+                                        "dxwzywqsmbsurexi")))
+                                .withTags(new ReportConfigComparisonExpression().withName("ryocfsfksymdd")
+                                    .withOperator(OperatorType.CONTAINS)
+                                    .withValues(Arrays.asList("kiiuxhqyudxor"))),
+                            new ReportConfigFilter()
+                                .withAnd(Arrays.asList(new ReportConfigFilter(), new ReportConfigFilter(),
+                                    new ReportConfigFilter(), new ReportConfigFilter()))
+                                .withOr(Arrays.asList(new ReportConfigFilter(), new ReportConfigFilter(),
+                                    new ReportConfigFilter(), new ReportConfigFilter()))
+                                .withDimensions(new ReportConfigComparisonExpression().withName("czvyifq")
+                                    .withOperator(OperatorType.IN)
+                                    .withValues(Arrays.asList("dvjsllrmvvdf", "atkpnp")))
+                                .withTags(new ReportConfigComparisonExpression().withName("exxbczwtr")
+                                    .withOperator(OperatorType.CONTAINS)
+                                    .withValues(Arrays.asList("qzbqjvsov", "yokacspkw")))))
+                        .withOr(Arrays.asList(
+                            new ReportConfigFilter()
+                                .withAnd(Arrays.asList(new ReportConfigFilter(), new ReportConfigFilter(),
+                                    new ReportConfigFilter()))
+                                .withOr(Arrays.asList(new ReportConfigFilter(), new ReportConfigFilter(),
+                                    new ReportConfigFilter(), new ReportConfigFilter()))
+                                .withDimensions(new ReportConfigComparisonExpression().withName("jmflbvvnch")
+                                    .withOperator(OperatorType.CONTAINS)
+                                    .withValues(Arrays.asList("ciwwzjuqkhr")))
+                                .withTags(new ReportConfigComparisonExpression()
+                                    .withName("jiwkuofoskghsau")
+                                    .withOperator(OperatorType.IN)
+                                    .withValues(
+                                        Arrays.asList("jmvxie", "uugidyjrrfby", "osvexcsonpclhoc", "hslkevleggzf"))),
+                            new ReportConfigFilter()
+                                .withAnd(Arrays.asList(new ReportConfigFilter(), new ReportConfigFilter(),
+                                    new ReportConfigFilter()))
+                                .withOr(Arrays.asList(new ReportConfigFilter(), new ReportConfigFilter(),
+                                    new ReportConfigFilter(), new ReportConfigFilter()))
+                                .withDimensions(new ReportConfigComparisonExpression().withName("faxkffeii")
+                                    .withOperator(OperatorType.IN)
+                                    .withValues(
+                                        Arrays.asList("vmezy", "shxmzsbbzoggigrx", "burvjxxjnspy", "ptkoenkoukn")))
+                                .withTags(new ReportConfigComparisonExpression().withName("dwtiukbldngkp")
+                                    .withOperator(OperatorType.CONTAINS)
+                                    .withValues(
+                                        Arrays.asList("pazyxoegukg", "npiucgygevqznty", "mrbpizcdrqj", "dpydn"))),
+                            new ReportConfigFilter()
+                                .withAnd(Arrays.asList(new ReportConfigFilter(), new ReportConfigFilter()))
+                                .withOr(Arrays.asList(new ReportConfigFilter()))
+                                .withDimensions(new ReportConfigComparisonExpression().withName("oejzi")
+                                    .withOperator(OperatorType.IN)
+                                    .withValues(Arrays.asList("fsj", "tgzfbishcbkh", "jdeyeamdpha", "alpbuxwgipwhon")))
+                                .withTags(new ReportConfigComparisonExpression().withName("kgshwa")
+                                    .withOperator(OperatorType.IN)
+                                    .withValues(Arrays.asList("xzbinjeputt", "rywn", "zoqftiyqzrnkcqvy", "lwh"))),
+                            new ReportConfigFilter()
+                                .withAnd(Arrays.asList(new ReportConfigFilter(), new ReportConfigFilter(),
+                                    new ReportConfigFilter(), new ReportConfigFilter()))
+                                .withOr(Arrays.asList(new ReportConfigFilter(), new ReportConfigFilter()))
+                                .withDimensions(new ReportConfigComparisonExpression().withName("hoqqnwvlr")
+                                    .withOperator(OperatorType.CONTAINS)
+                                    .withValues(Arrays.asList("w", "heun", "mqhgyxzkonocuk", "klyaxuconu")))
+                                .withTags(new ReportConfigComparisonExpression().withName("zf")
+                                    .withOperator(OperatorType.CONTAINS)
+                                    .withValues(Arrays.asList("ypewrmjmwvvjekt")))))
+                        .withDimensions(new ReportConfigComparisonExpression().withName("senhwlrs")
+                            .withOperator(OperatorType.CONTAINS)
+                            .withValues(Arrays.asList("zpwv", "qdqgbi", "ylihkaetckt", "fcivfsnkym")))
+                        .withTags(new ReportConfigComparisonExpression().withName("tqhjfbebrjcx")
+                            .withOperator(OperatorType.IN)
+                            .withValues(Arrays.asList("uwutttxfvjrbi", "phxepcyvahf", "ljkyqxjvuuj")))))
+            .withIncludeMonetaryCommitment(false);
         model = BinaryData.fromObject(model).toObject(ReportConfigDefinition.class);
         Assertions.assertEquals(ReportType.USAGE, model.type());
-        Assertions.assertEquals(ReportTimeframeType.CUSTOM, model.timeframe());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-28T07:34:48Z"), model.timePeriod().from());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-27T18:55:51Z"), model.timePeriod().to());
+        Assertions.assertEquals(ReportTimeframeType.YEAR_TO_DATE, model.timeframe());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-05T17:23:15Z"), model.timePeriod().from());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-23T04:38:56Z"), model.timePeriod().to());
         Assertions.assertEquals(ReportGranularityType.MONTHLY, model.dataSet().granularity());
-        Assertions.assertEquals("uertumk", model.dataSet().configuration().columns().get(0));
-        Assertions.assertEquals("whbmd", model.dataSet().aggregation().get("bjf").name());
-        Assertions.assertEquals(FunctionType.SUM, model.dataSet().aggregation().get("bjf").function());
+        Assertions.assertEquals("hbkuofqwey", model.dataSet().configuration().columns().get(0));
+        Assertions.assertEquals("yvdcsitynnaa", model.dataSet().aggregation().get("ectehf").name());
+        Assertions.assertEquals(FunctionType.SUM, model.dataSet().aggregation().get("ectehf").function());
         Assertions.assertEquals(QueryColumnType.DIMENSION, model.dataSet().grouping().get(0).type());
-        Assertions.assertEquals("bmbexppbhtqqro", model.dataSet().grouping().get(0).name());
+        Assertions.assertEquals("refovgmkqsleyyvx", model.dataSet().grouping().get(0).name());
         Assertions.assertEquals(ReportConfigSortingType.ASCENDING, model.dataSet().sorting().get(0).direction());
-        Assertions.assertEquals("uxig", model.dataSet().sorting().get(0).name());
+        Assertions.assertEquals("cattpngjcrcczsq", model.dataSet().sorting().get(0).name());
+        Assertions.assertEquals("pjmcmatuokthfuiu", model.dataSet().filter().and().get(0).dimensions().name());
+        Assertions.assertEquals(OperatorType.CONTAINS, model.dataSet().filter().and().get(0).dimensions().operator());
+        Assertions.assertEquals("sfcpkvxodpuozm", model.dataSet().filter().and().get(0).dimensions().values().get(0));
+        Assertions.assertEquals("ryocfsfksymdd", model.dataSet().filter().and().get(0).tags().name());
+        Assertions.assertEquals(OperatorType.CONTAINS, model.dataSet().filter().and().get(0).tags().operator());
+        Assertions.assertEquals("kiiuxhqyudxor", model.dataSet().filter().and().get(0).tags().values().get(0));
+        Assertions.assertEquals("jmflbvvnch", model.dataSet().filter().or().get(0).dimensions().name());
+        Assertions.assertEquals(OperatorType.CONTAINS, model.dataSet().filter().or().get(0).dimensions().operator());
+        Assertions.assertEquals("ciwwzjuqkhr", model.dataSet().filter().or().get(0).dimensions().values().get(0));
+        Assertions.assertEquals("jiwkuofoskghsau", model.dataSet().filter().or().get(0).tags().name());
+        Assertions.assertEquals(OperatorType.IN, model.dataSet().filter().or().get(0).tags().operator());
+        Assertions.assertEquals("jmvxie", model.dataSet().filter().or().get(0).tags().values().get(0));
+        Assertions.assertEquals("senhwlrs", model.dataSet().filter().dimensions().name());
+        Assertions.assertEquals(OperatorType.CONTAINS, model.dataSet().filter().dimensions().operator());
+        Assertions.assertEquals("zpwv", model.dataSet().filter().dimensions().values().get(0));
+        Assertions.assertEquals("tqhjfbebrjcx", model.dataSet().filter().tags().name());
+        Assertions.assertEquals(OperatorType.IN, model.dataSet().filter().tags().operator());
+        Assertions.assertEquals("uwutttxfvjrbi", model.dataSet().filter().tags().values().get(0));
         Assertions.assertEquals(false, model.includeMonetaryCommitment());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -15,7 +15,7 @@ autorest
 
 ### Code generation settings
 ``` yaml
-use: '@autorest/java@4.1.29'
+use: '@autorest/java@4.1.39'
 input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/688a906172823628e75b19ea8964d998cb7560fd/specification/storage/data-plane/Azure.Storage.Files.DataLake/preview/2023-05-03/DataLakeStorage.json
 java: true
 output-folder: ../
@@ -27,7 +27,7 @@ license-header: MICROSOFT_MIT_SMALL
 enable-sync-stack: true
 context-client-method-parameter: true
 optional-constant-as-enum: true
-default-http-exception-type: com.azure.storage.file.datalake.models.DataLakeStorageException
+default-http-exception-type: com.azure.storage.file.datalake.implementation.models.DataLakeStorageExceptionInternal
 models-subpackage: implementation.models
 custom-types: FileSystemInfo,FileSystemItem,FileSystemProperties,PathInfo,PathItem,PathProperties,ListFileSystemsOptions,PathHttpHeaders,EncryptionAlgorithmType,LeaseAction
 custom-types-subpackage: models

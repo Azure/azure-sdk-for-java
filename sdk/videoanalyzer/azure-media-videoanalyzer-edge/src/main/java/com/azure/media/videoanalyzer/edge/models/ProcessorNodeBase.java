@@ -4,67 +4,58 @@
 
 package com.azure.media.videoanalyzer.edge.models;
 
-import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
-/** Base class for topology processor nodes. */
-@JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "@type",
-        defaultImpl = ProcessorNodeBase.class)
-@JsonTypeName("ProcessorNodeBase")
-@JsonSubTypes({
-    @JsonSubTypes.Type(
-            name = "#Microsoft.VideoAnalyzer.MotionDetectionProcessor",
-            value = MotionDetectionProcessor.class),
-    @JsonSubTypes.Type(
-            name = "#Microsoft.VideoAnalyzer.ObjectTrackingProcessor",
-            value = ObjectTrackingProcessor.class),
-    @JsonSubTypes.Type(name = "#Microsoft.VideoAnalyzer.LineCrossingProcessor", value = LineCrossingProcessor.class),
-    @JsonSubTypes.Type(name = "#Microsoft.VideoAnalyzer.ExtensionProcessorBase", value = ExtensionProcessorBase.class),
-    @JsonSubTypes.Type(name = "#Microsoft.VideoAnalyzer.SignalGateProcessor", value = SignalGateProcessor.class),
-    @JsonSubTypes.Type(
-            name = "#Microsoft.VideoAnalyzer.CognitiveServicesVisionProcessor",
-            value = CognitiveServicesVisionProcessor.class)
-})
-@Fluent
-public class ProcessorNodeBase {
+/**
+ * Base class for topology processor nodes.
+ */
+@Immutable
+public class ProcessorNodeBase implements JsonSerializable<ProcessorNodeBase> {
+    /*
+     * Type discriminator for the derived types.
+     */
+    private String type = "ProcessorNodeBase";
+
     /*
      * Node name. Must be unique within the topology.
      */
-    @JsonProperty(value = "name", required = true)
-    private String name;
+    private final String name;
 
     /*
-     * An array of upstream node references within the topology to be used as
-     * inputs for this node.
+     * An array of upstream node references within the topology to be used as inputs for this node.
      */
-    @JsonProperty(value = "inputs", required = true)
-    private List<NodeInput> inputs;
+    private final List<NodeInput> inputs;
 
     /**
      * Creates an instance of ProcessorNodeBase class.
-     *
+     * 
      * @param name the name value to set.
      * @param inputs the inputs value to set.
      */
-    @JsonCreator
-    public ProcessorNodeBase(
-            @JsonProperty(value = "name", required = true) String name,
-            @JsonProperty(value = "inputs", required = true) List<NodeInput> inputs) {
+    public ProcessorNodeBase(String name, List<NodeInput> inputs) {
         this.name = name;
         this.inputs = inputs;
     }
 
     /**
+     * Get the type property: Type discriminator for the derived types.
+     * 
+     * @return the type value.
+     */
+    public String getType() {
+        return this.type;
+    }
+
+    /**
      * Get the name property: Node name. Must be unique within the topology.
-     *
+     * 
      * @return the name value.
      */
     public String getName() {
@@ -74,10 +65,112 @@ public class ProcessorNodeBase {
     /**
      * Get the inputs property: An array of upstream node references within the topology to be used as inputs for this
      * node.
-     *
+     * 
      * @return the inputs value.
      */
     public List<NodeInput> getInputs() {
         return this.inputs;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeArrayField("inputs", this.inputs, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("@type", this.type);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ProcessorNodeBase from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ProcessorNodeBase if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ProcessorNodeBase.
+     */
+    public static ProcessorNodeBase fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("@type".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("#Microsoft.VideoAnalyzer.MotionDetectionProcessor".equals(discriminatorValue)) {
+                    return MotionDetectionProcessor.fromJson(readerToUse.reset());
+                } else if ("#Microsoft.VideoAnalyzer.ObjectTrackingProcessor".equals(discriminatorValue)) {
+                    return ObjectTrackingProcessor.fromJson(readerToUse.reset());
+                } else if ("#Microsoft.VideoAnalyzer.LineCrossingProcessor".equals(discriminatorValue)) {
+                    return LineCrossingProcessor.fromJson(readerToUse.reset());
+                } else if ("#Microsoft.VideoAnalyzer.ExtensionProcessorBase".equals(discriminatorValue)) {
+                    return ExtensionProcessorBase.fromJsonKnownDiscriminator(readerToUse.reset());
+                } else if ("#Microsoft.VideoAnalyzer.GrpcExtension".equals(discriminatorValue)) {
+                    return GrpcExtension.fromJson(readerToUse.reset());
+                } else if ("#Microsoft.VideoAnalyzer.HttpExtension".equals(discriminatorValue)) {
+                    return HttpExtension.fromJson(readerToUse.reset());
+                } else if ("#Microsoft.VideoAnalyzer.SignalGateProcessor".equals(discriminatorValue)) {
+                    return SignalGateProcessor.fromJson(readerToUse.reset());
+                } else if ("#Microsoft.VideoAnalyzer.CognitiveServicesVisionProcessor".equals(discriminatorValue)) {
+                    return CognitiveServicesVisionProcessor.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static ProcessorNodeBase fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            boolean nameFound = false;
+            String name = null;
+            boolean inputsFound = false;
+            List<NodeInput> inputs = null;
+            String type = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    name = reader.getString();
+                    nameFound = true;
+                } else if ("inputs".equals(fieldName)) {
+                    inputs = reader.readArray(reader1 -> NodeInput.fromJson(reader1));
+                    inputsFound = true;
+                } else if ("@type".equals(fieldName)) {
+                    type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            if (nameFound && inputsFound) {
+                ProcessorNodeBase deserializedProcessorNodeBase = new ProcessorNodeBase(name, inputs);
+                deserializedProcessorNodeBase.type = type;
+
+                return deserializedProcessorNodeBase;
+            }
+            List<String> missingProperties = new ArrayList<>();
+            if (!nameFound) {
+                missingProperties.add("name");
+            }
+            if (!inputsFound) {
+                missingProperties.add("inputs");
+            }
+
+            throw new IllegalStateException(
+                "Missing required property/properties: " + String.join(", ", missingProperties));
+        });
     }
 }

@@ -74,12 +74,6 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
     private List<DocumentFigure> figures;
 
     /*
-     * Extracted lists.
-     */
-    @Generated
-    private List<DocumentList> lists;
-
-    /*
      * Extracted sections.
      */
     @Generated
@@ -108,6 +102,12 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
      */
     @Generated
     private List<Document> documents;
+
+    /*
+     * List of warnings encountered.
+     */
+    @Generated
+    private List<Warning> warnings;
 
     /**
      * Creates an instance of AnalyzeResult class.
@@ -220,16 +220,6 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
     }
 
     /**
-     * Get the lists property: Extracted lists.
-     * 
-     * @return the lists value.
-     */
-    @Generated
-    public List<DocumentList> getLists() {
-        return this.lists;
-    }
-
-    /**
      * Get the sections property: Extracted sections.
      * 
      * @return the sections value.
@@ -280,6 +270,16 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
     }
 
     /**
+     * Get the warnings property: List of warnings encountered.
+     * 
+     * @return the warnings value.
+     */
+    @Generated
+    public List<Warning> getWarnings() {
+        return this.warnings;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Generated
@@ -296,12 +296,12 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
         jsonWriter.writeArrayField("paragraphs", this.paragraphs, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("tables", this.tables, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("figures", this.figures, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeArrayField("lists", this.lists, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("sections", this.sections, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("keyValuePairs", this.keyValuePairs, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("styles", this.styles, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("languages", this.languages, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("documents", this.documents, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("warnings", this.warnings, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -326,12 +326,12 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
             List<DocumentParagraph> paragraphs = null;
             List<DocumentTable> tables = null;
             List<DocumentFigure> figures = null;
-            List<DocumentList> lists = null;
             List<DocumentSection> sections = null;
             List<DocumentKeyValuePair> keyValuePairs = null;
             List<DocumentStyle> styles = null;
             List<DocumentLanguage> languages = null;
             List<Document> documents = null;
+            List<Warning> warnings = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -354,8 +354,6 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
                     tables = reader.readArray(reader1 -> DocumentTable.fromJson(reader1));
                 } else if ("figures".equals(fieldName)) {
                     figures = reader.readArray(reader1 -> DocumentFigure.fromJson(reader1));
-                } else if ("lists".equals(fieldName)) {
-                    lists = reader.readArray(reader1 -> DocumentList.fromJson(reader1));
                 } else if ("sections".equals(fieldName)) {
                     sections = reader.readArray(reader1 -> DocumentSection.fromJson(reader1));
                 } else if ("keyValuePairs".equals(fieldName)) {
@@ -366,6 +364,8 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
                     languages = reader.readArray(reader1 -> DocumentLanguage.fromJson(reader1));
                 } else if ("documents".equals(fieldName)) {
                     documents = reader.readArray(reader1 -> Document.fromJson(reader1));
+                } else if ("warnings".equals(fieldName)) {
+                    warnings = reader.readArray(reader1 -> Warning.fromJson(reader1));
                 } else {
                     reader.skipChildren();
                 }
@@ -376,12 +376,12 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
             deserializedAnalyzeResult.paragraphs = paragraphs;
             deserializedAnalyzeResult.tables = tables;
             deserializedAnalyzeResult.figures = figures;
-            deserializedAnalyzeResult.lists = lists;
             deserializedAnalyzeResult.sections = sections;
             deserializedAnalyzeResult.keyValuePairs = keyValuePairs;
             deserializedAnalyzeResult.styles = styles;
             deserializedAnalyzeResult.languages = languages;
             deserializedAnalyzeResult.documents = documents;
+            deserializedAnalyzeResult.warnings = warnings;
 
             return deserializedAnalyzeResult;
         });

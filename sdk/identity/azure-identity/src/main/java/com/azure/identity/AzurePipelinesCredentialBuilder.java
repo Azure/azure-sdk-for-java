@@ -3,6 +3,7 @@
 
 package com.azure.identity;
 
+import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.implementation.util.ValidationUtil;
@@ -19,8 +20,7 @@ import java.util.Arrays;
  * &#47;&#47; You may choose another name for this variable.
  *
  * String systemAccessToken = System.getenv&#40;&quot;SYSTEM_ACCESSTOKEN&quot;&#41;;
- * AzurePipelinesCredential credential = new AzurePipelinesCredentialBuilder&#40;&#41;
- *     .clientId&#40;clientId&#41;
+ * AzurePipelinesCredential credential = new AzurePipelinesCredentialBuilder&#40;&#41;.clientId&#40;clientId&#41;
  *     .tenantId&#40;tenantId&#41;
  *     .serviceConnectionId&#40;serviceConnectionId&#41;
  *     .systemAccessToken&#40;systemAccessToken&#41;
@@ -74,7 +74,8 @@ public class AzurePipelinesCredentialBuilder extends AadCredentialBuilderBase<Az
      * @param tokenCachePersistenceOptions the token cache configuration options
      * @return An updated instance of this builder with the token cache options configured.
      */
-    public AzurePipelinesCredentialBuilder tokenCachePersistenceOptions(TokenCachePersistenceOptions tokenCachePersistenceOptions) {
+    public AzurePipelinesCredentialBuilder
+        tokenCachePersistenceOptions(TokenCachePersistenceOptions tokenCachePersistenceOptions) {
         this.identityClientOptions.setTokenCacheOptions(tokenCachePersistenceOptions);
         return this;
     }
@@ -102,13 +103,26 @@ public class AzurePipelinesCredentialBuilder extends AadCredentialBuilderBase<Az
 
         String oidcEndpoint = configuration.get("SYSTEM_OIDCREQUESTURI");
 
-        ValidationUtil.validate(getClass().getSimpleName(),
-            LOGGER,
+        ValidationUtil.validate(getClass().getSimpleName(), LOGGER,
             Arrays.asList("clientId", "tenantId", "serviceConnectionId", "systemAccessToken", "oidcEndpoint"),
             Arrays.asList(clientId, tenantId, serviceConnectionId, this.systemAccessToken, oidcEndpoint));
 
-        String requestUrl = String.format("%s?api-version=%s&serviceConnectionId=%s",
-            oidcEndpoint, OIDC_API_VERSION, serviceConnectionId);
-        return new AzurePipelinesCredential(clientId, tenantId, requestUrl, systemAccessToken, identityClientOptions.clone());
+        String requestUrl = String.format("%s?api-version=%s&serviceConnectionId=%s", oidcEndpoint, OIDC_API_VERSION,
+            serviceConnectionId);
+
+        // We need to make a best effort to log these headers.
+        // If the user gives us options, we'll sneak the headers in, or make an options with them.
+        // If the user gave us a pipeline none of this matters as we can't change a user created pipeline.
+        if (identityClientOptions.getHttpPipeline() != null) {
+            HttpLogOptions options = identityClientOptions.getHttpLogOptions();
+            if (options == null) {
+                options = new HttpLogOptions();
+            }
+            options.addAllowedHeaderName("x-vss-e2eid");
+            options.addAllowedHeaderName("x-msedge-ref");
+            identityClientOptions.setHttpLogOptions(options);
+        }
+        return new AzurePipelinesCredential(clientId, tenantId, requestUrl, systemAccessToken,
+            identityClientOptions.clone());
     }
 }

@@ -36,12 +36,12 @@ import static io.clientcore.core.implementation.util.ImplUtils.isNullOrEmpty;
 public class Configuration {
     // Default properties - these are what we read from the environment
     /**
-     * URL of the proxy for HTTP connections.
+     * URI of the proxy for HTTP connections.
      */
     public static final String PROPERTY_HTTP_PROXY = "HTTP_PROXY";
 
     /**
-     * URL of the proxy for HTTPS connections.
+     * URI of the proxy for HTTPS connections.
      */
     public static final String PROPERTY_HTTPS_PROXY = "HTTPS_PROXY";
 
@@ -112,8 +112,8 @@ public class Configuration {
     /*
      * Gets the global configuration shared by all client libraries.
      */
-    private static final Configuration GLOBAL_CONFIGURATION = new Configuration(Collections.emptyMap(),
-        EnvironmentConfiguration.getGlobalConfiguration(), null, null);
+    private static final Configuration GLOBAL_CONFIGURATION
+        = new Configuration(Collections.emptyMap(), EnvironmentConfiguration.getGlobalConfiguration(), null, null);
 
     private static final ClientLogger LOGGER = new ClientLogger(Configuration.class);
 
@@ -150,8 +150,8 @@ public class Configuration {
         String path, Configuration sharedConfiguration) {
         this.configurations = configurations;
         this.isEmpty = configurations.isEmpty();
-        this.environmentConfiguration = Objects.requireNonNull(environmentConfiguration,
-            "'environmentConfiguration' cannot be null");
+        this.environmentConfiguration
+            = Objects.requireNonNull(environmentConfiguration, "'environmentConfiguration' cannot be null");
         this.path = path;
         this.sharedConfiguration = sharedConfiguration;
     }

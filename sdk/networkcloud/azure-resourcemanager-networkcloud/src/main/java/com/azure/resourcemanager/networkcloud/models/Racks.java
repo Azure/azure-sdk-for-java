@@ -8,13 +8,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Racks. */
+/**
+ * Resource collection API of Racks.
+ */
 public interface Racks {
     /**
      * List racks in the subscription.
-     *
-     * <p>Get a list of racks in the provided subscription.
-     *
+     * 
+     * Get a list of racks in the provided subscription.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of racks in the provided subscription as paginated response with {@link PagedIterable}.
@@ -23,9 +25,9 @@ public interface Racks {
 
     /**
      * List racks in the subscription.
-     *
-     * <p>Get a list of racks in the provided subscription.
-     *
+     * 
+     * Get a list of racks in the provided subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -36,9 +38,9 @@ public interface Racks {
 
     /**
      * List racks in the resource group.
-     *
-     * <p>Get a list of racks in the provided resource group.
-     *
+     * 
+     * Get a list of racks in the provided resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -49,9 +51,9 @@ public interface Racks {
 
     /**
      * List racks in the resource group.
-     *
-     * <p>Get a list of racks in the provided resource group.
-     *
+     * 
+     * Get a list of racks in the provided resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -63,9 +65,9 @@ public interface Racks {
 
     /**
      * Retrieve the rack.
-     *
-     * <p>Get properties of the provided rack.
-     *
+     * 
+     * Get properties of the provided rack.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param rackName The name of the rack.
      * @param context The context to associate with this operation.
@@ -78,9 +80,9 @@ public interface Racks {
 
     /**
      * Retrieve the rack.
-     *
-     * <p>Get properties of the provided rack.
-     *
+     * 
+     * Get properties of the provided rack.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param rackName The name of the rack.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -92,38 +94,40 @@ public interface Racks {
 
     /**
      * Delete the rack.
-     *
-     * <p>Delete the provided rack. All customer initiated requests will be rejected as the life cycle of this resource
-     * is managed by the system.
-     *
+     * 
+     * Delete the provided rack.
+     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param rackName The name of the rack.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
-    void deleteByResourceGroup(String resourceGroupName, String rackName);
+    OperationStatusResult deleteByResourceGroup(String resourceGroupName, String rackName);
 
     /**
      * Delete the rack.
-     *
-     * <p>Delete the provided rack. All customer initiated requests will be rejected as the life cycle of this resource
-     * is managed by the system.
-     *
+     * 
+     * Delete the provided rack.
+     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param rackName The name of the rack.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
-    void delete(String resourceGroupName, String rackName, Context context);
+    OperationStatusResult delete(String resourceGroupName, String rackName, Context context);
 
     /**
      * Retrieve the rack.
-     *
-     * <p>Get properties of the provided rack.
-     *
+     * 
+     * Get properties of the provided rack.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -134,9 +138,9 @@ public interface Racks {
 
     /**
      * Retrieve the rack.
-     *
-     * <p>Get properties of the provided rack.
-     *
+     * 
+     * Get properties of the provided rack.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -148,34 +152,36 @@ public interface Racks {
 
     /**
      * Delete the rack.
-     *
-     * <p>Delete the provided rack. All customer initiated requests will be rejected as the life cycle of this resource
-     * is managed by the system.
-     *
+     * 
+     * Delete the provided rack.
+     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
-    void deleteById(String id);
+    OperationStatusResult deleteById(String id);
 
     /**
      * Delete the rack.
-     *
-     * <p>Delete the provided rack. All customer initiated requests will be rejected as the life cycle of this resource
-     * is managed by the system.
-     *
+     * 
+     * Delete the provided rack.
+     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
-    void deleteByIdWithResponse(String id, Context context);
+    OperationStatusResult deleteByIdWithResponse(String id, Context context);
 
     /**
      * Begins definition for a new Rack resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new Rack definition.
      */

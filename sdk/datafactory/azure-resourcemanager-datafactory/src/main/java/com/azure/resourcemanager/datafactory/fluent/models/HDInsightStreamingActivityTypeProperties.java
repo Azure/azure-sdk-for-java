@@ -6,10 +6,13 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.HDInsightActivityDebugInfoOption;
 import com.azure.resourcemanager.datafactory.models.LinkedServiceReference;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -17,78 +20,66 @@ import java.util.Map;
  * HDInsight streaming activity properties.
  */
 @Fluent
-public final class HDInsightStreamingActivityTypeProperties {
+public final class HDInsightStreamingActivityTypeProperties
+    implements JsonSerializable<HDInsightStreamingActivityTypeProperties> {
     /*
      * Storage linked service references.
      */
-    @JsonProperty(value = "storageLinkedServices")
     private List<LinkedServiceReference> storageLinkedServices;
 
     /*
      * User specified arguments to HDInsightActivity.
      */
-    @JsonProperty(value = "arguments")
     private List<Object> arguments;
 
     /*
      * Debug info option.
      */
-    @JsonProperty(value = "getDebugInfo")
     private HDInsightActivityDebugInfoOption getDebugInfo;
 
     /*
      * Mapper executable name. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "mapper", required = true)
     private Object mapper;
 
     /*
      * Reducer executable name. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "reducer", required = true)
     private Object reducer;
 
     /*
      * Input blob path. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "input", required = true)
     private Object input;
 
     /*
      * Output blob path. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "output", required = true)
     private Object output;
 
     /*
      * Paths to streaming job files. Can be directories.
      */
-    @JsonProperty(value = "filePaths", required = true)
     private List<Object> filePaths;
 
     /*
      * Linked service reference where the files are located.
      */
-    @JsonProperty(value = "fileLinkedService")
     private LinkedServiceReference fileLinkedService;
 
     /*
      * Combiner executable name. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "combiner")
     private Object combiner;
 
     /*
      * Command line environment values.
      */
-    @JsonProperty(value = "commandEnvironment")
     private List<Object> commandEnvironment;
 
     /*
      * Allows user to specify defines for streaming job request.
      */
-    @JsonProperty(value = "defines")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> defines;
 
     /**
@@ -378,4 +369,85 @@ public final class HDInsightStreamingActivityTypeProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(HDInsightStreamingActivityTypeProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("mapper", this.mapper);
+        jsonWriter.writeUntypedField("reducer", this.reducer);
+        jsonWriter.writeUntypedField("input", this.input);
+        jsonWriter.writeUntypedField("output", this.output);
+        jsonWriter.writeArrayField("filePaths", this.filePaths, (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeArrayField("storageLinkedServices", this.storageLinkedServices,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("arguments", this.arguments, (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeStringField("getDebugInfo", this.getDebugInfo == null ? null : this.getDebugInfo.toString());
+        jsonWriter.writeJsonField("fileLinkedService", this.fileLinkedService);
+        jsonWriter.writeUntypedField("combiner", this.combiner);
+        jsonWriter.writeArrayField("commandEnvironment", this.commandEnvironment,
+            (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeMapField("defines", this.defines, (writer, element) -> writer.writeUntyped(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HDInsightStreamingActivityTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HDInsightStreamingActivityTypeProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the HDInsightStreamingActivityTypeProperties.
+     */
+    public static HDInsightStreamingActivityTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HDInsightStreamingActivityTypeProperties deserializedHDInsightStreamingActivityTypeProperties
+                = new HDInsightStreamingActivityTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("mapper".equals(fieldName)) {
+                    deserializedHDInsightStreamingActivityTypeProperties.mapper = reader.readUntyped();
+                } else if ("reducer".equals(fieldName)) {
+                    deserializedHDInsightStreamingActivityTypeProperties.reducer = reader.readUntyped();
+                } else if ("input".equals(fieldName)) {
+                    deserializedHDInsightStreamingActivityTypeProperties.input = reader.readUntyped();
+                } else if ("output".equals(fieldName)) {
+                    deserializedHDInsightStreamingActivityTypeProperties.output = reader.readUntyped();
+                } else if ("filePaths".equals(fieldName)) {
+                    List<Object> filePaths = reader.readArray(reader1 -> reader1.readUntyped());
+                    deserializedHDInsightStreamingActivityTypeProperties.filePaths = filePaths;
+                } else if ("storageLinkedServices".equals(fieldName)) {
+                    List<LinkedServiceReference> storageLinkedServices
+                        = reader.readArray(reader1 -> LinkedServiceReference.fromJson(reader1));
+                    deserializedHDInsightStreamingActivityTypeProperties.storageLinkedServices = storageLinkedServices;
+                } else if ("arguments".equals(fieldName)) {
+                    List<Object> arguments = reader.readArray(reader1 -> reader1.readUntyped());
+                    deserializedHDInsightStreamingActivityTypeProperties.arguments = arguments;
+                } else if ("getDebugInfo".equals(fieldName)) {
+                    deserializedHDInsightStreamingActivityTypeProperties.getDebugInfo
+                        = HDInsightActivityDebugInfoOption.fromString(reader.getString());
+                } else if ("fileLinkedService".equals(fieldName)) {
+                    deserializedHDInsightStreamingActivityTypeProperties.fileLinkedService
+                        = LinkedServiceReference.fromJson(reader);
+                } else if ("combiner".equals(fieldName)) {
+                    deserializedHDInsightStreamingActivityTypeProperties.combiner = reader.readUntyped();
+                } else if ("commandEnvironment".equals(fieldName)) {
+                    List<Object> commandEnvironment = reader.readArray(reader1 -> reader1.readUntyped());
+                    deserializedHDInsightStreamingActivityTypeProperties.commandEnvironment = commandEnvironment;
+                } else if ("defines".equals(fieldName)) {
+                    Map<String, Object> defines = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedHDInsightStreamingActivityTypeProperties.defines = defines;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHDInsightStreamingActivityTypeProperties;
+        });
+    }
 }

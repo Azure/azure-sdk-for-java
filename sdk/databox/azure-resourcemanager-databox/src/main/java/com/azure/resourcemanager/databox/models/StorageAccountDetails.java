@@ -6,28 +6,45 @@ package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Details for the storage account. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "dataAccountType")
-@JsonTypeName("StorageAccount")
+/**
+ * Details for the storage account.
+ */
 @Fluent
 public final class StorageAccountDetails extends DataAccountDetails {
     /*
+     * Account Type of the data to be transferred.
+     */
+    private DataAccountType dataAccountType = DataAccountType.STORAGE_ACCOUNT;
+
+    /*
      * Storage Account Resource Id.
      */
-    @JsonProperty(value = "storageAccountId", required = true)
     private String storageAccountId;
 
-    /** Creates an instance of StorageAccountDetails class. */
+    /**
+     * Creates an instance of StorageAccountDetails class.
+     */
     public StorageAccountDetails() {
     }
 
     /**
+     * Get the dataAccountType property: Account Type of the data to be transferred.
+     * 
+     * @return the dataAccountType value.
+     */
+    @Override
+    public DataAccountType dataAccountType() {
+        return this.dataAccountType;
+    }
+
+    /**
      * Get the storageAccountId property: Storage Account Resource Id.
-     *
+     * 
      * @return the storageAccountId value.
      */
     public String storageAccountId() {
@@ -36,7 +53,7 @@ public final class StorageAccountDetails extends DataAccountDetails {
 
     /**
      * Set the storageAccountId property: Storage Account Resource Id.
-     *
+     * 
      * @param storageAccountId the storageAccountId value to set.
      * @return the StorageAccountDetails object itself.
      */
@@ -45,7 +62,9 @@ public final class StorageAccountDetails extends DataAccountDetails {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public StorageAccountDetails withSharePassword(String sharePassword) {
         super.withSharePassword(sharePassword);
@@ -54,19 +73,61 @@ public final class StorageAccountDetails extends DataAccountDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (storageAccountId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property storageAccountId in model StorageAccountDetails"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property storageAccountId in model StorageAccountDetails"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(StorageAccountDetails.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("sharePassword", sharePassword());
+        jsonWriter.writeStringField("storageAccountId", this.storageAccountId);
+        jsonWriter.writeStringField("dataAccountType",
+            this.dataAccountType == null ? null : this.dataAccountType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StorageAccountDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StorageAccountDetails if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the StorageAccountDetails.
+     */
+    public static StorageAccountDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StorageAccountDetails deserializedStorageAccountDetails = new StorageAccountDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sharePassword".equals(fieldName)) {
+                    deserializedStorageAccountDetails.withSharePassword(reader.getString());
+                } else if ("storageAccountId".equals(fieldName)) {
+                    deserializedStorageAccountDetails.storageAccountId = reader.getString();
+                } else if ("dataAccountType".equals(fieldName)) {
+                    deserializedStorageAccountDetails.dataAccountType = DataAccountType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStorageAccountDetails;
+        });
+    }
 }

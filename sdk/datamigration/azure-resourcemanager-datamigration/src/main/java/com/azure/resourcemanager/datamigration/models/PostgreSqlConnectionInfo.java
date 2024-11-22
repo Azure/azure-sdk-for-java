@@ -6,40 +6,55 @@ package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Information for connecting to PostgreSQL server. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("PostgreSqlConnectionInfo")
+/**
+ * Information for connecting to PostgreSQL server.
+ */
 @Fluent
 public final class PostgreSqlConnectionInfo extends ConnectionInfo {
     /*
+     * Type of connection info
+     */
+    private String type = "PostgreSqlConnectionInfo";
+
+    /*
      * Name of the server
      */
-    @JsonProperty(value = "serverName", required = true)
     private String serverName;
 
     /*
      * Name of the database
      */
-    @JsonProperty(value = "databaseName")
     private String databaseName;
 
     /*
      * Port for Server
      */
-    @JsonProperty(value = "port", required = true)
     private int port;
 
-    /** Creates an instance of PostgreSqlConnectionInfo class. */
+    /**
+     * Creates an instance of PostgreSqlConnectionInfo class.
+     */
     public PostgreSqlConnectionInfo() {
     }
 
     /**
+     * Get the type property: Type of connection info.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
      * Get the serverName property: Name of the server.
-     *
+     * 
      * @return the serverName value.
      */
     public String serverName() {
@@ -48,7 +63,7 @@ public final class PostgreSqlConnectionInfo extends ConnectionInfo {
 
     /**
      * Set the serverName property: Name of the server.
-     *
+     * 
      * @param serverName the serverName value to set.
      * @return the PostgreSqlConnectionInfo object itself.
      */
@@ -59,7 +74,7 @@ public final class PostgreSqlConnectionInfo extends ConnectionInfo {
 
     /**
      * Get the databaseName property: Name of the database.
-     *
+     * 
      * @return the databaseName value.
      */
     public String databaseName() {
@@ -68,7 +83,7 @@ public final class PostgreSqlConnectionInfo extends ConnectionInfo {
 
     /**
      * Set the databaseName property: Name of the database.
-     *
+     * 
      * @param databaseName the databaseName value to set.
      * @return the PostgreSqlConnectionInfo object itself.
      */
@@ -79,7 +94,7 @@ public final class PostgreSqlConnectionInfo extends ConnectionInfo {
 
     /**
      * Get the port property: Port for Server.
-     *
+     * 
      * @return the port value.
      */
     public int port() {
@@ -88,7 +103,7 @@ public final class PostgreSqlConnectionInfo extends ConnectionInfo {
 
     /**
      * Set the port property: Port for Server.
-     *
+     * 
      * @param port the port value to set.
      * @return the PostgreSqlConnectionInfo object itself.
      */
@@ -97,14 +112,18 @@ public final class PostgreSqlConnectionInfo extends ConnectionInfo {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PostgreSqlConnectionInfo withUsername(String username) {
         super.withUsername(username);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PostgreSqlConnectionInfo withPassword(String password) {
         super.withPassword(password);
@@ -113,19 +132,69 @@ public final class PostgreSqlConnectionInfo extends ConnectionInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (serverName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property serverName in model PostgreSqlConnectionInfo"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property serverName in model PostgreSqlConnectionInfo"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(PostgreSqlConnectionInfo.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("userName", username());
+        jsonWriter.writeStringField("password", password());
+        jsonWriter.writeStringField("serverName", this.serverName);
+        jsonWriter.writeIntField("port", this.port);
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("databaseName", this.databaseName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PostgreSqlConnectionInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PostgreSqlConnectionInfo if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PostgreSqlConnectionInfo.
+     */
+    public static PostgreSqlConnectionInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PostgreSqlConnectionInfo deserializedPostgreSqlConnectionInfo = new PostgreSqlConnectionInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("userName".equals(fieldName)) {
+                    deserializedPostgreSqlConnectionInfo.withUsername(reader.getString());
+                } else if ("password".equals(fieldName)) {
+                    deserializedPostgreSqlConnectionInfo.withPassword(reader.getString());
+                } else if ("serverName".equals(fieldName)) {
+                    deserializedPostgreSqlConnectionInfo.serverName = reader.getString();
+                } else if ("port".equals(fieldName)) {
+                    deserializedPostgreSqlConnectionInfo.port = reader.getInt();
+                } else if ("type".equals(fieldName)) {
+                    deserializedPostgreSqlConnectionInfo.type = reader.getString();
+                } else if ("databaseName".equals(fieldName)) {
+                    deserializedPostgreSqlConnectionInfo.databaseName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPostgreSqlConnectionInfo;
+        });
+    }
 }

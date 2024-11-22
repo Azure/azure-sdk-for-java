@@ -6,60 +6,61 @@ package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Contains the information necessary to perform import operation for existing database. */
+/**
+ * Contains the information necessary to perform import operation for existing database.
+ */
 @Fluent
-public final class ImportExistingDatabaseDefinition {
+public final class ImportExistingDatabaseDefinition implements JsonSerializable<ImportExistingDatabaseDefinition> {
     /*
      * Storage key type.
      */
-    @JsonProperty(value = "storageKeyType", required = true)
     private StorageKeyType storageKeyType;
 
     /*
      * Storage key.
      */
-    @JsonProperty(value = "storageKey", required = true)
     private String storageKey;
 
     /*
      * Storage Uri.
      */
-    @JsonProperty(value = "storageUri", required = true)
     private String storageUri;
 
     /*
      * Administrator login name.
      */
-    @JsonProperty(value = "administratorLogin", required = true)
     private String administratorLogin;
 
     /*
      * Administrator login password.
      */
-    @JsonProperty(value = "administratorLoginPassword", required = true)
     private String administratorLoginPassword;
 
     /*
      * Authentication type.
      */
-    @JsonProperty(value = "authenticationType")
     private String authenticationType;
 
     /*
      * Optional resource information to enable network isolation for request.
      */
-    @JsonProperty(value = "networkIsolation")
     private NetworkIsolationSettings networkIsolation;
 
-    /** Creates an instance of ImportExistingDatabaseDefinition class. */
+    /**
+     * Creates an instance of ImportExistingDatabaseDefinition class.
+     */
     public ImportExistingDatabaseDefinition() {
     }
 
     /**
      * Get the storageKeyType property: Storage key type.
-     *
+     * 
      * @return the storageKeyType value.
      */
     public StorageKeyType storageKeyType() {
@@ -68,7 +69,7 @@ public final class ImportExistingDatabaseDefinition {
 
     /**
      * Set the storageKeyType property: Storage key type.
-     *
+     * 
      * @param storageKeyType the storageKeyType value to set.
      * @return the ImportExistingDatabaseDefinition object itself.
      */
@@ -79,7 +80,7 @@ public final class ImportExistingDatabaseDefinition {
 
     /**
      * Get the storageKey property: Storage key.
-     *
+     * 
      * @return the storageKey value.
      */
     public String storageKey() {
@@ -88,7 +89,7 @@ public final class ImportExistingDatabaseDefinition {
 
     /**
      * Set the storageKey property: Storage key.
-     *
+     * 
      * @param storageKey the storageKey value to set.
      * @return the ImportExistingDatabaseDefinition object itself.
      */
@@ -99,7 +100,7 @@ public final class ImportExistingDatabaseDefinition {
 
     /**
      * Get the storageUri property: Storage Uri.
-     *
+     * 
      * @return the storageUri value.
      */
     public String storageUri() {
@@ -108,7 +109,7 @@ public final class ImportExistingDatabaseDefinition {
 
     /**
      * Set the storageUri property: Storage Uri.
-     *
+     * 
      * @param storageUri the storageUri value to set.
      * @return the ImportExistingDatabaseDefinition object itself.
      */
@@ -119,7 +120,7 @@ public final class ImportExistingDatabaseDefinition {
 
     /**
      * Get the administratorLogin property: Administrator login name.
-     *
+     * 
      * @return the administratorLogin value.
      */
     public String administratorLogin() {
@@ -128,7 +129,7 @@ public final class ImportExistingDatabaseDefinition {
 
     /**
      * Set the administratorLogin property: Administrator login name.
-     *
+     * 
      * @param administratorLogin the administratorLogin value to set.
      * @return the ImportExistingDatabaseDefinition object itself.
      */
@@ -139,7 +140,7 @@ public final class ImportExistingDatabaseDefinition {
 
     /**
      * Get the administratorLoginPassword property: Administrator login password.
-     *
+     * 
      * @return the administratorLoginPassword value.
      */
     public String administratorLoginPassword() {
@@ -148,7 +149,7 @@ public final class ImportExistingDatabaseDefinition {
 
     /**
      * Set the administratorLoginPassword property: Administrator login password.
-     *
+     * 
      * @param administratorLoginPassword the administratorLoginPassword value to set.
      * @return the ImportExistingDatabaseDefinition object itself.
      */
@@ -159,7 +160,7 @@ public final class ImportExistingDatabaseDefinition {
 
     /**
      * Get the authenticationType property: Authentication type.
-     *
+     * 
      * @return the authenticationType value.
      */
     public String authenticationType() {
@@ -168,7 +169,7 @@ public final class ImportExistingDatabaseDefinition {
 
     /**
      * Set the authenticationType property: Authentication type.
-     *
+     * 
      * @param authenticationType the authenticationType value to set.
      * @return the ImportExistingDatabaseDefinition object itself.
      */
@@ -179,7 +180,7 @@ public final class ImportExistingDatabaseDefinition {
 
     /**
      * Get the networkIsolation property: Optional resource information to enable network isolation for request.
-     *
+     * 
      * @return the networkIsolation value.
      */
     public NetworkIsolationSettings networkIsolation() {
@@ -188,7 +189,7 @@ public final class ImportExistingDatabaseDefinition {
 
     /**
      * Set the networkIsolation property: Optional resource information to enable network isolation for request.
-     *
+     * 
      * @param networkIsolation the networkIsolation value to set.
      * @return the ImportExistingDatabaseDefinition object itself.
      */
@@ -199,40 +200,34 @@ public final class ImportExistingDatabaseDefinition {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (storageKeyType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property storageKeyType in model ImportExistingDatabaseDefinition"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property storageKeyType in model ImportExistingDatabaseDefinition"));
         }
         if (storageKey() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property storageKey in model ImportExistingDatabaseDefinition"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property storageKey in model ImportExistingDatabaseDefinition"));
         }
         if (storageUri() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property storageUri in model ImportExistingDatabaseDefinition"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property storageUri in model ImportExistingDatabaseDefinition"));
         }
         if (administratorLogin() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property administratorLogin in model ImportExistingDatabaseDefinition"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property administratorLogin in model ImportExistingDatabaseDefinition"));
         }
         if (administratorLoginPassword() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property administratorLoginPassword in model"
-                            + " ImportExistingDatabaseDefinition"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property administratorLoginPassword in model ImportExistingDatabaseDefinition"));
         }
         if (networkIsolation() != null) {
             networkIsolation().validate();
@@ -240,4 +235,63 @@ public final class ImportExistingDatabaseDefinition {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ImportExistingDatabaseDefinition.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("storageKeyType",
+            this.storageKeyType == null ? null : this.storageKeyType.toString());
+        jsonWriter.writeStringField("storageKey", this.storageKey);
+        jsonWriter.writeStringField("storageUri", this.storageUri);
+        jsonWriter.writeStringField("administratorLogin", this.administratorLogin);
+        jsonWriter.writeStringField("administratorLoginPassword", this.administratorLoginPassword);
+        jsonWriter.writeStringField("authenticationType", this.authenticationType);
+        jsonWriter.writeJsonField("networkIsolation", this.networkIsolation);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ImportExistingDatabaseDefinition from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ImportExistingDatabaseDefinition if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ImportExistingDatabaseDefinition.
+     */
+    public static ImportExistingDatabaseDefinition fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ImportExistingDatabaseDefinition deserializedImportExistingDatabaseDefinition
+                = new ImportExistingDatabaseDefinition();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("storageKeyType".equals(fieldName)) {
+                    deserializedImportExistingDatabaseDefinition.storageKeyType
+                        = StorageKeyType.fromString(reader.getString());
+                } else if ("storageKey".equals(fieldName)) {
+                    deserializedImportExistingDatabaseDefinition.storageKey = reader.getString();
+                } else if ("storageUri".equals(fieldName)) {
+                    deserializedImportExistingDatabaseDefinition.storageUri = reader.getString();
+                } else if ("administratorLogin".equals(fieldName)) {
+                    deserializedImportExistingDatabaseDefinition.administratorLogin = reader.getString();
+                } else if ("administratorLoginPassword".equals(fieldName)) {
+                    deserializedImportExistingDatabaseDefinition.administratorLoginPassword = reader.getString();
+                } else if ("authenticationType".equals(fieldName)) {
+                    deserializedImportExistingDatabaseDefinition.authenticationType = reader.getString();
+                } else if ("networkIsolation".equals(fieldName)) {
+                    deserializedImportExistingDatabaseDefinition.networkIsolation
+                        = NetworkIsolationSettings.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedImportExistingDatabaseDefinition;
+        });
+    }
 }

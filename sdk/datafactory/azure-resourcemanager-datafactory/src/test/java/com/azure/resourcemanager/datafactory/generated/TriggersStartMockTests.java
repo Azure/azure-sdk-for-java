@@ -27,7 +27,7 @@ public final class TriggersStartMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.triggers().start("zfoxdtzzmcrm", "hfcaiz", "uiyuzufdmsbvyg", com.azure.core.util.Context.NONE);
+        manager.triggers().start("qbc", "tlyyphtdwhmwxhv", "pumokmymspatpveb", com.azure.core.util.Context.NONE);
 
     }
 }

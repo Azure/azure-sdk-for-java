@@ -19,7 +19,10 @@ public final class DeploymentsRestartSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void deploymentsRestart(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.springServices().manager().serviceClient().getDeployments().restart("myResourceGroup", "myservice",
-            "myapp", "mydeployment", com.azure.core.util.Context.NONE);
+        azure.springServices()
+            .manager()
+            .serviceClient()
+            .getDeployments()
+            .restart("myResourceGroup", "myservice", "myapp", "mydeployment", com.azure.core.util.Context.NONE);
     }
 }

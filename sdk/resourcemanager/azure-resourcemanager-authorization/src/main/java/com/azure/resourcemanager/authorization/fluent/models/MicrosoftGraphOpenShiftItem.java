@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.util.HashMap;
+import java.time.format.DateTimeFormatter;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/** openShiftItem. */
+/**
+ * openShiftItem.
+ */
 @Fluent
 public final class MicrosoftGraphOpenShiftItem extends MicrosoftGraphShiftItem {
     /*
      * Count of the number of slots for the given open shift.
      */
-    @JsonProperty(value = "openSlotCount")
     private Integer openSlotCount;
 
     /*
      * openShiftItem
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphOpenShiftItem class. */
+    /**
+     * Creates an instance of MicrosoftGraphOpenShiftItem class.
+     */
     public MicrosoftGraphOpenShiftItem() {
     }
 
     /**
      * Get the openSlotCount property: Count of the number of slots for the given open shift.
-     *
+     * 
      * @return the openSlotCount value.
      */
     public Integer openSlotCount() {
@@ -43,7 +48,7 @@ public final class MicrosoftGraphOpenShiftItem extends MicrosoftGraphShiftItem {
 
     /**
      * Set the openSlotCount property: Count of the number of slots for the given open shift.
-     *
+     * 
      * @param openSlotCount the openSlotCount value to set.
      * @return the MicrosoftGraphOpenShiftItem object itself.
      */
@@ -54,17 +59,16 @@ public final class MicrosoftGraphOpenShiftItem extends MicrosoftGraphShiftItem {
 
     /**
      * Get the additionalProperties property: openShiftItem.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: openShiftItem.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphOpenShiftItem object itself.
      */
@@ -73,50 +77,54 @@ public final class MicrosoftGraphOpenShiftItem extends MicrosoftGraphShiftItem {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphOpenShiftItem withActivities(List<MicrosoftGraphShiftActivity> activities) {
         super.withActivities(activities);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphOpenShiftItem withDisplayName(String displayName) {
         super.withDisplayName(displayName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphOpenShiftItem withNotes(String notes) {
         super.withNotes(notes);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphOpenShiftItem withEndDateTime(OffsetDateTime endDateTime) {
         super.withEndDateTime(endDateTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphOpenShiftItem withStartDateTime(OffsetDateTime startDateTime) {
         super.withStartDateTime(startDateTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphOpenShiftItem withTheme(MicrosoftGraphScheduleEntityTheme theme) {
         super.withTheme(theme);
@@ -125,11 +133,83 @@ public final class MicrosoftGraphOpenShiftItem extends MicrosoftGraphShiftItem {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("endDateTime",
+            endDateTime() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(endDateTime()));
+        jsonWriter.writeStringField("startDateTime",
+            startDateTime() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(startDateTime()));
+        jsonWriter.writeStringField("theme", theme() == null ? null : theme().toString());
+        jsonWriter.writeArrayField("activities", activities(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("displayName", displayName());
+        jsonWriter.writeStringField("notes", notes());
+        jsonWriter.writeNumberField("openSlotCount", this.openSlotCount);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphOpenShiftItem from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphOpenShiftItem if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphOpenShiftItem.
+     */
+    public static MicrosoftGraphOpenShiftItem fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphOpenShiftItem deserializedMicrosoftGraphOpenShiftItem = new MicrosoftGraphOpenShiftItem();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("endDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphOpenShiftItem.withEndDateTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("startDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphOpenShiftItem.withStartDateTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("theme".equals(fieldName)) {
+                    deserializedMicrosoftGraphOpenShiftItem
+                        .withTheme(MicrosoftGraphScheduleEntityTheme.fromString(reader.getString()));
+                } else if ("activities".equals(fieldName)) {
+                    List<MicrosoftGraphShiftActivity> activities
+                        = reader.readArray(reader1 -> MicrosoftGraphShiftActivity.fromJson(reader1));
+                    deserializedMicrosoftGraphOpenShiftItem.withActivities(activities);
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedMicrosoftGraphOpenShiftItem.withDisplayName(reader.getString());
+                } else if ("notes".equals(fieldName)) {
+                    deserializedMicrosoftGraphOpenShiftItem.withNotes(reader.getString());
+                } else if ("openSlotCount".equals(fieldName)) {
+                    deserializedMicrosoftGraphOpenShiftItem.openSlotCount = reader.getNullable(JsonReader::getInt);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphOpenShiftItem.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphOpenShiftItem;
+        });
     }
 }

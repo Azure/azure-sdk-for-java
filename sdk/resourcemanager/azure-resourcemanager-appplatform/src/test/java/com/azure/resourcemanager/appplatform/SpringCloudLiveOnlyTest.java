@@ -50,11 +50,16 @@ import java.util.List;
 
 public class SpringCloudLiveOnlyTest extends AppPlatformTest {
     private static final String PIGGYMETRICS_CONFIG_URL = "https://github.com/Azure-Samples/piggymetrics-config";
-    private static final String GATEWAY_JAR_URL = "https://github.com/weidongxu-microsoft/azure-sdk-for-java-management-tests/raw/master/spring-cloud/gateway.jar";
-    private static final String PIGGYMETRICS_TAR_GZ_URL = "https://github.com/weidongxu-microsoft/azure-sdk-for-java-management-tests/raw/master/spring-cloud/piggymetrics.tar.gz";
-    private static final String PETCLINIC_CONFIG_URL = "https://github.com/XiaofeiCao/spring-petclinic-microservices-config";
-    private static final String PETCLINIC_GATEWAY_JAR_URL = "https://github.com/weidongxu-microsoft/azure-sdk-for-java-management-tests/tree/master/spring-cloud/api-gateway.jar";
-    private static final String PETCLINIC_TAR_GZ_URL = "https://github.com/weidongxu-microsoft/azure-sdk-for-java-management-tests/tree/master/spring-cloud/petclinic.tar.gz";
+    private static final String GATEWAY_JAR_URL
+        = "https://github.com/weidongxu-microsoft/azure-sdk-for-java-management-tests/raw/master/spring-cloud/gateway.jar";
+    private static final String PIGGYMETRICS_TAR_GZ_URL
+        = "https://github.com/weidongxu-microsoft/azure-sdk-for-java-management-tests/raw/master/spring-cloud/piggymetrics.tar.gz";
+    private static final String PETCLINIC_CONFIG_URL
+        = "https://github.com/XiaofeiCao/spring-petclinic-microservices-config";
+    private static final String PETCLINIC_GATEWAY_JAR_URL
+        = "https://github.com/weidongxu-microsoft/azure-sdk-for-java-management-tests/tree/master/spring-cloud/api-gateway.jar";
+    private static final String PETCLINIC_TAR_GZ_URL
+        = "https://github.com/weidongxu-microsoft/azure-sdk-for-java-management-tests/tree/master/spring-cloud/petclinic.tar.gz";
 
     private static final String SPRING_CLOUD_SERVICE_OBJECT_ID = "938df8e2-2b9d-40b1-940c-c75c33494239";
 
@@ -69,14 +74,16 @@ public class SpringCloudLiveOnlyTest extends AppPlatformTest {
         String deploymentName1 = generateRandomResourceName("deploy", 15);
         Region region = Region.US_EAST;
 
-        SpringService service = appPlatformManager.springServices().define(serviceName)
+        SpringService service = appPlatformManager.springServices()
+            .define(serviceName)
             .withRegion(region)
             .withNewResourceGroup(rgName)
             .create();
 
         File jarFile = downloadFile(GATEWAY_JAR_URL);
 
-        SpringApp app = service.apps().define(appName)
+        SpringApp app = service.apps()
+            .define(appName)
             .defineActiveDeployment(deploymentName)
             .withJarFile(jarFile)
             .withInstance(2)
@@ -100,12 +107,13 @@ public class SpringCloudLiveOnlyTest extends AppPlatformTest {
 
         Assertions.assertEquals("2", deployment.settings().resourceRequests().cpu());
         Assertions.assertEquals("4Gi", deployment.settings().resourceRequests().memory());
-//        Assertions.assertEquals(RuntimeVersion.JAVA_11, deployment.settings().runtimeVersion());
+        //        Assertions.assertEquals(RuntimeVersion.JAVA_11, deployment.settings().runtimeVersion());
         Assertions.assertEquals(2, deployment.instances().size());
 
         File gzFile = downloadFile(PIGGYMETRICS_TAR_GZ_URL);
 
-        deployment = app.deployments().define(deploymentName1)
+        deployment = app.deployments()
+            .define(deploymentName1)
             .withSourceCodeTarGzFile(gzFile)
             .withTargetModule("gateway")
             .withActivation()
@@ -118,9 +126,7 @@ public class SpringCloudLiveOnlyTest extends AppPlatformTest {
 
         Assertions.assertTrue(requestSuccess(app.url()));
 
-        app.update()
-            .withoutDefaultPublicEndpoint()
-            .apply();
+        app.update().withoutDefaultPublicEndpoint().apply();
         Assertions.assertFalse(app.isPublic());
 
         app.deployments().deleteByName(deploymentName);
@@ -140,75 +146,72 @@ public class SpringCloudLiveOnlyTest extends AppPlatformTest {
 
         allowAllSSL();
         String cerPassword = password();
-        String resourcePath = Paths.get(this.getClass().getResource("/junit-platform.properties").toURI()).getParent().toString();
+        String resourcePath
+            = Paths.get(this.getClass().getResource("/junit-platform.properties").toURI()).getParent().toString();
         String cerPath = resourcePath + domainName + ".cer";
         String pfxPath = resourcePath + domainName + ".pfx";
         createCertificate(cerPath, pfxPath, domainName, cerPassword, "ssl." + domainName, "ssl." + domainName);
 
         byte[] certificate = readAllBytes(new FileInputStream(pfxPath));
 
-        appPlatformManager.resourceManager().resourceGroups().define(rgName)
-            .withRegion(region)
-            .create();
+        appPlatformManager.resourceManager().resourceGroups().define(rgName).withRegion(region).create();
 
         // create custom domain and certificate
-        DnsZone dnsZone = dnsZoneManager.zones().define(domainName)
-            .withExistingResourceGroup(rgName)
-            .create();
+        DnsZone dnsZone = dnsZoneManager.zones().define(domainName).withExistingResourceGroup(rgName).create();
 
-        AppServiceDomain domain = appServiceManager.domains().define(domainName)
+        AppServiceDomain domain = appServiceManager.domains()
+            .define(domainName)
             .withExistingResourceGroup(rgName)
             .defineRegistrantContact()
-                .withFirstName("Jon")
-                .withLastName("Doe")
-                .withEmail("jondoe@contoso.com")
-                .withAddressLine1("123 4th Ave")
-                .withCity("Redmond")
-                .withStateOrProvince("WA")
-                .withCountry(CountryIsoCode.UNITED_STATES)
-                .withPostalCode("98052")
-                .withPhoneCountryCode(CountryPhoneCode.UNITED_STATES)
-                .withPhoneNumber("4258828080")
-                .attach()
+            .withFirstName("Jon")
+            .withLastName("Doe")
+            .withEmail("jondoe@contoso.com")
+            .withAddressLine1("123 4th Ave")
+            .withCity("Redmond")
+            .withStateOrProvince("WA")
+            .withCountry(CountryIsoCode.UNITED_STATES)
+            .withPostalCode("98052")
+            .withPhoneCountryCode(CountryPhoneCode.UNITED_STATES)
+            .withPhoneNumber("4258828080")
+            .attach()
             .withDomainPrivacyEnabled(true)
             .withAutoRenewEnabled(false)
             .withExistingDnsZone(dnsZone)
             .create();
 
-        Vault vault = keyVaultManager.vaults().define(vaultName)
+        Vault vault = keyVaultManager.vaults()
+            .define(vaultName)
             .withRegion(region)
             .withExistingResourceGroup(rgName)
             .defineAccessPolicy()
-                .forServicePrincipal(clientIdFromFile())
-                .allowSecretAllPermissions()
-                .allowCertificateAllPermissions()
-                .attach()
+            .forUser(azureCliSignedInUser().userPrincipalName())
+            .allowSecretAllPermissions()
+            .allowCertificateAllPermissions()
+            .attach()
             .defineAccessPolicy()
-                .forObjectId(SPRING_CLOUD_SERVICE_OBJECT_ID)
-                .allowCertificatePermissions(CertificatePermissions.GET, CertificatePermissions.LIST)
-                .allowSecretPermissions(SecretPermissions.GET, SecretPermissions.LIST)
-                .attach()
+            .forObjectId(SPRING_CLOUD_SERVICE_OBJECT_ID)
+            .allowCertificatePermissions(CertificatePermissions.GET, CertificatePermissions.LIST)
+            .allowSecretPermissions(SecretPermissions.GET, SecretPermissions.LIST)
+            .attach()
             .create();
 
         // upload certificate
-        CertificateClient certificateClient = new CertificateClientBuilder()
-            .vaultUrl(vault.vaultUri())
+        CertificateClient certificateClient = new CertificateClientBuilder().vaultUrl(vault.vaultUri())
             .pipeline(appPlatformManager.httpPipeline())
             .buildClient();
 
         certificateClient.importCertificate(
-            new ImportCertificateOptions(certName, certificate)
-                .setPassword(cerPassword)
-                .setEnabled(true)
-        );
+            new ImportCertificateOptions(certName, certificate).setPassword(cerPassword).setEnabled(true));
 
         // get thumbprint
         KeyStore store = KeyStore.getInstance("PKCS12");
         store.load(new ByteArrayInputStream(certificate), cerPassword.toCharArray());
         String alias = Collections.list(store.aliases()).get(0);
-        String thumbprint = printHexBinary(MessageDigest.getInstance("SHA-1").digest(store.getCertificate(alias).getEncoded()));
+        String thumbprint
+            = printHexBinary(MessageDigest.getInstance("SHA-1").digest(store.getCertificate(alias).getEncoded()));
 
-        SpringService service = appPlatformManager.springServices().define(serviceName)
+        SpringService service = appPlatformManager.springServices()
+            .define(serviceName)
             .withRegion(region)
             .withExistingResourceGroup(rgName)
             .withCertificate("test", vault.vaultUri(), certName)
@@ -217,10 +220,7 @@ public class SpringCloudLiveOnlyTest extends AppPlatformTest {
         service.apps().define(appName).withDefaultActiveDeployment().withDefaultPublicEndpoint().create();
         SpringApp app = service.apps().getByName(appName);
 
-        dnsZone.update()
-            .withCNameRecordSet("www", app.fqdn())
-            .withCNameRecordSet("ssl", app.fqdn())
-            .apply();
+        dnsZone.update().withCNameRecordSet("www", app.fqdn()).withCNameRecordSet("ssl", app.fqdn()).apply();
 
         app.update()
             .withoutDefaultPublicEndpoint()
@@ -232,10 +232,7 @@ public class SpringCloudLiveOnlyTest extends AppPlatformTest {
         Assertions.assertTrue(requestSuccess(String.format("http://www.%s", domainName)));
         Assertions.assertTrue(requestSuccess(String.format("https://ssl.%s", domainName)));
 
-        app.update()
-            .withHttpsOnly()
-            .withoutCustomDomain(String.format("www.%s", domainName))
-            .apply();
+        app.update().withHttpsOnly().withoutCustomDomain(String.format("www.%s", domainName)).apply();
         Assertions.assertTrue(checkRedirect(String.format("http://ssl.%s", domainName)));
     }
 
@@ -249,7 +246,8 @@ public class SpringCloudLiveOnlyTest extends AppPlatformTest {
         String serviceName = generateRandomResourceName("springsvc", 15);
         Region region = Region.US_EAST;
 
-        SpringService service = appPlatformManager.springServices().define(serviceName)
+        SpringService service = appPlatformManager.springServices()
+            .define(serviceName)
             .withRegion(region)
             .withNewResourceGroup(rgName)
             .withEnterpriseTierSku()
@@ -259,7 +257,8 @@ public class SpringCloudLiveOnlyTest extends AppPlatformTest {
 
         List<String> apiGatewayConfigFilePatterns = Arrays.asList("api-gateway");
         String appName = "api-gateway";
-        SpringApp gatewayApp = service.apps().define(appName)
+        SpringApp gatewayApp = service.apps()
+            .define(appName)
             .defineActiveDeployment(deploymentName)
             .withJarFile(jarFile)
             .withInstance(2)
@@ -278,13 +277,9 @@ public class SpringCloudLiveOnlyTest extends AppPlatformTest {
         Assertions.assertEquals(jvmOptions, "-DskipTests=true");
 
         List<String> configFilePatterns = Arrays.asList("api-gateway", "customers-service");
-        service.update()
-            .withDefaultGitRepository(PETCLINIC_CONFIG_URL, "master", configFilePatterns)
-            .apply();
+        service.update().withDefaultGitRepository(PETCLINIC_CONFIG_URL, "master", configFilePatterns).apply();
 
-        deployment.update()
-            .withConfigFilePatterns(apiGatewayConfigFilePatterns)
-            .apply();
+        deployment.update().withConfigFilePatterns(apiGatewayConfigFilePatterns).apply();
 
         deployment.refresh();
         Assertions.assertFalse(CoreUtils.isNullOrEmpty(deployment.configFilePatterns()));
@@ -296,7 +291,8 @@ public class SpringCloudLiveOnlyTest extends AppPlatformTest {
         String appName2 = "customers-service";
         String customerServiceModule = "spring-petclinic-customers-service";
         List<String> customerServiceConfigFilePatterns = Arrays.asList("customers-service");
-        SpringApp customerServiceApp = service.apps().define(appName2)
+        SpringApp customerServiceApp = service.apps()
+            .define(appName2)
             .defineActiveDeployment(deploymentName)
             .withSourceCodeTarGzFile(tarGzFile, customerServiceConfigFilePatterns)
             .withTargetModule(customerServiceModule)
@@ -320,7 +316,7 @@ public class SpringCloudLiveOnlyTest extends AppPlatformTest {
             HttpURLConnection connection = (HttpURLConnection) new URL(remoteFileUrl).openConnection();
             connection.connect();
             try (InputStream inputStream = connection.getInputStream();
-                 OutputStream outputStream = new FileOutputStream(downloaded)) {
+                OutputStream outputStream = new FileOutputStream(downloaded)) {
                 IOUtils.copy(inputStream, outputStream);
             } finally {
                 connection.disconnect();
@@ -332,7 +328,8 @@ public class SpringCloudLiveOnlyTest extends AppPlatformTest {
     private void extraTarGzSource(File folder, URL url) throws IOException {
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.connect();
-        try (TarArchiveInputStream inputStream = new TarArchiveInputStream(new GzipCompressorInputStream(connection.getInputStream()))) {
+        try (TarArchiveInputStream inputStream
+            = new TarArchiveInputStream(new GzipCompressorInputStream(connection.getInputStream()))) {
             TarArchiveEntry entry;
             while ((entry = inputStream.getNextTarEntry()) != null) {
                 if (entry.isDirectory()) {
@@ -367,8 +364,8 @@ public class SpringCloudLiveOnlyTest extends AppPlatformTest {
         }
     }
 
-    public static void createCertificate(String certPath, String pfxPath,
-                                         String alias, String password, String cnName, String dnsName) throws IOException {
+    public static void createCertificate(String certPath, String pfxPath, String alias, String password, String cnName,
+        String dnsName) throws IOException {
         if (new File(pfxPath).exists()) {
             return;
         }
@@ -389,10 +386,29 @@ public class SpringCloudLiveOnlyTest extends AppPlatformTest {
         }
 
         // Create Pfx file
-        String[] commandArgs = {command, "-genkey", "-alias", alias,
-            "-keystore", pfxPath, "-storepass", password, "-validity",
-            validityInDays, "-keyalg", keyAlg, "-sigalg", sigAlg, "-keysize", keySize,
-            "-storetype", storeType, "-dname", "CN=" + cnName, "-ext", "EKU=1.3.6.1.5.5.7.3.1"};
+        String[] commandArgs = {
+            command,
+            "-genkey",
+            "-alias",
+            alias,
+            "-keystore",
+            pfxPath,
+            "-storepass",
+            password,
+            "-validity",
+            validityInDays,
+            "-keyalg",
+            keyAlg,
+            "-sigalg",
+            sigAlg,
+            "-keysize",
+            keySize,
+            "-storetype",
+            storeType,
+            "-dname",
+            "CN=" + cnName,
+            "-ext",
+            "EKU=1.3.6.1.5.5.7.3.1" };
         if (dnsName != null) {
             List<String> args = new ArrayList<>(Arrays.asList(commandArgs));
             args.add("-ext");
@@ -404,9 +420,20 @@ public class SpringCloudLiveOnlyTest extends AppPlatformTest {
         // Create cer file i.e. extract public key from pfx
         File pfxFile = new File(pfxPath);
         if (pfxFile.exists()) {
-            String[] certCommandArgs = {command, "-export", "-alias", alias,
-                "-storetype", storeType, "-keystore", pfxPath,
-                "-storepass", password, "-rfc", "-file", certPath};
+            String[] certCommandArgs = {
+                command,
+                "-export",
+                "-alias",
+                alias,
+                "-storetype",
+                storeType,
+                "-keystore",
+                pfxPath,
+                "-storepass",
+                password,
+                "-rfc",
+                "-file",
+                certPath };
             // output of keytool export command is going to error stream
             // although command is
             // executed successfully, hence ignoring error stream in this case
@@ -415,28 +442,22 @@ public class SpringCloudLiveOnlyTest extends AppPlatformTest {
             // Check if file got created or not
             File cerFile = new File(pfxPath);
             if (!cerFile.exists()) {
-                throw new IOException(
-                    "Error occurred while creating certificate"
-                        + String.join(" ", certCommandArgs));
+                throw new IOException("Error occurred while creating certificate" + String.join(" ", certCommandArgs));
             }
         } else {
-            throw new IOException("Error occurred while creating certificates"
-                + String.join(" ", commandArgs));
+            throw new IOException("Error occurred while creating certificates" + String.join(" ", commandArgs));
         }
     }
 
-    public static String cmdInvocation(String[] command,
-                                       boolean ignoreErrorStream) throws IOException {
+    public static String cmdInvocation(String[] command, boolean ignoreErrorStream) throws IOException {
         String result = "";
         String error = "";
 
         Process process = new ProcessBuilder(command).start();
-        try (
-            InputStream inputStream = process.getInputStream();
+        try (InputStream inputStream = process.getInputStream();
             InputStream errorStream = process.getErrorStream();
             BufferedReader br = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
-            BufferedReader ebr = new BufferedReader(new InputStreamReader(errorStream, StandardCharsets.UTF_8));
-        ) {
+            BufferedReader ebr = new BufferedReader(new InputStreamReader(errorStream, StandardCharsets.UTF_8));) {
             result = br.readLine();
             process.waitFor();
             error = ebr.readLine();

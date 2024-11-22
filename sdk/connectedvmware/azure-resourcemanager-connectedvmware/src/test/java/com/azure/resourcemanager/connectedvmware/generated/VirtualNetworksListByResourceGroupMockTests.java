@@ -31,37 +31,27 @@ public final class VirtualNetworksListByResourceGroupMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"uuid\":\"mvmmagoaqylkjz\",\"vCenterId\":\"iua\",\"moRefId\":\"cgm\",\"inventoryItemId\":\"tpfinzcpdltkr\",\"moName\":\"jmtbd\",\"customResourceName\":\"cqguef\",\"statuses\":[{\"type\":\"p\",\"status\":\"qdurelyujlfyoum\",\"reason\":\"kyeclcdigpta\",\"message\":\"rzmq\",\"severity\":\"cycijoclxiut\",\"lastUpdatedAt\":\"2021-08-12T23:35:09Z\"},{\"type\":\"z\",\"status\":\"jdnrqjbt\",\"reason\":\"eaoqaqbzgyhf\",\"message\":\"v\",\"severity\":\"tbwbqamteuli\",\"lastUpdatedAt\":\"2021-10-20T21:56:22Z\"},{\"type\":\"kcvmwfauxxepmy\",\"status\":\"ormcqmic\",\"reason\":\"jqpkzfbo\",\"message\":\"jmcsmyqwixvcpwn\",\"severity\":\"ywzwofalickd\",\"lastUpdatedAt\":\"2021-08-28T15:59:58Z\"}],\"provisioningState\":\"Canceled\"},\"extendedLocation\":{\"type\":\"t\",\"name\":\"sknxrwzawnvsbcf\"},\"kind\":\"gxnvhyc\",\"location\":\"dimwrzregzgyu\",\"tags\":{\"weryekzk\":\"rw\",\"w\":\"hmeott\"},\"id\":\"yos\",\"name\":\"wwhnhjtfvpn\",\"type\":\"pmil\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"uuid\":\"mvmmagoaqylkjz\",\"vCenterId\":\"iua\",\"moRefId\":\"cgm\",\"inventoryItemId\":\"tpfinzcpdltkr\",\"moName\":\"jmtbd\",\"customResourceName\":\"cqguef\",\"statuses\":[{\"type\":\"p\",\"status\":\"qdurelyujlfyoum\",\"reason\":\"kyeclcdigpta\",\"message\":\"rzmq\",\"severity\":\"cycijoclxiut\",\"lastUpdatedAt\":\"2021-08-12T23:35:09Z\"},{\"type\":\"z\",\"status\":\"jdnrqjbt\",\"reason\":\"eaoqaqbzgyhf\",\"message\":\"v\",\"severity\":\"tbwbqamteuli\",\"lastUpdatedAt\":\"2021-10-20T21:56:22Z\"},{\"type\":\"kcvmwfauxxepmy\",\"status\":\"ormcqmic\",\"reason\":\"jqpkzfbo\",\"message\":\"jmcsmyqwixvcpwn\",\"severity\":\"ywzwofalickd\",\"lastUpdatedAt\":\"2021-08-28T15:59:58Z\"}],\"provisioningState\":\"Canceled\"},\"extendedLocation\":{\"type\":\"t\",\"name\":\"sknxrwzawnvsbcf\"},\"kind\":\"gxnvhyc\",\"location\":\"dimwrzregzgyu\",\"tags\":{\"weryekzk\":\"rw\",\"w\":\"hmeott\"},\"id\":\"yos\",\"name\":\"wwhnhjtfvpn\",\"type\":\"pmil\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        ConnectedVMwareManager manager =
-            ConnectedVMwareManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        ConnectedVMwareManager manager = ConnectedVMwareManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<VirtualNetwork> response =
-            manager.virtualNetworks().listByResourceGroup("pag", com.azure.core.util.Context.NONE);
+        PagedIterable<VirtualNetwork> response
+            = manager.virtualNetworks().listByResourceGroup("pag", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("dimwrzregzgyu", response.iterator().next().location());
         Assertions.assertEquals("rw", response.iterator().next().tags().get("weryekzk"));

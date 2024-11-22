@@ -5,35 +5,39 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.fluent.models.ManagedDatabaseProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/** An managed database update. */
+/**
+ * An managed database update.
+ */
 @Fluent
-public final class ManagedDatabaseUpdate {
+public final class ManagedDatabaseUpdate implements JsonSerializable<ManagedDatabaseUpdate> {
     /*
      * Resource properties.
      */
-    @JsonProperty(value = "properties")
     private ManagedDatabaseProperties innerProperties;
 
     /*
      * Resource tags.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
-    /** Creates an instance of ManagedDatabaseUpdate class. */
+    /**
+     * Creates an instance of ManagedDatabaseUpdate class.
+     */
     public ManagedDatabaseUpdate() {
     }
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ManagedDatabaseProperties innerProperties() {
@@ -42,7 +46,7 @@ public final class ManagedDatabaseUpdate {
 
     /**
      * Get the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -51,7 +55,7 @@ public final class ManagedDatabaseUpdate {
 
     /**
      * Set the tags property: Resource tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the ManagedDatabaseUpdate object itself.
      */
@@ -62,7 +66,7 @@ public final class ManagedDatabaseUpdate {
 
     /**
      * Get the collation property: Collation of the managed database.
-     *
+     * 
      * @return the collation value.
      */
     public String collation() {
@@ -71,7 +75,7 @@ public final class ManagedDatabaseUpdate {
 
     /**
      * Set the collation property: Collation of the managed database.
-     *
+     * 
      * @param collation the collation value to set.
      * @return the ManagedDatabaseUpdate object itself.
      */
@@ -85,7 +89,7 @@ public final class ManagedDatabaseUpdate {
 
     /**
      * Get the status property: Status of the database.
-     *
+     * 
      * @return the status value.
      */
     public ManagedDatabaseStatus status() {
@@ -94,7 +98,7 @@ public final class ManagedDatabaseUpdate {
 
     /**
      * Get the creationDate property: Creation date of the database.
-     *
+     * 
      * @return the creationDate value.
      */
     public OffsetDateTime creationDate() {
@@ -103,7 +107,7 @@ public final class ManagedDatabaseUpdate {
 
     /**
      * Get the earliestRestorePoint property: Earliest restore point in time for point in time restore.
-     *
+     * 
      * @return the earliestRestorePoint value.
      */
     public OffsetDateTime earliestRestorePoint() {
@@ -114,7 +118,7 @@ public final class ManagedDatabaseUpdate {
      * Get the restorePointInTime property: Conditional. If createMode is PointInTimeRestore, this value is required.
      * Specifies the point in time (ISO8601 format) of the source database that will be restored to create the new
      * database.
-     *
+     * 
      * @return the restorePointInTime value.
      */
     public OffsetDateTime restorePointInTime() {
@@ -125,7 +129,7 @@ public final class ManagedDatabaseUpdate {
      * Set the restorePointInTime property: Conditional. If createMode is PointInTimeRestore, this value is required.
      * Specifies the point in time (ISO8601 format) of the source database that will be restored to create the new
      * database.
-     *
+     * 
      * @param restorePointInTime the restorePointInTime value to set.
      * @return the ManagedDatabaseUpdate object itself.
      */
@@ -139,7 +143,7 @@ public final class ManagedDatabaseUpdate {
 
     /**
      * Get the defaultSecondaryLocation property: Geo paired region.
-     *
+     * 
      * @return the defaultSecondaryLocation value.
      */
     public String defaultSecondaryLocation() {
@@ -148,7 +152,7 @@ public final class ManagedDatabaseUpdate {
 
     /**
      * Get the catalogCollation property: Collation of the metadata catalog.
-     *
+     * 
      * @return the catalogCollation value.
      */
     public CatalogCollationType catalogCollation() {
@@ -157,7 +161,7 @@ public final class ManagedDatabaseUpdate {
 
     /**
      * Set the catalogCollation property: Collation of the metadata catalog.
-     *
+     * 
      * @param catalogCollation the catalogCollation value to set.
      * @return the ManagedDatabaseUpdate object itself.
      */
@@ -177,7 +181,7 @@ public final class ManagedDatabaseUpdate {
      * geo-replicated backup. RecoverableDatabaseId must be specified as the recoverable database resource ID to
      * restore. RestoreLongTermRetentionBackup: Create a database by restoring from a long term retention backup
      * (longTermRetentionBackupResourceId required).
-     *
+     * 
      * @return the createMode value.
      */
     public ManagedDatabaseCreateMode createMode() {
@@ -192,7 +196,7 @@ public final class ManagedDatabaseUpdate {
      * geo-replicated backup. RecoverableDatabaseId must be specified as the recoverable database resource ID to
      * restore. RestoreLongTermRetentionBackup: Create a database by restoring from a long term retention backup
      * (longTermRetentionBackupResourceId required).
-     *
+     * 
      * @param createMode the createMode value to set.
      * @return the ManagedDatabaseUpdate object itself.
      */
@@ -207,7 +211,7 @@ public final class ManagedDatabaseUpdate {
     /**
      * Get the storageContainerUri property: Conditional. If createMode is RestoreExternalBackup, this value is
      * required. Specifies the uri of the storage container where backups for this restore are stored.
-     *
+     * 
      * @return the storageContainerUri value.
      */
     public String storageContainerUri() {
@@ -217,7 +221,7 @@ public final class ManagedDatabaseUpdate {
     /**
      * Set the storageContainerUri property: Conditional. If createMode is RestoreExternalBackup, this value is
      * required. Specifies the uri of the storage container where backups for this restore are stored.
-     *
+     * 
      * @param storageContainerUri the storageContainerUri value to set.
      * @return the ManagedDatabaseUpdate object itself.
      */
@@ -232,7 +236,7 @@ public final class ManagedDatabaseUpdate {
     /**
      * Get the sourceDatabaseId property: The resource identifier of the source database associated with create
      * operation of this database.
-     *
+     * 
      * @return the sourceDatabaseId value.
      */
     public String sourceDatabaseId() {
@@ -242,7 +246,7 @@ public final class ManagedDatabaseUpdate {
     /**
      * Set the sourceDatabaseId property: The resource identifier of the source database associated with create
      * operation of this database.
-     *
+     * 
      * @param sourceDatabaseId the sourceDatabaseId value to set.
      * @return the ManagedDatabaseUpdate object itself.
      */
@@ -257,7 +261,7 @@ public final class ManagedDatabaseUpdate {
     /**
      * Get the restorableDroppedDatabaseId property: The restorable dropped database resource id to restore when
      * creating this database.
-     *
+     * 
      * @return the restorableDroppedDatabaseId value.
      */
     public String restorableDroppedDatabaseId() {
@@ -267,7 +271,7 @@ public final class ManagedDatabaseUpdate {
     /**
      * Set the restorableDroppedDatabaseId property: The restorable dropped database resource id to restore when
      * creating this database.
-     *
+     * 
      * @param restorableDroppedDatabaseId the restorableDroppedDatabaseId value to set.
      * @return the ManagedDatabaseUpdate object itself.
      */
@@ -282,7 +286,7 @@ public final class ManagedDatabaseUpdate {
     /**
      * Get the storageContainerSasToken property: Conditional. If createMode is RestoreExternalBackup, this value is
      * required. Specifies the storage container sas token.
-     *
+     * 
      * @return the storageContainerSasToken value.
      */
     public String storageContainerSasToken() {
@@ -292,7 +296,7 @@ public final class ManagedDatabaseUpdate {
     /**
      * Set the storageContainerSasToken property: Conditional. If createMode is RestoreExternalBackup, this value is
      * required. Specifies the storage container sas token.
-     *
+     * 
      * @param storageContainerSasToken the storageContainerSasToken value to set.
      * @return the ManagedDatabaseUpdate object itself.
      */
@@ -307,7 +311,7 @@ public final class ManagedDatabaseUpdate {
     /**
      * Get the failoverGroupId property: Instance Failover Group resource identifier that this managed database belongs
      * to.
-     *
+     * 
      * @return the failoverGroupId value.
      */
     public String failoverGroupId() {
@@ -317,7 +321,7 @@ public final class ManagedDatabaseUpdate {
     /**
      * Get the recoverableDatabaseId property: The resource identifier of the recoverable database associated with
      * create operation of this database.
-     *
+     * 
      * @return the recoverableDatabaseId value.
      */
     public String recoverableDatabaseId() {
@@ -327,7 +331,7 @@ public final class ManagedDatabaseUpdate {
     /**
      * Set the recoverableDatabaseId property: The resource identifier of the recoverable database associated with
      * create operation of this database.
-     *
+     * 
      * @param recoverableDatabaseId the recoverableDatabaseId value to set.
      * @return the ManagedDatabaseUpdate object itself.
      */
@@ -342,7 +346,7 @@ public final class ManagedDatabaseUpdate {
     /**
      * Get the longTermRetentionBackupResourceId property: The name of the Long Term Retention backup to be used for
      * restore of this managed database.
-     *
+     * 
      * @return the longTermRetentionBackupResourceId value.
      */
     public String longTermRetentionBackupResourceId() {
@@ -352,7 +356,7 @@ public final class ManagedDatabaseUpdate {
     /**
      * Set the longTermRetentionBackupResourceId property: The name of the Long Term Retention backup to be used for
      * restore of this managed database.
-     *
+     * 
      * @param longTermRetentionBackupResourceId the longTermRetentionBackupResourceId value to set.
      * @return the ManagedDatabaseUpdate object itself.
      */
@@ -366,7 +370,7 @@ public final class ManagedDatabaseUpdate {
 
     /**
      * Get the autoCompleteRestore property: Whether to auto complete restore of this managed database.
-     *
+     * 
      * @return the autoCompleteRestore value.
      */
     public Boolean autoCompleteRestore() {
@@ -375,7 +379,7 @@ public final class ManagedDatabaseUpdate {
 
     /**
      * Set the autoCompleteRestore property: Whether to auto complete restore of this managed database.
-     *
+     * 
      * @param autoCompleteRestore the autoCompleteRestore value to set.
      * @return the ManagedDatabaseUpdate object itself.
      */
@@ -389,7 +393,7 @@ public final class ManagedDatabaseUpdate {
 
     /**
      * Get the lastBackupName property: Last backup file name for restore of this managed database.
-     *
+     * 
      * @return the lastBackupName value.
      */
     public String lastBackupName() {
@@ -398,7 +402,7 @@ public final class ManagedDatabaseUpdate {
 
     /**
      * Set the lastBackupName property: Last backup file name for restore of this managed database.
-     *
+     * 
      * @param lastBackupName the lastBackupName value to set.
      * @return the ManagedDatabaseUpdate object itself.
      */
@@ -412,12 +416,52 @@ public final class ManagedDatabaseUpdate {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedDatabaseUpdate from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedDatabaseUpdate if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ManagedDatabaseUpdate.
+     */
+    public static ManagedDatabaseUpdate fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedDatabaseUpdate deserializedManagedDatabaseUpdate = new ManagedDatabaseUpdate();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedManagedDatabaseUpdate.innerProperties = ManagedDatabaseProperties.fromJson(reader);
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedManagedDatabaseUpdate.tags = tags;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagedDatabaseUpdate;
+        });
     }
 }

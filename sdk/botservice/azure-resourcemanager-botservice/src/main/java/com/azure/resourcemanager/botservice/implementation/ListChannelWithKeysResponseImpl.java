@@ -19,8 +19,7 @@ public final class ListChannelWithKeysResponseImpl implements ListChannelWithKey
 
     private final com.azure.resourcemanager.botservice.BotServiceManager serviceManager;
 
-    ListChannelWithKeysResponseImpl(
-        ListChannelWithKeysResponseInner innerObject,
+    ListChannelWithKeysResponseImpl(ListChannelWithKeysResponseInner innerObject,
         com.azure.resourcemanager.botservice.BotServiceManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

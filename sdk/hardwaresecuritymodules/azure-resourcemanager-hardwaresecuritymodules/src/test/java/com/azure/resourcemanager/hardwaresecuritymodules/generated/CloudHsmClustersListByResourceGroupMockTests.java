@@ -49,12 +49,13 @@ public final class CloudHsmClustersListByResourceGroupMockTests {
             return Mono.just(httpResponse);
         }));
 
-        HardwareSecurityModulesManager manager = HardwareSecurityModulesManager.configure().withHttpClient(httpClient)
+        HardwareSecurityModulesManager manager = HardwareSecurityModulesManager.configure()
+            .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<CloudHsmCluster> response = manager.cloudHsmClusters().listByResourceGroup("zuempsbzkf",
-            "beyvpnqicvinvkjj", com.azure.core.util.Context.NONE);
+        PagedIterable<CloudHsmCluster> response = manager.cloudHsmClusters()
+            .listByResourceGroup("zuempsbzkf", "beyvpnqicvinvkjj", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("qu", response.iterator().next().location());
         Assertions.assertEquals("xicslfao", response.iterator().next().tags().get("z"));

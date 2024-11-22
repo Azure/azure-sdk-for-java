@@ -6,37 +6,37 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The storage account blob inventory policy rules.
  */
 @Fluent
-public final class BlobInventoryPolicySchema {
+public final class BlobInventoryPolicySchema implements JsonSerializable<BlobInventoryPolicySchema> {
     /*
      * Policy is enabled if set to true.
      */
-    @JsonProperty(value = "enabled", required = true)
     private boolean enabled;
 
     /*
      * Deprecated Property from API version 2021-04-01 onwards, the required destination container name must be
      * specified at the rule level 'policy.rule.destination'
      */
-    @JsonProperty(value = "destination", access = JsonProperty.Access.WRITE_ONLY)
     private String destination;
 
     /*
      * The valid value is Inventory
      */
-    @JsonProperty(value = "type", required = true)
     private InventoryRuleType type;
 
     /*
      * The storage account blob inventory policy rules. The rule is applied when it is enabled.
      */
-    @JsonProperty(value = "rules", required = true)
     private List<BlobInventoryPolicyRule> rules;
 
     /**
@@ -135,4 +135,51 @@ public final class BlobInventoryPolicySchema {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(BlobInventoryPolicySchema.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("enabled", this.enabled);
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeArrayField("rules", this.rules, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BlobInventoryPolicySchema from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BlobInventoryPolicySchema if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the BlobInventoryPolicySchema.
+     */
+    public static BlobInventoryPolicySchema fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BlobInventoryPolicySchema deserializedBlobInventoryPolicySchema = new BlobInventoryPolicySchema();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("enabled".equals(fieldName)) {
+                    deserializedBlobInventoryPolicySchema.enabled = reader.getBoolean();
+                } else if ("type".equals(fieldName)) {
+                    deserializedBlobInventoryPolicySchema.type = InventoryRuleType.fromString(reader.getString());
+                } else if ("rules".equals(fieldName)) {
+                    List<BlobInventoryPolicyRule> rules
+                        = reader.readArray(reader1 -> BlobInventoryPolicyRule.fromJson(reader1));
+                    deserializedBlobInventoryPolicySchema.rules = rules;
+                } else if ("destination".equals(fieldName)) {
+                    deserializedBlobInventoryPolicySchema.destination = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBlobInventoryPolicySchema;
+        });
+    }
 }

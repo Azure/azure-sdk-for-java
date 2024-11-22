@@ -13,22 +13,22 @@ public final class JobConfigurationScheduleTriggerConfigTests {
     public void testDeserialize() throws Exception {
         JobConfigurationScheduleTriggerConfig model = BinaryData
             .fromString(
-                "{\"replicaCompletionCount\":2045449859,\"cronExpression\":\"ejylmbkzu\",\"parallelism\":1007245359}")
+                "{\"replicaCompletionCount\":718100150,\"cronExpression\":\"mlwywaeeczg\",\"parallelism\":2069370787}")
             .toObject(JobConfigurationScheduleTriggerConfig.class);
-        Assertions.assertEquals(2045449859, model.replicaCompletionCount());
-        Assertions.assertEquals("ejylmbkzu", model.cronExpression());
-        Assertions.assertEquals(1007245359, model.parallelism());
+        Assertions.assertEquals(718100150, model.replicaCompletionCount());
+        Assertions.assertEquals("mlwywaeeczg", model.cronExpression());
+        Assertions.assertEquals(2069370787, model.parallelism());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         JobConfigurationScheduleTriggerConfig model
-            = new JobConfigurationScheduleTriggerConfig().withReplicaCompletionCount(2045449859)
-                .withCronExpression("ejylmbkzu")
-                .withParallelism(1007245359);
+            = new JobConfigurationScheduleTriggerConfig().withReplicaCompletionCount(718100150)
+                .withCronExpression("mlwywaeeczg")
+                .withParallelism(2069370787);
         model = BinaryData.fromObject(model).toObject(JobConfigurationScheduleTriggerConfig.class);
-        Assertions.assertEquals(2045449859, model.replicaCompletionCount());
-        Assertions.assertEquals("ejylmbkzu", model.cronExpression());
-        Assertions.assertEquals(1007245359, model.parallelism());
+        Assertions.assertEquals(718100150, model.replicaCompletionCount());
+        Assertions.assertEquals("mlwywaeeczg", model.cronExpression());
+        Assertions.assertEquals(2069370787, model.parallelism());
     }
 }

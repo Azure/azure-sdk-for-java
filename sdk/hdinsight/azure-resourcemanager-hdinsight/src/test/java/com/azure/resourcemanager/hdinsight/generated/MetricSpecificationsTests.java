@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class MetricSpecificationsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MetricSpecifications model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"g\",\"displayName\":\"joxslhvnhla\",\"displayDescription\":\"q\",\"unit\":\"kzjcjbtrgae\",\"aggregationType\":\"vibr\",\"supportedAggregationTypes\":[\"s\"],\"supportedTimeGrainTypes\":[\"beitpkx\",\"tmo\",\"bklftidgfcwqmpim\",\"qxzhem\"],\"enableRegionalMdmAccount\":false,\"sourceMdmAccount\":\"hujswtwkozzwcul\",\"sourceMdmNamespace\":\"awpfajnjwltlwtjj\",\"metricFilterPattern\":\"ktalhsnvkcdmxz\",\"fillGapWithZero\":false,\"category\":\"imlnwiaaomylw\",\"resourceIdDimensionNameOverride\":\"z\",\"isInternal\":false,\"delegateMetricNameOverride\":\"ethwwnpjhlfz\",\"dimensions\":[{\"name\":\"hwahfbousn\",\"displayName\":\"pgfewetwlyx\",\"internalName\":\"cxy\",\"toBeExportedForShoebox\":true},{\"name\":\"jhlimmbcxfhbcpo\",\"displayName\":\"vxcjzhqizxfpxtgq\",\"internalName\":\"javftjuhdqa\",\"toBeExportedForShoebox\":false}]}")
-                .toObject(MetricSpecifications.class);
+        MetricSpecifications model = BinaryData.fromString(
+            "{\"name\":\"g\",\"displayName\":\"joxslhvnhla\",\"displayDescription\":\"q\",\"unit\":\"kzjcjbtrgae\",\"aggregationType\":\"vibr\",\"supportedAggregationTypes\":[\"s\"],\"supportedTimeGrainTypes\":[\"beitpkx\",\"tmo\",\"bklftidgfcwqmpim\",\"qxzhem\"],\"enableRegionalMdmAccount\":false,\"sourceMdmAccount\":\"hujswtwkozzwcul\",\"sourceMdmNamespace\":\"awpfajnjwltlwtjj\",\"metricFilterPattern\":\"ktalhsnvkcdmxz\",\"fillGapWithZero\":false,\"category\":\"imlnwiaaomylw\",\"resourceIdDimensionNameOverride\":\"z\",\"isInternal\":false,\"delegateMetricNameOverride\":\"ethwwnpjhlfz\",\"dimensions\":[{\"name\":\"hwahfbousn\",\"displayName\":\"pgfewetwlyx\",\"internalName\":\"cxy\",\"toBeExportedForShoebox\":true},{\"name\":\"jhlimmbcxfhbcpo\",\"displayName\":\"vxcjzhqizxfpxtgq\",\"internalName\":\"javftjuhdqa\",\"toBeExportedForShoebox\":false}]}")
+            .toObject(MetricSpecifications.class);
         Assertions.assertEquals("g", model.name());
         Assertions.assertEquals("joxslhvnhla", model.displayName());
         Assertions.assertEquals("q", model.displayDescription());
@@ -42,37 +40,31 @@ public final class MetricSpecificationsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MetricSpecifications model =
-            new MetricSpecifications()
-                .withName("g")
-                .withDisplayName("joxslhvnhla")
-                .withDisplayDescription("q")
-                .withUnit("kzjcjbtrgae")
-                .withAggregationType("vibr")
-                .withSupportedAggregationTypes(Arrays.asList("s"))
-                .withSupportedTimeGrainTypes(Arrays.asList("beitpkx", "tmo", "bklftidgfcwqmpim", "qxzhem"))
-                .withEnableRegionalMdmAccount(false)
-                .withSourceMdmAccount("hujswtwkozzwcul")
-                .withSourceMdmNamespace("awpfajnjwltlwtjj")
-                .withMetricFilterPattern("ktalhsnvkcdmxz")
-                .withFillGapWithZero(false)
-                .withCategory("imlnwiaaomylw")
-                .withResourceIdDimensionNameOverride("z")
-                .withIsInternal(false)
-                .withDelegateMetricNameOverride("ethwwnpjhlfz")
-                .withDimensions(
-                    Arrays
-                        .asList(
-                            new Dimension()
-                                .withName("hwahfbousn")
-                                .withDisplayName("pgfewetwlyx")
-                                .withInternalName("cxy")
-                                .withToBeExportedForShoebox(true),
-                            new Dimension()
-                                .withName("jhlimmbcxfhbcpo")
-                                .withDisplayName("vxcjzhqizxfpxtgq")
-                                .withInternalName("javftjuhdqa")
-                                .withToBeExportedForShoebox(false)));
+        MetricSpecifications model = new MetricSpecifications().withName("g")
+            .withDisplayName("joxslhvnhla")
+            .withDisplayDescription("q")
+            .withUnit("kzjcjbtrgae")
+            .withAggregationType("vibr")
+            .withSupportedAggregationTypes(Arrays.asList("s"))
+            .withSupportedTimeGrainTypes(Arrays.asList("beitpkx", "tmo", "bklftidgfcwqmpim", "qxzhem"))
+            .withEnableRegionalMdmAccount(false)
+            .withSourceMdmAccount("hujswtwkozzwcul")
+            .withSourceMdmNamespace("awpfajnjwltlwtjj")
+            .withMetricFilterPattern("ktalhsnvkcdmxz")
+            .withFillGapWithZero(false)
+            .withCategory("imlnwiaaomylw")
+            .withResourceIdDimensionNameOverride("z")
+            .withIsInternal(false)
+            .withDelegateMetricNameOverride("ethwwnpjhlfz")
+            .withDimensions(Arrays.asList(
+                new Dimension().withName("hwahfbousn")
+                    .withDisplayName("pgfewetwlyx")
+                    .withInternalName("cxy")
+                    .withToBeExportedForShoebox(true),
+                new Dimension().withName("jhlimmbcxfhbcpo")
+                    .withDisplayName("vxcjzhqizxfpxtgq")
+                    .withInternalName("javftjuhdqa")
+                    .withToBeExportedForShoebox(false)));
         model = BinaryData.fromObject(model).toObject(MetricSpecifications.class);
         Assertions.assertEquals("g", model.name());
         Assertions.assertEquals("joxslhvnhla", model.displayName());

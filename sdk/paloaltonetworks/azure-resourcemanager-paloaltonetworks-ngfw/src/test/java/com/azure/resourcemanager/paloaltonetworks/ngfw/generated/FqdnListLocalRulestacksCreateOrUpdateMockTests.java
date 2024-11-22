@@ -45,13 +45,19 @@ public final class FqdnListLocalRulestacksCreateOrUpdateMockTests {
             return Mono.just(httpResponse);
         }));
 
-        PaloAltoNetworksNgfwManager manager = PaloAltoNetworksNgfwManager.configure().withHttpClient(httpClient)
+        PaloAltoNetworksNgfwManager manager = PaloAltoNetworksNgfwManager.configure()
+            .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        FqdnListLocalRulestackResource response = manager.fqdnListLocalRulestacks().define("hctmjtsgh")
-            .withExistingLocalRulestack("xegqphr", "fn").withFqdnList(Arrays.asList("pzarpzeqacdld"))
-            .withDescription("c").withEtag("mpypefcpczshnuq").withAuditComment("aizu").create();
+        FqdnListLocalRulestackResource response = manager.fqdnListLocalRulestacks()
+            .define("hctmjtsgh")
+            .withExistingLocalRulestack("xegqphr", "fn")
+            .withFqdnList(Arrays.asList("pzarpzeqacdld"))
+            .withDescription("c")
+            .withEtag("mpypefcpczshnuq")
+            .withAuditComment("aizu")
+            .create();
 
         Assertions.assertEquals("aokgkskjivbsshaj", response.description());
         Assertions.assertEquals("u", response.fqdnList().get(0));

@@ -5,7 +5,7 @@
 package com.azure.communication.callingserver.implementation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.util.Collection;
 
 /** Defines values for CommunicationCloudEnvironmentModel. */
@@ -20,12 +20,21 @@ public final class CommunicationCloudEnvironmentModel extends ExpandableStringEn
     public static final CommunicationCloudEnvironmentModel GCCH = fromString("gcch");
 
     /**
+     * Creates an instance of {@link CommunicationCloudEnvironmentModel} with no string value.
+     *
+     * @deprecated Use {@link #fromString(String)} to create or get an instance of
+     * {@link CommunicationCloudEnvironmentModel} instead.
+     */
+    @Deprecated
+    public CommunicationCloudEnvironmentModel() {
+    }
+
+    /**
      * Creates or finds a CommunicationCloudEnvironmentModel from its string representation.
      *
      * @param name a name to look for.
      * @return the corresponding CommunicationCloudEnvironmentModel.
      */
-    @JsonCreator
     public static CommunicationCloudEnvironmentModel fromString(String name) {
         return fromString(name, CommunicationCloudEnvironmentModel.class);
     }

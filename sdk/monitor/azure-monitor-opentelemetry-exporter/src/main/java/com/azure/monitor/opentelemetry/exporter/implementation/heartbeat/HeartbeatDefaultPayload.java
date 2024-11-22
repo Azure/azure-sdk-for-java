@@ -14,8 +14,7 @@ public class HeartbeatDefaultPayload {
     /**
      * List of default payloads which would be added.
      */
-    private static final List<HeartBeatPayloadProviderInterface> defaultPayloadProviders =
-        new ArrayList<>();
+    private static final List<HeartBeatPayloadProviderInterface> defaultPayloadProviders = new ArrayList<>();
 
     static {
         defaultPayloadProviders.add(new DefaultHeartBeatPropertyProvider());

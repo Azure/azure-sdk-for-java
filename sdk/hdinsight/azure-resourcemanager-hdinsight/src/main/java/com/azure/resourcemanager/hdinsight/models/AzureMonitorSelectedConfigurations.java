@@ -5,40 +5,43 @@
 package com.azure.resourcemanager.hdinsight.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** The selected configurations for azure monitor. */
+/**
+ * The selected configurations for azure monitor.
+ */
 @Fluent
-public final class AzureMonitorSelectedConfigurations {
+public final class AzureMonitorSelectedConfigurations implements JsonSerializable<AzureMonitorSelectedConfigurations> {
     /*
      * The configuration version.
      */
-    @JsonProperty(value = "configurationVersion")
     private String configurationVersion;
 
     /*
      * The global configurations of selected configurations.
      */
-    @JsonProperty(value = "globalConfigurations")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> globalConfigurations;
 
     /*
      * The table list.
      */
-    @JsonProperty(value = "tableList")
     private List<AzureMonitorTableConfiguration> tableList;
 
-    /** Creates an instance of AzureMonitorSelectedConfigurations class. */
+    /**
+     * Creates an instance of AzureMonitorSelectedConfigurations class.
+     */
     public AzureMonitorSelectedConfigurations() {
     }
 
     /**
      * Get the configurationVersion property: The configuration version.
-     *
+     * 
      * @return the configurationVersion value.
      */
     public String configurationVersion() {
@@ -47,7 +50,7 @@ public final class AzureMonitorSelectedConfigurations {
 
     /**
      * Set the configurationVersion property: The configuration version.
-     *
+     * 
      * @param configurationVersion the configurationVersion value to set.
      * @return the AzureMonitorSelectedConfigurations object itself.
      */
@@ -58,7 +61,7 @@ public final class AzureMonitorSelectedConfigurations {
 
     /**
      * Get the globalConfigurations property: The global configurations of selected configurations.
-     *
+     * 
      * @return the globalConfigurations value.
      */
     public Map<String, String> globalConfigurations() {
@@ -67,7 +70,7 @@ public final class AzureMonitorSelectedConfigurations {
 
     /**
      * Set the globalConfigurations property: The global configurations of selected configurations.
-     *
+     * 
      * @param globalConfigurations the globalConfigurations value to set.
      * @return the AzureMonitorSelectedConfigurations object itself.
      */
@@ -78,7 +81,7 @@ public final class AzureMonitorSelectedConfigurations {
 
     /**
      * Get the tableList property: The table list.
-     *
+     * 
      * @return the tableList value.
      */
     public List<AzureMonitorTableConfiguration> tableList() {
@@ -87,7 +90,7 @@ public final class AzureMonitorSelectedConfigurations {
 
     /**
      * Set the tableList property: The table list.
-     *
+     * 
      * @param tableList the tableList value to set.
      * @return the AzureMonitorSelectedConfigurations object itself.
      */
@@ -98,12 +101,59 @@ public final class AzureMonitorSelectedConfigurations {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (tableList() != null) {
             tableList().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("configurationVersion", this.configurationVersion);
+        jsonWriter.writeMapField("globalConfigurations", this.globalConfigurations,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("tableList", this.tableList, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureMonitorSelectedConfigurations from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureMonitorSelectedConfigurations if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureMonitorSelectedConfigurations.
+     */
+    public static AzureMonitorSelectedConfigurations fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureMonitorSelectedConfigurations deserializedAzureMonitorSelectedConfigurations
+                = new AzureMonitorSelectedConfigurations();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("configurationVersion".equals(fieldName)) {
+                    deserializedAzureMonitorSelectedConfigurations.configurationVersion = reader.getString();
+                } else if ("globalConfigurations".equals(fieldName)) {
+                    Map<String, String> globalConfigurations = reader.readMap(reader1 -> reader1.getString());
+                    deserializedAzureMonitorSelectedConfigurations.globalConfigurations = globalConfigurations;
+                } else if ("tableList".equals(fieldName)) {
+                    List<AzureMonitorTableConfiguration> tableList
+                        = reader.readArray(reader1 -> AzureMonitorTableConfiguration.fromJson(reader1));
+                    deserializedAzureMonitorSelectedConfigurations.tableList = tableList;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureMonitorSelectedConfigurations;
+        });
     }
 }

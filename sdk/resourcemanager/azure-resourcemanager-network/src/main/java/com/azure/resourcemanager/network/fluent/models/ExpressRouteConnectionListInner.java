@@ -5,18 +5,21 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * ExpressRouteConnection list.
  */
 @Fluent
-public final class ExpressRouteConnectionListInner {
+public final class ExpressRouteConnectionListInner implements JsonSerializable<ExpressRouteConnectionListInner> {
     /*
      * The list of ExpressRoute connections.
      */
-    @JsonProperty(value = "value")
     private List<ExpressRouteConnectionInner> value;
 
     /**
@@ -54,5 +57,44 @@ public final class ExpressRouteConnectionListInner {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExpressRouteConnectionListInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExpressRouteConnectionListInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ExpressRouteConnectionListInner.
+     */
+    public static ExpressRouteConnectionListInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExpressRouteConnectionListInner deserializedExpressRouteConnectionListInner
+                = new ExpressRouteConnectionListInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<ExpressRouteConnectionInner> value
+                        = reader.readArray(reader1 -> ExpressRouteConnectionInner.fromJson(reader1));
+                    deserializedExpressRouteConnectionListInner.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExpressRouteConnectionListInner;
+        });
     }
 }

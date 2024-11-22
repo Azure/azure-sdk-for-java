@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.redis.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class TlsVersion extends ExpandableStringEnum<TlsVersion> {
      * @param name a name to look for.
      * @return the corresponding TlsVersion.
      */
-    @JsonCreator
     public static TlsVersion fromString(String name) {
         return fromString(name, TlsVersion.class);
     }

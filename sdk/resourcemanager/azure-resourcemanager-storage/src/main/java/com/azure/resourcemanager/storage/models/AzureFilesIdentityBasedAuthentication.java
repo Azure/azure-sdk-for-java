@@ -6,29 +6,31 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Settings for Azure Files identity based authentication.
  */
 @Fluent
-public final class AzureFilesIdentityBasedAuthentication {
+public final class AzureFilesIdentityBasedAuthentication
+    implements JsonSerializable<AzureFilesIdentityBasedAuthentication> {
     /*
      * Indicates the directory service used. Note that this enum may be extended in the future.
      */
-    @JsonProperty(value = "directoryServiceOptions", required = true)
     private DirectoryServiceOptions directoryServiceOptions;
 
     /*
      * Required if directoryServiceOptions are AD, optional if they are AADKERB.
      */
-    @JsonProperty(value = "activeDirectoryProperties")
     private ActiveDirectoryProperties activeDirectoryProperties;
 
     /*
      * Default share permission for users using Kerberos authentication if RBAC role is not assigned.
      */
-    @JsonProperty(value = "defaultSharePermission")
     private DefaultSharePermission defaultSharePermission;
 
     /**
@@ -123,4 +125,53 @@ public final class AzureFilesIdentityBasedAuthentication {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AzureFilesIdentityBasedAuthentication.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("directoryServiceOptions",
+            this.directoryServiceOptions == null ? null : this.directoryServiceOptions.toString());
+        jsonWriter.writeJsonField("activeDirectoryProperties", this.activeDirectoryProperties);
+        jsonWriter.writeStringField("defaultSharePermission",
+            this.defaultSharePermission == null ? null : this.defaultSharePermission.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureFilesIdentityBasedAuthentication from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureFilesIdentityBasedAuthentication if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AzureFilesIdentityBasedAuthentication.
+     */
+    public static AzureFilesIdentityBasedAuthentication fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureFilesIdentityBasedAuthentication deserializedAzureFilesIdentityBasedAuthentication
+                = new AzureFilesIdentityBasedAuthentication();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("directoryServiceOptions".equals(fieldName)) {
+                    deserializedAzureFilesIdentityBasedAuthentication.directoryServiceOptions
+                        = DirectoryServiceOptions.fromString(reader.getString());
+                } else if ("activeDirectoryProperties".equals(fieldName)) {
+                    deserializedAzureFilesIdentityBasedAuthentication.activeDirectoryProperties
+                        = ActiveDirectoryProperties.fromJson(reader);
+                } else if ("defaultSharePermission".equals(fieldName)) {
+                    deserializedAzureFilesIdentityBasedAuthentication.defaultSharePermission
+                        = DefaultSharePermission.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureFilesIdentityBasedAuthentication;
+        });
+    }
 }

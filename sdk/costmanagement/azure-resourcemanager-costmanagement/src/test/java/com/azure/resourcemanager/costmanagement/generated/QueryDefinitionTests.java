@@ -10,11 +10,13 @@ import com.azure.resourcemanager.costmanagement.models.FunctionType;
 import com.azure.resourcemanager.costmanagement.models.GranularityType;
 import com.azure.resourcemanager.costmanagement.models.QueryAggregation;
 import com.azure.resourcemanager.costmanagement.models.QueryColumnType;
+import com.azure.resourcemanager.costmanagement.models.QueryComparisonExpression;
 import com.azure.resourcemanager.costmanagement.models.QueryDataset;
 import com.azure.resourcemanager.costmanagement.models.QueryDatasetConfiguration;
 import com.azure.resourcemanager.costmanagement.models.QueryDefinition;
 import com.azure.resourcemanager.costmanagement.models.QueryFilter;
 import com.azure.resourcemanager.costmanagement.models.QueryGrouping;
+import com.azure.resourcemanager.costmanagement.models.QueryOperatorType;
 import com.azure.resourcemanager.costmanagement.models.QueryTimePeriod;
 import com.azure.resourcemanager.costmanagement.models.TimeframeType;
 import java.time.OffsetDateTime;
@@ -26,62 +28,128 @@ import org.junit.jupiter.api.Assertions;
 public final class QueryDefinitionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        QueryDefinition model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"Usage\",\"timeframe\":\"TheLastBillingMonth\",\"timePeriod\":{\"from\":\"2021-04-02T08:06:31Z\",\"to\":\"2021-08-30T17:38:27Z\"},\"dataset\":{\"granularity\":\"Daily\",\"configuration\":{\"columns\":[\"hdneuelfph\",\"dyhtozfikdowwquu\"]},\"aggregation\":{\"qzonosggbhcohf\":{\"name\":\"xclvit\",\"function\":\"Sum\"}},\"grouping\":[{\"type\":\"Dimension\",\"name\":\"n\"},{\"type\":\"Dimension\",\"name\":\"ljuti\"}],\"filter\":{\"and\":[],\"or\":[]}}}")
-                .toObject(QueryDefinition.class);
-        Assertions.assertEquals(ExportType.USAGE, model.type());
-        Assertions.assertEquals(TimeframeType.THE_LAST_BILLING_MONTH, model.timeframe());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-02T08:06:31Z"), model.timePeriod().from());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-30T17:38:27Z"), model.timePeriod().to());
+        QueryDefinition model = BinaryData.fromString(
+            "{\"type\":\"ActualCost\",\"timeframe\":\"TheLastMonth\",\"timePeriod\":{\"from\":\"2021-05-25T04:49:26Z\",\"to\":\"2021-07-27T14:18:56Z\"},\"dataset\":{\"granularity\":\"Daily\",\"configuration\":{\"columns\":[\"gzfc\",\"bgomfgbegl\"]},\"aggregation\":{\"uankrrfxeeeb\":{\"name\":\"eohibet\",\"function\":\"Sum\"},\"cvbmqzb\":{\"name\":\"ij\",\"function\":\"Sum\"},\"aj\":{\"name\":\"q\",\"function\":\"Sum\"},\"cevehjkuyxoafg\":{\"name\":\"nw\",\"function\":\"Sum\"}},\"grouping\":[{\"type\":\"TagKey\",\"name\":\"tfaeyl\"},{\"type\":\"TagKey\",\"name\":\"mfgvxirpghriypo\"}],\"filter\":{\"and\":[{\"and\":[{},{},{}],\"or\":[{},{},{}],\"dimensions\":{\"name\":\"prlpy\",\"operator\":\"In\",\"values\":[\"ciqdsme\",\"iitdfuxt\"]},\"tags\":{\"name\":\"siibmiybnnustgn\",\"operator\":\"In\",\"values\":[\"nmgixh\",\"mavmq\",\"oudorhcgyyp\"]}},{\"and\":[{},{},{}],\"or\":[{},{},{}],\"dimensions\":{\"name\":\"undmbx\",\"operator\":\"In\",\"values\":[\"cmjkavlgorbmftpm\",\"tzfjltf\"]},\"tags\":{\"name\":\"zcyjtot\",\"operator\":\"In\",\"values\":[\"pvpbdbzqgqqiheds\"]}},{\"and\":[{},{}],\"or\":[{},{}],\"dimensions\":{\"name\":\"ky\",\"operator\":\"In\",\"values\":[\"ysi\",\"sgqcwdho\"]},\"tags\":{\"name\":\"dtmcd\",\"operator\":\"In\",\"values\":[\"fcohdxbzlmcmu\",\"pcvhdbevwqqxeys\",\"onqzinkfkbgbzbow\"]}}],\"or\":[{\"and\":[{}],\"or\":[{},{}],\"dimensions\":{\"name\":\"ygvkzqkjj\",\"operator\":\"In\",\"values\":[\"bzefezr\",\"cczurtlei\",\"q\",\"bkwvzg\"]},\"tags\":{\"name\":\"v\",\"operator\":\"In\",\"values\":[\"zdix\",\"mqpnoda\"]}}],\"dimensions\":{\"name\":\"pqhe\",\"operator\":\"In\",\"values\":[\"tmcg\",\"bostzel\",\"dlat\",\"tmzlbiojlv\"]},\"tags\":{\"name\":\"rbbpneqvcwwyy\",\"operator\":\"In\",\"values\":[\"ochpprpr\",\"nmokayzejnhlbk\",\"bzpcpiljhahzvec\",\"ndbnwieh\"]}}}}")
+            .toObject(QueryDefinition.class);
+        Assertions.assertEquals(ExportType.ACTUAL_COST, model.type());
+        Assertions.assertEquals(TimeframeType.THE_LAST_MONTH, model.timeframe());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-25T04:49:26Z"), model.timePeriod().from());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-27T14:18:56Z"), model.timePeriod().to());
         Assertions.assertEquals(GranularityType.DAILY, model.dataset().granularity());
-        Assertions.assertEquals("hdneuelfph", model.dataset().configuration().columns().get(0));
-        Assertions.assertEquals("xclvit", model.dataset().aggregation().get("qzonosggbhcohf").name());
-        Assertions.assertEquals(FunctionType.SUM, model.dataset().aggregation().get("qzonosggbhcohf").function());
-        Assertions.assertEquals(QueryColumnType.DIMENSION, model.dataset().grouping().get(0).type());
-        Assertions.assertEquals("n", model.dataset().grouping().get(0).name());
+        Assertions.assertEquals("gzfc", model.dataset().configuration().columns().get(0));
+        Assertions.assertEquals("eohibet", model.dataset().aggregation().get("uankrrfxeeeb").name());
+        Assertions.assertEquals(FunctionType.SUM, model.dataset().aggregation().get("uankrrfxeeeb").function());
+        Assertions.assertEquals(QueryColumnType.TAG_KEY, model.dataset().grouping().get(0).type());
+        Assertions.assertEquals("tfaeyl", model.dataset().grouping().get(0).name());
+        Assertions.assertEquals("prlpy", model.dataset().filter().and().get(0).dimensions().name());
+        Assertions.assertEquals(QueryOperatorType.IN, model.dataset().filter().and().get(0).dimensions().operator());
+        Assertions.assertEquals("ciqdsme", model.dataset().filter().and().get(0).dimensions().values().get(0));
+        Assertions.assertEquals("siibmiybnnustgn", model.dataset().filter().and().get(0).tags().name());
+        Assertions.assertEquals(QueryOperatorType.IN, model.dataset().filter().and().get(0).tags().operator());
+        Assertions.assertEquals("nmgixh", model.dataset().filter().and().get(0).tags().values().get(0));
+        Assertions.assertEquals("ygvkzqkjj", model.dataset().filter().or().get(0).dimensions().name());
+        Assertions.assertEquals(QueryOperatorType.IN, model.dataset().filter().or().get(0).dimensions().operator());
+        Assertions.assertEquals("bzefezr", model.dataset().filter().or().get(0).dimensions().values().get(0));
+        Assertions.assertEquals("v", model.dataset().filter().or().get(0).tags().name());
+        Assertions.assertEquals(QueryOperatorType.IN, model.dataset().filter().or().get(0).tags().operator());
+        Assertions.assertEquals("zdix", model.dataset().filter().or().get(0).tags().values().get(0));
+        Assertions.assertEquals("pqhe", model.dataset().filter().dimensions().name());
+        Assertions.assertEquals(QueryOperatorType.IN, model.dataset().filter().dimensions().operator());
+        Assertions.assertEquals("tmcg", model.dataset().filter().dimensions().values().get(0));
+        Assertions.assertEquals("rbbpneqvcwwyy", model.dataset().filter().tags().name());
+        Assertions.assertEquals(QueryOperatorType.IN, model.dataset().filter().tags().operator());
+        Assertions.assertEquals("ochpprpr", model.dataset().filter().tags().values().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        QueryDefinition model =
-            new QueryDefinition()
-                .withType(ExportType.USAGE)
-                .withTimeframe(TimeframeType.THE_LAST_BILLING_MONTH)
-                .withTimePeriod(
-                    new QueryTimePeriod()
-                        .withFrom(OffsetDateTime.parse("2021-04-02T08:06:31Z"))
-                        .withTo(OffsetDateTime.parse("2021-08-30T17:38:27Z")))
-                .withDataset(
-                    new QueryDataset()
-                        .withGranularity(GranularityType.DAILY)
-                        .withConfiguration(
-                            new QueryDatasetConfiguration()
-                                .withColumns(Arrays.asList("hdneuelfph", "dyhtozfikdowwquu")))
-                        .withAggregation(
-                            mapOf(
-                                "qzonosggbhcohf",
-                                new QueryAggregation().withName("xclvit").withFunction(FunctionType.SUM)))
-                        .withGrouping(
-                            Arrays
-                                .asList(
-                                    new QueryGrouping().withType(QueryColumnType.DIMENSION).withName("n"),
-                                    new QueryGrouping().withType(QueryColumnType.DIMENSION).withName("ljuti")))
-                        .withFilter(new QueryFilter().withAnd(Arrays.asList()).withOr(Arrays.asList())));
+        QueryDefinition model = new QueryDefinition().withType(ExportType.ACTUAL_COST)
+            .withTimeframe(TimeframeType.THE_LAST_MONTH)
+            .withTimePeriod(new QueryTimePeriod().withFrom(OffsetDateTime.parse("2021-05-25T04:49:26Z"))
+                .withTo(OffsetDateTime.parse("2021-07-27T14:18:56Z")))
+            .withDataset(new QueryDataset().withGranularity(GranularityType.DAILY)
+                .withConfiguration(new QueryDatasetConfiguration().withColumns(Arrays.asList("gzfc", "bgomfgbegl")))
+                .withAggregation(
+                    mapOf("uankrrfxeeeb", new QueryAggregation().withName("eohibet").withFunction(FunctionType.SUM),
+                        "cvbmqzb", new QueryAggregation().withName("ij").withFunction(FunctionType.SUM), "aj",
+                        new QueryAggregation().withName("q").withFunction(FunctionType.SUM), "cevehjkuyxoafg",
+                        new QueryAggregation().withName("nw").withFunction(FunctionType.SUM)))
+                .withGrouping(Arrays.asList(new QueryGrouping().withType(QueryColumnType.TAG_KEY).withName("tfaeyl"),
+                    new QueryGrouping().withType(QueryColumnType.TAG_KEY).withName("mfgvxirpghriypo")))
+                .withFilter(new QueryFilter()
+                    .withAnd(Arrays.asList(
+                        new QueryFilter()
+                            .withAnd(Arrays.asList(new QueryFilter(), new QueryFilter(), new QueryFilter()))
+                            .withOr(Arrays.asList(new QueryFilter(), new QueryFilter(), new QueryFilter()))
+                            .withDimensions(new QueryComparisonExpression().withName("prlpy")
+                                .withOperator(QueryOperatorType.IN)
+                                .withValues(Arrays.asList("ciqdsme", "iitdfuxt")))
+                            .withTags(new QueryComparisonExpression().withName("siibmiybnnustgn")
+                                .withOperator(QueryOperatorType.IN)
+                                .withValues(Arrays.asList("nmgixh", "mavmq", "oudorhcgyyp"))),
+                        new QueryFilter()
+                            .withAnd(Arrays.asList(new QueryFilter(), new QueryFilter(), new QueryFilter()))
+                            .withOr(Arrays.asList(new QueryFilter(), new QueryFilter(), new QueryFilter()))
+                            .withDimensions(new QueryComparisonExpression().withName("undmbx")
+                                .withOperator(QueryOperatorType.IN)
+                                .withValues(Arrays.asList("cmjkavlgorbmftpm", "tzfjltf")))
+                            .withTags(new QueryComparisonExpression().withName("zcyjtot")
+                                .withOperator(QueryOperatorType.IN)
+                                .withValues(Arrays.asList("pvpbdbzqgqqiheds"))),
+                        new QueryFilter().withAnd(Arrays.asList(new QueryFilter(), new QueryFilter()))
+                            .withOr(Arrays.asList(new QueryFilter(), new QueryFilter()))
+                            .withDimensions(new QueryComparisonExpression().withName("ky")
+                                .withOperator(QueryOperatorType.IN)
+                                .withValues(Arrays.asList("ysi", "sgqcwdho")))
+                            .withTags(new QueryComparisonExpression().withName("dtmcd")
+                                .withOperator(QueryOperatorType.IN)
+                                .withValues(Arrays.asList("fcohdxbzlmcmu", "pcvhdbevwqqxeys", "onqzinkfkbgbzbow")))))
+                    .withOr(Arrays.asList(new QueryFilter().withAnd(Arrays.asList(new QueryFilter()))
+                        .withOr(Arrays.asList(new QueryFilter(), new QueryFilter()))
+                        .withDimensions(new QueryComparisonExpression().withName("ygvkzqkjj")
+                            .withOperator(QueryOperatorType.IN)
+                            .withValues(Arrays.asList("bzefezr", "cczurtlei", "q", "bkwvzg")))
+                        .withTags(new QueryComparisonExpression().withName("v")
+                            .withOperator(QueryOperatorType.IN)
+                            .withValues(Arrays.asList("zdix", "mqpnoda")))))
+                    .withDimensions(new QueryComparisonExpression().withName("pqhe")
+                        .withOperator(QueryOperatorType.IN)
+                        .withValues(Arrays.asList("tmcg", "bostzel", "dlat", "tmzlbiojlv")))
+                    .withTags(new QueryComparisonExpression().withName("rbbpneqvcwwyy")
+                        .withOperator(QueryOperatorType.IN)
+                        .withValues(Arrays.asList("ochpprpr", "nmokayzejnhlbk", "bzpcpiljhahzvec", "ndbnwieh")))));
         model = BinaryData.fromObject(model).toObject(QueryDefinition.class);
-        Assertions.assertEquals(ExportType.USAGE, model.type());
-        Assertions.assertEquals(TimeframeType.THE_LAST_BILLING_MONTH, model.timeframe());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-02T08:06:31Z"), model.timePeriod().from());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-30T17:38:27Z"), model.timePeriod().to());
+        Assertions.assertEquals(ExportType.ACTUAL_COST, model.type());
+        Assertions.assertEquals(TimeframeType.THE_LAST_MONTH, model.timeframe());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-25T04:49:26Z"), model.timePeriod().from());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-27T14:18:56Z"), model.timePeriod().to());
         Assertions.assertEquals(GranularityType.DAILY, model.dataset().granularity());
-        Assertions.assertEquals("hdneuelfph", model.dataset().configuration().columns().get(0));
-        Assertions.assertEquals("xclvit", model.dataset().aggregation().get("qzonosggbhcohf").name());
-        Assertions.assertEquals(FunctionType.SUM, model.dataset().aggregation().get("qzonosggbhcohf").function());
-        Assertions.assertEquals(QueryColumnType.DIMENSION, model.dataset().grouping().get(0).type());
-        Assertions.assertEquals("n", model.dataset().grouping().get(0).name());
+        Assertions.assertEquals("gzfc", model.dataset().configuration().columns().get(0));
+        Assertions.assertEquals("eohibet", model.dataset().aggregation().get("uankrrfxeeeb").name());
+        Assertions.assertEquals(FunctionType.SUM, model.dataset().aggregation().get("uankrrfxeeeb").function());
+        Assertions.assertEquals(QueryColumnType.TAG_KEY, model.dataset().grouping().get(0).type());
+        Assertions.assertEquals("tfaeyl", model.dataset().grouping().get(0).name());
+        Assertions.assertEquals("prlpy", model.dataset().filter().and().get(0).dimensions().name());
+        Assertions.assertEquals(QueryOperatorType.IN, model.dataset().filter().and().get(0).dimensions().operator());
+        Assertions.assertEquals("ciqdsme", model.dataset().filter().and().get(0).dimensions().values().get(0));
+        Assertions.assertEquals("siibmiybnnustgn", model.dataset().filter().and().get(0).tags().name());
+        Assertions.assertEquals(QueryOperatorType.IN, model.dataset().filter().and().get(0).tags().operator());
+        Assertions.assertEquals("nmgixh", model.dataset().filter().and().get(0).tags().values().get(0));
+        Assertions.assertEquals("ygvkzqkjj", model.dataset().filter().or().get(0).dimensions().name());
+        Assertions.assertEquals(QueryOperatorType.IN, model.dataset().filter().or().get(0).dimensions().operator());
+        Assertions.assertEquals("bzefezr", model.dataset().filter().or().get(0).dimensions().values().get(0));
+        Assertions.assertEquals("v", model.dataset().filter().or().get(0).tags().name());
+        Assertions.assertEquals(QueryOperatorType.IN, model.dataset().filter().or().get(0).tags().operator());
+        Assertions.assertEquals("zdix", model.dataset().filter().or().get(0).tags().values().get(0));
+        Assertions.assertEquals("pqhe", model.dataset().filter().dimensions().name());
+        Assertions.assertEquals(QueryOperatorType.IN, model.dataset().filter().dimensions().operator());
+        Assertions.assertEquals("tmcg", model.dataset().filter().dimensions().values().get(0));
+        Assertions.assertEquals("rbbpneqvcwwyy", model.dataset().filter().tags().name());
+        Assertions.assertEquals(QueryOperatorType.IN, model.dataset().filter().tags().operator());
+        Assertions.assertEquals("ochpprpr", model.dataset().filter().tags().values().get(0));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

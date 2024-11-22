@@ -5,101 +5,97 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.models.JobExecutionLifecycle;
 import com.azure.resourcemanager.sql.models.JobExecutionTarget;
 import com.azure.resourcemanager.sql.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
-/** Properties for an Azure SQL Database Elastic job execution. */
+/**
+ * Properties for an Azure SQL Database Elastic job execution.
+ */
 @Fluent
-public final class JobExecutionProperties {
+public final class JobExecutionProperties implements JsonSerializable<JobExecutionProperties> {
     /*
      * The job version number.
      */
-    @JsonProperty(value = "jobVersion", access = JsonProperty.Access.WRITE_ONLY)
     private Integer jobVersion;
 
     /*
      * The job step name.
      */
-    @JsonProperty(value = "stepName", access = JsonProperty.Access.WRITE_ONLY)
     private String stepName;
 
     /*
      * The job step id.
      */
-    @JsonProperty(value = "stepId", access = JsonProperty.Access.WRITE_ONLY)
     private Integer stepId;
 
     /*
      * The unique identifier of the job execution.
      */
-    @JsonProperty(value = "jobExecutionId", access = JsonProperty.Access.WRITE_ONLY)
     private UUID jobExecutionId;
 
     /*
      * The detailed state of the job execution.
      */
-    @JsonProperty(value = "lifecycle", access = JsonProperty.Access.WRITE_ONLY)
     private JobExecutionLifecycle lifecycle;
 
     /*
      * The ARM provisioning state of the job execution.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * The time that the job execution was created.
      */
-    @JsonProperty(value = "createTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime createTime;
 
     /*
      * The time that the job execution started.
      */
-    @JsonProperty(value = "startTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime startTime;
 
     /*
      * The time that the job execution completed.
      */
-    @JsonProperty(value = "endTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime endTime;
 
     /*
      * Number of times the job execution has been attempted.
      */
-    @JsonProperty(value = "currentAttempts")
     private Integer currentAttempts;
 
     /*
      * Start time of the current attempt.
      */
-    @JsonProperty(value = "currentAttemptStartTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime currentAttemptStartTime;
 
     /*
      * The last status or error message.
      */
-    @JsonProperty(value = "lastMessage", access = JsonProperty.Access.WRITE_ONLY)
     private String lastMessage;
 
     /*
      * The target that this execution is executed on.
      */
-    @JsonProperty(value = "target", access = JsonProperty.Access.WRITE_ONLY)
     private JobExecutionTarget target;
 
-    /** Creates an instance of JobExecutionProperties class. */
+    /**
+     * Creates an instance of JobExecutionProperties class.
+     */
     public JobExecutionProperties() {
     }
 
     /**
      * Get the jobVersion property: The job version number.
-     *
+     * 
      * @return the jobVersion value.
      */
     public Integer jobVersion() {
@@ -108,7 +104,7 @@ public final class JobExecutionProperties {
 
     /**
      * Get the stepName property: The job step name.
-     *
+     * 
      * @return the stepName value.
      */
     public String stepName() {
@@ -117,7 +113,7 @@ public final class JobExecutionProperties {
 
     /**
      * Get the stepId property: The job step id.
-     *
+     * 
      * @return the stepId value.
      */
     public Integer stepId() {
@@ -126,7 +122,7 @@ public final class JobExecutionProperties {
 
     /**
      * Get the jobExecutionId property: The unique identifier of the job execution.
-     *
+     * 
      * @return the jobExecutionId value.
      */
     public UUID jobExecutionId() {
@@ -135,7 +131,7 @@ public final class JobExecutionProperties {
 
     /**
      * Get the lifecycle property: The detailed state of the job execution.
-     *
+     * 
      * @return the lifecycle value.
      */
     public JobExecutionLifecycle lifecycle() {
@@ -144,7 +140,7 @@ public final class JobExecutionProperties {
 
     /**
      * Get the provisioningState property: The ARM provisioning state of the job execution.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -153,7 +149,7 @@ public final class JobExecutionProperties {
 
     /**
      * Get the createTime property: The time that the job execution was created.
-     *
+     * 
      * @return the createTime value.
      */
     public OffsetDateTime createTime() {
@@ -162,7 +158,7 @@ public final class JobExecutionProperties {
 
     /**
      * Get the startTime property: The time that the job execution started.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -171,7 +167,7 @@ public final class JobExecutionProperties {
 
     /**
      * Get the endTime property: The time that the job execution completed.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -180,7 +176,7 @@ public final class JobExecutionProperties {
 
     /**
      * Get the currentAttempts property: Number of times the job execution has been attempted.
-     *
+     * 
      * @return the currentAttempts value.
      */
     public Integer currentAttempts() {
@@ -189,7 +185,7 @@ public final class JobExecutionProperties {
 
     /**
      * Set the currentAttempts property: Number of times the job execution has been attempted.
-     *
+     * 
      * @param currentAttempts the currentAttempts value to set.
      * @return the JobExecutionProperties object itself.
      */
@@ -200,7 +196,7 @@ public final class JobExecutionProperties {
 
     /**
      * Get the currentAttemptStartTime property: Start time of the current attempt.
-     *
+     * 
      * @return the currentAttemptStartTime value.
      */
     public OffsetDateTime currentAttemptStartTime() {
@@ -209,7 +205,7 @@ public final class JobExecutionProperties {
 
     /**
      * Get the lastMessage property: The last status or error message.
-     *
+     * 
      * @return the lastMessage value.
      */
     public String lastMessage() {
@@ -218,7 +214,7 @@ public final class JobExecutionProperties {
 
     /**
      * Get the target property: The target that this execution is executed on.
-     *
+     * 
      * @return the target value.
      */
     public JobExecutionTarget target() {
@@ -227,12 +223,78 @@ public final class JobExecutionProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (target() != null) {
             target().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("currentAttempts", this.currentAttempts);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of JobExecutionProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of JobExecutionProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the JobExecutionProperties.
+     */
+    public static JobExecutionProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            JobExecutionProperties deserializedJobExecutionProperties = new JobExecutionProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("jobVersion".equals(fieldName)) {
+                    deserializedJobExecutionProperties.jobVersion = reader.getNullable(JsonReader::getInt);
+                } else if ("stepName".equals(fieldName)) {
+                    deserializedJobExecutionProperties.stepName = reader.getString();
+                } else if ("stepId".equals(fieldName)) {
+                    deserializedJobExecutionProperties.stepId = reader.getNullable(JsonReader::getInt);
+                } else if ("jobExecutionId".equals(fieldName)) {
+                    deserializedJobExecutionProperties.jobExecutionId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("lifecycle".equals(fieldName)) {
+                    deserializedJobExecutionProperties.lifecycle = JobExecutionLifecycle.fromString(reader.getString());
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedJobExecutionProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("createTime".equals(fieldName)) {
+                    deserializedJobExecutionProperties.createTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedJobExecutionProperties.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("endTime".equals(fieldName)) {
+                    deserializedJobExecutionProperties.endTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("currentAttempts".equals(fieldName)) {
+                    deserializedJobExecutionProperties.currentAttempts = reader.getNullable(JsonReader::getInt);
+                } else if ("currentAttemptStartTime".equals(fieldName)) {
+                    deserializedJobExecutionProperties.currentAttemptStartTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastMessage".equals(fieldName)) {
+                    deserializedJobExecutionProperties.lastMessage = reader.getString();
+                } else if ("target".equals(fieldName)) {
+                    deserializedJobExecutionProperties.target = JobExecutionTarget.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedJobExecutionProperties;
+        });
     }
 }

@@ -10,41 +10,36 @@ import com.azure.resourcemanager.trafficmanager.models.MonitorConfigCustomHeader
 import com.azure.resourcemanager.trafficmanager.models.MonitorProtocol;
 import java.util.Arrays;
 
-/** Samples for Profiles Update. */
+/**
+ * Samples for Profiles Update.
+ */
 public final class ProfilesUpdateSamples {
     /*
-     * x-ms-original-file: specification/trafficmanager/resource-manager/Microsoft.Network/stable/2022-04-01/examples/Profile-PATCH-MonitorConfig.json
+     * x-ms-original-file:
+     * specification/trafficmanager/resource-manager/Microsoft.Network/stable/2022-04-01/examples/Profile-PATCH-
+     * MonitorConfig.json
      */
     /**
      * Sample code: Profile-PATCH-MonitorConfig.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void profilePATCHMonitorConfig(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .trafficManagerProfiles()
+        azure.trafficManagerProfiles()
             .manager()
             .serviceClient()
             .getProfiles()
-            .updateWithResponse(
-                "azuresdkfornetautoresttrafficmanager2583",
-                "azuresdkfornetautoresttrafficmanager6192",
+            .updateWithResponse("azuresdkfornetautoresttrafficmanager2583", "azuresdkfornetautoresttrafficmanager6192",
                 new ProfileInner()
-                    .withMonitorConfig(
-                        new MonitorConfig()
-                            .withProtocol(MonitorProtocol.HTTP)
-                            .withPort(80L)
-                            .withPath("/testpath.aspx")
-                            .withIntervalInSeconds(30L)
-                            .withTimeoutInSeconds(6L)
-                            .withToleratedNumberOfFailures(4L)
-                            .withCustomHeaders(
-                                Arrays
-                                    .asList(
-                                        new MonitorConfigCustomHeadersItem().withName("header-1").withValue("value-1"),
-                                        new MonitorConfigCustomHeadersItem()
-                                            .withName("header-2")
-                                            .withValue("value-2")))),
+                    .withMonitorConfig(new MonitorConfig().withProtocol(MonitorProtocol.HTTP)
+                        .withPort(80L)
+                        .withPath("/testpath.aspx")
+                        .withIntervalInSeconds(30L)
+                        .withTimeoutInSeconds(6L)
+                        .withToleratedNumberOfFailures(4L)
+                        .withCustomHeaders(Arrays.asList(
+                            new MonitorConfigCustomHeadersItem().withName("header-1").withValue("value-1"),
+                            new MonitorConfigCustomHeadersItem().withName("header-2").withValue("value-2")))),
                 com.azure.core.util.Context.NONE);
     }
 }

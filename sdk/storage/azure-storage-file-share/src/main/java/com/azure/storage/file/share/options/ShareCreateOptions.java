@@ -21,6 +21,11 @@ public class ShareCreateOptions {
     private ShareProtocols protocols;
     private ShareRootSquash rootSquash;
     private Boolean enableSnapshotVirtualDirectoryAccess;
+    private Boolean enablePaidBursting;
+    private Long paidBurstingMaxIops;
+    private Long paidBurstingMaxBandwidthMibps;
+    private Long provisionedMaxIops;
+    private Long provisionedMaxBandwidthMibps;
 
     /**
      * Creates a new instance of {@link ShareCreateOptions}.
@@ -148,9 +153,126 @@ public class ShareCreateOptions {
      * @param snapshotVirtualDirectoryAccessEnabled the enableSnapshotVirtualDirectoryAccess value to set.
      * @return the ShareCreateOptions object itself.
      */
-    public ShareCreateOptions setSnapshotVirtualDirectoryAccessEnabled(
-        Boolean snapshotVirtualDirectoryAccessEnabled) {
+    public ShareCreateOptions setSnapshotVirtualDirectoryAccessEnabled(Boolean snapshotVirtualDirectoryAccessEnabled) {
         this.enableSnapshotVirtualDirectoryAccess = snapshotVirtualDirectoryAccessEnabled;
+        return this;
+    }
+
+    /**
+     * Get the enablePaidBursting property:
+     * Optional. Supported in version 2023-11-03 and above. Only applicable for premium file storage accounts.
+     * This property enables paid bursting on premium file storage accounts.
+     * @return the enablePaidBursting value.
+     */
+    public Boolean isPaidBurstingEnabled() {
+        return enablePaidBursting;
+    }
+
+    /**
+     * Set the enablePaidBursting property:
+     * Optional. Supported in version 2023-11-03 and above. Only applicable for premium file storage accounts.
+     * This property enables paid bursting on premium file storage accounts.
+     * @param enablePaidBursting the enablePaidBursting value to set.
+     * @return the ShareCreateOptions object itself.
+     */
+    public ShareCreateOptions setPaidBurstingEnabled(Boolean enablePaidBursting) {
+        this.enablePaidBursting = enablePaidBursting;
+        return this;
+    }
+
+    /**
+     * Get the paidBurstingMaxIops property:
+     * Optional. Supported in version 2023-11-03 and above. Only applicable for premium file storage accounts.
+     * Default if not specified is the maximum IOPS the file share can support.
+     * Current maximum for a file share is 102,400 IOPS.
+     * @return the paidBurstingMaxIops value.
+     */
+    public Long getPaidBurstingMaxIops() {
+        return paidBurstingMaxIops;
+    }
+
+    /**
+     * Set the paidBurstingMaxIops property:
+     * Optional. Supported in version 2023-11-03 and above. Only applicable for premium file storage accounts.
+     * Default if not specified is the maximum IOPS the file share can support.
+     * Current maximum for a file share is 102,400 IOPS.
+     * @param paidBurstingMaxIops the paidBurstingMaxIops value to set.
+     * @return the ShareCreateOptions object itself.
+     */
+    public ShareCreateOptions setPaidBurstingMaxIops(Long paidBurstingMaxIops) {
+        this.paidBurstingMaxIops = paidBurstingMaxIops;
+        return this;
+    }
+
+    /**
+     * Get the paidBurstingMaxBandwidthMibps property:
+     * Optional. Supported in version 2023-11-03 and above. Only applicable for premium file storage accounts.
+     * Default if not specified is the maximum throughput the file share can support.
+     * Current maximum for a file share is 10,340 MiB/sec.
+     * @return the paidBurstingMaxBandwidthMibps value.
+     */
+    public Long getPaidBurstingMaxBandwidthMibps() {
+        return paidBurstingMaxBandwidthMibps;
+    }
+
+    /**
+     * Set the paidBurstingMaxBandwidthMibps property:
+     * Optional. Supported in version 2023-11-03 and above. Only applicable for premium file storage accounts.
+     * Default if not specified is the maximum throughput the file share can support.
+     * Current maximum for a file share is 10,340 MiB/sec.
+     * @param paidBurstingMaxBandwidthMibps the paidBurstingMaxBandwidthMibps value to set.
+     * @return the ShareCreateOptions object itself.
+     */
+    public ShareCreateOptions setPaidBurstingMaxBandwidthMibps(Long paidBurstingMaxBandwidthMibps) {
+        this.paidBurstingMaxBandwidthMibps = paidBurstingMaxBandwidthMibps;
+        return this;
+    }
+
+    /**
+     * Get the provisionedMaxIops property:
+     * Optional. Only applicable to provisioned v2 storage accounts.
+     * The provisioned IOPS of the share. For SSD, minimum IOPS is 3,000 and maximum is 100,000.
+     * For HDD, minimum IOPS is 500 and maximum is 50,000.
+     * @return the provisionedMaxIops value.
+     */
+    public Long getProvisionedMaxIops() {
+        return provisionedMaxIops;
+    }
+
+    /**
+     * Set the provisionedMaxIops property:
+     * Optional. Only applicable to provisioned v2 storage accounts.
+     * The provisioned IOPS of the share. For SSD, minimum IOPS is 3,000 and maximum is 100,000.
+     * For HDD, minimum IOPS is 500 and maximum is 50,000.
+     * @param provisionedMaxIops the provisionedIops value to set.
+     * @return the ShareCreateOptions object itself.
+     */
+    public ShareCreateOptions setProvisionedMaxIops(Long provisionedMaxIops) {
+        this.provisionedMaxIops = provisionedMaxIops;
+        return this;
+    }
+
+    /**
+     * Get the provisionedMaxBandwidthMibps property:
+     * Optional. Only applicable to provisioned v2 storage accounts.
+     * The provisioned throughput of the share. For SSD, minimum throughput is 125 MiB/sec and maximum is 10,340 MiB/sec.
+     * For HDD, minimum throughput is 60 MiB/sec and maximum is 5,125 MiB/sec.
+     * @return the provisionedMaxBandwidthMibps value.
+     */
+    public Long getProvisionedMaxBandwidthMibps() {
+        return provisionedMaxBandwidthMibps;
+    }
+
+    /**
+     * Set the provisionedMaxBandwidthMibps property:
+     * Optional. Only applicable to provisioned v2 storage accounts.
+     * The provisioned throughput of the share. For SSD, minimum throughput is 125 MiB/sec and maximum is 10,340 MiB/sec.
+     * For HDD, minimum throughput is 60 MiB/sec and maximum is 5,125 MiB/sec.
+     * @param provisionedMaxBandwidthMibps the provisionedMaxBandwidthMibps value to set.
+     * @return the ShareCreateOptions object itself.
+     */
+    public ShareCreateOptions setProvisionedMaxBandwidthMibps(Long provisionedMaxBandwidthMibps) {
+        this.provisionedMaxBandwidthMibps = provisionedMaxBandwidthMibps;
         return this;
     }
 }

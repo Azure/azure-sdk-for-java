@@ -11,20 +11,20 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
-import com.azure.core.http.policy.HttpLoggingPolicy;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
-import com.azure.core.management.http.policy.ArmChallengeAuthenticationPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.computefleet.fluent.AzureFleetClient;
-import com.azure.resourcemanager.computefleet.implementation.AzureFleetClientBuilder;
+import com.azure.resourcemanager.computefleet.fluent.ComputeFleetManagementClient;
+import com.azure.resourcemanager.computefleet.implementation.ComputeFleetManagementClientBuilder;
 import com.azure.resourcemanager.computefleet.implementation.FleetsImpl;
 import com.azure.resourcemanager.computefleet.implementation.OperationsImpl;
 import com.azure.resourcemanager.computefleet.models.Fleets;
@@ -44,12 +44,12 @@ public final class ComputeFleetManager {
 
     private Fleets fleets;
 
-    private final AzureFleetClient clientObject;
+    private final ComputeFleetManagementClient clientObject;
 
     private ComputeFleetManager(HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
-        this.clientObject = new AzureFleetClientBuilder().pipeline(httpPipeline)
+        this.clientObject = new ComputeFleetManagementClientBuilder().pipeline(httpPipeline)
             .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
             .subscriptionId(profile.getSubscriptionId())
             .defaultPollInterval(defaultPollInterval)
@@ -241,7 +241,7 @@ public final class ComputeFleetManager {
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
-            policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
+            policies.add(new BearerTokenAuthenticationPolicy(credential, scopes.toArray(new String[0])));
             policies.addAll(this.policies.stream()
                 .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
                 .collect(Collectors.toList()));
@@ -279,12 +279,12 @@ public final class ComputeFleetManager {
     }
 
     /**
-     * Gets wrapped service client AzureFleetClient providing direct access to the underlying auto-generated API
-     * implementation, based on Azure REST API.
+     * Gets wrapped service client ComputeFleetManagementClient providing direct access to the underlying auto-generated
+     * API implementation, based on Azure REST API.
      * 
-     * @return Wrapped service client AzureFleetClient.
+     * @return Wrapped service client ComputeFleetManagementClient.
      */
-    public AzureFleetClient serviceClient() {
+    public ComputeFleetManagementClient serviceClient() {
         return this.clientObject;
     }
 }

@@ -42,21 +42,21 @@ public final class SkusClientImpl implements SkusClient {
     /**
      * The service client containing this operation class.
      */
-    private final DevOpsInfrastructureClientImpl client;
+    private final DevOpsInfrastructureManagementClientImpl client;
 
     /**
      * Initializes an instance of SkusClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    SkusClientImpl(DevOpsInfrastructureClientImpl client) {
+    SkusClientImpl(DevOpsInfrastructureManagementClientImpl client) {
         this.service = RestProxy.create(SkusService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for DevOpsInfrastructureClientSkus to be used by the proxy service to
-     * perform REST calls.
+     * The interface defining all the services for DevOpsInfrastructureManagementClientSkus to be used by the proxy
+     * service to perform REST calls.
      */
     @Host("{endpoint}")
     @ServiceInterface(name = "DevOpsInfrastructure")
@@ -67,7 +67,7 @@ public final class SkusClientImpl implements SkusClient {
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ResourceSkuListResult>> listByLocation(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("locationName") String locationName, @HeaderParam("accept") String accept, Context context);
+            @PathParam("locationName") String locationName, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -75,7 +75,7 @@ public final class SkusClientImpl implements SkusClient {
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ResourceSkuListResult>> listByLocationNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept, Context context);
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**

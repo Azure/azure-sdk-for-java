@@ -6,6 +6,7 @@ package com.azure.analytics.purview.datamap.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -37,7 +38,7 @@ public final class SuggestOptions implements JsonSerializable<SuggestOptions> {
      * The filter for the search.
      */
     @Generated
-    private Object filter;
+    private BinaryData filter;
 
     /**
      * Creates an instance of SuggestOptions class.
@@ -104,7 +105,7 @@ public final class SuggestOptions implements JsonSerializable<SuggestOptions> {
      * @return the filter value.
      */
     @Generated
-    public Object getFilter() {
+    public BinaryData getFilter() {
         return this.filter;
     }
 
@@ -115,7 +116,7 @@ public final class SuggestOptions implements JsonSerializable<SuggestOptions> {
      * @return the SuggestOptions object itself.
      */
     @Generated
-    public SuggestOptions setFilter(Object filter) {
+    public SuggestOptions setFilter(BinaryData filter) {
         this.filter = filter;
         return this;
     }
@@ -129,7 +130,10 @@ public final class SuggestOptions implements JsonSerializable<SuggestOptions> {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("keywords", this.keywords);
         jsonWriter.writeNumberField("limit", this.limit);
-        jsonWriter.writeUntypedField("filter", this.filter);
+        if (this.filter != null) {
+            jsonWriter.writeFieldName("filter");
+            this.filter.writeTo(jsonWriter);
+        }
         return jsonWriter.writeEndObject();
     }
 
@@ -154,7 +158,8 @@ public final class SuggestOptions implements JsonSerializable<SuggestOptions> {
                 } else if ("limit".equals(fieldName)) {
                     deserializedSuggestOptions.limit = reader.getNullable(JsonReader::getInt);
                 } else if ("filter".equals(fieldName)) {
-                    deserializedSuggestOptions.filter = reader.readUntyped();
+                    deserializedSuggestOptions.filter
+                        = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
                 } else {
                     reader.skipChildren();
                 }

@@ -38,11 +38,14 @@ import static com.azure.spring.messaging.implementation.config.AzureMessagingBoo
  */
 public final class DefaultServiceBusNamespaceProducerFactory implements ServiceBusProducerFactory, DisposableBean {
 
+    private static final String LOG_IGNORE_NULL_CUSTOMIZER = "The provided '{}' customizer is null, will ignore it.";
     private final List<Listener> listeners = new ArrayList<>();
     private final NamespaceProperties namespaceProperties;
     private final PropertiesSupplier<String, ProducerProperties> propertiesSupplier;
     private final Map<String, ServiceBusSenderAsyncClient> clients = new ConcurrentHashMap<>();
     private final SenderPropertiesParentMerger parentMerger = new SenderPropertiesParentMerger();
+
+    private final List<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder>> serviceBusClientBuilderCustomizers = new ArrayList<>();
     private final List<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSenderClientBuilder>> customizers = new ArrayList<>();
     private final Map<String, List<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSenderClientBuilder>>> dedicatedCustomizers = new HashMap<>();
     private AzureCredentialResolver<TokenCredential> tokenCredentialResolver = null;
@@ -107,7 +110,7 @@ public final class DefaultServiceBusNamespaceProducerFactory implements ServiceB
             ProducerProperties producerProperties = parentMerger.merge(properties, this.namespaceProperties);
             producerProperties.setEntityName(entityName);
 
-            ServiceBusSenderClientBuilderFactory factory = new ServiceBusSenderClientBuilderFactory(producerProperties);
+            ServiceBusSenderClientBuilderFactory factory = new ServiceBusSenderClientBuilderFactory(producerProperties, this.serviceBusClientBuilderCustomizers);
 
             factory.setDefaultTokenCredential(this.defaultCredential);
             factory.setTokenCredentialResolver(this.tokenCredentialResolver);
@@ -141,13 +144,27 @@ public final class DefaultServiceBusNamespaceProducerFactory implements ServiceB
     }
 
     /**
+     * Add a {@link com.azure.messaging.servicebus.ServiceBusClientBuilder}
+     * customizer to customize the shared client builder created in this factory, it's used to build other sender clients.
+     *
+     * @param customizer the provided builder customizer.
+     */
+    public void addServiceBusClientBuilderCustomizer(AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder> customizer) {
+        if (customizer == null) {
+            LOGGER.debug(LOG_IGNORE_NULL_CUSTOMIZER, ServiceBusClientBuilder.class.getName());
+        } else {
+            this.serviceBusClientBuilderCustomizers.add(customizer);
+        }
+    }
+
+    /**
      * Add a service client builder customizer to customize all the clients created from this factory.
      *
      * @param customizer the provided customizer.
      */
     public void addBuilderCustomizer(AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSenderClientBuilder> customizer) {
         if (customizer == null) {
-            LOGGER.debug("The provided customizer is null, will ignore it.");
+            LOGGER.debug(LOG_IGNORE_NULL_CUSTOMIZER, ServiceBusClientBuilder.ServiceBusSenderClientBuilder.class.getName());
             return;
         }
         this.customizers.add(customizer);

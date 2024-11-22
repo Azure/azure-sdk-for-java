@@ -63,6 +63,8 @@ extends:
         safeName: azureidentitybroker
         releaseInBatch: ${{ parameters.release_azureidentitybroker }}
     AdditionalModules:
+      - name: azure-identity-broker-samples
+        groupId: com.azure
       - name: azure-identity-perf
         groupId: com.azure
         # required by the above perf library
@@ -74,6 +76,7 @@ extends:
           CalledFromClient: true
           ServiceDirectory: identity
           SupportedClouds: 'Public,UsGov,China'
+          UseFederatedAuth: false
           EnvVars:
             SYSTEM_ACCESSTOKEN: $(System.AccessToken)
           CloudConfig:

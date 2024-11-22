@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.appservice.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * Auth Type.
  */
@@ -46,7 +43,6 @@ public enum AuthType {
      * @param value the serialized value to parse.
      * @return the parsed AuthType object, or null if unable to parse.
      */
-    @JsonCreator
     public static AuthType fromString(String value) {
         if (value == null) {
             return null;
@@ -63,7 +59,6 @@ public enum AuthType {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

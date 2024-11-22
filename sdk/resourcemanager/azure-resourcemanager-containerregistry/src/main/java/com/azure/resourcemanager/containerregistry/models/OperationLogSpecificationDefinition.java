@@ -5,29 +5,31 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The definition of Azure Monitoring log.
  */
 @Fluent
-public final class OperationLogSpecificationDefinition {
+public final class OperationLogSpecificationDefinition
+    implements JsonSerializable<OperationLogSpecificationDefinition> {
     /*
      * Log name.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Log display name.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * Log blob duration.
      */
-    @JsonProperty(value = "blobDuration")
     private String blobDuration;
 
     /**
@@ -102,5 +104,48 @@ public final class OperationLogSpecificationDefinition {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("blobDuration", this.blobDuration);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OperationLogSpecificationDefinition from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OperationLogSpecificationDefinition if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OperationLogSpecificationDefinition.
+     */
+    public static OperationLogSpecificationDefinition fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OperationLogSpecificationDefinition deserializedOperationLogSpecificationDefinition
+                = new OperationLogSpecificationDefinition();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedOperationLogSpecificationDefinition.name = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedOperationLogSpecificationDefinition.displayName = reader.getString();
+                } else if ("blobDuration".equals(fieldName)) {
+                    deserializedOperationLogSpecificationDefinition.blobDuration = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOperationLogSpecificationDefinition;
+        });
     }
 }

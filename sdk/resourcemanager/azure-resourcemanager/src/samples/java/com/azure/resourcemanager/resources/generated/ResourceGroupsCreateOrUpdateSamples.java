@@ -11,7 +11,8 @@ import com.azure.resourcemanager.resources.fluent.models.ResourceGroupInner;
  */
 public final class ResourceGroupsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2024-03-01/examples/CreateResourceGroup.json
+     * x-ms-original-file:
+     * specification/resources/resource-manager/Microsoft.Resources/stable/2024-03-01/examples/CreateResourceGroup.json
      */
     /**
      * Sample code: Create or update a resource group.

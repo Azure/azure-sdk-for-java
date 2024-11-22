@@ -13,25 +13,23 @@ import org.junit.jupiter.api.Assertions;
 public final class FilterTrackPropertyConditionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FilterTrackPropertyCondition model =
-            BinaryData
-                .fromString("{\"property\":\"FourCC\",\"value\":\"smy\",\"operation\":\"Equal\"}")
+        FilterTrackPropertyCondition model
+            = BinaryData.fromString("{\"property\":\"Type\",\"value\":\"zoxxjtf\",\"operation\":\"NotEqual\"}")
                 .toObject(FilterTrackPropertyCondition.class);
-        Assertions.assertEquals(FilterTrackPropertyType.FOUR_CC, model.property());
-        Assertions.assertEquals("smy", model.value());
-        Assertions.assertEquals(FilterTrackPropertyCompareOperation.EQUAL, model.operation());
+        Assertions.assertEquals(FilterTrackPropertyType.TYPE, model.property());
+        Assertions.assertEquals("zoxxjtf", model.value());
+        Assertions.assertEquals(FilterTrackPropertyCompareOperation.NOT_EQUAL, model.operation());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FilterTrackPropertyCondition model =
-            new FilterTrackPropertyCondition()
-                .withProperty(FilterTrackPropertyType.FOUR_CC)
-                .withValue("smy")
-                .withOperation(FilterTrackPropertyCompareOperation.EQUAL);
+        FilterTrackPropertyCondition model
+            = new FilterTrackPropertyCondition().withProperty(FilterTrackPropertyType.TYPE)
+                .withValue("zoxxjtf")
+                .withOperation(FilterTrackPropertyCompareOperation.NOT_EQUAL);
         model = BinaryData.fromObject(model).toObject(FilterTrackPropertyCondition.class);
-        Assertions.assertEquals(FilterTrackPropertyType.FOUR_CC, model.property());
-        Assertions.assertEquals("smy", model.value());
-        Assertions.assertEquals(FilterTrackPropertyCompareOperation.EQUAL, model.operation());
+        Assertions.assertEquals(FilterTrackPropertyType.TYPE, model.property());
+        Assertions.assertEquals("zoxxjtf", model.value());
+        Assertions.assertEquals(FilterTrackPropertyCompareOperation.NOT_EQUAL, model.operation());
     }
 }

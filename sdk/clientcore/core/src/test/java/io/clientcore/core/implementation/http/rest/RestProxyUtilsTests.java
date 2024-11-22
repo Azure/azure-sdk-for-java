@@ -75,8 +75,8 @@ public class RestProxyUtilsTests {
 
     @Test
     public void multipleToBytesToCheckBodyLength() {
-        HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, "http://localhost")
-            .setBody(BinaryData.fromBytes(EXPECTED));
+        HttpRequest httpRequest
+            = new HttpRequest(HttpMethod.GET, "http://localhost").setBody(BinaryData.fromBytes(EXPECTED));
         httpRequest.getHeaders().set(HttpHeaderName.CONTENT_LENGTH, String.valueOf(EXPECTED.length));
 
         BinaryData binaryData = RestProxyUtils.validateLength(httpRequest);
@@ -92,28 +92,21 @@ public class RestProxyUtilsTests {
         Files.write(file, EXPECTED);
 
         return Stream.of(
+            Arguments.of(Named.of("bytes",
+                createHttpRequest("http://localhost", BinaryData.fromBytes(EXPECTED), contentLength))),
+            Arguments.of(Named.of("string",
+                createHttpRequest("http://localhost", BinaryData.fromString(SAMPLE), contentLength))),
             Arguments.of(
-                Named.of("bytes", createHttpRequest("http://localhost", BinaryData.fromBytes(EXPECTED), contentLength))
-            ),
-            Arguments.of(
-                Named.of("string", createHttpRequest("http://localhost", BinaryData.fromString(SAMPLE), contentLength))
-            ),
-            Arguments.of(
-                Named.of("stream", createHttpRequest("http://localhost", BinaryData.fromFile(file), contentLength))
-            ),
-            Arguments.of(
-                Named.of("file", createHttpRequest("http://localhost", BinaryData.fromFile(file), contentLength))
-            )
-        );
+                Named.of("stream", createHttpRequest("http://localhost", BinaryData.fromFile(file), contentLength))),
+            Arguments
+                .of(Named.of("file", createHttpRequest("http://localhost", BinaryData.fromFile(file), contentLength))));
     }
 
-    private static HttpRequest createHttpRequest(String url, BinaryData body, int contentLength) {
-        HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, url)
-            .setBody(body);
+    private static HttpRequest createHttpRequest(String uri, BinaryData body, int contentLength) {
+        HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, uri).setBody(body);
         httpRequest.getHeaders().set(HttpHeaderName.CONTENT_LENGTH, String.valueOf(contentLength));
         return httpRequest;
     }
-
 
     @Test
     public void userProvidedLengthShouldNotBeTrustedTooLarge() throws IOException {
@@ -122,9 +115,8 @@ public class RestProxyUtilsTests {
                 .setBody(BinaryData.fromStream(byteArrayInputStream, EXPECTED.length - 1L));
             httpRequest.getHeaders().set(HttpHeaderName.CONTENT_LENGTH, String.valueOf(EXPECTED.length - 1L));
 
-            IllegalStateException thrown =
-                assertThrows(IllegalStateException.class, () -> validateAndCollectRequest(httpRequest),
-                    "Expected validateLength() to throw, but it didn't");
+            IllegalStateException thrown = assertThrows(IllegalStateException.class,
+                () -> validateAndCollectRequest(httpRequest), "Expected validateLength() to throw, but it didn't");
             assertEquals("Request body emitted " + EXPECTED.length + " bytes, more than the expected "
                 + (EXPECTED.length - 1) + " bytes.", thrown.getMessage());
         }
@@ -137,9 +129,8 @@ public class RestProxyUtilsTests {
                 .setBody(BinaryData.fromStream(byteArrayInputStream, EXPECTED.length + 1L));
             httpRequest.getHeaders().set(HttpHeaderName.CONTENT_LENGTH, String.valueOf(EXPECTED.length + 1L));
 
-            IllegalStateException thrown =
-                assertThrows(IllegalStateException.class, () -> validateAndCollectRequest(httpRequest),
-                    "Expected validateLength() to throw, but it didn't");
+            IllegalStateException thrown = assertThrows(IllegalStateException.class,
+                () -> validateAndCollectRequest(httpRequest), "Expected validateLength() to throw, but it didn't");
 
             assertEquals("Request body emitted " + EXPECTED.length + " bytes, less than the expected "
                 + (EXPECTED.length + 1) + " bytes.", thrown.getMessage());

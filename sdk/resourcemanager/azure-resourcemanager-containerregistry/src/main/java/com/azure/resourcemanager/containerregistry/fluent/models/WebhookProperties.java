@@ -6,41 +6,41 @@ package com.azure.resourcemanager.containerregistry.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.containerregistry.models.ProvisioningState;
 import com.azure.resourcemanager.containerregistry.models.WebhookAction;
 import com.azure.resourcemanager.containerregistry.models.WebhookStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The properties of a webhook.
  */
 @Fluent
-public final class WebhookProperties {
+public final class WebhookProperties implements JsonSerializable<WebhookProperties> {
     /*
      * The status of the webhook at the time the operation was called.
      */
-    @JsonProperty(value = "status")
     private WebhookStatus status;
 
     /*
      * The scope of repositories where the event can be triggered. For example, 'foo:*' means events for all tags under
-     * repository 'foo'. 'foo:bar' means events for 'foo:bar' only. 'foo' is equivalent to 'foo:latest'. Empty means
-     * all events.
+     * repository 'foo'. 'foo:bar' means events for 'foo:bar' only. 'foo' is equivalent to 'foo:latest'. Empty means all
+     * events.
      */
-    @JsonProperty(value = "scope")
     private String scope;
 
     /*
      * The list of actions that trigger the webhook to post notifications.
      */
-    @JsonProperty(value = "actions", required = true)
     private List<WebhookAction> actions;
 
     /*
      * The provisioning state of the webhook at the time the operation was called.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /**
@@ -129,10 +129,58 @@ public final class WebhookProperties {
      */
     public void validate() {
         if (actions() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property actions in model WebhookProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property actions in model WebhookProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(WebhookProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("actions", this.actions,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        jsonWriter.writeStringField("scope", this.scope);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WebhookProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WebhookProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the WebhookProperties.
+     */
+    public static WebhookProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WebhookProperties deserializedWebhookProperties = new WebhookProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("actions".equals(fieldName)) {
+                    List<WebhookAction> actions
+                        = reader.readArray(reader1 -> WebhookAction.fromString(reader1.getString()));
+                    deserializedWebhookProperties.actions = actions;
+                } else if ("status".equals(fieldName)) {
+                    deserializedWebhookProperties.status = WebhookStatus.fromString(reader.getString());
+                } else if ("scope".equals(fieldName)) {
+                    deserializedWebhookProperties.scope = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedWebhookProperties.provisioningState = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWebhookProperties;
+        });
+    }
 }

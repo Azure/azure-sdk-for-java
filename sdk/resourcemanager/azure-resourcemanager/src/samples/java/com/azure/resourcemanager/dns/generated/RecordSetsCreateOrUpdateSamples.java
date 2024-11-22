@@ -6,8 +6,8 @@ package com.azure.resourcemanager.dns.generated;
 
 import com.azure.core.management.SubResource;
 import com.azure.resourcemanager.dns.fluent.models.RecordSetInner;
-import com.azure.resourcemanager.dns.models.ARecord;
 import com.azure.resourcemanager.dns.models.AaaaRecord;
+import com.azure.resourcemanager.dns.models.ARecord;
 import com.azure.resourcemanager.dns.models.CaaRecord;
 import com.azure.resourcemanager.dns.models.CnameRecord;
 import com.azure.resourcemanager.dns.models.MxRecord;
@@ -21,331 +21,252 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for RecordSets CreateOrUpdate. */
+/**
+ * Samples for RecordSets CreateOrUpdate.
+ */
 public final class RecordSetsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/CreateOrUpdateSRVRecordset.json
+     * x-ms-original-file:
+     * specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/CreateOrUpdateSRVRecordset.json
      */
     /**
      * Sample code: Create SRV recordset.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createSRVRecordset(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .dnsZones()
+        azure.dnsZones()
             .manager()
             .serviceClient()
             .getRecordSets()
-            .createOrUpdateWithResponse(
-                "rg1",
-                "zone1",
-                "record1",
-                RecordType.SRV,
-                new RecordSetInner()
-                    .withMetadata(mapOf("key1", "fakeTokenPlaceholder"))
+            .createOrUpdateWithResponse("rg1", "zone1", "record1", RecordType.SRV,
+                new RecordSetInner().withMetadata(mapOf("key1", "fakeTokenPlaceholder"))
                     .withTtl(3600L)
-                    .withSrvRecords(
-                        Arrays
-                            .asList(
-                                new SrvRecord().withPriority(0).withWeight(10).withPort(80).withTarget("contoso.com"))),
-                null,
-                null,
-                com.azure.core.util.Context.NONE);
+                    .withSrvRecords(Arrays
+                        .asList(new SrvRecord().withPriority(0).withWeight(10).withPort(80).withTarget("contoso.com"))),
+                null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/CreateOrUpdateCNAMERecordset.json
+     * x-ms-original-file:
+     * specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/CreateOrUpdateCNAMERecordset.json
      */
     /**
      * Sample code: Create CNAME recordset.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createCNAMERecordset(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .dnsZones()
+        azure.dnsZones()
             .manager()
             .serviceClient()
             .getRecordSets()
-            .createOrUpdateWithResponse(
-                "rg1",
-                "zone1",
-                "record1",
-                RecordType.CNAME,
-                new RecordSetInner()
-                    .withMetadata(mapOf("key1", "fakeTokenPlaceholder"))
+            .createOrUpdateWithResponse("rg1", "zone1", "record1", RecordType.CNAME,
+                new RecordSetInner().withMetadata(mapOf("key1", "fakeTokenPlaceholder"))
                     .withTtl(3600L)
                     .withCnameRecord(new CnameRecord().withCname("contoso.com")),
-                null,
-                null,
-                com.azure.core.util.Context.NONE);
+                null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/CreateOrUpdateTXTRecordset.json
+     * x-ms-original-file:
+     * specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/CreateOrUpdateTXTRecordset.json
      */
     /**
      * Sample code: Create TXT recordset.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createTXTRecordset(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .dnsZones()
+        azure.dnsZones()
             .manager()
             .serviceClient()
             .getRecordSets()
-            .createOrUpdateWithResponse(
-                "rg1",
-                "zone1",
-                "record1",
-                RecordType.TXT,
-                new RecordSetInner()
-                    .withMetadata(mapOf("key1", "fakeTokenPlaceholder"))
+            .createOrUpdateWithResponse("rg1", "zone1", "record1", RecordType.TXT,
+                new RecordSetInner().withMetadata(mapOf("key1", "fakeTokenPlaceholder"))
                     .withTtl(3600L)
                     .withTxtRecords(Arrays.asList(new TxtRecord().withValue(Arrays.asList("string1", "string2")))),
-                null,
-                null,
-                com.azure.core.util.Context.NONE);
+                null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/CreateOrUpdateAAAARecordset.json
+     * x-ms-original-file:
+     * specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/CreateOrUpdateAAAARecordset.json
      */
     /**
      * Sample code: Create AAAA recordset.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createAAAARecordset(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .dnsZones()
+        azure.dnsZones()
             .manager()
             .serviceClient()
             .getRecordSets()
-            .createOrUpdateWithResponse(
-                "rg1",
-                "zone1",
-                "record1",
-                RecordType.AAAA,
-                new RecordSetInner()
-                    .withMetadata(mapOf("key1", "fakeTokenPlaceholder"))
+            .createOrUpdateWithResponse("rg1", "zone1", "record1", RecordType.AAAA,
+                new RecordSetInner().withMetadata(mapOf("key1", "fakeTokenPlaceholder"))
                     .withTtl(3600L)
                     .withAaaaRecords(Arrays.asList(new AaaaRecord().withIpv6Address("::1"))),
-                null,
-                null,
-                com.azure.core.util.Context.NONE);
+                null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/CreateOrUpdateCaaRecordset.json
+     * x-ms-original-file:
+     * specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/CreateOrUpdateCaaRecordset.json
      */
     /**
      * Sample code: Create CAA recordset.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createCAARecordset(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .dnsZones()
+        azure.dnsZones()
             .manager()
             .serviceClient()
             .getRecordSets()
-            .createOrUpdateWithResponse(
-                "rg1",
-                "zone1",
-                "record1",
-                RecordType.CAA,
-                new RecordSetInner()
-                    .withMetadata(mapOf("key1", "fakeTokenPlaceholder"))
+            .createOrUpdateWithResponse("rg1", "zone1", "record1", RecordType.CAA,
+                new RecordSetInner().withMetadata(mapOf("key1", "fakeTokenPlaceholder"))
                     .withTtl(3600L)
                     .withCaaRecords(
                         Arrays.asList(new CaaRecord().withFlags(0).withTag("issue").withValue("ca.contoso.com"))),
-                null,
-                null,
-                com.azure.core.util.Context.NONE);
+                null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/CreateOrUpdatePTRRecordset.json
+     * x-ms-original-file:
+     * specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/CreateOrUpdatePTRRecordset.json
      */
     /**
      * Sample code: Create PTR recordset.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createPTRRecordset(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .dnsZones()
+        azure.dnsZones()
             .manager()
             .serviceClient()
             .getRecordSets()
-            .createOrUpdateWithResponse(
-                "rg1",
-                "0.0.127.in-addr.arpa",
-                "1",
-                RecordType.PTR,
-                new RecordSetInner()
-                    .withMetadata(mapOf("key1", "fakeTokenPlaceholder"))
+            .createOrUpdateWithResponse("rg1", "0.0.127.in-addr.arpa", "1", RecordType.PTR,
+                new RecordSetInner().withMetadata(mapOf("key1", "fakeTokenPlaceholder"))
                     .withTtl(3600L)
                     .withPtrRecords(Arrays.asList(new PtrRecord().withPtrdname("localhost"))),
-                null,
-                null,
-                com.azure.core.util.Context.NONE);
+                null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/CreateOrUpdateMXRecordset.json
+     * x-ms-original-file:
+     * specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/CreateOrUpdateMXRecordset.json
      */
     /**
      * Sample code: Create MX recordset.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createMXRecordset(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .dnsZones()
+        azure.dnsZones()
             .manager()
             .serviceClient()
             .getRecordSets()
-            .createOrUpdateWithResponse(
-                "rg1",
-                "zone1",
-                "record1",
-                RecordType.MX,
-                new RecordSetInner()
-                    .withMetadata(mapOf("key1", "fakeTokenPlaceholder"))
+            .createOrUpdateWithResponse("rg1", "zone1", "record1", RecordType.MX,
+                new RecordSetInner().withMetadata(mapOf("key1", "fakeTokenPlaceholder"))
                     .withTtl(3600L)
                     .withMxRecords(Arrays.asList(new MxRecord().withPreference(0).withExchange("mail.contoso.com"))),
-                null,
-                null,
-                com.azure.core.util.Context.NONE);
+                null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/CreateOrUpdateNSRecordset.json
+     * x-ms-original-file:
+     * specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/CreateOrUpdateNSRecordset.json
      */
     /**
      * Sample code: Create NS recordset.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createNSRecordset(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .dnsZones()
+        azure.dnsZones()
             .manager()
             .serviceClient()
             .getRecordSets()
-            .createOrUpdateWithResponse(
-                "rg1",
-                "zone1",
-                "record1",
-                RecordType.NS,
-                new RecordSetInner()
-                    .withMetadata(mapOf("key1", "fakeTokenPlaceholder"))
+            .createOrUpdateWithResponse("rg1", "zone1", "record1", RecordType.NS,
+                new RecordSetInner().withMetadata(mapOf("key1", "fakeTokenPlaceholder"))
                     .withTtl(3600L)
                     .withNsRecords(Arrays.asList(new NsRecord().withNsdname("ns1.contoso.com"))),
-                null,
-                null,
-                com.azure.core.util.Context.NONE);
+                null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/CreateOrUpdateARecordsetAlias.json
+     * x-ms-original-file:
+     * specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/CreateOrUpdateARecordsetAlias.
+     * json
      */
     /**
      * Sample code: Create A recordset with alias target resource.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createARecordsetWithAliasTargetResource(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .dnsZones()
+        azure.dnsZones()
             .manager()
             .serviceClient()
             .getRecordSets()
-            .createOrUpdateWithResponse(
-                "rg1",
-                "zone1",
-                "record1",
-                RecordType.A,
-                new RecordSetInner()
-                    .withMetadata(mapOf("key1", "fakeTokenPlaceholder"))
-                    .withTtl(3600L)
-                    .withTargetResource(
-                        new SubResource()
-                            .withId(
-                                "/subscriptions/726f8cd6-6459-4db4-8e6d-2cd2716904e2/resourceGroups/test/providers/Microsoft.Network/trafficManagerProfiles/testpp2")),
-                null,
-                null,
-                com.azure.core.util.Context.NONE);
+            .createOrUpdateWithResponse("rg1", "zone1", "record1", RecordType.A, new RecordSetInner()
+                .withMetadata(mapOf("key1", "fakeTokenPlaceholder"))
+                .withTtl(3600L)
+                .withTargetResource(new SubResource().withId(
+                    "/subscriptions/726f8cd6-6459-4db4-8e6d-2cd2716904e2/resourceGroups/test/providers/Microsoft.Network/trafficManagerProfiles/testpp2")),
+                null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/CreateOrUpdateARecordset.json
+     * x-ms-original-file:
+     * specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/CreateOrUpdateARecordset.json
      */
     /**
      * Sample code: Create A recordset.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createARecordset(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .dnsZones()
+        azure.dnsZones()
             .manager()
             .serviceClient()
             .getRecordSets()
-            .createOrUpdateWithResponse(
-                "rg1",
-                "zone1",
-                "record1",
-                RecordType.A,
-                new RecordSetInner()
-                    .withMetadata(mapOf("key1", "fakeTokenPlaceholder"))
+            .createOrUpdateWithResponse("rg1", "zone1", "record1", RecordType.A,
+                new RecordSetInner().withMetadata(mapOf("key1", "fakeTokenPlaceholder"))
                     .withTtl(3600L)
                     .withARecords(Arrays.asList(new ARecord().withIpv4Address("127.0.0.1"))),
-                null,
-                null,
-                com.azure.core.util.Context.NONE);
+                null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/CreateOrUpdateSOARecordset.json
+     * x-ms-original-file:
+     * specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/CreateOrUpdateSOARecordset.json
      */
     /**
      * Sample code: Create SOA recordset.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createSOARecordset(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .dnsZones()
+        azure.dnsZones()
             .manager()
             .serviceClient()
             .getRecordSets()
-            .createOrUpdateWithResponse(
-                "rg1",
-                "zone1",
-                "@",
-                RecordType.SOA,
-                new RecordSetInner()
-                    .withMetadata(mapOf("key1", "fakeTokenPlaceholder"))
+            .createOrUpdateWithResponse("rg1", "zone1", "@", RecordType.SOA,
+                new RecordSetInner().withMetadata(mapOf("key1", "fakeTokenPlaceholder"))
                     .withTtl(3600L)
-                    .withSoaRecord(
-                        new SoaRecord()
-                            .withHost("ns1.contoso.com")
-                            .withEmail("hostmaster.contoso.com")
-                            .withSerialNumber(1L)
-                            .withRefreshTime(3600L)
-                            .withRetryTime(300L)
-                            .withExpireTime(2419200L)
-                            .withMinimumTtl(300L)),
-                null,
-                null,
-                com.azure.core.util.Context.NONE);
+                    .withSoaRecord(new SoaRecord().withHost("ns1.contoso.com")
+                        .withEmail("hostmaster.contoso.com")
+                        .withSerialNumber(1L)
+                        .withRefreshTime(3600L)
+                        .withRetryTime(300L)
+                        .withExpireTime(2419200L)
+                        .withMinimumTtl(300L)),
+                null, null, com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

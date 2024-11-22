@@ -5,42 +5,46 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Automatic tuning properties for individual advisors. */
+/**
+ * Automatic tuning properties for individual advisors.
+ */
 @Fluent
-public final class AutomaticTuningServerOptions {
+public final class AutomaticTuningServerOptions implements JsonSerializable<AutomaticTuningServerOptions> {
     /*
      * Automatic tuning option desired state.
      */
-    @JsonProperty(value = "desiredState")
     private AutomaticTuningOptionModeDesired desiredState;
 
     /*
      * Automatic tuning option actual state.
      */
-    @JsonProperty(value = "actualState", access = JsonProperty.Access.WRITE_ONLY)
     private AutomaticTuningOptionModeActual actualState;
 
     /*
      * Reason code if desired and actual state are different.
      */
-    @JsonProperty(value = "reasonCode", access = JsonProperty.Access.WRITE_ONLY)
     private Integer reasonCode;
 
     /*
      * Reason description if desired and actual state are different.
      */
-    @JsonProperty(value = "reasonDesc", access = JsonProperty.Access.WRITE_ONLY)
     private AutomaticTuningServerReason reasonDesc;
 
-    /** Creates an instance of AutomaticTuningServerOptions class. */
+    /**
+     * Creates an instance of AutomaticTuningServerOptions class.
+     */
     public AutomaticTuningServerOptions() {
     }
 
     /**
      * Get the desiredState property: Automatic tuning option desired state.
-     *
+     * 
      * @return the desiredState value.
      */
     public AutomaticTuningOptionModeDesired desiredState() {
@@ -49,7 +53,7 @@ public final class AutomaticTuningServerOptions {
 
     /**
      * Set the desiredState property: Automatic tuning option desired state.
-     *
+     * 
      * @param desiredState the desiredState value to set.
      * @return the AutomaticTuningServerOptions object itself.
      */
@@ -60,7 +64,7 @@ public final class AutomaticTuningServerOptions {
 
     /**
      * Get the actualState property: Automatic tuning option actual state.
-     *
+     * 
      * @return the actualState value.
      */
     public AutomaticTuningOptionModeActual actualState() {
@@ -69,7 +73,7 @@ public final class AutomaticTuningServerOptions {
 
     /**
      * Get the reasonCode property: Reason code if desired and actual state are different.
-     *
+     * 
      * @return the reasonCode value.
      */
     public Integer reasonCode() {
@@ -78,7 +82,7 @@ public final class AutomaticTuningServerOptions {
 
     /**
      * Get the reasonDesc property: Reason description if desired and actual state are different.
-     *
+     * 
      * @return the reasonDesc value.
      */
     public AutomaticTuningServerReason reasonDesc() {
@@ -87,9 +91,54 @@ public final class AutomaticTuningServerOptions {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("desiredState", this.desiredState == null ? null : this.desiredState.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AutomaticTuningServerOptions from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AutomaticTuningServerOptions if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AutomaticTuningServerOptions.
+     */
+    public static AutomaticTuningServerOptions fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AutomaticTuningServerOptions deserializedAutomaticTuningServerOptions = new AutomaticTuningServerOptions();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("desiredState".equals(fieldName)) {
+                    deserializedAutomaticTuningServerOptions.desiredState
+                        = AutomaticTuningOptionModeDesired.fromString(reader.getString());
+                } else if ("actualState".equals(fieldName)) {
+                    deserializedAutomaticTuningServerOptions.actualState
+                        = AutomaticTuningOptionModeActual.fromString(reader.getString());
+                } else if ("reasonCode".equals(fieldName)) {
+                    deserializedAutomaticTuningServerOptions.reasonCode = reader.getNullable(JsonReader::getInt);
+                } else if ("reasonDesc".equals(fieldName)) {
+                    deserializedAutomaticTuningServerOptions.reasonDesc
+                        = AutomaticTuningServerReason.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAutomaticTuningServerOptions;
+        });
     }
 }

@@ -6,25 +6,27 @@ package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.resourcemanager.machinelearning.fluent.models.EndpointAuthKeysInner;
 
-/** An immutable client-side representation of EndpointAuthKeys. */
+/**
+ * An immutable client-side representation of EndpointAuthKeys.
+ */
 public interface EndpointAuthKeys {
     /**
      * Gets the primaryKey property: The primary key.
-     *
+     * 
      * @return the primaryKey value.
      */
     String primaryKey();
 
     /**
      * Gets the secondaryKey property: The secondary key.
-     *
+     * 
      * @return the secondaryKey value.
      */
     String secondaryKey();
 
     /**
      * Gets the inner com.azure.resourcemanager.machinelearning.fluent.models.EndpointAuthKeysInner object.
-     *
+     * 
      * @return the inner object.
      */
     EndpointAuthKeysInner innerModel();

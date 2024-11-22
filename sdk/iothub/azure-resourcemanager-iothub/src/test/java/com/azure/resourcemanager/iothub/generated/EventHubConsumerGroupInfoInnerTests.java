@@ -12,18 +12,15 @@ import java.util.Map;
 public final class EventHubConsumerGroupInfoInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EventHubConsumerGroupInfoInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"ali\":\"dataisgwbnbbeldawkz\",\"hashsfwxosow\":\"dataurqhaka\"},\"etag\":\"cugicjoox\",\"id\":\"j\",\"name\":\"bwpucwwfvovbv\",\"type\":\"euecivyhzceuoj\"}")
-                .toObject(EventHubConsumerGroupInfoInner.class);
+        EventHubConsumerGroupInfoInner model = BinaryData.fromString(
+            "{\"properties\":{\"ali\":\"dataisgwbnbbeldawkz\",\"hashsfwxosow\":\"dataurqhaka\"},\"etag\":\"cugicjoox\",\"id\":\"j\",\"name\":\"bwpucwwfvovbv\",\"type\":\"euecivyhzceuoj\"}")
+            .toObject(EventHubConsumerGroupInfoInner.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EventHubConsumerGroupInfoInner model =
-            new EventHubConsumerGroupInfoInner()
-                .withProperties(mapOf("ali", "dataisgwbnbbeldawkz", "hashsfwxosow", "dataurqhaka"));
+        EventHubConsumerGroupInfoInner model = new EventHubConsumerGroupInfoInner()
+            .withProperties(mapOf("ali", "dataisgwbnbbeldawkz", "hashsfwxosow", "dataurqhaka"));
         model = BinaryData.fromObject(model).toObject(EventHubConsumerGroupInfoInner.class);
     }
 

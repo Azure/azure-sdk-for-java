@@ -17,8 +17,7 @@ public final class JitRequestDefinitionListResultImpl implements JitRequestDefin
 
     private final com.azure.resourcemanager.managedapplications.ApplicationManager serviceManager;
 
-    JitRequestDefinitionListResultImpl(
-        JitRequestDefinitionListResultInner innerObject,
+    JitRequestDefinitionListResultImpl(JitRequestDefinitionListResultInner innerObject,
         com.azure.resourcemanager.managedapplications.ApplicationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -27,12 +26,9 @@ public final class JitRequestDefinitionListResultImpl implements JitRequestDefin
     public List<JitRequestDefinition> value() {
         List<JitRequestDefinitionInner> inner = this.innerModel().value();
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new JitRequestDefinitionImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
+            return Collections.unmodifiableList(inner.stream()
+                .map(inner1 -> new JitRequestDefinitionImpl(inner1, this.manager()))
+                .collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }

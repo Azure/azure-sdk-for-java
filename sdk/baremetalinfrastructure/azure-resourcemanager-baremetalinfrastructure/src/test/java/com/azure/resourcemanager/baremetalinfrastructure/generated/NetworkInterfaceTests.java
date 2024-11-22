@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class NetworkInterfaceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NetworkInterface model =
-            BinaryData.fromString("{\"ipAddress\":\"napczwlokjy\"}").toObject(NetworkInterface.class);
+        NetworkInterface model
+            = BinaryData.fromString("{\"ipAddress\":\"napczwlokjy\"}").toObject(NetworkInterface.class);
         Assertions.assertEquals("napczwlokjy", model.ipAddress());
     }
 

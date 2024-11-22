@@ -53,8 +53,8 @@ public interface WebTestsClient {
      * @return a specific Application Insights web test definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<WebTestInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String webTestName, Context context);
+    Response<WebTestInner> getByResourceGroupWithResponse(String resourceGroupName, String webTestName,
+        Context context);
 
     /**
      * Get a specific Application Insights web test definition.
@@ -83,8 +83,8 @@ public interface WebTestsClient {
      * @return an Application Insights WebTest definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<WebTestInner> createOrUpdateWithResponse(
-        String resourceGroupName, String webTestName, WebTestInner webTestDefinition, Context context);
+    Response<WebTestInner> createOrUpdateWithResponse(String resourceGroupName, String webTestName,
+        WebTestInner webTestDefinition, Context context);
 
     /**
      * Creates or updates an Application Insights web test definition.
@@ -114,8 +114,8 @@ public interface WebTestsClient {
      * @return an Application Insights WebTest definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<WebTestInner> updateTagsWithResponse(
-        String resourceGroupName, String webTestName, TagsResource webTestTags, Context context);
+    Response<WebTestInner> updateTagsWithResponse(String resourceGroupName, String webTestName,
+        TagsResource webTestTags, Context context);
 
     /**
      * Updates the tags associated with an Application Insights web test.

@@ -5,44 +5,49 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.models.RestorePointType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** Properties of a database restore point. */
+/**
+ * Properties of a database restore point.
+ */
 @Immutable
-public final class RestorePointProperties {
+public final class RestorePointProperties implements JsonSerializable<RestorePointProperties> {
     /*
      * The type of restore point
      */
-    @JsonProperty(value = "restorePointType", access = JsonProperty.Access.WRITE_ONLY)
     private RestorePointType restorePointType;
 
     /*
      * The earliest time to which this database can be restored
      */
-    @JsonProperty(value = "earliestRestoreDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime earliestRestoreDate;
 
     /*
      * The time the backup was taken
      */
-    @JsonProperty(value = "restorePointCreationDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime restorePointCreationDate;
 
     /*
      * The label of restore point for backup request by user
      */
-    @JsonProperty(value = "restorePointLabel", access = JsonProperty.Access.WRITE_ONLY)
     private String restorePointLabel;
 
-    /** Creates an instance of RestorePointProperties class. */
+    /**
+     * Creates an instance of RestorePointProperties class.
+     */
     public RestorePointProperties() {
     }
 
     /**
      * Get the restorePointType property: The type of restore point.
-     *
+     * 
      * @return the restorePointType value.
      */
     public RestorePointType restorePointType() {
@@ -51,7 +56,7 @@ public final class RestorePointProperties {
 
     /**
      * Get the earliestRestoreDate property: The earliest time to which this database can be restored.
-     *
+     * 
      * @return the earliestRestoreDate value.
      */
     public OffsetDateTime earliestRestoreDate() {
@@ -60,7 +65,7 @@ public final class RestorePointProperties {
 
     /**
      * Get the restorePointCreationDate property: The time the backup was taken.
-     *
+     * 
      * @return the restorePointCreationDate value.
      */
     public OffsetDateTime restorePointCreationDate() {
@@ -69,7 +74,7 @@ public final class RestorePointProperties {
 
     /**
      * Get the restorePointLabel property: The label of restore point for backup request by user.
-     *
+     * 
      * @return the restorePointLabel value.
      */
     public String restorePointLabel() {
@@ -78,9 +83,53 @@ public final class RestorePointProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RestorePointProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RestorePointProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RestorePointProperties.
+     */
+    public static RestorePointProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RestorePointProperties deserializedRestorePointProperties = new RestorePointProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("restorePointType".equals(fieldName)) {
+                    deserializedRestorePointProperties.restorePointType
+                        = RestorePointType.fromString(reader.getString());
+                } else if ("earliestRestoreDate".equals(fieldName)) {
+                    deserializedRestorePointProperties.earliestRestoreDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("restorePointCreationDate".equals(fieldName)) {
+                    deserializedRestorePointProperties.restorePointCreationDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("restorePointLabel".equals(fieldName)) {
+                    deserializedRestorePointProperties.restorePointLabel = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRestorePointProperties;
+        });
     }
 }

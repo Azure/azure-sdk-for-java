@@ -6,29 +6,30 @@ package com.azure.resourcemanager.servicefabric.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Describes the certificate details.
  */
 @Fluent
-public final class CertificateDescription {
+public final class CertificateDescription implements JsonSerializable<CertificateDescription> {
     /*
      * Thumbprint of the primary certificate.
      */
-    @JsonProperty(value = "thumbprint", required = true)
     private String thumbprint;
 
     /*
      * Thumbprint of the secondary certificate.
      */
-    @JsonProperty(value = "thumbprintSecondary")
     private String thumbprintSecondary;
 
     /*
      * The local certificate store location.
      */
-    @JsonProperty(value = "x509StoreName")
     private StoreName x509StoreName;
 
     /**
@@ -104,10 +105,54 @@ public final class CertificateDescription {
      */
     public void validate() {
         if (thumbprint() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property thumbprint in model CertificateDescription"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property thumbprint in model CertificateDescription"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(CertificateDescription.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("thumbprint", this.thumbprint);
+        jsonWriter.writeStringField("thumbprintSecondary", this.thumbprintSecondary);
+        jsonWriter.writeStringField("x509StoreName", this.x509StoreName == null ? null : this.x509StoreName.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CertificateDescription from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CertificateDescription if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CertificateDescription.
+     */
+    public static CertificateDescription fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CertificateDescription deserializedCertificateDescription = new CertificateDescription();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("thumbprint".equals(fieldName)) {
+                    deserializedCertificateDescription.thumbprint = reader.getString();
+                } else if ("thumbprintSecondary".equals(fieldName)) {
+                    deserializedCertificateDescription.thumbprintSecondary = reader.getString();
+                } else if ("x509StoreName".equals(fieldName)) {
+                    deserializedCertificateDescription.x509StoreName = StoreName.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCertificateDescription;
+        });
+    }
 }

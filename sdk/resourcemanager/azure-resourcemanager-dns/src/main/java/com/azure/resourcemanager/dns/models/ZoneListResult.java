@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.dns.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.dns.fluent.models.ZoneInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The response to a Zone List or ListAll operation. */
+/**
+ * The response to a Zone List or ListAll operation.
+ */
 @Fluent
-public final class ZoneListResult {
+public final class ZoneListResult implements JsonSerializable<ZoneListResult> {
     /*
      * Information about the DNS zones.
      */
-    @JsonProperty(value = "value")
     private List<ZoneInner> value;
 
     /*
      * The continuation token for the next page of results.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of ZoneListResult class. */
+    /**
+     * Creates an instance of ZoneListResult class.
+     */
     public ZoneListResult() {
     }
 
     /**
      * Get the value property: Information about the DNS zones.
-     *
+     * 
      * @return the value value.
      */
     public List<ZoneInner> value() {
@@ -39,7 +45,7 @@ public final class ZoneListResult {
 
     /**
      * Set the value property: Information about the DNS zones.
-     *
+     * 
      * @param value the value value to set.
      * @return the ZoneListResult object itself.
      */
@@ -50,7 +56,7 @@ public final class ZoneListResult {
 
     /**
      * Get the nextLink property: The continuation token for the next page of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,12 +65,51 @@ public final class ZoneListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ZoneListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ZoneListResult if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ZoneListResult.
+     */
+    public static ZoneListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ZoneListResult deserializedZoneListResult = new ZoneListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<ZoneInner> value = reader.readArray(reader1 -> ZoneInner.fromJson(reader1));
+                    deserializedZoneListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedZoneListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedZoneListResult;
+        });
     }
 }

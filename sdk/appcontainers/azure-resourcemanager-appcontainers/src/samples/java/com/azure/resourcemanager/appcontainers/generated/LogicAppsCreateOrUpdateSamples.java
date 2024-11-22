@@ -14,7 +14,7 @@ import java.io.IOException;
 public final class LogicAppsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/app/resource-manager/Microsoft.App/preview/2024-02-02-preview/examples/LogicApps_Create.json
+     * specification/app/resource-manager/Microsoft.App/preview/2024-08-02-preview/examples/LogicApps_Create.json
      */
     /**
      * Sample code: Create logic app extension.

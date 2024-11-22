@@ -5,42 +5,44 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.CustomDnsSuffixProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * CustomDnsSuffixConfiguration resource specific properties.
  */
 @Fluent
-public final class CustomDnsSuffixConfigurationProperties {
+public final class CustomDnsSuffixConfigurationProperties
+    implements JsonSerializable<CustomDnsSuffixConfigurationProperties> {
     /*
      * The provisioningState property.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private CustomDnsSuffixProvisioningState provisioningState;
 
     /*
      * The provisioningDetails property.
      */
-    @JsonProperty(value = "provisioningDetails", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningDetails;
 
     /*
      * The default custom domain suffix to use for all sites deployed on the ASE.
      */
-    @JsonProperty(value = "dnsSuffix")
     private String dnsSuffix;
 
     /*
-     * The URL referencing the Azure Key Vault certificate secret that should be used as the default SSL/TLS certificate for sites with the custom domain suffix.
+     * The URL referencing the Azure Key Vault certificate secret that should be used as the default SSL/TLS certificate
+     * for sites with the custom domain suffix.
      */
-    @JsonProperty(value = "certificateUrl")
     private String certificateUrl;
 
     /*
-     * The user-assigned identity to use for resolving the key vault certificate reference. If not specified, the system-assigned ASE identity will be used if available.
+     * The user-assigned identity to use for resolving the key vault certificate reference. If not specified, the
+     * system-assigned ASE identity will be used if available.
      */
-    @JsonProperty(value = "keyVaultReferenceIdentity")
     private String keyVaultReferenceIdentity;
 
     /**
@@ -137,5 +139,53 @@ public final class CustomDnsSuffixConfigurationProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("dnsSuffix", this.dnsSuffix);
+        jsonWriter.writeStringField("certificateUrl", this.certificateUrl);
+        jsonWriter.writeStringField("keyVaultReferenceIdentity", this.keyVaultReferenceIdentity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CustomDnsSuffixConfigurationProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CustomDnsSuffixConfigurationProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CustomDnsSuffixConfigurationProperties.
+     */
+    public static CustomDnsSuffixConfigurationProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CustomDnsSuffixConfigurationProperties deserializedCustomDnsSuffixConfigurationProperties
+                = new CustomDnsSuffixConfigurationProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedCustomDnsSuffixConfigurationProperties.provisioningState
+                        = CustomDnsSuffixProvisioningState.fromString(reader.getString());
+                } else if ("provisioningDetails".equals(fieldName)) {
+                    deserializedCustomDnsSuffixConfigurationProperties.provisioningDetails = reader.getString();
+                } else if ("dnsSuffix".equals(fieldName)) {
+                    deserializedCustomDnsSuffixConfigurationProperties.dnsSuffix = reader.getString();
+                } else if ("certificateUrl".equals(fieldName)) {
+                    deserializedCustomDnsSuffixConfigurationProperties.certificateUrl = reader.getString();
+                } else if ("keyVaultReferenceIdentity".equals(fieldName)) {
+                    deserializedCustomDnsSuffixConfigurationProperties.keyVaultReferenceIdentity = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCustomDnsSuffixConfigurationProperties;
+        });
     }
 }

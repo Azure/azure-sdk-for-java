@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The InferenceContainerProperties model. */
+/**
+ * The InferenceContainerProperties model.
+ */
 @Fluent
-public final class InferenceContainerProperties {
+public final class InferenceContainerProperties implements JsonSerializable<InferenceContainerProperties> {
     /*
      * The route to check the liveness of the inference server container.
      */
-    @JsonProperty(value = "livenessRoute")
     private Route livenessRoute;
 
     /*
      * The route to check the readiness of the inference server container.
      */
-    @JsonProperty(value = "readinessRoute")
     private Route readinessRoute;
 
     /*
      * The port to send the scoring requests to, within the inference server container.
      */
-    @JsonProperty(value = "scoringRoute")
     private Route scoringRoute;
 
-    /** Creates an instance of InferenceContainerProperties class. */
+    /**
+     * Creates an instance of InferenceContainerProperties class.
+     */
     public InferenceContainerProperties() {
     }
 
     /**
      * Get the livenessRoute property: The route to check the liveness of the inference server container.
-     *
+     * 
      * @return the livenessRoute value.
      */
     public Route livenessRoute() {
@@ -43,7 +48,7 @@ public final class InferenceContainerProperties {
 
     /**
      * Set the livenessRoute property: The route to check the liveness of the inference server container.
-     *
+     * 
      * @param livenessRoute the livenessRoute value to set.
      * @return the InferenceContainerProperties object itself.
      */
@@ -54,7 +59,7 @@ public final class InferenceContainerProperties {
 
     /**
      * Get the readinessRoute property: The route to check the readiness of the inference server container.
-     *
+     * 
      * @return the readinessRoute value.
      */
     public Route readinessRoute() {
@@ -63,7 +68,7 @@ public final class InferenceContainerProperties {
 
     /**
      * Set the readinessRoute property: The route to check the readiness of the inference server container.
-     *
+     * 
      * @param readinessRoute the readinessRoute value to set.
      * @return the InferenceContainerProperties object itself.
      */
@@ -74,7 +79,7 @@ public final class InferenceContainerProperties {
 
     /**
      * Get the scoringRoute property: The port to send the scoring requests to, within the inference server container.
-     *
+     * 
      * @return the scoringRoute value.
      */
     public Route scoringRoute() {
@@ -83,7 +88,7 @@ public final class InferenceContainerProperties {
 
     /**
      * Set the scoringRoute property: The port to send the scoring requests to, within the inference server container.
-     *
+     * 
      * @param scoringRoute the scoringRoute value to set.
      * @return the InferenceContainerProperties object itself.
      */
@@ -94,7 +99,7 @@ public final class InferenceContainerProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -107,5 +112,47 @@ public final class InferenceContainerProperties {
         if (scoringRoute() != null) {
             scoringRoute().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("livenessRoute", this.livenessRoute);
+        jsonWriter.writeJsonField("readinessRoute", this.readinessRoute);
+        jsonWriter.writeJsonField("scoringRoute", this.scoringRoute);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InferenceContainerProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InferenceContainerProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the InferenceContainerProperties.
+     */
+    public static InferenceContainerProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InferenceContainerProperties deserializedInferenceContainerProperties = new InferenceContainerProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("livenessRoute".equals(fieldName)) {
+                    deserializedInferenceContainerProperties.livenessRoute = Route.fromJson(reader);
+                } else if ("readinessRoute".equals(fieldName)) {
+                    deserializedInferenceContainerProperties.readinessRoute = Route.fromJson(reader);
+                } else if ("scoringRoute".equals(fieldName)) {
+                    deserializedInferenceContainerProperties.scoringRoute = Route.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInferenceContainerProperties;
+        });
     }
 }

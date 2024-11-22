@@ -19,32 +19,35 @@ public final class TeradataTableDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TeradataTableDataset model = BinaryData.fromString(
-            "{\"type\":\"TeradataTable\",\"typeProperties\":{\"database\":\"datamgfjculojhhylxd\",\"table\":\"datafiyymotuzb\"},\"description\":\"wjmtftcvelniru\",\"structure\":\"dataqnstpaqpibjg\",\"schema\":\"dataswmehfxrttxb\",\"linkedServiceName\":{\"referenceName\":\"sennqfabq\",\"parameters\":{\"xmsynbkd\":\"dataalectcxsfmbz\",\"brnxhjtlxfikj\":\"datanyufxuzmsvzyq\"}},\"parameters\":{\"htrxbozp\":{\"type\":\"String\",\"defaultValue\":\"datavwwuasnjeg\"}},\"annotations\":[\"datanwjzbqblxrnwvdsv\",\"dataqizawwsds\",\"datargf\"],\"folder\":{\"name\":\"saw\"},\"\":{\"kmwzrdqyoy\":\"datauffhxf\"}}")
+            "{\"type\":\"TeradataTable\",\"typeProperties\":{\"database\":\"datalnzffewvqky\",\"table\":\"datacgeipqxxsdyaf\"},\"description\":\"ydsmmabh\",\"structure\":\"datalejqzhpvhxp\",\"schema\":\"datadjze\",\"linkedServiceName\":{\"referenceName\":\"llgfy\",\"parameters\":{\"mwdz\":\"dataqscjpvqerqxk\",\"x\":\"datazlhcu\",\"kfrwxohlydsnjz\":\"dataqpwwvmbjecfwlbgh\",\"hi\":\"datachiypbfhm\"}},\"parameters\":{\"srjzgkbrau\":{\"type\":\"SecureString\",\"defaultValue\":\"dataewb\"},\"rukbuudrizwkw\":{\"type\":\"Int\",\"defaultValue\":\"dataufqnnqbjxgjwsr\"}},\"annotations\":[\"datalaacedikqe\"],\"folder\":{\"name\":\"yb\"},\"\":{\"rommkiqhypwt\":\"datavgb\"}}")
             .toObject(TeradataTableDataset.class);
-        Assertions.assertEquals("wjmtftcvelniru", model.description());
-        Assertions.assertEquals("sennqfabq", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.STRING, model.parameters().get("htrxbozp").type());
-        Assertions.assertEquals("saw", model.folder().name());
+        Assertions.assertEquals("ydsmmabh", model.description());
+        Assertions.assertEquals("llgfy", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.SECURE_STRING, model.parameters().get("srjzgkbrau").type());
+        Assertions.assertEquals("yb", model.folder().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TeradataTableDataset model = new TeradataTableDataset().withDescription("wjmtftcvelniru")
-            .withStructure("dataqnstpaqpibjg")
-            .withSchema("dataswmehfxrttxb")
-            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("sennqfabq")
-                .withParameters(mapOf("xmsynbkd", "dataalectcxsfmbz", "brnxhjtlxfikj", "datanyufxuzmsvzyq")))
-            .withParameters(mapOf("htrxbozp",
-                new ParameterSpecification().withType(ParameterType.STRING).withDefaultValue("datavwwuasnjeg")))
-            .withAnnotations(Arrays.asList("datanwjzbqblxrnwvdsv", "dataqizawwsds", "datargf"))
-            .withFolder(new DatasetFolder().withName("saw"))
-            .withDatabase("datamgfjculojhhylxd")
-            .withTable("datafiyymotuzb");
+        TeradataTableDataset model = new TeradataTableDataset().withDescription("ydsmmabh")
+            .withStructure("datalejqzhpvhxp")
+            .withSchema("datadjze")
+            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("llgfy")
+                .withParameters(mapOf("mwdz", "dataqscjpvqerqxk", "x", "datazlhcu", "kfrwxohlydsnjz",
+                    "dataqpwwvmbjecfwlbgh", "hi", "datachiypbfhm")))
+            .withParameters(mapOf("srjzgkbrau",
+                new ParameterSpecification().withType(ParameterType.SECURE_STRING).withDefaultValue("dataewb"),
+                "rukbuudrizwkw",
+                new ParameterSpecification().withType(ParameterType.INT).withDefaultValue("dataufqnnqbjxgjwsr")))
+            .withAnnotations(Arrays.asList("datalaacedikqe"))
+            .withFolder(new DatasetFolder().withName("yb"))
+            .withDatabase("datalnzffewvqky")
+            .withTable("datacgeipqxxsdyaf");
         model = BinaryData.fromObject(model).toObject(TeradataTableDataset.class);
-        Assertions.assertEquals("wjmtftcvelniru", model.description());
-        Assertions.assertEquals("sennqfabq", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.STRING, model.parameters().get("htrxbozp").type());
-        Assertions.assertEquals("saw", model.folder().name());
+        Assertions.assertEquals("ydsmmabh", model.description());
+        Assertions.assertEquals("llgfy", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.SECURE_STRING, model.parameters().get("srjzgkbrau").type());
+        Assertions.assertEquals("yb", model.folder().name());
     }
 
     // Use "Map.of" if available

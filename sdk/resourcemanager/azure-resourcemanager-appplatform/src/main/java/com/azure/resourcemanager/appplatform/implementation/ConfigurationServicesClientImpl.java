@@ -452,8 +452,10 @@ public final class ConfigurationServicesClientImpl implements ConfigurationServi
     public SyncPoller<PollResult<ConfigurationServiceResourceInner>, ConfigurationServiceResourceInner>
         beginCreateOrUpdate(String resourceGroupName, String serviceName, String configurationServiceName,
             ConfigurationServiceResourceInner configurationServiceResource) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, serviceName, configurationServiceName,
-            configurationServiceResource).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, serviceName, configurationServiceName,
+                configurationServiceResource)
+            .getSyncPoller();
     }
 
     /**
@@ -474,8 +476,10 @@ public final class ConfigurationServicesClientImpl implements ConfigurationServi
     public SyncPoller<PollResult<ConfigurationServiceResourceInner>, ConfigurationServiceResourceInner>
         beginCreateOrUpdate(String resourceGroupName, String serviceName, String configurationServiceName,
             ConfigurationServiceResourceInner configurationServiceResource, Context context) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, serviceName, configurationServiceName,
-            configurationServiceResource, context).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, serviceName, configurationServiceName,
+                configurationServiceResource, context)
+            .getSyncPoller();
     }
 
     /**
@@ -1398,8 +1402,10 @@ public final class ConfigurationServicesClientImpl implements ConfigurationServi
         SyncPoller<PollResult<ConfigurationServiceSettingsValidateResultInner>, ConfigurationServiceSettingsValidateResultInner>
         beginValidateResource(String resourceGroupName, String serviceName, String configurationServiceName,
             ConfigurationServiceResourceInner configurationServiceResource) {
-        return this.beginValidateResourceAsync(resourceGroupName, serviceName, configurationServiceName,
-            configurationServiceResource).getSyncPoller();
+        return this
+            .beginValidateResourceAsync(resourceGroupName, serviceName, configurationServiceName,
+                configurationServiceResource)
+            .getSyncPoller();
     }
 
     /**
@@ -1421,8 +1427,10 @@ public final class ConfigurationServicesClientImpl implements ConfigurationServi
         SyncPoller<PollResult<ConfigurationServiceSettingsValidateResultInner>, ConfigurationServiceSettingsValidateResultInner>
         beginValidateResource(String resourceGroupName, String serviceName, String configurationServiceName,
             ConfigurationServiceResourceInner configurationServiceResource, Context context) {
-        return this.beginValidateResourceAsync(resourceGroupName, serviceName, configurationServiceName,
-            configurationServiceResource, context).getSyncPoller();
+        return this
+            .beginValidateResourceAsync(resourceGroupName, serviceName, configurationServiceName,
+                configurationServiceResource, context)
+            .getSyncPoller();
     }
 
     /**
@@ -1514,9 +1522,7 @@ public final class ConfigurationServicesClientImpl implements ConfigurationServi
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1542,9 +1548,7 @@ public final class ConfigurationServicesClientImpl implements ConfigurationServi
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

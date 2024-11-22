@@ -5,8 +5,11 @@
 package com.azure.media.videoanalyzer.edge.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The Video Analyzer edge module can act as a transparent gateway for video, enabling IoT devices to send video to the
@@ -14,38 +17,34 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * between the cloud and IoT device would then flow via the Video Analyzer edge module.
  */
 @Fluent
-public class RemoteDeviceAdapter {
+public class RemoteDeviceAdapter implements JsonSerializable<RemoteDeviceAdapter> {
     /*
      * The unique identifier for the remote device adapter.
      */
-    @JsonProperty(value = "name", required = true)
-    private String name;
+    private final String name;
 
     /*
      * Read-only system metadata associated with this object.
      */
-    @JsonProperty(value = "systemData")
     private SystemData systemData;
 
     /*
      * Properties of the remote device adapter.
      */
-    @JsonProperty(value = "properties")
     private RemoteDeviceAdapterProperties properties;
 
     /**
      * Creates an instance of RemoteDeviceAdapter class.
-     *
+     * 
      * @param name the name value to set.
      */
-    @JsonCreator
-    public RemoteDeviceAdapter(@JsonProperty(value = "name", required = true) String name) {
+    public RemoteDeviceAdapter(String name) {
         this.name = name;
     }
 
     /**
      * Get the name property: The unique identifier for the remote device adapter.
-     *
+     * 
      * @return the name value.
      */
     public String getName() {
@@ -54,7 +53,7 @@ public class RemoteDeviceAdapter {
 
     /**
      * Get the systemData property: Read-only system metadata associated with this object.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData getSystemData() {
@@ -63,7 +62,7 @@ public class RemoteDeviceAdapter {
 
     /**
      * Set the systemData property: Read-only system metadata associated with this object.
-     *
+     * 
      * @param systemData the systemData value to set.
      * @return the RemoteDeviceAdapter object itself.
      */
@@ -74,7 +73,7 @@ public class RemoteDeviceAdapter {
 
     /**
      * Get the properties property: Properties of the remote device adapter.
-     *
+     * 
      * @return the properties value.
      */
     public RemoteDeviceAdapterProperties getProperties() {
@@ -83,12 +82,65 @@ public class RemoteDeviceAdapter {
 
     /**
      * Set the properties property: Properties of the remote device adapter.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the RemoteDeviceAdapter object itself.
      */
     public RemoteDeviceAdapter setProperties(RemoteDeviceAdapterProperties properties) {
         this.properties = properties;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeJsonField("systemData", this.systemData);
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RemoteDeviceAdapter from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RemoteDeviceAdapter if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RemoteDeviceAdapter.
+     */
+    public static RemoteDeviceAdapter fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            boolean nameFound = false;
+            String name = null;
+            SystemData systemData = null;
+            RemoteDeviceAdapterProperties properties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    name = reader.getString();
+                    nameFound = true;
+                } else if ("systemData".equals(fieldName)) {
+                    systemData = SystemData.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    properties = RemoteDeviceAdapterProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            if (nameFound) {
+                RemoteDeviceAdapter deserializedRemoteDeviceAdapter = new RemoteDeviceAdapter(name);
+                deserializedRemoteDeviceAdapter.systemData = systemData;
+                deserializedRemoteDeviceAdapter.properties = properties;
+
+                return deserializedRemoteDeviceAdapter;
+            }
+            throw new IllegalStateException("Missing required property: name");
+        });
     }
 }

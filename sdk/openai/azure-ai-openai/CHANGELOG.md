@@ -1,16 +1,74 @@
 # Release History
 
-## 1.0.0-beta.11 (Unreleased)
+## 1.0.0-beta.13 (Unreleased)
 
 ### Features Added
-- Added a new overload `getImageGenerationsWithResponse` that takes `RequestOptions` to provide the flexibility to
-  modify the HTTP request.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.12 (2024-10-22)
+
+### Features Added
+- Added support for service API version `2024-08-01-preview`.
+- Structured Outputs can be enabled by setting the parameter `strict: true` in an API call with either a defined response format or function definitions.
+  - Added `refusal` property in `ChatChoiceLogProbabilityInfo`, `ChatMessageContentItem`, `ChatResponseMessage` classes,
+    and a new type of content item class `ChatMessageRefusalContentItem` to support refusal. `refusal` only works with structured output.
+  - Added `json_schema` property in `ChatCompletionsResponseFormat` class to support JSON schema.
+    New classes `ChatCompletionsJsonSchemaResponseFormat` and `ChatCompletionsJsonSchemaResponseFormatJsonSchema` are added to support JSON schema response format.
+- Added support for uploading large files in multiple parts. New client methods `createUpload`, `addUploadPart`,
+  `completeUpload` and `cancelUpload` introduced in `OpenAIClient` and `OpenAIAsyncClient` classes.
+- Updated `ChatRequestMessages` derived classes, 
+  - `ChatRequestSystemMessage` content: `String` or `ChatMessageTextContentItem[]`.
+  - `ChatRequestAssistantMessage` content: `String`, `ChatMessageTextContentItem[]`, `ChatMessageRefusalContentItem[]` or `null`.
+  - `ChatRequestToolMessage` content: `String` or `ChatMessageTextContentItem[]`.
+- Added `rerank_score` property in `AzureChatExtensionDataSourceResponseCitation` class to support re-rank score.
+- Added support for MongoDB chat extension. New classes `MongoDBChatExtensionConfiguration`, `MongoDBChatExtensionParameters`,
+  and `MongoDBChatExtensionParametersFieldsMapping` are added to support MongoDB chat extension.
+- Added `username_and_password` in `OnYourDataAuthenticationOptions` class and an input option class`OnYourDataUsernameAndPasswordAuthenticationOptions`  to support username and password authentication.
+- Added `intergrated` property in `OnYourDataVectorizationSource` class and `OnYourDataVectorizationSourceType` to support integrated vectorization source.
+
+### Breaking Changes
+
+- Replaced `FunctionDefintion` by `ChatCompletionsFunctionToolDefinitionFunction` in `ChatCompletionsFunctionToolDefinition` class. 
+  `FunctionDefintion` only works for `functions` but not `tools`, The `functions` is deprecated.
+- Removed `azure_ml_index` from `AzureChatExtensionConfiguration` class, and its response models `AzureMachineLearningIndexConfiguration` and `AzureMachineLearningIndexChatExtensionParameters`.
+- Removed `role_information` from `AzureSearchChatExtensionParameters`, `ElasticsearchChatExtensionParameters` and `PineconeChatExtensionParameters` classes.
+
+### Other Changes
+
+- Upgraded `azure-core` to version `1.53.0`.
+- Upgraded `azure-core-http-netty` to version `1.15.5`.
+
+## 1.0.0-beta.11 (2024-08-29)
+
+### Features Added
+
+- Added a new overload `getImageGenerationsWithResponse` that takes `RequestOptions` to provide the flexibility to
+  modify the HTTP request.
+- Added the capability to handle the float[] `embedding` type when serializing to `toJson()` and deserializing from `fromJson()` in the `EmbeddingItem` class. ([#41159](https://github.com/Azure/azure-sdk-for-java/issues/41159))
+- A new `required` keyword is added to `tool_choice` in the request options, which specifies that at least one tool must be called. This adds to the existing `auto` (default), `none`, and ability to specify a specific (function) tool by name
+- New operation paths: `/batches`, `/batches/{batch-id}` and `/batches/{batch-id}/cancel`
+- New request model: `BatchCreateRequest`
+- New response models: `Batch`, `BatchErrors`, etc.
+- Added `/files` operation from the Azure OpenAI Assistants SDK
+- New `batch` and `batch_output` files purposes
+- In `ChatCompletionsOptions` the `setToolChoice` method uses `ChatCompletionsToolSelection` to pass either a preset enum or a named tool.
+
+### Breaking Changes
+
+- Removed `finish_details` field from `ChatChoice` class since service API version, `2024-07-01-preview`, does not return this field. 
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` to version `1.51.0`.
+- Upgraded `azure-core-http-netty` to version `1.15.3`.
+
 
 ## 1.0.0-beta.10 (2024-07-02)
 

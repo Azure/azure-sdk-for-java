@@ -6,30 +6,36 @@ package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Properties of a job credential. */
+/**
+ * Properties of a job credential.
+ */
 @Fluent
-public final class JobCredentialProperties {
+public final class JobCredentialProperties implements JsonSerializable<JobCredentialProperties> {
     /*
      * The credential user name.
      */
-    @JsonProperty(value = "username", required = true)
     private String username;
 
     /*
      * The credential password.
      */
-    @JsonProperty(value = "password", required = true)
     private String password;
 
-    /** Creates an instance of JobCredentialProperties class. */
+    /**
+     * Creates an instance of JobCredentialProperties class.
+     */
     public JobCredentialProperties() {
     }
 
     /**
      * Get the username property: The credential user name.
-     *
+     * 
      * @return the username value.
      */
     public String username() {
@@ -38,7 +44,7 @@ public final class JobCredentialProperties {
 
     /**
      * Set the username property: The credential user name.
-     *
+     * 
      * @param username the username value to set.
      * @return the JobCredentialProperties object itself.
      */
@@ -49,7 +55,7 @@ public final class JobCredentialProperties {
 
     /**
      * Get the password property: The credential password.
-     *
+     * 
      * @return the password value.
      */
     public String password() {
@@ -58,7 +64,7 @@ public final class JobCredentialProperties {
 
     /**
      * Set the password property: The credential password.
-     *
+     * 
      * @param password the password value to set.
      * @return the JobCredentialProperties object itself.
      */
@@ -69,23 +75,61 @@ public final class JobCredentialProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (username() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property username in model JobCredentialProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property username in model JobCredentialProperties"));
         }
         if (password() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property password in model JobCredentialProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property password in model JobCredentialProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(JobCredentialProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("username", this.username);
+        jsonWriter.writeStringField("password", this.password);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of JobCredentialProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of JobCredentialProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the JobCredentialProperties.
+     */
+    public static JobCredentialProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            JobCredentialProperties deserializedJobCredentialProperties = new JobCredentialProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("username".equals(fieldName)) {
+                    deserializedJobCredentialProperties.username = reader.getString();
+                } else if ("password".equals(fieldName)) {
+                    deserializedJobCredentialProperties.password = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedJobCredentialProperties;
+        });
+    }
 }

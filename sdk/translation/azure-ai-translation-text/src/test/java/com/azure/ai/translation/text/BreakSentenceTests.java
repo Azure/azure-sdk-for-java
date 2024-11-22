@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import com.azure.ai.translation.text.models.BreakSentenceItem;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,16 +18,17 @@ public class BreakSentenceTests extends TextTranslationClientBase {
     public void breakSentenceWithAutoDetect() {
         BreakSentenceItem response = getTranslationClient().findSentenceBoundaries("hello world");
         assertEquals("en", response.getDetectedLanguage().getLanguage());
-        assertEquals(0.98, response.getDetectedLanguage().getConfidence());
+        assertTrue(response.getDetectedLanguage().getConfidence() > 0.8);
         assertEquals(11, response.getSentencesLengths().get(0));
     }
 
     @Test
     public void breakSentenceWithLanguage() {
-        String content = "Mi familia es muy muy bonita. no padre .mi madre es bonita y muy bajo . mi hermano es alto. Me gusta mi familia.";
+        String content
+            = "Mi familia es muy muy bonita. no padre .mi madre es bonita y muy bajo . mi hermano es alto. Me gusta mi familia.";
 
         BreakSentenceItem response = getTranslationClient().findSentenceBoundaries(content, "es", null);
-        int[] expectedLengths = new int[]{ 30, 42, 20, 20 };
+        int[] expectedLengths = new int[] { 30, 42, 20, 20 };
         for (int i = 0; i < expectedLengths.length; i++) {
             assertEquals(expectedLengths[i], response.getSentencesLengths().get(i));
         }
@@ -34,7 +36,8 @@ public class BreakSentenceTests extends TextTranslationClientBase {
 
     @Test
     public void breakSentenceWithLanguageAndScript() {
-        BreakSentenceItem response = getTranslationClient().findSentenceBoundaries("zhè shì gè cè shì。", "zh-Hans", "Latn");
+        BreakSentenceItem response
+            = getTranslationClient().findSentenceBoundaries("zhè shì gè cè shì。", "zh-Hans", "Latn");
         assertEquals(18, response.getSentencesLengths().get(0));
     }
 

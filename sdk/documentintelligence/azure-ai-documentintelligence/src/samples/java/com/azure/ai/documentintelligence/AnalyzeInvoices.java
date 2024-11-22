@@ -21,7 +21,7 @@ import java.util.Map;
 
 /**
  * Sample for analyzing commonly found invoice fields from a local file input stream of an invoice document.
- * See fields found on an invoice <a href=https://aka.ms/documentintelligence/invoicefields>here</a>
+ * See fields found on an invoice <a href=https://aka.ms/formrecognizer/invoicefields>here</a>
  */
 public class AnalyzeInvoices {
     /**
@@ -42,6 +42,7 @@ public class AnalyzeInvoices {
 
         SyncPoller<AnalyzeResultOperation, AnalyzeResult> analyzeInvoicesPoller =
             client.beginAnalyzeDocument("prebuilt-invoice",
+                null,
                 null,
                 null,
                 null,
@@ -129,7 +130,7 @@ public class AnalyzeInvoices {
                         .map(documentField -> documentField.getValueObject())
                         .forEach(documentFieldMap -> documentFieldMap.forEach((key, documentField) -> {
                             // See a full list of fields found on an invoice here:
-                            // https://aka.ms/documentintelligence/invoicefields
+                            // https://aka.ms/formrecognizer/invoicefields
                             if ("Description".equals(key)) {
                                 if (DocumentFieldType.STRING == documentField.getType()) {
                                     String name = documentField.getValueString();

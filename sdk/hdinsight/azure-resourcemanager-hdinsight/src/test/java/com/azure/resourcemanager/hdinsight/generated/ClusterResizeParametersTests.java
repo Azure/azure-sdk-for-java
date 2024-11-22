@@ -11,15 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class ClusterResizeParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ClusterResizeParameters model =
-            BinaryData.fromString("{\"targetInstanceCount\":485357732}").toObject(ClusterResizeParameters.class);
-        Assertions.assertEquals(485357732, model.targetInstanceCount());
+        ClusterResizeParameters model
+            = BinaryData.fromString("{\"targetInstanceCount\":792920613}").toObject(ClusterResizeParameters.class);
+        Assertions.assertEquals(792920613, model.targetInstanceCount());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClusterResizeParameters model = new ClusterResizeParameters().withTargetInstanceCount(485357732);
+        ClusterResizeParameters model = new ClusterResizeParameters().withTargetInstanceCount(792920613);
         model = BinaryData.fromObject(model).toObject(ClusterResizeParameters.class);
-        Assertions.assertEquals(485357732, model.targetInstanceCount());
+        Assertions.assertEquals(792920613, model.targetInstanceCount());
     }
 }

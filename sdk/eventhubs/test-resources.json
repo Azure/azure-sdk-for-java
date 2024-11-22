@@ -25,32 +25,12 @@
             "metadata": {
                 "description": "The tenant id to which the application and resources belong."
             }
-        },
-        "testApplicationId": {
-            "type": "string",
-            "metadata": {
-                "description": "The client id of the service principal used to run tests."
-            }
-        },
-        "testApplicationOid": {
-            "type": "string",
-            "metadata": {
-                "description": "This is the object id of the service principal used to run tests."
-            }
-        },
-        "testApplicationSecret": {
-            "type": "string",
-            "metadata": {
-                "description": "The application client secret used to run tests."
-            }
         }
     },
     "variables": {
         "authorizationApiVersion": "2018-09-01-preview",
-        "authorizationRulesName": "[concat('authr', parameters('baseName'))]",
         "eventHubsApiVersion": "2017-04-01",
         "eventHubsDataOwnerRoleId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/f526a384-b230-433a-b45c-95f59c4a2dec')]",
-        "eventHubsNamespaceKeyName": "RootManageSharedAccessKey",
         "eventHubsNamespaceName": "[concat('eventhub', parameters('baseName'))]",
         "location": "[resourceGroup().location]"
     },
@@ -85,52 +65,12 @@
                 "partitionCount": 5,
                 "status": "Active"
             }
-        },
-        {
-            "type": "Microsoft.EventHub/namespaces/AuthorizationRules",
-            "apiVersion": "[variables('eventHubsApiVersion')]",
-            "name": "[concat(variables('eventHubsNamespaceName'), '/', variables('eventHubsNamespaceKeyName'))]",
-            "location": "[variables('location')]",
-            "dependsOn": [
-                "[resourceId('Microsoft.EventHub/namespaces', variables('eventHubsNamespaceName'))]"
-            ],
-            "properties": {
-                "rights": [
-                    "Send",
-                    "Listen",
-                    "Manage"
-                ]
-            }
-        },
-        {
-            "type": "Microsoft.Authorization/roleAssignments",
-            "apiVersion": "[variables('authorizationApiVersion')]",
-            "name": "[guid(concat('eventHubsDataOwnerRoleId', variables('eventHubsNamespaceName')))]",
-            "dependsOn": [
-                "[resourceId('Microsoft.EventHub/namespaces', variables('eventHubsNamespaceName'))]"
-            ],
-            "properties": {
-                "roleDefinitionId": "[variables('eventHubsDataOwnerRoleId')]",
-                "principalId": "[parameters('testApplicationOid')]"
-            }
         }
     ],
     "outputs": {
-        "AZURE_TENANT_ID": {
-            "type": "string",
-            "value": "[parameters('tenantId')]"
-        },
-        "AZURE_CLIENT_ID": {
-            "type": "string",
-            "value": "[parameters('testApplicationId')]"
-        },
-        "AZURE_CLIENT_SECRET": {
-            "type": "string",
-            "value": "[parameters('testApplicationSecret')]"
-        },
         "AZURE_EVENTHUBS_CONNECTION_STRING": {
             "type": "string",
-            "value": "[concat(listKeys(resourceId('Microsoft.EventHub/namespaces/authorizationRules', variables('eventHubsNamespaceName'), variables('eventHubsNamespaceKeyName')), variables('eventHubsApiVersion')).primaryConnectionString, ';EntityPath=', parameters('eventHubName'))]"
+            "value": "[concat(listKeys(resourceId('Microsoft.EventHub/namespaces/authorizationRules', variables('eventHubsNamespaceName'), 'RootManageSharedAccessKey'), variables('eventHubsApiVersion')).primaryConnectionString)]"
         },
         "AZURE_EVENTHUBS_EVENT_HUB_NAME": {
             "type": "string",

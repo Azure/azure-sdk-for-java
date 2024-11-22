@@ -16,11 +16,9 @@ import org.junit.jupiter.api.Assertions;
 public final class NotificationChannelInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NotificationChannelInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"webHookUrl\":\"lrri\",\"emailRecipient\":\"ywdxsmic\",\"notificationLocale\":\"rwfscjfnynszquj\",\"description\":\"dvoqyt\",\"events\":[{\"eventName\":\"AutoShutdown\"}],\"createdDate\":\"2021-09-24T22:06:57Z\",\"provisioningState\":\"gyavu\",\"uniqueIdentifier\":\"thjoxoism\"},\"location\":\"ksbpimlqoljx\",\"tags\":{\"dwl\":\"xxlxsffgcvizq\",\"youpfgfbkj\":\"w\",\"ttsttktlahbqact\":\"bdyhgkfminsgowz\",\"qqqxhrnxrx\":\"tgzukxitmmqt\"},\"id\":\"pjui\",\"name\":\"av\",\"type\":\"k\"}")
-                .toObject(NotificationChannelInner.class);
+        NotificationChannelInner model = BinaryData.fromString(
+            "{\"properties\":{\"webHookUrl\":\"lrri\",\"emailRecipient\":\"ywdxsmic\",\"notificationLocale\":\"rwfscjfnynszquj\",\"description\":\"dvoqyt\",\"events\":[{\"eventName\":\"AutoShutdown\"}],\"createdDate\":\"2021-09-24T22:06:57Z\",\"provisioningState\":\"gyavu\",\"uniqueIdentifier\":\"thjoxoism\"},\"location\":\"ksbpimlqoljx\",\"tags\":{\"dwl\":\"xxlxsffgcvizq\",\"youpfgfbkj\":\"w\",\"ttsttktlahbqact\":\"bdyhgkfminsgowz\",\"qqqxhrnxrx\":\"tgzukxitmmqt\"},\"id\":\"pjui\",\"name\":\"av\",\"type\":\"k\"}")
+            .toObject(NotificationChannelInner.class);
         Assertions.assertEquals("ksbpimlqoljx", model.location());
         Assertions.assertEquals("xxlxsffgcvizq", model.tags().get("dwl"));
         Assertions.assertEquals("lrri", model.webhookUrl());
@@ -32,24 +30,14 @@ public final class NotificationChannelInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NotificationChannelInner model =
-            new NotificationChannelInner()
-                .withLocation("ksbpimlqoljx")
-                .withTags(
-                    mapOf(
-                        "dwl",
-                        "xxlxsffgcvizq",
-                        "youpfgfbkj",
-                        "w",
-                        "ttsttktlahbqact",
-                        "bdyhgkfminsgowz",
-                        "qqqxhrnxrx",
-                        "tgzukxitmmqt"))
-                .withWebhookUrl("lrri")
-                .withEmailRecipient("ywdxsmic")
-                .withNotificationLocale("rwfscjfnynszquj")
-                .withDescription("dvoqyt")
-                .withEvents(Arrays.asList(new Event().withEventName(NotificationChannelEventType.AUTO_SHUTDOWN)));
+        NotificationChannelInner model = new NotificationChannelInner().withLocation("ksbpimlqoljx")
+            .withTags(mapOf("dwl", "xxlxsffgcvizq", "youpfgfbkj", "w", "ttsttktlahbqact", "bdyhgkfminsgowz",
+                "qqqxhrnxrx", "tgzukxitmmqt"))
+            .withWebhookUrl("lrri")
+            .withEmailRecipient("ywdxsmic")
+            .withNotificationLocale("rwfscjfnynszquj")
+            .withDescription("dvoqyt")
+            .withEvents(Arrays.asList(new Event().withEventName(NotificationChannelEventType.AUTO_SHUTDOWN)));
         model = BinaryData.fromObject(model).toObject(NotificationChannelInner.class);
         Assertions.assertEquals("ksbpimlqoljx", model.location());
         Assertions.assertEquals("xxlxsffgcvizq", model.tags().get("dwl"));

@@ -5,143 +5,131 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.util.HashMap;
+import java.time.format.DateTimeFormatter;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** remoteItem. */
+/**
+ * remoteItem.
+ */
 @Fluent
-public final class MicrosoftGraphRemoteItem {
+public final class MicrosoftGraphRemoteItem implements JsonSerializable<MicrosoftGraphRemoteItem> {
     /*
      * identitySet
      */
-    @JsonProperty(value = "createdBy")
     private MicrosoftGraphIdentitySet createdBy;
 
     /*
      * Date and time of item creation. Read-only.
      */
-    @JsonProperty(value = "createdDateTime")
     private OffsetDateTime createdDateTime;
 
     /*
      * file
      */
-    @JsonProperty(value = "file")
     private MicrosoftGraphFile file;
 
     /*
      * fileSystemInfo
      */
-    @JsonProperty(value = "fileSystemInfo")
     private MicrosoftGraphFileSystemInfo fileSystemInfo;
 
     /*
      * folder
      */
-    @JsonProperty(value = "folder")
     private MicrosoftGraphFolder folder;
 
     /*
      * Unique identifier for the remote item in its drive. Read-only.
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * image
      */
-    @JsonProperty(value = "image")
     private MicrosoftGraphImage image;
 
     /*
      * identitySet
      */
-    @JsonProperty(value = "lastModifiedBy")
     private MicrosoftGraphIdentitySet lastModifiedBy;
 
     /*
      * Date and time the item was last modified. Read-only.
      */
-    @JsonProperty(value = "lastModifiedDateTime")
     private OffsetDateTime lastModifiedDateTime;
 
     /*
      * Optional. Filename of the remote item. Read-only.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * package
      */
-    @JsonProperty(value = "package")
     private MicrosoftGraphPackage packageProperty;
 
     /*
      * itemReference
      */
-    @JsonProperty(value = "parentReference")
     private MicrosoftGraphItemReference parentReference;
 
     /*
      * shared
      */
-    @JsonProperty(value = "shared")
     private MicrosoftGraphShared shared;
 
     /*
      * sharepointIds
      */
-    @JsonProperty(value = "sharepointIds")
     private MicrosoftGraphSharepointIds sharepointIds;
 
     /*
      * Size of the remote item. Read-only.
      */
-    @JsonProperty(value = "size")
     private Long size;
 
     /*
      * specialFolder
      */
-    @JsonProperty(value = "specialFolder")
     private MicrosoftGraphSpecialFolder specialFolder;
 
     /*
      * video
      */
-    @JsonProperty(value = "video")
     private MicrosoftGraphVideo video;
 
     /*
      * DAV compatible URL for the item.
      */
-    @JsonProperty(value = "webDavUrl")
     private String webDavUrl;
 
     /*
      * URL that displays the resource in the browser. Read-only.
      */
-    @JsonProperty(value = "webUrl")
     private String webUrl;
 
     /*
      * remoteItem
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphRemoteItem class. */
+    /**
+     * Creates an instance of MicrosoftGraphRemoteItem class.
+     */
     public MicrosoftGraphRemoteItem() {
     }
 
     /**
      * Get the createdBy property: identitySet.
-     *
+     * 
      * @return the createdBy value.
      */
     public MicrosoftGraphIdentitySet createdBy() {
@@ -150,7 +138,7 @@ public final class MicrosoftGraphRemoteItem {
 
     /**
      * Set the createdBy property: identitySet.
-     *
+     * 
      * @param createdBy the createdBy value to set.
      * @return the MicrosoftGraphRemoteItem object itself.
      */
@@ -161,7 +149,7 @@ public final class MicrosoftGraphRemoteItem {
 
     /**
      * Get the createdDateTime property: Date and time of item creation. Read-only.
-     *
+     * 
      * @return the createdDateTime value.
      */
     public OffsetDateTime createdDateTime() {
@@ -170,7 +158,7 @@ public final class MicrosoftGraphRemoteItem {
 
     /**
      * Set the createdDateTime property: Date and time of item creation. Read-only.
-     *
+     * 
      * @param createdDateTime the createdDateTime value to set.
      * @return the MicrosoftGraphRemoteItem object itself.
      */
@@ -181,7 +169,7 @@ public final class MicrosoftGraphRemoteItem {
 
     /**
      * Get the file property: file.
-     *
+     * 
      * @return the file value.
      */
     public MicrosoftGraphFile file() {
@@ -190,7 +178,7 @@ public final class MicrosoftGraphRemoteItem {
 
     /**
      * Set the file property: file.
-     *
+     * 
      * @param file the file value to set.
      * @return the MicrosoftGraphRemoteItem object itself.
      */
@@ -201,7 +189,7 @@ public final class MicrosoftGraphRemoteItem {
 
     /**
      * Get the fileSystemInfo property: fileSystemInfo.
-     *
+     * 
      * @return the fileSystemInfo value.
      */
     public MicrosoftGraphFileSystemInfo fileSystemInfo() {
@@ -210,7 +198,7 @@ public final class MicrosoftGraphRemoteItem {
 
     /**
      * Set the fileSystemInfo property: fileSystemInfo.
-     *
+     * 
      * @param fileSystemInfo the fileSystemInfo value to set.
      * @return the MicrosoftGraphRemoteItem object itself.
      */
@@ -221,7 +209,7 @@ public final class MicrosoftGraphRemoteItem {
 
     /**
      * Get the folder property: folder.
-     *
+     * 
      * @return the folder value.
      */
     public MicrosoftGraphFolder folder() {
@@ -230,7 +218,7 @@ public final class MicrosoftGraphRemoteItem {
 
     /**
      * Set the folder property: folder.
-     *
+     * 
      * @param folder the folder value to set.
      * @return the MicrosoftGraphRemoteItem object itself.
      */
@@ -241,7 +229,7 @@ public final class MicrosoftGraphRemoteItem {
 
     /**
      * Get the id property: Unique identifier for the remote item in its drive. Read-only.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -250,7 +238,7 @@ public final class MicrosoftGraphRemoteItem {
 
     /**
      * Set the id property: Unique identifier for the remote item in its drive. Read-only.
-     *
+     * 
      * @param id the id value to set.
      * @return the MicrosoftGraphRemoteItem object itself.
      */
@@ -261,7 +249,7 @@ public final class MicrosoftGraphRemoteItem {
 
     /**
      * Get the image property: image.
-     *
+     * 
      * @return the image value.
      */
     public MicrosoftGraphImage image() {
@@ -270,7 +258,7 @@ public final class MicrosoftGraphRemoteItem {
 
     /**
      * Set the image property: image.
-     *
+     * 
      * @param image the image value to set.
      * @return the MicrosoftGraphRemoteItem object itself.
      */
@@ -281,7 +269,7 @@ public final class MicrosoftGraphRemoteItem {
 
     /**
      * Get the lastModifiedBy property: identitySet.
-     *
+     * 
      * @return the lastModifiedBy value.
      */
     public MicrosoftGraphIdentitySet lastModifiedBy() {
@@ -290,7 +278,7 @@ public final class MicrosoftGraphRemoteItem {
 
     /**
      * Set the lastModifiedBy property: identitySet.
-     *
+     * 
      * @param lastModifiedBy the lastModifiedBy value to set.
      * @return the MicrosoftGraphRemoteItem object itself.
      */
@@ -301,7 +289,7 @@ public final class MicrosoftGraphRemoteItem {
 
     /**
      * Get the lastModifiedDateTime property: Date and time the item was last modified. Read-only.
-     *
+     * 
      * @return the lastModifiedDateTime value.
      */
     public OffsetDateTime lastModifiedDateTime() {
@@ -310,7 +298,7 @@ public final class MicrosoftGraphRemoteItem {
 
     /**
      * Set the lastModifiedDateTime property: Date and time the item was last modified. Read-only.
-     *
+     * 
      * @param lastModifiedDateTime the lastModifiedDateTime value to set.
      * @return the MicrosoftGraphRemoteItem object itself.
      */
@@ -321,7 +309,7 @@ public final class MicrosoftGraphRemoteItem {
 
     /**
      * Get the name property: Optional. Filename of the remote item. Read-only.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -330,7 +318,7 @@ public final class MicrosoftGraphRemoteItem {
 
     /**
      * Set the name property: Optional. Filename of the remote item. Read-only.
-     *
+     * 
      * @param name the name value to set.
      * @return the MicrosoftGraphRemoteItem object itself.
      */
@@ -341,7 +329,7 @@ public final class MicrosoftGraphRemoteItem {
 
     /**
      * Get the packageProperty property: package.
-     *
+     * 
      * @return the packageProperty value.
      */
     public MicrosoftGraphPackage packageProperty() {
@@ -350,7 +338,7 @@ public final class MicrosoftGraphRemoteItem {
 
     /**
      * Set the packageProperty property: package.
-     *
+     * 
      * @param packageProperty the packageProperty value to set.
      * @return the MicrosoftGraphRemoteItem object itself.
      */
@@ -361,7 +349,7 @@ public final class MicrosoftGraphRemoteItem {
 
     /**
      * Get the parentReference property: itemReference.
-     *
+     * 
      * @return the parentReference value.
      */
     public MicrosoftGraphItemReference parentReference() {
@@ -370,7 +358,7 @@ public final class MicrosoftGraphRemoteItem {
 
     /**
      * Set the parentReference property: itemReference.
-     *
+     * 
      * @param parentReference the parentReference value to set.
      * @return the MicrosoftGraphRemoteItem object itself.
      */
@@ -381,7 +369,7 @@ public final class MicrosoftGraphRemoteItem {
 
     /**
      * Get the shared property: shared.
-     *
+     * 
      * @return the shared value.
      */
     public MicrosoftGraphShared shared() {
@@ -390,7 +378,7 @@ public final class MicrosoftGraphRemoteItem {
 
     /**
      * Set the shared property: shared.
-     *
+     * 
      * @param shared the shared value to set.
      * @return the MicrosoftGraphRemoteItem object itself.
      */
@@ -401,7 +389,7 @@ public final class MicrosoftGraphRemoteItem {
 
     /**
      * Get the sharepointIds property: sharepointIds.
-     *
+     * 
      * @return the sharepointIds value.
      */
     public MicrosoftGraphSharepointIds sharepointIds() {
@@ -410,7 +398,7 @@ public final class MicrosoftGraphRemoteItem {
 
     /**
      * Set the sharepointIds property: sharepointIds.
-     *
+     * 
      * @param sharepointIds the sharepointIds value to set.
      * @return the MicrosoftGraphRemoteItem object itself.
      */
@@ -421,7 +409,7 @@ public final class MicrosoftGraphRemoteItem {
 
     /**
      * Get the size property: Size of the remote item. Read-only.
-     *
+     * 
      * @return the size value.
      */
     public Long size() {
@@ -430,7 +418,7 @@ public final class MicrosoftGraphRemoteItem {
 
     /**
      * Set the size property: Size of the remote item. Read-only.
-     *
+     * 
      * @param size the size value to set.
      * @return the MicrosoftGraphRemoteItem object itself.
      */
@@ -441,7 +429,7 @@ public final class MicrosoftGraphRemoteItem {
 
     /**
      * Get the specialFolder property: specialFolder.
-     *
+     * 
      * @return the specialFolder value.
      */
     public MicrosoftGraphSpecialFolder specialFolder() {
@@ -450,7 +438,7 @@ public final class MicrosoftGraphRemoteItem {
 
     /**
      * Set the specialFolder property: specialFolder.
-     *
+     * 
      * @param specialFolder the specialFolder value to set.
      * @return the MicrosoftGraphRemoteItem object itself.
      */
@@ -461,7 +449,7 @@ public final class MicrosoftGraphRemoteItem {
 
     /**
      * Get the video property: video.
-     *
+     * 
      * @return the video value.
      */
     public MicrosoftGraphVideo video() {
@@ -470,7 +458,7 @@ public final class MicrosoftGraphRemoteItem {
 
     /**
      * Set the video property: video.
-     *
+     * 
      * @param video the video value to set.
      * @return the MicrosoftGraphRemoteItem object itself.
      */
@@ -481,7 +469,7 @@ public final class MicrosoftGraphRemoteItem {
 
     /**
      * Get the webDavUrl property: DAV compatible URL for the item.
-     *
+     * 
      * @return the webDavUrl value.
      */
     public String webDavUrl() {
@@ -490,7 +478,7 @@ public final class MicrosoftGraphRemoteItem {
 
     /**
      * Set the webDavUrl property: DAV compatible URL for the item.
-     *
+     * 
      * @param webDavUrl the webDavUrl value to set.
      * @return the MicrosoftGraphRemoteItem object itself.
      */
@@ -501,7 +489,7 @@ public final class MicrosoftGraphRemoteItem {
 
     /**
      * Get the webUrl property: URL that displays the resource in the browser. Read-only.
-     *
+     * 
      * @return the webUrl value.
      */
     public String webUrl() {
@@ -510,7 +498,7 @@ public final class MicrosoftGraphRemoteItem {
 
     /**
      * Set the webUrl property: URL that displays the resource in the browser. Read-only.
-     *
+     * 
      * @param webUrl the webUrl value to set.
      * @return the MicrosoftGraphRemoteItem object itself.
      */
@@ -521,17 +509,16 @@ public final class MicrosoftGraphRemoteItem {
 
     /**
      * Get the additionalProperties property: remoteItem.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: remoteItem.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphRemoteItem object itself.
      */
@@ -540,17 +527,9 @@ public final class MicrosoftGraphRemoteItem {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -590,5 +569,112 @@ public final class MicrosoftGraphRemoteItem {
         if (video() != null) {
             video().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("createdBy", this.createdBy);
+        jsonWriter.writeStringField("createdDateTime",
+            this.createdDateTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.createdDateTime));
+        jsonWriter.writeJsonField("file", this.file);
+        jsonWriter.writeJsonField("fileSystemInfo", this.fileSystemInfo);
+        jsonWriter.writeJsonField("folder", this.folder);
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeJsonField("image", this.image);
+        jsonWriter.writeJsonField("lastModifiedBy", this.lastModifiedBy);
+        jsonWriter.writeStringField("lastModifiedDateTime",
+            this.lastModifiedDateTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastModifiedDateTime));
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeJsonField("package", this.packageProperty);
+        jsonWriter.writeJsonField("parentReference", this.parentReference);
+        jsonWriter.writeJsonField("shared", this.shared);
+        jsonWriter.writeJsonField("sharepointIds", this.sharepointIds);
+        jsonWriter.writeNumberField("size", this.size);
+        jsonWriter.writeJsonField("specialFolder", this.specialFolder);
+        jsonWriter.writeJsonField("video", this.video);
+        jsonWriter.writeStringField("webDavUrl", this.webDavUrl);
+        jsonWriter.writeStringField("webUrl", this.webUrl);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphRemoteItem from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphRemoteItem if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphRemoteItem.
+     */
+    public static MicrosoftGraphRemoteItem fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphRemoteItem deserializedMicrosoftGraphRemoteItem = new MicrosoftGraphRemoteItem();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("createdBy".equals(fieldName)) {
+                    deserializedMicrosoftGraphRemoteItem.createdBy = MicrosoftGraphIdentitySet.fromJson(reader);
+                } else if ("createdDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphRemoteItem.createdDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("file".equals(fieldName)) {
+                    deserializedMicrosoftGraphRemoteItem.file = MicrosoftGraphFile.fromJson(reader);
+                } else if ("fileSystemInfo".equals(fieldName)) {
+                    deserializedMicrosoftGraphRemoteItem.fileSystemInfo = MicrosoftGraphFileSystemInfo.fromJson(reader);
+                } else if ("folder".equals(fieldName)) {
+                    deserializedMicrosoftGraphRemoteItem.folder = MicrosoftGraphFolder.fromJson(reader);
+                } else if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphRemoteItem.id = reader.getString();
+                } else if ("image".equals(fieldName)) {
+                    deserializedMicrosoftGraphRemoteItem.image = MicrosoftGraphImage.fromJson(reader);
+                } else if ("lastModifiedBy".equals(fieldName)) {
+                    deserializedMicrosoftGraphRemoteItem.lastModifiedBy = MicrosoftGraphIdentitySet.fromJson(reader);
+                } else if ("lastModifiedDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphRemoteItem.lastModifiedDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("name".equals(fieldName)) {
+                    deserializedMicrosoftGraphRemoteItem.name = reader.getString();
+                } else if ("package".equals(fieldName)) {
+                    deserializedMicrosoftGraphRemoteItem.packageProperty = MicrosoftGraphPackage.fromJson(reader);
+                } else if ("parentReference".equals(fieldName)) {
+                    deserializedMicrosoftGraphRemoteItem.parentReference = MicrosoftGraphItemReference.fromJson(reader);
+                } else if ("shared".equals(fieldName)) {
+                    deserializedMicrosoftGraphRemoteItem.shared = MicrosoftGraphShared.fromJson(reader);
+                } else if ("sharepointIds".equals(fieldName)) {
+                    deserializedMicrosoftGraphRemoteItem.sharepointIds = MicrosoftGraphSharepointIds.fromJson(reader);
+                } else if ("size".equals(fieldName)) {
+                    deserializedMicrosoftGraphRemoteItem.size = reader.getNullable(JsonReader::getLong);
+                } else if ("specialFolder".equals(fieldName)) {
+                    deserializedMicrosoftGraphRemoteItem.specialFolder = MicrosoftGraphSpecialFolder.fromJson(reader);
+                } else if ("video".equals(fieldName)) {
+                    deserializedMicrosoftGraphRemoteItem.video = MicrosoftGraphVideo.fromJson(reader);
+                } else if ("webDavUrl".equals(fieldName)) {
+                    deserializedMicrosoftGraphRemoteItem.webDavUrl = reader.getString();
+                } else if ("webUrl".equals(fieldName)) {
+                    deserializedMicrosoftGraphRemoteItem.webUrl = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphRemoteItem.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphRemoteItem;
+        });
     }
 }

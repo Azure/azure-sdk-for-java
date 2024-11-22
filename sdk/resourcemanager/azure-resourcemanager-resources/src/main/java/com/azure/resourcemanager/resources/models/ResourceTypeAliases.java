@@ -5,24 +5,26 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The resource type aliases definition.
  */
 @Fluent
-public final class ResourceTypeAliases {
+public final class ResourceTypeAliases implements JsonSerializable<ResourceTypeAliases> {
     /*
      * The resource type name.
      */
-    @JsonProperty(value = "resourceType")
     private String resourceType;
 
     /*
      * The aliases for property names.
      */
-    @JsonProperty(value = "aliases")
     private List<Alias> aliases;
 
     /**
@@ -80,5 +82,45 @@ public final class ResourceTypeAliases {
         if (aliases() != null) {
             aliases().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("resourceType", this.resourceType);
+        jsonWriter.writeArrayField("aliases", this.aliases, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourceTypeAliases from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourceTypeAliases if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ResourceTypeAliases.
+     */
+    public static ResourceTypeAliases fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourceTypeAliases deserializedResourceTypeAliases = new ResourceTypeAliases();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceType".equals(fieldName)) {
+                    deserializedResourceTypeAliases.resourceType = reader.getString();
+                } else if ("aliases".equals(fieldName)) {
+                    List<Alias> aliases = reader.readArray(reader1 -> Alias.fromJson(reader1));
+                    deserializedResourceTypeAliases.aliases = aliases;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResourceTypeAliases;
+        });
     }
 }

@@ -5,25 +5,28 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appplatform.fluent.models.PredefinedAcceleratorResourceInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The PredefinedAcceleratorResourceCollection model.
  */
 @Fluent
-public final class PredefinedAcceleratorResourceCollection {
+public final class PredefinedAcceleratorResourceCollection
+    implements JsonSerializable<PredefinedAcceleratorResourceCollection> {
     /*
      * The value property.
      */
-    @JsonProperty(value = "value")
     private List<PredefinedAcceleratorResourceInner> value;
 
     /*
      * The nextLink property.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
@@ -81,5 +84,47 @@ public final class PredefinedAcceleratorResourceCollection {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PredefinedAcceleratorResourceCollection from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PredefinedAcceleratorResourceCollection if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PredefinedAcceleratorResourceCollection.
+     */
+    public static PredefinedAcceleratorResourceCollection fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PredefinedAcceleratorResourceCollection deserializedPredefinedAcceleratorResourceCollection
+                = new PredefinedAcceleratorResourceCollection();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<PredefinedAcceleratorResourceInner> value
+                        = reader.readArray(reader1 -> PredefinedAcceleratorResourceInner.fromJson(reader1));
+                    deserializedPredefinedAcceleratorResourceCollection.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedPredefinedAcceleratorResourceCollection.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPredefinedAcceleratorResourceCollection;
+        });
     }
 }

@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** Name-value pair. */
 @Fluent
 public final class NameValuePair {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NameValuePair.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(NameValuePair.class);
 
     /*
      * The name in the name-value pair.

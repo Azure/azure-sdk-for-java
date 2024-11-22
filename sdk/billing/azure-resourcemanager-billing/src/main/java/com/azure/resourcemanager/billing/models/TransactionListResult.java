@@ -5,56 +5,38 @@
 package com.azure.resourcemanager.billing.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.billing.fluent.models.TransactionInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The list of transactions. */
+/**
+ * A container for a list of resources.
+ */
 @Immutable
-public final class TransactionListResult {
-    /*
-     * The list of transactions.
-     */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
-    private List<TransactionInner> value;
-
-    /*
-     * Total number of records.
-     */
-    @JsonProperty(value = "totalCount", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer totalCount;
-
+public final class TransactionListResult implements JsonSerializable<TransactionListResult> {
     /*
      * The link (url) to the next page of results.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of TransactionListResult class. */
+    /*
+     * The list of resources.
+     */
+    private List<TransactionInner> value;
+
+    /**
+     * Creates an instance of TransactionListResult class.
+     */
     public TransactionListResult() {
     }
 
     /**
-     * Get the value property: The list of transactions.
-     *
-     * @return the value value.
-     */
-    public List<TransactionInner> value() {
-        return this.value;
-    }
-
-    /**
-     * Get the totalCount property: Total number of records.
-     *
-     * @return the totalCount value.
-     */
-    public Integer totalCount() {
-        return this.totalCount;
-    }
-
-    /**
      * Get the nextLink property: The link (url) to the next page of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -62,13 +44,60 @@ public final class TransactionListResult {
     }
 
     /**
+     * Get the value property: The list of resources.
+     * 
+     * @return the value value.
+     */
+    public List<TransactionInner> value() {
+        return this.value;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TransactionListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TransactionListResult if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TransactionListResult.
+     */
+    public static TransactionListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TransactionListResult deserializedTransactionListResult = new TransactionListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("nextLink".equals(fieldName)) {
+                    deserializedTransactionListResult.nextLink = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    List<TransactionInner> value = reader.readArray(reader1 -> TransactionInner.fromJson(reader1));
+                    deserializedTransactionListResult.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTransactionListResult;
+        });
     }
 }

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -47,7 +46,6 @@ public final class ProviderAuthorizationConsentState extends ExpandableStringEnu
      * @param name a name to look for.
      * @return the corresponding ProviderAuthorizationConsentState.
      */
-    @JsonCreator
     public static ProviderAuthorizationConsentState fromString(String name) {
         return fromString(name, ProviderAuthorizationConsentState.class);
     }

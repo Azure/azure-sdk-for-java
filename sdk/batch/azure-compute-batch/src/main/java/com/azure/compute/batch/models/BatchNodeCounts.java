@@ -241,46 +241,6 @@ public final class BatchNodeCounts implements JsonSerializable<BatchNodeCounts> 
         return this.total;
     }
 
-    /**
-     * Creates an instance of BatchNodeCounts class.
-     *
-     * @param creating the creating value to set.
-     * @param idle the idle value to set.
-     * @param offline the offline value to set.
-     * @param preempted the preempted value to set.
-     * @param rebooting the rebooting value to set.
-     * @param reimaging the reimaging value to set.
-     * @param running the running value to set.
-     * @param starting the starting value to set.
-     * @param startTaskFailed the startTaskFailed value to set.
-     * @param leavingPool the leavingPool value to set.
-     * @param unknown the unknown value to set.
-     * @param unusable the unusable value to set.
-     * @param waitingForStartTask the waitingForStartTask value to set.
-     * @param total the total value to set.
-     * @param upgradingOs the upgradingOs value to set.
-     */
-    @Generated
-    private BatchNodeCounts(int creating, int idle, int offline, int preempted, int rebooting, int reimaging,
-        int running, int starting, int startTaskFailed, int leavingPool, int unknown, int unusable,
-        int waitingForStartTask, int total, int upgradingOs) {
-        this.creating = creating;
-        this.idle = idle;
-        this.offline = offline;
-        this.preempted = preempted;
-        this.rebooting = rebooting;
-        this.reimaging = reimaging;
-        this.running = running;
-        this.starting = starting;
-        this.startTaskFailed = startTaskFailed;
-        this.leavingPool = leavingPool;
-        this.unknown = unknown;
-        this.unusable = unusable;
-        this.waitingForStartTask = waitingForStartTask;
-        this.total = total;
-        this.upgradingOs = upgradingOs;
-    }
-
     /*
      * The number of Compute Nodes in the upgradingOS state.
      */
@@ -317,6 +277,8 @@ public final class BatchNodeCounts implements JsonSerializable<BatchNodeCounts> 
         jsonWriter.writeIntField("unknown", this.unknown);
         jsonWriter.writeIntField("unusable", this.unusable);
         jsonWriter.writeIntField("waitingForStartTask", this.waitingForStartTask);
+        jsonWriter.writeIntField("deallocated", this.deallocated);
+        jsonWriter.writeIntField("deallocating", this.deallocating);
         jsonWriter.writeIntField("total", this.total);
         jsonWriter.writeIntField("upgradingOS", this.upgradingOs);
         return jsonWriter.writeEndObject();
@@ -347,6 +309,8 @@ public final class BatchNodeCounts implements JsonSerializable<BatchNodeCounts> 
             int unknown = 0;
             int unusable = 0;
             int waitingForStartTask = 0;
+            int deallocated = 0;
+            int deallocating = 0;
             int total = 0;
             int upgradingOs = 0;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -378,6 +342,10 @@ public final class BatchNodeCounts implements JsonSerializable<BatchNodeCounts> 
                     unusable = reader.getInt();
                 } else if ("waitingForStartTask".equals(fieldName)) {
                     waitingForStartTask = reader.getInt();
+                } else if ("deallocated".equals(fieldName)) {
+                    deallocated = reader.getInt();
+                } else if ("deallocating".equals(fieldName)) {
+                    deallocating = reader.getInt();
                 } else if ("total".equals(fieldName)) {
                     total = reader.getInt();
                 } else if ("upgradingOS".equals(fieldName)) {
@@ -387,7 +355,84 @@ public final class BatchNodeCounts implements JsonSerializable<BatchNodeCounts> 
                 }
             }
             return new BatchNodeCounts(creating, idle, offline, preempted, rebooting, reimaging, running, starting,
-                startTaskFailed, leavingPool, unknown, unusable, waitingForStartTask, total, upgradingOs);
+                startTaskFailed, leavingPool, unknown, unusable, waitingForStartTask, deallocated, deallocating, total,
+                upgradingOs);
         });
+    }
+
+    /*
+     * The number of Compute Nodes in the deallocated state.
+     */
+    @Generated
+    private final int deallocated;
+
+    /*
+     * The number of Compute Nodes in the deallocating state.
+     */
+    @Generated
+    private final int deallocating;
+
+    /**
+     * Creates an instance of BatchNodeCounts class.
+     *
+     * @param creating the creating value to set.
+     * @param idle the idle value to set.
+     * @param offline the offline value to set.
+     * @param preempted the preempted value to set.
+     * @param rebooting the rebooting value to set.
+     * @param reimaging the reimaging value to set.
+     * @param running the running value to set.
+     * @param starting the starting value to set.
+     * @param startTaskFailed the startTaskFailed value to set.
+     * @param leavingPool the leavingPool value to set.
+     * @param unknown the unknown value to set.
+     * @param unusable the unusable value to set.
+     * @param waitingForStartTask the waitingForStartTask value to set.
+     * @param deallocated the deallocated value to set.
+     * @param deallocating the deallocating value to set.
+     * @param total the total value to set.
+     * @param upgradingOs the upgradingOs value to set.
+     */
+    @Generated
+    private BatchNodeCounts(int creating, int idle, int offline, int preempted, int rebooting, int reimaging,
+        int running, int starting, int startTaskFailed, int leavingPool, int unknown, int unusable,
+        int waitingForStartTask, int deallocated, int deallocating, int total, int upgradingOs) {
+        this.creating = creating;
+        this.idle = idle;
+        this.offline = offline;
+        this.preempted = preempted;
+        this.rebooting = rebooting;
+        this.reimaging = reimaging;
+        this.running = running;
+        this.starting = starting;
+        this.startTaskFailed = startTaskFailed;
+        this.leavingPool = leavingPool;
+        this.unknown = unknown;
+        this.unusable = unusable;
+        this.waitingForStartTask = waitingForStartTask;
+        this.deallocated = deallocated;
+        this.deallocating = deallocating;
+        this.total = total;
+        this.upgradingOs = upgradingOs;
+    }
+
+    /**
+     * Get the deallocated property: The number of Compute Nodes in the deallocated state.
+     *
+     * @return the deallocated value.
+     */
+    @Generated
+    public int getDeallocated() {
+        return this.deallocated;
+    }
+
+    /**
+     * Get the deallocating property: The number of Compute Nodes in the deallocating state.
+     *
+     * @return the deallocating value.
+     */
+    @Generated
+    public int getDeallocating() {
+        return this.deallocating;
     }
 }

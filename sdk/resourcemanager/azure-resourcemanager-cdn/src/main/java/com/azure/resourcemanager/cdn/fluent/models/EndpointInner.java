@@ -7,6 +7,9 @@ package com.azure.resourcemanager.cdn.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cdn.models.DeepCreatedCustomDomain;
 import com.azure.resourcemanager.cdn.models.DeepCreatedOrigin;
 import com.azure.resourcemanager.cdn.models.DeepCreatedOriginGroup;
@@ -19,7 +22,7 @@ import com.azure.resourcemanager.cdn.models.OptimizationType;
 import com.azure.resourcemanager.cdn.models.QueryStringCachingBehavior;
 import com.azure.resourcemanager.cdn.models.ResourceReference;
 import com.azure.resourcemanager.cdn.models.UrlSigningKey;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -32,14 +35,27 @@ public final class EndpointInner extends Resource {
     /*
      * The JSON object that contains the properties required to create an endpoint.
      */
-    @JsonProperty(value = "properties")
     private EndpointProperties innerProperties;
 
     /*
      * Read only system data
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
 
     /**
      * Creates an instance of EndpointInner class.
@@ -63,6 +79,36 @@ public final class EndpointInner extends Resource {
      */
     public SystemData systemData() {
         return this.systemData;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
     }
 
     /**
@@ -220,9 +266,9 @@ public final class EndpointInner extends Resource {
 
     /**
      * Get the originHostHeader property: The host header value sent to the origin with each request. This property at
-     * Endpoint is only allowed when endpoint uses single origin and can be overridden by the same property specified
-     * at origin.If you leave this blank, the request hostname determines this value. Azure CDN origins, such as Web
-     * Apps, Blob Storage, and Cloud Services require this host header value to match the origin hostname by default.
+     * Endpoint is only allowed when endpoint uses single origin and can be overridden by the same property specified at
+     * origin.If you leave this blank, the request hostname determines this value. Azure CDN origins, such as Web Apps,
+     * Blob Storage, and Cloud Services require this host header value to match the origin hostname by default.
      * 
      * @return the originHostHeader value.
      */
@@ -232,9 +278,9 @@ public final class EndpointInner extends Resource {
 
     /**
      * Set the originHostHeader property: The host header value sent to the origin with each request. This property at
-     * Endpoint is only allowed when endpoint uses single origin and can be overridden by the same property specified
-     * at origin.If you leave this blank, the request hostname determines this value. Azure CDN origins, such as Web
-     * Apps, Blob Storage, and Cloud Services require this host header value to match the origin hostname by default.
+     * Endpoint is only allowed when endpoint uses single origin and can be overridden by the same property specified at
+     * origin.If you leave this blank, the request hostname determines this value. Azure CDN origins, such as Web Apps,
+     * Blob Storage, and Cloud Services require this host header value to match the origin hostname by default.
      * 
      * @param originHostHeader the originHostHeader value to set.
      * @return the EndpointInner object itself.
@@ -249,8 +295,8 @@ public final class EndpointInner extends Resource {
 
     /**
      * Get the isCompressionEnabled property: Indicates whether content compression is enabled on CDN. Default value is
-     * false. If compression is enabled, content will be served as compressed if user requests for a compressed
-     * version. Content won't be compressed on CDN when requested content is smaller than 1 byte or larger than 1 MB.
+     * false. If compression is enabled, content will be served as compressed if user requests for a compressed version.
+     * Content won't be compressed on CDN when requested content is smaller than 1 byte or larger than 1 MB.
      * 
      * @return the isCompressionEnabled value.
      */
@@ -260,8 +306,8 @@ public final class EndpointInner extends Resource {
 
     /**
      * Set the isCompressionEnabled property: Indicates whether content compression is enabled on CDN. Default value is
-     * false. If compression is enabled, content will be served as compressed if user requests for a compressed
-     * version. Content won't be compressed on CDN when requested content is smaller than 1 byte or larger than 1 MB.
+     * false. If compression is enabled, content will be served as compressed if user requests for a compressed version.
+     * Content won't be compressed on CDN when requested content is smaller than 1 byte or larger than 1 MB.
      * 
      * @param isCompressionEnabled the isCompressionEnabled value to set.
      * @return the EndpointInner object itself.
@@ -275,8 +321,8 @@ public final class EndpointInner extends Resource {
     }
 
     /**
-     * Get the isHttpAllowed property: Indicates whether HTTP traffic is allowed on the endpoint. Default value is
-     * true. At least one protocol (HTTP or HTTPS) must be allowed.
+     * Get the isHttpAllowed property: Indicates whether HTTP traffic is allowed on the endpoint. Default value is true.
+     * At least one protocol (HTTP or HTTPS) must be allowed.
      * 
      * @return the isHttpAllowed value.
      */
@@ -285,8 +331,8 @@ public final class EndpointInner extends Resource {
     }
 
     /**
-     * Set the isHttpAllowed property: Indicates whether HTTP traffic is allowed on the endpoint. Default value is
-     * true. At least one protocol (HTTP or HTTPS) must be allowed.
+     * Set the isHttpAllowed property: Indicates whether HTTP traffic is allowed on the endpoint. Default value is true.
+     * At least one protocol (HTTP or HTTPS) must be allowed.
      * 
      * @param isHttpAllowed the isHttpAllowed value to set.
      * @return the EndpointInner object itself.
@@ -532,5 +578,57 @@ public final class EndpointInner extends Resource {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EndpointInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EndpointInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the EndpointInner.
+     */
+    public static EndpointInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EndpointInner deserializedEndpointInner = new EndpointInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedEndpointInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedEndpointInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedEndpointInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedEndpointInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedEndpointInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedEndpointInner.innerProperties = EndpointProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedEndpointInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEndpointInner;
+        });
     }
 }

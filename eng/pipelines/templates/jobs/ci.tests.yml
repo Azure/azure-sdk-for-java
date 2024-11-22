@@ -48,6 +48,9 @@ parameters:
   - name: EnvVars
     type: object
     default: {}
+  - name: VersionOverride
+    type: string
+    default: $(VersionOverride)
 
 jobs:
   - job:
@@ -136,7 +139,6 @@ jobs:
       - template: /eng/pipelines/templates/steps/run-and-validate-linting.yml
         parameters:
           JavaBuildVersion: $(JavaTestVersion)
-          JavadocSafeJavaBuildVersion: $(JavadocSafeJavaBuildVersion)
           AdditionalLintingOptions: ${{ parameters.AdditionalLintingOptions }}
           BuildParallelization: ${{ parameters.BuildParallelization }}
           ContinueOnError: true
@@ -150,6 +152,7 @@ jobs:
           TestParallelization: ${{ parameters.TestParallelization }}
           BuildParallelization: ${{ parameters.BuildParallelization }}
           TestEnvVars: ${{ parameters.EnvVars }}
+          VersionOverride: ${{ parameters.VersionOverride }}
 
       - template: /eng/pipelines/templates/steps/post-job-cleanup.yml
 

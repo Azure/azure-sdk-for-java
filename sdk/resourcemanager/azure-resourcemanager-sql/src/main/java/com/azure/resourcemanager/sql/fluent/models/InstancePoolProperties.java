@@ -6,38 +6,43 @@ package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.models.InstancePoolLicenseType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Properties of an instance pool. */
+/**
+ * Properties of an instance pool.
+ */
 @Fluent
-public final class InstancePoolProperties {
+public final class InstancePoolProperties implements JsonSerializable<InstancePoolProperties> {
     /*
      * Resource ID of the subnet to place this instance pool in.
      */
-    @JsonProperty(value = "subnetId", required = true)
     private String subnetId;
 
     /*
      * Count of vCores belonging to this instance pool.
      */
-    @JsonProperty(value = "vCores", required = true)
     private int vCores;
 
     /*
      * The license type. Possible values are 'LicenseIncluded' (price for SQL license is included) and 'BasePrice'
      * (without SQL license price).
      */
-    @JsonProperty(value = "licenseType", required = true)
     private InstancePoolLicenseType licenseType;
 
-    /** Creates an instance of InstancePoolProperties class. */
+    /**
+     * Creates an instance of InstancePoolProperties class.
+     */
     public InstancePoolProperties() {
     }
 
     /**
      * Get the subnetId property: Resource ID of the subnet to place this instance pool in.
-     *
+     * 
      * @return the subnetId value.
      */
     public String subnetId() {
@@ -46,7 +51,7 @@ public final class InstancePoolProperties {
 
     /**
      * Set the subnetId property: Resource ID of the subnet to place this instance pool in.
-     *
+     * 
      * @param subnetId the subnetId value to set.
      * @return the InstancePoolProperties object itself.
      */
@@ -57,7 +62,7 @@ public final class InstancePoolProperties {
 
     /**
      * Get the vCores property: Count of vCores belonging to this instance pool.
-     *
+     * 
      * @return the vCores value.
      */
     public int vCores() {
@@ -66,7 +71,7 @@ public final class InstancePoolProperties {
 
     /**
      * Set the vCores property: Count of vCores belonging to this instance pool.
-     *
+     * 
      * @param vCores the vCores value to set.
      * @return the InstancePoolProperties object itself.
      */
@@ -78,7 +83,7 @@ public final class InstancePoolProperties {
     /**
      * Get the licenseType property: The license type. Possible values are 'LicenseIncluded' (price for SQL license is
      * included) and 'BasePrice' (without SQL license price).
-     *
+     * 
      * @return the licenseType value.
      */
     public InstancePoolLicenseType licenseType() {
@@ -88,7 +93,7 @@ public final class InstancePoolProperties {
     /**
      * Set the licenseType property: The license type. Possible values are 'LicenseIncluded' (price for SQL license is
      * included) and 'BasePrice' (without SQL license price).
-     *
+     * 
      * @param licenseType the licenseType value to set.
      * @return the InstancePoolProperties object itself.
      */
@@ -99,22 +104,65 @@ public final class InstancePoolProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (subnetId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
+            throw LOGGER.atError()
+                .log(
                     new IllegalArgumentException("Missing required property subnetId in model InstancePoolProperties"));
         }
         if (licenseType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property licenseType in model InstancePoolProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property licenseType in model InstancePoolProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(InstancePoolProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("subnetId", this.subnetId);
+        jsonWriter.writeIntField("vCores", this.vCores);
+        jsonWriter.writeStringField("licenseType", this.licenseType == null ? null : this.licenseType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InstancePoolProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InstancePoolProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the InstancePoolProperties.
+     */
+    public static InstancePoolProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InstancePoolProperties deserializedInstancePoolProperties = new InstancePoolProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("subnetId".equals(fieldName)) {
+                    deserializedInstancePoolProperties.subnetId = reader.getString();
+                } else if ("vCores".equals(fieldName)) {
+                    deserializedInstancePoolProperties.vCores = reader.getInt();
+                } else if ("licenseType".equals(fieldName)) {
+                    deserializedInstancePoolProperties.licenseType
+                        = InstancePoolLicenseType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInstancePoolProperties;
+        });
+    }
 }

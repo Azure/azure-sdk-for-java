@@ -5,8 +5,12 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
@@ -14,90 +18,76 @@ import java.util.Map;
  * The SubscriptionFeatureRegistrationProperties model.
  */
 @Fluent
-public final class SubscriptionFeatureRegistrationProperties {
+public final class SubscriptionFeatureRegistrationProperties
+    implements JsonSerializable<SubscriptionFeatureRegistrationProperties> {
     /*
      * The tenantId.
      */
-    @JsonProperty(value = "tenantId", access = JsonProperty.Access.WRITE_ONLY)
     private String tenantId;
 
     /*
      * The subscriptionId.
      */
-    @JsonProperty(value = "subscriptionId", access = JsonProperty.Access.WRITE_ONLY)
     private String subscriptionId;
 
     /*
      * The featureName.
      */
-    @JsonProperty(value = "featureName", access = JsonProperty.Access.WRITE_ONLY)
     private String featureName;
 
     /*
      * The featureDisplayName.
      */
-    @JsonProperty(value = "displayName", access = JsonProperty.Access.WRITE_ONLY)
     private String displayName;
 
     /*
      * The providerNamespace.
      */
-    @JsonProperty(value = "providerNamespace", access = JsonProperty.Access.WRITE_ONLY)
     private String providerNamespace;
 
     /*
      * The state.
      */
-    @JsonProperty(value = "state")
     private SubscriptionFeatureRegistrationState state;
 
     /*
      * Authorization Profile
      */
-    @JsonProperty(value = "authorizationProfile")
     private AuthorizationProfile authorizationProfile;
 
     /*
      * Key-value pairs for meta data.
      */
-    @JsonProperty(value = "metadata")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> metadata;
 
     /*
      * The feature release date.
      */
-    @JsonProperty(value = "releaseDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime releaseDate;
 
     /*
      * The feature registration date.
      */
-    @JsonProperty(value = "registrationDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime registrationDate;
 
     /*
      * The feature documentation link.
      */
-    @JsonProperty(value = "documentationLink", access = JsonProperty.Access.WRITE_ONLY)
     private String documentationLink;
 
     /*
      * The feature approval type.
      */
-    @JsonProperty(value = "approvalType", access = JsonProperty.Access.WRITE_ONLY)
     private SubscriptionFeatureRegistrationApprovalType approvalType;
 
     /*
      * Indicates whether feature should be displayed in Portal.
      */
-    @JsonProperty(value = "shouldFeatureDisplayInPortal")
     private Boolean shouldFeatureDisplayInPortal;
 
     /*
      * The feature description.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /**
@@ -298,5 +288,79 @@ public final class SubscriptionFeatureRegistrationProperties {
         if (authorizationProfile() != null) {
             authorizationProfile().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
+        jsonWriter.writeJsonField("authorizationProfile", this.authorizationProfile);
+        jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeBooleanField("shouldFeatureDisplayInPortal", this.shouldFeatureDisplayInPortal);
+        jsonWriter.writeStringField("description", this.description);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SubscriptionFeatureRegistrationProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SubscriptionFeatureRegistrationProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SubscriptionFeatureRegistrationProperties.
+     */
+    public static SubscriptionFeatureRegistrationProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SubscriptionFeatureRegistrationProperties deserializedSubscriptionFeatureRegistrationProperties
+                = new SubscriptionFeatureRegistrationProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tenantId".equals(fieldName)) {
+                    deserializedSubscriptionFeatureRegistrationProperties.tenantId = reader.getString();
+                } else if ("subscriptionId".equals(fieldName)) {
+                    deserializedSubscriptionFeatureRegistrationProperties.subscriptionId = reader.getString();
+                } else if ("featureName".equals(fieldName)) {
+                    deserializedSubscriptionFeatureRegistrationProperties.featureName = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedSubscriptionFeatureRegistrationProperties.displayName = reader.getString();
+                } else if ("providerNamespace".equals(fieldName)) {
+                    deserializedSubscriptionFeatureRegistrationProperties.providerNamespace = reader.getString();
+                } else if ("state".equals(fieldName)) {
+                    deserializedSubscriptionFeatureRegistrationProperties.state
+                        = SubscriptionFeatureRegistrationState.fromString(reader.getString());
+                } else if ("authorizationProfile".equals(fieldName)) {
+                    deserializedSubscriptionFeatureRegistrationProperties.authorizationProfile
+                        = AuthorizationProfile.fromJson(reader);
+                } else if ("metadata".equals(fieldName)) {
+                    Map<String, String> metadata = reader.readMap(reader1 -> reader1.getString());
+                    deserializedSubscriptionFeatureRegistrationProperties.metadata = metadata;
+                } else if ("releaseDate".equals(fieldName)) {
+                    deserializedSubscriptionFeatureRegistrationProperties.releaseDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("registrationDate".equals(fieldName)) {
+                    deserializedSubscriptionFeatureRegistrationProperties.registrationDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("documentationLink".equals(fieldName)) {
+                    deserializedSubscriptionFeatureRegistrationProperties.documentationLink = reader.getString();
+                } else if ("approvalType".equals(fieldName)) {
+                    deserializedSubscriptionFeatureRegistrationProperties.approvalType
+                        = SubscriptionFeatureRegistrationApprovalType.fromString(reader.getString());
+                } else if ("shouldFeatureDisplayInPortal".equals(fieldName)) {
+                    deserializedSubscriptionFeatureRegistrationProperties.shouldFeatureDisplayInPortal
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("description".equals(fieldName)) {
+                    deserializedSubscriptionFeatureRegistrationProperties.description = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSubscriptionFeatureRegistrationProperties;
+        });
     }
 }

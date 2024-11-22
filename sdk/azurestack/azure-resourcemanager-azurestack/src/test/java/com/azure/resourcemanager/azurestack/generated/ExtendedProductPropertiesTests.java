@@ -10,11 +10,9 @@ import com.azure.resourcemanager.azurestack.fluent.models.ExtendedProductPropert
 public final class ExtendedProductPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ExtendedProductProperties model =
-            BinaryData
-                .fromString(
-                    "{\"version\":\"efovgmk\",\"osDiskImage\":{\"operatingSystem\":\"Windows\",\"sourceBlobSasUri\":\"bvyvdcsity\"},\"dataDiskImages\":[{\"lun\":1611277697,\"sourceBlobSasUri\":\"ectehf\"},{\"lun\":1860942440,\"sourceBlobSasUri\":\"jeyp\"}],\"computeRole\":\"PaaS\",\"isSystemExtension\":true,\"sourceBlob\":{\"uri\":\"q\"},\"supportMultipleExtensions\":true,\"vmOsType\":\"Windows\",\"vmScaleSetEnabled\":true}")
-                .toObject(ExtendedProductProperties.class);
+        ExtendedProductProperties model = BinaryData.fromString(
+            "{\"version\":\"alpbuxwgipwhon\",\"osDiskImage\":{\"operatingSystem\":\"None\",\"sourceBlobSasUri\":\"xdeoejzic\"},\"dataDiskImages\":[{\"lun\":1558612469,\"sourceBlobSasUri\":\"tgzfbishcbkh\"}],\"computeRole\":\"None\",\"isSystemExtension\":true,\"sourceBlob\":{\"uri\":\"md\"},\"supportMultipleExtensions\":true,\"vmOsType\":\"None\",\"vmScaleSetEnabled\":true}")
+            .toObject(ExtendedProductProperties.class);
     }
 
     @org.junit.jupiter.api.Test

@@ -5,53 +5,80 @@
 package com.azure.resourcemanager.defendereasm.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Resources provisioning states. */
+/**
+ * Resources provisioning states.
+ */
 public final class ResourceState extends ExpandableStringEnum<ResourceState> {
-    /** Static value NotSpecified for ResourceState. */
+    /**
+     * Static value NotSpecified for ResourceState.
+     */
     public static final ResourceState NOT_SPECIFIED = fromString("NotSpecified");
 
-    /** Static value Accepted for ResourceState. */
+    /**
+     * Static value Accepted for ResourceState.
+     */
     public static final ResourceState ACCEPTED = fromString("Accepted");
 
-    /** Static value Creating for ResourceState. */
+    /**
+     * Static value Creating for ResourceState.
+     */
     public static final ResourceState CREATING = fromString("Creating");
 
-    /** Static value Succeeded for ResourceState. */
+    /**
+     * Static value Succeeded for ResourceState.
+     */
     public static final ResourceState SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Failed for ResourceState. */
+    /**
+     * Static value Failed for ResourceState.
+     */
     public static final ResourceState FAILED = fromString("Failed");
 
-    /** Static value Canceled for ResourceState. */
+    /**
+     * Static value Canceled for ResourceState.
+     */
     public static final ResourceState CANCELED = fromString("Canceled");
 
-    /** Static value ProvisioningResources for ResourceState. */
+    /**
+     * Static value ProvisioningResources for ResourceState.
+     */
     public static final ResourceState PROVISIONING_RESOURCES = fromString("ProvisioningResources");
 
-    /** Static value InstallingApplication for ResourceState. */
+    /**
+     * Static value InstallingApplication for ResourceState.
+     */
     public static final ResourceState INSTALLING_APPLICATION = fromString("InstallingApplication");
 
-    /** Static value ConfiguringApplication for ResourceState. */
+    /**
+     * Static value ConfiguringApplication for ResourceState.
+     */
     public static final ResourceState CONFIGURING_APPLICATION = fromString("ConfiguringApplication");
 
-    /** Static value MigratingApplicationData for ResourceState. */
+    /**
+     * Static value MigratingApplicationData for ResourceState.
+     */
     public static final ResourceState MIGRATING_APPLICATION_DATA = fromString("MigratingApplicationData");
 
-    /** Static value RunningValidations for ResourceState. */
+    /**
+     * Static value RunningValidations for ResourceState.
+     */
     public static final ResourceState RUNNING_VALIDATIONS = fromString("RunningValidations");
 
-    /** Static value CreatingArtifacts for ResourceState. */
+    /**
+     * Static value CreatingArtifacts for ResourceState.
+     */
     public static final ResourceState CREATING_ARTIFACTS = fromString("CreatingArtifacts");
 
-    /** Static value DeletingArtifacts for ResourceState. */
+    /**
+     * Static value DeletingArtifacts for ResourceState.
+     */
     public static final ResourceState DELETING_ARTIFACTS = fromString("DeletingArtifacts");
 
     /**
      * Creates a new instance of ResourceState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -60,18 +87,17 @@ public final class ResourceState extends ExpandableStringEnum<ResourceState> {
 
     /**
      * Creates or finds a ResourceState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ResourceState.
      */
-    @JsonCreator
     public static ResourceState fromString(String name) {
         return fromString(name, ResourceState.class);
     }
 
     /**
      * Gets known ResourceState values.
-     *
+     * 
      * @return known ResourceState values.
      */
     public static Collection<ResourceState> values() {

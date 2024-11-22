@@ -34,19 +34,9 @@ public final class LicenseProfileMachineInstanceViewEsuPropertiesInner
     private LicenseAssignmentState licenseAssignmentState;
 
     /*
-     * The guid id of the license.
+     * Indicates whether there is an ESU Key currently active for the machine.
      */
-    private String assignedLicenseImmutableId;
-
-    /*
-     * The list of ESU keys.
-     */
-    private List<EsuKey> esuKeys;
-
-    /*
-     * The type of the Esu servers.
-     */
-    private EsuServerType serverType;
+    private EsuKeyState esuKeyState;
 
     /*
      * Indicates the eligibility state of Esu.
@@ -54,9 +44,19 @@ public final class LicenseProfileMachineInstanceViewEsuPropertiesInner
     private EsuEligibility esuEligibility;
 
     /*
-     * Indicates whether there is an ESU Key currently active for the machine.
+     * The type of the Esu servers.
      */
-    private EsuKeyState esuKeyState;
+    private EsuServerType serverType;
+
+    /*
+     * The list of ESU keys.
+     */
+    private List<EsuKey> esuKeys;
+
+    /*
+     * The guid id of the license.
+     */
+    private String assignedLicenseImmutableId;
 
     /**
      * Creates an instance of LicenseProfileMachineInstanceViewEsuPropertiesInner class.
@@ -106,33 +106,13 @@ public final class LicenseProfileMachineInstanceViewEsuPropertiesInner
     }
 
     /**
-     * Get the assignedLicenseImmutableId property: The guid id of the license.
+     * Get the esuKeyState property: Indicates whether there is an ESU Key currently active for the machine.
      * 
-     * @return the assignedLicenseImmutableId value.
+     * @return the esuKeyState value.
      */
     @Override
-    public String assignedLicenseImmutableId() {
-        return this.assignedLicenseImmutableId;
-    }
-
-    /**
-     * Get the esuKeys property: The list of ESU keys.
-     * 
-     * @return the esuKeys value.
-     */
-    @Override
-    public List<EsuKey> esuKeys() {
-        return this.esuKeys;
-    }
-
-    /**
-     * Get the serverType property: The type of the Esu servers.
-     * 
-     * @return the serverType value.
-     */
-    @Override
-    public EsuServerType serverType() {
-        return this.serverType;
+    public EsuKeyState esuKeyState() {
+        return this.esuKeyState;
     }
 
     /**
@@ -146,13 +126,33 @@ public final class LicenseProfileMachineInstanceViewEsuPropertiesInner
     }
 
     /**
-     * Get the esuKeyState property: Indicates whether there is an ESU Key currently active for the machine.
+     * Get the serverType property: The type of the Esu servers.
      * 
-     * @return the esuKeyState value.
+     * @return the serverType value.
      */
     @Override
-    public EsuKeyState esuKeyState() {
-        return this.esuKeyState;
+    public EsuServerType serverType() {
+        return this.serverType;
+    }
+
+    /**
+     * Get the esuKeys property: The list of ESU keys.
+     * 
+     * @return the esuKeys value.
+     */
+    @Override
+    public List<EsuKey> esuKeys() {
+        return this.esuKeys;
+    }
+
+    /**
+     * Get the assignedLicenseImmutableId property: The guid id of the license.
+     * 
+     * @return the assignedLicenseImmutableId value.
+     */
+    @Override
+    public String assignedLicenseImmutableId() {
+        return this.assignedLicenseImmutableId;
     }
 
     /**
@@ -162,9 +162,11 @@ public final class LicenseProfileMachineInstanceViewEsuPropertiesInner
      */
     @Override
     public void validate() {
-        super.validate();
         if (assignedLicense() != null) {
             assignedLicense().validate();
+        }
+        if (esuKeys() != null) {
+            esuKeys().forEach(e -> e.validate());
         }
     }
 

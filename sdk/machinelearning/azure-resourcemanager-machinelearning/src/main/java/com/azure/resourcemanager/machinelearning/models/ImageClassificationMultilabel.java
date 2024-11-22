@@ -6,53 +6,51 @@ package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Image Classification Multilabel. Multi-label image classification is used when an image could have one or more labels
  * from a set of labels - e.g. an image could be labeled with both 'cat' and 'dog'.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "taskType")
-@JsonTypeName("ImageClassificationMultilabel")
 @Fluent
 public final class ImageClassificationMultilabel extends AutoMLVertical {
     /*
+     * [Required] Task type for AutoMLJob.
+     */
+    private TaskType taskType = TaskType.IMAGE_CLASSIFICATION_MULTILABEL;
+
+    /*
      * Primary metric to optimize for this task.
      */
-    @JsonProperty(value = "primaryMetric")
     private ClassificationMultilabelPrimaryMetrics primaryMetric;
 
     /*
      * Settings used for training the model.
      */
-    @JsonProperty(value = "modelSettings")
     private ImageModelSettingsClassification modelSettings;
 
     /*
      * Search space for sampling different combinations of models and their hyperparameters.
      */
-    @JsonProperty(value = "searchSpace")
     private List<ImageModelDistributionSettingsClassification> searchSpace;
 
     /*
      * [Required] Limit settings for the AutoML job.
      */
-    @JsonProperty(value = "limitSettings", required = true)
     private ImageLimitSettings limitSettings;
 
     /*
      * Model sweeping and hyperparameter sweeping related settings.
      */
-    @JsonProperty(value = "sweepSettings")
     private ImageSweepSettings sweepSettings;
 
     /*
      * Validation data inputs.
      */
-    @JsonProperty(value = "validationData")
     private MLTableJobInput validationData;
 
     /*
@@ -60,16 +58,27 @@ public final class ImageClassificationMultilabel extends AutoMLVertical {
      * Values between (0.0 , 1.0)
      * Applied when validation dataset is not provided.
      */
-    @JsonProperty(value = "validationDataSize")
     private Double validationDataSize;
 
-    /** Creates an instance of ImageClassificationMultilabel class. */
+    /**
+     * Creates an instance of ImageClassificationMultilabel class.
+     */
     public ImageClassificationMultilabel() {
     }
 
     /**
+     * Get the taskType property: [Required] Task type for AutoMLJob.
+     * 
+     * @return the taskType value.
+     */
+    @Override
+    public TaskType taskType() {
+        return this.taskType;
+    }
+
+    /**
      * Get the primaryMetric property: Primary metric to optimize for this task.
-     *
+     * 
      * @return the primaryMetric value.
      */
     public ClassificationMultilabelPrimaryMetrics primaryMetric() {
@@ -78,7 +87,7 @@ public final class ImageClassificationMultilabel extends AutoMLVertical {
 
     /**
      * Set the primaryMetric property: Primary metric to optimize for this task.
-     *
+     * 
      * @param primaryMetric the primaryMetric value to set.
      * @return the ImageClassificationMultilabel object itself.
      */
@@ -89,7 +98,7 @@ public final class ImageClassificationMultilabel extends AutoMLVertical {
 
     /**
      * Get the modelSettings property: Settings used for training the model.
-     *
+     * 
      * @return the modelSettings value.
      */
     public ImageModelSettingsClassification modelSettings() {
@@ -98,7 +107,7 @@ public final class ImageClassificationMultilabel extends AutoMLVertical {
 
     /**
      * Set the modelSettings property: Settings used for training the model.
-     *
+     * 
      * @param modelSettings the modelSettings value to set.
      * @return the ImageClassificationMultilabel object itself.
      */
@@ -110,7 +119,7 @@ public final class ImageClassificationMultilabel extends AutoMLVertical {
     /**
      * Get the searchSpace property: Search space for sampling different combinations of models and their
      * hyperparameters.
-     *
+     * 
      * @return the searchSpace value.
      */
     public List<ImageModelDistributionSettingsClassification> searchSpace() {
@@ -120,19 +129,19 @@ public final class ImageClassificationMultilabel extends AutoMLVertical {
     /**
      * Set the searchSpace property: Search space for sampling different combinations of models and their
      * hyperparameters.
-     *
+     * 
      * @param searchSpace the searchSpace value to set.
      * @return the ImageClassificationMultilabel object itself.
      */
-    public ImageClassificationMultilabel withSearchSpace(
-        List<ImageModelDistributionSettingsClassification> searchSpace) {
+    public ImageClassificationMultilabel
+        withSearchSpace(List<ImageModelDistributionSettingsClassification> searchSpace) {
         this.searchSpace = searchSpace;
         return this;
     }
 
     /**
      * Get the limitSettings property: [Required] Limit settings for the AutoML job.
-     *
+     * 
      * @return the limitSettings value.
      */
     public ImageLimitSettings limitSettings() {
@@ -141,7 +150,7 @@ public final class ImageClassificationMultilabel extends AutoMLVertical {
 
     /**
      * Set the limitSettings property: [Required] Limit settings for the AutoML job.
-     *
+     * 
      * @param limitSettings the limitSettings value to set.
      * @return the ImageClassificationMultilabel object itself.
      */
@@ -152,7 +161,7 @@ public final class ImageClassificationMultilabel extends AutoMLVertical {
 
     /**
      * Get the sweepSettings property: Model sweeping and hyperparameter sweeping related settings.
-     *
+     * 
      * @return the sweepSettings value.
      */
     public ImageSweepSettings sweepSettings() {
@@ -161,7 +170,7 @@ public final class ImageClassificationMultilabel extends AutoMLVertical {
 
     /**
      * Set the sweepSettings property: Model sweeping and hyperparameter sweeping related settings.
-     *
+     * 
      * @param sweepSettings the sweepSettings value to set.
      * @return the ImageClassificationMultilabel object itself.
      */
@@ -172,7 +181,7 @@ public final class ImageClassificationMultilabel extends AutoMLVertical {
 
     /**
      * Get the validationData property: Validation data inputs.
-     *
+     * 
      * @return the validationData value.
      */
     public MLTableJobInput validationData() {
@@ -181,7 +190,7 @@ public final class ImageClassificationMultilabel extends AutoMLVertical {
 
     /**
      * Set the validationData property: Validation data inputs.
-     *
+     * 
      * @param validationData the validationData value to set.
      * @return the ImageClassificationMultilabel object itself.
      */
@@ -192,8 +201,10 @@ public final class ImageClassificationMultilabel extends AutoMLVertical {
 
     /**
      * Get the validationDataSize property: The fraction of training dataset that needs to be set aside for validation
-     * purpose. Values between (0.0 , 1.0) Applied when validation dataset is not provided.
-     *
+     * purpose.
+     * Values between (0.0 , 1.0)
+     * Applied when validation dataset is not provided.
+     * 
      * @return the validationDataSize value.
      */
     public Double validationDataSize() {
@@ -202,8 +213,10 @@ public final class ImageClassificationMultilabel extends AutoMLVertical {
 
     /**
      * Set the validationDataSize property: The fraction of training dataset that needs to be set aside for validation
-     * purpose. Values between (0.0 , 1.0) Applied when validation dataset is not provided.
-     *
+     * purpose.
+     * Values between (0.0 , 1.0)
+     * Applied when validation dataset is not provided.
+     * 
      * @param validationDataSize the validationDataSize value to set.
      * @return the ImageClassificationMultilabel object itself.
      */
@@ -212,21 +225,18 @@ public final class ImageClassificationMultilabel extends AutoMLVertical {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ImageClassificationMultilabel withLogVerbosity(LogVerbosity logVerbosity) {
         super.withLogVerbosity(logVerbosity);
         return this;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public ImageClassificationMultilabel withTargetColumnName(String targetColumnName) {
-        super.withTargetColumnName(targetColumnName);
-        return this;
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ImageClassificationMultilabel withTrainingData(MLTableJobInput trainingData) {
         super.withTrainingData(trainingData);
@@ -234,8 +244,17 @@ public final class ImageClassificationMultilabel extends AutoMLVertical {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ImageClassificationMultilabel withTargetColumnName(String targetColumnName) {
+        super.withTargetColumnName(targetColumnName);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -248,10 +267,9 @@ public final class ImageClassificationMultilabel extends AutoMLVertical {
             searchSpace().forEach(e -> e.validate());
         }
         if (limitSettings() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property limitSettings in model ImageClassificationMultilabel"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property limitSettings in model ImageClassificationMultilabel"));
         } else {
             limitSettings().validate();
         }
@@ -264,4 +282,78 @@ public final class ImageClassificationMultilabel extends AutoMLVertical {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ImageClassificationMultilabel.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("trainingData", trainingData());
+        jsonWriter.writeStringField("logVerbosity", logVerbosity() == null ? null : logVerbosity().toString());
+        jsonWriter.writeStringField("targetColumnName", targetColumnName());
+        jsonWriter.writeJsonField("limitSettings", this.limitSettings);
+        jsonWriter.writeStringField("taskType", this.taskType == null ? null : this.taskType.toString());
+        jsonWriter.writeStringField("primaryMetric", this.primaryMetric == null ? null : this.primaryMetric.toString());
+        jsonWriter.writeJsonField("modelSettings", this.modelSettings);
+        jsonWriter.writeArrayField("searchSpace", this.searchSpace, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("sweepSettings", this.sweepSettings);
+        jsonWriter.writeJsonField("validationData", this.validationData);
+        jsonWriter.writeNumberField("validationDataSize", this.validationDataSize);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ImageClassificationMultilabel from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ImageClassificationMultilabel if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ImageClassificationMultilabel.
+     */
+    public static ImageClassificationMultilabel fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ImageClassificationMultilabel deserializedImageClassificationMultilabel
+                = new ImageClassificationMultilabel();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("trainingData".equals(fieldName)) {
+                    deserializedImageClassificationMultilabel.withTrainingData(MLTableJobInput.fromJson(reader));
+                } else if ("logVerbosity".equals(fieldName)) {
+                    deserializedImageClassificationMultilabel
+                        .withLogVerbosity(LogVerbosity.fromString(reader.getString()));
+                } else if ("targetColumnName".equals(fieldName)) {
+                    deserializedImageClassificationMultilabel.withTargetColumnName(reader.getString());
+                } else if ("limitSettings".equals(fieldName)) {
+                    deserializedImageClassificationMultilabel.limitSettings = ImageLimitSettings.fromJson(reader);
+                } else if ("taskType".equals(fieldName)) {
+                    deserializedImageClassificationMultilabel.taskType = TaskType.fromString(reader.getString());
+                } else if ("primaryMetric".equals(fieldName)) {
+                    deserializedImageClassificationMultilabel.primaryMetric
+                        = ClassificationMultilabelPrimaryMetrics.fromString(reader.getString());
+                } else if ("modelSettings".equals(fieldName)) {
+                    deserializedImageClassificationMultilabel.modelSettings
+                        = ImageModelSettingsClassification.fromJson(reader);
+                } else if ("searchSpace".equals(fieldName)) {
+                    List<ImageModelDistributionSettingsClassification> searchSpace
+                        = reader.readArray(reader1 -> ImageModelDistributionSettingsClassification.fromJson(reader1));
+                    deserializedImageClassificationMultilabel.searchSpace = searchSpace;
+                } else if ("sweepSettings".equals(fieldName)) {
+                    deserializedImageClassificationMultilabel.sweepSettings = ImageSweepSettings.fromJson(reader);
+                } else if ("validationData".equals(fieldName)) {
+                    deserializedImageClassificationMultilabel.validationData = MLTableJobInput.fromJson(reader);
+                } else if ("validationDataSize".equals(fieldName)) {
+                    deserializedImageClassificationMultilabel.validationDataSize
+                        = reader.getNullable(JsonReader::getDouble);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedImageClassificationMultilabel;
+        });
+    }
 }

@@ -9,7 +9,8 @@ package com.azure.resourcemanager.cosmos.generated;
  */
 public final class PartitionKeyRangeIdListMetricsSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBPKeyRangeIdGetMetrics.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-08-15/examples/
+     * CosmosDBPKeyRangeIdGetMetrics.json
      */
     /**
      * Sample code: CosmosDBDatabaseAccountRegionGetMetrics.

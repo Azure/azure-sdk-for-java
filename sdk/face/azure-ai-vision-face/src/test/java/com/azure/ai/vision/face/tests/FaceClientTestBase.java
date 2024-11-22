@@ -28,7 +28,8 @@ import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import org.apache.commons.lang3.tuple.Triple;
+import reactor.util.function.Tuple3;
+import reactor.util.function.Tuples;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -37,34 +38,38 @@ import java.util.stream.Stream;
 
 public class FaceClientTestBase extends TestProxyTestBase {
 
-    private static final HashMap<Class<?>, Function<FaceClientTestBase, HttpClient, FaceServiceVersion, Object>> TYPE_MAP = new HashMap<Class<?>, Function<FaceClientTestBase, HttpClient, FaceServiceVersion, Object>>() {{
-            put(FaceClient.class, (testBase, httpClient, serviceVersion) ->
-                testBase.getFaceClientBuilder(serviceVersion, httpClient, true).buildClient());
-            put(FaceAsyncClient.class, (testBase, httpClient, serviceVersion) ->
-                testBase.getFaceClientBuilder(serviceVersion, httpClient, false).buildAsyncClient());
-            put(FaceSessionClient.class, (testBase, httpClient, serviceVersion) ->
-                testBase.getFaceSessionClientBuilder(serviceVersion, httpClient, true).buildClient());
-            put(FaceSessionAsyncClient.class, (testBase, httpClient, serviceVersion) ->
-                testBase.getFaceSessionClientBuilder(serviceVersion, httpClient, false).buildAsyncClient());
-        }};
+    private static final HashMap<Class<?>, Function<FaceClientTestBase, HttpClient, FaceServiceVersion, Object>> TYPE_MAP
+        = new HashMap<Class<?>, Function<FaceClientTestBase, HttpClient, FaceServiceVersion, Object>>() {
+            {
+                put(FaceClient.class, (testBase, httpClient,
+                    serviceVersion) -> testBase.getFaceClientBuilder(serviceVersion, httpClient, true).buildClient());
+                put(FaceAsyncClient.class,
+                    (testBase, httpClient, serviceVersion) -> testBase
+                        .getFaceClientBuilder(serviceVersion, httpClient, false)
+                        .buildAsyncClient());
+                put(FaceSessionClient.class,
+                    (testBase, httpClient, serviceVersion) -> testBase
+                        .getFaceSessionClientBuilder(serviceVersion, httpClient, true)
+                        .buildClient());
+                put(FaceSessionAsyncClient.class,
+                    (testBase, httpClient, serviceVersion) -> testBase
+                        .getFaceSessionClientBuilder(serviceVersion, httpClient, false)
+                        .buildAsyncClient());
+            }
+        };
 
-
-    protected <TSyncClient, TAsyncClient, TCommand> Stream<Triple<String, FaceServiceVersion, Supplier<TCommand>>> createClientArgumentStream(
-            Class<TSyncClient> clientClass,
-            Class<TAsyncClient> asyncClientClass,
+    protected <TSyncClient, TAsyncClient, TCommand> Stream<Tuple3<String, FaceServiceVersion, Supplier<TCommand>>>
+        createClientArgumentStream(Class<TSyncClient> clientClass, Class<TAsyncClient> asyncClientClass,
             CommandProvider<TSyncClient, TAsyncClient, TCommand>[] commandBuilders) {
-        return getHttpClients()
-                .flatMap(httpClient -> Arrays.stream(TestUtils.getServiceVersions())
-                        .flatMap(serviceVersion -> Arrays.stream(commandBuilders)
-                                .map(builderFunction -> Triple.of(
-                                        httpClient.getClass().getSimpleName(), serviceVersion, new CommandProviderAdapter<>(
-                                                httpClient, serviceVersion, clientClass, asyncClientClass, builderFunction)
-                                ))));
+        return getHttpClients().flatMap(httpClient -> Arrays.stream(TestUtils.getServiceVersions())
+            .flatMap(serviceVersion -> Arrays.stream(commandBuilders)
+                .map(builderFunction -> Tuples.of(httpClient.getClass().getSimpleName(), serviceVersion,
+                    new CommandProviderAdapter<>(httpClient, serviceVersion, clientClass, asyncClientClass,
+                        builderFunction)))));
     }
 
     @SuppressWarnings("unchecked")
-    protected <T> T createTestClient(
-            Class<T> clazz, HttpClient httpClient, FaceServiceVersion serviceVersion) {
+    protected <T> T createTestClient(Class<T> clazz, HttpClient httpClient, FaceServiceVersion serviceVersion) {
         Function<FaceClientTestBase, HttpClient, FaceServiceVersion, Object> creator = TYPE_MAP.get(clazz);
         if (null == creator) {
             throw new IllegalArgumentException("No such client type: " + clazz);
@@ -73,13 +78,13 @@ public class FaceClientTestBase extends TestProxyTestBase {
         return (T) creator.apply(this, httpClient, serviceVersion);
     }
 
-    private FaceClientBuilder getFaceClientBuilder(
-            FaceServiceVersion serviceVersion, HttpClient httpClient, boolean isSync) {
+    private FaceClientBuilder getFaceClientBuilder(FaceServiceVersion serviceVersion, HttpClient httpClient,
+        boolean isSync) {
         return this.configureBuilder(new FaceClientBuilder().serviceVersion(serviceVersion), httpClient, isSync);
     }
 
-    private FaceSessionClientBuilder getFaceSessionClientBuilder(
-            FaceServiceVersion serviceVersion, HttpClient httpClient, boolean isSync) {
+    private FaceSessionClientBuilder getFaceSessionClientBuilder(FaceServiceVersion serviceVersion,
+        HttpClient httpClient, boolean isSync) {
         return this.configureBuilder(new FaceSessionClientBuilder().serviceVersion(serviceVersion), httpClient, isSync);
     }
 
@@ -88,8 +93,8 @@ public class FaceClientTestBase extends TestProxyTestBase {
             httpClient = HttpClient.createDefault();
         }
 
-        AssertingHttpClientBuilder builder =  new AssertingHttpClientBuilder(httpClient)
-                .skipRequest((ignored1, ignored2) -> false);
+        AssertingHttpClientBuilder builder
+            = new AssertingHttpClientBuilder(httpClient).skipRequest((ignored1, ignored2) -> false);
 
         if (isSync) {
             builder.assertSync();
@@ -97,11 +102,11 @@ public class FaceClientTestBase extends TestProxyTestBase {
             builder.assertAsync();
         }
 
-        return  builder.build();
+        return builder.build();
     }
 
-    private <T extends HttpTrait<T> & TokenCredentialTrait<T> & KeyCredentialTrait<T> & EndpointTrait<T>> T configureBuilder(
-        T clientBuilder, HttpClient httpClient, boolean isSync) {
+    private <T extends HttpTrait<T> & TokenCredentialTrait<T> & KeyCredentialTrait<T> & EndpointTrait<T>> T
+        configureBuilder(T clientBuilder, HttpClient httpClient, boolean isSync) {
 
         clientBuilder.endpoint(ConfigurationHelper.getEndpoint())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
@@ -109,16 +114,20 @@ public class FaceClientTestBase extends TestProxyTestBase {
         switch (getTestMode()) {
             case PLAYBACK:
                 return configureForPlayBackMode(clientBuilder, httpClient, isSync);
+
             case RECORD:
                 return configureForRecordMode(clientBuilder, httpClient, isSync);
+
             case LIVE:
                 return configureForLiveMode(clientBuilder, httpClient, isSync);
+
             default:
                 throw new IllegalStateException("Incorrect test mode:" + getTestMode());
         }
     }
 
-    private <T extends HttpTrait<T> & TokenCredentialTrait<T> & KeyCredentialTrait<T>> T configureCredential(T clientBuilder) {
+    private <T extends HttpTrait<T> & TokenCredentialTrait<T> & KeyCredentialTrait<T>> T
+        configureCredential(T clientBuilder) {
         String accountKey = ConfigurationHelper.getAccountKey();
         if (accountKey != null && !accountKey.isEmpty()) {
             return clientBuilder.credential(new KeyCredential(accountKey));
@@ -127,37 +136,35 @@ public class FaceClientTestBase extends TestProxyTestBase {
         return clientBuilder.credential(new DefaultAzureCredentialBuilder().build());
     }
 
-    private <T extends HttpTrait<T> & TokenCredentialTrait<T> & KeyCredentialTrait<T> & EndpointTrait<T>> T configureForPlayBackMode(
-            T clientBuilder, HttpClient httpClient, boolean isSync) {
+    private <T extends HttpTrait<T> & TokenCredentialTrait<T> & KeyCredentialTrait<T> & EndpointTrait<T>> T
+        configureForPlayBackMode(T clientBuilder, HttpClient httpClient, boolean isSync) {
         addSanitizers(interceptorManager);
-        return clientBuilder
-            .endpoint("https://localhost:8080")
+        return clientBuilder.endpoint("https://localhost:8080")
             .httpClient(createHttpClient(interceptorManager.getPlaybackClient(), isSync))
             .credential(new AzureKeyCredential("Fake"));
     }
 
-    private <T extends HttpTrait<T> & TokenCredentialTrait<T> & KeyCredentialTrait<T> & EndpointTrait<T>> T configureForRecordMode(
-            T clientBuilder, HttpClient httpClient, boolean isSync) {
+    private <T extends HttpTrait<T> & TokenCredentialTrait<T> & KeyCredentialTrait<T> & EndpointTrait<T>> T
+        configureForRecordMode(T clientBuilder, HttpClient httpClient, boolean isSync) {
         addSanitizers(interceptorManager);
-        return configureCredential(clientBuilder)
-            .endpoint(ConfigurationHelper.getEndpoint())
+        return configureCredential(clientBuilder).endpoint(ConfigurationHelper.getEndpoint())
             .httpClient(createHttpClient(httpClient, isSync))
             .addPolicy(interceptorManager.getRecordPolicy());
     }
 
     private static void addSanitizers(InterceptorManager interceptorManager) {
         interceptorManager.addSanitizers(Arrays.asList(
-                new TestProxySanitizer("Content-Type", "multipart/form-data.*", "multipart/form-data", TestProxySanitizerType.HEADER),
-                new TestProxySanitizer("$..deviceCorrelationId", null, TestUtils.EMPTY_UUID, TestProxySanitizerType.BODY_KEY),
-                new TestProxySanitizer("$..authToken", null, TestUtils.FAKE_TOKEN, TestProxySanitizerType.BODY_KEY)
-            ));
+            new TestProxySanitizer("Content-Type", "multipart/form-data.*", "multipart/form-data",
+                TestProxySanitizerType.HEADER),
+            new TestProxySanitizer("$..deviceCorrelationId", null, TestUtils.EMPTY_UUID,
+                TestProxySanitizerType.BODY_KEY),
+            new TestProxySanitizer("$..authToken", null, TestUtils.FAKE_TOKEN, TestProxySanitizerType.BODY_KEY)));
     }
 
-    private <T extends HttpTrait<T> & TokenCredentialTrait<T> & KeyCredentialTrait<T> & EndpointTrait<T>> T configureForLiveMode(
-            T clientBuilder, HttpClient httpClient, boolean isSync) {
-        return configureCredential(clientBuilder)
-                .endpoint(ConfigurationHelper.getEndpoint())
-                .httpClient(createHttpClient(httpClient, isSync));
+    private <T extends HttpTrait<T> & TokenCredentialTrait<T> & KeyCredentialTrait<T> & EndpointTrait<T>> T
+        configureForLiveMode(T clientBuilder, HttpClient httpClient, boolean isSync) {
+        return configureCredential(clientBuilder).endpoint(ConfigurationHelper.getEndpoint())
+            .httpClient(createHttpClient(httpClient, isSync));
     }
 
     @FunctionalInterface
@@ -172,12 +179,8 @@ public class FaceClientTestBase extends TestProxyTestBase {
         private final Class<TAsyncClient> asyncClientClass;
         private final CommandProvider<TSyncClient, TAsyncClient, TCommand> provider;
 
-        CommandProviderAdapter(
-                HttpClient httpClient,
-                FaceServiceVersion serviceVersion,
-                Class<TSyncClient> clientClass,
-                Class<TAsyncClient> asyncClientClass,
-                CommandProvider<TSyncClient, TAsyncClient, TCommand> provider) {
+        CommandProviderAdapter(HttpClient httpClient, FaceServiceVersion serviceVersion, Class<TSyncClient> clientClass,
+            Class<TAsyncClient> asyncClientClass, CommandProvider<TSyncClient, TAsyncClient, TCommand> provider) {
             this.httpClient = httpClient;
             this.asyncClientClass = asyncClientClass;
             this.serviceVersion = serviceVersion;
@@ -198,4 +201,3 @@ public class FaceClientTestBase extends TestProxyTestBase {
         }
     }
 }
-

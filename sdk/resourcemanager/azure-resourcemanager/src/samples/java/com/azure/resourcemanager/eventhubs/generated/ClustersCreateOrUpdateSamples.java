@@ -7,7 +7,6 @@ package com.azure.resourcemanager.eventhubs.generated;
 import com.azure.resourcemanager.eventhubs.fluent.models.ClusterInner;
 import com.azure.resourcemanager.eventhubs.models.ClusterSku;
 import com.azure.resourcemanager.eventhubs.models.ClusterSkuName;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,7 +20,7 @@ public final class ClustersCreateOrUpdateSamples {
      */
     /**
      * Sample code: ClusterPut.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void clusterPut(com.azure.resourcemanager.AzureResourceManager azure) {

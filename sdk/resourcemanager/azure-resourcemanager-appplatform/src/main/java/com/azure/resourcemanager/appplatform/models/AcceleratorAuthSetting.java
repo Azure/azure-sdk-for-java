@@ -5,29 +5,35 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Auth setting payload.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "authType",
-    defaultImpl = AcceleratorAuthSetting.class)
-@JsonTypeName("AcceleratorAuthSetting")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "Public", value = AcceleratorPublicSetting.class),
-    @JsonSubTypes.Type(name = "BasicAuth", value = AcceleratorBasicAuthSetting.class),
-    @JsonSubTypes.Type(name = "SSH", value = AcceleratorSshSetting.class) })
 @Immutable
-public class AcceleratorAuthSetting {
+public class AcceleratorAuthSetting implements JsonSerializable<AcceleratorAuthSetting> {
+    /*
+     * The type of the auth setting.
+     */
+    private String authType = "AcceleratorAuthSetting";
+
     /**
      * Creates an instance of AcceleratorAuthSetting class.
      */
     public AcceleratorAuthSetting() {
+    }
+
+    /**
+     * Get the authType property: The type of the auth setting.
+     * 
+     * @return the authType value.
+     */
+    public String authType() {
+        return this.authType;
     }
 
     /**
@@ -36,5 +42,70 @@ public class AcceleratorAuthSetting {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("authType", this.authType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AcceleratorAuthSetting from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AcceleratorAuthSetting if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AcceleratorAuthSetting.
+     */
+    public static AcceleratorAuthSetting fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("authType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("Public".equals(discriminatorValue)) {
+                    return AcceleratorPublicSetting.fromJson(readerToUse.reset());
+                } else if ("BasicAuth".equals(discriminatorValue)) {
+                    return AcceleratorBasicAuthSetting.fromJson(readerToUse.reset());
+                } else if ("SSH".equals(discriminatorValue)) {
+                    return AcceleratorSshSetting.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static AcceleratorAuthSetting fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AcceleratorAuthSetting deserializedAcceleratorAuthSetting = new AcceleratorAuthSetting();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("authType".equals(fieldName)) {
+                    deserializedAcceleratorAuthSetting.authType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAcceleratorAuthSetting;
+        });
     }
 }

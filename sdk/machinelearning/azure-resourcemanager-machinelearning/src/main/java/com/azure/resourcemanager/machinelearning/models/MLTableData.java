@@ -5,30 +5,47 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** MLTable data definition. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "dataType")
-@JsonTypeName("mltable")
+/**
+ * MLTable data definition.
+ */
 @Fluent
 public final class MLTableData extends DataVersionBaseProperties {
     /*
+     * [Required] Specifies the type of data.
+     */
+    private DataType dataType = DataType.MLTABLE;
+
+    /*
      * Uris referenced in the MLTable definition (required for lineage)
      */
-    @JsonProperty(value = "referencedUris")
     private List<String> referencedUris;
 
-    /** Creates an instance of MLTableData class. */
+    /**
+     * Creates an instance of MLTableData class.
+     */
     public MLTableData() {
     }
 
     /**
+     * Get the dataType property: [Required] Specifies the type of data.
+     * 
+     * @return the dataType value.
+     */
+    @Override
+    public DataType dataType() {
+        return this.dataType;
+    }
+
+    /**
      * Get the referencedUris property: Uris referenced in the MLTable definition (required for lineage).
-     *
+     * 
      * @return the referencedUris value.
      */
     public List<String> referencedUris() {
@@ -37,7 +54,7 @@ public final class MLTableData extends DataVersionBaseProperties {
 
     /**
      * Set the referencedUris property: Uris referenced in the MLTable definition (required for lineage).
-     *
+     * 
      * @param referencedUris the referencedUris value to set.
      * @return the MLTableData object itself.
      */
@@ -46,42 +63,45 @@ public final class MLTableData extends DataVersionBaseProperties {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MLTableData withDataUri(String dataUri) {
         super.withDataUri(dataUri);
         return this;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public MLTableData withIsAnonymous(Boolean isAnonymous) {
-        super.withIsAnonymous(isAnonymous);
-        return this;
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MLTableData withIsArchived(Boolean isArchived) {
         super.withIsArchived(isArchived);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MLTableData withIsAnonymous(Boolean isAnonymous) {
+        super.withIsAnonymous(isAnonymous);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MLTableData withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public MLTableData withProperties(Map<String, String> properties) {
-        super.withProperties(properties);
-        return this;
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MLTableData withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -89,12 +109,83 @@ public final class MLTableData extends DataVersionBaseProperties {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MLTableData withProperties(Map<String, String> properties) {
+        super.withProperties(properties);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("dataUri", dataUri());
+        jsonWriter.writeStringField("description", description());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("properties", properties(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeBooleanField("isArchived", isArchived());
+        jsonWriter.writeBooleanField("isAnonymous", isAnonymous());
+        jsonWriter.writeStringField("dataType", this.dataType == null ? null : this.dataType.toString());
+        jsonWriter.writeArrayField("referencedUris", this.referencedUris,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MLTableData from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MLTableData if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the MLTableData.
+     */
+    public static MLTableData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MLTableData deserializedMLTableData = new MLTableData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("dataUri".equals(fieldName)) {
+                    deserializedMLTableData.withDataUri(reader.getString());
+                } else if ("description".equals(fieldName)) {
+                    deserializedMLTableData.withDescription(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedMLTableData.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    Map<String, String> properties = reader.readMap(reader1 -> reader1.getString());
+                    deserializedMLTableData.withProperties(properties);
+                } else if ("isArchived".equals(fieldName)) {
+                    deserializedMLTableData.withIsArchived(reader.getNullable(JsonReader::getBoolean));
+                } else if ("isAnonymous".equals(fieldName)) {
+                    deserializedMLTableData.withIsAnonymous(reader.getNullable(JsonReader::getBoolean));
+                } else if ("dataType".equals(fieldName)) {
+                    deserializedMLTableData.dataType = DataType.fromString(reader.getString());
+                } else if ("referencedUris".equals(fieldName)) {
+                    List<String> referencedUris = reader.readArray(reader1 -> reader1.getString());
+                    deserializedMLTableData.referencedUris = referencedUris;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMLTableData;
+        });
     }
 }

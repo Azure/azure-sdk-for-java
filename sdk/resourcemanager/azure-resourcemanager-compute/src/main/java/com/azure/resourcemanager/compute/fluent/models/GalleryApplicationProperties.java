@@ -5,61 +5,60 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.models.GalleryApplicationCustomAction;
 import com.azure.resourcemanager.compute.models.OperatingSystemTypes;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
  * Describes the properties of a gallery Application Definition.
  */
 @Fluent
-public final class GalleryApplicationProperties {
+public final class GalleryApplicationProperties implements JsonSerializable<GalleryApplicationProperties> {
     /*
      * The description of this gallery Application Definition resource. This property is updatable.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * The Eula agreement for the gallery Application Definition.
      */
-    @JsonProperty(value = "eula")
     private String eula;
 
     /*
      * The privacy statement uri.
      */
-    @JsonProperty(value = "privacyStatementUri")
     private String privacyStatementUri;
 
     /*
      * The release note uri.
      */
-    @JsonProperty(value = "releaseNoteUri")
     private String releaseNoteUri;
 
     /*
      * The end of life date of the gallery Application Definition. This property can be used for decommissioning
      * purposes. This property is updatable.
      */
-    @JsonProperty(value = "endOfLifeDate")
     private OffsetDateTime endOfLifeDate;
 
     /*
      * This property allows you to specify the supported type of the OS that application is built for. Possible values
      * are: **Windows,** **Linux.**
      */
-    @JsonProperty(value = "supportedOSType", required = true)
     private OperatingSystemTypes supportedOSType;
 
     /*
      * A list of custom actions that can be performed with all of the Gallery Application Versions within this Gallery
      * Application.
      */
-    @JsonProperty(value = "customActions")
     private List<GalleryApplicationCustomAction> customActions;
 
     /**
@@ -233,4 +232,65 @@ public final class GalleryApplicationProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(GalleryApplicationProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("supportedOSType",
+            this.supportedOSType == null ? null : this.supportedOSType.toString());
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("eula", this.eula);
+        jsonWriter.writeStringField("privacyStatementUri", this.privacyStatementUri);
+        jsonWriter.writeStringField("releaseNoteUri", this.releaseNoteUri);
+        jsonWriter.writeStringField("endOfLifeDate",
+            this.endOfLifeDate == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endOfLifeDate));
+        jsonWriter.writeArrayField("customActions", this.customActions, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GalleryApplicationProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GalleryApplicationProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the GalleryApplicationProperties.
+     */
+    public static GalleryApplicationProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GalleryApplicationProperties deserializedGalleryApplicationProperties = new GalleryApplicationProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("supportedOSType".equals(fieldName)) {
+                    deserializedGalleryApplicationProperties.supportedOSType
+                        = OperatingSystemTypes.fromString(reader.getString());
+                } else if ("description".equals(fieldName)) {
+                    deserializedGalleryApplicationProperties.description = reader.getString();
+                } else if ("eula".equals(fieldName)) {
+                    deserializedGalleryApplicationProperties.eula = reader.getString();
+                } else if ("privacyStatementUri".equals(fieldName)) {
+                    deserializedGalleryApplicationProperties.privacyStatementUri = reader.getString();
+                } else if ("releaseNoteUri".equals(fieldName)) {
+                    deserializedGalleryApplicationProperties.releaseNoteUri = reader.getString();
+                } else if ("endOfLifeDate".equals(fieldName)) {
+                    deserializedGalleryApplicationProperties.endOfLifeDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("customActions".equals(fieldName)) {
+                    List<GalleryApplicationCustomAction> customActions
+                        = reader.readArray(reader1 -> GalleryApplicationCustomAction.fromJson(reader1));
+                    deserializedGalleryApplicationProperties.customActions = customActions;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGalleryApplicationProperties;
+        });
+    }
 }

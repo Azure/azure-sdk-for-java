@@ -15,8 +15,7 @@ public final class ServiceProviderResponseListImpl implements ServiceProviderRes
 
     private final com.azure.resourcemanager.botservice.BotServiceManager serviceManager;
 
-    ServiceProviderResponseListImpl(
-        ServiceProviderResponseListInner innerObject,
+    ServiceProviderResponseListImpl(ServiceProviderResponseListInner innerObject,
         com.azure.resourcemanager.botservice.BotServiceManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

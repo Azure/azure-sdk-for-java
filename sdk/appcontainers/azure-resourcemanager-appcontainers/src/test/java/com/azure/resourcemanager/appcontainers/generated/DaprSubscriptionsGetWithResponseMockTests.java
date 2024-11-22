@@ -21,7 +21,7 @@ public final class DaprSubscriptionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"pubsubName\":\"jisskob\",\"topic\":\"clflioe\",\"deadLetterTopic\":\"hxessmvrk\",\"routes\":{\"rules\":[{\"match\":\"qfbdxmdses\",\"path\":\"ujbjppp\"}],\"default\":\"lpdib\"},\"scopes\":[\"hieatnejr\"],\"metadata\":{\"zfffjilzfbpnt\":\"nzqplgtkihonikzs\",\"fxxkwykuqdndxl\":\"gkensckhbmcarmo\",\"gga\":\"kh\"},\"bulkSubscribe\":{\"enabled\":false,\"maxMessagesCount\":1051896367,\"maxAwaitDurationMs\":1808991970}},\"id\":\"rscdxrnrnjrcuf\",\"name\":\"bgacnr\",\"type\":\"fdtncmspsanma\"}";
+            = "{\"properties\":{\"pubsubName\":\"gtxdhmfppinmg\",\"topic\":\"esmkwtzgf\",\"deadLetterTopic\":\"gjhxerxl\",\"routes\":{\"rules\":[{\"match\":\"tqhvmmniiqyholhj\",\"path\":\"kb\"},{\"match\":\"icnq\",\"path\":\"ct\"},{\"match\":\"pblxkrkqgvxrkt\",\"path\":\"jigcwtspanb\"}],\"default\":\"asevc\"},\"scopes\":[\"p\"],\"metadata\":{\"ybruhola\":\"d\",\"lonbzaowcahdkmb\":\"mwcgimmrimaabsq\",\"glkvbgukbsv\":\"smihrijezbfsjwfc\",\"ygnbknhjgclxaxwc\":\"wyo\"},\"bulkSubscribe\":{\"enabled\":false,\"maxMessagesCount\":1452046394,\"maxAwaitDurationMs\":2032469123}},\"id\":\"ucszgh\",\"name\":\"oaqipmnxclfrs\",\"type\":\"zrn\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,19 +31,19 @@ public final class DaprSubscriptionsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         DaprSubscription response = manager.daprSubscriptions()
-            .getWithResponse("pmpv", "nogehlufbort", "nukkfaxzsvb", com.azure.core.util.Context.NONE)
+            .getWithResponse("pfixoskkzd", "iv", "ujybsrwz", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("jisskob", response.pubsubName());
-        Assertions.assertEquals("clflioe", response.topic());
-        Assertions.assertEquals("hxessmvrk", response.deadLetterTopic());
-        Assertions.assertEquals("qfbdxmdses", response.routes().rules().get(0).match());
-        Assertions.assertEquals("ujbjppp", response.routes().rules().get(0).path());
-        Assertions.assertEquals("lpdib", response.routes().defaultProperty());
-        Assertions.assertEquals("hieatnejr", response.scopes().get(0));
-        Assertions.assertEquals("nzqplgtkihonikzs", response.metadata().get("zfffjilzfbpnt"));
+        Assertions.assertEquals("gtxdhmfppinmg", response.pubsubName());
+        Assertions.assertEquals("esmkwtzgf", response.topic());
+        Assertions.assertEquals("gjhxerxl", response.deadLetterTopic());
+        Assertions.assertEquals("tqhvmmniiqyholhj", response.routes().rules().get(0).match());
+        Assertions.assertEquals("kb", response.routes().rules().get(0).path());
+        Assertions.assertEquals("asevc", response.routes().defaultProperty());
+        Assertions.assertEquals("p", response.scopes().get(0));
+        Assertions.assertEquals("d", response.metadata().get("ybruhola"));
         Assertions.assertEquals(false, response.bulkSubscribe().enabled());
-        Assertions.assertEquals(1051896367, response.bulkSubscribe().maxMessagesCount());
-        Assertions.assertEquals(1808991970, response.bulkSubscribe().maxAwaitDurationMs());
+        Assertions.assertEquals(1452046394, response.bulkSubscribe().maxMessagesCount());
+        Assertions.assertEquals(2032469123, response.bulkSubscribe().maxAwaitDurationMs());
     }
 }

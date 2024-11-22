@@ -9,26 +9,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import java.util.UUID;
 
-/** Resource collection API of SourceControlSyncJobs. */
+/**
+ * Resource collection API of SourceControlSyncJobs.
+ */
 public interface SourceControlSyncJobs {
     /**
      * Retrieve the source control sync job identified by job id.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param sourceControlName The source control name.
-     * @param sourceControlSyncJobId The source control sync job id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the source control sync job.
-     */
-    SourceControlSyncJobById get(
-        String resourceGroupName, String automationAccountName, String sourceControlName, UUID sourceControlSyncJobId);
-
-    /**
-     * Retrieve the source control sync job identified by job id.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param sourceControlName The source control name.
@@ -39,31 +26,42 @@ public interface SourceControlSyncJobs {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return definition of the source control sync job along with {@link Response}.
      */
-    Response<SourceControlSyncJobById> getWithResponse(
-        String resourceGroupName,
-        String automationAccountName,
-        String sourceControlName,
-        UUID sourceControlSyncJobId,
-        Context context);
+    Response<SourceControlSyncJobById> getWithResponse(String resourceGroupName, String automationAccountName,
+        String sourceControlName, UUID sourceControlSyncJobId, Context context);
+
+    /**
+     * Retrieve the source control sync job identified by job id.
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param sourceControlName The source control name.
+     * @param sourceControlSyncJobId The source control sync job id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the source control sync job.
+     */
+    SourceControlSyncJobById get(String resourceGroupName, String automationAccountName, String sourceControlName,
+        UUID sourceControlSyncJobId);
 
     /**
      * Retrieve a list of source control sync jobs.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param sourceControlName The source control name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list source control sync jobs operation as paginated response with {@link
-     *     PagedIterable}.
+     * @return the response model for the list source control sync jobs operation as paginated response with
+     * {@link PagedIterable}.
      */
-    PagedIterable<SourceControlSyncJob> listByAutomationAccount(
-        String resourceGroupName, String automationAccountName, String sourceControlName);
+    PagedIterable<SourceControlSyncJob> listByAutomationAccount(String resourceGroupName, String automationAccountName,
+        String sourceControlName);
 
     /**
      * Retrieve a list of source control sync jobs.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param sourceControlName The source control name.
@@ -72,19 +70,15 @@ public interface SourceControlSyncJobs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list source control sync jobs operation as paginated response with {@link
-     *     PagedIterable}.
+     * @return the response model for the list source control sync jobs operation as paginated response with
+     * {@link PagedIterable}.
      */
-    PagedIterable<SourceControlSyncJob> listByAutomationAccount(
-        String resourceGroupName,
-        String automationAccountName,
-        String sourceControlName,
-        String filter,
-        Context context);
+    PagedIterable<SourceControlSyncJob> listByAutomationAccount(String resourceGroupName, String automationAccountName,
+        String sourceControlName, String filter, Context context);
 
     /**
      * Begins definition for a new SourceControlSyncJob resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new SourceControlSyncJob definition.
      */

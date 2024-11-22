@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
-
 import java.util.Collection;
 
 /**
@@ -30,7 +28,7 @@ public final class AzureStorageProtocol extends ExpandableStringEnum<AzureStorag
 
     /**
      * Creates a new instance of AzureStorageProtocol value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -39,18 +37,17 @@ public final class AzureStorageProtocol extends ExpandableStringEnum<AzureStorag
 
     /**
      * Creates or finds a AzureStorageProtocol from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AzureStorageProtocol.
      */
-    @JsonCreator
     public static AzureStorageProtocol fromString(String name) {
         return fromString(name, AzureStorageProtocol.class);
     }
 
     /**
      * Gets known AzureStorageProtocol values.
-     *
+     * 
      * @return known AzureStorageProtocol values.
      */
     public static Collection<AzureStorageProtocol> values() {

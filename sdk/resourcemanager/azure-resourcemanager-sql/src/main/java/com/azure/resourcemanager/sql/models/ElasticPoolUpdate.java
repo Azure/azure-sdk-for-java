@@ -5,40 +5,43 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.fluent.models.ElasticPoolUpdateProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** An elastic pool update. */
+/**
+ * An elastic pool update.
+ */
 @Fluent
-public final class ElasticPoolUpdate {
+public final class ElasticPoolUpdate implements JsonSerializable<ElasticPoolUpdate> {
     /*
      * An ARM Resource SKU.
      */
-    @JsonProperty(value = "sku")
     private Sku sku;
 
     /*
      * Resource properties.
      */
-    @JsonProperty(value = "properties")
     private ElasticPoolUpdateProperties innerProperties;
 
     /*
      * Resource tags.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
-    /** Creates an instance of ElasticPoolUpdate class. */
+    /**
+     * Creates an instance of ElasticPoolUpdate class.
+     */
     public ElasticPoolUpdate() {
     }
 
     /**
      * Get the sku property: An ARM Resource SKU.
-     *
+     * 
      * @return the sku value.
      */
     public Sku sku() {
@@ -47,7 +50,7 @@ public final class ElasticPoolUpdate {
 
     /**
      * Set the sku property: An ARM Resource SKU.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the ElasticPoolUpdate object itself.
      */
@@ -58,7 +61,7 @@ public final class ElasticPoolUpdate {
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ElasticPoolUpdateProperties innerProperties() {
@@ -67,7 +70,7 @@ public final class ElasticPoolUpdate {
 
     /**
      * Get the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -76,7 +79,7 @@ public final class ElasticPoolUpdate {
 
     /**
      * Set the tags property: Resource tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the ElasticPoolUpdate object itself.
      */
@@ -87,7 +90,7 @@ public final class ElasticPoolUpdate {
 
     /**
      * Get the maxSizeBytes property: The storage limit for the database elastic pool in bytes.
-     *
+     * 
      * @return the maxSizeBytes value.
      */
     public Long maxSizeBytes() {
@@ -96,7 +99,7 @@ public final class ElasticPoolUpdate {
 
     /**
      * Set the maxSizeBytes property: The storage limit for the database elastic pool in bytes.
-     *
+     * 
      * @param maxSizeBytes the maxSizeBytes value to set.
      * @return the ElasticPoolUpdate object itself.
      */
@@ -110,7 +113,7 @@ public final class ElasticPoolUpdate {
 
     /**
      * Get the minCapacity property: Minimal capacity that serverless pool will not shrink below, if not paused.
-     *
+     * 
      * @return the minCapacity value.
      */
     public Double minCapacity() {
@@ -119,7 +122,7 @@ public final class ElasticPoolUpdate {
 
     /**
      * Set the minCapacity property: Minimal capacity that serverless pool will not shrink below, if not paused.
-     *
+     * 
      * @param minCapacity the minCapacity value to set.
      * @return the ElasticPoolUpdate object itself.
      */
@@ -133,7 +136,7 @@ public final class ElasticPoolUpdate {
 
     /**
      * Get the perDatabaseSettings property: The per database settings for the elastic pool.
-     *
+     * 
      * @return the perDatabaseSettings value.
      */
     public ElasticPoolPerDatabaseSettings perDatabaseSettings() {
@@ -142,7 +145,7 @@ public final class ElasticPoolUpdate {
 
     /**
      * Set the perDatabaseSettings property: The per database settings for the elastic pool.
-     *
+     * 
      * @param perDatabaseSettings the perDatabaseSettings value to set.
      * @return the ElasticPoolUpdate object itself.
      */
@@ -157,7 +160,7 @@ public final class ElasticPoolUpdate {
     /**
      * Get the zoneRedundant property: Whether or not this elastic pool is zone redundant, which means the replicas of
      * this elastic pool will be spread across multiple availability zones.
-     *
+     * 
      * @return the zoneRedundant value.
      */
     public Boolean zoneRedundant() {
@@ -167,7 +170,7 @@ public final class ElasticPoolUpdate {
     /**
      * Set the zoneRedundant property: Whether or not this elastic pool is zone redundant, which means the replicas of
      * this elastic pool will be spread across multiple availability zones.
-     *
+     * 
      * @param zoneRedundant the zoneRedundant value to set.
      * @return the ElasticPoolUpdate object itself.
      */
@@ -181,7 +184,7 @@ public final class ElasticPoolUpdate {
 
     /**
      * Get the licenseType property: The license type to apply for this elastic pool.
-     *
+     * 
      * @return the licenseType value.
      */
     public ElasticPoolLicenseType licenseType() {
@@ -190,7 +193,7 @@ public final class ElasticPoolUpdate {
 
     /**
      * Set the licenseType property: The license type to apply for this elastic pool.
-     *
+     * 
      * @param licenseType the licenseType value to set.
      * @return the ElasticPoolUpdate object itself.
      */
@@ -205,7 +208,7 @@ public final class ElasticPoolUpdate {
     /**
      * Get the maintenanceConfigurationId property: Maintenance configuration id assigned to the elastic pool. This
      * configuration defines the period when the maintenance updates will will occur.
-     *
+     * 
      * @return the maintenanceConfigurationId value.
      */
     public String maintenanceConfigurationId() {
@@ -215,7 +218,7 @@ public final class ElasticPoolUpdate {
     /**
      * Set the maintenanceConfigurationId property: Maintenance configuration id assigned to the elastic pool. This
      * configuration defines the period when the maintenance updates will will occur.
-     *
+     * 
      * @param maintenanceConfigurationId the maintenanceConfigurationId value to set.
      * @return the ElasticPoolUpdate object itself.
      */
@@ -230,7 +233,7 @@ public final class ElasticPoolUpdate {
     /**
      * Get the highAvailabilityReplicaCount property: The number of secondary replicas associated with the elastic pool
      * that are used to provide high availability. Applicable only to Hyperscale elastic pools.
-     *
+     * 
      * @return the highAvailabilityReplicaCount value.
      */
     public Integer highAvailabilityReplicaCount() {
@@ -240,7 +243,7 @@ public final class ElasticPoolUpdate {
     /**
      * Set the highAvailabilityReplicaCount property: The number of secondary replicas associated with the elastic pool
      * that are used to provide high availability. Applicable only to Hyperscale elastic pools.
-     *
+     * 
      * @param highAvailabilityReplicaCount the highAvailabilityReplicaCount value to set.
      * @return the ElasticPoolUpdate object itself.
      */
@@ -254,7 +257,7 @@ public final class ElasticPoolUpdate {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -264,5 +267,48 @@ public final class ElasticPoolUpdate {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ElasticPoolUpdate from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ElasticPoolUpdate if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ElasticPoolUpdate.
+     */
+    public static ElasticPoolUpdate fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ElasticPoolUpdate deserializedElasticPoolUpdate = new ElasticPoolUpdate();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sku".equals(fieldName)) {
+                    deserializedElasticPoolUpdate.sku = Sku.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedElasticPoolUpdate.innerProperties = ElasticPoolUpdateProperties.fromJson(reader);
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedElasticPoolUpdate.tags = tags;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedElasticPoolUpdate;
+        });
     }
 }

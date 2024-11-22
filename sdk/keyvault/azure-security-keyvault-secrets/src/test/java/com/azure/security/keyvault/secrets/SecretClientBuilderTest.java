@@ -38,10 +38,10 @@ public class SecretClientBuilderTest {
 
     @Test
     public void buildSyncClientTest() {
-        SecretClient secretClient = new SecretClientBuilder()
-            .vaultUrl(vaultUrl)
+        SecretClient secretClient = new SecretClientBuilder().vaultUrl(vaultUrl)
             .serviceVersion(serviceVersion)
             .credential(new TestUtils.TestCredential())
+            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
             .buildClient();
 
         assertNotNull(secretClient);
@@ -50,9 +50,9 @@ public class SecretClientBuilderTest {
 
     @Test
     public void buildSyncClientUsingDefaultApiVersionTest() {
-        SecretClient secretClient = new SecretClientBuilder()
-            .vaultUrl(vaultUrl)
+        SecretClient secretClient = new SecretClientBuilder().vaultUrl(vaultUrl)
             .credential(new TestUtils.TestCredential())
+            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
             .buildClient();
 
         assertNotNull(secretClient);
@@ -61,10 +61,10 @@ public class SecretClientBuilderTest {
 
     @Test
     public void buildAsyncClientTest() {
-        SecretAsyncClient secretAsyncClient = new SecretClientBuilder()
-            .vaultUrl(vaultUrl)
+        SecretAsyncClient secretAsyncClient = new SecretClientBuilder().vaultUrl(vaultUrl)
             .serviceVersion(serviceVersion)
             .credential(new TestUtils.TestCredential())
+            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
             .buildAsyncClient();
 
         assertNotNull(secretAsyncClient);
@@ -73,9 +73,9 @@ public class SecretClientBuilderTest {
 
     @Test
     public void buildAsyncClientUsingDefaultApiVersionTest() {
-        SecretAsyncClient secretAsyncClient = new SecretClientBuilder()
-            .vaultUrl(vaultUrl)
+        SecretAsyncClient secretAsyncClient = new SecretClientBuilder().vaultUrl(vaultUrl)
             .credential(new TestUtils.TestCredential())
+            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
             .buildAsyncClient();
 
         assertNotNull(secretAsyncClient);
@@ -94,8 +94,7 @@ public class SecretClientBuilderTest {
 
     @Test
     public void clientOptionsIsPreferredOverLogOptions() {
-        SecretClient secretClient = new SecretClientBuilder()
-            .vaultUrl(vaultUrl)
+        SecretClient secretClient = new SecretClientBuilder().vaultUrl(vaultUrl)
             .credential(new TestUtils.TestCredential())
             .httpLogOptions(new HttpLogOptions().setApplicationId("anOldApplication"))
             .clientOptions(new ClientOptions().setApplicationId("aNewApplication"))
@@ -110,8 +109,7 @@ public class SecretClientBuilderTest {
 
     @Test
     public void applicationIdFallsBackToLogOptions() {
-        SecretClient secretClient = new SecretClientBuilder()
-            .vaultUrl(vaultUrl)
+        SecretClient secretClient = new SecretClientBuilder().vaultUrl(vaultUrl)
             .credential(new TestUtils.TestCredential())
             .httpLogOptions(new HttpLogOptions().setApplicationId("anOldApplication"))
             .httpClient(httpRequest -> {
@@ -125,11 +123,10 @@ public class SecretClientBuilderTest {
 
     @Test
     public void clientOptionHeadersAreAddedLast() {
-        SecretClient secretClient = new SecretClientBuilder()
-            .vaultUrl(vaultUrl)
+        SecretClient secretClient = new SecretClientBuilder().vaultUrl(vaultUrl)
             .credential(new TestUtils.TestCredential())
-            .clientOptions(new ClientOptions()
-                .setHeaders(Collections.singletonList(new Header("User-Agent", "custom"))))
+            .clientOptions(
+                new ClientOptions().setHeaders(Collections.singletonList(new Header("User-Agent", "custom"))))
             .httpClient(httpRequest -> {
                 assertEquals("custom", httpRequest.getHeaders().getValue(HttpHeaderName.USER_AGENT));
                 return Mono.error(new HttpResponseException(new MockHttpResponse(httpRequest, 400)));
@@ -141,24 +138,25 @@ public class SecretClientBuilderTest {
 
     @Test
     public void bothRetryOptionsAndRetryPolicySet() {
-        assertThrows(IllegalStateException.class, () -> new SecretClientBuilder()
-            .vaultUrl(vaultUrl)
-            .serviceVersion(serviceVersion)
-            .credential(new TestUtils.TestCredential())
-            .retryOptions(new RetryOptions(new ExponentialBackoffOptions()))
-            .retryPolicy(new RetryPolicy())
-            .buildClient());
+        assertThrows(IllegalStateException.class,
+            () -> new SecretClientBuilder().vaultUrl(vaultUrl)
+                .serviceVersion(serviceVersion)
+                .credential(new TestUtils.TestCredential())
+                .retryOptions(new RetryOptions(new ExponentialBackoffOptions()))
+                .retryPolicy(new RetryPolicy())
+                .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
+                .buildClient());
     }
 
     // This tests the policy is in the right place because if it were added per retry, it would be after the credentials
     // and auth would fail because we changed a signed header.
     @Test
     public void addPerCallPolicy() {
-        SecretAsyncClient secretAsyncClient = new SecretClientBuilder()
-            .vaultUrl(vaultUrl)
+        SecretAsyncClient secretAsyncClient = new SecretClientBuilder().vaultUrl(vaultUrl)
             .credential(new TestUtils.TestCredential())
             .addPolicy(new TestUtils.PerCallPolicy())
             .addPolicy(new TestUtils.PerRetryPolicy())
+            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
             .buildAsyncClient();
 
         HttpPipeline pipeline = secretAsyncClient.getHttpPipeline();

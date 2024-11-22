@@ -7,6 +7,7 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusReceiverClientBuilder;
+import com.azure.messaging.servicebus.implementation.MessageUtils;
 import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusTracer;
 import com.azure.messaging.servicebus.models.AbandonOptions;
 import com.azure.messaging.servicebus.models.CompleteOptions;
@@ -104,6 +105,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
     private final SynchronousReceiver syncReceiver;
 
     private final ServiceBusTracer tracer;
+
     /**
      * Creates a synchronous receiver given its asynchronous counterpart.
      *
@@ -111,9 +113,8 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @param isPrefetchDisabled Indicates if the prefetch is disabled.
      * @param operationTimeout Timeout to wait for operation to complete.
      */
-    ServiceBusReceiverClient(ServiceBusReceiverAsyncClient asyncClient,
-                             boolean isPrefetchDisabled,
-                             Duration operationTimeout) {
+    ServiceBusReceiverClient(ServiceBusReceiverAsyncClient asyncClient, boolean isPrefetchDisabled,
+        Duration operationTimeout) {
         this.asyncClient = Objects.requireNonNull(asyncClient, "'asyncClient' cannot be null.");
         this.operationTimeout = Objects.requireNonNull(operationTimeout, "'operationTimeout' cannot be null.");
         this.isPrefetchDisabled = isPrefetchDisabled;
@@ -485,7 +486,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
         }
 
         final Flux<ServiceBusReceivedMessage> messages = tracer.traceSyncReceive("ServiceBus.peekMessages",
-                asyncClient.peekMessages(maxMessages, sequenceNumber, sessionId).timeout(operationTimeout));
+            asyncClient.peekMessages(maxMessages, sequenceNumber, sessionId).timeout(operationTimeout));
 
         return fromFluxAndSubscribe(messages);
     }
@@ -617,8 +618,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 "'maxMessages' cannot be less than or equal to 0. maxMessages: " + maxMessages));
         } else if (Objects.isNull(maxWaitTime)) {
-            throw LOGGER.logExceptionAsError(
-                new NullPointerException("'maxWaitTime' cannot be null."));
+            throw LOGGER.logExceptionAsError(new NullPointerException("'maxWaitTime' cannot be null."));
         } else if (maxWaitTime.isNegative() || maxWaitTime.isZero()) {
             throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("'maxWaitTime' cannot be zero or less. maxWaitTime: " + maxWaitTime));
@@ -637,9 +637,10 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
 
         queueWork(maxMessages, maxWaitTime, emitter);
 
-        final Flux<ServiceBusReceivedMessage> messagesFlux =  tracer.traceSyncReceive("ServiceBus.receiveMessages", emitter.asFlux());
+        final Flux<ServiceBusReceivedMessage> messagesFlux
+            = tracer.traceSyncReceive("ServiceBus.receiveMessages", emitter.asFlux());
         // messagesFlux is already a hot publisher, so it's ok to subscribe
-        messagesFlux.subscribe();
+        MessageUtils.subscribe(messagesFlux);
 
         return new IterableStream<>(messagesFlux);
     }
@@ -709,8 +710,9 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
     IterableStream<ServiceBusReceivedMessage> receiveDeferredMessageBatch(Iterable<Long> sequenceNumbers,
         String sessionId) {
 
-        final Flux<ServiceBusReceivedMessage> messages = tracer.traceSyncReceive("ServiceBus.receiveDeferredMessageBatch",
-            asyncClient.receiveDeferredMessages(sequenceNumbers, sessionId).timeout(operationTimeout));
+        final Flux<ServiceBusReceivedMessage> messages
+            = tracer.traceSyncReceive("ServiceBus.receiveDeferredMessageBatch",
+                asyncClient.receiveDeferredMessages(sequenceNumbers, sessionId).timeout(operationTimeout));
 
         return fromFluxAndSubscribe(messages);
     }
@@ -754,12 +756,17 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
         final String lockToken = message != null ? message.getLockToken() : "null";
         final Consumer<Throwable> throwableConsumer = onError != null
             ? onError
-            : error -> LOGGER.atWarning().addKeyValue(LOCK_TOKEN_KEY, lockToken).log("Exception occurred while renewing lock token.", error);
+            : error -> LOGGER.atWarning()
+                .addKeyValue(LOCK_TOKEN_KEY, lockToken)
+                .log("Exception occurred while renewing lock token.", error);
 
-        asyncClient.renewMessageLock(message, maxLockRenewalDuration).subscribe(
-            v -> LOGGER.atVerbose().addKeyValue(LOCK_TOKEN_KEY, lockToken).log("Completed renewing lock token."),
-            throwableConsumer,
-            () -> LOGGER.atVerbose().addKeyValue(LOCK_TOKEN_KEY, lockToken).log("Auto message lock renewal operation completed"));
+        asyncClient.renewMessageLock(message, maxLockRenewalDuration)
+            .subscribe(
+                v -> LOGGER.atVerbose().addKeyValue(LOCK_TOKEN_KEY, lockToken).log("Completed renewing lock token."),
+                throwableConsumer,
+                () -> LOGGER.atVerbose()
+                    .addKeyValue(LOCK_TOKEN_KEY, lockToken)
+                    .log("Auto message lock renewal operation completed"));
     }
 
     /**
@@ -918,10 +925,8 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
             messageSubscriber = synchronousMessageSubscriber.get();
             isFirstWork = messageSubscriber == null;
             if (isFirstWork) {
-                messageSubscriber = new SynchronousMessageSubscriber(asyncClient,
-                    work,
-                    isPrefetchDisabled,
-                    operationTimeout);
+                messageSubscriber
+                    = new SynchronousMessageSubscriber(asyncClient, work, isPrefetchDisabled, operationTimeout);
                 synchronousMessageSubscriber.set(messageSubscriber);
             }
         } finally {
@@ -946,19 +951,23 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
     void renewSessionLock(String sessionId, Duration maxLockRenewalDuration, Consumer<Throwable> onError) {
         final Consumer<Throwable> throwableConsumer = onError != null
             ? onError
-            : error -> LOGGER.atWarning().addKeyValue(SESSION_ID_KEY, sessionId).log("Exception occurred while renewing session.", error);
+            : error -> LOGGER.atWarning()
+                .addKeyValue(SESSION_ID_KEY, sessionId)
+                .log("Exception occurred while renewing session.", error);
 
-        asyncClient.renewSessionLock(maxLockRenewalDuration).subscribe(
-            v -> LOGGER.atVerbose().addKeyValue(SESSION_ID_KEY, sessionId).log("Completed renewing session"),
-            throwableConsumer,
-            () -> LOGGER.atVerbose().addKeyValue(SESSION_ID_KEY, sessionId).log("Auto session lock renewal operation completed."));
+        asyncClient.renewSessionLock(maxLockRenewalDuration)
+            .subscribe(v -> LOGGER.atVerbose().addKeyValue(SESSION_ID_KEY, sessionId).log("Completed renewing session"),
+                throwableConsumer,
+                () -> LOGGER.atVerbose()
+                    .addKeyValue(SESSION_ID_KEY, sessionId)
+                    .log("Auto session lock renewal operation completed."));
     }
 
-    private <T> IterableStream<T> fromFluxAndSubscribe(Flux<T> flux)  {
+    private <T> IterableStream<T> fromFluxAndSubscribe(Flux<T> flux) {
         Flux<T> cached = flux.cache();
 
         // Subscribe to message flux so we can kick off this operation
-        cached.subscribe();
+        MessageUtils.subscribe(cached);
         return new IterableStream<>(cached);
     }
 }

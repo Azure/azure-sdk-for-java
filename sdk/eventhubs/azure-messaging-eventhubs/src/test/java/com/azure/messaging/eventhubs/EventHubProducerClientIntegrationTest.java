@@ -32,10 +32,7 @@ class EventHubProducerClientIntegrationTest extends IntegrationTestBase {
 
     @Override
     protected void beforeTest() {
-        producer = new EventHubClientBuilder()
-            .connectionString(TestUtils.getConnectionString())
-            .retry(RETRY_OPTIONS)
-            .buildProducerClient();
+        producer = createBuilder().buildProducerClient();
     }
 
     @Override
@@ -50,10 +47,8 @@ class EventHubProducerClientIntegrationTest extends IntegrationTestBase {
     void sendMessageToPartition() {
         // Arrange
         final SendOptions sendOptions = new SendOptions().setPartitionId(PARTITION_ID);
-        final List<EventData> events = Arrays.asList(
-            new EventData("Event 1".getBytes(UTF_8)),
-            new EventData("Event 2".getBytes(UTF_8)),
-            new EventData("Event 3".getBytes(UTF_8)));
+        final List<EventData> events = Arrays.asList(new EventData("Event 1".getBytes(UTF_8)),
+            new EventData("Event 2".getBytes(UTF_8)), new EventData("Event 3".getBytes(UTF_8)));
 
         // Act & Assert
         producer.send(events, sendOptions);
@@ -66,10 +61,8 @@ class EventHubProducerClientIntegrationTest extends IntegrationTestBase {
     @Test
     void sendMessage() {
         // Arrange
-        final List<EventData> events = Arrays.asList(
-            new EventData("Event 1".getBytes(UTF_8)),
-            new EventData("Event 2".getBytes(UTF_8)),
-            new EventData("Event 3".getBytes(UTF_8)));
+        final List<EventData> events = Arrays.asList(new EventData("Event 1".getBytes(UTF_8)),
+            new EventData("Event 2".getBytes(UTF_8)), new EventData("Event 3".getBytes(UTF_8)));
 
         // Act & Assert
         producer.send(events);
@@ -81,10 +74,8 @@ class EventHubProducerClientIntegrationTest extends IntegrationTestBase {
     @Test
     void sendBatch() {
         // Arrange
-        final List<EventData> events = Arrays.asList(
-            new EventData("Event 1".getBytes(UTF_8)),
-            new EventData("Event 2".getBytes(UTF_8)),
-            new EventData("Event 3".getBytes(UTF_8)));
+        final List<EventData> events = Arrays.asList(new EventData("Event 1".getBytes(UTF_8)),
+            new EventData("Event 2".getBytes(UTF_8)), new EventData("Event 3".getBytes(UTF_8)));
 
         // Act & Assert
         EventDataBatch batch = producer.createBatch();
@@ -99,10 +90,8 @@ class EventHubProducerClientIntegrationTest extends IntegrationTestBase {
     @Test
     void sendBatchWithPartitionKey() {
         // Arrange
-        final List<EventData> events = Arrays.asList(
-            new EventData("Event 1".getBytes(UTF_8)),
-            new EventData("Event 2".getBytes(UTF_8)),
-            new EventData("Event 3".getBytes(UTF_8)));
+        final List<EventData> events = Arrays.asList(new EventData("Event 1".getBytes(UTF_8)),
+            new EventData("Event 2".getBytes(UTF_8)), new EventData("Event 3".getBytes(UTF_8)));
 
         // Act & Assert
         final CreateBatchOptions options = new CreateBatchOptions().setPartitionKey("my-partition-key");
@@ -119,10 +108,8 @@ class EventHubProducerClientIntegrationTest extends IntegrationTestBase {
     @Test
     void sendEventsWithKeyAndPartition() {
         // Arrange
-        final List<EventData> events = Arrays.asList(
-            new EventData("Event 1".getBytes(UTF_8)),
-            new EventData("Event 2".getBytes(UTF_8)),
-            new EventData("Event 3".getBytes(UTF_8)));
+        final List<EventData> events = Arrays.asList(new EventData("Event 1".getBytes(UTF_8)),
+            new EventData("Event 2".getBytes(UTF_8)), new EventData("Event 3".getBytes(UTF_8)));
 
         // Act
         producer.send(events);
@@ -138,7 +125,8 @@ class EventHubProducerClientIntegrationTest extends IntegrationTestBase {
             final EventDataBatch batch = producer.createBatch(new CreateBatchOptions().setPartitionId(partitionId));
             Assertions.assertNotNull(batch);
 
-            Assertions.assertTrue(batch.tryAdd(TestUtils.getEvent("event", "test guid", Integer.parseInt(partitionId))));
+            Assertions
+                .assertTrue(batch.tryAdd(TestUtils.getEvent("event", "test guid", Integer.parseInt(partitionId))));
 
             // Act & Assert
             producer.send(batch);
@@ -153,8 +141,7 @@ class EventHubProducerClientIntegrationTest extends IntegrationTestBase {
         // Arrange
         final EventData event = new EventData("body");
         final SendOptions options = new SendOptions().setPartitionId(PARTITION_ID);
-        final EventHubProducerClient client = createBuilder(true)
-            .buildProducerClient();
+        final EventHubProducerClient client = createBuilder(true).buildProducerClient();
 
         // Act & Assert
         try {

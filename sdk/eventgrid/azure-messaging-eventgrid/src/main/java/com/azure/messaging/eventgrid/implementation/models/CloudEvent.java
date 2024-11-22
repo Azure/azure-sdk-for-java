@@ -106,8 +106,8 @@ public final class CloudEvent implements JsonSerializable<CloudEvent> {
     }
 
     /**
-     * Get the source property: Identifies the context in which an event happened. The combination of id and source
-     * must be unique for each distinct event.
+     * Get the source property: Identifies the context in which an event happened. The combination of id and source must
+     * be unique for each distinct event.
      * 
      * @return the source value.
      */
@@ -116,8 +116,8 @@ public final class CloudEvent implements JsonSerializable<CloudEvent> {
     }
 
     /**
-     * Set the source property: Identifies the context in which an event happened. The combination of id and source
-     * must be unique for each distinct event.
+     * Set the source property: Identifies the context in which an event happened. The combination of id and source must
+     * be unique for each distinct event.
      * 
      * @param source the source value to set.
      * @return the CloudEvent object itself.
@@ -311,6 +311,9 @@ public final class CloudEvent implements JsonSerializable<CloudEvent> {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -363,8 +366,8 @@ public final class CloudEvent implements JsonSerializable<CloudEvent> {
                 } else if ("data_base64".equals(fieldName)) {
                     deserializedCloudEvent.dataBase64 = reader.getBinary();
                 } else if ("time".equals(fieldName)) {
-                    deserializedCloudEvent.time
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedCloudEvent.time = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("dataschema".equals(fieldName)) {
                     deserializedCloudEvent.dataschema = reader.getString();
                 } else if ("datacontenttype".equals(fieldName)) {

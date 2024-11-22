@@ -5,25 +5,28 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.resources.fluent.models.SubscriptionFeatureRegistrationInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The list of subscription feature registrations.
  */
 @Fluent
-public final class SubscriptionFeatureRegistrationList {
+public final class SubscriptionFeatureRegistrationList
+    implements JsonSerializable<SubscriptionFeatureRegistrationList> {
     /*
      * The link used to get the next page of subscription feature registrations list.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /*
      * The list of subscription feature registrations.
      */
-    @JsonProperty(value = "value")
     private List<SubscriptionFeatureRegistrationInner> value;
 
     /**
@@ -81,5 +84,47 @@ public final class SubscriptionFeatureRegistrationList {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SubscriptionFeatureRegistrationList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SubscriptionFeatureRegistrationList if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SubscriptionFeatureRegistrationList.
+     */
+    public static SubscriptionFeatureRegistrationList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SubscriptionFeatureRegistrationList deserializedSubscriptionFeatureRegistrationList
+                = new SubscriptionFeatureRegistrationList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("nextLink".equals(fieldName)) {
+                    deserializedSubscriptionFeatureRegistrationList.nextLink = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    List<SubscriptionFeatureRegistrationInner> value
+                        = reader.readArray(reader1 -> SubscriptionFeatureRegistrationInner.fromJson(reader1));
+                    deserializedSubscriptionFeatureRegistrationList.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSubscriptionFeatureRegistrationList;
+        });
     }
 }

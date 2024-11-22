@@ -5,63 +5,64 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Routing rules for ramp up testing. This rule allows to redirect static traffic % to a slot or to gradually change
  * routing % based on performance.
  */
 @Fluent
-public final class RampUpRule {
+public final class RampUpRule implements JsonSerializable<RampUpRule> {
     /*
      * Hostname of a slot to which the traffic will be redirected if decided to. E.g. myapp-stage.azurewebsites.net.
      */
-    @JsonProperty(value = "actionHostName")
     private String actionHostname;
 
     /*
      * Percentage of the traffic which will be redirected to <code>ActionHostName</code>.
      */
-    @JsonProperty(value = "reroutePercentage")
     private Double reroutePercentage;
 
     /*
-     * In auto ramp up scenario this is the step to add/remove from <code>ReroutePercentage</code> until it reaches \n<code>MinReroutePercentage</code> or 
-     * <code>MaxReroutePercentage</code>. Site metrics are checked every N minutes specified in <code>ChangeIntervalInMinutes</code>.\nCustom decision algorithm 
-     * can be provided in TiPCallback site extension which URL can be specified in <code>ChangeDecisionCallbackUrl</code>.
+     * In auto ramp up scenario this is the step to add/remove from <code>ReroutePercentage</code> until it reaches
+     * \n<code>MinReroutePercentage</code> or
+     * <code>MaxReroutePercentage</code>. Site metrics are checked every N minutes specified in
+     * <code>ChangeIntervalInMinutes</code>.\nCustom decision algorithm
+     * can be provided in TiPCallback site extension which URL can be specified in
+     * <code>ChangeDecisionCallbackUrl</code>.
      */
-    @JsonProperty(value = "changeStep")
     private Double changeStep;
 
     /*
      * Specifies interval in minutes to reevaluate ReroutePercentage.
      */
-    @JsonProperty(value = "changeIntervalInMinutes")
     private Integer changeIntervalInMinutes;
 
     /*
      * Specifies lower boundary above which ReroutePercentage will stay.
      */
-    @JsonProperty(value = "minReroutePercentage")
     private Double minReroutePercentage;
 
     /*
      * Specifies upper boundary below which ReroutePercentage will stay.
      */
-    @JsonProperty(value = "maxReroutePercentage")
     private Double maxReroutePercentage;
 
     /*
-     * Custom decision algorithm can be provided in TiPCallback site extension which URL can be specified. See TiPCallback site extension for the scaffold and contracts.
+     * Custom decision algorithm can be provided in TiPCallback site extension which URL can be specified. See
+     * TiPCallback site extension for the scaffold and contracts.
      * https://www.siteextensions.net/packages/TiPCallback/
      */
-    @JsonProperty(value = "changeDecisionCallbackUrl")
     private String changeDecisionCallbackUrl;
 
     /*
-     * Name of the routing rule. The recommended name would be to point to the slot which will receive the traffic in the experiment.
+     * Name of the routing rule. The recommended name would be to point to the slot which will receive the traffic in
+     * the experiment.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /**
@@ -256,5 +257,62 @@ public final class RampUpRule {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("actionHostName", this.actionHostname);
+        jsonWriter.writeNumberField("reroutePercentage", this.reroutePercentage);
+        jsonWriter.writeNumberField("changeStep", this.changeStep);
+        jsonWriter.writeNumberField("changeIntervalInMinutes", this.changeIntervalInMinutes);
+        jsonWriter.writeNumberField("minReroutePercentage", this.minReroutePercentage);
+        jsonWriter.writeNumberField("maxReroutePercentage", this.maxReroutePercentage);
+        jsonWriter.writeStringField("changeDecisionCallbackUrl", this.changeDecisionCallbackUrl);
+        jsonWriter.writeStringField("name", this.name);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RampUpRule from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RampUpRule if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the RampUpRule.
+     */
+    public static RampUpRule fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RampUpRule deserializedRampUpRule = new RampUpRule();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("actionHostName".equals(fieldName)) {
+                    deserializedRampUpRule.actionHostname = reader.getString();
+                } else if ("reroutePercentage".equals(fieldName)) {
+                    deserializedRampUpRule.reroutePercentage = reader.getNullable(JsonReader::getDouble);
+                } else if ("changeStep".equals(fieldName)) {
+                    deserializedRampUpRule.changeStep = reader.getNullable(JsonReader::getDouble);
+                } else if ("changeIntervalInMinutes".equals(fieldName)) {
+                    deserializedRampUpRule.changeIntervalInMinutes = reader.getNullable(JsonReader::getInt);
+                } else if ("minReroutePercentage".equals(fieldName)) {
+                    deserializedRampUpRule.minReroutePercentage = reader.getNullable(JsonReader::getDouble);
+                } else if ("maxReroutePercentage".equals(fieldName)) {
+                    deserializedRampUpRule.maxReroutePercentage = reader.getNullable(JsonReader::getDouble);
+                } else if ("changeDecisionCallbackUrl".equals(fieldName)) {
+                    deserializedRampUpRule.changeDecisionCallbackUrl = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedRampUpRule.name = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRampUpRule;
+        });
     }
 }

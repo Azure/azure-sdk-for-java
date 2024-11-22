@@ -6,42 +6,46 @@ package com.azure.resourcemanager.storagepool.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Metadata about an operation. */
+/**
+ * Metadata about an operation.
+ */
 @Fluent
-public final class StoragePoolOperationDisplay {
+public final class StoragePoolOperationDisplay implements JsonSerializable<StoragePoolOperationDisplay> {
     /*
      * Localized friendly form of the resource provider name.
      */
-    @JsonProperty(value = "provider", required = true)
     private String provider;
 
     /*
      * Localized friendly form of the resource type related to this action/operation.
      */
-    @JsonProperty(value = "resource", required = true)
     private String resource;
 
     /*
      * Localized friendly name for the operation, as it should be shown to the user.
      */
-    @JsonProperty(value = "operation", required = true)
     private String operation;
 
     /*
      * Localized friendly description for the operation, as it should be shown to the user.
      */
-    @JsonProperty(value = "description", required = true)
     private String description;
 
-    /** Creates an instance of StoragePoolOperationDisplay class. */
+    /**
+     * Creates an instance of StoragePoolOperationDisplay class.
+     */
     public StoragePoolOperationDisplay() {
     }
 
     /**
      * Get the provider property: Localized friendly form of the resource provider name.
-     *
+     * 
      * @return the provider value.
      */
     public String provider() {
@@ -50,7 +54,7 @@ public final class StoragePoolOperationDisplay {
 
     /**
      * Set the provider property: Localized friendly form of the resource provider name.
-     *
+     * 
      * @param provider the provider value to set.
      * @return the StoragePoolOperationDisplay object itself.
      */
@@ -61,7 +65,7 @@ public final class StoragePoolOperationDisplay {
 
     /**
      * Get the resource property: Localized friendly form of the resource type related to this action/operation.
-     *
+     * 
      * @return the resource value.
      */
     public String resource() {
@@ -70,7 +74,7 @@ public final class StoragePoolOperationDisplay {
 
     /**
      * Set the resource property: Localized friendly form of the resource type related to this action/operation.
-     *
+     * 
      * @param resource the resource value to set.
      * @return the StoragePoolOperationDisplay object itself.
      */
@@ -81,7 +85,7 @@ public final class StoragePoolOperationDisplay {
 
     /**
      * Get the operation property: Localized friendly name for the operation, as it should be shown to the user.
-     *
+     * 
      * @return the operation value.
      */
     public String operation() {
@@ -90,7 +94,7 @@ public final class StoragePoolOperationDisplay {
 
     /**
      * Set the operation property: Localized friendly name for the operation, as it should be shown to the user.
-     *
+     * 
      * @param operation the operation value to set.
      * @return the StoragePoolOperationDisplay object itself.
      */
@@ -102,7 +106,7 @@ public final class StoragePoolOperationDisplay {
     /**
      * Get the description property: Localized friendly description for the operation, as it should be shown to the
      * user.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -112,7 +116,7 @@ public final class StoragePoolOperationDisplay {
     /**
      * Set the description property: Localized friendly description for the operation, as it should be shown to the
      * user.
-     *
+     * 
      * @param description the description value to set.
      * @return the StoragePoolOperationDisplay object itself.
      */
@@ -123,35 +127,77 @@ public final class StoragePoolOperationDisplay {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (provider() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property provider in model StoragePoolOperationDisplay"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property provider in model StoragePoolOperationDisplay"));
         }
         if (resource() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property resource in model StoragePoolOperationDisplay"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property resource in model StoragePoolOperationDisplay"));
         }
         if (operation() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property operation in model StoragePoolOperationDisplay"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property operation in model StoragePoolOperationDisplay"));
         }
         if (description() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property description in model StoragePoolOperationDisplay"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property description in model StoragePoolOperationDisplay"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(StoragePoolOperationDisplay.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("provider", this.provider);
+        jsonWriter.writeStringField("resource", this.resource);
+        jsonWriter.writeStringField("operation", this.operation);
+        jsonWriter.writeStringField("description", this.description);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StoragePoolOperationDisplay from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StoragePoolOperationDisplay if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the StoragePoolOperationDisplay.
+     */
+    public static StoragePoolOperationDisplay fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StoragePoolOperationDisplay deserializedStoragePoolOperationDisplay = new StoragePoolOperationDisplay();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provider".equals(fieldName)) {
+                    deserializedStoragePoolOperationDisplay.provider = reader.getString();
+                } else if ("resource".equals(fieldName)) {
+                    deserializedStoragePoolOperationDisplay.resource = reader.getString();
+                } else if ("operation".equals(fieldName)) {
+                    deserializedStoragePoolOperationDisplay.operation = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedStoragePoolOperationDisplay.description = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStoragePoolOperationDisplay;
+        });
+    }
 }

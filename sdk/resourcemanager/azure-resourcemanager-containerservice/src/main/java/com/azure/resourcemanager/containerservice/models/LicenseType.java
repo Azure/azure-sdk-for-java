@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -38,7 +37,6 @@ public final class LicenseType extends ExpandableStringEnum<LicenseType> {
      * @param name a name to look for.
      * @return the corresponding LicenseType.
      */
-    @JsonCreator
     public static LicenseType fromString(String name) {
         return fromString(name, LicenseType.class);
     }

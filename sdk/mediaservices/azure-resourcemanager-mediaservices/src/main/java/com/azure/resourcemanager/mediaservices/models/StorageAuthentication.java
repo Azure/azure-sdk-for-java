@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for StorageAuthentication. */
+/**
+ * Defines values for StorageAuthentication.
+ */
 public final class StorageAuthentication extends ExpandableStringEnum<StorageAuthentication> {
-    /** Static value System for StorageAuthentication. */
+    /**
+     * Static value System for StorageAuthentication.
+     */
     public static final StorageAuthentication SYSTEM = fromString("System");
 
-    /** Static value ManagedIdentity for StorageAuthentication. */
+    /**
+     * Static value ManagedIdentity for StorageAuthentication.
+     */
     public static final StorageAuthentication MANAGED_IDENTITY = fromString("ManagedIdentity");
 
     /**
      * Creates a new instance of StorageAuthentication value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class StorageAuthentication extends ExpandableStringEnum<StorageAut
 
     /**
      * Creates or finds a StorageAuthentication from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding StorageAuthentication.
      */
-    @JsonCreator
     public static StorageAuthentication fromString(String name) {
         return fromString(name, StorageAuthentication.class);
     }
 
     /**
      * Gets known StorageAuthentication values.
-     *
+     * 
      * @return known StorageAuthentication values.
      */
     public static Collection<StorageAuthentication> values() {

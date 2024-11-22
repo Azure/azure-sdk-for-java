@@ -13,18 +13,18 @@ public final class DynamicPoolConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DynamicPoolConfiguration model
-            = BinaryData.fromString("{\"executionType\":\"Timed\",\"cooldownPeriodInSeconds\":1285762272}")
+            = BinaryData.fromString("{\"executionType\":\"Timed\",\"cooldownPeriodInSeconds\":746023712}")
                 .toObject(DynamicPoolConfiguration.class);
         Assertions.assertEquals(ExecutionType.TIMED, model.executionType());
-        Assertions.assertEquals(1285762272, model.cooldownPeriodInSeconds());
+        Assertions.assertEquals(746023712, model.cooldownPeriodInSeconds());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DynamicPoolConfiguration model = new DynamicPoolConfiguration().withExecutionType(ExecutionType.TIMED)
-            .withCooldownPeriodInSeconds(1285762272);
+            .withCooldownPeriodInSeconds(746023712);
         model = BinaryData.fromObject(model).toObject(DynamicPoolConfiguration.class);
         Assertions.assertEquals(ExecutionType.TIMED, model.executionType());
-        Assertions.assertEquals(1285762272, model.cooldownPeriodInSeconds());
+        Assertions.assertEquals(746023712, model.cooldownPeriodInSeconds());
     }
 }

@@ -5,32 +5,39 @@
 package com.azure.resourcemanager.baremetalinfrastructure.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.baremetalinfrastructure.models.StorageProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Describes the properties of an AzureBareMetalStorageInstance. */
+/**
+ * Describes the properties of an AzureBareMetalStorageInstance.
+ */
 @Fluent
-public final class AzureBareMetalStorageInstanceProperties {
+public final class AzureBareMetalStorageInstanceProperties
+    implements JsonSerializable<AzureBareMetalStorageInstanceProperties> {
     /*
      * Specifies the AzureBareMetaStorageInstance unique ID.
      */
-    @JsonProperty(value = "azureBareMetalStorageInstanceUniqueIdentifier")
     private String azureBareMetalStorageInstanceUniqueIdentifier;
 
     /*
      * Specifies the storage properties for the AzureBareMetalStorage instance.
      */
-    @JsonProperty(value = "storageProperties")
     private StorageProperties storageProperties;
 
-    /** Creates an instance of AzureBareMetalStorageInstanceProperties class. */
+    /**
+     * Creates an instance of AzureBareMetalStorageInstanceProperties class.
+     */
     public AzureBareMetalStorageInstanceProperties() {
     }
 
     /**
      * Get the azureBareMetalStorageInstanceUniqueIdentifier property: Specifies the AzureBareMetaStorageInstance unique
      * ID.
-     *
+     * 
      * @return the azureBareMetalStorageInstanceUniqueIdentifier value.
      */
     public String azureBareMetalStorageInstanceUniqueIdentifier() {
@@ -40,20 +47,20 @@ public final class AzureBareMetalStorageInstanceProperties {
     /**
      * Set the azureBareMetalStorageInstanceUniqueIdentifier property: Specifies the AzureBareMetaStorageInstance unique
      * ID.
-     *
+     * 
      * @param azureBareMetalStorageInstanceUniqueIdentifier the azureBareMetalStorageInstanceUniqueIdentifier value to
-     *     set.
+     * set.
      * @return the AzureBareMetalStorageInstanceProperties object itself.
      */
-    public AzureBareMetalStorageInstanceProperties withAzureBareMetalStorageInstanceUniqueIdentifier(
-        String azureBareMetalStorageInstanceUniqueIdentifier) {
+    public AzureBareMetalStorageInstanceProperties
+        withAzureBareMetalStorageInstanceUniqueIdentifier(String azureBareMetalStorageInstanceUniqueIdentifier) {
         this.azureBareMetalStorageInstanceUniqueIdentifier = azureBareMetalStorageInstanceUniqueIdentifier;
         return this;
     }
 
     /**
      * Get the storageProperties property: Specifies the storage properties for the AzureBareMetalStorage instance.
-     *
+     * 
      * @return the storageProperties value.
      */
     public StorageProperties storageProperties() {
@@ -62,7 +69,7 @@ public final class AzureBareMetalStorageInstanceProperties {
 
     /**
      * Set the storageProperties property: Specifies the storage properties for the AzureBareMetalStorage instance.
-     *
+     * 
      * @param storageProperties the storageProperties value to set.
      * @return the AzureBareMetalStorageInstanceProperties object itself.
      */
@@ -73,12 +80,55 @@ public final class AzureBareMetalStorageInstanceProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (storageProperties() != null) {
             storageProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("azureBareMetalStorageInstanceUniqueIdentifier",
+            this.azureBareMetalStorageInstanceUniqueIdentifier);
+        jsonWriter.writeJsonField("storageProperties", this.storageProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureBareMetalStorageInstanceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureBareMetalStorageInstanceProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureBareMetalStorageInstanceProperties.
+     */
+    public static AzureBareMetalStorageInstanceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureBareMetalStorageInstanceProperties deserializedAzureBareMetalStorageInstanceProperties
+                = new AzureBareMetalStorageInstanceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("azureBareMetalStorageInstanceUniqueIdentifier".equals(fieldName)) {
+                    deserializedAzureBareMetalStorageInstanceProperties.azureBareMetalStorageInstanceUniqueIdentifier
+                        = reader.getString();
+                } else if ("storageProperties".equals(fieldName)) {
+                    deserializedAzureBareMetalStorageInstanceProperties.storageProperties
+                        = StorageProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureBareMetalStorageInstanceProperties;
+        });
     }
 }

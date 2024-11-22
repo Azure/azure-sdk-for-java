@@ -5,17 +5,20 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Describes the settings for producing output into a log analytics workspace.
  */
 @Fluent
-public final class ConnectionMonitorWorkspaceSettings {
+public final class ConnectionMonitorWorkspaceSettings implements JsonSerializable<ConnectionMonitorWorkspaceSettings> {
     /*
      * Log analytics workspace resource ID.
      */
-    @JsonProperty(value = "workspaceResourceId")
     private String workspaceResourceId;
 
     /**
@@ -50,5 +53,42 @@ public final class ConnectionMonitorWorkspaceSettings {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("workspaceResourceId", this.workspaceResourceId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConnectionMonitorWorkspaceSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConnectionMonitorWorkspaceSettings if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ConnectionMonitorWorkspaceSettings.
+     */
+    public static ConnectionMonitorWorkspaceSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConnectionMonitorWorkspaceSettings deserializedConnectionMonitorWorkspaceSettings
+                = new ConnectionMonitorWorkspaceSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("workspaceResourceId".equals(fieldName)) {
+                    deserializedConnectionMonitorWorkspaceSettings.workspaceResourceId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConnectionMonitorWorkspaceSettings;
+        });
     }
 }

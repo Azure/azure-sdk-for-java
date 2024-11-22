@@ -3,42 +3,18 @@
 
 package com.azure.resourcemanager.servicebus.implementation;
 
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.module.SimpleModule;
-
-import java.io.IOException;
 import java.time.Duration;
 
 /**
  * Custom serializer for serializing {@link Duration} object into ISO8601 formats, with precision to nanoseconds.
  */
-public final class DurationSerializer extends JsonSerializer<Duration> {
+public final class DurationSerializer {
     /**
-     * Gets a module wrapping this serializer as an adapter for the Jackson
-     * ObjectMapper.
-     *
-     * @return a simple module to be plugged onto Jackson ObjectMapper.
-     */
-    public static SimpleModule getModule() {
-        SimpleModule module = new SimpleModule();
-        module.addSerializer(Duration.class, new DurationSerializer());
-        return module;
-    }
-
-    @Override
-    public void serialize(Duration duration, JsonGenerator jsonGenerator, SerializerProvider serializerProvider)
-        throws IOException {
-        jsonGenerator.writeString(DurationSerializer.toString(duration));
-    }
-
-    /**
-     * Convert to provided Duration to an ISO 8601 String with a days component.
+     * Convert to provided Duration to an ISO 8601 String with a days component, with precision to nanoseconds.
      * @param duration The Duration to convert.
      * @return The String representation of the provided Duration.
      */
-    public static String toString(Duration duration) {
+    public static String serialize(Duration duration) {
         String result = null;
         if (duration != null) {
             if (duration.isZero()) {

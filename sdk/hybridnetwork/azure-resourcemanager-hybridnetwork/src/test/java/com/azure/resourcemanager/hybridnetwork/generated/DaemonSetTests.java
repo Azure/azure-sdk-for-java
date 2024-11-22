@@ -27,8 +27,13 @@ public final class DaemonSetTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DaemonSet model = new DaemonSet().withName("umaq").withNamespace("bgycduiertgccym").withDesired(50940581)
-            .withCurrent(76010479).withReady(10940345).withUpToDate(245335843).withAvailable(1979529158)
+        DaemonSet model = new DaemonSet().withName("umaq")
+            .withNamespace("bgycduiertgccym")
+            .withDesired(50940581)
+            .withCurrent(76010479)
+            .withReady(10940345)
+            .withUpToDate(245335843)
+            .withAvailable(1979529158)
             .withCreationTime(OffsetDateTime.parse("2021-08-20T01:14:48Z"));
         model = BinaryData.fromObject(model).toObject(DaemonSet.class);
         Assertions.assertEquals("umaq", model.name());

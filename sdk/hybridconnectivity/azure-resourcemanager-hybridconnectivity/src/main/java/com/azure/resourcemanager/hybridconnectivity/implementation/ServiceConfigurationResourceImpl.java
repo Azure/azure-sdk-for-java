@@ -12,10 +12,8 @@ import com.azure.resourcemanager.hybridconnectivity.models.ServiceConfigurationR
 import com.azure.resourcemanager.hybridconnectivity.models.ServiceConfigurationResourcePatch;
 import com.azure.resourcemanager.hybridconnectivity.models.ServiceName;
 
-public final class ServiceConfigurationResourceImpl
-    implements ServiceConfigurationResource,
-        ServiceConfigurationResource.Definition,
-        ServiceConfigurationResource.Update {
+public final class ServiceConfigurationResourceImpl implements ServiceConfigurationResource,
+    ServiceConfigurationResource.Definition, ServiceConfigurationResource.Update {
     private ServiceConfigurationResourceInner innerObject;
 
     private final com.azure.resourcemanager.hybridconnectivity.HybridConnectivityManager serviceManager;
@@ -75,29 +73,24 @@ public final class ServiceConfigurationResourceImpl
     }
 
     public ServiceConfigurationResource create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getServiceConfigurations()
-                .createOrupdateWithResponse(
-                    resourceUri, endpointName, serviceConfigurationName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getServiceConfigurations()
+            .createOrupdateWithResponse(resourceUri, endpointName, serviceConfigurationName, this.innerModel(),
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public ServiceConfigurationResource create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getServiceConfigurations()
-                .createOrupdateWithResponse(
-                    resourceUri, endpointName, serviceConfigurationName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getServiceConfigurations()
+            .createOrupdateWithResponse(resourceUri, endpointName, serviceConfigurationName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
-    ServiceConfigurationResourceImpl(
-        String name, com.azure.resourcemanager.hybridconnectivity.HybridConnectivityManager serviceManager) {
+    ServiceConfigurationResourceImpl(String name,
+        com.azure.resourcemanager.hybridconnectivity.HybridConnectivityManager serviceManager) {
         this.innerObject = new ServiceConfigurationResourceInner();
         this.serviceManager = serviceManager;
         this.serviceConfigurationName = name;
@@ -109,73 +102,51 @@ public final class ServiceConfigurationResourceImpl
     }
 
     public ServiceConfigurationResource apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getServiceConfigurations()
-                .updateWithResponse(
-                    resourceUri,
-                    endpointName,
-                    serviceConfigurationName,
-                    updateServiceConfigurationResource,
-                    Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getServiceConfigurations()
+            .updateWithResponse(resourceUri, endpointName, serviceConfigurationName, updateServiceConfigurationResource,
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public ServiceConfigurationResource apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getServiceConfigurations()
-                .updateWithResponse(
-                    resourceUri, endpointName, serviceConfigurationName, updateServiceConfigurationResource, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getServiceConfigurations()
+            .updateWithResponse(resourceUri, endpointName, serviceConfigurationName, updateServiceConfigurationResource,
+                context)
+            .getValue();
         return this;
     }
 
-    ServiceConfigurationResourceImpl(
-        ServiceConfigurationResourceInner innerObject,
+    ServiceConfigurationResourceImpl(ServiceConfigurationResourceInner innerObject,
         com.azure.resourcemanager.hybridconnectivity.HybridConnectivityManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceUri =
-            Utils
-                .getValueFromIdByParameterName(
-                    innerObject.id(),
-                    "/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints/{endpointName}/serviceConfigurations/{serviceConfigurationName}",
-                    "resourceUri");
-        this.endpointName =
-            Utils
-                .getValueFromIdByParameterName(
-                    innerObject.id(),
-                    "/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints/{endpointName}/serviceConfigurations/{serviceConfigurationName}",
-                    "endpointName");
-        this.serviceConfigurationName =
-            Utils
-                .getValueFromIdByParameterName(
-                    innerObject.id(),
-                    "/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints/{endpointName}/serviceConfigurations/{serviceConfigurationName}",
-                    "serviceConfigurationName");
+        this.resourceUri = Utils.getValueFromIdByParameterName(innerObject.id(),
+            "/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints/{endpointName}/serviceConfigurations/{serviceConfigurationName}",
+            "resourceUri");
+        this.endpointName = Utils.getValueFromIdByParameterName(innerObject.id(),
+            "/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints/{endpointName}/serviceConfigurations/{serviceConfigurationName}",
+            "endpointName");
+        this.serviceConfigurationName = Utils.getValueFromIdByParameterName(innerObject.id(),
+            "/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints/{endpointName}/serviceConfigurations/{serviceConfigurationName}",
+            "serviceConfigurationName");
     }
 
     public ServiceConfigurationResource refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getServiceConfigurations()
-                .getWithResponse(resourceUri, endpointName, serviceConfigurationName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getServiceConfigurations()
+            .getWithResponse(resourceUri, endpointName, serviceConfigurationName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ServiceConfigurationResource refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getServiceConfigurations()
-                .getWithResponse(resourceUri, endpointName, serviceConfigurationName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getServiceConfigurations()
+            .getWithResponse(resourceUri, endpointName, serviceConfigurationName, context)
+            .getValue();
         return this;
     }
 

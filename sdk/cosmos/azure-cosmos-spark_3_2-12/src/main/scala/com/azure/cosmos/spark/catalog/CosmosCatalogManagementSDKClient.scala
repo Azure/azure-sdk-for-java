@@ -35,7 +35,8 @@ private[spark] case class CosmosCatalogManagementSDKClient(resourceGroupName: St
 
     private val objectMapper: ObjectMapper = new ObjectMapper()
     objectMapper.setSerializationInclusion(Include.NON_NULL)
-
+    objectMapper.registerModule(
+      com.azure.core.serializer.json.jackson.JacksonJsonProvider.getJsonSerializableDatabindModule())
     private val sqlResourcesClient = cosmosManager.serviceClient().getSqlResources()
 
     override def close(): Unit = {}

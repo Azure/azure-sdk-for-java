@@ -22,7 +22,7 @@ public final class DotNetComponentsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"componentType\":\"AspireDashboard\",\"provisioningState\":\"Deleting\",\"configurations\":[{\"propertyName\":\"fnkwmygjjekrknf\",\"value\":\"ugjqyckgtxkrdt\"},{\"propertyName\":\"crcjdklotcsubmz\",\"value\":\"nsvob\"}],\"serviceBinds\":[{\"name\":\"fpw\",\"serviceId\":\"yslb\"},{\"name\":\"glmnnk\",\"serviceId\":\"ayqshwyqxridttbs\"}]},\"id\":\"jmkgxqwqueuuylzt\",\"name\":\"z\",\"type\":\"izevjyk\"}";
+            = "{\"properties\":{\"componentType\":\"AspireDashboard\",\"provisioningState\":\"InProgress\",\"configurations\":[{\"propertyName\":\"nqifb\",\"value\":\"troiauesugmo\"},{\"propertyName\":\"cjycb\",\"value\":\"lrgttwfldsiuor\"},{\"propertyName\":\"ikcedpk\",\"value\":\"iwm\"}],\"serviceBinds\":[{\"name\":\"rx\",\"serviceId\":\"qvvyczyay\"}]},\"id\":\"tg\",\"name\":\"bxiqahragpxmibpl\",\"type\":\"upoyryefqm\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,13 +32,13 @@ public final class DotNetComponentsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         DotNetComponent response = manager.dotNetComponents()
-            .getWithResponse("mczfedyuepsvplt", "dajjvywe", "cfkumcfjxo", com.azure.core.util.Context.NONE)
+            .getWithResponse("qoq", "umov", "fbpbvzopaxmfmvsm", com.azure.core.util.Context.NONE)
             .getValue();
 
         Assertions.assertEquals(DotNetComponentType.ASPIRE_DASHBOARD, response.componentType());
-        Assertions.assertEquals("fnkwmygjjekrknf", response.configurations().get(0).propertyName());
-        Assertions.assertEquals("ugjqyckgtxkrdt", response.configurations().get(0).value());
-        Assertions.assertEquals("fpw", response.serviceBinds().get(0).name());
-        Assertions.assertEquals("yslb", response.serviceBinds().get(0).serviceId());
+        Assertions.assertEquals("nqifb", response.configurations().get(0).propertyName());
+        Assertions.assertEquals("troiauesugmo", response.configurations().get(0).value());
+        Assertions.assertEquals("rx", response.serviceBinds().get(0).name());
+        Assertions.assertEquals("qvvyczyay", response.serviceBinds().get(0).serviceId());
     }
 }

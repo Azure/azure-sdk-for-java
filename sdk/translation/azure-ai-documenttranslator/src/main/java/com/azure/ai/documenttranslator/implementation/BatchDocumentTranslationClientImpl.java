@@ -73,12 +73,8 @@ public final class BatchDocumentTranslationClientImpl {
      *     https://westus.api.cognitive.microsoft.com).
      */
     public BatchDocumentTranslationClientImpl(String endpoint) {
-        this(
-                new HttpPipelineBuilder()
-                        .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
-                        .build(),
-                JacksonAdapter.createDefaultSerializerAdapter(),
-                endpoint);
+        this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build(),
+            JacksonAdapter.createDefaultSerializerAdapter(), endpoint);
     }
 
     /**
@@ -100,8 +96,8 @@ public final class BatchDocumentTranslationClientImpl {
      * @param endpoint Supported Cognitive Services endpoints (protocol and hostname, for example:
      *     https://westus.api.cognitive.microsoft.com).
      */
-    public BatchDocumentTranslationClientImpl(
-            HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint) {
+    public BatchDocumentTranslationClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
+        String endpoint) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;

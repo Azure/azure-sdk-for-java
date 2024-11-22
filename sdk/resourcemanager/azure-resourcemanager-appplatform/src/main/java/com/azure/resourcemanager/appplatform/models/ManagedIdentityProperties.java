@@ -5,38 +5,36 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
 /**
  * Managed identity properties retrieved from ARM request headers.
  */
 @Fluent
-public final class ManagedIdentityProperties {
+public final class ManagedIdentityProperties implements JsonSerializable<ManagedIdentityProperties> {
     /*
      * Type of the managed identity
      */
-    @JsonProperty(value = "type")
     private ManagedIdentityType type;
 
     /*
      * Principal Id of system-assigned managed identity.
      */
-    @JsonProperty(value = "principalId")
     private String principalId;
 
     /*
      * Tenant Id of system-assigned managed identity.
      */
-    @JsonProperty(value = "tenantId")
     private String tenantId;
 
     /*
      * Properties of user-assigned managed identities
      */
-    @JsonProperty(value = "userAssignedIdentities")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, UserAssignedManagedIdentity> userAssignedIdentities;
 
     /**
@@ -139,5 +137,53 @@ public final class ManagedIdentityProperties {
                 }
             });
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("principalId", this.principalId);
+        jsonWriter.writeStringField("tenantId", this.tenantId);
+        jsonWriter.writeMapField("userAssignedIdentities", this.userAssignedIdentities,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedIdentityProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedIdentityProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ManagedIdentityProperties.
+     */
+    public static ManagedIdentityProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedIdentityProperties deserializedManagedIdentityProperties = new ManagedIdentityProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedManagedIdentityProperties.type = ManagedIdentityType.fromString(reader.getString());
+                } else if ("principalId".equals(fieldName)) {
+                    deserializedManagedIdentityProperties.principalId = reader.getString();
+                } else if ("tenantId".equals(fieldName)) {
+                    deserializedManagedIdentityProperties.tenantId = reader.getString();
+                } else if ("userAssignedIdentities".equals(fieldName)) {
+                    Map<String, UserAssignedManagedIdentity> userAssignedIdentities
+                        = reader.readMap(reader1 -> UserAssignedManagedIdentity.fromJson(reader1));
+                    deserializedManagedIdentityProperties.userAssignedIdentities = userAssignedIdentities;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagedIdentityProperties;
+        });
     }
 }

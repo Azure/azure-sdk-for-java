@@ -26,8 +26,8 @@ public interface PolicyDescriptionsClient {
      * @return descriptions of API Management policies along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PolicyDescriptionCollectionInner> listByServiceWithResponse(
-        String resourceGroupName, String serviceName, PolicyScopeContract scope, Context context);
+    Response<PolicyDescriptionCollectionInner> listByServiceWithResponse(String resourceGroupName, String serviceName,
+        PolicyScopeContract scope, Context context);
 
     /**
      * Lists all policy descriptions.

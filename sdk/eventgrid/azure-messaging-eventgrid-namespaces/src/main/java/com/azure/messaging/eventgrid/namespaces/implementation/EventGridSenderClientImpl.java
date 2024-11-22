@@ -156,7 +156,7 @@ public final class EventGridSenderClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> send(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("topicName") String topicName,
-            @HeaderParam("content-type") String contentType, @HeaderParam("accept") String accept,
+            @HeaderParam("content-type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/cloudevents+json; charset=utf-8") BinaryData event, RequestOptions requestOptions,
             Context context);
 
@@ -168,7 +168,7 @@ public final class EventGridSenderClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> sendSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("topicName") String topicName,
-            @HeaderParam("content-type") String contentType, @HeaderParam("accept") String accept,
+            @HeaderParam("content-type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/cloudevents+json; charset=utf-8") BinaryData event, RequestOptions requestOptions,
             Context context);
 
@@ -180,7 +180,7 @@ public final class EventGridSenderClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> sendEvents(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("topicName") String topicName,
-            @HeaderParam("content-type") String contentType, @HeaderParam("accept") String accept,
+            @HeaderParam("content-type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/cloudevents-batch+json; charset=utf-8") BinaryData events,
             RequestOptions requestOptions, Context context);
 
@@ -192,7 +192,7 @@ public final class EventGridSenderClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> sendEventsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("topicName") String topicName,
-            @HeaderParam("content-type") String contentType, @HeaderParam("accept") String accept,
+            @HeaderParam("content-type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/cloudevents-batch+json; charset=utf-8") BinaryData events,
             RequestOptions requestOptions, Context context);
     }
@@ -201,11 +201,12 @@ public final class EventGridSenderClientImpl {
      * Publish a single Cloud Event to a namespace topic.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     source: String (Required)
-     *     data: Object (Optional)
+     *     data: BinaryData (Optional)
      *     data_base64: byte[] (Optional)
      *     type: String (Required)
      *     time: OffsetDateTime (Optional)
@@ -214,13 +215,17 @@ public final class EventGridSenderClientImpl {
      *     datacontenttype: String (Optional)
      *     subject: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
-     * { }
-     * }</pre>
+     * <pre>
+     * {@code
+     * {
+     * }
+     * }
+     * </pre>
      * 
      * @param topicName Topic Name.
      * @param event Single Cloud Event being published.
@@ -244,11 +249,12 @@ public final class EventGridSenderClientImpl {
      * Publish a single Cloud Event to a namespace topic.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     source: String (Required)
-     *     data: Object (Optional)
+     *     data: BinaryData (Optional)
      *     data_base64: byte[] (Optional)
      *     type: String (Required)
      *     time: OffsetDateTime (Optional)
@@ -257,13 +263,17 @@ public final class EventGridSenderClientImpl {
      *     datacontenttype: String (Optional)
      *     subject: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
-     * { }
-     * }</pre>
+     * <pre>
+     * {@code
+     * {
+     * }
+     * }
+     * </pre>
      * 
      * @param topicName Topic Name.
      * @param event Single Cloud Event being published.
@@ -286,12 +296,13 @@ public final class EventGridSenderClientImpl {
      * Publish a batch of Cloud Events to a namespace topic.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         id: String (Required)
      *         source: String (Required)
-     *         data: Object (Optional)
+     *         data: BinaryData (Optional)
      *         data_base64: byte[] (Optional)
      *         type: String (Required)
      *         time: OffsetDateTime (Optional)
@@ -301,13 +312,17 @@ public final class EventGridSenderClientImpl {
      *         subject: String (Optional)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
-     * { }
-     * }</pre>
+     * <pre>
+     * {@code
+     * {
+     * }
+     * }
+     * </pre>
      * 
      * @param topicName Topic Name.
      * @param events Array of Cloud Events being published.
@@ -331,12 +346,13 @@ public final class EventGridSenderClientImpl {
      * Publish a batch of Cloud Events to a namespace topic.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         id: String (Required)
      *         source: String (Required)
-     *         data: Object (Optional)
+     *         data: BinaryData (Optional)
      *         data_base64: byte[] (Optional)
      *         type: String (Required)
      *         time: OffsetDateTime (Optional)
@@ -346,13 +362,17 @@ public final class EventGridSenderClientImpl {
      *         subject: String (Optional)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
-     * { }
-     * }</pre>
+     * <pre>
+     * {@code
+     * {
+     * }
+     * }
+     * </pre>
      * 
      * @param topicName Topic Name.
      * @param events Array of Cloud Events being published.

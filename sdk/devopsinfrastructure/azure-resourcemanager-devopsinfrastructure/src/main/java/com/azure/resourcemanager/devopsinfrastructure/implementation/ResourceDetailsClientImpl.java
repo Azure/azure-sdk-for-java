@@ -42,22 +42,22 @@ public final class ResourceDetailsClientImpl implements ResourceDetailsClient {
     /**
      * The service client containing this operation class.
      */
-    private final DevOpsInfrastructureClientImpl client;
+    private final DevOpsInfrastructureManagementClientImpl client;
 
     /**
      * Initializes an instance of ResourceDetailsClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    ResourceDetailsClientImpl(DevOpsInfrastructureClientImpl client) {
+    ResourceDetailsClientImpl(DevOpsInfrastructureManagementClientImpl client) {
         this.service
             = RestProxy.create(ResourceDetailsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for DevOpsInfrastructureClientResourceDetails to be used by the proxy
-     * service to perform REST calls.
+     * The interface defining all the services for DevOpsInfrastructureManagementClientResourceDetails to be used by the
+     * proxy service to perform REST calls.
      */
     @Host("{endpoint}")
     @ServiceInterface(name = "DevOpsInfrastructure")
@@ -69,7 +69,7 @@ public final class ResourceDetailsClientImpl implements ResourceDetailsClient {
         Mono<Response<ResourceDetailsObjectListResult>> listByPool(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("poolName") String poolName,
-            @HeaderParam("accept") String accept, Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -77,7 +77,7 @@ public final class ResourceDetailsClientImpl implements ResourceDetailsClient {
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ResourceDetailsObjectListResult>> listByPoolNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept, Context context);
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**

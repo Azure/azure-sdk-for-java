@@ -4,19 +4,22 @@
 
 package com.azure.resourcemanager.networkcloud.generated;
 
-/** Samples for Consoles Delete. */
+/**
+ * Samples for Consoles Delete.
+ */
 public final class ConsolesDeleteSamples {
     /*
-     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2023-07-01/examples/Consoles_Delete.json
+     * x-ms-original-file:
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-06-01-preview/examples/
+     * Consoles_Delete.json
      */
     /**
      * Sample code: Delete virtual machine console.
-     *
+     * 
      * @param manager Entry point to NetworkCloudManager.
      */
     public static void deleteVirtualMachineConsole(com.azure.resourcemanager.networkcloud.NetworkCloudManager manager) {
-        manager
-            .consoles()
+        manager.consoles()
             .delete("resourceGroupName", "virtualMachineName", "default", com.azure.core.util.Context.NONE);
     }
 }

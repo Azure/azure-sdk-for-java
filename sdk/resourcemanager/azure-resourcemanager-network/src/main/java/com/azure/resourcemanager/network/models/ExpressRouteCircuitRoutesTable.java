@@ -5,41 +5,40 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The routes table associated with the ExpressRouteCircuit.
  */
 @Fluent
-public final class ExpressRouteCircuitRoutesTable {
+public final class ExpressRouteCircuitRoutesTable implements JsonSerializable<ExpressRouteCircuitRoutesTable> {
     /*
      * IP address of a network entity.
      */
-    @JsonProperty(value = "network")
     private String network;
 
     /*
      * NextHop address.
      */
-    @JsonProperty(value = "nextHop")
     private String nextHop;
 
     /*
      * Local preference value as set with the set local-preference route-map configuration command.
      */
-    @JsonProperty(value = "locPrf")
     private String locPrf;
 
     /*
      * Route Weight.
      */
-    @JsonProperty(value = "weight")
     private Integer weight;
 
     /*
      * Autonomous system paths to the destination network.
      */
-    @JsonProperty(value = "path")
     private String path;
 
     /**
@@ -156,5 +155,54 @@ public final class ExpressRouteCircuitRoutesTable {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("network", this.network);
+        jsonWriter.writeStringField("nextHop", this.nextHop);
+        jsonWriter.writeStringField("locPrf", this.locPrf);
+        jsonWriter.writeNumberField("weight", this.weight);
+        jsonWriter.writeStringField("path", this.path);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExpressRouteCircuitRoutesTable from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExpressRouteCircuitRoutesTable if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ExpressRouteCircuitRoutesTable.
+     */
+    public static ExpressRouteCircuitRoutesTable fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExpressRouteCircuitRoutesTable deserializedExpressRouteCircuitRoutesTable
+                = new ExpressRouteCircuitRoutesTable();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("network".equals(fieldName)) {
+                    deserializedExpressRouteCircuitRoutesTable.network = reader.getString();
+                } else if ("nextHop".equals(fieldName)) {
+                    deserializedExpressRouteCircuitRoutesTable.nextHop = reader.getString();
+                } else if ("locPrf".equals(fieldName)) {
+                    deserializedExpressRouteCircuitRoutesTable.locPrf = reader.getString();
+                } else if ("weight".equals(fieldName)) {
+                    deserializedExpressRouteCircuitRoutesTable.weight = reader.getNullable(JsonReader::getInt);
+                } else if ("path".equals(fieldName)) {
+                    deserializedExpressRouteCircuitRoutesTable.path = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExpressRouteCircuitRoutesTable;
+        });
     }
 }

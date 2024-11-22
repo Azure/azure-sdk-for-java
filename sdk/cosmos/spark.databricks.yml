@@ -43,7 +43,7 @@ stages:
         vmImage: 'ubuntu-20.04'
 
       steps:
-      - task: Maven@3
+      - task: Maven@4
         displayName: Building spark package
         inputs:
           mavenPOMFile: pom.xml
@@ -54,9 +54,9 @@ stages:
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
       - task: UsePythonVersion@0
-        displayName: Use Python 3.8
+        displayName: Use Python $(PythonVersion)
         inputs:
-          versionSpec: 3.8
+          versionSpec: $(PythonVersion)
       - task: Bash@3
         displayName: Install Databricks CLI
         inputs:

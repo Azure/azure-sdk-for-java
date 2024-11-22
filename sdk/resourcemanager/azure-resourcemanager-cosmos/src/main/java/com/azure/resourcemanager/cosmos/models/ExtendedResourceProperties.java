@@ -5,30 +5,31 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The system generated resource properties associated with SQL databases, SQL containers, Gremlin databases and Gremlin
  * graphs.
  */
 @Immutable
-public class ExtendedResourceProperties {
+public class ExtendedResourceProperties implements JsonSerializable<ExtendedResourceProperties> {
     /*
      * A system generated property. A unique identifier.
      */
-    @JsonProperty(value = "_rid", access = JsonProperty.Access.WRITE_ONLY)
     private String rid;
 
     /*
      * A system generated property that denotes the last updated timestamp of the resource.
      */
-    @JsonProperty(value = "_ts", access = JsonProperty.Access.WRITE_ONLY)
     private Float ts;
 
     /*
      * A system generated property representing the resource etag required for optimistic concurrency control.
      */
-    @JsonProperty(value = "_etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /**
@@ -47,12 +48,34 @@ public class ExtendedResourceProperties {
     }
 
     /**
+     * Set the rid property: A system generated property. A unique identifier.
+     * 
+     * @param rid the rid value to set.
+     * @return the ExtendedResourceProperties object itself.
+     */
+    ExtendedResourceProperties withRid(String rid) {
+        this.rid = rid;
+        return this;
+    }
+
+    /**
      * Get the ts property: A system generated property that denotes the last updated timestamp of the resource.
      * 
      * @return the ts value.
      */
     public Float ts() {
         return this.ts;
+    }
+
+    /**
+     * Set the ts property: A system generated property that denotes the last updated timestamp of the resource.
+     * 
+     * @param ts the ts value to set.
+     * @return the ExtendedResourceProperties object itself.
+     */
+    ExtendedResourceProperties withTs(Float ts) {
+        this.ts = ts;
+        return this;
     }
 
     /**
@@ -66,10 +89,61 @@ public class ExtendedResourceProperties {
     }
 
     /**
+     * Set the etag property: A system generated property representing the resource etag required for optimistic
+     * concurrency control.
+     * 
+     * @param etag the etag value to set.
+     * @return the ExtendedResourceProperties object itself.
+     */
+    ExtendedResourceProperties withEtag(String etag) {
+        this.etag = etag;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExtendedResourceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExtendedResourceProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ExtendedResourceProperties.
+     */
+    public static ExtendedResourceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExtendedResourceProperties deserializedExtendedResourceProperties = new ExtendedResourceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("_rid".equals(fieldName)) {
+                    deserializedExtendedResourceProperties.rid = reader.getString();
+                } else if ("_ts".equals(fieldName)) {
+                    deserializedExtendedResourceProperties.ts = reader.getNullable(JsonReader::getFloat);
+                } else if ("_etag".equals(fieldName)) {
+                    deserializedExtendedResourceProperties.etag = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExtendedResourceProperties;
+        });
     }
 }

@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class AaddsResourceDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AaddsResourceDetails model =
-            BinaryData
-                .fromString(
-                    "{\"domainName\":\"gzslesjcbhernnti\",\"initialSyncComplete\":false,\"ldapsEnabled\":false,\"ldapsPublicCertificateInBase64\":\"bquwrbehw\",\"resourceId\":\"o\",\"subnetId\":\"uffkmrqemvvh\",\"tenantId\":\"tdrjfutacoebj\"}")
-                .toObject(AaddsResourceDetails.class);
+        AaddsResourceDetails model = BinaryData.fromString(
+            "{\"domainName\":\"gzslesjcbhernnti\",\"initialSyncComplete\":false,\"ldapsEnabled\":false,\"ldapsPublicCertificateInBase64\":\"bquwrbehw\",\"resourceId\":\"o\",\"subnetId\":\"uffkmrqemvvh\",\"tenantId\":\"tdrjfutacoebj\"}")
+            .toObject(AaddsResourceDetails.class);
         Assertions.assertEquals("gzslesjcbhernnti", model.domainName());
         Assertions.assertEquals(false, model.initialSyncComplete());
         Assertions.assertEquals(false, model.ldapsEnabled());
@@ -27,15 +25,13 @@ public final class AaddsResourceDetailsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AaddsResourceDetails model =
-            new AaddsResourceDetails()
-                .withDomainName("gzslesjcbhernnti")
-                .withInitialSyncComplete(false)
-                .withLdapsEnabled(false)
-                .withLdapsPublicCertificateInBase64("bquwrbehw")
-                .withResourceId("o")
-                .withSubnetId("uffkmrqemvvh")
-                .withTenantId("tdrjfutacoebj");
+        AaddsResourceDetails model = new AaddsResourceDetails().withDomainName("gzslesjcbhernnti")
+            .withInitialSyncComplete(false)
+            .withLdapsEnabled(false)
+            .withLdapsPublicCertificateInBase64("bquwrbehw")
+            .withResourceId("o")
+            .withSubnetId("uffkmrqemvvh")
+            .withTenantId("tdrjfutacoebj");
         model = BinaryData.fromObject(model).toObject(AaddsResourceDetails.class);
         Assertions.assertEquals("gzslesjcbhernnti", model.domainName());
         Assertions.assertEquals(false, model.initialSyncComplete());

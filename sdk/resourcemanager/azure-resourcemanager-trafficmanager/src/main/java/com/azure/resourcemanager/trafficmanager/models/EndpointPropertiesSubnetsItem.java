@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.trafficmanager.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Subnet first address, scope, and/or last address. */
+/**
+ * Subnet first address, scope, and/or last address.
+ */
 @Fluent
-public final class EndpointPropertiesSubnetsItem {
+public final class EndpointPropertiesSubnetsItem implements JsonSerializable<EndpointPropertiesSubnetsItem> {
     /*
      * First address in the subnet.
      */
-    @JsonProperty(value = "first")
     private String first;
 
     /*
      * Last address in the subnet.
      */
-    @JsonProperty(value = "last")
     private String last;
 
     /*
      * Block size (number of leading bits in the subnet mask).
      */
-    @JsonProperty(value = "scope")
     private Integer scope;
 
-    /** Creates an instance of EndpointPropertiesSubnetsItem class. */
+    /**
+     * Creates an instance of EndpointPropertiesSubnetsItem class.
+     */
     public EndpointPropertiesSubnetsItem() {
     }
 
     /**
      * Get the first property: First address in the subnet.
-     *
+     * 
      * @return the first value.
      */
     public String first() {
@@ -43,7 +48,7 @@ public final class EndpointPropertiesSubnetsItem {
 
     /**
      * Set the first property: First address in the subnet.
-     *
+     * 
      * @param first the first value to set.
      * @return the EndpointPropertiesSubnetsItem object itself.
      */
@@ -54,7 +59,7 @@ public final class EndpointPropertiesSubnetsItem {
 
     /**
      * Get the last property: Last address in the subnet.
-     *
+     * 
      * @return the last value.
      */
     public String last() {
@@ -63,7 +68,7 @@ public final class EndpointPropertiesSubnetsItem {
 
     /**
      * Set the last property: Last address in the subnet.
-     *
+     * 
      * @param last the last value to set.
      * @return the EndpointPropertiesSubnetsItem object itself.
      */
@@ -74,7 +79,7 @@ public final class EndpointPropertiesSubnetsItem {
 
     /**
      * Get the scope property: Block size (number of leading bits in the subnet mask).
-     *
+     * 
      * @return the scope value.
      */
     public Integer scope() {
@@ -83,7 +88,7 @@ public final class EndpointPropertiesSubnetsItem {
 
     /**
      * Set the scope property: Block size (number of leading bits in the subnet mask).
-     *
+     * 
      * @param scope the scope value to set.
      * @return the EndpointPropertiesSubnetsItem object itself.
      */
@@ -94,9 +99,52 @@ public final class EndpointPropertiesSubnetsItem {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("first", this.first);
+        jsonWriter.writeStringField("last", this.last);
+        jsonWriter.writeNumberField("scope", this.scope);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EndpointPropertiesSubnetsItem from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EndpointPropertiesSubnetsItem if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EndpointPropertiesSubnetsItem.
+     */
+    public static EndpointPropertiesSubnetsItem fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EndpointPropertiesSubnetsItem deserializedEndpointPropertiesSubnetsItem
+                = new EndpointPropertiesSubnetsItem();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("first".equals(fieldName)) {
+                    deserializedEndpointPropertiesSubnetsItem.first = reader.getString();
+                } else if ("last".equals(fieldName)) {
+                    deserializedEndpointPropertiesSubnetsItem.last = reader.getString();
+                } else if ("scope".equals(fieldName)) {
+                    deserializedEndpointPropertiesSubnetsItem.scope = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEndpointPropertiesSubnetsItem;
+        });
     }
 }

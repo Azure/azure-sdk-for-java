@@ -41,9 +41,8 @@ import java.util.List;
  *
  * <!-- src_embed com.azure.identity.credential.interactivebrowsercredential.construct -->
  * <pre>
- * TokenCredential interactiveBrowserCredential = new InteractiveBrowserCredentialBuilder&#40;&#41;
- *     .redirectUrl&#40;&quot;http:&#47;&#47;localhost:8765&quot;&#41;
- *     .build&#40;&#41;;
+ * TokenCredential interactiveBrowserCredential = new InteractiveBrowserCredentialBuilder&#40;&#41;.redirectUrl&#40;
+ *     &quot;http:&#47;&#47;localhost:8765&quot;&#41;.build&#40;&#41;;
  * </pre>
  * <!-- end com.azure.identity.credential.interactivebrowsercredential.construct -->
  *
@@ -65,6 +64,20 @@ public class InteractiveBrowserCredentialBuilder extends AadCredentialBuilderBas
     }
 
     /**
+     * Sets the client ID of the Microsoft Entra application that users will sign in to. It is recommended
+     * that developers register their applications and assign appropriate roles. For more information,
+     * visit this doc for <a href="https://aka.ms/identity/AppRegistrationAndRoleAssignment">app registration</a>.
+     * If not specified, users will authenticate to an Azure development application, which is not recommended
+     * for production scenarios.
+     * @param clientId the client ID of the application.
+     * @return An updated instance of this builder with the client id configured.
+     */
+    @Override
+    public InteractiveBrowserCredentialBuilder clientId(String clientId) {
+        return super.clientId(clientId);
+    }
+
+    /**
      * Sets the port for the local HTTP server, for which {@code http://localhost:{port}} must be
      * registered as a valid reply URL on the application.
      *
@@ -72,7 +85,7 @@ public class InteractiveBrowserCredentialBuilder extends AadCredentialBuilderBas
      * {@link InteractiveBrowserCredentialBuilder#redirectUrl(String)} instead.
      *
      * @param port the port on which the credential will listen for the browser authentication result
-     * @return the InteractiveBrowserCredentialBuilder itself
+     * @return An updated instance of this builder with the port configured.
      */
     @Deprecated
     public InteractiveBrowserCredentialBuilder port(int port) {
@@ -103,7 +116,6 @@ public class InteractiveBrowserCredentialBuilder extends AadCredentialBuilderBas
         return this;
     }
 
-
     /**
      * Sets the {@link AuthenticationRecord} captured from a previous authentication.
      *
@@ -124,12 +136,11 @@ public class InteractiveBrowserCredentialBuilder extends AadCredentialBuilderBas
      * @param tokenCachePersistenceOptions the token cache configuration options
      * @return An updated instance of this builder with the token cache options configured.
      */
-    public InteractiveBrowserCredentialBuilder tokenCachePersistenceOptions(TokenCachePersistenceOptions
-                                                                          tokenCachePersistenceOptions) {
+    public InteractiveBrowserCredentialBuilder
+        tokenCachePersistenceOptions(TokenCachePersistenceOptions tokenCachePersistenceOptions) {
         this.identityClientOptions.setTokenCacheOptions(tokenCachePersistenceOptions);
         return this;
     }
-
 
     /**
      * Sets the Redirect URL where STS will callback the application with the security code. It is required if a custom
@@ -184,8 +195,8 @@ public class InteractiveBrowserCredentialBuilder extends AadCredentialBuilderBas
      */
     @Override
     public InteractiveBrowserCredentialBuilder additionallyAllowedTenants(String... additionallyAllowedTenants) {
-        identityClientOptions
-            .setAdditionallyAllowedTenants(IdentityUtil.resolveAdditionalTenants(Arrays.asList(additionallyAllowedTenants)));
+        identityClientOptions.setAdditionallyAllowedTenants(
+            IdentityUtil.resolveAdditionalTenants(Arrays.asList(additionallyAllowedTenants)));
         return this;
     }
 
@@ -200,7 +211,8 @@ public class InteractiveBrowserCredentialBuilder extends AadCredentialBuilderBas
      */
     @Override
     public InteractiveBrowserCredentialBuilder additionallyAllowedTenants(List<String> additionallyAllowedTenants) {
-        identityClientOptions.setAdditionallyAllowedTenants(IdentityUtil.resolveAdditionalTenants(additionallyAllowedTenants));
+        identityClientOptions
+            .setAdditionallyAllowedTenants(IdentityUtil.resolveAdditionalTenants(additionallyAllowedTenants));
         return this;
     }
 
@@ -209,7 +221,8 @@ public class InteractiveBrowserCredentialBuilder extends AadCredentialBuilderBas
      * @param browserCustomizationOptions the browser customization options
      * @return An updated instance of this builder with the browser customization options configured.
      */
-    public InteractiveBrowserCredentialBuilder browserCustomizationOptions(BrowserCustomizationOptions browserCustomizationOptions) {
+    public InteractiveBrowserCredentialBuilder
+        browserCustomizationOptions(BrowserCustomizationOptions browserCustomizationOptions) {
         this.identityClientOptions.setBrowserCustomizationOptions(browserCustomizationOptions);
         return this;
     }

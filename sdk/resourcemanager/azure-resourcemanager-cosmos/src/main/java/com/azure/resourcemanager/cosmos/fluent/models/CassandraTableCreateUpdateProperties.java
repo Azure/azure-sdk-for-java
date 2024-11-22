@@ -6,25 +6,28 @@ package com.azure.resourcemanager.cosmos.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cosmos.models.CassandraTableResource;
 import com.azure.resourcemanager.cosmos.models.CreateUpdateOptions;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Properties to create and update Azure Cosmos DB Cassandra table.
  */
 @Fluent
-public final class CassandraTableCreateUpdateProperties {
+public final class CassandraTableCreateUpdateProperties
+    implements JsonSerializable<CassandraTableCreateUpdateProperties> {
     /*
      * The standard JSON format of a Cassandra table
      */
-    @JsonProperty(value = "resource", required = true)
     private CassandraTableResource resource;
 
     /*
      * A key-value pair of options to be applied for the request. This corresponds to the headers sent with the request.
      */
-    @JsonProperty(value = "options")
     private CreateUpdateOptions options;
 
     /**
@@ -94,4 +97,45 @@ public final class CassandraTableCreateUpdateProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(CassandraTableCreateUpdateProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("resource", this.resource);
+        jsonWriter.writeJsonField("options", this.options);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CassandraTableCreateUpdateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CassandraTableCreateUpdateProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CassandraTableCreateUpdateProperties.
+     */
+    public static CassandraTableCreateUpdateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CassandraTableCreateUpdateProperties deserializedCassandraTableCreateUpdateProperties
+                = new CassandraTableCreateUpdateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resource".equals(fieldName)) {
+                    deserializedCassandraTableCreateUpdateProperties.resource = CassandraTableResource.fromJson(reader);
+                } else if ("options".equals(fieldName)) {
+                    deserializedCassandraTableCreateUpdateProperties.options = CreateUpdateOptions.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCassandraTableCreateUpdateProperties;
+        });
+    }
 }

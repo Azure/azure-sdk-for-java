@@ -21,8 +21,8 @@ public interface SignUpSettings {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity state (Etag) version of the SignUpSettings.
      */
-    SignUpSettingsGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, Context context);
+    SignUpSettingsGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,
+        Context context);
 
     /**
      * Gets the entity state (Etag) version of the SignUpSettings.
@@ -74,12 +74,8 @@ public interface SignUpSettings {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> updateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String ifMatch,
-        PortalSignupSettingsInner parameters,
-        Context context);
+    Response<Void> updateWithResponse(String resourceGroupName, String serviceName, String ifMatch,
+        PortalSignupSettingsInner parameters, Context context);
 
     /**
      * Update Sign-Up settings.
@@ -108,12 +104,8 @@ public interface SignUpSettings {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return sign-Up settings for a developer portal along with {@link Response}.
      */
-    Response<PortalSignupSettings> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        PortalSignupSettingsInner parameters,
-        String ifMatch,
-        Context context);
+    Response<PortalSignupSettings> createOrUpdateWithResponse(String resourceGroupName, String serviceName,
+        PortalSignupSettingsInner parameters, String ifMatch, Context context);
 
     /**
      * Create or Update Sign-Up settings.
@@ -126,6 +118,6 @@ public interface SignUpSettings {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return sign-Up settings for a developer portal.
      */
-    PortalSignupSettings createOrUpdate(
-        String resourceGroupName, String serviceName, PortalSignupSettingsInner parameters);
+    PortalSignupSettings createOrUpdate(String resourceGroupName, String serviceName,
+        PortalSignupSettingsInner parameters);
 }

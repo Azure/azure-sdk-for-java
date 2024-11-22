@@ -5,7 +5,11 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Specifies the Linux operating system settings on the virtual machine. For a list of supported Linux distributions,
@@ -13,17 +17,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * Distributions](https://docs.microsoft.com/azure/virtual-machines/linux/endorsed-distros).
  */
 @Fluent
-public final class LinuxConfiguration {
+public final class LinuxConfiguration implements JsonSerializable<LinuxConfiguration> {
     /*
      * Specifies whether password authentication should be disabled.
      */
-    @JsonProperty(value = "disablePasswordAuthentication")
     private Boolean disablePasswordAuthentication;
 
     /*
      * Specifies the ssh key configuration for a Linux OS.
      */
-    @JsonProperty(value = "ssh")
     private SshConfiguration ssh;
 
     /*
@@ -31,19 +33,16 @@ public final class LinuxConfiguration {
      * specified in the request body, default behavior is to set it to true. This will ensure that VM Agent is installed
      * on the VM so that extensions can be added to the VM later.
      */
-    @JsonProperty(value = "provisionVMAgent")
     private Boolean provisionVMAgent;
 
     /*
      * [Preview Feature] Specifies settings related to VM Guest Patching on Linux.
      */
-    @JsonProperty(value = "patchSettings")
     private LinuxPatchSettings patchSettings;
 
     /*
      * Indicates whether VMAgent Platform Updates is enabled for the Linux virtual machine. Default value is false.
      */
-    @JsonProperty(value = "enableVMAgentPlatformUpdates")
     private Boolean enableVMAgentPlatformUpdates;
 
     /**
@@ -170,5 +169,55 @@ public final class LinuxConfiguration {
         if (patchSettings() != null) {
             patchSettings().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("disablePasswordAuthentication", this.disablePasswordAuthentication);
+        jsonWriter.writeJsonField("ssh", this.ssh);
+        jsonWriter.writeBooleanField("provisionVMAgent", this.provisionVMAgent);
+        jsonWriter.writeJsonField("patchSettings", this.patchSettings);
+        jsonWriter.writeBooleanField("enableVMAgentPlatformUpdates", this.enableVMAgentPlatformUpdates);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LinuxConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LinuxConfiguration if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LinuxConfiguration.
+     */
+    public static LinuxConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LinuxConfiguration deserializedLinuxConfiguration = new LinuxConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("disablePasswordAuthentication".equals(fieldName)) {
+                    deserializedLinuxConfiguration.disablePasswordAuthentication
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("ssh".equals(fieldName)) {
+                    deserializedLinuxConfiguration.ssh = SshConfiguration.fromJson(reader);
+                } else if ("provisionVMAgent".equals(fieldName)) {
+                    deserializedLinuxConfiguration.provisionVMAgent = reader.getNullable(JsonReader::getBoolean);
+                } else if ("patchSettings".equals(fieldName)) {
+                    deserializedLinuxConfiguration.patchSettings = LinuxPatchSettings.fromJson(reader);
+                } else if ("enableVMAgentPlatformUpdates".equals(fieldName)) {
+                    deserializedLinuxConfiguration.enableVMAgentPlatformUpdates
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLinuxConfiguration;
+        });
     }
 }

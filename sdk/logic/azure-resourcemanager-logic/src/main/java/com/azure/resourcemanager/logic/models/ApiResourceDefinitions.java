@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The Api resource definition. */
+/**
+ * The Api resource definition.
+ */
 @Fluent
-public final class ApiResourceDefinitions {
+public final class ApiResourceDefinitions implements JsonSerializable<ApiResourceDefinitions> {
     /*
      * The original swagger url.
      */
-    @JsonProperty(value = "originalSwaggerUrl")
     private String originalSwaggerUrl;
 
     /*
      * The modified swagger url.
      */
-    @JsonProperty(value = "modifiedSwaggerUrl")
     private String modifiedSwaggerUrl;
 
-    /** Creates an instance of ApiResourceDefinitions class. */
+    /**
+     * Creates an instance of ApiResourceDefinitions class.
+     */
     public ApiResourceDefinitions() {
     }
 
     /**
      * Get the originalSwaggerUrl property: The original swagger url.
-     *
+     * 
      * @return the originalSwaggerUrl value.
      */
     public String originalSwaggerUrl() {
@@ -37,7 +43,7 @@ public final class ApiResourceDefinitions {
 
     /**
      * Set the originalSwaggerUrl property: The original swagger url.
-     *
+     * 
      * @param originalSwaggerUrl the originalSwaggerUrl value to set.
      * @return the ApiResourceDefinitions object itself.
      */
@@ -48,7 +54,7 @@ public final class ApiResourceDefinitions {
 
     /**
      * Get the modifiedSwaggerUrl property: The modified swagger url.
-     *
+     * 
      * @return the modifiedSwaggerUrl value.
      */
     public String modifiedSwaggerUrl() {
@@ -57,7 +63,7 @@ public final class ApiResourceDefinitions {
 
     /**
      * Set the modifiedSwaggerUrl property: The modified swagger url.
-     *
+     * 
      * @param modifiedSwaggerUrl the modifiedSwaggerUrl value to set.
      * @return the ApiResourceDefinitions object itself.
      */
@@ -68,9 +74,48 @@ public final class ApiResourceDefinitions {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("originalSwaggerUrl", this.originalSwaggerUrl);
+        jsonWriter.writeStringField("modifiedSwaggerUrl", this.modifiedSwaggerUrl);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApiResourceDefinitions from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApiResourceDefinitions if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApiResourceDefinitions.
+     */
+    public static ApiResourceDefinitions fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApiResourceDefinitions deserializedApiResourceDefinitions = new ApiResourceDefinitions();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("originalSwaggerUrl".equals(fieldName)) {
+                    deserializedApiResourceDefinitions.originalSwaggerUrl = reader.getString();
+                } else if ("modifiedSwaggerUrl".equals(fieldName)) {
+                    deserializedApiResourceDefinitions.modifiedSwaggerUrl = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApiResourceDefinitions;
+        });
     }
 }

@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.privatedns.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** An AAAA record. */
+/**
+ * An AAAA record.
+ */
 @Fluent
-public final class AaaaRecord {
+public final class AaaaRecord implements JsonSerializable<AaaaRecord> {
     /*
      * The IPv6 address of this AAAA record.
      */
-    @JsonProperty(value = "ipv6Address")
     private String ipv6Address;
 
-    /** Creates an instance of AaaaRecord class. */
+    /**
+     * Creates an instance of AaaaRecord class.
+     */
     public AaaaRecord() {
     }
 
     /**
      * Get the ipv6Address property: The IPv6 address of this AAAA record.
-     *
+     * 
      * @return the ipv6Address value.
      */
     public String ipv6Address() {
@@ -31,7 +38,7 @@ public final class AaaaRecord {
 
     /**
      * Set the ipv6Address property: The IPv6 address of this AAAA record.
-     *
+     * 
      * @param ipv6Address the ipv6Address value to set.
      * @return the AaaaRecord object itself.
      */
@@ -42,9 +49,45 @@ public final class AaaaRecord {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("ipv6Address", this.ipv6Address);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AaaaRecord from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AaaaRecord if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the AaaaRecord.
+     */
+    public static AaaaRecord fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AaaaRecord deserializedAaaaRecord = new AaaaRecord();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("ipv6Address".equals(fieldName)) {
+                    deserializedAaaaRecord.ipv6Address = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAaaaRecord;
+        });
     }
 }

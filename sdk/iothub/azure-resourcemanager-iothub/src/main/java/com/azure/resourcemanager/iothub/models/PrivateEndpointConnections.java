@@ -25,8 +25,8 @@ public interface PrivateEndpointConnections {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of private endpoint connections for an IotHub along with {@link Response}.
      */
-    Response<List<PrivateEndpointConnection>> listWithResponse(
-        String resourceGroupName, String resourceName, Context context);
+    Response<List<PrivateEndpointConnection>> listWithResponse(String resourceGroupName, String resourceName,
+        Context context);
 
     /**
      * List private endpoint connections
@@ -58,8 +58,8 @@ public interface PrivateEndpointConnections {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return private endpoint connection properties along with {@link Response}.
      */
-    Response<PrivateEndpointConnection> getWithResponse(
-        String resourceGroupName, String resourceName, String privateEndpointConnectionName, Context context);
+    Response<PrivateEndpointConnection> getWithResponse(String resourceGroupName, String resourceName,
+        String privateEndpointConnectionName, Context context);
 
     /**
      * Get private endpoint connection
@@ -92,11 +92,8 @@ public interface PrivateEndpointConnections {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the private endpoint connection of an IotHub.
      */
-    PrivateEndpointConnection update(
-        String resourceGroupName,
-        String resourceName,
-        String privateEndpointConnectionName,
-        PrivateEndpointConnectionInner privateEndpointConnection);
+    PrivateEndpointConnection update(String resourceGroupName, String resourceName,
+        String privateEndpointConnectionName, PrivateEndpointConnectionInner privateEndpointConnection);
 
     /**
      * Update private endpoint connection
@@ -114,11 +111,8 @@ public interface PrivateEndpointConnections {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the private endpoint connection of an IotHub.
      */
-    PrivateEndpointConnection update(
-        String resourceGroupName,
-        String resourceName,
-        String privateEndpointConnectionName,
-        PrivateEndpointConnectionInner privateEndpointConnection,
+    PrivateEndpointConnection update(String resourceGroupName, String resourceName,
+        String privateEndpointConnectionName, PrivateEndpointConnectionInner privateEndpointConnection,
         Context context);
 
     /**
@@ -135,8 +129,8 @@ public interface PrivateEndpointConnections {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the private endpoint connection of an IotHub.
      */
-    PrivateEndpointConnection delete(
-        String resourceGroupName, String resourceName, String privateEndpointConnectionName);
+    PrivateEndpointConnection delete(String resourceGroupName, String resourceName,
+        String privateEndpointConnectionName);
 
     /**
      * Delete private endpoint connection
@@ -153,6 +147,6 @@ public interface PrivateEndpointConnections {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the private endpoint connection of an IotHub.
      */
-    PrivateEndpointConnection delete(
-        String resourceGroupName, String resourceName, String privateEndpointConnectionName, Context context);
+    PrivateEndpointConnection delete(String resourceGroupName, String resourceName,
+        String privateEndpointConnectionName, Context context);
 }

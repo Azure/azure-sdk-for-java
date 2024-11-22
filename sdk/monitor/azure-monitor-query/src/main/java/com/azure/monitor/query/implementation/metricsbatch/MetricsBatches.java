@@ -55,8 +55,8 @@ public final class MetricsBatches {
     }
 
     /**
-     * The interface defining all the services for AzureMonitorMetricBatchMetricsBatches to be used by the proxy
-     * service to perform REST calls.
+     * The interface defining all the services for AzureMonitorMetricBatchMetricsBatches to be used by the proxy service
+     * to perform REST calls.
      */
     @Host("{endpoint}")
     @ServiceInterface(name = "AzureMonitorMetricBa")
@@ -130,12 +130,8 @@ public final class MetricsBatches {
     public Mono<Response<MetricResultsResponse>> batchWithResponseAsync(String subscriptionId, String metricnamespace,
         List<String> metricnames, ResourceIdList batchRequest, String starttime, String endtime, Duration interval,
         String aggregation, Integer top, String orderBy, String filter, String rollupby) {
-        final String accept = "application/json";
-        String metricnamesConverted = metricnames.stream().map(paramItemValue -> Objects.toString(paramItemValue, ""))
-            .collect(Collectors.joining(","));
-        return FluxUtil.withContext(context -> service.batch(this.client.getEndpoint(), subscriptionId, starttime,
-            endtime, interval, metricnamespace, metricnamesConverted, aggregation, top, orderBy, filter, rollupby,
-            this.client.getApiVersion(), batchRequest, accept, context));
+        return FluxUtil.withContext(context -> batchWithResponseAsync(subscriptionId, metricnamespace, metricnames,
+            batchRequest, starttime, endtime, interval, aggregation, top, orderBy, filter, rollupby, context));
     }
 
     /**
@@ -182,7 +178,8 @@ public final class MetricsBatches {
         List<String> metricnames, ResourceIdList batchRequest, String starttime, String endtime, Duration interval,
         String aggregation, Integer top, String orderBy, String filter, String rollupby, Context context) {
         final String accept = "application/json";
-        String metricnamesConverted = metricnames.stream().map(paramItemValue -> Objects.toString(paramItemValue, ""))
+        String metricnamesConverted = metricnames.stream()
+            .map(paramItemValue -> Objects.toString(paramItemValue, ""))
             .collect(Collectors.joining(","));
         return service.batch(this.client.getEndpoint(), subscriptionId, starttime, endtime, interval, metricnamespace,
             metricnamesConverted, aggregation, top, orderBy, filter, rollupby, this.client.getApiVersion(),
@@ -280,7 +277,7 @@ public final class MetricsBatches {
         String aggregation, Integer top, String orderBy, String filter, String rollupby, Context context) {
         return batchWithResponseAsync(subscriptionId, metricnamespace, metricnames, batchRequest, starttime, endtime,
             interval, aggregation, top, orderBy, filter, rollupby, context)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -327,7 +324,8 @@ public final class MetricsBatches {
         List<String> metricnames, ResourceIdList batchRequest, String starttime, String endtime, Duration interval,
         String aggregation, Integer top, String orderBy, String filter, String rollupby, Context context) {
         final String accept = "application/json";
-        String metricnamesConverted = metricnames.stream().map(paramItemValue -> Objects.toString(paramItemValue, ""))
+        String metricnamesConverted = metricnames.stream()
+            .map(paramItemValue -> Objects.toString(paramItemValue, ""))
             .collect(Collectors.joining(","));
         return service.batchSync(this.client.getEndpoint(), subscriptionId, starttime, endtime, interval,
             metricnamespace, metricnamesConverted, aggregation, top, orderBy, filter, rollupby,

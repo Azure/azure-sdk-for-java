@@ -7,34 +7,58 @@ package com.azure.resourcemanager.servicebus.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.servicebus.models.AccessRights;
-import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.io.IOException;
 import java.util.List;
 
-/** Description of a namespace authorization rule. */
+/**
+ * Description of a namespace authorization rule.
+ */
 @Fluent
 public final class SBAuthorizationRuleInner extends Resource {
     /*
      * AuthorizationRule properties.
      */
-    @JsonProperty(value = "properties")
     private SBAuthorizationRuleProperties innerProperties;
 
     /*
      * The system meta data relating to this resource.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
     /*
      * The geo-location where the resource lives
      */
-    @JsonProperty(value = "location", access = JsonProperty.Access.WRITE_ONLY)
     private String location;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /**
+     * Creates an instance of SBAuthorizationRuleInner class.
+     */
+    public SBAuthorizationRuleInner() {
+    }
 
     /**
      * Get the innerProperties property: AuthorizationRule properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SBAuthorizationRuleProperties innerProperties() {
@@ -43,7 +67,7 @@ public final class SBAuthorizationRuleInner extends Resource {
 
     /**
      * Get the systemData property: The system meta data relating to this resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -52,7 +76,7 @@ public final class SBAuthorizationRuleInner extends Resource {
 
     /**
      * Get the location property: The geo-location where the resource lives.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -60,8 +84,38 @@ public final class SBAuthorizationRuleInner extends Resource {
     }
 
     /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
      * Get the rights property: The rights associated with the rule.
-     *
+     * 
      * @return the rights value.
      */
     public List<AccessRights> rights() {
@@ -70,7 +124,7 @@ public final class SBAuthorizationRuleInner extends Resource {
 
     /**
      * Set the rights property: The rights associated with the rule.
-     *
+     * 
      * @param rights the rights value to set.
      * @return the SBAuthorizationRuleInner object itself.
      */
@@ -84,12 +138,60 @@ public final class SBAuthorizationRuleInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SBAuthorizationRuleInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SBAuthorizationRuleInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SBAuthorizationRuleInner.
+     */
+    public static SBAuthorizationRuleInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SBAuthorizationRuleInner deserializedSBAuthorizationRuleInner = new SBAuthorizationRuleInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedSBAuthorizationRuleInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedSBAuthorizationRuleInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedSBAuthorizationRuleInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedSBAuthorizationRuleInner.innerProperties
+                        = SBAuthorizationRuleProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedSBAuthorizationRuleInner.systemData = SystemData.fromJson(reader);
+                } else if ("location".equals(fieldName)) {
+                    deserializedSBAuthorizationRuleInner.location = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSBAuthorizationRuleInner;
+        });
     }
 }

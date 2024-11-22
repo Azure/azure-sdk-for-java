@@ -27,8 +27,7 @@ public final class LogicAppsDeleteWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.logicApps()
-            .deleteWithResponse("uxlvrhprrvbwonl", "qflvtlrvbst", "huy", com.azure.core.util.Context.NONE);
+        manager.logicApps().deleteWithResponse("mxrfomckew", "my", "fopxf", com.azure.core.util.Context.NONE);
 
     }
 }

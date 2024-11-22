@@ -7,28 +7,52 @@ package com.azure.resourcemanager.automation.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.automation.models.WorkerType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** Definition of hybrid runbook worker. */
+/**
+ * Definition of hybrid runbook worker.
+ */
 @Fluent
 public final class HybridRunbookWorkerInner extends ProxyResource {
     /*
      * Gets or sets the hybrid worker group properties.
      */
-    @JsonProperty(value = "properties")
     private HybridRunbookWorkerProperties innerProperties;
 
     /*
      * Resource system metadata.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of HybridRunbookWorkerInner class.
+     */
+    public HybridRunbookWorkerInner() {
+    }
 
     /**
      * Get the innerProperties property: Gets or sets the hybrid worker group properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private HybridRunbookWorkerProperties innerProperties() {
@@ -37,7 +61,7 @@ public final class HybridRunbookWorkerInner extends ProxyResource {
 
     /**
      * Get the systemData property: Resource system metadata.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -45,8 +69,38 @@ public final class HybridRunbookWorkerInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the ip property: Gets or sets the assigned machine IP address.
-     *
+     * 
      * @return the ip value.
      */
     public String ip() {
@@ -55,7 +109,7 @@ public final class HybridRunbookWorkerInner extends ProxyResource {
 
     /**
      * Set the ip property: Gets or sets the assigned machine IP address.
-     *
+     * 
      * @param ip the ip value to set.
      * @return the HybridRunbookWorkerInner object itself.
      */
@@ -69,7 +123,7 @@ public final class HybridRunbookWorkerInner extends ProxyResource {
 
     /**
      * Get the registeredDateTime property: Gets or sets the registration time of the worker machine.
-     *
+     * 
      * @return the registeredDateTime value.
      */
     public OffsetDateTime registeredDateTime() {
@@ -78,7 +132,7 @@ public final class HybridRunbookWorkerInner extends ProxyResource {
 
     /**
      * Set the registeredDateTime property: Gets or sets the registration time of the worker machine.
-     *
+     * 
      * @param registeredDateTime the registeredDateTime value to set.
      * @return the HybridRunbookWorkerInner object itself.
      */
@@ -92,7 +146,7 @@ public final class HybridRunbookWorkerInner extends ProxyResource {
 
     /**
      * Get the lastSeenDateTime property: Last Heartbeat from the Worker.
-     *
+     * 
      * @return the lastSeenDateTime value.
      */
     public OffsetDateTime lastSeenDateTime() {
@@ -101,7 +155,7 @@ public final class HybridRunbookWorkerInner extends ProxyResource {
 
     /**
      * Set the lastSeenDateTime property: Last Heartbeat from the Worker.
-     *
+     * 
      * @param lastSeenDateTime the lastSeenDateTime value to set.
      * @return the HybridRunbookWorkerInner object itself.
      */
@@ -115,7 +169,7 @@ public final class HybridRunbookWorkerInner extends ProxyResource {
 
     /**
      * Get the vmResourceId property: Azure Resource Manager Id for a virtual machine.
-     *
+     * 
      * @return the vmResourceId value.
      */
     public String vmResourceId() {
@@ -124,7 +178,7 @@ public final class HybridRunbookWorkerInner extends ProxyResource {
 
     /**
      * Set the vmResourceId property: Azure Resource Manager Id for a virtual machine.
-     *
+     * 
      * @param vmResourceId the vmResourceId value to set.
      * @return the HybridRunbookWorkerInner object itself.
      */
@@ -138,7 +192,7 @@ public final class HybridRunbookWorkerInner extends ProxyResource {
 
     /**
      * Get the workerType property: Type of the HybridWorker.
-     *
+     * 
      * @return the workerType value.
      */
     public WorkerType workerType() {
@@ -147,7 +201,7 @@ public final class HybridRunbookWorkerInner extends ProxyResource {
 
     /**
      * Set the workerType property: Type of the HybridWorker.
-     *
+     * 
      * @param workerType the workerType value to set.
      * @return the HybridRunbookWorkerInner object itself.
      */
@@ -161,7 +215,7 @@ public final class HybridRunbookWorkerInner extends ProxyResource {
 
     /**
      * Get the workerName property: Name of the HybridWorker.
-     *
+     * 
      * @return the workerName value.
      */
     public String workerName() {
@@ -170,7 +224,7 @@ public final class HybridRunbookWorkerInner extends ProxyResource {
 
     /**
      * Set the workerName property: Name of the HybridWorker.
-     *
+     * 
      * @param workerName the workerName value to set.
      * @return the HybridRunbookWorkerInner object itself.
      */
@@ -184,12 +238,58 @@ public final class HybridRunbookWorkerInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HybridRunbookWorkerInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HybridRunbookWorkerInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the HybridRunbookWorkerInner.
+     */
+    public static HybridRunbookWorkerInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HybridRunbookWorkerInner deserializedHybridRunbookWorkerInner = new HybridRunbookWorkerInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedHybridRunbookWorkerInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedHybridRunbookWorkerInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedHybridRunbookWorkerInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedHybridRunbookWorkerInner.innerProperties
+                        = HybridRunbookWorkerProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedHybridRunbookWorkerInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHybridRunbookWorkerInner;
+        });
     }
 }

@@ -22,8 +22,8 @@ import io.clientcore.http.stress.util.TelemetryHelper;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.time.Instant;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -35,8 +35,7 @@ public class HttpPatch extends ScenarioBase<StressOptions> {
     private static final TelemetryHelper TELEMETRY_HELPER = new TelemetryHelper(HttpPatch.class);
     private static final ClientLogger LOGGER = new ClientLogger(HttpPatch.class);
     private final HttpPipeline pipeline;
-    private final URL url;
-
+    private final URI uri;
 
     // This is almost-unique-id generator. We could use UUID, but it's a bit more expensive to use.
     private final AtomicLong clientRequestId = new AtomicLong(Instant.now().getEpochSecond());
@@ -49,9 +48,9 @@ public class HttpPatch extends ScenarioBase<StressOptions> {
         super(options, TELEMETRY_HELPER);
         pipeline = getPipelineBuilder().build();
         try {
-            url = new URL(options.getServiceEndpoint());
-        } catch (MalformedURLException ex) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'url' must be a valid URL.", ex));
+            uri = new URI(options.getServiceEndpoint());
+        } catch (URISyntaxException ex) {
+            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'uri' must be a valid URI.", ex));
         }
     }
 
@@ -78,21 +77,21 @@ public class HttpPatch extends ScenarioBase<StressOptions> {
 
     private HttpRequest createRequest() {
         String body = "{\"id\": \"1\", \"name\": \"test\"}";
-        HttpRequest request = new HttpRequest(HttpMethod.PATCH, url).setBody(BinaryData.fromString(body));
+        HttpRequest request = new HttpRequest(HttpMethod.PATCH, uri).setBody(BinaryData.fromString(body));
         request.getHeaders().set(HttpHeaderName.CONTENT_LENGTH, String.valueOf(body.length()));
         request.getHeaders().set(HttpHeaderName.USER_AGENT, "azsdk-java-stress");
-        request.getHeaders().set(HttpHeaderName.fromString("x-client-id"), String.valueOf(clientRequestId.incrementAndGet()));
+        request.getHeaders()
+            .set(HttpHeaderName.fromString("x-client-id"), String.valueOf(clientRequestId.incrementAndGet()));
         request.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json");
         request.getHeaders().set(HttpHeaderName.ACCEPT, "application/json");
         return request;
     }
 
     private HttpPipelineBuilder getPipelineBuilder() {
-        HttpLogOptions logOptions = new HttpLogOptions()
-            .setLogLevel(HttpLogOptions.HttpLogDetailLevel.HEADERS);
+        HttpLogOptions logOptions = new HttpLogOptions().setLogLevel(HttpLogOptions.HttpLogDetailLevel.HEADERS);
 
-        HttpPipelineBuilder builder = new HttpPipelineBuilder()
-            .policies(new HttpRetryPolicy(), new HttpLoggingPolicy(logOptions));
+        HttpPipelineBuilder builder
+            = new HttpPipelineBuilder().policies(new HttpRetryPolicy(), new HttpLoggingPolicy(logOptions));
 
         if (options.getHttpClient() == PerfStressOptions.HttpClientType.OKHTTP) {
             builder.httpClient(new OkHttpHttpClientProvider().getSharedInstance());

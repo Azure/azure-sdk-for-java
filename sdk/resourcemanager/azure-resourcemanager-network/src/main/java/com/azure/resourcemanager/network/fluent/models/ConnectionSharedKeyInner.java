@@ -7,7 +7,10 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Response for GetConnectionSharedKey API service call.
@@ -17,7 +20,6 @@ public final class ConnectionSharedKeyInner extends SubResource {
     /*
      * The virtual network connection shared key value.
      */
-    @JsonProperty(value = "value", required = true)
     private String value;
 
     /**
@@ -68,4 +70,44 @@ public final class ConnectionSharedKeyInner extends SubResource {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ConnectionSharedKeyInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeStringField("value", this.value);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConnectionSharedKeyInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConnectionSharedKeyInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ConnectionSharedKeyInner.
+     */
+    public static ConnectionSharedKeyInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConnectionSharedKeyInner deserializedConnectionSharedKeyInner = new ConnectionSharedKeyInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedConnectionSharedKeyInner.withId(reader.getString());
+                } else if ("value".equals(fieldName)) {
+                    deserializedConnectionSharedKeyInner.value = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConnectionSharedKeyInner;
+        });
+    }
 }

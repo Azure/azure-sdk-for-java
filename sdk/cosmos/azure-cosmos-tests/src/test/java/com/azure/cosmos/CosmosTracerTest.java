@@ -165,7 +165,7 @@ public class CosmosTracerTest extends TestSuiteBase {
             new Object[] { false, true, true, 0d },
         };
     }
-    
+
     @DataProvider(name = "traceTestCaseProviderAsyncContainer")
     private Object[][] traceTestCaseProviderAsyncContainer() {
         return new Object[][]{
@@ -177,7 +177,7 @@ public class CosmosTracerTest extends TestSuiteBase {
             new Object[] { false, true, ShowQueryMode.NONE, true, 1d },
             new Object[] { false, true, ShowQueryMode.NONE, true, 0.99999999 },
             new Object[] { false, true, ShowQueryMode.NONE, true, 0d },
-            
+
             new Object[] { false, true, ShowQueryMode.ALL, true, 1d },
             new Object[] { false, false, ShowQueryMode.ALL, true, 1d },
             new Object[] { false, false, ShowQueryMode.ALL, false, 1d },
@@ -565,7 +565,7 @@ public class CosmosTracerTest extends TestSuiteBase {
 
         DiagnosticsProvider provider = createAndInitializeDiagnosticsProvider(
             mockTracer, useLegacyTracing, enableRequestLevelTracing, showQueryMode, forceThresholdViolations, samplingRate);
-        
+
         CosmosClientTelemetryConfig telemetryConfigSnapshot = provider.getClientTelemetryConfig();
 
         CosmosContainerResponse containerResponse = cosmosAsyncContainer.read().block();
@@ -785,10 +785,10 @@ public class CosmosTracerTest extends TestSuiteBase {
             query,
             forceThresholdViolations,
             "CustomQueryName",
-            
+
             samplingRate);
         mockTracer.reset();
-        
+
         feedItemResponse = cosmosAsyncContainer
                 .queryItems(query, ObjectNode.class)
                 .byPage()
@@ -869,7 +869,7 @@ public class CosmosTracerTest extends TestSuiteBase {
                 null,
                 samplingRate);
         mockTracer.reset();
-        
+
         feedItemResponse = cosmosAsyncContainer.queryItems(querySpec, ObjectNode.class)
                 .byPage()
                 .blockFirst();
@@ -1358,7 +1358,7 @@ public class CosmosTracerTest extends TestSuiteBase {
             customOperationId,
             samplingRate);
     }
-    
+
     private void verifyTracerAttributes(TracerUnderTest mockTracer,
             String methodName,
             String databaseName,
@@ -1467,7 +1467,7 @@ public class CosmosTracerTest extends TestSuiteBase {
 
             verifyOTelTracerTransport(
                 cosmosDiagnostics, error, mockTracer, enableRequestLevelTracing);
-            
+
             String dbStatement = (String) attributes.get("db.statement");
 
             boolean isReadMany = "readMany".equals(cosmosDiagnostics.getDiagnosticsContext().getOperationId());
@@ -2048,7 +2048,7 @@ public class CosmosTracerTest extends TestSuiteBase {
         if (enableRequestLevelTracing) {
             clientTelemetryConfig.enableTransportLevelTracing();
         }
-        
+
         clientTelemetryConfig.showQueryMode(showQueryMode);
 
         ImplementationBridgeHelpers

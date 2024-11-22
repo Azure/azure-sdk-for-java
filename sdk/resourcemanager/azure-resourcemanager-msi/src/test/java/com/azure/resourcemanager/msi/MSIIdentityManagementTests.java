@@ -10,13 +10,13 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.test.annotation.LiveOnly;
+import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.authorization.models.RoleAssignment;
 import com.azure.resourcemanager.msi.models.Identity;
 import com.azure.resourcemanager.resources.ResourceManager;
-import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
@@ -39,21 +39,10 @@ public class MSIIdentityManagementTests extends ResourceManagerTestProxyTestBase
     private ResourceManager resourceManager;
 
     @Override
-    protected HttpPipeline buildHttpPipeline(
-        TokenCredential credential,
-        AzureProfile profile,
-        HttpLogOptions httpLogOptions,
-        List<HttpPipelinePolicy> policies,
-        HttpClient httpClient) {
-        return HttpPipelineProvider.buildHttpPipeline(
-            credential,
-            profile,
-            null,
-            httpLogOptions,
-            null,
-            new RetryPolicy("Retry-After", ChronoUnit.SECONDS),
-            policies,
-            httpClient);
+    protected HttpPipeline buildHttpPipeline(TokenCredential credential, AzureProfile profile,
+        HttpLogOptions httpLogOptions, List<HttpPipelinePolicy> policies, HttpClient httpClient) {
+        return HttpPipelineProvider.buildHttpPipeline(credential, profile, null, httpLogOptions, null,
+            new RetryPolicy("Retry-After", ChronoUnit.SECONDS), policies, httpClient);
     }
 
     @Override
@@ -76,20 +65,20 @@ public class MSIIdentityManagementTests extends ResourceManagerTestProxyTestBase
         rgName = generateRandomResourceName("javaismrg", 15);
         String identityName = generateRandomResourceName("msi-id", 15);
 
-        Creatable<ResourceGroup> creatableRG = resourceManager.resourceGroups()
-                .define(rgName)
-                .withRegion(region);
+        Creatable<ResourceGroup> creatableRG = resourceManager.resourceGroups().define(rgName).withRegion(region);
 
         Identity identity = msiManager.identities()
-                .define(identityName)
-                .withRegion(region)
-                .withNewResourceGroup(creatableRG)
-                .create();
+            .define(identityName)
+            .withRegion(region)
+            .withNewResourceGroup(creatableRG)
+            .create();
 
         Assertions.assertNotNull(identity);
         Assertions.assertNotNull(identity.innerModel());
-        Assertions.assertTrue(identityName.equalsIgnoreCase(identity.name()), String.format("%s == %s", identityName, identity.name()));
-        Assertions.assertTrue(rgName.equalsIgnoreCase(identity.resourceGroupName()), String.format("%s == %s", rgName, identity.resourceGroupName()));
+        Assertions.assertTrue(identityName.equalsIgnoreCase(identity.name()),
+            String.format("%s == %s", identityName, identity.name()));
+        Assertions.assertTrue(rgName.equalsIgnoreCase(identity.resourceGroupName()),
+            String.format("%s == %s", rgName, identity.resourceGroupName()));
 
         Assertions.assertNotNull(identity.clientId());
         Assertions.assertNotNull(identity.principalId());
@@ -101,8 +90,7 @@ public class MSIIdentityManagementTests extends ResourceManagerTestProxyTestBase
         Assertions.assertNotNull(identity);
         Assertions.assertNotNull(identity.innerModel());
 
-        PagedIterable<Identity> identities = msiManager.identities()
-                .listByResourceGroup(rgName);
+        PagedIterable<Identity> identities = msiManager.identities().listByResourceGroup(rgName);
 
         Assertions.assertNotNull(identities);
 
@@ -121,43 +109,43 @@ public class MSIIdentityManagementTests extends ResourceManagerTestProxyTestBase
 
         Assertions.assertTrue(found);
 
-        msiManager.identities()
-                .deleteById(identity.id());
+        msiManager.identities().deleteById(identity.id());
     }
 
     @Test
-    @LiveOnly
+    @DoNotRecord(skipInPlayback = true)
     public void canAssignCurrentResourceGroupAccessRoleToIdentity() throws Exception {
+        // In `PLAYBACK` mode, An identity update exception occurred.
+        // Flux#last() didn't observe any onNext signal
         rgName = generateRandomResourceName("javaismrg", 15);
         String identityName = generateRandomResourceName("msi-id", 15);
 
-        Creatable<ResourceGroup> creatableRG = resourceManager.resourceGroups()
-                .define(rgName)
-                .withRegion(region);
+        Creatable<ResourceGroup> creatableRG = resourceManager.resourceGroups().define(rgName).withRegion(region);
 
         Identity identity = msiManager.identities()
-                .define(identityName)
-                .withRegion(region)
-                .withNewResourceGroup(creatableRG)
-                .withAccessToCurrentResourceGroup(BuiltInRole.READER)
-                .create();
+            .define(identityName)
+            .withRegion(region)
+            .withNewResourceGroup(creatableRG)
+            .withAccessToCurrentResourceGroup(BuiltInRole.READER)
+            .create();
 
         // Ensure role assigned
         //
         ResourceGroup resourceGroup = this.resourceManager.resourceGroups().getByName(identity.resourceGroupName());
-        PagedIterable<RoleAssignment> roleAssignments = this.msiManager.authorizationManager().roleAssignments().listByScope(resourceGroup.id());
+        PagedIterable<RoleAssignment> roleAssignments
+            = this.msiManager.authorizationManager().roleAssignments().listByScope(resourceGroup.id());
         boolean found = false;
         for (RoleAssignment roleAssignment : roleAssignments) {
-            if (roleAssignment.principalId() != null && roleAssignment.principalId().equalsIgnoreCase(identity.principalId())) {
+            if (roleAssignment.principalId() != null
+                && roleAssignment.principalId().equalsIgnoreCase(identity.principalId())) {
                 found = true;
                 break;
             }
         }
-        Assertions.assertTrue(found, "Expected role assignment not found for the resource group that identity belongs to");
+        Assertions.assertTrue(found,
+            "Expected role assignment not found for the resource group that identity belongs to");
 
-        identity.update()
-                .withoutAccessTo(resourceGroup.id(), BuiltInRole.READER)
-                .apply();
+        identity.update().withoutAccessTo(resourceGroup.id(), BuiltInRole.READER).apply();
 
         ResourceManagerUtils.sleep(Duration.ofSeconds(30));
 
@@ -166,15 +154,15 @@ public class MSIIdentityManagementTests extends ResourceManagerTestProxyTestBase
         roleAssignments = this.msiManager.authorizationManager().roleAssignments().listByScope(resourceGroup.id());
         boolean notFound = true;
         for (RoleAssignment roleAssignment : roleAssignments) {
-            if (roleAssignment.principalId() != null && roleAssignment.principalId().equalsIgnoreCase(identity.principalId())) {
+            if (roleAssignment.principalId() != null
+                && roleAssignment.principalId().equalsIgnoreCase(identity.principalId())) {
                 notFound = false;
                 break;
             }
         }
         Assertions.assertTrue(notFound, "Role assignment to access resource group is not removed");
 
-        msiManager.identities()
-                .deleteById(identity.id());
+        msiManager.identities().deleteById(identity.id());
 
     }
 
@@ -185,53 +173,51 @@ public class MSIIdentityManagementTests extends ResourceManagerTestProxyTestBase
 
         String anotherRgName = generateRandomResourceName("rg", 15);
 
-        ResourceGroup anotherResourceGroup = resourceManager.resourceGroups()
-                .define(anotherRgName)
-                .withRegion(region)
-                .create();
+        ResourceGroup anotherResourceGroup
+            = resourceManager.resourceGroups().define(anotherRgName).withRegion(region).create();
 
-        Creatable<ResourceGroup> creatableRG = resourceManager.resourceGroups()
-                .define(rgName)
-                .withRegion(region);
+        Creatable<ResourceGroup> creatableRG = resourceManager.resourceGroups().define(rgName).withRegion(region);
 
         Identity identity = msiManager.identities()
-                .define(identityName)
-                .withRegion(region)
-                .withNewResourceGroup(creatableRG)
-                .withAccessToCurrentResourceGroup(BuiltInRole.READER)
-                .withAccessTo(anotherResourceGroup, BuiltInRole.CONTRIBUTOR)
-                .createAsync()
-                .block();
+            .define(identityName)
+            .withRegion(region)
+            .withNewResourceGroup(creatableRG)
+            .withAccessToCurrentResourceGroup(BuiltInRole.READER)
+            .withAccessTo(anotherResourceGroup, BuiltInRole.CONTRIBUTOR)
+            .createAsync()
+            .block();
 
         Assertions.assertNotNull(identity);
 
         // Ensure roles are assigned
         //
         ResourceGroup resourceGroup = this.resourceManager.resourceGroups().getByName(identity.resourceGroupName());
-        PagedIterable<RoleAssignment> roleAssignments = this.msiManager.authorizationManager().roleAssignments().listByScope(resourceGroup.id());
+        PagedIterable<RoleAssignment> roleAssignments
+            = this.msiManager.authorizationManager().roleAssignments().listByScope(resourceGroup.id());
         boolean found = false;
         for (RoleAssignment roleAssignment : roleAssignments) {
-            if (roleAssignment.principalId() != null && roleAssignment.principalId().equalsIgnoreCase(identity.principalId())) {
+            if (roleAssignment.principalId() != null
+                && roleAssignment.principalId().equalsIgnoreCase(identity.principalId())) {
                 found = true;
                 break;
             }
         }
-        Assertions.assertTrue(found, "Expected role assignment not found for the resource group that identity belongs to");
+        Assertions.assertTrue(found,
+            "Expected role assignment not found for the resource group that identity belongs to");
 
-        roleAssignments = this.msiManager.authorizationManager().roleAssignments().listByScope(anotherResourceGroup.id());
+        roleAssignments
+            = this.msiManager.authorizationManager().roleAssignments().listByScope(anotherResourceGroup.id());
         found = false;
         for (RoleAssignment roleAssignment : roleAssignments) {
-            if (roleAssignment.principalId() != null && roleAssignment.principalId().equalsIgnoreCase(identity.principalId())) {
+            if (roleAssignment.principalId() != null
+                && roleAssignment.principalId().equalsIgnoreCase(identity.principalId())) {
                 found = true;
                 break;
             }
         }
         Assertions.assertTrue(found, "Expected role assignment not found for the resource group resource");
 
-        identity = identity
-                .update()
-                .withTag("a", "bb")
-                .apply();
+        identity = identity.update().withTag("a", "bb").apply();
 
         Assertions.assertNotNull(identity.tags());
         Assertions.assertTrue(identity.tags().containsKey("a"));

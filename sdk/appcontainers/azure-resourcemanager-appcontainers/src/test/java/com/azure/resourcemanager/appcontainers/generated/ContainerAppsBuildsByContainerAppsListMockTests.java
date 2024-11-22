@@ -21,7 +21,7 @@ public final class ContainerAppsBuildsByContainerAppsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"buildStatus\":\"InProgress\",\"destinationContainerRegistry\":{\"server\":\"yzkxitds\",\"image\":\"zsvko\"},\"configuration\":{\"baseOs\":\"pjovmozsayebraz\",\"platform\":\"lpzbtzuykykipf\",\"platformVersion\":\"yepfn\",\"environmentVariables\":[{\"name\":\"bezacfpztga\",\"value\":\"wyqejgaao\"},{\"name\":\"ctgkppgkqzkcyzmf\",\"value\":\"ngdyfcixrhlcq\"},{\"name\":\"hoe\",\"value\":\"goiutgw\"}],\"preBuildSteps\":[{\"description\":\"hpqhazyntacihn\",\"scripts\":[\"mip\",\"mliqmvlb\",\"i\",\"eaqgrvgpomxpupd\"],\"httpGet\":{\"url\":\"dfj\"}},{\"description\":\"esocwiqbuou\",\"scripts\":[\"yzgleofjs\"],\"httpGet\":{\"url\":\"bwwzvdajf\"}},{\"description\":\"n\",\"scripts\":[\"aciq\",\"jjrlhiqlwix\",\"tbouguxtnd\"],\"httpGet\":{\"url\":\"gjttbasualapdlnd\"}}]},\"logStreamEndpoint\":\"aqbkixvvlwynpbbf\"},\"id\":\"zfjmsp\",\"name\":\"gzfeuzj\",\"type\":\"jmphfkyezolgj\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"buildStatus\":\"NotStarted\",\"destinationContainerRegistry\":{\"server\":\"lrupjovmo\",\"image\":\"ayeb\"},\"configuration\":{\"baseOs\":\"wzlpzbtz\",\"platform\":\"kykipfsdyepfnoc\",\"platformVersion\":\"ezacfpztga\",\"environmentVariables\":[{\"name\":\"qejg\",\"value\":\"aokctgkp\"},{\"name\":\"gkqzkcyzmffngdyf\",\"value\":\"ixrhl\"}],\"preBuildSteps\":[{\"description\":\"oejgoiutgwrmkah\",\"scripts\":[\"azyntacihncogm\",\"pnmliq\",\"v\",\"bhikeaqgr\"],\"httpGet\":{\"url\":\"pomxpu\"}},{\"description\":\"tsdfjyieso\",\"scripts\":[\"qb\",\"outmp\"],\"httpGet\":{\"url\":\"gleofjsbgbw\"}}]},\"logStreamEndpoint\":\"vdajfwn\"},\"id\":\"fmaciqgjjrlhiq\",\"name\":\"wixvtbouguxtndop\",\"type\":\"jtt\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,7 +31,7 @@ public final class ContainerAppsBuildsByContainerAppsListMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<ContainerAppsBuildResource> response = manager.containerAppsBuildsByContainerApps()
-            .list("etjsczivfqbqna", "dsyenzsieuscpl", com.azure.core.util.Context.NONE);
+            .list("ieuscplhyvdgx", "yzkxitds", com.azure.core.util.Context.NONE);
 
     }
 }

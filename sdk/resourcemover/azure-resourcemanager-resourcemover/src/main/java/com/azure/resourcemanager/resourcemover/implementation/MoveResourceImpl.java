@@ -15,8 +15,8 @@ public final class MoveResourceImpl implements MoveResource, MoveResource.Defini
 
     private final com.azure.resourcemanager.resourcemover.ResourceMoverManager serviceManager;
 
-    MoveResourceImpl(
-        MoveResourceInner innerObject, com.azure.resourcemanager.resourcemover.ResourceMoverManager serviceManager) {
+    MoveResourceImpl(MoveResourceInner innerObject,
+        com.azure.resourcemanager.resourcemover.ResourceMoverManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -62,20 +62,16 @@ public final class MoveResourceImpl implements MoveResource, MoveResource.Defini
     }
 
     public MoveResource create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getMoveResources()
-                .create(resourceGroupName, moveCollectionName, moveResourceName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getMoveResources()
+            .create(resourceGroupName, moveCollectionName, moveResourceName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public MoveResource create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getMoveResources()
-                .create(resourceGroupName, moveCollectionName, moveResourceName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getMoveResources()
+            .create(resourceGroupName, moveCollectionName, moveResourceName, this.innerModel(), context);
         return this;
     }
 
@@ -86,22 +82,18 @@ public final class MoveResourceImpl implements MoveResource, MoveResource.Defini
     }
 
     public MoveResource refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getMoveResources()
-                .getWithResponse(resourceGroupName, moveCollectionName, moveResourceName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getMoveResources()
+            .getWithResponse(resourceGroupName, moveCollectionName, moveResourceName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public MoveResource refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getMoveResources()
-                .getWithResponse(resourceGroupName, moveCollectionName, moveResourceName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getMoveResources()
+            .getWithResponse(resourceGroupName, moveCollectionName, moveResourceName, context)
+            .getValue();
         return this;
     }
 

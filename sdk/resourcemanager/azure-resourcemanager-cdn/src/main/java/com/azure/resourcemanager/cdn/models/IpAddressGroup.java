@@ -5,30 +5,31 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * CDN Ip address group.
  */
 @Fluent
-public final class IpAddressGroup {
+public final class IpAddressGroup implements JsonSerializable<IpAddressGroup> {
     /*
      * The delivery region of the ip address group
      */
-    @JsonProperty(value = "deliveryRegion")
     private String deliveryRegion;
 
     /*
      * The list of ip v4 addresses.
      */
-    @JsonProperty(value = "ipv4Addresses")
     private List<CidrIpAddress> ipv4Addresses;
 
     /*
      * The list of ip v6 addresses.
      */
-    @JsonProperty(value = "ipv6Addresses")
     private List<CidrIpAddress> ipv6Addresses;
 
     /**
@@ -109,5 +110,49 @@ public final class IpAddressGroup {
         if (ipv6Addresses() != null) {
             ipv6Addresses().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("deliveryRegion", this.deliveryRegion);
+        jsonWriter.writeArrayField("ipv4Addresses", this.ipv4Addresses, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("ipv6Addresses", this.ipv6Addresses, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IpAddressGroup from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IpAddressGroup if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IpAddressGroup.
+     */
+    public static IpAddressGroup fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IpAddressGroup deserializedIpAddressGroup = new IpAddressGroup();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("deliveryRegion".equals(fieldName)) {
+                    deserializedIpAddressGroup.deliveryRegion = reader.getString();
+                } else if ("ipv4Addresses".equals(fieldName)) {
+                    List<CidrIpAddress> ipv4Addresses = reader.readArray(reader1 -> CidrIpAddress.fromJson(reader1));
+                    deserializedIpAddressGroup.ipv4Addresses = ipv4Addresses;
+                } else if ("ipv6Addresses".equals(fieldName)) {
+                    List<CidrIpAddress> ipv6Addresses = reader.readArray(reader1 -> CidrIpAddress.fromJson(reader1));
+                    deserializedIpAddressGroup.ipv6Addresses = ipv6Addresses;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIpAddressGroup;
+        });
     }
 }

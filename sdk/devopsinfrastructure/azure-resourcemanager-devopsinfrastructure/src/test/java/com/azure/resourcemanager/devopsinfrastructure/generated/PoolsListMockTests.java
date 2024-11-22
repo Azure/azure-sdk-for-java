@@ -24,7 +24,7 @@ public final class PoolsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Updating\",\"maximumConcurrency\":422897894,\"organizationProfile\":{\"kind\":\"OrganizationProfile\"},\"agentProfile\":{\"kind\":\"AgentProfile\",\"resourcePredictions\":{},\"resourcePredictionsProfile\":{\"kind\":\"ResourcePredictionsProfile\"}},\"fabricProfile\":{\"kind\":\"FabricProfile\"},\"devCenterProjectResourceId\":\"ayrhyrnx\"},\"identity\":{\"principalId\":\"eedndrdvstkwqqtc\",\"tenantId\":\"alm\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"gyqagvrvmnpkuk\":{\"principalId\":\"aygdvwvgpioh\",\"clientId\":\"xrtfudxep\"}}},\"location\":\"i\",\"tags\":{\"xw\":\"lxgwimfnjhf\",\"fkzikfj\":\"szkkfoqre\"},\"id\":\"wneaiv\",\"name\":\"wczelpci\",\"type\":\"elsfeaen\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Provisioning\",\"maximumConcurrency\":583924547,\"organizationProfile\":{\"kind\":\"OrganizationProfile\"},\"agentProfile\":{\"kind\":\"AgentProfile\",\"resourcePredictions\":{},\"resourcePredictionsProfile\":{\"kind\":\"ResourcePredictionsProfile\"}},\"fabricProfile\":{\"kind\":\"FabricProfile\"},\"devCenterProjectResourceId\":\"zqalkrmnjijpx\"},\"identity\":{\"principalId\":\"qudf\",\"tenantId\":\"yxbaaabjyvayf\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"wmewzsyy\":{\"principalId\":\"rtuzqogs\",\"clientId\":\"nevfdnw\"},\"frxtrthzvaytdwk\":{\"principalId\":\"uzsoi\",\"clientId\":\"ud\"},\"q\":{\"principalId\":\"rqubpaxhexiil\",\"clientId\":\"pdtii\"}}},\"location\":\"qoaxoruzfgs\",\"tags\":{\"tramxjez\":\"fxrxxle\",\"tdooaoj\":\"lwnwxuqlcvydyp\"},\"id\":\"niodkooeb\",\"name\":\"nuj\",\"type\":\"emmsbvdkc\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,13 +35,12 @@ public final class PoolsListMockTests {
 
         PagedIterable<Pool> response = manager.pools().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("i", response.iterator().next().location());
-        Assertions.assertEquals("lxgwimfnjhf", response.iterator().next().tags().get("xw"));
-        Assertions.assertEquals(ProvisioningState.UPDATING,
+        Assertions.assertEquals("qoaxoruzfgs", response.iterator().next().location());
+        Assertions.assertEquals("fxrxxle", response.iterator().next().tags().get("tramxjez"));
+        Assertions.assertEquals(ProvisioningState.PROVISIONING,
             response.iterator().next().properties().provisioningState());
-        Assertions.assertEquals(422897894, response.iterator().next().properties().maximumConcurrency());
-        Assertions.assertEquals("ayrhyrnx", response.iterator().next().properties().devCenterProjectResourceId());
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED,
-            response.iterator().next().identity().type());
+        Assertions.assertEquals(583924547, response.iterator().next().properties().maximumConcurrency());
+        Assertions.assertEquals("zqalkrmnjijpx", response.iterator().next().properties().devCenterProjectResourceId());
+        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, response.iterator().next().identity().type());
     }
 }

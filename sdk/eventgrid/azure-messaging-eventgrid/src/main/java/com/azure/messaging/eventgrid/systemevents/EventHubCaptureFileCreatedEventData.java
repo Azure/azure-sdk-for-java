@@ -5,6 +5,7 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -250,6 +251,9 @@ public final class EventHubCaptureFileCreatedEventData
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -260,8 +264,10 @@ public final class EventHubCaptureFileCreatedEventData
         jsonWriter.writeNumberField("eventCount", this.eventCount);
         jsonWriter.writeNumberField("firstSequenceNumber", this.firstSequenceNumber);
         jsonWriter.writeNumberField("lastSequenceNumber", this.lastSequenceNumber);
-        jsonWriter.writeStringField("firstEnqueueTime", this.firstEnqueueTime == null ? null
-            : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.firstEnqueueTime));
+        jsonWriter.writeStringField("firstEnqueueTime",
+            this.firstEnqueueTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.firstEnqueueTime));
         jsonWriter.writeStringField("lastEnqueueTime",
             this.lastEnqueueTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastEnqueueTime));
         return jsonWriter.writeEndObject();
@@ -301,11 +307,11 @@ public final class EventHubCaptureFileCreatedEventData
                     deserializedEventHubCaptureFileCreatedEventData.lastSequenceNumber
                         = reader.getNullable(JsonReader::getInt);
                 } else if ("firstEnqueueTime".equals(fieldName)) {
-                    deserializedEventHubCaptureFileCreatedEventData.firstEnqueueTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedEventHubCaptureFileCreatedEventData.firstEnqueueTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("lastEnqueueTime".equals(fieldName)) {
-                    deserializedEventHubCaptureFileCreatedEventData.lastEnqueueTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedEventHubCaptureFileCreatedEventData.lastEnqueueTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else {
                     reader.skipChildren();
                 }

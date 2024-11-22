@@ -37,8 +37,8 @@ public interface ServiceConfigurations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the paginated list of serviceConfigurations as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<ServiceConfigurationResource> listByEndpointResource(
-        String resourceUri, String endpointName, Context context);
+    PagedIterable<ServiceConfigurationResource> listByEndpointResource(String resourceUri, String endpointName,
+        Context context);
 
     /**
      * Gets the details about the service to the resource.
@@ -52,8 +52,8 @@ public interface ServiceConfigurations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details about the service to the resource along with {@link Response}.
      */
-    Response<ServiceConfigurationResource> getWithResponse(
-        String resourceUri, String endpointName, String serviceConfigurationName, Context context);
+    Response<ServiceConfigurationResource> getWithResponse(String resourceUri, String endpointName,
+        String serviceConfigurationName, Context context);
 
     /**
      * Gets the details about the service to the resource.
@@ -80,8 +80,8 @@ public interface ServiceConfigurations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceUri, String endpointName, String serviceConfigurationName, Context context);
+    Response<Void> deleteWithResponse(String resourceUri, String endpointName, String serviceConfigurationName,
+        Context context);
 
     /**
      * Deletes the service details to the target resource.

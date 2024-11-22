@@ -18,6 +18,11 @@ import java.util.List;
 @Fluent
 public final class MetricsConfiguration implements JsonSerializable<MetricsConfiguration> {
     /*
+     * Boolean indicating if including keda metrics
+     */
+    private Boolean includeKeda;
+
+    /*
      * Open telemetry metrics destinations
      */
     private List<String> destinations;
@@ -26,6 +31,26 @@ public final class MetricsConfiguration implements JsonSerializable<MetricsConfi
      * Creates an instance of MetricsConfiguration class.
      */
     public MetricsConfiguration() {
+    }
+
+    /**
+     * Get the includeKeda property: Boolean indicating if including keda metrics.
+     * 
+     * @return the includeKeda value.
+     */
+    public Boolean includeKeda() {
+        return this.includeKeda;
+    }
+
+    /**
+     * Set the includeKeda property: Boolean indicating if including keda metrics.
+     * 
+     * @param includeKeda the includeKeda value to set.
+     * @return the MetricsConfiguration object itself.
+     */
+    public MetricsConfiguration withIncludeKeda(Boolean includeKeda) {
+        this.includeKeda = includeKeda;
+        return this;
     }
 
     /**
@@ -62,6 +87,7 @@ public final class MetricsConfiguration implements JsonSerializable<MetricsConfi
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("includeKeda", this.includeKeda);
         jsonWriter.writeArrayField("destinations", this.destinations, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
@@ -81,7 +107,9 @@ public final class MetricsConfiguration implements JsonSerializable<MetricsConfi
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("destinations".equals(fieldName)) {
+                if ("includeKeda".equals(fieldName)) {
+                    deserializedMetricsConfiguration.includeKeda = reader.getNullable(JsonReader::getBoolean);
+                } else if ("destinations".equals(fieldName)) {
                     List<String> destinations = reader.readArray(reader1 -> reader1.getString());
                     deserializedMetricsConfiguration.destinations = destinations;
                 } else {

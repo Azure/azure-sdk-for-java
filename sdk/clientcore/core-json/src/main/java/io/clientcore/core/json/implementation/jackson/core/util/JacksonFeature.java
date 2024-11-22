@@ -9,14 +9,13 @@ package io.clientcore.core.json.implementation.jackson.core.util;
  *
  * @since 2.12
  */
-public interface JacksonFeature
-{
+public interface JacksonFeature {
     /**
      * Accessor for checking whether this feature is enabled by default.
      *
      * @return Whether this instance is enabled by default or not
      */
-    public boolean enabledByDefault();
+    boolean enabledByDefault();
 
     /**
      * Returns bit mask for this feature instance; must be a single bit,
@@ -24,7 +23,7 @@ public interface JacksonFeature
      *
      * @return Bit mask of this feature
      */
-    public int getMask();
+    int getMask();
 
     /**
      * Convenience method for checking whether feature is enabled in given bitmask.
@@ -33,5 +32,5 @@ public interface JacksonFeature
      *
      * @return True if this feature is enabled in passed bit field
      */
-    public boolean enabledIn(int flags);
+    boolean enabledIn(int flags);
 }

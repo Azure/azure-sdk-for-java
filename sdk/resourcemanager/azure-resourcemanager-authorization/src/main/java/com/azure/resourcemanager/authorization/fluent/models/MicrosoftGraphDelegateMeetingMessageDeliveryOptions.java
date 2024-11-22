@@ -5,27 +5,34 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** delegateMeetingMessageDeliveryOptions. */
+/**
+ * delegateMeetingMessageDeliveryOptions.
+ */
 public final class MicrosoftGraphDelegateMeetingMessageDeliveryOptions
     extends ExpandableStringEnum<MicrosoftGraphDelegateMeetingMessageDeliveryOptions> {
-    /** Static value sendToDelegateAndInformationToPrincipal for MicrosoftGraphDelegateMeetingMessageDeliveryOptions. */
-    public static final MicrosoftGraphDelegateMeetingMessageDeliveryOptions
-        SEND_TO_DELEGATE_AND_INFORMATION_TO_PRINCIPAL = fromString("sendToDelegateAndInformationToPrincipal");
+    /**
+     * Static value sendToDelegateAndInformationToPrincipal for MicrosoftGraphDelegateMeetingMessageDeliveryOptions.
+     */
+    public static final MicrosoftGraphDelegateMeetingMessageDeliveryOptions SEND_TO_DELEGATE_AND_INFORMATION_TO_PRINCIPAL
+        = fromString("sendToDelegateAndInformationToPrincipal");
 
-    /** Static value sendToDelegateAndPrincipal for MicrosoftGraphDelegateMeetingMessageDeliveryOptions. */
-    public static final MicrosoftGraphDelegateMeetingMessageDeliveryOptions SEND_TO_DELEGATE_AND_PRINCIPAL =
-        fromString("sendToDelegateAndPrincipal");
+    /**
+     * Static value sendToDelegateAndPrincipal for MicrosoftGraphDelegateMeetingMessageDeliveryOptions.
+     */
+    public static final MicrosoftGraphDelegateMeetingMessageDeliveryOptions SEND_TO_DELEGATE_AND_PRINCIPAL
+        = fromString("sendToDelegateAndPrincipal");
 
-    /** Static value sendToDelegateOnly for MicrosoftGraphDelegateMeetingMessageDeliveryOptions. */
-    public static final MicrosoftGraphDelegateMeetingMessageDeliveryOptions SEND_TO_DELEGATE_ONLY =
-        fromString("sendToDelegateOnly");
+    /**
+     * Static value sendToDelegateOnly for MicrosoftGraphDelegateMeetingMessageDeliveryOptions.
+     */
+    public static final MicrosoftGraphDelegateMeetingMessageDeliveryOptions SEND_TO_DELEGATE_ONLY
+        = fromString("sendToDelegateOnly");
 
     /**
      * Creates a new instance of MicrosoftGraphDelegateMeetingMessageDeliveryOptions value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -34,18 +41,17 @@ public final class MicrosoftGraphDelegateMeetingMessageDeliveryOptions
 
     /**
      * Creates or finds a MicrosoftGraphDelegateMeetingMessageDeliveryOptions from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MicrosoftGraphDelegateMeetingMessageDeliveryOptions.
      */
-    @JsonCreator
     public static MicrosoftGraphDelegateMeetingMessageDeliveryOptions fromString(String name) {
         return fromString(name, MicrosoftGraphDelegateMeetingMessageDeliveryOptions.class);
     }
 
     /**
      * Gets known MicrosoftGraphDelegateMeetingMessageDeliveryOptions values.
-     *
+     * 
      * @return known MicrosoftGraphDelegateMeetingMessageDeliveryOptions values.
      */
     public static Collection<MicrosoftGraphDelegateMeetingMessageDeliveryOptions> values() {

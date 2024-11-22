@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Usage strings container.
  */
 @Immutable
-public final class VirtualNetworkUsageName {
+public final class VirtualNetworkUsageName implements JsonSerializable<VirtualNetworkUsageName> {
     /*
      * Localized subnet size and usage string.
      */
-    @JsonProperty(value = "localizedValue", access = JsonProperty.Access.WRITE_ONLY)
     private String localizedValue;
 
     /*
      * Subnet size and usage string.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private String value;
 
     /**
@@ -54,5 +56,42 @@ public final class VirtualNetworkUsageName {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualNetworkUsageName from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualNetworkUsageName if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualNetworkUsageName.
+     */
+    public static VirtualNetworkUsageName fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualNetworkUsageName deserializedVirtualNetworkUsageName = new VirtualNetworkUsageName();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("localizedValue".equals(fieldName)) {
+                    deserializedVirtualNetworkUsageName.localizedValue = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    deserializedVirtualNetworkUsageName.value = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualNetworkUsageName;
+        });
     }
 }

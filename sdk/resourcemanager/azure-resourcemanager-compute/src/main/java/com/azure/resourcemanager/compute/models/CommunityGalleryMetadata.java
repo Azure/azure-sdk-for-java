@@ -6,42 +6,41 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The metadata of community gallery.
  */
 @Fluent
-public final class CommunityGalleryMetadata {
+public final class CommunityGalleryMetadata implements JsonSerializable<CommunityGalleryMetadata> {
     /*
      * The publisher URI of this community gallery.
      */
-    @JsonProperty(value = "publisherUri")
     private String publisherUri;
 
     /*
      * The publisher email id of this community gallery.
      */
-    @JsonProperty(value = "publisherContact", required = true)
     private String publisherContact;
 
     /*
      * The end-user license agreement for this community gallery.
      */
-    @JsonProperty(value = "eula")
     private String eula;
 
     /*
      * A list of public names the gallery has.
      */
-    @JsonProperty(value = "publicNames", required = true)
     private List<String> publicNames;
 
     /*
      * The link for the privacy statement of this community gallery from the gallery publisher.
      */
-    @JsonProperty(value = "privacyStatementUri")
     private String privacyStatementUri;
 
     /**
@@ -171,4 +170,54 @@ public final class CommunityGalleryMetadata {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(CommunityGalleryMetadata.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("publisherContact", this.publisherContact);
+        jsonWriter.writeArrayField("publicNames", this.publicNames, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("publisherUri", this.publisherUri);
+        jsonWriter.writeStringField("eula", this.eula);
+        jsonWriter.writeStringField("privacyStatementUri", this.privacyStatementUri);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CommunityGalleryMetadata from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CommunityGalleryMetadata if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CommunityGalleryMetadata.
+     */
+    public static CommunityGalleryMetadata fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CommunityGalleryMetadata deserializedCommunityGalleryMetadata = new CommunityGalleryMetadata();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("publisherContact".equals(fieldName)) {
+                    deserializedCommunityGalleryMetadata.publisherContact = reader.getString();
+                } else if ("publicNames".equals(fieldName)) {
+                    List<String> publicNames = reader.readArray(reader1 -> reader1.getString());
+                    deserializedCommunityGalleryMetadata.publicNames = publicNames;
+                } else if ("publisherUri".equals(fieldName)) {
+                    deserializedCommunityGalleryMetadata.publisherUri = reader.getString();
+                } else if ("eula".equals(fieldName)) {
+                    deserializedCommunityGalleryMetadata.eula = reader.getString();
+                } else if ("privacyStatementUri".equals(fieldName)) {
+                    deserializedCommunityGalleryMetadata.privacyStatementUri = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCommunityGalleryMetadata;
+        });
+    }
 }

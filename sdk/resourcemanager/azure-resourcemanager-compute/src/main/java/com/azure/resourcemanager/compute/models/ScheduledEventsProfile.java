@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The ScheduledEventsProfile model.
  */
 @Fluent
-public final class ScheduledEventsProfile {
+public final class ScheduledEventsProfile implements JsonSerializable<ScheduledEventsProfile> {
     /*
      * Specifies Terminate Scheduled Event related configurations.
      */
-    @JsonProperty(value = "terminateNotificationProfile")
     private TerminateNotificationProfile terminateNotificationProfile;
 
     /*
      * Specifies OS Image Scheduled Event related configurations.
      */
-    @JsonProperty(value = "osImageNotificationProfile")
     private OSImageNotificationProfile osImageNotificationProfile;
 
     /**
@@ -84,5 +86,46 @@ public final class ScheduledEventsProfile {
         if (osImageNotificationProfile() != null) {
             osImageNotificationProfile().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("terminateNotificationProfile", this.terminateNotificationProfile);
+        jsonWriter.writeJsonField("osImageNotificationProfile", this.osImageNotificationProfile);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ScheduledEventsProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ScheduledEventsProfile if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ScheduledEventsProfile.
+     */
+    public static ScheduledEventsProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ScheduledEventsProfile deserializedScheduledEventsProfile = new ScheduledEventsProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("terminateNotificationProfile".equals(fieldName)) {
+                    deserializedScheduledEventsProfile.terminateNotificationProfile
+                        = TerminateNotificationProfile.fromJson(reader);
+                } else if ("osImageNotificationProfile".equals(fieldName)) {
+                    deserializedScheduledEventsProfile.osImageNotificationProfile
+                        = OSImageNotificationProfile.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedScheduledEventsProfile;
+        });
     }
 }

@@ -8,7 +8,6 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.Region;
 import com.azure.core.management.SubResource;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.test.annotation.LiveOnly;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.authorization.models.RoleAssignment;
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachineScaleSetInner;
@@ -80,7 +79,7 @@ import java.util.stream.Collectors;
 
 public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest {
     private String rgName = "";
-    private final Region region = Region.US_WEST;
+    private final Region region = Region.US_WEST2;
 
     @Override
     protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
@@ -101,47 +100,38 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         ResourceGroup resourceGroup = this.resourceManager.resourceGroups().define(rgName).withRegion(region).create();
         final String uname = "jvuser";
 
-        Network network =
-            this
-                .networkManager
-                .networks()
-                .define(generateRandomResourceName("vmssvnet", 15))
-                .withRegion(region)
-                .withExistingResourceGroup(resourceGroup)
-                .withAddressSpace("10.0.0.0/28")
-                .withSubnet("subnet1", "10.0.0.0/28")
-                .create();
+        Network network = this.networkManager.networks()
+            .define(generateRandomResourceName("vmssvnet", 15))
+            .withRegion(region)
+            .withExistingResourceGroup(resourceGroup)
+            .withAddressSpace("10.0.0.0/28")
+            .withSubnet("subnet1", "10.0.0.0/28")
+            .create();
 
-        PurchasePlan plan = new PurchasePlan()
-            .withName("openvpnas")
-            .withPublisher("openvpn")
-            .withProduct("openvpnas");
+        PurchasePlan plan = new PurchasePlan().withName("openvpnas").withPublisher("openvpn").withProduct("openvpnas");
 
-        ImageReference imageReference = new ImageReference()
-            .withPublisher("openvpn")
+        ImageReference imageReference = new ImageReference().withPublisher("openvpn")
             .withOffer("openvpnas")
             .withSku("openvpnas")
             .withVersion("latest");
 
-        VirtualMachineScaleSet virtualMachineScaleSet =
-            this
-                .computeManager
-                .virtualMachineScaleSets()
-                .define(vmssName)
-                .withRegion(region)
-                .withExistingResourceGroup(resourceGroup)
-                .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
-                .withExistingPrimaryNetworkSubnet(network, "subnet1")
-                .withoutPrimaryInternetFacingLoadBalancer()
-                .withoutPrimaryInternalLoadBalancer()
-                .withSpecificLinuxImageVersion(imageReference)
-                .withRootUsername(uname)
-                .withSsh(sshPublicKey())
-                .withNewDataDisk(1)
-                .withPlan(plan)
-                .create();
+        VirtualMachineScaleSet virtualMachineScaleSet = this.computeManager.virtualMachineScaleSets()
+            .define(vmssName)
+            .withRegion(region)
+            .withExistingResourceGroup(resourceGroup)
+            .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
+            .withExistingPrimaryNetworkSubnet(network, "subnet1")
+            .withoutPrimaryInternetFacingLoadBalancer()
+            .withoutPrimaryInternalLoadBalancer()
+            .withSpecificLinuxImageVersion(imageReference)
+            .withRootUsername(uname)
+            .withSsh(sshPublicKey())
+            .withNewDataDisk(1)
+            .withPlan(plan)
+            .create();
 
-        VirtualMachineScaleSet currentVirtualMachineScaleSet = this.computeManager.virtualMachineScaleSets().getByResourceGroup(rgName, vmssName);
+        VirtualMachineScaleSet currentVirtualMachineScaleSet
+            = this.computeManager.virtualMachineScaleSets().getByResourceGroup(rgName, vmssName);
         // assertion for purchase plan
         Assertions.assertEquals("openvpnas", currentVirtualMachineScaleSet.plan().name());
         Assertions.assertEquals("openvpn", currentVirtualMachineScaleSet.plan().publisher());
@@ -157,58 +147,49 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
 
         ResourceGroup resourceGroup = this.resourceManager.resourceGroups().define(rgName).withRegion(region).create();
 
-        StorageAccount storageAccount =
-            this
-                .storageManager
-                .storageAccounts()
-                .define(generateRandomResourceName("stg", 15))
-                .withRegion(region)
-                .withExistingResourceGroup(resourceGroup)
-                .create();
+        StorageAccount storageAccount = this.storageManager.storageAccounts()
+            .define(generateRandomResourceName("stg", 15))
+            .withRegion(region)
+            .withExistingResourceGroup(resourceGroup)
+            .create();
 
         List<StorageAccountKey> keys = storageAccount.getKeys();
         Assertions.assertNotNull(keys);
         Assertions.assertTrue(keys.size() > 0);
         String storageAccountKey = keys.get(0).value();
 
-        Network network =
-            this
-                .networkManager
-                .networks()
-                .define(generateRandomResourceName("vmssvnet", 15))
-                .withRegion(region)
-                .withExistingResourceGroup(resourceGroup)
-                .withAddressSpace("10.0.0.0/28")
-                .withSubnet("subnet1", "10.0.0.0/28")
-                .create();
+        Network network = this.networkManager.networks()
+            .define(generateRandomResourceName("vmssvnet", 15))
+            .withRegion(region)
+            .withExistingResourceGroup(resourceGroup)
+            .withAddressSpace("10.0.0.0/28")
+            .withSubnet("subnet1", "10.0.0.0/28")
+            .create();
 
-        VirtualMachineScaleSet virtualMachineScaleSet =
-            this
-                .computeManager
-                .virtualMachineScaleSets()
-                .define(vmssName)
-                .withRegion(region)
-                .withExistingResourceGroup(resourceGroup)
-                .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
-                .withExistingPrimaryNetworkSubnet(network, "subnet1")
-                .withoutPrimaryInternetFacingLoadBalancer()
-                .withoutPrimaryInternalLoadBalancer()
-                .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
-                .withRootUsername(uname)
-                .withSsh(sshPublicKey())
-                .withUnmanagedDisks()
-                .withNewStorageAccount(generateRandomResourceName("stg", 15))
-                .withExistingStorageAccount(storageAccount)
-                .defineNewExtension("CustomScriptForLinux")
-                .withPublisher("Microsoft.OSTCExtensions")
-                .withType("CustomScriptForLinux")
-                .withVersion("1.4")
-                .withMinorVersionAutoUpgrade()
-                .withPublicSetting("commandToExecute", "ls")
-                .withProtectedSetting("storageAccountName", storageAccount.name())
-                .withProtectedSetting("storageAccountKey", storageAccountKey)
-                .attach()
-                .create();
+        VirtualMachineScaleSet virtualMachineScaleSet = this.computeManager.virtualMachineScaleSets()
+            .define(vmssName)
+            .withRegion(region)
+            .withExistingResourceGroup(resourceGroup)
+            .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
+            .withExistingPrimaryNetworkSubnet(network, "subnet1")
+            .withoutPrimaryInternetFacingLoadBalancer()
+            .withoutPrimaryInternalLoadBalancer()
+            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+            .withRootUsername(uname)
+            .withSsh(sshPublicKey())
+            .withUnmanagedDisks()
+            .withNewStorageAccount(generateRandomResourceName("stg", 15))
+            .withExistingStorageAccount(storageAccount)
+            .defineNewExtension("CustomScriptForLinux")
+            .withPublisher("Microsoft.OSTCExtensions")
+            .withType("CustomScriptForLinux")
+            .withVersion("1.4")
+            .withMinorVersionAutoUpgrade()
+            .withPublicSetting("commandToExecute", "ls")
+            .withProtectedSetting("storageAccountName", storageAccount.name())
+            .withProtectedSetting("storageAccountKey", storageAccountKey)
+            .attach()
+            .create();
         // Validate extensions after create
         //
         Map<String, VirtualMachineScaleSetExtension> extensions = virtualMachineScaleSet.extensions();
@@ -220,8 +201,8 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         Assertions.assertEquals(1, extension.publicSettings().size());
         Assertions.assertNotNull(extension.publicSettingsAsJsonString());
         // Retrieve scale set
-        VirtualMachineScaleSet scaleSet =
-            this.computeManager.virtualMachineScaleSets().getById(virtualMachineScaleSet.id());
+        VirtualMachineScaleSet scaleSet
+            = this.computeManager.virtualMachineScaleSets().getById(virtualMachineScaleSet.id());
         // Validate extensions after get
         //
         extensions = scaleSet.extensions();
@@ -256,44 +237,38 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
 
         ResourceGroup resourceGroup = this.resourceManager.resourceGroups().define(rgName).withRegion(region).create();
 
-        Network network =
-            this
-                .networkManager
-                .networks()
-                .define(generateRandomResourceName("vmssvnet", 15))
-                .withRegion(region)
-                .withExistingResourceGroup(resourceGroup)
-                .withAddressSpace("10.0.0.0/28")
-                .withSubnet("subnet1", "10.0.0.0/28")
-                .create();
+        Network network = this.networkManager.networks()
+            .define(generateRandomResourceName("vmssvnet", 15))
+            .withRegion(region)
+            .withExistingResourceGroup(resourceGroup)
+            .withAddressSpace("10.0.0.0/28")
+            .withSubnet("subnet1", "10.0.0.0/28")
+            .create();
 
         LoadBalancer publicLoadBalancer = createHttpLoadBalancers(region, resourceGroup, "1");
-        VirtualMachineScaleSet virtualMachineScaleSet =
-            this
-                .computeManager
-                .virtualMachineScaleSets()
-                .define(vmssName)
-                .withRegion(region)
-                .withExistingResourceGroup(resourceGroup)
-                .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
-                .withExistingPrimaryNetworkSubnet(network, "subnet1")
-                .withExistingPrimaryInternetFacingLoadBalancer(publicLoadBalancer)
-                .withoutPrimaryInternalLoadBalancer()
-                .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
-                .withRootUsername(uname)
-                .withSsh(sshPublicKey())
-                .withUnmanagedDisks()
-                .withNewStorageAccount(generateRandomResourceName("stg", 15))
-                .withNewStorageAccount(generateRandomResourceName("stg", 15))
-                .defineNewExtension("CustomScriptForLinux")
-                .withPublisher("Microsoft.OSTCExtensions")
-                .withType("CustomScriptForLinux")
-                .withVersion("1.4")
-                .withMinorVersionAutoUpgrade()
-                .withPublicSetting("commandToExecute", "ls")
-                .attach()
-                .withUpgradeMode(UpgradeMode.MANUAL)
-                .create();
+        VirtualMachineScaleSet virtualMachineScaleSet = this.computeManager.virtualMachineScaleSets()
+            .define(vmssName)
+            .withRegion(region)
+            .withExistingResourceGroup(resourceGroup)
+            .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
+            .withExistingPrimaryNetworkSubnet(network, "subnet1")
+            .withExistingPrimaryInternetFacingLoadBalancer(publicLoadBalancer)
+            .withoutPrimaryInternalLoadBalancer()
+            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+            .withRootUsername(uname)
+            .withSsh(sshPublicKey())
+            .withUnmanagedDisks()
+            .withNewStorageAccount(generateRandomResourceName("stg", 15))
+            .withNewStorageAccount(generateRandomResourceName("stg", 15))
+            .defineNewExtension("CustomScriptForLinux")
+            .withPublisher("Microsoft.OSTCExtensions")
+            .withType("CustomScriptForLinux")
+            .withVersion("1.4")
+            .withMinorVersionAutoUpgrade()
+            .withPublicSetting("commandToExecute", "ls")
+            .attach()
+            .withUpgradeMode(UpgradeMode.MANUAL)
+            .create();
 
         checkVMInstances(virtualMachineScaleSet);
 
@@ -302,13 +277,13 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
 
         String fqdn = publicIPAddress.fqdn();
         Assertions.assertNotNull(fqdn);
-//        // Assert public load balancing connection
-//        if (!isPlaybackMode()) {
-//            HttpClient client = HttpClient.createDefault();
-//            HttpRequest request = new HttpRequest(HttpMethod.GET, "http://" + fqdn);
-//            HttpResponse response = client.send(request).block();
-//            Assertions.assertEquals(response.getStatusCode(), 200);
-//        }
+        //        // Assert public load balancing connection
+        //        if (!isPlaybackMode()) {
+        //            HttpClient client = HttpClient.createDefault();
+        //            HttpRequest request = new HttpRequest(HttpMethod.GET, "http://" + fqdn);
+        //            HttpResponse response = client.send(request).block();
+        //            Assertions.assertEquals(response.getStatusCode(), 200);
+        //        }
 
         // Check SSH to VM instances via Nat rule
         //
@@ -329,8 +304,8 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             }
             Assertions.assertNotNull(sshFrontendPort);
 
-//            this.sleep(1000 * 60); // Wait some time for VM to be available
-//            this.ensureCanDoSsh(fqdn, sshFrontendPort, uname, password);
+            //            this.sleep(1000 * 60); // Wait some time for VM to be available
+            //            this.ensureCanDoSsh(fqdn, sshFrontendPort, uname, password);
         }
     }
 
@@ -343,47 +318,38 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
 
         ResourceGroup resourceGroup = this.resourceManager.resourceGroups().define(rgName).withRegion(region).create();
 
-        Network network =
-            this
-                .networkManager
-                .networks()
-                .define("vmssvnet")
-                .withRegion(region)
-                .withExistingResourceGroup(resourceGroup)
-                .withAddressSpace("10.0.0.0/28")
-                .withSubnet("subnet1", "10.0.0.0/28")
-                .create();
+        Network network = this.networkManager.networks()
+            .define("vmssvnet")
+            .withRegion(region)
+            .withExistingResourceGroup(resourceGroup)
+            .withAddressSpace("10.0.0.0/28")
+            .withSubnet("subnet1", "10.0.0.0/28")
+            .create();
 
-        ApplicationSecurityGroup asg =
-            this
-                .networkManager
-                .applicationSecurityGroups()
-                .define(asgName)
-                .withRegion(region)
-                .withExistingResourceGroup(resourceGroup)
-                .create();
+        ApplicationSecurityGroup asg = this.networkManager.applicationSecurityGroups()
+            .define(asgName)
+            .withRegion(region)
+            .withExistingResourceGroup(resourceGroup)
+            .create();
 
         // Create VMSS with instance public ip
-        VirtualMachineScaleSet virtualMachineScaleSet =
-            this
-                .computeManager
-                .virtualMachineScaleSets()
-                .define(vmssName)
-                .withRegion(region)
-                .withExistingResourceGroup(resourceGroup)
-                .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_D3_V2)
-                .withExistingPrimaryNetworkSubnet(network, "subnet1")
-                .withoutPrimaryInternetFacingLoadBalancer()
-                .withoutPrimaryInternalLoadBalancer()
-                .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
-                .withRootUsername("jvuser")
-                .withSsh(sshPublicKey())
-                .withVirtualMachinePublicIp(vmssVmDnsLabel)
-                .withExistingApplicationSecurityGroup(asg)
-                .create();
+        VirtualMachineScaleSet virtualMachineScaleSet = this.computeManager.virtualMachineScaleSets()
+            .define(vmssName)
+            .withRegion(region)
+            .withExistingResourceGroup(resourceGroup)
+            .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_D3_V2)
+            .withExistingPrimaryNetworkSubnet(network, "subnet1")
+            .withoutPrimaryInternetFacingLoadBalancer()
+            .withoutPrimaryInternalLoadBalancer()
+            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+            .withRootUsername("jvuser")
+            .withSsh(sshPublicKey())
+            .withVirtualMachinePublicIp(vmssVmDnsLabel)
+            .withExistingApplicationSecurityGroup(asg)
+            .create();
 
-        VirtualMachineScaleSetPublicIpAddressConfiguration currentIpConfig =
-            virtualMachineScaleSet.virtualMachinePublicIpConfig();
+        VirtualMachineScaleSetPublicIpAddressConfiguration currentIpConfig
+            = virtualMachineScaleSet.virtualMachinePublicIpConfig();
 
         Assertions.assertNotNull(currentIpConfig);
         Assertions.assertNotNull(currentIpConfig.dnsSettings());
@@ -408,24 +374,21 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         Assertions.assertNotNull(asgIds);
         Assertions.assertEquals(1, asgIds.size());
 
-        NetworkSecurityGroup nsg =
-            networkManager
-                .networkSecurityGroups()
-                .define(nsgName)
-                .withRegion(region)
-                .withExistingResourceGroup(resourceGroup)
-                .defineRule("rule1")
-                .allowOutbound()
-                .fromAnyAddress()
-                .fromPort(80)
-                .toAnyAddress()
-                .toPort(80)
-                .withProtocol(SecurityRuleProtocol.TCP)
-                .attach()
-                .create();
+        NetworkSecurityGroup nsg = networkManager.networkSecurityGroups()
+            .define(nsgName)
+            .withRegion(region)
+            .withExistingResourceGroup(resourceGroup)
+            .defineRule("rule1")
+            .allowOutbound()
+            .fromAnyAddress()
+            .fromPort(80)
+            .toAnyAddress()
+            .toPort(80)
+            .withProtocol(SecurityRuleProtocol.TCP)
+            .attach()
+            .create();
         virtualMachineScaleSet.deallocate();
-        virtualMachineScaleSet
-            .update()
+        virtualMachineScaleSet.update()
             .withIpForwarding()
             .withAcceleratedNetworking()
             .withExistingNetworkSecurityGroup(nsg)
@@ -441,8 +404,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         Assertions.assertTrue(virtualMachineScaleSet.isAcceleratedNetworkingEnabled());
         Assertions.assertNotNull(virtualMachineScaleSet.networkSecurityGroupId());
 
-        virtualMachineScaleSet
-            .update()
+        virtualMachineScaleSet.update()
             .withoutIpForwarding()
             .withoutAcceleratedNetworking()
             .withoutNetworkSecurityGroup()
@@ -461,19 +423,16 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
 
         ResourceGroup resourceGroup = this.resourceManager.resourceGroups().define(rgName).withRegion(region).create();
 
-        Network network =
-            this
-                .networkManager
-                .networks()
-                .define("vmssvnet")
-                .withRegion(region)
-                .withExistingResourceGroup(resourceGroup)
-                .withAddressSpace("10.0.0.0/28")
-                .withSubnet("subnet1", "10.0.0.0/28")
-                .create();
+        Network network = this.networkManager.networks()
+            .define("vmssvnet")
+            .withRegion(region)
+            .withExistingResourceGroup(resourceGroup)
+            .withAddressSpace("10.0.0.0/28")
+            .withSubnet("subnet1", "10.0.0.0/28")
+            .create();
 
-        LoadBalancer publicLoadBalancer =
-            createInternetFacingLoadBalancer(region, resourceGroup, "1", LoadBalancerSkuType.BASIC);
+        LoadBalancer publicLoadBalancer
+            = createInternetFacingLoadBalancer(region, resourceGroup, "1", LoadBalancerSkuType.BASIC);
 
         List<String> backends = new ArrayList<>();
         for (String backend : publicLoadBalancer.backends().keySet()) {
@@ -481,52 +440,42 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         }
         Assertions.assertTrue(backends.size() == 2);
 
-        Vault vault =
-            this
-                .keyVaultManager
-                .vaults()
-                .define(vaultName)
-                .withRegion(region)
-                .withExistingResourceGroup(resourceGroup)
-                .defineAccessPolicy()
-                .forServicePrincipal(clientIdFromFile())
-                .allowSecretAllPermissions()
-                .attach()
-                .withDeploymentEnabled()
-                .create();
-        final InputStream embeddedJsonConfig =
-            this.getClass().getResourceAsStream("/myTest.txt");
+        Vault vault = this.keyVaultManager.vaults()
+            .define(vaultName)
+            .withRegion(region)
+            .withExistingResourceGroup(resourceGroup)
+            .defineAccessPolicy()
+            .forUser(azureCliSignedInUser().userPrincipalName())
+            .allowSecretAllPermissions()
+            .attach()
+            .withDeploymentEnabled()
+            .create();
+        final InputStream embeddedJsonConfig = this.getClass().getResourceAsStream("/myTest.txt");
         String secretValue = IOUtils.toString(embeddedJsonConfig, StandardCharsets.UTF_8);
         Secret secret = vault.secrets().define(secretName).withValue(secretValue).create();
         List<VaultCertificate> certs = new ArrayList<>();
         certs.add(new VaultCertificate().withCertificateUrl(secret.id()));
         List<VaultSecretGroup> group = new ArrayList<>();
-        group
-            .add(
-                new VaultSecretGroup()
-                    .withSourceVault(new SubResource().withId(vault.id()))
-                    .withVaultCertificates(certs));
+        group.add(
+            new VaultSecretGroup().withSourceVault(new SubResource().withId(vault.id())).withVaultCertificates(certs));
 
-        VirtualMachineScaleSet virtualMachineScaleSet =
-            this
-                .computeManager
-                .virtualMachineScaleSets()
-                .define(vmssName)
-                .withRegion(region)
-                .withExistingResourceGroup(resourceGroup)
-                .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
-                .withExistingPrimaryNetworkSubnet(network, "subnet1")
-                .withExistingPrimaryInternetFacingLoadBalancer(publicLoadBalancer)
-                .withPrimaryInternetFacingLoadBalancerBackends(backends.get(0), backends.get(1))
-                .withoutPrimaryInternalLoadBalancer()
-                .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
-                .withRootUsername("jvuser")
-                .withSsh(sshPublicKey())
-                .withSecrets(group)
-                .withNewStorageAccount(generateRandomResourceName("stg", 15))
-                .withNewStorageAccount(generateRandomResourceName("stg3", 15))
-                .withUpgradeMode(UpgradeMode.MANUAL)
-                .create();
+        VirtualMachineScaleSet virtualMachineScaleSet = this.computeManager.virtualMachineScaleSets()
+            .define(vmssName)
+            .withRegion(region)
+            .withExistingResourceGroup(resourceGroup)
+            .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
+            .withExistingPrimaryNetworkSubnet(network, "subnet1")
+            .withExistingPrimaryInternetFacingLoadBalancer(publicLoadBalancer)
+            .withPrimaryInternetFacingLoadBalancerBackends(backends.get(0), backends.get(1))
+            .withoutPrimaryInternalLoadBalancer()
+            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+            .withRootUsername("jvuser")
+            .withSsh(sshPublicKey())
+            .withSecrets(group)
+            .withNewStorageAccount(generateRandomResourceName("stg", 15))
+            .withNewStorageAccount(generateRandomResourceName("stg3", 15))
+            .withUpgradeMode(UpgradeMode.MANUAL)
+            .create();
 
         for (VirtualMachineScaleSetVM vm : virtualMachineScaleSet.virtualMachines().list()) {
             Assertions.assertTrue(vm.osProfile().secrets().size() > 0);
@@ -544,44 +493,38 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         final String vmssName = generateRandomResourceName("vmss", 10);
         ResourceGroup resourceGroup = this.resourceManager.resourceGroups().define(rgName).withRegion(region).create();
 
-        Network network =
-            this
-                .networkManager
-                .networks()
-                .define("vmssvnet")
-                .withRegion(region)
-                .withExistingResourceGroup(resourceGroup)
-                .withAddressSpace("10.0.0.0/28")
-                .withSubnet("subnet1", "10.0.0.0/28")
-                .create();
+        Network network = this.networkManager.networks()
+            .define("vmssvnet")
+            .withRegion(region)
+            .withExistingResourceGroup(resourceGroup)
+            .withAddressSpace("10.0.0.0/28")
+            .withSubnet("subnet1", "10.0.0.0/28")
+            .create();
 
-        LoadBalancer publicLoadBalancer =
-            createInternetFacingLoadBalancer(region, resourceGroup, "1", LoadBalancerSkuType.BASIC);
+        LoadBalancer publicLoadBalancer
+            = createInternetFacingLoadBalancer(region, resourceGroup, "1", LoadBalancerSkuType.BASIC);
         List<String> backends = new ArrayList<>();
         for (String backend : publicLoadBalancer.backends().keySet()) {
             backends.add(backend);
         }
         Assertions.assertTrue(backends.size() == 2);
 
-        VirtualMachineScaleSet virtualMachineScaleSet =
-            this
-                .computeManager
-                .virtualMachineScaleSets()
-                .define(vmssName)
-                .withRegion(region)
-                .withExistingResourceGroup(resourceGroup)
-                .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
-                .withExistingPrimaryNetworkSubnet(network, "subnet1")
-                .withExistingPrimaryInternetFacingLoadBalancer(publicLoadBalancer)
-                .withPrimaryInternetFacingLoadBalancerBackends(backends.get(0), backends.get(1))
-                .withoutPrimaryInternalLoadBalancer()
-                .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
-                .withRootUsername("jvuser")
-                .withSsh(sshPublicKey())
-                .withUnmanagedDisks()
-                .withNewStorageAccount(generateRandomResourceName("stg", 15))
-                .withNewStorageAccount(generateRandomResourceName("stg", 15))
-                .create();
+        VirtualMachineScaleSet virtualMachineScaleSet = this.computeManager.virtualMachineScaleSets()
+            .define(vmssName)
+            .withRegion(region)
+            .withExistingResourceGroup(resourceGroup)
+            .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
+            .withExistingPrimaryNetworkSubnet(network, "subnet1")
+            .withExistingPrimaryInternetFacingLoadBalancer(publicLoadBalancer)
+            .withPrimaryInternetFacingLoadBalancerBackends(backends.get(0), backends.get(1))
+            .withoutPrimaryInternalLoadBalancer()
+            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+            .withRootUsername("jvuser")
+            .withSsh(sshPublicKey())
+            .withUnmanagedDisks()
+            .withNewStorageAccount(generateRandomResourceName("stg", 15))
+            .withNewStorageAccount(generateRandomResourceName("stg", 15))
+            .create();
 
         // Validate Network specific properties (LB, VNet, NIC, IPConfig etc..)
         //
@@ -628,10 +571,8 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
                     for (Map.Entry<String, LoadBalancingRule> ruleEntry : lbRules.entrySet()) {
                         LoadBalancingRule rule = ruleEntry.getValue();
                         Assertions.assertNotNull(rule);
-                        Assertions
-                            .assertTrue(
-                                (rule.frontendPort() == 80 && rule.backendPort() == 80)
-                                    || (rule.frontendPort() == 443 && rule.backendPort() == 443));
+                        Assertions.assertTrue((rule.frontendPort() == 80 && rule.backendPort() == 80)
+                            || (rule.frontendPort() == 443 && rule.backendPort() == 443));
                     }
                 }
                 List<LoadBalancerInboundNatRule> lbNatRules = ipConfig.listAssociatedLoadBalancerInboundNatRules();
@@ -639,10 +580,8 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
                 //  nat rules in ip-config as well
                 Assertions.assertEquals(lbNatRules.size(), 2);
                 for (LoadBalancerInboundNatRule lbNatRule : lbNatRules) {
-                    Assertions
-                        .assertTrue(
-                            (lbNatRule.frontendPort() >= 5000 && lbNatRule.frontendPort() <= 5099)
-                                || (lbNatRule.frontendPort() >= 6000 && lbNatRule.frontendPort() <= 6099));
+                    Assertions.assertTrue((lbNatRule.frontendPort() >= 5000 && lbNatRule.frontendPort() <= 5099)
+                        || (lbNatRule.frontendPort() >= 6000 && lbNatRule.frontendPort() <= 6099));
                     Assertions.assertTrue(lbNatRule.backendPort() == 22 || lbNatRule.backendPort() == 23);
                 }
             }
@@ -660,16 +599,15 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         primaryNetwork = virtualMachineScaleSet.getPrimaryNetwork();
 
         String inboundNatPoolToRemove = null;
-        for (String inboundNatPoolName
-            : virtualMachineScaleSet.listPrimaryInternetFacingLoadBalancerInboundNatPools().keySet()) {
+        for (String inboundNatPoolName : virtualMachineScaleSet.listPrimaryInternetFacingLoadBalancerInboundNatPools()
+            .keySet()) {
             inboundNatPoolToRemove = inboundNatPoolName;
             break;
         }
 
         LoadBalancer internalLoadBalancer = createInternalLoadBalancer(region, resourceGroup, primaryNetwork, "1");
 
-        virtualMachineScaleSet
-            .update()
+        virtualMachineScaleSet.update()
             .withExistingPrimaryInternalLoadBalancer(internalLoadBalancer)
             .withoutPrimaryInternetFacingLoadBalancerNatPools(inboundNatPoolToRemove) // Remove one NatPool
             .apply();
@@ -712,12 +650,10 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
                     for (Map.Entry<String, LoadBalancingRule> ruleEntry : lbRules.entrySet()) {
                         LoadBalancingRule rule = ruleEntry.getValue();
                         Assertions.assertNotNull(rule);
-                        Assertions
-                            .assertTrue(
-                                (rule.frontendPort() == 80 && rule.backendPort() == 80)
-                                    || (rule.frontendPort() == 443 && rule.backendPort() == 443)
-                                    || (rule.frontendPort() == 1000 && rule.backendPort() == 1000)
-                                    || (rule.frontendPort() == 1001 && rule.backendPort() == 1001));
+                        Assertions.assertTrue((rule.frontendPort() == 80 && rule.backendPort() == 80)
+                            || (rule.frontendPort() == 443 && rule.backendPort() == 443)
+                            || (rule.frontendPort() == 1000 && rule.backendPort() == 1000)
+                            || (rule.frontendPort() == 1001 && rule.backendPort() == 1001));
                     }
                 }
                 List<LoadBalancerInboundNatRule> lbNatRules = ipConfig.listAssociatedLoadBalancerInboundNatRules();
@@ -729,19 +665,15 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
                 // Assertions.assertEquals(lbNatRules.size(), 3);
                 for (LoadBalancerInboundNatRule lbNatRule : lbNatRules) {
                     // As mentioned above some chnages are not propgating to all VM instances 6000+ should be there
-                    Assertions
-                        .assertTrue(
-                            (lbNatRule.frontendPort() >= 6000 && lbNatRule.frontendPort() <= 6099)
-                                || (lbNatRule.frontendPort() >= 5000 && lbNatRule.frontendPort() <= 5099)
-                                || (lbNatRule.frontendPort() >= 8000 && lbNatRule.frontendPort() <= 8099)
-                                || (lbNatRule.frontendPort() >= 9000 && lbNatRule.frontendPort() <= 9099));
+                    Assertions.assertTrue((lbNatRule.frontendPort() >= 6000 && lbNatRule.frontendPort() <= 6099)
+                        || (lbNatRule.frontendPort() >= 5000 && lbNatRule.frontendPort() <= 5099)
+                        || (lbNatRule.frontendPort() >= 8000 && lbNatRule.frontendPort() <= 8099)
+                        || (lbNatRule.frontendPort() >= 9000 && lbNatRule.frontendPort() <= 9099));
                     // Same as above
-                    Assertions
-                        .assertTrue(
-                            lbNatRule.backendPort() == 23
-                                || lbNatRule.backendPort() == 22
-                                || lbNatRule.backendPort() == 44
-                                || lbNatRule.backendPort() == 45);
+                    Assertions.assertTrue(lbNatRule.backendPort() == 23
+                        || lbNatRule.backendPort() == 22
+                        || lbNatRule.backendPort() == 44
+                        || lbNatRule.backendPort() == 45);
                 }
             }
         }
@@ -762,25 +694,21 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
 
         Region region2 = Region.US_EAST2;
 
-        ResourceGroup resourceGroup =
-            this.resourceManager.resourceGroups().define(rgName).withRegion(region2).create();
+        ResourceGroup resourceGroup = this.resourceManager.resourceGroups().define(rgName).withRegion(region2).create();
 
-        Network network =
-            this
-                .networkManager
-                .networks()
-                .define("vmssvnet")
-                .withRegion(region2)
-                .withExistingResourceGroup(resourceGroup)
-                .withAddressSpace("10.0.0.0/28")
-                .withSubnet("subnet1", "10.0.0.0/28")
-                .create();
+        Network network = this.networkManager.networks()
+            .define("vmssvnet")
+            .withRegion(region2)
+            .withExistingResourceGroup(resourceGroup)
+            .withAddressSpace("10.0.0.0/28")
+            .withSubnet("subnet1", "10.0.0.0/28")
+            .create();
 
         // Creates a STANDARD LB with one public frontend ip configuration with two backend pools
         // Each address pool of STANDARD LB can hold different VMSS resource.
         //
-        LoadBalancer publicLoadBalancer =
-            createInternetFacingLoadBalancer(region2, resourceGroup, "1", LoadBalancerSkuType.STANDARD);
+        LoadBalancer publicLoadBalancer
+            = createInternetFacingLoadBalancer(region2, resourceGroup, "1", LoadBalancerSkuType.STANDARD);
 
         // With default LB SKU BASIC, an attempt to associate two different VMSS to different
         // backend pool will cause below error (more accurately, while trying to put second VMSS)
@@ -811,44 +739,38 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         final String vmssName1 = generateRandomResourceName("vmss1", 10);
         // HTTP goes to this virtual machine scale set
         //
-        VirtualMachineScaleSet virtualMachineScaleSet1 =
-            this
-                .computeManager
-                .virtualMachineScaleSets()
-                .define(vmssName1)
-                .withRegion(region2)
-                .withExistingResourceGroup(resourceGroup)
-                .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
-                .withExistingPrimaryNetworkSubnet(network, "subnet1")
-                .withExistingPrimaryInternetFacingLoadBalancer(publicLoadBalancer)
-                .withPrimaryInternetFacingLoadBalancerBackends(backends.get(0)) // This VMSS in the first backend pool
-                .withPrimaryInternetFacingLoadBalancerInboundNatPools(natpools.get(0))
-                .withoutPrimaryInternalLoadBalancer()
-                .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
-                .withRootUsername("jvuser")
-                .withSsh(sshPublicKey())
-                .create();
+        VirtualMachineScaleSet virtualMachineScaleSet1 = this.computeManager.virtualMachineScaleSets()
+            .define(vmssName1)
+            .withRegion(region2)
+            .withExistingResourceGroup(resourceGroup)
+            .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
+            .withExistingPrimaryNetworkSubnet(network, "subnet1")
+            .withExistingPrimaryInternetFacingLoadBalancer(publicLoadBalancer)
+            .withPrimaryInternetFacingLoadBalancerBackends(backends.get(0)) // This VMSS in the first backend pool
+            .withPrimaryInternetFacingLoadBalancerInboundNatPools(natpools.get(0))
+            .withoutPrimaryInternalLoadBalancer()
+            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+            .withRootUsername("jvuser")
+            .withSsh(sshPublicKey())
+            .create();
 
         final String vmssName2 = generateRandomResourceName("vmss2", 10);
         // HTTPS goes to this virtual machine scale set
         //
-        VirtualMachineScaleSet virtualMachineScaleSet2 =
-            this
-                .computeManager
-                .virtualMachineScaleSets()
-                .define(vmssName2)
-                .withRegion(region2)
-                .withExistingResourceGroup(resourceGroup)
-                .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
-                .withExistingPrimaryNetworkSubnet(network, "subnet1")
-                .withExistingPrimaryInternetFacingLoadBalancer(publicLoadBalancer)
-                .withPrimaryInternetFacingLoadBalancerBackends(backends.get(1)) // This VMSS in the second backend pool
-                .withPrimaryInternetFacingLoadBalancerInboundNatPools(natpools.get(1))
-                .withoutPrimaryInternalLoadBalancer()
-                .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
-                .withRootUsername("jvuser")
-                .withSsh(sshPublicKey())
-                .create();
+        VirtualMachineScaleSet virtualMachineScaleSet2 = this.computeManager.virtualMachineScaleSets()
+            .define(vmssName2)
+            .withRegion(region2)
+            .withExistingResourceGroup(resourceGroup)
+            .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
+            .withExistingPrimaryNetworkSubnet(network, "subnet1")
+            .withExistingPrimaryInternetFacingLoadBalancer(publicLoadBalancer)
+            .withPrimaryInternetFacingLoadBalancerBackends(backends.get(1)) // This VMSS in the second backend pool
+            .withPrimaryInternetFacingLoadBalancerInboundNatPools(natpools.get(1))
+            .withoutPrimaryInternalLoadBalancer()
+            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+            .withRootUsername("jvuser")
+            .withSsh(sshPublicKey())
+            .create();
 
         // Validate Network specific properties (LB, VNet, NIC, IPConfig etc..)
         //
@@ -874,27 +796,23 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
 
         Region region2 = Region.US_EAST2;
 
-        ResourceGroup resourceGroup =
-            this.resourceManager.resourceGroups().define(rgName).withRegion(region2).create();
+        ResourceGroup resourceGroup = this.resourceManager.resourceGroups().define(rgName).withRegion(region2).create();
 
-        Network network =
-            this
-                .networkManager
-                .networks()
-                .define("vmssvnet")
-                .withRegion(region2)
-                .withExistingResourceGroup(resourceGroup)
-                .withAddressSpace("10.0.0.0/28")
-                .withSubnet("subnet1", "10.0.0.0/28")
-                .create();
+        Network network = this.networkManager.networks()
+            .define("vmssvnet")
+            .withRegion(region2)
+            .withExistingResourceGroup(resourceGroup)
+            .withAddressSpace("10.0.0.0/28")
+            .withSubnet("subnet1", "10.0.0.0/28")
+            .create();
 
         // Zone redundant VMSS requires STANDARD LB
         //
         // Creates a STANDARD LB with one public frontend ip configuration with two backend pools
         // Each address pool of STANDARD LB can hold different VMSS resource.
         //
-        LoadBalancer publicLoadBalancer =
-            createInternetFacingLoadBalancer(region2, resourceGroup, "1", LoadBalancerSkuType.STANDARD);
+        LoadBalancer publicLoadBalancer
+            = createInternetFacingLoadBalancer(region2, resourceGroup, "1", LoadBalancerSkuType.STANDARD);
 
         List<String> backends = new ArrayList<>();
         for (String backend : publicLoadBalancer.backends().keySet()) {
@@ -906,24 +824,21 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         // HTTP & HTTPS traffic on port 80, 443 of Internet-facing LB goes to corresponding port in virtual machine
         // scale set
         //
-        VirtualMachineScaleSet virtualMachineScaleSet =
-            this
-                .computeManager
-                .virtualMachineScaleSets()
-                .define(vmssName)
-                .withRegion(region2)
-                .withExistingResourceGroup(resourceGroup)
-                .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_D3_V2)
-                .withExistingPrimaryNetworkSubnet(network, "subnet1")
-                .withExistingPrimaryInternetFacingLoadBalancer(publicLoadBalancer)
-                .withPrimaryInternetFacingLoadBalancerBackends(backends.get(0), backends.get(1))
-                .withoutPrimaryInternalLoadBalancer()
-                .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
-                .withRootUsername("jvuser")
-                .withSsh(sshPublicKey())
-                .withAvailabilityZone(AvailabilityZoneId.ZONE_1) // Zone redundant - zone 1 + zone 2
-                .withAvailabilityZone(AvailabilityZoneId.ZONE_2)
-                .create();
+        VirtualMachineScaleSet virtualMachineScaleSet = this.computeManager.virtualMachineScaleSets()
+            .define(vmssName)
+            .withRegion(region2)
+            .withExistingResourceGroup(resourceGroup)
+            .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_D3_V2)
+            .withExistingPrimaryNetworkSubnet(network, "subnet1")
+            .withExistingPrimaryInternetFacingLoadBalancer(publicLoadBalancer)
+            .withPrimaryInternetFacingLoadBalancerBackends(backends.get(0), backends.get(1))
+            .withoutPrimaryInternalLoadBalancer()
+            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+            .withRootUsername("jvuser")
+            .withSsh(sshPublicKey())
+            .withAvailabilityZone(AvailabilityZoneId.ZONE_1) // Zone redundant - zone 1 + zone 2
+            .withAvailabilityZone(AvailabilityZoneId.ZONE_2)
+            .create();
 
         // Check zones
         //
@@ -946,48 +861,42 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
     }
 
     @Test
-    @LiveOnly
     public void canEnableMSIOnVirtualMachineScaleSetWithoutRoleAssignment() throws Exception {
-        // LiveOnly because test needs to be refactored for storing/evaluating PrincipalId
         final String vmssName = generateRandomResourceName("vmss", 10);
-        ResourceGroup resourceGroup = this.resourceManager.resourceGroups().define(rgName).withRegion(region).create();
+        Region localRegion = Region.US_WEST2;
+        ResourceGroup resourceGroup
+            = this.resourceManager.resourceGroups().define(rgName).withRegion(localRegion).create();
 
-        Network network =
-            this
-                .networkManager
-                .networks()
-                .define("vmssvnet")
-                .withRegion(region)
-                .withExistingResourceGroup(resourceGroup)
-                .withAddressSpace("10.0.0.0/28")
-                .withSubnet("subnet1", "10.0.0.0/28")
-                .create();
+        Network network = this.networkManager.networks()
+            .define("vmssvnet")
+            .withRegion(localRegion)
+            .withExistingResourceGroup(resourceGroup)
+            .withAddressSpace("10.0.0.0/28")
+            .withSubnet("subnet1", "10.0.0.0/28")
+            .create();
 
-        LoadBalancer publicLoadBalancer =
-            createInternetFacingLoadBalancer(region, resourceGroup, "1", LoadBalancerSkuType.BASIC);
+        LoadBalancer publicLoadBalancer
+            = createInternetFacingLoadBalancer(localRegion, resourceGroup, "1", LoadBalancerSkuType.BASIC);
         List<String> backends = new ArrayList<>();
         for (String backend : publicLoadBalancer.backends().keySet()) {
             backends.add(backend);
         }
         Assertions.assertTrue(backends.size() == 2);
 
-        VirtualMachineScaleSet virtualMachineScaleSet =
-            this
-                .computeManager
-                .virtualMachineScaleSets()
-                .define(vmssName)
-                .withRegion(region)
-                .withExistingResourceGroup(resourceGroup)
-                .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
-                .withExistingPrimaryNetworkSubnet(network, "subnet1")
-                .withExistingPrimaryInternetFacingLoadBalancer(publicLoadBalancer)
-                .withPrimaryInternetFacingLoadBalancerBackends(backends.get(0), backends.get(1))
-                .withoutPrimaryInternalLoadBalancer()
-                .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
-                .withRootUsername("jvuser")
-                .withSsh(sshPublicKey())
-                .withSystemAssignedManagedServiceIdentity()
-                .create();
+        VirtualMachineScaleSet virtualMachineScaleSet = this.computeManager.virtualMachineScaleSets()
+            .define(vmssName)
+            .withRegion(localRegion)
+            .withExistingResourceGroup(resourceGroup)
+            .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
+            .withExistingPrimaryNetworkSubnet(network, "subnet1")
+            .withExistingPrimaryInternetFacingLoadBalancer(publicLoadBalancer)
+            .withPrimaryInternetFacingLoadBalancerBackends(backends.get(0), backends.get(1))
+            .withoutPrimaryInternalLoadBalancer()
+            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+            .withRootUsername("jvuser")
+            .withSsh(sshPublicKey())
+            .withSystemAssignedManagedServiceIdentity()
+            .create();
 
         // Validate service created service principal
         //
@@ -1002,21 +911,23 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
 
         // Ensure role assigned for resource group
         //
-        PagedIterable<RoleAssignment> rgRoleAssignments = authorizationManager.roleAssignments().listByScope(resourceGroup.id());
-        Assertions.assertNotNull(rgRoleAssignments);
-        boolean found = false;
-        for (RoleAssignment roleAssignment : rgRoleAssignments) {
-            if (roleAssignment.principalId() != null
-                && roleAssignment
-                .principalId()
-                .equalsIgnoreCase(virtualMachineScaleSet.systemAssignedManagedServiceIdentityPrincipalId())) {
-                found = true;
-                break;
+        if (!isPlaybackMode()) {
+            // principalId redacted
+            PagedIterable<RoleAssignment> rgRoleAssignments
+                = authorizationManager.roleAssignments().listByScope(resourceGroup.id());
+            Assertions.assertNotNull(rgRoleAssignments);
+            boolean found = false;
+            for (RoleAssignment roleAssignment : rgRoleAssignments) {
+                if (roleAssignment.principalId() != null
+                    && roleAssignment.principalId()
+                        .equalsIgnoreCase(virtualMachineScaleSet.systemAssignedManagedServiceIdentityPrincipalId())) {
+                    found = true;
+                    break;
+                }
             }
+            Assertions.assertFalse(found,
+                "Resource group should not have a role assignment with virtual machine scale set MSI principal");
         }
-        Assertions
-            .assertFalse(
-                found, "Resource group should not have a role assignment with virtual machine scale set MSI principal");
     }
 
     @Test
@@ -1024,58 +935,48 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         final String vmssName = generateRandomResourceName("vmss", 10);
         ResourceGroup resourceGroup = this.resourceManager.resourceGroups().define(rgName).withRegion(region).create();
 
-        Network network =
-            this
-                .networkManager
-                .networks()
-                .define("vmssvnet")
-                .withRegion(region)
-                .withExistingResourceGroup(resourceGroup)
-                .withAddressSpace("10.0.0.0/28")
-                .withSubnet("subnet1", "10.0.0.0/28")
-                .create();
+        Network network = this.networkManager.networks()
+            .define("vmssvnet")
+            .withRegion(region)
+            .withExistingResourceGroup(resourceGroup)
+            .withAddressSpace("10.0.0.0/28")
+            .withSubnet("subnet1", "10.0.0.0/28")
+            .create();
 
-        LoadBalancer publicLoadBalancer =
-            createInternetFacingLoadBalancer(region, resourceGroup, "1", LoadBalancerSkuType.BASIC);
+        LoadBalancer publicLoadBalancer
+            = createInternetFacingLoadBalancer(region, resourceGroup, "1", LoadBalancerSkuType.BASIC);
         List<String> backends = new ArrayList<>();
         for (String backend : publicLoadBalancer.backends().keySet()) {
             backends.add(backend);
         }
         Assertions.assertTrue(backends.size() == 2);
 
-        StorageAccount storageAccount =
-            this
-                .storageManager
-                .storageAccounts()
-                .define(generateRandomResourceName("jvcsrg", 10))
-                .withRegion(region)
-                .withExistingResourceGroup(resourceGroup)
-                .create();
+        StorageAccount storageAccount = this.storageManager.storageAccounts()
+            .define(generateRandomResourceName("jvcsrg", 10))
+            .withRegion(region)
+            .withExistingResourceGroup(resourceGroup)
+            .create();
 
-        VirtualMachineScaleSet virtualMachineScaleSet =
-            this
-                .computeManager
-                .virtualMachineScaleSets()
-                .define(vmssName)
-                .withRegion(region)
-                .withExistingResourceGroup(resourceGroup)
-                .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
-                .withExistingPrimaryNetworkSubnet(network, "subnet1")
-                .withExistingPrimaryInternetFacingLoadBalancer(publicLoadBalancer)
-                .withPrimaryInternetFacingLoadBalancerBackends(backends.get(0), backends.get(1))
-                .withoutPrimaryInternalLoadBalancer()
-                .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
-                .withRootUsername("jvuser")
-                .withSsh(sshPublicKey())
-                .withSystemAssignedManagedServiceIdentity()
-                .withSystemAssignedIdentityBasedAccessToCurrentResourceGroup(BuiltInRole.CONTRIBUTOR)
-                .withSystemAssignedIdentityBasedAccessTo(storageAccount.id(), BuiltInRole.CONTRIBUTOR)
-                .create();
+        VirtualMachineScaleSet virtualMachineScaleSet = this.computeManager.virtualMachineScaleSets()
+            .define(vmssName)
+            .withRegion(region)
+            .withExistingResourceGroup(resourceGroup)
+            .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
+            .withExistingPrimaryNetworkSubnet(network, "subnet1")
+            .withExistingPrimaryInternetFacingLoadBalancer(publicLoadBalancer)
+            .withPrimaryInternetFacingLoadBalancerBackends(backends.get(0), backends.get(1))
+            .withoutPrimaryInternalLoadBalancer()
+            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+            .withRootUsername("jvuser")
+            .withSsh(sshPublicKey())
+            .withSystemAssignedManagedServiceIdentity()
+            .withSystemAssignedIdentityBasedAccessToCurrentResourceGroup(BuiltInRole.CONTRIBUTOR)
+            .withSystemAssignedIdentityBasedAccessTo(storageAccount.id(), BuiltInRole.CONTRIBUTOR)
+            .create();
 
         Assertions.assertNotNull(virtualMachineScaleSet.managedServiceIdentityType());
-        Assertions
-            .assertTrue(
-                virtualMachineScaleSet.managedServiceIdentityType().equals(ResourceIdentityType.SYSTEM_ASSIGNED));
+        Assertions.assertTrue(
+            virtualMachineScaleSet.managedServiceIdentityType().equals(ResourceIdentityType.SYSTEM_ASSIGNED));
 
         // Validate service created service principal
         //
@@ -1090,40 +991,37 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
 
         // Ensure role assigned for resource group
         //
-        PagedIterable<RoleAssignment> rgRoleAssignments = authorizationManager.roleAssignments().listByScope(resourceGroup.id());
+        PagedIterable<RoleAssignment> rgRoleAssignments
+            = authorizationManager.roleAssignments().listByScope(resourceGroup.id());
         Assertions.assertNotNull(rgRoleAssignments);
         boolean found = false;
         for (RoleAssignment roleAssignment : rgRoleAssignments) {
             if (roleAssignment.principalId() != null
-                && roleAssignment
-                .principalId()
-                .equalsIgnoreCase(virtualMachineScaleSet.systemAssignedManagedServiceIdentityPrincipalId())) {
+                && roleAssignment.principalId()
+                    .equalsIgnoreCase(virtualMachineScaleSet.systemAssignedManagedServiceIdentityPrincipalId())) {
                 found = true;
                 break;
             }
         }
-        Assertions
-            .assertTrue(
-                found, "Resource group should have a role assignment with virtual machine scale set MSI principal");
+        Assertions.assertTrue(found,
+            "Resource group should have a role assignment with virtual machine scale set MSI principal");
 
         // Ensure role assigned for storage account
         //
-        PagedIterable<RoleAssignment> stgRoleAssignments =
-            authorizationManager.roleAssignments().listByScope(storageAccount.id());
+        PagedIterable<RoleAssignment> stgRoleAssignments
+            = authorizationManager.roleAssignments().listByScope(storageAccount.id());
         Assertions.assertNotNull(stgRoleAssignments);
         found = false;
         for (RoleAssignment roleAssignment : stgRoleAssignments) {
             if (roleAssignment.principalId() != null
-                && roleAssignment
-                .principalId()
-                .equalsIgnoreCase(virtualMachineScaleSet.systemAssignedManagedServiceIdentityPrincipalId())) {
+                && roleAssignment.principalId()
+                    .equalsIgnoreCase(virtualMachineScaleSet.systemAssignedManagedServiceIdentityPrincipalId())) {
                 found = true;
                 break;
             }
         }
-        Assertions
-            .assertTrue(
-                found, "Storage account should have a role assignment with virtual machine scale set MSI principal");
+        Assertions.assertTrue(found,
+            "Storage account should have a role assignment with virtual machine scale set MSI principal");
     }
 
     @Test
@@ -1132,19 +1030,16 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         final String vmssName = generateRandomResourceName("vmss", 10);
         ResourceGroup resourceGroup = this.resourceManager.resourceGroups().define(rgName).withRegion(region).create();
 
-        Network network =
-            this
-                .networkManager
-                .networks()
-                .define("vmssvnet")
-                .withRegion(region)
-                .withExistingResourceGroup(resourceGroup)
-                .withAddressSpace("10.0.0.0/28")
-                .withSubnet("subnet1", "10.0.0.0/28")
-                .create();
+        Network network = this.networkManager.networks()
+            .define("vmssvnet")
+            .withRegion(region)
+            .withExistingResourceGroup(resourceGroup)
+            .withAddressSpace("10.0.0.0/28")
+            .withSubnet("subnet1", "10.0.0.0/28")
+            .create();
 
-        LoadBalancer publicLoadBalancer =
-            createInternetFacingLoadBalancer(region, resourceGroup, "1", LoadBalancerSkuType.BASIC);
+        LoadBalancer publicLoadBalancer
+            = createInternetFacingLoadBalancer(region, resourceGroup, "1", LoadBalancerSkuType.BASIC);
 
         List<String> backends = new ArrayList<>();
         for (String backend : publicLoadBalancer.backends().keySet()) {
@@ -1152,9 +1047,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         }
         Assertions.assertTrue(backends.size() == 2);
 
-        this
-            .computeManager
-            .virtualMachineScaleSets()
+        this.computeManager.virtualMachineScaleSets()
             .define(vmssName)
             .withRegion(region)
             .withExistingResourceGroup(resourceGroup)
@@ -1171,14 +1064,14 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             .withUpgradeMode(UpgradeMode.MANUAL)
             .create();
 
-        VirtualMachineScaleSet virtualMachineScaleSet =
-            this.computeManager.virtualMachineScaleSets().getByResourceGroup(rgName, vmssName);
+        VirtualMachineScaleSet virtualMachineScaleSet
+            = this.computeManager.virtualMachineScaleSets().getByResourceGroup(rgName, vmssName);
         VirtualMachineScaleSetVMs virtualMachineScaleSetVMs = virtualMachineScaleSet.virtualMachines();
         VirtualMachineScaleSetVM firstVm = virtualMachineScaleSetVMs.list().iterator().next();
         VirtualMachineScaleSetVM fetchedVm = virtualMachineScaleSetVMs.getInstance(firstVm.instanceId());
         this.checkVmsEqual(firstVm, fetchedVm);
-        VirtualMachineScaleSetVM fetchedAsyncVm =
-            virtualMachineScaleSetVMs.getInstanceAsync(firstVm.instanceId()).block();
+        VirtualMachineScaleSetVM fetchedAsyncVm
+            = virtualMachineScaleSetVMs.getInstanceAsync(firstVm.instanceId()).block();
         this.checkVmsEqual(firstVm, fetchedAsyncVm);
     }
 
@@ -1187,19 +1080,16 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         final String vmssName = generateRandomResourceName("vmss", 10);
         ResourceGroup resourceGroup = this.resourceManager.resourceGroups().define(rgName).withRegion(region).create();
 
-        Network network =
-            this
-                .networkManager
-                .networks()
-                .define("vmssvnet")
-                .withRegion(region)
-                .withExistingResourceGroup(resourceGroup)
-                .withAddressSpace("10.0.0.0/28")
-                .withSubnet("subnet1", "10.0.0.0/28")
-                .create();
+        Network network = this.networkManager.networks()
+            .define("vmssvnet")
+            .withRegion(region)
+            .withExistingResourceGroup(resourceGroup)
+            .withAddressSpace("10.0.0.0/28")
+            .withSubnet("subnet1", "10.0.0.0/28")
+            .create();
 
-        LoadBalancer publicLoadBalancer =
-            createInternetFacingLoadBalancer(region, resourceGroup, "1", LoadBalancerSkuType.STANDARD);
+        LoadBalancer publicLoadBalancer
+            = createInternetFacingLoadBalancer(region, resourceGroup, "1", LoadBalancerSkuType.STANDARD);
 
         List<String> backends = new ArrayList<>();
         for (String backend : publicLoadBalancer.backends().keySet()) {
@@ -1207,27 +1097,24 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         }
         Assertions.assertTrue(backends.size() == 2);
 
-        VirtualMachineScaleSet vmss =
-            this
-                .computeManager
-                .virtualMachineScaleSets()
-                .define(vmssName)
-                .withRegion(region)
-                .withExistingResourceGroup(resourceGroup)
-                .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_D3_V2)
-                .withExistingPrimaryNetworkSubnet(network, "subnet1")
-                .withExistingPrimaryInternetFacingLoadBalancer(publicLoadBalancer)
-                .withPrimaryInternetFacingLoadBalancerBackends(backends.get(0), backends.get(1))
-                .withoutPrimaryInternalLoadBalancer()
-                .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
-                .withRootUsername("jvuser")
-                .withSsh(sshPublicKey())
-                .withNewStorageAccount(generateRandomResourceName("stg", 15))
-                .withNewStorageAccount(generateRandomResourceName("stg3", 15))
-                .withUpgradeMode(UpgradeMode.MANUAL)
-                .withLowPriorityVirtualMachine(VirtualMachineEvictionPolicyTypes.DEALLOCATE)
-                .withMaxPrice(-1.0)
-                .create();
+        VirtualMachineScaleSet vmss = this.computeManager.virtualMachineScaleSets()
+            .define(vmssName)
+            .withRegion(region)
+            .withExistingResourceGroup(resourceGroup)
+            .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_D3_V2)
+            .withExistingPrimaryNetworkSubnet(network, "subnet1")
+            .withExistingPrimaryInternetFacingLoadBalancer(publicLoadBalancer)
+            .withPrimaryInternetFacingLoadBalancerBackends(backends.get(0), backends.get(1))
+            .withoutPrimaryInternalLoadBalancer()
+            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+            .withRootUsername("jvuser")
+            .withSsh(sshPublicKey())
+            .withNewStorageAccount(generateRandomResourceName("stg", 15))
+            .withNewStorageAccount(generateRandomResourceName("stg3", 15))
+            .withUpgradeMode(UpgradeMode.MANUAL)
+            .withLowPriorityVirtualMachine(VirtualMachineEvictionPolicyTypes.DEALLOCATE)
+            .withMaxPrice(-1.0)
+            .create();
 
         Assertions.assertEquals(vmss.virtualMachinePriority(), VirtualMachinePriorityTypes.LOW);
         Assertions.assertEquals(vmss.virtualMachineEvictionPolicy(), VirtualMachineEvictionPolicyTypes.DEALLOCATE);
@@ -1244,8 +1131,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
 
         final String vmssName = generateRandomResourceName("vmss", 10);
 
-        Network network = this.networkManager
-            .networks()
+        Network network = this.networkManager.networks()
             .define("vmssvnet")
             .withRegion(region)
             .withNewResourceGroup(rgName)
@@ -1253,8 +1139,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             .withSubnet("subnet1", "10.0.0.0/28")
             .create();
 
-        this.computeManager
-            .virtualMachineScaleSets()
+        this.computeManager.virtualMachineScaleSets()
             .define(vmssName)
             .withRegion(region)
             .withExistingResourceGroup(rgName)
@@ -1271,10 +1156,14 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
 
         // list with VirtualMachineScaleSetVMExpandType.INSTANCE_VIEW
         VirtualMachineScaleSet vmss = computeManager.virtualMachineScaleSets().getByResourceGroup(rgName, vmssName);
-        List<VirtualMachineScaleSetVM> vmInstances = vmss.virtualMachines().list(null, VirtualMachineScaleSetVMExpandType.INSTANCE_VIEW).stream().collect(Collectors.toList());
+        List<VirtualMachineScaleSetVM> vmInstances = vmss.virtualMachines()
+            .list(null, VirtualMachineScaleSetVMExpandType.INSTANCE_VIEW)
+            .stream()
+            .collect(Collectors.toList());
         Assertions.assertEquals(3, vmInstances.size());
         Assertions.assertTrue(vmInstances.stream().allMatch(vm -> vm.timeCreated() != null));
-        List<PowerState> powerStates = vmInstances.stream().map(VirtualMachineScaleSetVM::powerState).collect(Collectors.toList());
+        List<PowerState> powerStates
+            = vmInstances.stream().map(VirtualMachineScaleSetVM::powerState).collect(Collectors.toList());
         Assertions.assertEquals(Arrays.asList(PowerState.RUNNING, PowerState.RUNNING, PowerState.RUNNING), powerStates);
 
         // update status of VM and check again
@@ -1282,7 +1171,8 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         computeManager.serviceClient().getVirtualMachineScaleSetVMs().deallocate(rgName, vmssName, firstInstanceId);
         vmInstances.get(0).refresh();
         powerStates = vmInstances.stream().map(VirtualMachineScaleSetVM::powerState).collect(Collectors.toList());
-        Assertions.assertEquals(Arrays.asList(PowerState.DEALLOCATED, PowerState.RUNNING, PowerState.RUNNING), powerStates);
+        Assertions.assertEquals(Arrays.asList(PowerState.DEALLOCATED, PowerState.RUNNING, PowerState.RUNNING),
+            powerStates);
 
         // check single VM
         VirtualMachineScaleSetVM vmInstance0 = vmss.virtualMachines().getInstance(firstInstanceId);
@@ -1295,13 +1185,9 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
     public void canPerformSimulateEvictionOnSpotVMSSInstance() {
         final String vmssName = generateRandomResourceName("vmss", 10);
 
-        ResourceGroup resourceGroup = this.resourceManager.resourceGroups()
-            .define(rgName)
-            .withRegion(region)
-            .create();
+        ResourceGroup resourceGroup = this.resourceManager.resourceGroups().define(rgName).withRegion(region).create();
 
-        Network network = this.networkManager
-            .networks()
+        Network network = this.networkManager.networks()
             .define("vmssvnet")
             .withRegion(region)
             .withExistingResourceGroup(resourceGroup)
@@ -1366,7 +1252,8 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         Assertions.assertEquals(original.extensions().size(), fetched.extensions().size());
         Assertions.assertEquals(original.instanceId(), fetched.instanceId());
         Assertions.assertEquals(original.isLatestScaleSetUpdateApplied(), fetched.isLatestScaleSetUpdateApplied());
-        Assertions.assertEquals(original.isLinuxPasswordAuthenticationEnabled(), fetched.isLinuxPasswordAuthenticationEnabled());
+        Assertions.assertEquals(original.isLinuxPasswordAuthenticationEnabled(),
+            fetched.isLinuxPasswordAuthenticationEnabled());
         Assertions.assertEquals(original.isManagedDiskEnabled(), fetched.isManagedDiskEnabled());
         Assertions.assertEquals(original.isOSBasedOnCustomImage(), fetched.isOSBasedOnCustomImage());
         Assertions.assertEquals(original.isOSBasedOnPlatformImage(), fetched.isOSBasedOnPlatformImage());
@@ -1427,19 +1314,20 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         // Check Instance NICs
         //
         for (VirtualMachineScaleSetVM vm : virtualMachines) {
-            PagedIterable<VirtualMachineScaleSetNetworkInterface> nics =
-                vmScaleSet.listNetworkInterfacesByInstanceId(vm.instanceId());
+            PagedIterable<VirtualMachineScaleSetNetworkInterface> nics
+                = vmScaleSet.listNetworkInterfacesByInstanceId(vm.instanceId());
             Assertions.assertNotNull(nics);
             Assertions.assertEquals(TestUtilities.getSize(nics), 1);
             VirtualMachineScaleSetNetworkInterface nic = nics.iterator().next();
             Assertions.assertNotNull(nic.virtualMachineId());
             Assertions.assertTrue(nic.virtualMachineId().toLowerCase().equalsIgnoreCase(vm.id()));
             Assertions.assertNotNull(vm.listNetworkInterfaces());
-            VirtualMachineScaleSetNetworkInterface nicA =
-                vmScaleSet.getNetworkInterfaceByInstanceId(vm.instanceId(), nic.name());
+            VirtualMachineScaleSetNetworkInterface nicA
+                = vmScaleSet.getNetworkInterfaceByInstanceId(vm.instanceId(), nic.name());
             Assertions.assertNotNull(nicA);
             VirtualMachineScaleSetNetworkInterface nicB = vm.getNetworkInterface(nic.name());
-            String nicIdB = vm.getNetworkInterfaceAsync(nic.name()).map(n -> nic.primaryIPConfiguration().networkId()).block();
+            String nicIdB
+                = vm.getNetworkInterfaceAsync(nic.name()).map(n -> nic.primaryIPConfiguration().networkId()).block();
             Assertions.assertNotNull(nicB);
             Assertions.assertNotNull(nicIdB);
         }
@@ -1473,24 +1361,18 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         String euapRegion = "eastus2euap";
 
         final String vmssName = generateRandomResourceName("vmss", 10);
-        ResourceGroup resourceGroup = this.resourceManager.resourceGroups().define(rgName)
+        ResourceGroup resourceGroup
+            = this.resourceManager.resourceGroups().define(rgName).withRegion(euapRegion).create();
+
+        Network network = this.networkManager.networks()
+            .define("vmssvnet")
             .withRegion(euapRegion)
+            .withExistingResourceGroup(resourceGroup)
+            .withAddressSpace("10.0.0.0/28")
+            .withSubnet("subnet1", "10.0.0.0/28")
             .create();
 
-        Network network =
-            this
-                .networkManager
-                .networks()
-                .define("vmssvnet")
-                .withRegion(euapRegion)
-                .withExistingResourceGroup(resourceGroup)
-                .withAddressSpace("10.0.0.0/28")
-                .withSubnet("subnet1", "10.0.0.0/28")
-                .create();
-
-        VirtualMachineScaleSet vmss = this
-            .computeManager
-            .virtualMachineScaleSets()
+        VirtualMachineScaleSet vmss = this.computeManager.virtualMachineScaleSets()
             .define(vmssName)
             .withRegion(euapRegion)
             .withExistingResourceGroup(resourceGroup)
@@ -1507,7 +1389,9 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         Assertions.assertEquals(4, vmss.virtualMachines().list().stream().count());
 
         // force delete first 2 instances
-        List<String> firstTwoIds = vmss.virtualMachines().list().stream()
+        List<String> firstTwoIds = vmss.virtualMachines()
+            .list()
+            .stream()
             .limit(2)
             .map(VirtualMachineScaleSetVM::instanceId)
             .collect(Collectors.toList());
@@ -1516,12 +1400,16 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         Assertions.assertEquals(2, vmss.virtualMachines().list().stream().count());
 
         // delete next 1 instance
-        vmss.virtualMachines().deleteInstances(Collections.singleton(vmss.virtualMachines().list().stream().findFirst().get().instanceId()), false);
+        vmss.virtualMachines()
+            .deleteInstances(
+                Collections.singleton(vmss.virtualMachines().list().stream().findFirst().get().instanceId()), false);
 
         Assertions.assertEquals(1, vmss.virtualMachines().list().stream().count());
 
         // force delete next 1 instance
-        computeManager.virtualMachineScaleSets().deleteInstances(rgName, vmssName, Collections.singleton(vmss.virtualMachines().list().stream().findFirst().get().instanceId()), false);
+        computeManager.virtualMachineScaleSets()
+            .deleteInstances(rgName, vmssName,
+                Collections.singleton(vmss.virtualMachines().list().stream().findFirst().get().instanceId()), false);
     }
 
     @Test
@@ -1532,26 +1420,21 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             .withPlatformFaultDomainCount(1)
             .withLocation(region.name());
 
-        ResourceGroup resourceGroup = this.resourceManager.resourceGroups().define(rgName)
+        ResourceGroup resourceGroup
+            = this.resourceManager.resourceGroups().define(rgName).withRegion(region.name()).create();
+
+        Network network = this.networkManager.networks()
+            .define("vmssvnet")
             .withRegion(region.name())
+            .withExistingResourceGroup(resourceGroup)
+            .withAddressSpace("10.0.0.0/28")
+            .withSubnet("subnet1", "10.0.0.0/28")
             .create();
-
-        Network network =
-            this
-                .networkManager
-                .networks()
-                .define("vmssvnet")
-                .withRegion(region.name())
-                .withExistingResourceGroup(resourceGroup)
-                .withAddressSpace("10.0.0.0/28")
-                .withSubnet("subnet1", "10.0.0.0/28")
-                .create();
         final String vmssName = generateRandomResourceName("vmss", 10);
-        LoadBalancer publicLoadBalancer = createHttpLoadBalancers(region, resourceGroup, "1", LoadBalancerSkuType.STANDARD, PublicIPSkuType.STANDARD, true);
+        LoadBalancer publicLoadBalancer = createHttpLoadBalancers(region, resourceGroup, "1",
+            LoadBalancerSkuType.STANDARD, PublicIPSkuType.STANDARD, true);
 
-        VirtualMachineScaleSet vmss = this
-            .computeManager
-            .virtualMachineScaleSets()
+        VirtualMachineScaleSet vmss = this.computeManager.virtualMachineScaleSets()
             .define(vmssName)
             .withRegion(region.name())
             .withExistingResourceGroup(resourceGroup)
@@ -1579,12 +1462,10 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         String euapRegion = "eastus2euap";
 
         final String vmssName = generateRandomResourceName("vmss", 10);
-        ResourceGroup resourceGroup = this.resourceManager.resourceGroups().define(rgName)
-            .withRegion(euapRegion)
-            .create();
+        ResourceGroup resourceGroup
+            = this.resourceManager.resourceGroups().define(rgName).withRegion(euapRegion).create();
 
-        VirtualMachineScaleSet vmss = this.computeManager
-            .virtualMachineScaleSets()
+        VirtualMachineScaleSet vmss = this.computeManager.virtualMachineScaleSets()
             .define(vmssName)
             .withRegion(euapRegion)
             .withExistingResourceGroup(resourceGroup)
@@ -1618,29 +1499,24 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         Assertions.assertFalse(vmss.isManagedDiskEnabled());
 
         // update tag on vmss flex with no profile
-        vmss.update()
-            .withTag("tag1", "value1")
-            .apply();
+        vmss.update().withTag("tag1", "value1").apply();
 
         Assertions.assertNotNull(vmss.tags());
         Assertions.assertEquals(vmss.tags().get("tag1"), "value1");
 
-        Network network =
-            this
-                .networkManager
-                .networks()
-                .define("vmssvnet")
-                .withRegion(euapRegion)
-                .withExistingResourceGroup(resourceGroup)
-                .withAddressSpace("10.0.0.0/28")
-                .withSubnet("subnet1", "10.0.0.0/28")
-                .create();
-        LoadBalancer publicLoadBalancer = createHttpLoadBalancers(Region.fromName(euapRegion), resourceGroup, "1", LoadBalancerSkuType.STANDARD, PublicIPSkuType.STANDARD, true);
+        Network network = this.networkManager.networks()
+            .define("vmssvnet")
+            .withRegion(euapRegion)
+            .withExistingResourceGroup(resourceGroup)
+            .withAddressSpace("10.0.0.0/28")
+            .withSubnet("subnet1", "10.0.0.0/28")
+            .create();
+        LoadBalancer publicLoadBalancer = createHttpLoadBalancers(Region.fromName(euapRegion), resourceGroup, "1",
+            LoadBalancerSkuType.STANDARD, PublicIPSkuType.STANDARD, true);
         final String vmssVmDnsLabel = generateRandomResourceName("pip", 10);
 
         // update vmss, attach profile
-        vmss = this.computeManager
-            .virtualMachineScaleSets()
+        vmss = this.computeManager.virtualMachineScaleSets()
             .define(vmssName)
             .withRegion(euapRegion)
             .withExistingResourceGroup(resourceGroup)
@@ -1661,13 +1537,9 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         Assertions.assertNotNull(vmss.getPrimaryNetwork());
 
         // update tag on vmss flex with profile
-        vmss = this.computeManager
-            .virtualMachineScaleSets()
-            .getById(vmss.id());
+        vmss = this.computeManager.virtualMachineScaleSets().getById(vmss.id());
         Assertions.assertNotNull(vmss);
-        vmss.update()
-            .withTag("tag1", "value2")
-            .apply();
+        vmss.update().withTag("tag1", "value2").apply();
         Assertions.assertNotNull(vmss.innerModel().virtualMachineProfile());
         Assertions.assertNotNull(vmss.tags());
         Assertions.assertEquals(vmss.tags().get("tag1"), "value2");
@@ -1690,24 +1562,18 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         String euapRegion = "eastus2euap";
 
         final String vmssName = generateRandomResourceName("vmss", 10);
-        ResourceGroup resourceGroup = this.resourceManager.resourceGroups().define(rgName)
+        ResourceGroup resourceGroup
+            = this.resourceManager.resourceGroups().define(rgName).withRegion(euapRegion).create();
+
+        Network network = this.networkManager.networks()
+            .define("vmssvnet")
             .withRegion(euapRegion)
+            .withExistingResourceGroup(resourceGroup)
+            .withAddressSpace("10.0.0.0/28")
+            .withSubnet("subnet1", "10.0.0.0/28")
             .create();
 
-        Network network =
-            this
-                .networkManager
-                .networks()
-                .define("vmssvnet")
-                .withRegion(euapRegion)
-                .withExistingResourceGroup(resourceGroup)
-                .withAddressSpace("10.0.0.0/28")
-                .withSubnet("subnet1", "10.0.0.0/28")
-                .create();
-
-        VirtualMachineScaleSet vmss = this
-            .computeManager
-            .virtualMachineScaleSets()
+        VirtualMachineScaleSet vmss = this.computeManager.virtualMachineScaleSets()
             .define(vmssName)
             .withRegion(euapRegion)
             .withExistingResourceGroup(resourceGroup)
@@ -1725,9 +1591,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
 
         // create vmss with flexible orchestration type
         final String vmssName2 = generateRandomResourceName("vmss", 10);
-        VirtualMachineScaleSet vmss2 = this
-            .computeManager
-            .virtualMachineScaleSets()
+        VirtualMachineScaleSet vmss2 = this.computeManager.virtualMachineScaleSets()
             .define(vmssName2)
             .withRegion(euapRegion)
             .withExistingResourceGroup(rgName)
@@ -1743,19 +1607,18 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         String euapRegion = "eastus2euap";
 
         final String vmssName = generateRandomResourceName("vmss", 10);
-        ResourceGroup resourceGroup = this.resourceManager.resourceGroups().define(rgName)
-            .withRegion(euapRegion)
-            .create();
+        ResourceGroup resourceGroup
+            = this.resourceManager.resourceGroups().define(rgName).withRegion(euapRegion).create();
 
-        VirtualMachineScaleSet vmss = this.computeManager
-            .virtualMachineScaleSets()
+        VirtualMachineScaleSet vmss = this.computeManager.virtualMachineScaleSets()
             .define(vmssName)
             .withRegion(euapRegion)
             .withExistingResourceGroup(resourceGroup)
             .withFlexibleOrchestrationMode()
             .create();
 
-        String excludeMethodsString = "start,startAsync,reimage,reimageAsync,deallocate,deallocateAsync,powerOff,powerOffAsync,restart,restartAsync";
+        String excludeMethodsString
+            = "start,startAsync,reimage,reimageAsync,deallocate,deallocateAsync,powerOff,powerOffAsync,restart,restartAsync";
         Set<String> excludeMethods = new HashSet<>(Arrays.asList(excludeMethodsString.split(",")));
         Set<String> invoked = new HashSet<>();
         // invoke all the methods with 0 parameters except those from the exclusion set
@@ -1773,8 +1636,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
     public void canBatchOperateVMSSInstance() {
         final String vmssName = generateRandomResourceName("vmss", 10);
 
-        Network network = this.networkManager
-            .networks()
+        Network network = this.networkManager.networks()
             .define("vmssvnet")
             .withRegion(region)
             .withNewResourceGroup(rgName)
@@ -1782,8 +1644,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             .withSubnet("subnet1", "10.0.0.0/28")
             .create();
 
-        VirtualMachineScaleSet vmss = this.computeManager
-            .virtualMachineScaleSets()
+        VirtualMachineScaleSet vmss = this.computeManager.virtualMachineScaleSets()
             .define(vmssName)
             .withRegion(region)
             .withExistingResourceGroup(rgName)
@@ -1808,7 +1669,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         VirtualMachineScaleSetVMs vmInstances = vmss.virtualMachines();
         VirtualMachineScaleSetVM vmInstance2 = vmss.virtualMachines().getInstance(instances.get(2).instanceId());
 
-//        vmInstances.reimageInstances(instanceIds);
+        //        vmInstances.reimageInstances(instanceIds);
 
         vmInstances.redeployInstances(instanceIds);
 
@@ -1838,8 +1699,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         // uniform vmss with ephemeral os disk
         final String vmssName = generateRandomResourceName("vmss", 10);
 
-        Network network = this.networkManager
-            .networks()
+        Network network = this.networkManager.networks()
             .define("vmssvnet")
             .withRegion(region)
             .withNewResourceGroup(rgName)
@@ -1847,8 +1707,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             .withSubnet("subnet1", "10.0.0.0/28")
             .create();
 
-        VirtualMachineScaleSet uniformVMSS = this.computeManager
-            .virtualMachineScaleSets()
+        VirtualMachineScaleSet uniformVMSS = this.computeManager.virtualMachineScaleSets()
             .define(vmssName)
             .withRegion(region)
             .withExistingResourceGroup(rgName)
@@ -1870,41 +1729,43 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         ResourceManagerUtils.sleep(Duration.ofMinutes(1));
 
         // update VMs to latest model, create baseline
-        uniformVMSS.virtualMachines().updateInstances(
-            uniformVMSS.virtualMachines()
+        uniformVMSS.virtualMachines()
+            .updateInstances(uniformVMSS.virtualMachines()
                 .list()
                 .stream()
                 .map(VirtualMachineScaleSetVM::instanceId)
                 .toArray(String[]::new));
 
-        Assertions.assertTrue(uniformVMSS.virtualMachines().list().stream().allMatch(VirtualMachineScaleSetVM::isLatestScaleSetUpdateApplied));
+        Assertions.assertTrue(uniformVMSS.virtualMachines()
+            .list()
+            .stream()
+            .allMatch(VirtualMachineScaleSetVM::isLatestScaleSetUpdateApplied));
 
         // scale up vmss
-        uniformVMSS.update()
-            .withCapacity(2)
-            .apply();
+        uniformVMSS.update().withCapacity(2).apply();
 
         ResourceManagerUtils.sleep(Duration.ofMinutes(1));
 
         // verify that scaling up won't result in outdated VMs
-        Assertions.assertTrue(uniformVMSS.virtualMachines().list().stream().allMatch(VirtualMachineScaleSetVM::isLatestScaleSetUpdateApplied));
+        Assertions.assertTrue(uniformVMSS.virtualMachines()
+            .list()
+            .stream()
+            .allMatch(VirtualMachineScaleSetVM::isLatestScaleSetUpdateApplied));
 
         // flex vmss with ephemeral os disk
-        Network network2 =
-            this
-                .networkManager
-                .networks()
-                .define("vmssvnet2")
-                .withRegion(region)
-                .withExistingResourceGroup(rgName)
-                .withAddressSpace("10.1.0.0/16")
-                .withSubnet("subnet1", "10.1.0.0/16")
-                .create();
-        LoadBalancer publicLoadBalancer = createHttpLoadBalancers(region, this.resourceManager.resourceGroups().getByName(rgName), "1", LoadBalancerSkuType.STANDARD, PublicIPSkuType.STANDARD, true);
+        Network network2 = this.networkManager.networks()
+            .define("vmssvnet2")
+            .withRegion(region)
+            .withExistingResourceGroup(rgName)
+            .withAddressSpace("10.1.0.0/16")
+            .withSubnet("subnet1", "10.1.0.0/16")
+            .create();
+        LoadBalancer publicLoadBalancer
+            = createHttpLoadBalancers(region, this.resourceManager.resourceGroups().getByName(rgName), "1",
+                LoadBalancerSkuType.STANDARD, PublicIPSkuType.STANDARD, true);
 
         final String vmssName1 = generateRandomResourceName("vmss", 10);
-        VirtualMachineScaleSet flexVMSS = this.computeManager
-            .virtualMachineScaleSets()
+        VirtualMachineScaleSet flexVMSS = this.computeManager.virtualMachineScaleSets()
             .define(vmssName1)
             .withRegion(region)
             .withNewResourceGroup(rgName)
@@ -1920,15 +1781,13 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             .withPlacement(DiffDiskPlacement.CACHE_DISK)
             .create();
         Assertions.assertTrue(flexVMSS.isEphemeralOSDisk());
-        VirtualMachine instance1 = this.computeManager
-            .virtualMachines()
+        VirtualMachine instance1 = this.computeManager.virtualMachines()
             .getById(flexVMSS.virtualMachines().list().stream().iterator().next().id());
         Assertions.assertTrue(instance1.isOSDiskEphemeral());
 
         // can add vm with non-ephemeral os disk to flex vmss with ephemeral os disk vm profile
         final String vmName = generateRandomResourceName("vm", 10);
-        VirtualMachine vm = this.computeManager
-            .virtualMachines()
+        VirtualMachine vm = this.computeManager.virtualMachines()
             .define(vmName)
             .withRegion(region)
             .withNewResourceGroup(rgName)
@@ -1953,8 +1812,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
     public void canCreateVMSSWithProximityPlacementGroup() throws Exception {
         final String vmssName = generateRandomResourceName("vmss", 10);
 
-        Network network = this.networkManager
-            .networks()
+        Network network = this.networkManager.networks()
             .define("vmssvnet")
             .withRegion(region)
             .withNewResourceGroup(rgName)
@@ -1980,6 +1838,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             .create();
 
         Assertions.assertNotNull(vmss.proximityPlacementGroup());
-        Assertions.assertEquals(ProximityPlacementGroupType.STANDARD, vmss.proximityPlacementGroup().proximityPlacementGroupType());
+        Assertions.assertEquals(ProximityPlacementGroupType.STANDARD,
+            vmss.proximityPlacementGroup().proximityPlacementGroupType());
     }
 }

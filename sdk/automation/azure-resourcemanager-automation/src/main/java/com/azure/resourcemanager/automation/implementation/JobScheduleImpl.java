@@ -19,8 +19,8 @@ public final class JobScheduleImpl implements JobSchedule, JobSchedule.Definitio
 
     private final com.azure.resourcemanager.automation.AutomationManager serviceManager;
 
-    JobScheduleImpl(
-        JobScheduleInner innerObject, com.azure.resourcemanager.automation.AutomationManager serviceManager) {
+    JobScheduleImpl(JobScheduleInner innerObject,
+        com.azure.resourcemanager.automation.AutomationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -85,23 +85,18 @@ public final class JobScheduleImpl implements JobSchedule, JobSchedule.Definitio
     }
 
     public JobSchedule create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getJobSchedules()
-                .createWithResponse(
-                    resourceGroupName, automationAccountName, jobScheduleId, createParameters, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getJobSchedules()
+            .createWithResponse(resourceGroupName, automationAccountName, jobScheduleId, createParameters, Context.NONE)
+            .getValue();
         return this;
     }
 
     public JobSchedule create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getJobSchedules()
-                .createWithResponse(resourceGroupName, automationAccountName, jobScheduleId, createParameters, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getJobSchedules()
+            .createWithResponse(resourceGroupName, automationAccountName, jobScheduleId, createParameters, context)
+            .getValue();
         return this;
     }
 
@@ -113,22 +108,18 @@ public final class JobScheduleImpl implements JobSchedule, JobSchedule.Definitio
     }
 
     public JobSchedule refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getJobSchedules()
-                .getWithResponse(resourceGroupName, automationAccountName, jobScheduleId, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getJobSchedules()
+            .getWithResponse(resourceGroupName, automationAccountName, jobScheduleId, Context.NONE)
+            .getValue();
         return this;
     }
 
     public JobSchedule refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getJobSchedules()
-                .getWithResponse(resourceGroupName, automationAccountName, jobScheduleId, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getJobSchedules()
+            .getWithResponse(resourceGroupName, automationAccountName, jobScheduleId, context)
+            .getValue();
         return this;
     }
 

@@ -10,11 +10,9 @@ import com.azure.resourcemanager.synapse.models.LinkedIntegrationRuntime;
 public final class LinkedIntegrationRuntimeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LinkedIntegrationRuntime model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"s\",\"subscriptionId\":\"k\",\"dataFactoryName\":\"bcufqbvntn\",\"dataFactoryLocation\":\"mqso\",\"createTime\":\"2021-05-17T14:08:07Z\"}")
-                .toObject(LinkedIntegrationRuntime.class);
+        LinkedIntegrationRuntime model = BinaryData.fromString(
+            "{\"name\":\"sbpkf\",\"subscriptionId\":\"nfkgxsyaowuzowpu\",\"dataFactoryName\":\"dkcprg\",\"dataFactoryLocation\":\"xrztiochlu\",\"createTime\":\"2021-01-23T01:31:30Z\"}")
+            .toObject(LinkedIntegrationRuntime.class);
     }
 
     @org.junit.jupiter.api.Test

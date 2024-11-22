@@ -6,26 +6,28 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.fluent.models.DiskEncryptionSetInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The List disk encryption set operation response.
  */
 @Fluent
-public final class DiskEncryptionSetList {
+public final class DiskEncryptionSetList implements JsonSerializable<DiskEncryptionSetList> {
     /*
      * A list of disk encryption sets.
      */
-    @JsonProperty(value = "value", required = true)
     private List<DiskEncryptionSetInner> value;
 
     /*
      * The uri to fetch the next page of disk encryption sets. Call ListNext() with this to fetch the next page of disk
      * encryption sets.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
@@ -91,4 +93,46 @@ public final class DiskEncryptionSetList {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(DiskEncryptionSetList.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DiskEncryptionSetList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DiskEncryptionSetList if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DiskEncryptionSetList.
+     */
+    public static DiskEncryptionSetList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DiskEncryptionSetList deserializedDiskEncryptionSetList = new DiskEncryptionSetList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<DiskEncryptionSetInner> value
+                        = reader.readArray(reader1 -> DiskEncryptionSetInner.fromJson(reader1));
+                    deserializedDiskEncryptionSetList.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedDiskEncryptionSetList.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDiskEncryptionSetList;
+        });
+    }
 }

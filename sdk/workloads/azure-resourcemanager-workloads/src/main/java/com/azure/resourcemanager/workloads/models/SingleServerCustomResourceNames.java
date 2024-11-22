@@ -19,7 +19,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     property = "namingPatternType",
     defaultImpl = SingleServerCustomResourceNames.class)
 @JsonTypeName("SingleServerCustomResourceNames")
-@JsonSubTypes({@JsonSubTypes.Type(name = "FullResourceName", value = SingleServerFullResourceNames.class)})
+@JsonSubTypes({ @JsonSubTypes.Type(name = "FullResourceName", value = SingleServerFullResourceNames.class) })
 @Immutable
 public class SingleServerCustomResourceNames {
     /** Creates an instance of SingleServerCustomResourceNames class. */

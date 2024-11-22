@@ -1,14 +1,14 @@
 # Release History
 
-## 1.0.0-beta.3 (Unreleased)
+## 2.0.0-beta.1 (2024-11-08)
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
+- Support Rendering API `2024-04-01`
 
 ### Other Changes
+
+- Updated dependencies
 
 ## 1.0.0-beta.2 (2023-07-13)
 

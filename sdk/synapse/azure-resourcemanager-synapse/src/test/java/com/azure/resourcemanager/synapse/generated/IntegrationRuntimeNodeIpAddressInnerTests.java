@@ -10,8 +10,8 @@ import com.azure.resourcemanager.synapse.fluent.models.IntegrationRuntimeNodeIpA
 public final class IntegrationRuntimeNodeIpAddressInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IntegrationRuntimeNodeIpAddressInner model =
-            BinaryData.fromString("{\"ipAddress\":\"tlt\"}").toObject(IntegrationRuntimeNodeIpAddressInner.class);
+        IntegrationRuntimeNodeIpAddressInner model = BinaryData.fromString("{\"ipAddress\":\"wntsjgqrsxy\"}")
+            .toObject(IntegrationRuntimeNodeIpAddressInner.class);
     }
 
     @org.junit.jupiter.api.Test

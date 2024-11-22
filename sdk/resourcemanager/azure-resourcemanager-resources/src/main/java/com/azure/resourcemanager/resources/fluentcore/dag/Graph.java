@@ -142,9 +142,8 @@ public class Graph<DataT, NodeT extends Node<DataT, NodeT>> {
             }
         }
 
-        throw logger.logExceptionAsError(
-            new IllegalStateException("Internal Error: Unable to locate the edge type {" + fromKey + ", " + toKey + "}")
-        );
+        throw logger.logExceptionAsError(new IllegalStateException(
+            "Internal Error: Unable to locate the edge type {" + fromKey + ", " + toKey + "}"));
     }
 
     /**

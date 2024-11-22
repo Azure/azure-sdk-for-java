@@ -7,6 +7,7 @@ package com.azure.ai.openai;
 import com.azure.ai.openai.implementation.FutureTemperatureArguments;
 import com.azure.ai.openai.implementation.FutureTemperatureParameters;
 import com.azure.ai.openai.implementation.Parameters;
+import com.azure.ai.openai.models.AddUploadPartRequest;
 import com.azure.ai.openai.models.AudioTaskLabel;
 import com.azure.ai.openai.models.AudioTranscription;
 import com.azure.ai.openai.models.AudioTranscriptionOptions;
@@ -21,6 +22,9 @@ import com.azure.ai.openai.models.ChatChoice;
 import com.azure.ai.openai.models.ChatCompletions;
 import com.azure.ai.openai.models.ChatCompletionsFunctionToolCall;
 import com.azure.ai.openai.models.ChatCompletionsFunctionToolDefinition;
+import com.azure.ai.openai.models.ChatCompletionsFunctionToolDefinitionFunction;
+import com.azure.ai.openai.models.ChatCompletionsJsonSchemaResponseFormat;
+import com.azure.ai.openai.models.ChatCompletionsJsonSchemaResponseFormatJsonSchema;
 import com.azure.ai.openai.models.ChatCompletionsOptions;
 import com.azure.ai.openai.models.ChatCompletionsToolDefinition;
 import com.azure.ai.openai.models.ChatMessageImageContentItem;
@@ -44,14 +48,20 @@ import com.azure.ai.openai.models.ContentFilterResultDetailsForPrompt;
 import com.azure.ai.openai.models.ContentFilterResultsForChoice;
 import com.azure.ai.openai.models.ContentFilterResultsForPrompt;
 import com.azure.ai.openai.models.ContentFilterSeverity;
+import com.azure.ai.openai.models.CreateUploadRequest;
+import com.azure.ai.openai.models.CreateUploadRequestPurpose;
+import com.azure.ai.openai.models.DataFileDetails;
 import com.azure.ai.openai.models.EmbeddingItem;
 import com.azure.ai.openai.models.Embeddings;
 import com.azure.ai.openai.models.EmbeddingsOptions;
+import com.azure.ai.openai.models.FileDetails;
+import com.azure.ai.openai.models.FilePurpose;
 import com.azure.ai.openai.models.FunctionCall;
 import com.azure.ai.openai.models.FunctionDefinition;
 import com.azure.ai.openai.models.ImageGenerationData;
 import com.azure.ai.openai.models.ImageGenerationOptions;
 import com.azure.ai.openai.models.ImageGenerations;
+import com.azure.ai.openai.models.OpenAIFile;
 import com.azure.ai.openai.models.SpeechGenerationOptions;
 import com.azure.ai.openai.models.SpeechVoice;
 import com.azure.core.credential.AzureKeyCredential;
@@ -97,10 +107,20 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public abstract class OpenAIClientTestBase extends TestProxyTestBase {
     private boolean sanitizersRemoved = false;
 
+    String azureSearchEndpoint = Configuration.getGlobalConfiguration().get("AZURE_SEARCH_ENDPOINT");
+    String azureSearchIndexName = Configuration.getGlobalConfiguration().get("AZURE_OPENAI_SEARCH_INDEX");
+
+    private static final String JAVA_SDK_TESTS_FILES_TXT = "java_sdk_tests_files.txt";
+    private static final String JAVA_SDK_TESTS_FINE_TUNING_JSON = "java_sdk_tests_fine_tuning.json";
+    private static final String MS_LOGO_PNG = "ms_logo.png";
+
+    private static final String BATCH_TASKS = "batch_tasks.jsonl";
+    private static final String BATCH_TASKS_AZURE = "batch_tasks_azure.jsonl";
+
+    private static final String LARGE_FILE = "large_file.txt";
+
     OpenAIClientBuilder getOpenAIClientBuilder(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
-        OpenAIClientBuilder builder = new OpenAIClientBuilder()
-                .httpClient(httpClient)
-                .serviceVersion(serviceVersion);
+        OpenAIClientBuilder builder = new OpenAIClientBuilder().httpClient(httpClient).serviceVersion(serviceVersion);
         TestMode testMode = getTestMode();
         if (testMode != TestMode.LIVE) {
             addTestRecordCustomSanitizers();
@@ -113,25 +133,20 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         }
 
         if (testMode == TestMode.PLAYBACK) {
-            builder
-                    .endpoint("https://localhost:8080")
-                    .credential(new AzureKeyCredential(FAKE_API_KEY));
+            builder.endpoint("https://localhost:8080").credential(new AzureKeyCredential(FAKE_API_KEY));
         } else if (testMode == TestMode.RECORD) {
-            builder
-                    .addPolicy(interceptorManager.getRecordPolicy())
-                    .endpoint(Configuration.getGlobalConfiguration().get("AZURE_OPENAI_ENDPOINT"))
-                    .credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("AZURE_OPENAI_KEY")));
+            builder.addPolicy(interceptorManager.getRecordPolicy())
+                .endpoint(Configuration.getGlobalConfiguration().get("AZURE_OPENAI_ENDPOINT"))
+                .credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("AZURE_OPENAI_KEY")));
         } else {
-            builder
-                    .endpoint(Configuration.getGlobalConfiguration().get("AZURE_OPENAI_ENDPOINT"))
-                    .credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("AZURE_OPENAI_KEY")));
+            builder.endpoint(Configuration.getGlobalConfiguration().get("AZURE_OPENAI_ENDPOINT"))
+                .credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("AZURE_OPENAI_KEY")));
         }
         return builder;
     }
 
     OpenAIClientBuilder getNonAzureOpenAIClientBuilder(HttpClient httpClient) {
-        OpenAIClientBuilder builder = new OpenAIClientBuilder()
-                .httpClient(httpClient);
+        OpenAIClientBuilder builder = new OpenAIClientBuilder().httpClient(httpClient);
 
         if (getTestMode() != TestMode.LIVE) {
             addTestRecordCustomSanitizers();
@@ -144,26 +159,23 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         }
 
         if (getTestMode() == TestMode.PLAYBACK) {
-            builder
-                    .credential(new KeyCredential(FAKE_API_KEY));
+            builder.credential(new KeyCredential(FAKE_API_KEY));
         } else if (getTestMode() == TestMode.RECORD) {
-            builder
-                    .addPolicy(interceptorManager.getRecordPolicy())
-                    .credential(new KeyCredential(Configuration.getGlobalConfiguration().get("NON_AZURE_OPENAI_KEY")));
+            builder.addPolicy(interceptorManager.getRecordPolicy())
+                .credential(new KeyCredential(Configuration.getGlobalConfiguration().get("NON_AZURE_OPENAI_KEY")));
         } else {
-            builder
-                    .credential(new KeyCredential(Configuration.getGlobalConfiguration().get("NON_AZURE_OPENAI_KEY")));
+            builder.credential(new KeyCredential(Configuration.getGlobalConfiguration().get("NON_AZURE_OPENAI_KEY")));
         }
         return builder;
     }
 
     private void addTestRecordCustomSanitizers() {
-        interceptorManager.addSanitizers(Arrays.asList(
-                new TestProxySanitizer("$..key", null, "REDACTED", TestProxySanitizerType.BODY_KEY),
+        interceptorManager.addSanitizers(
+            Arrays.asList(new TestProxySanitizer("$..key", null, "REDACTED", TestProxySanitizerType.BODY_KEY),
                 new TestProxySanitizer("$..endpoint", null, "https://REDACTED", TestProxySanitizerType.BODY_KEY),
-                new TestProxySanitizer("Content-Type", "(^multipart\\/form-data; boundary=[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{2})",
-                        "multipart\\/form-data; boundary=BOUNDARY", TestProxySanitizerType.HEADER)
-        ));
+                new TestProxySanitizer("Content-Type",
+                    "(^multipart\\/form-data; boundary=[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{2})",
+                    "multipart\\/form-data; boundary=BOUNDARY", TestProxySanitizerType.HEADER)));
     }
 
     private void addCustomMatchers() {
@@ -177,9 +189,8 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         } else if (azureCognitiveSearchKey != null) {
             return azureCognitiveSearchKey;
         } else {
-            throw new IllegalStateException(
-                    "No Azure Cognitive Search API key found. "
-                            + "Please set the appropriate environment variable to use this value.");
+            throw new IllegalStateException("No Azure Cognitive Search API key found. "
+                + "Please set the appropriate environment variable to use this value.");
         }
     }
 
@@ -234,8 +245,28 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         testRunner.accept("gpt-35-turbo-1106", getChatMessages());
     }
 
-    void getChatCompletionsWithResponseRunner(Function<String,
-            Function<List<ChatRequestMessage>, Consumer<RequestOptions>>> testRunner) {
+    void getChatCompletionsStructuredOutputInResponseFormatRunner(
+        BiConsumer<String, ChatCompletionsOptions> testRunner) {
+        testRunner.accept("gpt-4o",
+            new ChatCompletionsOptions(Arrays.asList(new ChatRequestUserMessage("What is the weather in Seattle?")))
+                .setResponseFormat(new ChatCompletionsJsonSchemaResponseFormat(
+                    new ChatCompletionsJsonSchemaResponseFormatJsonSchema("get_weather").setStrict(true)
+                        .setDescription("Fetches the weather in the given location")
+                        .setSchema(BinaryData.fromObject(new Parameters())))));
+    }
+
+    void getChatCompletionsStructuredOutputInResponseFormatRunnerForNonAzure(
+        BiConsumer<String, ChatCompletionsOptions> testRunner) {
+        testRunner.accept("gpt-4o-2024-08-06",
+            new ChatCompletionsOptions(Arrays.asList(new ChatRequestUserMessage("What is the weather in Seattle?")))
+                .setResponseFormat(new ChatCompletionsJsonSchemaResponseFormat(
+                    new ChatCompletionsJsonSchemaResponseFormatJsonSchema("get_weather").setStrict(true)
+                        .setDescription("Fetches the weather in the given location")
+                        .setSchema(BinaryData.fromObject(new Parameters())))));
+    }
+
+    void getChatCompletionsWithResponseRunner(
+        Function<String, Function<List<ChatRequestMessage>, Consumer<RequestOptions>>> testRunner) {
         testRunner.apply("gpt-35-turbo-1106").apply(getChatMessages()).accept(getRequestOption());
     }
 
@@ -243,15 +274,15 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         testRunner.accept("gpt-3.5-turbo", getChatMessages());
     }
 
-    void getChatCompletionsWithResponseRunnerForNonAzure(Function<String,
-            Function<List<ChatRequestMessage>, Consumer<RequestOptions>>> testRunner) {
+    void getChatCompletionsWithResponseRunnerForNonAzure(
+        Function<String, Function<List<ChatRequestMessage>, Consumer<RequestOptions>>> testRunner) {
         testRunner.apply("gpt-3.5-turbo").apply(getChatMessages()).accept(getRequestOption());
     }
 
     void getChatCompletionsAzureChatSearchRunner(BiConsumer<String, ChatCompletionsOptions> testRunner) {
-        ChatCompletionsOptions chatCompletionsOptions = new ChatCompletionsOptions(
-                Arrays.asList(new ChatRequestUserMessage("What does PR complete mean?")));
-        testRunner.accept("gpt-35-turbo-16k", chatCompletionsOptions);
+        ChatCompletionsOptions chatCompletionsOptions
+            = new ChatCompletionsOptions(Arrays.asList(new ChatRequestUserMessage("What does PR complete mean?")));
+        testRunner.accept("gpt-4-32k", chatCompletionsOptions);
     }
 
     void getEmbeddingRunner(BiConsumer<String, EmbeddingsOptions> testRunner) {
@@ -259,9 +290,8 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
     }
 
     void getEmbeddingWithSmallerDimensionsRunner(BiConsumer<String, EmbeddingsOptions> testRunner) {
-        testRunner.accept("text-embedding-3-large",
-                new EmbeddingsOptions(Arrays.asList("Your text string goes here")).setDimensions(20)
-        );
+        testRunner.accept("text-embedding-3-small",
+            new EmbeddingsOptions(Arrays.asList("Your text string goes here")).setDimensions(20));
     }
 
     void getEmbeddingRunnerForNonAzure(BiConsumer<String, EmbeddingsOptions> testRunner) {
@@ -270,14 +300,14 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
 
     void getImageGenerationRunner(BiConsumer<String, ImageGenerationOptions> testRunner) {
         testRunner.accept("dall-e-3",
-                new ImageGenerationOptions("A drawing of the Seattle skyline in the style of Van Gogh")
-        );
+            new ImageGenerationOptions("A drawing of the Seattle skyline in the style of Van Gogh"));
     }
 
-    void getImageGenerationWithResponseRunner(Function<String, Function<ImageGenerationOptions, Consumer<RequestOptions>>> testRunner) {
+    void getImageGenerationWithResponseRunner(
+        Function<String, Function<ImageGenerationOptions, Consumer<RequestOptions>>> testRunner) {
         testRunner.apply("dall-e-3")
-                .apply(new ImageGenerationOptions("A drawing of the Seattle skyline in the style of Van Gogh"))
-                .accept(getRequestOption());
+            .apply(new ImageGenerationOptions("A drawing of the Seattle skyline in the style of Van Gogh"))
+            .accept(getRequestOption());
     }
 
     void contentFilterInputExceptionRunner(BiConsumer<String, ImageGenerationOptions> testRunner) {
@@ -337,12 +367,88 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         testRunner.accept("gpt-35-turbo-1106", getChatCompletionsOptionWithToolCall());
     }
 
+    void getChatWithToolCallStructuredOutputRunner(BiConsumer<String, ChatCompletionsOptions> testRunner) {
+        testRunner.accept("gpt-4o", getChatCompletionsOptionWithToolCallStrict());
+    }
+
+    void getChatWithToolCallStructuredOutputRunnerForNonAzure(BiConsumer<String, ChatCompletionsOptions> testRunner) {
+        testRunner.accept("gpt-4o-2024-08-06", getChatCompletionsOptionWithToolCallStrict());
+    }
+
     void textToSpeechRunner(BiConsumer<String, SpeechGenerationOptions> testRunner) {
         testRunner.accept("tts", getSpeechGenerationOptions());
     }
 
     void textToSpeechRunnerForNonAzure(BiConsumer<String, SpeechGenerationOptions> testRunner) {
         testRunner.accept("tts-1", getSpeechGenerationOptions());
+    }
+
+    // Files
+
+    void uploadTextFileRunner(BiConsumer<FileDetails, FilePurpose> testRunner) {
+        String fileName = JAVA_SDK_TESTS_FILES_TXT;
+        FileDetails fileDetails = new FileDetails(BinaryData.fromFile(openResourceFile(fileName)), fileName);
+        testRunner.accept(fileDetails, FilePurpose.ASSISTANTS);
+    }
+
+    public static Path openResourceFile(String fileName) {
+        return Paths.get("src", "test", "resources", fileName);
+    }
+
+    void uploadImageFileRunner(BiConsumer<FileDetails, FilePurpose> testRunner) {
+        String fileName = MS_LOGO_PNG;
+        FileDetails fileDetails = new FileDetails(BinaryData.fromFile(openResourceFile(fileName)), fileName);
+        testRunner.accept(fileDetails, FilePurpose.ASSISTANTS);
+    }
+
+    void uploadFineTuningJsonFileRunner(BiConsumer<FileDetails, FilePurpose> testRunner) {
+        String fileName = JAVA_SDK_TESTS_FINE_TUNING_JSON;
+        FileDetails fileDetails = new FileDetails(BinaryData.fromFile(openResourceFile(fileName)), fileName);
+        testRunner.accept(fileDetails, FilePurpose.FINE_TUNE);
+    }
+
+    // Batch
+
+    void uploadBatchFileRunner(BiConsumer<FileDetails, FilePurpose> testRunner) {
+        String fileName = BATCH_TASKS;
+        FileDetails fileDetails = new FileDetails(BinaryData.fromFile(openResourceFile(fileName)), fileName);
+        testRunner.accept(fileDetails, FilePurpose.BATCH);
+    }
+
+    void uploadBatchFileAzureRunner(BiConsumer<FileDetails, FilePurpose> testRunner) {
+        String fileName = BATCH_TASKS_AZURE;
+        FileDetails fileDetails = new FileDetails(BinaryData.fromFile(openResourceFile(fileName)), fileName);
+        testRunner.accept(fileDetails, FilePurpose.BATCH);
+    }
+
+    // Upload large files in multiple parts
+    private static int getFileSize(Path path) {
+        return (int) path.toFile().length();
+    }
+
+    void uploadCreationRunner(Consumer<CreateUploadRequest> testRunner) {
+        Path path = openResourceFile(JAVA_SDK_TESTS_FILES_TXT);
+        Path path2 = openResourceFile(JAVA_SDK_TESTS_FINE_TUNING_JSON);
+
+        int fileSize = getFileSize(path);
+        int fileSize2 = getFileSize(path2);
+
+        CreateUploadRequest createUploadRequest = new CreateUploadRequest(LARGE_FILE,
+            CreateUploadRequestPurpose.ASSISTANTS, fileSize + fileSize2, "text/plain");
+
+        testRunner.accept(createUploadRequest);
+    }
+
+    void addUploadPartRequestRunner(BiConsumer<AddUploadPartRequest, AddUploadPartRequest> testRunner) {
+        Path path = openResourceFile(JAVA_SDK_TESTS_FILES_TXT);
+        Path path2 = openResourceFile(JAVA_SDK_TESTS_FINE_TUNING_JSON);
+
+        AddUploadPartRequest addUploadPartRequest = new AddUploadPartRequest(
+            new DataFileDetails(BinaryData.fromFile(path)).setFilename(JAVA_SDK_TESTS_FILES_TXT));
+        AddUploadPartRequest addUploadPartRequest2 = new AddUploadPartRequest(
+            new DataFileDetails(BinaryData.fromFile(path2)).setFilename(JAVA_SDK_TESTS_FINE_TUNING_JSON));
+
+        testRunner.accept(addUploadPartRequest, addUploadPartRequest2);
     }
 
     private static AudioTranslationOptions getAudioTranslationOptions(String fileName) {
@@ -372,8 +478,19 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         List<ChatRequestMessage> chatRequestMessages = getChatRequestMessagesForToolCall();
 
         ChatCompletionsOptions chatCompletionsOptions = new ChatCompletionsOptions(chatRequestMessages);
-        ChatCompletionsToolDefinition toolDefinition = new ChatCompletionsFunctionToolDefinition(
-                getFutureTemperatureFunctionDefinition());
+        ChatCompletionsToolDefinition toolDefinition
+            = new ChatCompletionsFunctionToolDefinition(getFutureTemperatureFunctionDefinition());
+        chatCompletionsOptions.setTools(Arrays.asList(toolDefinition));
+
+        return chatCompletionsOptions;
+    }
+
+    private ChatCompletionsOptions getChatCompletionsOptionWithToolCallStrict() {
+        List<ChatRequestMessage> chatRequestMessages = getChatRequestMessagesForToolCall();
+
+        ChatCompletionsOptions chatCompletionsOptions = new ChatCompletionsOptions(chatRequestMessages);
+        ChatCompletionsToolDefinition toolDefinition
+            = new ChatCompletionsFunctionToolDefinition(getFutureTemperatureFunctionDefinition().setStrict(true));
         chatCompletionsOptions.setTools(Arrays.asList(toolDefinition));
 
         return chatCompletionsOptions;
@@ -381,7 +498,7 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
 
     private SpeechGenerationOptions getSpeechGenerationOptions() {
         return new SpeechGenerationOptions("Today is a wonderful day to build something people love!",
-                SpeechVoice.ALLOY);
+            SpeechVoice.ALLOY);
     }
 
     // Preparation for follow-up with the service
@@ -390,7 +507,7 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
     // - The ChatCompletionsFunctionToolCall from the service
     // - The result of function tool
     protected ChatCompletionsOptions getChatCompletionsOptionWithToolCallFollowUp(
-            ChatCompletionsFunctionToolCall functionToolCall, String responseMessageContent) {
+        ChatCompletionsFunctionToolCall functionToolCall, String responseMessageContent) {
         // original messages
         List<ChatRequestMessage> chatRequestMessages = getChatRequestMessagesForToolCall();
 
@@ -404,8 +521,8 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         chatRequestMessages.add(toolMessage);
 
         ChatCompletionsOptions chatCompletionsOptions = new ChatCompletionsOptions(chatRequestMessages);
-        ChatCompletionsToolDefinition toolDefinition = new ChatCompletionsFunctionToolDefinition(
-                getFutureTemperatureFunctionDefinition());
+        ChatCompletionsToolDefinition toolDefinition
+            = new ChatCompletionsFunctionToolDefinition(getFutureTemperatureFunctionDefinition());
         chatCompletionsOptions.setTools(Arrays.asList(toolDefinition));
 
         return chatCompletionsOptions;
@@ -432,10 +549,9 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         List<ChatRequestMessage> chatMessages = new ArrayList<>();
         chatMessages.add(new ChatRequestSystemMessage("You are a helpful assistant that describes images"));
         chatMessages.add(new ChatRequestUserMessage(Arrays.asList(
-                new ChatMessageTextContentItem("Please describe this image"),
-                new ChatMessageImageContentItem(
-                        new ChatMessageImageUrl("https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Microsoft_logo.svg/512px-Microsoft_logo.svg.png"))
-        )));
+            new ChatMessageTextContentItem("Please describe this image"),
+            new ChatMessageImageContentItem(new ChatMessageImageUrl(
+                "https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Microsoft_logo.svg/512px-Microsoft_logo.svg.png")))));
         return chatMessages;
     }
 
@@ -458,8 +574,9 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         return functionDefinition;
     }
 
-    private FunctionDefinition getFutureTemperatureFunctionDefinition() {
-        FunctionDefinition functionDefinition = new FunctionDefinition("FutureTemperature");
+    private ChatCompletionsFunctionToolDefinitionFunction getFutureTemperatureFunctionDefinition() {
+        ChatCompletionsFunctionToolDefinitionFunction functionDefinition
+            = new ChatCompletionsFunctionToolDefinitionFunction("FutureTemperature");
         FutureTemperatureParameters parameters = new FutureTemperatureParameters();
         functionDefinition.setParameters(BinaryData.fromObject(parameters));
         return functionDefinition;
@@ -529,7 +646,8 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         }
     }
 
-    static void assertChatCompletions(int choiceCount, String expectedFinishReason, ChatRole chatRole, ChatCompletions actual) {
+    static void assertChatCompletions(int choiceCount, String expectedFinishReason, ChatRole chatRole,
+        ChatCompletions actual) {
         List<ChatChoice> choices = actual.getChoices();
         assertNotNull(choices);
         assertTrue(choices.size() > 0);
@@ -537,7 +655,8 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         assertNotNull(actual.getUsage());
     }
 
-    static void assertChatChoices(int choiceCount, String expectedFinishReason, ChatRole chatRole, List<ChatChoice> actual) {
+    static void assertChatChoices(int choiceCount, String expectedFinishReason, ChatRole chatRole,
+        List<ChatChoice> actual) {
         assertEquals(choiceCount, actual.size());
         for (int i = 0; i < actual.size(); i++) {
             assertChatChoice(i, expectedFinishReason, chatRole, actual.get(i));
@@ -716,6 +835,10 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
                 assertNotNull(retrievedDocument.getContent());
                 assertFalse(CoreUtils.isNullOrEmpty(retrievedDocument.getSearchQueries()));
                 assertNotNull(retrievedDocument.getFilterReason());
+                Double rerankScore = retrievedDocument.getRerankScore();
+                if (rerankScore != null) {
+                    assertTrue(rerankScore >= 0);
+                }
             }
         }
     }
@@ -740,7 +863,8 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
                 AzureChatExtensionsMessageContext messageContext = delta.getContext();
                 assertNotNull(messageContext);
                 assertNotNull(messageContext.getCitations());
-                AzureChatExtensionDataSourceResponseCitation firstResponseCitation = messageContext.getCitations().get(0);
+                AzureChatExtensionDataSourceResponseCitation firstResponseCitation
+                    = messageContext.getCitations().get(0);
                 assertNotNull(firstResponseCitation.getContent());
                 // Role comes in the 1st message only in the streaming scenario
                 assertNotNull(delta.getRole());
@@ -763,7 +887,8 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         assertNull(transcription.getSegments());
     }
 
-    static void assertAudioTranscriptionVerboseJson(AudioTranscription transcription, String expectedText, AudioTaskLabel audioTaskLabel) {
+    static void assertAudioTranscriptionVerboseJson(AudioTranscription transcription, String expectedText,
+        AudioTaskLabel audioTaskLabel) {
         assertNotNull(transcription);
         assertEquals(expectedText, transcription.getText());
         assertNotNull(transcription.getDuration());
@@ -801,7 +926,8 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         assertNull(translation.getSegments());
     }
 
-    static void assertAudioTranslationVerboseJson(AudioTranslation translation, String expectedText, AudioTaskLabel audioTaskLabel) {
+    static void assertAudioTranslationVerboseJson(AudioTranslation translation, String expectedText,
+        AudioTaskLabel audioTaskLabel) {
         assertNotNull(translation);
         assertEquals(expectedText, translation.getText());
         assertNotNull(translation.getDuration());
@@ -812,7 +938,8 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
     }
 
     static void assertFunctionToolCallArgs(String argumentJson) {
-        FutureTemperatureArguments functionArguments = BinaryData.fromString(argumentJson).toObject(FutureTemperatureArguments.class);
+        FutureTemperatureArguments functionArguments
+            = BinaryData.fromString(argumentJson).toObject(FutureTemperatureArguments.class);
         assertNotNull(functionArguments);
     }
 
@@ -825,8 +952,9 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         Map<String, Object> error = (Map) exceptionValue.get("error");
         @SuppressWarnings("unchecked")
         Map<String, Object> innerError = (Map) error.get("inner_error");
-        ContentFilterResultDetailsForPrompt contentFilterResults = BinaryData.fromObject(
-                innerError.get("content_filter_results")).toObject(ContentFilterResultDetailsForPrompt.class);
+        ContentFilterResultDetailsForPrompt contentFilterResults
+            = BinaryData.fromObject(innerError.get("content_filter_results"))
+                .toObject(ContentFilterResultDetailsForPrompt.class);
         assertNotNull(contentFilterResults);
     }
 
@@ -847,8 +975,8 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         });
     }
 
-    protected static final String BATMAN_TRANSCRIPTION =
-            "Skills and Abilities. Batman has no inherent superpowers. He relies on his own "
+    protected static final String BATMAN_TRANSCRIPTION
+        = "Skills and Abilities. Batman has no inherent superpowers. He relies on his own "
             + "scientific knowledge, detective skills, and athletic prowess. In the stories, Batman is "
             + "regarded as one of the world's greatest detectives, if not the world's greatest "
             + "crime solver. Batman has been repeatedly described as having genius-level intellect, one of"
@@ -865,4 +993,13 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
             + "and an expert in espionage, often gathering information under different identities. "
             + "Batman's karate, judo, and jujitsu training has made him a master of stealth and escape, "
             + "allowing him to appear and disappear at will, and to break free from the chains of his past.";
+
+    // Files
+    static void assertFileEquals(OpenAIFile expected, OpenAIFile actual) {
+        assertEquals(expected.getId(), actual.getId());
+        assertEquals(expected.getFilename(), actual.getFilename());
+        assertEquals(expected.getBytes(), actual.getBytes());
+        assertEquals(expected.getPurpose(), actual.getPurpose());
+        assertEquals(expected.getCreatedAt(), actual.getCreatedAt());
+    }
 }

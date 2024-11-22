@@ -5,54 +5,62 @@
 package com.azure.resourcemanager.automation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.automation.models.ActivityOutputType;
 import com.azure.resourcemanager.automation.models.ActivityParameterSet;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-/** Properties of the activity. */
+/**
+ * Properties of the activity.
+ */
 @Fluent
-public final class ActivityProperties {
+public final class ActivityProperties implements JsonSerializable<ActivityProperties> {
     /*
      * Gets or sets the user name of the activity.
      */
-    @JsonProperty(value = "definition")
     private String definition;
 
     /*
      * Gets or sets the parameter sets of the activity.
      */
-    @JsonProperty(value = "parameterSets")
     private List<ActivityParameterSet> parameterSets;
 
     /*
      * Gets or sets the output types of the activity.
      */
-    @JsonProperty(value = "outputTypes")
     private List<ActivityOutputType> outputTypes;
 
     /*
      * Gets or sets the creation time.
      */
-    @JsonProperty(value = "creationTime")
     private OffsetDateTime creationTime;
 
     /*
      * Gets or sets the last modified time.
      */
-    @JsonProperty(value = "lastModifiedTime")
     private OffsetDateTime lastModifiedTime;
 
     /*
      * Gets or sets the description.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /**
+     * Creates an instance of ActivityProperties class.
+     */
+    public ActivityProperties() {
+    }
+
+    /**
      * Get the definition property: Gets or sets the user name of the activity.
-     *
+     * 
      * @return the definition value.
      */
     public String definition() {
@@ -61,7 +69,7 @@ public final class ActivityProperties {
 
     /**
      * Set the definition property: Gets or sets the user name of the activity.
-     *
+     * 
      * @param definition the definition value to set.
      * @return the ActivityProperties object itself.
      */
@@ -72,7 +80,7 @@ public final class ActivityProperties {
 
     /**
      * Get the parameterSets property: Gets or sets the parameter sets of the activity.
-     *
+     * 
      * @return the parameterSets value.
      */
     public List<ActivityParameterSet> parameterSets() {
@@ -81,7 +89,7 @@ public final class ActivityProperties {
 
     /**
      * Set the parameterSets property: Gets or sets the parameter sets of the activity.
-     *
+     * 
      * @param parameterSets the parameterSets value to set.
      * @return the ActivityProperties object itself.
      */
@@ -92,7 +100,7 @@ public final class ActivityProperties {
 
     /**
      * Get the outputTypes property: Gets or sets the output types of the activity.
-     *
+     * 
      * @return the outputTypes value.
      */
     public List<ActivityOutputType> outputTypes() {
@@ -101,7 +109,7 @@ public final class ActivityProperties {
 
     /**
      * Set the outputTypes property: Gets or sets the output types of the activity.
-     *
+     * 
      * @param outputTypes the outputTypes value to set.
      * @return the ActivityProperties object itself.
      */
@@ -112,7 +120,7 @@ public final class ActivityProperties {
 
     /**
      * Get the creationTime property: Gets or sets the creation time.
-     *
+     * 
      * @return the creationTime value.
      */
     public OffsetDateTime creationTime() {
@@ -121,7 +129,7 @@ public final class ActivityProperties {
 
     /**
      * Set the creationTime property: Gets or sets the creation time.
-     *
+     * 
      * @param creationTime the creationTime value to set.
      * @return the ActivityProperties object itself.
      */
@@ -132,7 +140,7 @@ public final class ActivityProperties {
 
     /**
      * Get the lastModifiedTime property: Gets or sets the last modified time.
-     *
+     * 
      * @return the lastModifiedTime value.
      */
     public OffsetDateTime lastModifiedTime() {
@@ -141,7 +149,7 @@ public final class ActivityProperties {
 
     /**
      * Set the lastModifiedTime property: Gets or sets the last modified time.
-     *
+     * 
      * @param lastModifiedTime the lastModifiedTime value to set.
      * @return the ActivityProperties object itself.
      */
@@ -152,7 +160,7 @@ public final class ActivityProperties {
 
     /**
      * Get the description property: Gets or sets the description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -161,7 +169,7 @@ public final class ActivityProperties {
 
     /**
      * Set the description property: Gets or sets the description.
-     *
+     * 
      * @param description the description value to set.
      * @return the ActivityProperties object itself.
      */
@@ -172,7 +180,7 @@ public final class ActivityProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -182,5 +190,66 @@ public final class ActivityProperties {
         if (outputTypes() != null) {
             outputTypes().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("definition", this.definition);
+        jsonWriter.writeArrayField("parameterSets", this.parameterSets, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("outputTypes", this.outputTypes, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("creationTime",
+            this.creationTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.creationTime));
+        jsonWriter.writeStringField("lastModifiedTime",
+            this.lastModifiedTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastModifiedTime));
+        jsonWriter.writeStringField("description", this.description);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ActivityProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ActivityProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ActivityProperties.
+     */
+    public static ActivityProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ActivityProperties deserializedActivityProperties = new ActivityProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("definition".equals(fieldName)) {
+                    deserializedActivityProperties.definition = reader.getString();
+                } else if ("parameterSets".equals(fieldName)) {
+                    List<ActivityParameterSet> parameterSets
+                        = reader.readArray(reader1 -> ActivityParameterSet.fromJson(reader1));
+                    deserializedActivityProperties.parameterSets = parameterSets;
+                } else if ("outputTypes".equals(fieldName)) {
+                    List<ActivityOutputType> outputTypes
+                        = reader.readArray(reader1 -> ActivityOutputType.fromJson(reader1));
+                    deserializedActivityProperties.outputTypes = outputTypes;
+                } else if ("creationTime".equals(fieldName)) {
+                    deserializedActivityProperties.creationTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastModifiedTime".equals(fieldName)) {
+                    deserializedActivityProperties.lastModifiedTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("description".equals(fieldName)) {
+                    deserializedActivityProperties.description = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedActivityProperties;
+        });
     }
 }

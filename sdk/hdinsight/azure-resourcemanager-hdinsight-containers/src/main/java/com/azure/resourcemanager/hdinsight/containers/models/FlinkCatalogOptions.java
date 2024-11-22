@@ -5,17 +5,20 @@
 package com.azure.resourcemanager.hdinsight.containers.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Flink cluster catalog options.
  */
 @Fluent
-public final class FlinkCatalogOptions {
+public final class FlinkCatalogOptions implements JsonSerializable<FlinkCatalogOptions> {
     /*
      * Hive Catalog Option for Flink cluster.
      */
-    @JsonProperty(value = "hive")
     private FlinkHiveCatalogOption hive;
 
     /**
@@ -53,5 +56,41 @@ public final class FlinkCatalogOptions {
         if (hive() != null) {
             hive().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("hive", this.hive);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FlinkCatalogOptions from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FlinkCatalogOptions if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FlinkCatalogOptions.
+     */
+    public static FlinkCatalogOptions fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FlinkCatalogOptions deserializedFlinkCatalogOptions = new FlinkCatalogOptions();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("hive".equals(fieldName)) {
+                    deserializedFlinkCatalogOptions.hive = FlinkHiveCatalogOption.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFlinkCatalogOptions;
+        });
     }
 }

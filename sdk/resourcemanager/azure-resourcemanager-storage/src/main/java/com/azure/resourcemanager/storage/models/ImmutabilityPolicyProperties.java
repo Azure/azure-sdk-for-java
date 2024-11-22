@@ -5,31 +5,32 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.storage.fluent.models.ImmutabilityPolicyProperty;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The properties of an ImmutabilityPolicy of a blob container.
  */
 @Fluent
-public final class ImmutabilityPolicyProperties {
+public final class ImmutabilityPolicyProperties implements JsonSerializable<ImmutabilityPolicyProperties> {
     /*
      * The properties of an ImmutabilityPolicy of a blob container.
      */
-    @JsonProperty(value = "properties")
     private ImmutabilityPolicyProperty innerProperties;
 
     /*
      * ImmutabilityPolicy Etag.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /*
      * The ImmutabilityPolicy update history of the blob container.
      */
-    @JsonProperty(value = "updateHistory", access = JsonProperty.Access.WRITE_ONLY)
     private List<UpdateHistoryProperty> updateHistory;
 
     /**
@@ -173,5 +174,48 @@ public final class ImmutabilityPolicyProperties {
         if (updateHistory() != null) {
             updateHistory().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ImmutabilityPolicyProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ImmutabilityPolicyProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ImmutabilityPolicyProperties.
+     */
+    public static ImmutabilityPolicyProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ImmutabilityPolicyProperties deserializedImmutabilityPolicyProperties = new ImmutabilityPolicyProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedImmutabilityPolicyProperties.innerProperties
+                        = ImmutabilityPolicyProperty.fromJson(reader);
+                } else if ("etag".equals(fieldName)) {
+                    deserializedImmutabilityPolicyProperties.etag = reader.getString();
+                } else if ("updateHistory".equals(fieldName)) {
+                    List<UpdateHistoryProperty> updateHistory
+                        = reader.readArray(reader1 -> UpdateHistoryProperty.fromJson(reader1));
+                    deserializedImmutabilityPolicyProperties.updateHistory = updateHistory;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedImmutabilityPolicyProperties;
+        });
     }
 }

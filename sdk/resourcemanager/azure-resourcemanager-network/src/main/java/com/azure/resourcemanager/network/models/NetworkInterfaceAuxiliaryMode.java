@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -47,7 +46,6 @@ public final class NetworkInterfaceAuxiliaryMode extends ExpandableStringEnum<Ne
      * @param name a name to look for.
      * @return the corresponding NetworkInterfaceAuxiliaryMode.
      */
-    @JsonCreator
     public static NetworkInterfaceAuxiliaryMode fromString(String name) {
         return fromString(name, NetworkInterfaceAuxiliaryMode.class);
     }

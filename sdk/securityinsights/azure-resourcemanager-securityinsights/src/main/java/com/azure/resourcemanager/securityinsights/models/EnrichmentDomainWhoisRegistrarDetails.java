@@ -5,50 +5,57 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The registrar associated with this domain. */
+/**
+ * The registrar associated with this domain.
+ */
 @Fluent
-public final class EnrichmentDomainWhoisRegistrarDetails {
+public final class EnrichmentDomainWhoisRegistrarDetails
+    implements JsonSerializable<EnrichmentDomainWhoisRegistrarDetails> {
     /*
      * The name of this registrar
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * This registrar's abuse contact email
      */
-    @JsonProperty(value = "abuseContactEmail")
     private String abuseContactEmail;
 
     /*
      * This registrar's abuse contact phone number
      */
-    @JsonProperty(value = "abuseContactPhone")
     private String abuseContactPhone;
 
     /*
      * This registrar's Internet Assigned Numbers Authority id
      */
-    @JsonProperty(value = "ianaId")
     private String ianaId;
 
     /*
      * This registrar's URL
      */
-    @JsonProperty(value = "url")
     private String url;
 
     /*
      * The hostname of this registrar's whois server
      */
-    @JsonProperty(value = "whoisServer")
     private String whoisServer;
 
     /**
+     * Creates an instance of EnrichmentDomainWhoisRegistrarDetails class.
+     */
+    public EnrichmentDomainWhoisRegistrarDetails() {
+    }
+
+    /**
      * Get the name property: The name of this registrar.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -57,7 +64,7 @@ public final class EnrichmentDomainWhoisRegistrarDetails {
 
     /**
      * Set the name property: The name of this registrar.
-     *
+     * 
      * @param name the name value to set.
      * @return the EnrichmentDomainWhoisRegistrarDetails object itself.
      */
@@ -68,7 +75,7 @@ public final class EnrichmentDomainWhoisRegistrarDetails {
 
     /**
      * Get the abuseContactEmail property: This registrar's abuse contact email.
-     *
+     * 
      * @return the abuseContactEmail value.
      */
     public String abuseContactEmail() {
@@ -77,7 +84,7 @@ public final class EnrichmentDomainWhoisRegistrarDetails {
 
     /**
      * Set the abuseContactEmail property: This registrar's abuse contact email.
-     *
+     * 
      * @param abuseContactEmail the abuseContactEmail value to set.
      * @return the EnrichmentDomainWhoisRegistrarDetails object itself.
      */
@@ -88,7 +95,7 @@ public final class EnrichmentDomainWhoisRegistrarDetails {
 
     /**
      * Get the abuseContactPhone property: This registrar's abuse contact phone number.
-     *
+     * 
      * @return the abuseContactPhone value.
      */
     public String abuseContactPhone() {
@@ -97,7 +104,7 @@ public final class EnrichmentDomainWhoisRegistrarDetails {
 
     /**
      * Set the abuseContactPhone property: This registrar's abuse contact phone number.
-     *
+     * 
      * @param abuseContactPhone the abuseContactPhone value to set.
      * @return the EnrichmentDomainWhoisRegistrarDetails object itself.
      */
@@ -108,7 +115,7 @@ public final class EnrichmentDomainWhoisRegistrarDetails {
 
     /**
      * Get the ianaId property: This registrar's Internet Assigned Numbers Authority id.
-     *
+     * 
      * @return the ianaId value.
      */
     public String ianaId() {
@@ -117,7 +124,7 @@ public final class EnrichmentDomainWhoisRegistrarDetails {
 
     /**
      * Set the ianaId property: This registrar's Internet Assigned Numbers Authority id.
-     *
+     * 
      * @param ianaId the ianaId value to set.
      * @return the EnrichmentDomainWhoisRegistrarDetails object itself.
      */
@@ -128,7 +135,7 @@ public final class EnrichmentDomainWhoisRegistrarDetails {
 
     /**
      * Get the url property: This registrar's URL.
-     *
+     * 
      * @return the url value.
      */
     public String url() {
@@ -137,7 +144,7 @@ public final class EnrichmentDomainWhoisRegistrarDetails {
 
     /**
      * Set the url property: This registrar's URL.
-     *
+     * 
      * @param url the url value to set.
      * @return the EnrichmentDomainWhoisRegistrarDetails object itself.
      */
@@ -148,7 +155,7 @@ public final class EnrichmentDomainWhoisRegistrarDetails {
 
     /**
      * Get the whoisServer property: The hostname of this registrar's whois server.
-     *
+     * 
      * @return the whoisServer value.
      */
     public String whoisServer() {
@@ -157,7 +164,7 @@ public final class EnrichmentDomainWhoisRegistrarDetails {
 
     /**
      * Set the whoisServer property: The hostname of this registrar's whois server.
-     *
+     * 
      * @param whoisServer the whoisServer value to set.
      * @return the EnrichmentDomainWhoisRegistrarDetails object itself.
      */
@@ -168,9 +175,61 @@ public final class EnrichmentDomainWhoisRegistrarDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("abuseContactEmail", this.abuseContactEmail);
+        jsonWriter.writeStringField("abuseContactPhone", this.abuseContactPhone);
+        jsonWriter.writeStringField("ianaId", this.ianaId);
+        jsonWriter.writeStringField("url", this.url);
+        jsonWriter.writeStringField("whoisServer", this.whoisServer);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EnrichmentDomainWhoisRegistrarDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EnrichmentDomainWhoisRegistrarDetails if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EnrichmentDomainWhoisRegistrarDetails.
+     */
+    public static EnrichmentDomainWhoisRegistrarDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EnrichmentDomainWhoisRegistrarDetails deserializedEnrichmentDomainWhoisRegistrarDetails
+                = new EnrichmentDomainWhoisRegistrarDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedEnrichmentDomainWhoisRegistrarDetails.name = reader.getString();
+                } else if ("abuseContactEmail".equals(fieldName)) {
+                    deserializedEnrichmentDomainWhoisRegistrarDetails.abuseContactEmail = reader.getString();
+                } else if ("abuseContactPhone".equals(fieldName)) {
+                    deserializedEnrichmentDomainWhoisRegistrarDetails.abuseContactPhone = reader.getString();
+                } else if ("ianaId".equals(fieldName)) {
+                    deserializedEnrichmentDomainWhoisRegistrarDetails.ianaId = reader.getString();
+                } else if ("url".equals(fieldName)) {
+                    deserializedEnrichmentDomainWhoisRegistrarDetails.url = reader.getString();
+                } else if ("whoisServer".equals(fieldName)) {
+                    deserializedEnrichmentDomainWhoisRegistrarDetails.whoisServer = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEnrichmentDomainWhoisRegistrarDetails;
+        });
     }
 }

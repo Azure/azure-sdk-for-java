@@ -5,62 +5,64 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.models.BackupStorageRedundancy;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.UUID;
 
-/** Contains the operation result properties for long term retention backup operation. */
+/**
+ * Contains the operation result properties for long term retention backup operation.
+ */
 @Immutable
-public final class LongTermRetentionOperationResultProperties {
+public final class LongTermRetentionOperationResultProperties
+    implements JsonSerializable<LongTermRetentionOperationResultProperties> {
     /*
      * Request Id.
      */
-    @JsonProperty(value = "requestId", access = JsonProperty.Access.WRITE_ONLY)
     private UUID requestId;
 
     /*
      * Operation type.
      */
-    @JsonProperty(value = "operationType", access = JsonProperty.Access.WRITE_ONLY)
     private String operationType;
 
     /*
      * Source backup resource id
      */
-    @JsonProperty(value = "fromBackupResourceId", access = JsonProperty.Access.WRITE_ONLY)
     private String fromBackupResourceId;
 
     /*
      * Target backup resource id
      */
-    @JsonProperty(value = "toBackupResourceId", access = JsonProperty.Access.WRITE_ONLY)
     private String toBackupResourceId;
 
     /*
      * The storage redundancy type of the copied backup
      */
-    @JsonProperty(value = "targetBackupStorageRedundancy", access = JsonProperty.Access.WRITE_ONLY)
     private BackupStorageRedundancy targetBackupStorageRedundancy;
 
     /*
      * Operation status
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private String status;
 
     /*
      * Progress message
      */
-    @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
     private String message;
 
-    /** Creates an instance of LongTermRetentionOperationResultProperties class. */
+    /**
+     * Creates an instance of LongTermRetentionOperationResultProperties class.
+     */
     public LongTermRetentionOperationResultProperties() {
     }
 
     /**
      * Get the requestId property: Request Id.
-     *
+     * 
      * @return the requestId value.
      */
     public UUID requestId() {
@@ -69,7 +71,7 @@ public final class LongTermRetentionOperationResultProperties {
 
     /**
      * Get the operationType property: Operation type.
-     *
+     * 
      * @return the operationType value.
      */
     public String operationType() {
@@ -78,7 +80,7 @@ public final class LongTermRetentionOperationResultProperties {
 
     /**
      * Get the fromBackupResourceId property: Source backup resource id.
-     *
+     * 
      * @return the fromBackupResourceId value.
      */
     public String fromBackupResourceId() {
@@ -87,7 +89,7 @@ public final class LongTermRetentionOperationResultProperties {
 
     /**
      * Get the toBackupResourceId property: Target backup resource id.
-     *
+     * 
      * @return the toBackupResourceId value.
      */
     public String toBackupResourceId() {
@@ -96,7 +98,7 @@ public final class LongTermRetentionOperationResultProperties {
 
     /**
      * Get the targetBackupStorageRedundancy property: The storage redundancy type of the copied backup.
-     *
+     * 
      * @return the targetBackupStorageRedundancy value.
      */
     public BackupStorageRedundancy targetBackupStorageRedundancy() {
@@ -105,7 +107,7 @@ public final class LongTermRetentionOperationResultProperties {
 
     /**
      * Get the status property: Operation status.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -114,7 +116,7 @@ public final class LongTermRetentionOperationResultProperties {
 
     /**
      * Get the message property: Progress message.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -123,9 +125,59 @@ public final class LongTermRetentionOperationResultProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LongTermRetentionOperationResultProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LongTermRetentionOperationResultProperties if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LongTermRetentionOperationResultProperties.
+     */
+    public static LongTermRetentionOperationResultProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LongTermRetentionOperationResultProperties deserializedLongTermRetentionOperationResultProperties
+                = new LongTermRetentionOperationResultProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("requestId".equals(fieldName)) {
+                    deserializedLongTermRetentionOperationResultProperties.requestId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("operationType".equals(fieldName)) {
+                    deserializedLongTermRetentionOperationResultProperties.operationType = reader.getString();
+                } else if ("fromBackupResourceId".equals(fieldName)) {
+                    deserializedLongTermRetentionOperationResultProperties.fromBackupResourceId = reader.getString();
+                } else if ("toBackupResourceId".equals(fieldName)) {
+                    deserializedLongTermRetentionOperationResultProperties.toBackupResourceId = reader.getString();
+                } else if ("targetBackupStorageRedundancy".equals(fieldName)) {
+                    deserializedLongTermRetentionOperationResultProperties.targetBackupStorageRedundancy
+                        = BackupStorageRedundancy.fromString(reader.getString());
+                } else if ("status".equals(fieldName)) {
+                    deserializedLongTermRetentionOperationResultProperties.status = reader.getString();
+                } else if ("message".equals(fieldName)) {
+                    deserializedLongTermRetentionOperationResultProperties.message = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLongTermRetentionOperationResultProperties;
+        });
     }
 }

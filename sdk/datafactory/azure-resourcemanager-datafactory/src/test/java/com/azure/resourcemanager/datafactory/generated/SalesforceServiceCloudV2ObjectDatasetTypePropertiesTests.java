@@ -11,15 +11,15 @@ public final class SalesforceServiceCloudV2ObjectDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SalesforceServiceCloudV2ObjectDatasetTypeProperties model
-            = BinaryData.fromString("{\"objectApiName\":\"datay\",\"reportId\":\"dataohlmtsnv\"}")
+            = BinaryData.fromString("{\"objectApiName\":\"datacu\",\"reportId\":\"datajuzvyjxux\"}")
                 .toObject(SalesforceServiceCloudV2ObjectDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SalesforceServiceCloudV2ObjectDatasetTypeProperties model
-            = new SalesforceServiceCloudV2ObjectDatasetTypeProperties().withObjectApiName("datay")
-                .withReportId("dataohlmtsnv");
+            = new SalesforceServiceCloudV2ObjectDatasetTypeProperties().withObjectApiName("datacu")
+                .withReportId("datajuzvyjxux");
         model = BinaryData.fromObject(model).toObject(SalesforceServiceCloudV2ObjectDatasetTypeProperties.class);
     }
 }

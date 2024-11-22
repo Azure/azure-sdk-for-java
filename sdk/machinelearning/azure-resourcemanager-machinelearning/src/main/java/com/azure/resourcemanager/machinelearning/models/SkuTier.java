@@ -4,27 +4,34 @@
 
 package com.azure.resourcemanager.machinelearning.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * This field is required to be implemented by the Resource Provider if the service has more than one tier, but is not
  * required on a PUT.
  */
 public enum SkuTier {
-    /** Enum value Free. */
+    /**
+     * Enum value Free.
+     */
     FREE("Free"),
 
-    /** Enum value Basic. */
+    /**
+     * Enum value Basic.
+     */
     BASIC("Basic"),
 
-    /** Enum value Standard. */
+    /**
+     * Enum value Standard.
+     */
     STANDARD("Standard"),
 
-    /** Enum value Premium. */
+    /**
+     * Enum value Premium.
+     */
     PREMIUM("Premium");
 
-    /** The actual serialized value for a SkuTier instance. */
+    /**
+     * The actual serialized value for a SkuTier instance.
+     */
     private final String value;
 
     SkuTier(String value) {
@@ -33,11 +40,10 @@ public enum SkuTier {
 
     /**
      * Parses a serialized value to a SkuTier instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed SkuTier object, or null if unable to parse.
      */
-    @JsonCreator
     public static SkuTier fromString(String value) {
         if (value == null) {
             return null;
@@ -51,8 +57,9 @@ public enum SkuTier {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

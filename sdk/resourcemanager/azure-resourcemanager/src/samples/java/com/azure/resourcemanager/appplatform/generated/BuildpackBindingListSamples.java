@@ -19,7 +19,10 @@ public final class BuildpackBindingListSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void buildpackBindingGet(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.springServices().manager().serviceClient().getBuildpackBindings().list("myResourceGroup", "myservice",
-            "default", "default", com.azure.core.util.Context.NONE);
+        azure.springServices()
+            .manager()
+            .serviceClient()
+            .getBuildpackBindings()
+            .list("myResourceGroup", "myservice", "default", "default", com.azure.core.util.Context.NONE);
     }
 }

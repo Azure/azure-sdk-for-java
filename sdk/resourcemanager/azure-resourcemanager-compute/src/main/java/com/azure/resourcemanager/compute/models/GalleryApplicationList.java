@@ -6,26 +6,28 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.fluent.models.GalleryApplicationInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The List Gallery Applications operation response.
  */
 @Fluent
-public final class GalleryApplicationList {
+public final class GalleryApplicationList implements JsonSerializable<GalleryApplicationList> {
     /*
      * A list of Gallery Applications.
      */
-    @JsonProperty(value = "value", required = true)
     private List<GalleryApplicationInner> value;
 
     /*
      * The uri to fetch the next page of Application Definitions in the Application Gallery. Call ListNext() with this
      * to fetch the next page of gallery Application Definitions.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
@@ -91,4 +93,46 @@ public final class GalleryApplicationList {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(GalleryApplicationList.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GalleryApplicationList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GalleryApplicationList if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the GalleryApplicationList.
+     */
+    public static GalleryApplicationList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GalleryApplicationList deserializedGalleryApplicationList = new GalleryApplicationList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<GalleryApplicationInner> value
+                        = reader.readArray(reader1 -> GalleryApplicationInner.fromJson(reader1));
+                    deserializedGalleryApplicationList.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedGalleryApplicationList.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGalleryApplicationList;
+        });
+    }
 }

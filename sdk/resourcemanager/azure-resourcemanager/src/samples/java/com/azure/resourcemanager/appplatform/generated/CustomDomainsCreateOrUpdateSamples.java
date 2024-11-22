@@ -21,10 +21,14 @@ public final class CustomDomainsCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void customDomainsCreateOrUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.springServices().manager().serviceClient().getCustomDomains().createOrUpdate("myResourceGroup",
-            "myservice", "myapp", "mydomain.com",
-            new CustomDomainResourceInner().withProperties(new CustomDomainProperties()
-                .withThumbprint("934367bf1c97033f877db0f15cb1b586957d3133").withCertName("mycert")),
-            com.azure.core.util.Context.NONE);
+        azure.springServices()
+            .manager()
+            .serviceClient()
+            .getCustomDomains()
+            .createOrUpdate("myResourceGroup", "myservice", "myapp", "mydomain.com",
+                new CustomDomainResourceInner().withProperties(
+                    new CustomDomainProperties().withThumbprint("934367bf1c97033f877db0f15cb1b586957d3133")
+                        .withCertName("mycert")),
+                com.azure.core.util.Context.NONE);
     }
 }

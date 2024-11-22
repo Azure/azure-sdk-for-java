@@ -10,7 +10,7 @@ steps:
 
   # Clean up /target folders to reduce scope of what may be scanned. /target folders aren't released, therefore don't
   # need to waste time during scanning.
-  - task: Maven@3
+  - task: Maven@4
     displayName: 'Clean after tests'
     inputs:
       mavenPomFile: pom.xml
@@ -23,7 +23,7 @@ steps:
       goals: 'clean'
     condition: and(succeeded(), ne(variables['TestFromSource'], 'true'))
 
-  - task: Maven@3
+  - task: Maven@4
     displayName: 'Clean after tests for From Source run'
     inputs:
       mavenPomFile: ClientFromSourcePom.xml

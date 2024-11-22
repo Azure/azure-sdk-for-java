@@ -4,30 +4,32 @@
 
 package com.azure.resourcemanager.automation.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.automation.models.DscConfiguration;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for DscConfiguration Update. */
+/**
+ * Samples for DscConfiguration Update.
+ */
 public final class DscConfigurationUpdateSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2019-06-01/examples/updateDscConfiguration.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/stable/2019-06-01/examples/updateDscConfiguration.
+     * json
      */
     /**
      * Sample code: Create or Update Configuration.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void createOrUpdateConfiguration(com.azure.resourcemanager.automation.AutomationManager manager) {
-        DscConfiguration resource =
-            manager
-                .dscConfigurations()
-                .getWithResponse("rg", "myAutomationAccount18", "SetupServer", Context.NONE)
-                .getValue();
+        DscConfiguration resource = manager.dscConfigurations()
+            .getWithResponse("rg", "myAutomationAccount18", "SetupServer", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("Hello", "World")).withName("SetupServer").apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

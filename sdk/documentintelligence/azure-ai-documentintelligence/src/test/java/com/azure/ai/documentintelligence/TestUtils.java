@@ -38,7 +38,7 @@ public final class TestUtils {
     public static final Duration ONE_NANO_DURATION = Duration.ofMillis(1);
 
     public static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
-    public static final String[] REMOVE_SANITIZER_ID = {"AZSDK2003", "AZSDK2030"};
+    public static final String[] REMOVE_SANITIZER_ID = { "AZSDK2003", "AZSDK2030" };
 
     // Local test files
     static final String CONTENT_FORM_JPG = "Form_1.jpg";
@@ -49,8 +49,10 @@ public final class TestUtils {
     static final String LICENSE_PNG = "license.png";
     static final String W2_JPG = "w2-single.png";
     static final String IRS_1040 = "IRS-1040_3.pdf";
+    static final String LAYOUT_SAMPLE = "layout-pageobject.pdf";
+    static final String BATCH_SAMPLE_PDF = "Acord_27.pdf";
+
     static final String EXPECTED_MERCHANT_NAME = "Contoso";
-    public static final String INVALID_KEY = "invalid key";
     static final String URL_TEST_FILE_FORMAT = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/"
         + "main/sdk/documentintelligence/azure-ai-documentintelligence/src/test/resources/sample_files/Test/";
     public static final String LOCAL_FILE_PATH = "src/test/resources/sample_files/Test/";
@@ -59,19 +61,23 @@ public final class TestUtils {
         EXPECTED_MODEL_TAGS.put("createdBy", "java_test");
     }
     static final Configuration GLOBAL_CONFIGURATION = Configuration.getGlobalConfiguration();
-    public static final String DOCUMENTINTELLIGENCE_TRAINING_DATA_CONTAINER_SAS_URL_CONFIGURATION =
-        GLOBAL_CONFIGURATION.get("DOCUMENTINTELLIGENCE_TRAINING_DATA_CONTAINER_SAS_URL");
-    public static final String DOCUMENTINTELLIGENCE_TESTING_DATA_CONTAINER_SAS_URL_CONFIGURATION =
-        GLOBAL_CONFIGURATION.get("DOCUMENTINTELLIGENCE_TESTING_DATA_CONTAINER_SAS_URL");
-    public static final String AZURE_DOCUMENTINTELLIGENCE_ENDPOINT_CONFIGURATION =
-        GLOBAL_CONFIGURATION.get("DOCUMENTINTELLIGENCE_ENDPOINT");
-    public static final String DOCUMENTINTELLIGENCE_MULTIPAGE_TRAINING_DATA_CONTAINER_SAS_URL_CONFIGURATION =
-        GLOBAL_CONFIGURATION.get("DOCUMENTINTELLIGENCE_MULTIPAGE_TRAINING_DATA_CONTAINER_SAS_URL");
-    public static final String DOCUMENTINTELLIGENCE_SELECTION_MARK_DATA_CONTAINER_SAS_URL_CONFIGURATION =
-        GLOBAL_CONFIGURATION.get("DOCUMENTINTELLIGENCE_SELECTION_MARK_DATA_CONTAINER_SAS_URL");
-    public static final String DOCUMENTINTELLIGENCE_CLASSIFIER_TRAINING_DATA_CONTAINER_SAS_URL_CONFIGURATION =
-        GLOBAL_CONFIGURATION.get("DOCUMENTINTELLIGENCE_CLASSIFIER_TRAINING_DATA_CONTAINER_SAS_URL");
+    public static final String DOCUMENTINTELLIGENCE_TRAINING_DATA_CONTAINER_SAS_URL_CONFIGURATION
+        = GLOBAL_CONFIGURATION.get("DOCUMENTINTELLIGENCE_TRAINING_DATA_CONTAINER_SAS_URL");
+    public static final String AZURE_DOCUMENTINTELLIGENCE_ENDPOINT_CONFIGURATION
+        = GLOBAL_CONFIGURATION.get("DOCUMENTINTELLIGENCE_ENDPOINT");
+    public static final String DOCUMENTINTELLIGENCE_MULTIPAGE_TRAINING_DATA_CONTAINER_SAS_URL_CONFIGURATION
+        = GLOBAL_CONFIGURATION.get("DOCUMENTINTELLIGENCE_MULTIPAGE_TRAINING_DATA_CONTAINER_SAS_URL");
+    public static final String DOCUMENTINTELLIGENCE_SELECTION_MARK_DATA_CONTAINER_SAS_URL_CONFIGURATION
+        = GLOBAL_CONFIGURATION.get("DOCUMENTINTELLIGENCE_SELECTION_MARK_DATA_CONTAINER_SAS_URL");
+    public static final String DOCUMENTINTELLIGENCE_CLASSIFIER_TRAINING_DATA_CONTAINER_SAS_URL_CONFIGURATION
+        = GLOBAL_CONFIGURATION.get("DOCUMENTINTELLIGENCE_CLASSIFIER_TRAINING_DATA_CONTAINER_SAS_URL");
+    public static final String DOCUMENTINTELLIGENCE_BATCH_TRAINING_DATA_CONTAINER_SAS_URL_CONFIGURATION
+        = GLOBAL_CONFIGURATION.get("DOCUMENTINTELLIGENCE_BATCH_TRAINING_DATA_CONTAINER_SAS_URL");
+    public static final String DOCUMENT_INTELLIGENCE_BATCH_TRAINING_DATA_RESULT_CONTAINER_SAS_URL_CONFIGURATION
+        = GLOBAL_CONFIGURATION.get("DOCUMENT_INTELLIGENCE_BATCH_TRAINING_DATA_RESULT_CONTAINER_SAS_URL");
     public static final Duration DEFAULT_POLL_INTERVAL = Duration.ofSeconds(5);
+    public static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(30);
+
     private TestUtils() {
     }
 
@@ -90,44 +96,27 @@ public final class TestUtils {
             throw new RuntimeException(e);
         }
     }
+
     public static void getTrainingDataContainerHelper(Consumer<String> testRunner, boolean isPlaybackMode) {
         testRunner.accept(getTrainingFilesContainerUrl(isPlaybackMode));
     }
+
     public static void getMultipageTrainingContainerHelper(Consumer<String> testRunner, boolean isPlaybackMode) {
         testRunner.accept(getMultipageTrainingSasUri(isPlaybackMode));
     }
+
     public static void getSelectionMarkTrainingContainerHelper(Consumer<String> testRunner, boolean isPlaybackMode) {
         testRunner.accept(getSelectionMarkTrainingSasUri(isPlaybackMode));
     }
-    static void getTestingContainerHelper(Consumer<String> testRunner, String fileName, boolean isPlaybackMode) {
-        testRunner.accept(getStorageTestingFileUrl(fileName, isPlaybackMode));
-    }
+
     public static void getClassifierTrainingDataContainerHelper(Consumer<String> testRunner, boolean isPlaybackMode) {
         testRunner.accept(getClassifierTrainingFilesContainerUrl(isPlaybackMode));
     }
 
-    /**
-     * Get the testing data set SAS Url value based on the test running mode.
-     *
-     * @return the testing data set Url
-     * @param isPlaybackMode boolean to indicate if the test running in playback mode
-     */
-    private static String getTestingSasUri(boolean isPlaybackMode) {
-        return isPlaybackMode ? "https://isPlaybackmode" : DOCUMENTINTELLIGENCE_TESTING_DATA_CONTAINER_SAS_URL_CONFIGURATION;
-    }
-
-    /**
-     * Prepare the file url from the testing data set SAS Url value.
-     *
-     * @return the testing data specific file Url
-     */
-    private static String getStorageTestingFileUrl(String fileName, boolean isPlaybackMode) {
-        if (isPlaybackMode) {
-            return "https://isPlaybackmode";
-        } else {
-            final String[] urlParts = getTestingSasUri(isPlaybackMode).split("\\?");
-            return urlParts[0] + "/" + fileName + "?" + urlParts[1];
-        }
+    public static void getBatchTrainingDataContainerHelper(BiConsumer<String, String> testRunner,
+        boolean isPlaybackMode) {
+        testRunner.accept(getBatchTrainingFilesContainerUrl(isPlaybackMode),
+            getBatchTrainingFilesResultContainerUrl(isPlaybackMode));
     }
 
     /**
@@ -136,7 +125,9 @@ public final class TestUtils {
      * @return the training data set Url
      */
     private static String getTrainingFilesContainerUrl(boolean isPlaybackMode) {
-        return isPlaybackMode ? "https://isPlaybackmode" : DOCUMENTINTELLIGENCE_TRAINING_DATA_CONTAINER_SAS_URL_CONFIGURATION;
+        return isPlaybackMode
+            ? "https://isPlaybackmode"
+            : DOCUMENTINTELLIGENCE_TRAINING_DATA_CONTAINER_SAS_URL_CONFIGURATION;
     }
 
     /**
@@ -146,7 +137,8 @@ public final class TestUtils {
      */
     private static String getMultipageTrainingSasUri(boolean isPlaybackMode) {
         return isPlaybackMode
-            ? "https://isPlaybackmode" : DOCUMENTINTELLIGENCE_MULTIPAGE_TRAINING_DATA_CONTAINER_SAS_URL_CONFIGURATION;
+            ? "https://isPlaybackmode"
+            : DOCUMENTINTELLIGENCE_MULTIPAGE_TRAINING_DATA_CONTAINER_SAS_URL_CONFIGURATION;
     }
 
     /**
@@ -156,7 +148,8 @@ public final class TestUtils {
      */
     private static String getSelectionMarkTrainingSasUri(boolean isPlaybackMode) {
         return isPlaybackMode
-            ? "https://isPlaybackmode" : DOCUMENTINTELLIGENCE_SELECTION_MARK_DATA_CONTAINER_SAS_URL_CONFIGURATION;
+            ? "https://isPlaybackmode"
+            : DOCUMENTINTELLIGENCE_SELECTION_MARK_DATA_CONTAINER_SAS_URL_CONFIGURATION;
     }
 
     /**
@@ -165,7 +158,31 @@ public final class TestUtils {
      * @return the training data set Url for classifiers
      */
     private static String getClassifierTrainingFilesContainerUrl(boolean isPlaybackMode) {
-        return isPlaybackMode ? "https://isPlaybackmode" : DOCUMENTINTELLIGENCE_CLASSIFIER_TRAINING_DATA_CONTAINER_SAS_URL_CONFIGURATION;
+        return isPlaybackMode
+            ? "https://isPlaybackmode"
+            : DOCUMENTINTELLIGENCE_CLASSIFIER_TRAINING_DATA_CONTAINER_SAS_URL_CONFIGURATION;
+    }
+
+    /**
+     * Get the training data set SAS Url value based on the test running mode.
+     *
+     * @return the training data set Url
+     */
+    private static String getBatchTrainingFilesResultContainerUrl(boolean isPlaybackMode) {
+        return isPlaybackMode
+            ? "https://isPlaybackmode"
+            : DOCUMENT_INTELLIGENCE_BATCH_TRAINING_DATA_RESULT_CONTAINER_SAS_URL_CONFIGURATION;
+    }
+
+    /**
+     * Get the training data set SAS Url value based on the test running mode.
+     *
+     * @return the training data set Url
+     */
+    private static String getBatchTrainingFilesContainerUrl(boolean isPlaybackMode) {
+        return isPlaybackMode
+            ? "https://isPlaybackmode"
+            : DOCUMENTINTELLIGENCE_BATCH_TRAINING_DATA_CONTAINER_SAS_URL_CONFIGURATION;
     }
 
     /**
@@ -179,11 +196,11 @@ public final class TestUtils {
         // cartesian product of arguments - https://github.com/junit-team/junit5/issues/1427
         List<Arguments> argumentsList = new ArrayList<>();
 
-        getHttpClients()
-            .forEach(httpClient -> {
-                Arrays.stream(DocumentIntelligenceServiceVersion.values()).filter(TestUtils::shouldServiceVersionBeTested)
-                    .forEach(serviceVersion -> argumentsList.add(Arguments.of(httpClient, serviceVersion)));
-            });
+        getHttpClients().forEach(httpClient -> {
+            Arrays.stream(DocumentIntelligenceServiceVersion.values())
+                .filter(TestUtils::shouldServiceVersionBeTested)
+                .forEach(serviceVersion -> argumentsList.add(Arguments.of(httpClient, serviceVersion)));
+        });
         return argumentsList.stream();
     }
 
@@ -204,8 +221,8 @@ public final class TestUtils {
      * @return Boolean indicates whether filters out the service version or not.
      */
     private static boolean shouldServiceVersionBeTested(DocumentIntelligenceServiceVersion serviceVersion) {
-        String serviceVersionFromEnv =
-            Configuration.getGlobalConfiguration().get("AZURE_DOCUMENTINTELLIGENCE_TEST_SERVICE_VERSIONS");
+        String serviceVersionFromEnv
+            = Configuration.getGlobalConfiguration().get("AZURE_DOCUMENTINTELLIGENCE_TEST_SERVICE_VERSIONS");
         if (CoreUtils.isNullOrEmpty(serviceVersionFromEnv)) {
             return DocumentIntelligenceServiceVersion.getLatest().equals(serviceVersion);
         }
@@ -213,8 +230,8 @@ public final class TestUtils {
             return true;
         }
         String[] configuredServiceVersionList = serviceVersionFromEnv.split(",");
-        return Arrays.stream(configuredServiceVersionList).anyMatch(configuredServiceVersion ->
-            serviceVersion.getVersion().equals(configuredServiceVersion.trim()));
+        return Arrays.stream(configuredServiceVersionList)
+            .anyMatch(configuredServiceVersion -> serviceVersion.getVersion().equals(configuredServiceVersion.trim()));
     }
 
     public static List<TestProxySanitizer> getTestProxySanitizers() {
@@ -228,4 +245,3 @@ public final class TestUtils {
             new TestProxySanitizer("Location", URL_REGEX, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY));
     }
 }
-

@@ -134,7 +134,8 @@ public class CosmosBulkWriter extends CosmosWriterBase {
             ImplementationBridgeHelpers
                 .CosmosBulkExecutionOptionsHelper
                 .getCosmosBulkExecutionOptionsAccessor()
-                .setMaxConcurrentCosmosPartitions(bulkExecutionOptions, this.writeConfig.getBulkMaxConcurrentCosmosPartitions());
+                .getImpl(bulkExecutionOptions)
+                .setMaxConcurrentCosmosPartitions(this.writeConfig.getBulkMaxConcurrentCosmosPartitions());
         }
 
         CosmosThroughputControlHelper.tryPopulateThroughputControlGroupName(bulkExecutionOptions, this.throughputControlConfig);

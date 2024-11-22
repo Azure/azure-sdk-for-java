@@ -5,37 +5,42 @@
 package com.azure.resourcemanager.keyvault.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.keyvault.models.GeoReplicationRegionProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** A region that this managed HSM Pool has been extended to. */
+/**
+ * A region that this managed HSM Pool has been extended to.
+ */
 @Fluent
-public final class MhsmGeoReplicatedRegionInner {
+public final class MhsmGeoReplicatedRegionInner implements JsonSerializable<MhsmGeoReplicatedRegionInner> {
     /*
      * Name of the geo replicated region.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Provisioning state of the geo replicated region.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private GeoReplicationRegionProvisioningState provisioningState;
 
     /*
      * A boolean value that indicates whether the region is the primary region or a secondary region.
      */
-    @JsonProperty(value = "isPrimary")
     private Boolean isPrimary;
 
-    /** Creates an instance of MhsmGeoReplicatedRegionInner class. */
+    /**
+     * Creates an instance of MhsmGeoReplicatedRegionInner class.
+     */
     public MhsmGeoReplicatedRegionInner() {
     }
 
     /**
      * Get the name property: Name of the geo replicated region.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -44,7 +49,7 @@ public final class MhsmGeoReplicatedRegionInner {
 
     /**
      * Set the name property: Name of the geo replicated region.
-     *
+     * 
      * @param name the name value to set.
      * @return the MhsmGeoReplicatedRegionInner object itself.
      */
@@ -55,7 +60,7 @@ public final class MhsmGeoReplicatedRegionInner {
 
     /**
      * Get the provisioningState property: Provisioning state of the geo replicated region.
-     *
+     * 
      * @return the provisioningState value.
      */
     public GeoReplicationRegionProvisioningState provisioningState() {
@@ -65,7 +70,7 @@ public final class MhsmGeoReplicatedRegionInner {
     /**
      * Get the isPrimary property: A boolean value that indicates whether the region is the primary region or a
      * secondary region.
-     *
+     * 
      * @return the isPrimary value.
      */
     public Boolean isPrimary() {
@@ -75,7 +80,7 @@ public final class MhsmGeoReplicatedRegionInner {
     /**
      * Set the isPrimary property: A boolean value that indicates whether the region is the primary region or a
      * secondary region.
-     *
+     * 
      * @param isPrimary the isPrimary value to set.
      * @return the MhsmGeoReplicatedRegionInner object itself.
      */
@@ -86,9 +91,51 @@ public final class MhsmGeoReplicatedRegionInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeBooleanField("isPrimary", this.isPrimary);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MhsmGeoReplicatedRegionInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MhsmGeoReplicatedRegionInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MhsmGeoReplicatedRegionInner.
+     */
+    public static MhsmGeoReplicatedRegionInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MhsmGeoReplicatedRegionInner deserializedMhsmGeoReplicatedRegionInner = new MhsmGeoReplicatedRegionInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedMhsmGeoReplicatedRegionInner.name = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedMhsmGeoReplicatedRegionInner.provisioningState
+                        = GeoReplicationRegionProvisioningState.fromString(reader.getString());
+                } else if ("isPrimary".equals(fieldName)) {
+                    deserializedMhsmGeoReplicatedRegionInner.isPrimary = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMhsmGeoReplicatedRegionInner;
+        });
     }
 }

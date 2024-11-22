@@ -6,89 +6,90 @@ package com.azure.resourcemanager.logic.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.logic.LogicManager;
 import com.azure.resourcemanager.logic.models.BatchConfiguration;
 import com.azure.resourcemanager.logic.models.BatchConfigurationProperties;
 import com.azure.resourcemanager.logic.models.BatchReleaseCriteria;
-import java.nio.ByteBuffer;
+import com.azure.resourcemanager.logic.models.DaysOfWeek;
+import com.azure.resourcemanager.logic.models.RecurrenceFrequency;
+import com.azure.resourcemanager.logic.models.RecurrenceSchedule;
+import com.azure.resourcemanager.logic.models.RecurrenceScheduleOccurrence;
+import com.azure.resourcemanager.logic.models.WorkflowTriggerRecurrence;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class IntegrationAccountBatchConfigurationsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"batchGroupName\":\"oneoqy\",\"releaseCriteria\":{\"messageCount\":1007123351,\"batchSize\":444321223,\"recurrence\":{\"frequency\":\"Month\",\"interval\":1257585117,\"startTime\":\"dp\",\"endTime\":\"cup\",\"timeZone\":\"r\",\"schedule\":{\"minutes\":[747965410,1385943372],\"hours\":[720653457,2031503561,1796983581],\"weekDays\":[\"Wednesday\",\"Saturday\"],\"monthDays\":[100679004,1209621918,1505640128,404160158],\"monthlyOccurrences\":[{},{}]}}},\"createdTime\":\"2021-06-15T13:00:32Z\",\"changedTime\":\"2021-07-04T15:42:41Z\",\"metadata\":\"datanmccfgkbytzmn\"},\"location\":\"mesdcmgmv\",\"tags\":{\"yyu\":\"fdhyrhfvaaps\",\"jnbd\":\"hcfeggyl\"},\"id\":\"a\",\"name\":\"qsbrqspvltu\",\"type\":\"vujuxvllx\"}";
 
-        String responseStr =
-            "{\"properties\":{\"batchGroupName\":\"btmkekxpkzwaq\",\"releaseCriteria\":{\"messageCount\":1131906752,\"batchSize\":1256995489},\"createdTime\":\"2021-07-03T05:53:58Z\",\"changedTime\":\"2021-07-04T03:41:28Z\",\"metadata\":\"datap\"},\"location\":\"vf\",\"tags\":{\"gmsfepxyi\":\"sztekxby\",\"fowxwyovcxjsgbi\":\"pqadagrhrdicxdwy\"},\"id\":\"cu\",\"name\":\"dveksbuhoduch\",\"type\":\"lscrdpibfdyjduss\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        LogicManager manager = LogicManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
-
-        LogicManager manager =
-            LogicManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        BatchConfiguration response =
-            manager
-                .integrationAccountBatchConfigurations()
-                .define("eituugedhfpjs")
-                .withRegion("ledjcustbvtqigd")
-                .withExistingIntegrationAccount("pqrtvaoznqni", "iezeagm")
+        BatchConfiguration response
+            = manager.integrationAccountBatchConfigurations()
+                .define("izwtqvgpidrtb")
+                .withRegion("rwlenrcovqt")
+                .withExistingIntegrationAccount("ao", "cnly")
                 .withProperties(
-                    new BatchConfigurationProperties()
-                        .withCreatedTime(OffsetDateTime.parse("2021-10-10T19:21:12Z"))
-                        .withChangedTime(OffsetDateTime.parse("2021-08-11T20:54:24Z"))
-                        .withMetadata("dataebfsy")
-                        .withBatchGroupName("lzmb")
-                        .withReleaseCriteria(
-                            new BatchReleaseCriteria().withMessageCount(1262532817).withBatchSize(587613619)))
-                .withTags(mapOf("zsxezppkkwaae", "sgeafgfosehx", "fjlpze", "k"))
+                    new BatchConfigurationProperties().withCreatedTime(OffsetDateTime.parse("2021-07-23T11:22:38Z"))
+                        .withChangedTime(OffsetDateTime.parse("2021-05-24T07:07:17Z"))
+                        .withMetadata("datawqwvwfombc")
+                        .withBatchGroupName("xiwfkdblvbwuey")
+                        .withReleaseCriteria(new BatchReleaseCriteria().withMessageCount(204909219)
+                            .withBatchSize(1944439888)
+                            .withRecurrence(new WorkflowTriggerRecurrence().withFrequency(RecurrenceFrequency.YEAR)
+                                .withInterval(435556112)
+                                .withStartTime("gaqn")
+                                .withEndTime("wenxmpiqln")
+                                .withTimeZone("bjohxsm")
+                                .withSchedule(new RecurrenceSchedule()
+                                    .withMinutes(Arrays.asList(1006431065, 908138621, 1076553651))
+                                    .withHours(Arrays.asList(1693114001, 1738338035, 195046188))
+                                    .withWeekDays(Arrays.asList(DaysOfWeek.MONDAY, DaysOfWeek.TUESDAY))
+                                    .withMonthDays(Arrays.asList(649938866, 1544282518, 1335431054, 129847497))
+                                    .withMonthlyOccurrences(Arrays.asList(new RecurrenceScheduleOccurrence()))))))
+                .withTags(mapOf("xzmrxxmgzslnnc", "yctkrga"))
                 .create();
 
-        Assertions.assertEquals("vf", response.location());
-        Assertions.assertEquals("sztekxby", response.tags().get("gmsfepxyi"));
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-03T05:53:58Z"), response.properties().createdTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-04T03:41:28Z"), response.properties().changedTime());
-        Assertions.assertEquals("btmkekxpkzwaq", response.properties().batchGroupName());
-        Assertions.assertEquals(1131906752, response.properties().releaseCriteria().messageCount());
-        Assertions.assertEquals(1256995489, response.properties().releaseCriteria().batchSize());
+        Assertions.assertEquals("mesdcmgmv", response.location());
+        Assertions.assertEquals("fdhyrhfvaaps", response.tags().get("yyu"));
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-15T13:00:32Z"), response.properties().createdTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-04T15:42:41Z"), response.properties().changedTime());
+        Assertions.assertEquals("oneoqy", response.properties().batchGroupName());
+        Assertions.assertEquals(1007123351, response.properties().releaseCriteria().messageCount());
+        Assertions.assertEquals(444321223, response.properties().releaseCriteria().batchSize());
+        Assertions.assertEquals(RecurrenceFrequency.MONTH,
+            response.properties().releaseCriteria().recurrence().frequency());
+        Assertions.assertEquals(1257585117, response.properties().releaseCriteria().recurrence().interval());
+        Assertions.assertEquals("dp", response.properties().releaseCriteria().recurrence().startTime());
+        Assertions.assertEquals("cup", response.properties().releaseCriteria().recurrence().endTime());
+        Assertions.assertEquals("r", response.properties().releaseCriteria().recurrence().timeZone());
+        Assertions.assertEquals(747965410,
+            response.properties().releaseCriteria().recurrence().schedule().minutes().get(0));
+        Assertions.assertEquals(720653457,
+            response.properties().releaseCriteria().recurrence().schedule().hours().get(0));
+        Assertions.assertEquals(DaysOfWeek.WEDNESDAY,
+            response.properties().releaseCriteria().recurrence().schedule().weekDays().get(0));
+        Assertions.assertEquals(100679004,
+            response.properties().releaseCriteria().recurrence().schedule().monthDays().get(0));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

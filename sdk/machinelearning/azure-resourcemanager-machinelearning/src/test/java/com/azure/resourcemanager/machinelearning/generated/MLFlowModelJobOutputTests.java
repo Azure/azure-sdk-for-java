@@ -12,26 +12,22 @@ import org.junit.jupiter.api.Assertions;
 public final class MLFlowModelJobOutputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MLFlowModelJobOutput model =
-            BinaryData
-                .fromString(
-                    "{\"jobOutputType\":\"mlflow_model\",\"mode\":\"Upload\",\"uri\":\"twmlmhjnqtqeah\",\"description\":\"dvragpokddxejhh\"}")
-                .toObject(MLFlowModelJobOutput.class);
-        Assertions.assertEquals("dvragpokddxejhh", model.description());
-        Assertions.assertEquals(OutputDeliveryMode.UPLOAD, model.mode());
-        Assertions.assertEquals("twmlmhjnqtqeah", model.uri());
+        MLFlowModelJobOutput model = BinaryData
+            .fromString(
+                "{\"jobOutputType\":\"mlflow_model\",\"uri\":\"i\",\"mode\":\"Direct\",\"description\":\"dqvao\"}")
+            .toObject(MLFlowModelJobOutput.class);
+        Assertions.assertEquals("dqvao", model.description());
+        Assertions.assertEquals("i", model.uri());
+        Assertions.assertEquals(OutputDeliveryMode.DIRECT, model.mode());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MLFlowModelJobOutput model =
-            new MLFlowModelJobOutput()
-                .withDescription("dvragpokddxejhh")
-                .withMode(OutputDeliveryMode.UPLOAD)
-                .withUri("twmlmhjnqtqeah");
+        MLFlowModelJobOutput model
+            = new MLFlowModelJobOutput().withDescription("dqvao").withUri("i").withMode(OutputDeliveryMode.DIRECT);
         model = BinaryData.fromObject(model).toObject(MLFlowModelJobOutput.class);
-        Assertions.assertEquals("dvragpokddxejhh", model.description());
-        Assertions.assertEquals(OutputDeliveryMode.UPLOAD, model.mode());
-        Assertions.assertEquals("twmlmhjnqtqeah", model.uri());
+        Assertions.assertEquals("dqvao", model.description());
+        Assertions.assertEquals("i", model.uri());
+        Assertions.assertEquals(OutputDeliveryMode.DIRECT, model.mode());
     }
 }

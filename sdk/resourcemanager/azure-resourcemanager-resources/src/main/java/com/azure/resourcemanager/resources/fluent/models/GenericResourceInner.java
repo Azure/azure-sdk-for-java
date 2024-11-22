@@ -6,11 +6,14 @@ package com.azure.resourcemanager.resources.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.resources.models.ExtendedLocation;
 import com.azure.resourcemanager.resources.models.Identity;
 import com.azure.resourcemanager.resources.models.Plan;
 import com.azure.resourcemanager.resources.models.Sku;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -21,44 +24,52 @@ public class GenericResourceInner extends Resource {
     /*
      * The plan of the resource.
      */
-    @JsonProperty(value = "plan")
     private Plan plan;
 
     /*
      * The resource properties.
      */
-    @JsonProperty(value = "properties")
     private Object properties;
 
     /*
      * The kind of the resource.
      */
-    @JsonProperty(value = "kind")
     private String kind;
 
     /*
      * ID of the resource that manages this resource.
      */
-    @JsonProperty(value = "managedBy")
     private String managedBy;
 
     /*
      * The SKU of the resource.
      */
-    @JsonProperty(value = "sku")
     private Sku sku;
 
     /*
      * The identity of the resource.
      */
-    @JsonProperty(value = "identity")
     private Identity identity;
 
     /*
      * Resource extended location.
      */
-    @JsonProperty(value = "extendedLocation")
     private ExtendedLocation extendedLocation;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
 
     /**
      * Creates an instance of GenericResourceInner class.
@@ -207,6 +218,36 @@ public class GenericResourceInner extends Resource {
     }
 
     /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -242,5 +283,73 @@ public class GenericResourceInner extends Resource {
         if (extendedLocation() != null) {
             extendedLocation().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("plan", this.plan);
+        jsonWriter.writeUntypedField("properties", this.properties);
+        jsonWriter.writeStringField("kind", this.kind);
+        jsonWriter.writeStringField("managedBy", this.managedBy);
+        jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeJsonField("identity", this.identity);
+        jsonWriter.writeJsonField("extendedLocation", this.extendedLocation);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GenericResourceInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GenericResourceInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the GenericResourceInner.
+     */
+    public static GenericResourceInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GenericResourceInner deserializedGenericResourceInner = new GenericResourceInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedGenericResourceInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedGenericResourceInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedGenericResourceInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedGenericResourceInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedGenericResourceInner.withTags(tags);
+                } else if ("plan".equals(fieldName)) {
+                    deserializedGenericResourceInner.plan = Plan.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedGenericResourceInner.properties = reader.readUntyped();
+                } else if ("kind".equals(fieldName)) {
+                    deserializedGenericResourceInner.kind = reader.getString();
+                } else if ("managedBy".equals(fieldName)) {
+                    deserializedGenericResourceInner.managedBy = reader.getString();
+                } else if ("sku".equals(fieldName)) {
+                    deserializedGenericResourceInner.sku = Sku.fromJson(reader);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedGenericResourceInner.identity = Identity.fromJson(reader);
+                } else if ("extendedLocation".equals(fieldName)) {
+                    deserializedGenericResourceInner.extendedLocation = ExtendedLocation.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGenericResourceInner;
+        });
     }
 }

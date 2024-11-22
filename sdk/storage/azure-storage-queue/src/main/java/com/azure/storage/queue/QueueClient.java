@@ -107,8 +107,8 @@ public final class QueueClient {
      * @param asyncClient the {@link QueueAsyncClient} associated with this client.
      */
     QueueClient(AzureQueueStorageImpl azureQueueStorage, String queueName, String accountName,
-        QueueServiceVersion serviceVersion, QueueMessageEncoding messageEncoding, Function<QueueMessageDecodingError,
-        Mono<Void>> processMessageDecodingErrorAsyncHandler,
+        QueueServiceVersion serviceVersion, QueueMessageEncoding messageEncoding,
+        Function<QueueMessageDecodingError, Mono<Void>> processMessageDecodingErrorAsyncHandler,
         Consumer<QueueMessageDecodingError> processMessageDecodingErrorHandler, QueueAsyncClient asyncClient) {
         Objects.requireNonNull(queueName, "'queueName' cannot be null.");
         this.azureQueueStorage = azureQueueStorage;
@@ -478,8 +478,8 @@ public final class QueueClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<QueueProperties> getPropertiesWithResponse(Duration timeout, Context context) {
         Context finalContext = context == null ? Context.NONE : context;
-        Supplier<ResponseBase<QueuesGetPropertiesHeaders, Void>> operation =
-            () -> this.azureQueueStorage.getQueues().getPropertiesWithResponse(queueName, null, null, finalContext);
+        Supplier<ResponseBase<QueuesGetPropertiesHeaders, Void>> operation
+            = () -> this.azureQueueStorage.getQueues().getPropertiesWithResponse(queueName, null, null, finalContext);
 
         ResponseBase<QueuesGetPropertiesHeaders, Void> response = submitThreadPool(operation, LOGGER, timeout);
         return new SimpleResponse<>(response, ModelHelper.transformQueueProperties(response.getDeserializedHeaders()));
@@ -592,12 +592,13 @@ public final class QueueClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<QueueSignedIdentifier> getAccessPolicy() {
-        ResponseBase<QueuesGetAccessPolicyHeaders, QueueSignedIdentifierWrapper> responseBase =
-            azureQueueStorage.getQueues().getAccessPolicyWithResponse(queueName, null, null, Context.NONE);
+        ResponseBase<QueuesGetAccessPolicyHeaders, QueueSignedIdentifierWrapper> responseBase
+            = azureQueueStorage.getQueues().getAccessPolicyWithResponse(queueName, null, null, Context.NONE);
 
-        Supplier<PagedResponse<QueueSignedIdentifier>> response = () -> new PagedResponseBase<>(
-            responseBase.getRequest(), responseBase.getStatusCode(), responseBase.getHeaders(),
-            responseBase.getValue().items(), null, responseBase.getDeserializedHeaders());
+        Supplier<PagedResponse<QueueSignedIdentifier>> response
+            = () -> new PagedResponseBase<>(responseBase.getRequest(), responseBase.getStatusCode(),
+                responseBase.getHeaders(), responseBase.getValue().items(), null,
+                responseBase.getDeserializedHeaders());
 
         return new PagedIterable<>(response);
     }
@@ -724,8 +725,8 @@ public final class QueueClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> clearMessagesWithResponse(Duration timeout, Context context) {
         Context finalContext = context == null ? Context.NONE : context;
-        Supplier<Response<Void>> operation = () ->
-            this.azureQueueStorage.getMessages().clearNoCustomHeadersWithResponse(queueName, null, null, finalContext);
+        Supplier<Response<Void>> operation = () -> this.azureQueueStorage.getMessages()
+            .clearNoCustomHeadersWithResponse(queueName, null, null, finalContext);
 
         return submitThreadPool(operation, LOGGER, timeout);
     }
@@ -894,16 +895,17 @@ public final class QueueClient {
         Duration timeToLive, Duration timeout, Context context) {
         Integer visibilityTimeoutInSeconds = (visibilityTimeout == null) ? null : (int) visibilityTimeout.getSeconds();
         Integer timeToLiveInSeconds = (timeToLive == null) ? null : (int) timeToLive.getSeconds();
-        Context finalContext  = context == null ? Context.NONE : context;
+        Context finalContext = context == null ? Context.NONE : context;
         String finalMessage = ModelHelper.encodeMessage(message, messageEncoding);
         QueueMessage queueMessage = new QueueMessage().setMessageText(finalMessage);
 
-        Supplier<ResponseBase<MessagesEnqueueHeaders, SendMessageResultWrapper>> operation = () ->
-            this.azureQueueStorage.getMessages().enqueueWithResponse(queueName, queueMessage,
-                visibilityTimeoutInSeconds, timeToLiveInSeconds, null, null, finalContext);
+        Supplier<ResponseBase<MessagesEnqueueHeaders, SendMessageResultWrapper>> operation
+            = () -> this.azureQueueStorage.getMessages()
+                .enqueueWithResponse(queueName, queueMessage, visibilityTimeoutInSeconds, timeToLiveInSeconds, null,
+                    null, finalContext);
 
-        ResponseBase<MessagesEnqueueHeaders, SendMessageResultWrapper> response =
-            submitThreadPool(operation, LOGGER, timeout);
+        ResponseBase<MessagesEnqueueHeaders, SendMessageResultWrapper> response
+            = submitThreadPool(operation, LOGGER, timeout);
 
         return new SimpleResponse<>(response, response.getValue().items().get(0));
     }
@@ -933,9 +935,9 @@ public final class QueueClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public QueueMessageItem receiveMessage() {
-        List<QueueMessageItem> result = receiveMessagesWithOptionalTimeout(1, null, null, Context.NONE).stream()
-            .collect(Collectors.toList());
-        return result.size() == 0 ? null : result.get(0);
+        List<QueueMessageItem> result
+            = receiveMessagesWithOptionalTimeout(1, null, null, Context.NONE).stream().collect(Collectors.toList());
+        return result.isEmpty() ? null : result.get(0);
     }
 
     /**
@@ -1019,22 +1021,18 @@ public final class QueueClient {
         Duration timeout, Context context) {
         Context finalContext = context == null ? Context.NONE : context;
         Integer visibilityTimeoutInSeconds = (visibilityTimeout == null) ? null : (int) visibilityTimeout.getSeconds();
-        Supplier<ResponseBase<MessagesDequeueHeaders, QueueMessageItemInternalWrapper>> operation = () ->
-            this.azureQueueStorage.getMessages()
+        Supplier<ResponseBase<MessagesDequeueHeaders, QueueMessageItemInternalWrapper>> operation
+            = () -> this.azureQueueStorage.getMessages()
                 .dequeueWithResponse(queueName, maxMessages, visibilityTimeoutInSeconds, null, null, finalContext);
 
-        ResponseBase<MessagesDequeueHeaders, QueueMessageItemInternalWrapper> response =
-            submitThreadPool(operation, LOGGER, timeout);
+        ResponseBase<MessagesDequeueHeaders, QueueMessageItemInternalWrapper> response
+            = submitThreadPool(operation, LOGGER, timeout);
 
-        PagedResponseBase<MessagesDequeueHeaders, QueueMessageItem> transformedMessages =
-            transformMessagesDequeueResponse(response);
+        PagedResponseBase<MessagesDequeueHeaders, QueueMessageItem> transformedMessages
+            = transformMessagesDequeueResponse(response);
 
-        Supplier<PagedResponse<QueueMessageItem>> res = () -> new PagedResponseBase<>(
-            response.getRequest(),
-            response.getStatusCode(),
-            response.getHeaders(),
-            transformedMessages,
-            response.getDeserializedHeaders());
+        Supplier<PagedResponse<QueueMessageItem>> res = () -> new PagedResponseBase<>(response.getRequest(),
+            response.getStatusCode(), response.getHeaders(), transformedMessages, response.getDeserializedHeaders());
 
         return new PagedIterable<>(res);
     }
@@ -1049,24 +1047,24 @@ public final class QueueClient {
 
         for (QueueMessageItemInternal queueMessageInternalItem : queueMessageInternalItems) {
             try {
-                QueueMessageItem decodedMessage =
-                    ModelHelper.transformQueueMessageItemInternal(queueMessageInternalItem, messageEncoding);
+                QueueMessageItem decodedMessage
+                    = ModelHelper.transformQueueMessageItemInternal(queueMessageInternalItem, messageEncoding);
                 messageItems.add(decodedMessage);
 
             } catch (IllegalArgumentException e) {
                 if (processMessageDecodingErrorAsyncHandler != null) {
-                    QueueMessageItem transformedQueueMessageItem = ModelHelper.transformQueueMessageItemInternal(
-                        queueMessageInternalItem, QueueMessageEncoding.NONE);
+                    QueueMessageItem transformedQueueMessageItem = ModelHelper
+                        .transformQueueMessageItemInternal(queueMessageInternalItem, QueueMessageEncoding.NONE);
 
-                    processMessageDecodingErrorAsyncHandler.apply(new QueueMessageDecodingError(asyncClient, this,
-                        transformedQueueMessageItem, null, e));
+                    processMessageDecodingErrorAsyncHandler
+                        .apply(new QueueMessageDecodingError(asyncClient, this, transformedQueueMessageItem, null, e));
 
                 } else if (processMessageDecodingErrorHandler != null) {
-                    QueueMessageItem transformedQueueMessageItem = ModelHelper.transformQueueMessageItemInternal(
-                        queueMessageInternalItem, QueueMessageEncoding.NONE);
+                    QueueMessageItem transformedQueueMessageItem = ModelHelper
+                        .transformQueueMessageItemInternal(queueMessageInternalItem, QueueMessageEncoding.NONE);
 
-                    processMessageDecodingErrorHandler.accept(new QueueMessageDecodingError(asyncClient, this,
-                        transformedQueueMessageItem, null, e));
+                    processMessageDecodingErrorHandler
+                        .accept(new QueueMessageDecodingError(asyncClient, this, transformedQueueMessageItem, null, e));
 
                 } else {
                     throw LOGGER.logExceptionAsError(e);
@@ -1144,23 +1142,25 @@ public final class QueueClient {
         return peekMessagesWithOptionalTimeout(maxMessages, timeout, context);
     }
 
-    PagedIterable<PeekedMessageItem> peekMessagesWithOptionalTimeout(Integer maxMessages, Duration timeout, Context context) {
+    PagedIterable<PeekedMessageItem> peekMessagesWithOptionalTimeout(Integer maxMessages, Duration timeout,
+        Context context) {
         Context finalContext = context == null ? Context.NONE : context;
-        Supplier<ResponseBase<MessagesPeekHeaders, PeekedMessageItemInternalWrapper>> operation = () ->
-            this.azureQueueStorage.getMessages().peekWithResponse(queueName, maxMessages, null, null, finalContext);
+        Supplier<ResponseBase<MessagesPeekHeaders, PeekedMessageItemInternalWrapper>> operation
+            = () -> this.azureQueueStorage.getMessages()
+                .peekWithResponse(queueName, maxMessages, null, null, finalContext);
 
-        ResponseBase<MessagesPeekHeaders, PeekedMessageItemInternalWrapper> response =
-            submitThreadPool(operation, LOGGER, timeout);
+        ResponseBase<MessagesPeekHeaders, PeekedMessageItemInternalWrapper> response
+            = submitThreadPool(operation, LOGGER, timeout);
 
-        PagedResponseBase<MessagesPeekHeaders, PeekedMessageItem> transformedMessages =
-            transformMessagesPeekResponse(response);
+        PagedResponseBase<MessagesPeekHeaders, PeekedMessageItem> transformedMessages
+            = transformMessagesPeekResponse(response);
         Supplier<PagedResponse<PeekedMessageItem>> res = () -> new PagedResponseBase<>(response.getRequest(),
             response.getStatusCode(), response.getHeaders(), transformedMessages, response.getDeserializedHeaders());
         return new PagedIterable<>(res);
     }
 
-    private PagedResponseBase<MessagesPeekHeaders, PeekedMessageItem> transformMessagesPeekResponse(
-        ResponseBase<MessagesPeekHeaders, PeekedMessageItemInternalWrapper> response) {
+    private PagedResponseBase<MessagesPeekHeaders, PeekedMessageItem>
+        transformMessagesPeekResponse(ResponseBase<MessagesPeekHeaders, PeekedMessageItemInternalWrapper> response) {
         List<PeekedMessageItemInternal> peekedMessageInternalItems = response.getValue().items();
         if (peekedMessageInternalItems == null) {
             peekedMessageInternalItems = Collections.emptyList();
@@ -1169,26 +1169,24 @@ public final class QueueClient {
 
         for (PeekedMessageItemInternal peekedMessageInternalItem : peekedMessageInternalItems) {
             try {
-                PeekedMessageItem peekedMessageItem =
-                    ModelHelper.transformPeekedMessageItemInternal(peekedMessageInternalItem, messageEncoding);
+                PeekedMessageItem peekedMessageItem
+                    = ModelHelper.transformPeekedMessageItemInternal(peekedMessageInternalItem, messageEncoding);
                 messageItems.add(peekedMessageItem);
 
             } catch (IllegalArgumentException e) {
                 if (processMessageDecodingErrorAsyncHandler != null) {
-                    PeekedMessageItem transformedPeekedMessageItem =
-                        ModelHelper.transformPeekedMessageItemInternal(peekedMessageInternalItem,
-                            QueueMessageEncoding.NONE);
+                    PeekedMessageItem transformedPeekedMessageItem = ModelHelper
+                        .transformPeekedMessageItemInternal(peekedMessageInternalItem, QueueMessageEncoding.NONE);
 
-                    processMessageDecodingErrorAsyncHandler.apply(new QueueMessageDecodingError(asyncClient, this, null,
-                        transformedPeekedMessageItem, e));
+                    processMessageDecodingErrorAsyncHandler
+                        .apply(new QueueMessageDecodingError(asyncClient, this, null, transformedPeekedMessageItem, e));
 
                 } else if (processMessageDecodingErrorHandler != null) {
-                    PeekedMessageItem transformedPeekedMessageItem =
-                        ModelHelper.transformPeekedMessageItemInternal(peekedMessageInternalItem,
-                            QueueMessageEncoding.NONE);
+                    PeekedMessageItem transformedPeekedMessageItem = ModelHelper
+                        .transformPeekedMessageItemInternal(peekedMessageInternalItem, QueueMessageEncoding.NONE);
 
-                    processMessageDecodingErrorHandler.accept(new QueueMessageDecodingError(asyncClient, this, null,
-                        transformedPeekedMessageItem, e));
+                    processMessageDecodingErrorHandler.accept(
+                        new QueueMessageDecodingError(asyncClient, this, null, transformedPeekedMessageItem, e));
 
                 } else {
                     throw LOGGER.logExceptionAsError(e);
@@ -1232,7 +1230,7 @@ public final class QueueClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UpdateMessageResult updateMessage(String messageId, String popReceipt, String messageText,
         Duration visibilityTimeout) {
-        return updateMessageWithResponse(messageId, popReceipt,  messageText, visibilityTimeout, null, Context.NONE)
+        return updateMessageWithResponse(messageId, popReceipt, messageText, visibilityTimeout, null, Context.NONE)
             .getValue();
     }
 
@@ -1379,7 +1377,6 @@ public final class QueueClient {
         return this.queueName;
     }
 
-
     /**
      * Get associated account name.
      *
@@ -1442,7 +1439,24 @@ public final class QueueClient {
      * @return A {@code String} representing the SAS query parameters.
      */
     public String generateSas(QueueServiceSasSignatureValues queueServiceSasSignatureValues, Context context) {
+        return generateSas(queueServiceSasSignatureValues, null, context);
+    }
+
+    /**
+     * Generates a service sas for the queue using the specified {@link QueueServiceSasSignatureValues}
+     * <p>Note : The client must be authenticated via {@link StorageSharedKeyCredential}
+     * <p>See {@link QueueServiceSasSignatureValues} for more information on how to construct a service SAS.</p>
+     *
+     * @param queueServiceSasSignatureValues {@link QueueServiceSasSignatureValues}
+     * @param stringToSignHandler For debugging purposes only. Returns the string to sign that was used to generate the
+     * signature.
+     * @param context Additional context that is passed through the code when generating a SAS.
+     *
+     * @return A {@code String} representing the SAS query parameters.
+     */
+    public String generateSas(QueueServiceSasSignatureValues queueServiceSasSignatureValues,
+        Consumer<String> stringToSignHandler, Context context) {
         return new QueueSasImplUtil(queueServiceSasSignatureValues, getQueueName())
-            .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), context);
+            .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), stringToSignHandler, context);
     }
 }

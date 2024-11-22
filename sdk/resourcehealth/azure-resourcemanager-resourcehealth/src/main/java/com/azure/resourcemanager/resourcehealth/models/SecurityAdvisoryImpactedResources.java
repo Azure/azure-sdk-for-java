@@ -32,8 +32,8 @@ public interface SecurityAdvisoryImpactedResources {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List of eventImpactedResources operation response as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<EventImpactedResource> listBySubscriptionIdAndEventId(
-        String eventTrackingId, String filter, Context context);
+    PagedIterable<EventImpactedResource> listBySubscriptionIdAndEventId(String eventTrackingId, String filter,
+        Context context);
 
     /**
      * Lists impacted resources in the tenant by an event (Security Advisory).
@@ -58,6 +58,6 @@ public interface SecurityAdvisoryImpactedResources {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List of eventImpactedResources operation response as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<EventImpactedResource> listByTenantIdAndEventId(
-        String eventTrackingId, String filter, Context context);
+    PagedIterable<EventImpactedResource> listByTenantIdAndEventId(String eventTrackingId, String filter,
+        Context context);
 }

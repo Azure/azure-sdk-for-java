@@ -13,37 +13,25 @@ import org.junit.jupiter.api.Assertions;
 public final class QueryPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        QueryProperties model =
-            BinaryData
-                .fromString(
-                    "{\"nextLink\":\"tdaaygdvwvg\",\"columns\":[{\"name\":\"g\",\"type\":\"rtfudxepxg\"},{\"name\":\"agvrvmnpkuk\",\"type\":\"i\"},{\"name\":\"blxgwimf\",\"type\":\"hfjx\"},{\"name\":\"szkkfoqre\",\"type\":\"kzikfjawneaivxwc\"}],\"rows\":[[\"datac\",\"datar\",\"datalsfeaenwabfatkld\"],[\"databjhwuaan\",\"datazjosp\",\"datayoulp\",\"datarvxaglrvimjwosy\"],[\"dataitc\"]]}")
-                .toObject(QueryProperties.class);
-        Assertions.assertEquals("tdaaygdvwvg", model.nextLink());
-        Assertions.assertEquals("g", model.columns().get(0).name());
-        Assertions.assertEquals("rtfudxepxg", model.columns().get(0).type());
+        QueryProperties model = BinaryData.fromString(
+            "{\"nextLink\":\"mdyomkxfbvfbh\",\"columns\":[{\"name\":\"hpwpgddeimawzovg\",\"type\":\"um\"}],\"rows\":[[\"datacjc\",\"dataztbws\"],[\"dataqowxwcom\",\"dataikytwvczcswka\"],[\"dataejyfdvlvhbwrnfx\"],[\"dataddpqt\",\"dataehnmnaoyankco\"]]}")
+            .toObject(QueryProperties.class);
+        Assertions.assertEquals("mdyomkxfbvfbh", model.nextLink());
+        Assertions.assertEquals("hpwpgddeimawzovg", model.columns().get(0).name());
+        Assertions.assertEquals("um", model.columns().get(0).type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        QueryProperties model =
-            new QueryProperties()
-                .withNextLink("tdaaygdvwvg")
-                .withColumns(
-                    Arrays
-                        .asList(
-                            new QueryColumn().withName("g").withType("rtfudxepxg"),
-                            new QueryColumn().withName("agvrvmnpkuk").withType("i"),
-                            new QueryColumn().withName("blxgwimf").withType("hfjx"),
-                            new QueryColumn().withName("szkkfoqre").withType("kzikfjawneaivxwc")))
-                .withRows(
-                    Arrays
-                        .asList(
-                            Arrays.asList("datac", "datar", "datalsfeaenwabfatkld"),
-                            Arrays.asList("databjhwuaan", "datazjosp", "datayoulp", "datarvxaglrvimjwosy"),
-                            Arrays.asList("dataitc")));
+        QueryProperties model
+            = new QueryProperties().withNextLink("mdyomkxfbvfbh")
+                .withColumns(Arrays.asList(new QueryColumn().withName("hpwpgddeimawzovg").withType("um")))
+                .withRows(Arrays.asList(Arrays.asList("datacjc", "dataztbws"),
+                    Arrays.asList("dataqowxwcom", "dataikytwvczcswka"), Arrays.asList("dataejyfdvlvhbwrnfx"),
+                    Arrays.asList("dataddpqt", "dataehnmnaoyankco")));
         model = BinaryData.fromObject(model).toObject(QueryProperties.class);
-        Assertions.assertEquals("tdaaygdvwvg", model.nextLink());
-        Assertions.assertEquals("g", model.columns().get(0).name());
-        Assertions.assertEquals("rtfudxepxg", model.columns().get(0).type());
+        Assertions.assertEquals("mdyomkxfbvfbh", model.nextLink());
+        Assertions.assertEquals("hpwpgddeimawzovg", model.columns().get(0).name());
+        Assertions.assertEquals("um", model.columns().get(0).type());
     }
 }

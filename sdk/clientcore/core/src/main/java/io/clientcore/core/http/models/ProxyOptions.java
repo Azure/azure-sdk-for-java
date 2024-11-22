@@ -3,15 +3,19 @@
 
 package io.clientcore.core.http.models;
 
+import io.clientcore.core.util.ClientLogger;
+import io.clientcore.core.util.auth.BasicChallengeHandler;
+import io.clientcore.core.util.auth.ChallengeHandler;
+import io.clientcore.core.util.auth.DigestChallengeHandler;
 import io.clientcore.core.util.configuration.Configuration;
 import io.clientcore.core.util.configuration.ConfigurationProperty;
 import io.clientcore.core.util.configuration.ConfigurationPropertyBuilder;
-import io.clientcore.core.util.ClientLogger;
+
 import java.io.UnsupportedEncodingException;
 import java.net.InetSocketAddress;
-import java.net.MalformedURLException;
 import java.net.Proxy;
-import java.net.URL;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
@@ -25,7 +29,7 @@ import static io.clientcore.core.implementation.util.ImplUtils.isNullOrEmpty;
  */
 public class ProxyOptions {
     private static final ClientLogger LOGGER = new ClientLogger(ProxyOptions.class);
-    private static final String INVALID_PROXY_URL = "URL is invalid and is being ignored.";
+    private static final String INVALID_PROXY_URI = "URI is invalid and is being ignored.";
 
     /*
      * This indicates whether system proxy configurations (HTTPS_PROXY, HTTP_PROXY) are allowed to be used.
@@ -61,31 +65,35 @@ public class ProxyOptions {
     private static final Pattern UNESCAPED_PERIOD = Pattern.compile("(?<!\\\\)\\.");
     private static final Pattern ANY = Pattern.compile("\\*");
 
-    private static final ConfigurationProperty<String> NON_PROXY_PROPERTY = ConfigurationPropertyBuilder.ofString(ConfigurationProperties.HTTP_PROXY_NON_PROXY_HOSTS)
-        .shared(true)
-        .logValue(true)
-        .build();
-    private static final ConfigurationProperty<String> HOST_PROPERTY = ConfigurationPropertyBuilder.ofString(ConfigurationProperties.HTTP_PROXY_HOST)
-        .shared(true)
-        .logValue(true)
-        .build();
-    private static final ConfigurationProperty<Integer> PORT_PROPERTY = ConfigurationPropertyBuilder.ofInteger(ConfigurationProperties.HTTP_PROXY_PORT)
-        .shared(true)
-        .defaultValue(DEFAULT_HTTPS_PORT)
-        .build();
-    private static final ConfigurationProperty<String> USER_PROPERTY = ConfigurationPropertyBuilder.ofString(ConfigurationProperties.HTTP_PROXY_USER)
-        .shared(true)
-        .logValue(true)
-        .build();
-    private static final ConfigurationProperty<String> PASSWORD_PROPERTY = ConfigurationPropertyBuilder.ofString(ConfigurationProperties.HTTP_PROXY_PASSWORD)
-        .shared(true)
-        .build();
+    private static final ConfigurationProperty<String> NON_PROXY_PROPERTY
+        = ConfigurationPropertyBuilder.ofString(ConfigurationProperties.HTTP_PROXY_NON_PROXY_HOSTS)
+            .shared(true)
+            .logValue(true)
+            .build();
+    private static final ConfigurationProperty<String> HOST_PROPERTY
+        = ConfigurationPropertyBuilder.ofString(ConfigurationProperties.HTTP_PROXY_HOST)
+            .shared(true)
+            .logValue(true)
+            .build();
+    private static final ConfigurationProperty<Integer> PORT_PROPERTY
+        = ConfigurationPropertyBuilder.ofInteger(ConfigurationProperties.HTTP_PROXY_PORT)
+            .shared(true)
+            .defaultValue(DEFAULT_HTTPS_PORT)
+            .build();
+    private static final ConfigurationProperty<String> USER_PROPERTY
+        = ConfigurationPropertyBuilder.ofString(ConfigurationProperties.HTTP_PROXY_USER)
+            .shared(true)
+            .logValue(true)
+            .build();
+    private static final ConfigurationProperty<String> PASSWORD_PROPERTY
+        = ConfigurationPropertyBuilder.ofString(ConfigurationProperties.HTTP_PROXY_PASSWORD).shared(true).build();
 
     private final InetSocketAddress address;
     private final Type type;
     private String username;
     private String password;
     private String nonProxyHosts;
+    private ChallengeHandler challengeHandler;
 
     /**
      * Creates ProxyOptions.
@@ -103,11 +111,14 @@ public class ProxyOptions {
      *
      * @param username proxy user name
      * @param password proxy password
-     * @return the updated ProxyOptions object
+     * @return the updated ProxyOptions object and generates a composite challenge handler with basic and
+     * digest authentication.
      */
     public ProxyOptions setCredentials(String username, String password) {
         this.username = Objects.requireNonNull(username, "'username' cannot be null.");
         this.password = Objects.requireNonNull(password, "'password' cannot be null.");
+        this.challengeHandler = ChallengeHandler.of(new BasicChallengeHandler(username, password),
+            new DigestChallengeHandler(username, password));
         return this;
     }
 
@@ -122,6 +133,17 @@ public class ProxyOptions {
      */
     public ProxyOptions setNonProxyHosts(String nonProxyHosts) {
         this.nonProxyHosts = sanitizeJavaHttpNonProxyHosts(nonProxyHosts);
+        return this;
+    }
+
+    /**
+     * Sets a custom ChallengeHandler.
+     *
+     * @param challengeHandler the custom ChallengeHandler to use.
+     * @return the updated ProxyOptions object.
+     */
+    public ProxyOptions setChallengeHandler(ChallengeHandler challengeHandler) {
+        this.challengeHandler = Objects.requireNonNull(challengeHandler, "'challengeHandler' cannot be null.");
         return this;
     }
 
@@ -225,9 +247,8 @@ public class ProxyOptions {
      * will be returned.
      */
     public static ProxyOptions fromConfiguration(Configuration configuration, boolean createUnresolved) {
-        Configuration proxyConfiguration = (configuration == null)
-            ? Configuration.getGlobalConfiguration()
-            : configuration;
+        Configuration proxyConfiguration
+            = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
 
         return attemptToLoadProxy(proxyConfiguration, createUnresolved);
     }
@@ -238,7 +259,8 @@ public class ProxyOptions {
         // System proxy configuration is only possible through system properties.
         // Only use system proxies when the prerequisite property is 'true'.
         if (Boolean.parseBoolean(configuration.get(JAVA_SYSTEM_PROXY_PREREQUISITE))) {
-            proxyOptions = attemptToLoadSystemProxy(configuration, createUnresolved, Configuration.PROPERTY_HTTPS_PROXY);
+            proxyOptions
+                = attemptToLoadSystemProxy(configuration, createUnresolved, Configuration.PROPERTY_HTTPS_PROXY);
             if (proxyOptions != null) {
                 LOGGER.atVerbose().log("Using proxy created from HTTPS_PROXY environment variable.");
                 return proxyOptions;
@@ -281,15 +303,19 @@ public class ProxyOptions {
         }
 
         try {
-            // TODO (alzimmer): UrlBuilder needs to add support for userinfo
+            // TODO (alzimmer): UriBuilder needs to add support for userinfo
             //  https://www.rfc-editor.org/rfc/rfc3986#section-3.2.1
-            @SuppressWarnings("deprecation")
-            URL proxyUrl = new URL(proxyConfiguration);
-            int port = (proxyUrl.getPort() == -1) ? proxyUrl.getDefaultPort() : proxyUrl.getPort();
+            URI proxyUri = new URI(proxyConfiguration);
+            int port;
+            if (proxyUri.getPort() == -1) {
+                port = "https".equals(proxyUri.getScheme()) ? 443 : 80;
+            } else {
+                port = proxyUri.getPort();
+            }
 
             InetSocketAddress socketAddress = (createUnresolved)
-                ? InetSocketAddress.createUnresolved(proxyUrl.getHost(), port)
-                : new InetSocketAddress(proxyUrl.getHost(), port);
+                ? InetSocketAddress.createUnresolved(proxyUri.getHost(), port)
+                : new InetSocketAddress(proxyUri.getHost(), port);
 
             ProxyOptions proxyOptions = new ProxyOptions(Type.HTTP, socketAddress);
 
@@ -297,20 +323,17 @@ public class ProxyOptions {
             if (!isNullOrEmpty(nonProxyHostsString)) {
                 proxyOptions.nonProxyHosts = sanitizeNoProxy(nonProxyHostsString);
 
-                LOGGER.atVerbose()
-                    .addKeyValue("regex", proxyOptions.nonProxyHosts)
-                    .log("Using non-proxy hosts");
+                LOGGER.atVerbose().addKeyValue("regex", proxyOptions.nonProxyHosts).log("Using non-proxy hosts");
             }
 
-            String userInfo = proxyUrl.getUserInfo();
+            String userInfo = proxyUri.getUserInfo();
             if (userInfo != null) {
                 String[] usernamePassword = userInfo.split(":", 2);
                 if (usernamePassword.length == 2) {
                     try {
                         proxyOptions.setCredentials(
                             URLDecoder.decode(usernamePassword[0], StandardCharsets.UTF_8.toString()),
-                            URLDecoder.decode(usernamePassword[1], StandardCharsets.UTF_8.toString())
-                        );
+                            URLDecoder.decode(usernamePassword[1], StandardCharsets.UTF_8.toString()));
                     } catch (UnsupportedEncodingException e) {
                         return null;
                     }
@@ -318,10 +341,8 @@ public class ProxyOptions {
             }
 
             return proxyOptions;
-        } catch (MalformedURLException ex) {
-            LOGGER.atWarning()
-                .addKeyValue("url", proxyProperty)
-                .log(INVALID_PROXY_URL, ex);
+        } catch (URISyntaxException ex) {
+            LOGGER.atWarning().addKeyValue("uri", proxyProperty).log(INVALID_PROXY_URI, ex);
             return null;
         }
     }
@@ -334,7 +355,7 @@ public class ProxyOptions {
     }
 
     private static ProxyOptions attemptToLoadJavaProxy(Configuration configuration, boolean createUnresolved,
-                                                       String type) {
+        String type) {
         String host = configuration.get(type + "." + JAVA_PROXY_HOST);
 
         // No proxy configuration setup.
@@ -372,19 +393,17 @@ public class ProxyOptions {
         return createOptions(host, port, nonProxyHostsString, username, password, createUnresolved);
     }
 
-    private static ProxyOptions createOptions(String host, int port, String nonProxyHostsString, String username, String password, boolean createUnresolved) {
-        InetSocketAddress socketAddress = (createUnresolved)
-            ? InetSocketAddress.createUnresolved(host, port)
-            : new InetSocketAddress(host, port);
+    private static ProxyOptions createOptions(String host, int port, String nonProxyHostsString, String username,
+        String password, boolean createUnresolved) {
+        InetSocketAddress socketAddress
+            = (createUnresolved) ? InetSocketAddress.createUnresolved(host, port) : new InetSocketAddress(host, port);
 
         ProxyOptions proxyOptions = new ProxyOptions(Type.HTTP, socketAddress);
 
         if (!isNullOrEmpty(nonProxyHostsString)) {
             proxyOptions.nonProxyHosts = sanitizeJavaHttpNonProxyHosts(nonProxyHostsString);
 
-            LOGGER.atVerbose()
-                .addKeyValue("regex", proxyOptions.nonProxyHosts)
-                .log("Using non-proxy host regex");
+            LOGGER.atVerbose().addKeyValue("regex", proxyOptions.nonProxyHosts).log("Using non-proxy host regex");
         }
 
         if (username != null && password != null) {
@@ -393,6 +412,7 @@ public class ProxyOptions {
 
         return proxyOptions;
     }
+
     /*
      * Helper function that sanitizes 'http.nonProxyHosts' into a Pattern safe string.
      */
@@ -486,6 +506,15 @@ public class ProxyOptions {
         }
 
         return sanitizedBuilder.toString();
+    }
+
+    /**
+     * Gets the `ChallengeHandler` instance associated with the proxy options.
+     *
+     * @return The `ChallengeHandler` instance.
+     */
+    public ChallengeHandler getChallengeHandler() {
+        return this.challengeHandler;
     }
 
     /**

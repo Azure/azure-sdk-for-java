@@ -15,6 +15,11 @@ public final class StopTranscriptionOptions {
      */
     private String operationContext;
 
+    /**
+     * Creates an instance of {@link StopTranscriptionOptions}.
+     */
+    public StopTranscriptionOptions() {
+    }
 
     /**
      * Get the operation context.

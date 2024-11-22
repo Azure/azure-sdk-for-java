@@ -21,7 +21,7 @@ public final class JobsStopMultipleExecutionsMockTests {
     @Test
     public void testStopMultipleExecutions() throws Exception {
         String responseStr
-            = "{\"value\":[{\"name\":\"dcpks\",\"id\":\"ojermhzicsbfdjhy\",\"type\":\"knyuki\",\"properties\":{\"status\":\"Unknown\",\"startTime\":\"2021-04-30T04:52:05Z\",\"endTime\":\"2021-04-28T16:27:01Z\",\"template\":{\"containers\":[{},{},{}],\"initContainers\":[{}]},\"detailedStatus\":{\"replicas\":[{},{},{}]}}},{\"name\":\"ilhvtozyagjj\",\"id\":\"k\",\"type\":\"lh\",\"properties\":{\"status\":\"Unknown\",\"startTime\":\"2021-06-20T06:55:53Z\",\"endTime\":\"2020-12-31T17:44:18Z\",\"template\":{\"containers\":[{}],\"initContainers\":[{},{}]},\"detailedStatus\":{\"replicas\":[{},{},{},{}]}}},{\"name\":\"s\",\"id\":\"vq\",\"type\":\"nsgnwxlwmez\",\"properties\":{\"status\":\"Stopped\",\"startTime\":\"2021-02-19T17:59:35Z\",\"endTime\":\"2020-12-21T20:32:13Z\",\"template\":{\"containers\":[{},{}],\"initContainers\":[{},{},{},{}]},\"detailedStatus\":{\"replicas\":[{},{},{}]}}}],\"nextLink\":\"vesob\"}";
+            = "{\"value\":[{\"name\":\"nxhtf\",\"id\":\"qbsudzpgchzpg\",\"type\":\"umjdjxhzghg\",\"properties\":{\"status\":\"Failed\",\"startTime\":\"2021-01-05T00:02:43Z\",\"endTime\":\"2021-01-05T16:16:30Z\",\"template\":{\"containers\":[{}],\"initContainers\":[{}]},\"detailedStatus\":{\"replicas\":[{}]}}}],\"nextLink\":\"mxjdnaju\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,12 +31,12 @@ public final class JobsStopMultipleExecutionsMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         ContainerAppJobExecutions response
-            = manager.jobs().stopMultipleExecutions("ihzqjjtsmuy", "qfttkacybdueur", com.azure.core.util.Context.NONE);
+            = manager.jobs().stopMultipleExecutions("swqi", "wepwoggg", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("dcpks", response.value().get(0).name());
-        Assertions.assertEquals("ojermhzicsbfdjhy", response.value().get(0).id());
-        Assertions.assertEquals("knyuki", response.value().get(0).type());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-30T04:52:05Z"), response.value().get(0).startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-28T16:27:01Z"), response.value().get(0).endTime());
+        Assertions.assertEquals("nxhtf", response.value().get(0).name());
+        Assertions.assertEquals("qbsudzpgchzpg", response.value().get(0).id());
+        Assertions.assertEquals("umjdjxhzghg", response.value().get(0).type());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-05T00:02:43Z"), response.value().get(0).startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-05T16:16:30Z"), response.value().get(0).endTime());
     }
 }

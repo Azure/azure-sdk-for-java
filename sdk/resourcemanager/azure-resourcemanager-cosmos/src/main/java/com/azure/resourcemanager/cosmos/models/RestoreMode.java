@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -32,7 +31,6 @@ public final class RestoreMode extends ExpandableStringEnum<RestoreMode> {
      * @param name a name to look for.
      * @return the corresponding RestoreMode.
      */
-    @JsonCreator
     public static RestoreMode fromString(String name) {
         return fromString(name, RestoreMode.class);
     }

@@ -195,9 +195,9 @@ public final class TrafficAsyncClient {
             return monoError(LOGGER, new NullPointerException("Options is null"));
         }
 
-        return this.serviceClient.getTrafficFlowTileNoCustomHeadersWithResponseAsync(options.getFormat(),
-                options.getTrafficFlowTileStyle(), options.getZoom(), options.getTileIndex(), options.getThickness(),
-                context)
+        return this.serviceClient
+            .getTrafficFlowTileNoCustomHeadersWithResponseAsync(options.getFormat(), options.getTrafficFlowTileStyle(),
+                options.getZoom(), options.getTileIndex(), options.getThickness(), context)
             .onErrorMap(TrafficAsyncClient::mapThrowable);
     }
 
@@ -318,10 +318,10 @@ public final class TrafficAsyncClient {
      */
     Mono<Response<TrafficFlowSegmentData>> getTrafficFlowSegmentWithResponse(TrafficFlowSegmentOptions options,
         Context context) {
-        return this.serviceClient.getTrafficFlowSegmentWithResponseAsync(ResponseFormat.JSON,
-                options.getTrafficFlowSegmentStyle(), options.getZoom(),
-                Utility.toCoordinates(options.getCoordinates()), options.getUnit(), options.getThickness(),
-                options.getOpenLr(), context)
+        return this.serviceClient
+            .getTrafficFlowSegmentWithResponseAsync(ResponseFormat.JSON, options.getTrafficFlowSegmentStyle(),
+                options.getZoom(), Utility.toCoordinates(options.getCoordinates()), options.getUnit(),
+                options.getThickness(), options.getOpenLr(), context)
             .onErrorMap(TrafficAsyncClient::mapThrowable);
     }
 
@@ -440,7 +440,8 @@ public final class TrafficAsyncClient {
             return monoError(LOGGER, new NullPointerException("Options is null"));
         }
 
-        return this.serviceClient.getTrafficIncidentTileNoCustomHeadersWithResponseAsync(options.getFormat(),
+        return this.serviceClient
+            .getTrafficIncidentTileNoCustomHeadersWithResponseAsync(options.getFormat(),
                 options.getTrafficIncidentTileStyle(), options.getZoom(), options.getTileIndex(),
                 options.getTrafficState(), context)
             .onErrorMap(TrafficAsyncClient::mapThrowable);
@@ -532,8 +533,8 @@ public final class TrafficAsyncClient {
      * @return this object is returned from a successful Traffic incident Detail call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<TrafficIncidentDetail>> getTrafficIncidentDetailWithResponse(
-        TrafficIncidentDetailOptions options) {
+    public Mono<Response<TrafficIncidentDetail>>
+        getTrafficIncidentDetailWithResponse(TrafficIncidentDetailOptions options) {
         return withContext(context -> getTrafficIncidentDetailWithResponse(options, context));
     }
 
@@ -580,9 +581,10 @@ public final class TrafficAsyncClient {
      */
     Mono<Response<TrafficIncidentDetail>> getTrafficIncidentDetailWithResponse(TrafficIncidentDetailOptions options,
         Context context) {
-        return this.serviceClient.getTrafficIncidentDetailWithResponseAsync(ResponseFormat.JSON,
-                options.getIncidentDetailStyle(), Utility.toBoundingBox(options.getBoundingBox()),
-                options.getBoundingZoom(), options.getTrafficIncidentDetailTrafficModelId(), options.getLanguage(),
+        return this.serviceClient
+            .getTrafficIncidentDetailWithResponseAsync(ResponseFormat.JSON, options.getIncidentDetailStyle(),
+                Utility.toBoundingBox(options.getBoundingBox()), options.getBoundingZoom(),
+                options.getTrafficIncidentDetailTrafficModelId(), options.getLanguage(),
                 options.getProjectionStandard(), options.getIncidentGeometryType(), options.getExpandCluster(),
                 options.getOriginalPosition(), context)
             .onErrorMap(TrafficAsyncClient::mapThrowable);
@@ -670,8 +672,8 @@ public final class TrafficAsyncClient {
      * @return this object is returned from a successful Traffic Incident Viewport call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<TrafficIncidentViewport>> getTrafficIncidentViewportWithResponse(
-        TrafficIncidentViewportOptions options) {
+    public Mono<Response<TrafficIncidentViewport>>
+        getTrafficIncidentViewportWithResponse(TrafficIncidentViewportOptions options) {
         return withContext(context -> getTrafficIncidentViewportWithResponse(options, context));
     }
 
@@ -714,12 +716,11 @@ public final class TrafficAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return this object is returned from a successful Traffic Incident Viewport call.
      */
-    Mono<Response<TrafficIncidentViewport>> getTrafficIncidentViewportWithResponse(
-        TrafficIncidentViewportOptions options, Context context) {
+    Mono<Response<TrafficIncidentViewport>>
+        getTrafficIncidentViewportWithResponse(TrafficIncidentViewportOptions options, Context context) {
         return this.serviceClient.getTrafficIncidentViewportWithResponseAsync(ResponseFormat.JSON,
-                Utility.toBoundingBox(options.getBoundingBox()), options.getBoundingZoom(),
-                Utility.toBoundingBox(options.getOverviewBox()), options.getOverviewZoom(), options.getCopyright(),
-                context)
+            Utility.toBoundingBox(options.getBoundingBox()), options.getBoundingZoom(),
+            Utility.toBoundingBox(options.getOverviewBox()), options.getOverviewZoom(), options.getCopyright(), context)
             .onErrorMap(TrafficAsyncClient::mapThrowable);
     }
 

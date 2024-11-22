@@ -1,19 +1,20 @@
 // Original file from https://github.com/FasterXML/jackson-core under Apache-2.0 license.
 package io.clientcore.core.json.implementation.jackson.core.exc;
 
-import io.clientcore.core.json.implementation.jackson.core.*;
+import io.clientcore.core.json.implementation.jackson.core.JsonGenerationException;
+import io.clientcore.core.json.implementation.jackson.core.JsonGenerator;
+import io.clientcore.core.json.implementation.jackson.core.JsonLocation;
+import io.clientcore.core.json.implementation.jackson.core.JsonProcessingException;
 
 /**
  * Intermediate base class for all read-side streaming processing problems, including
  * parsing and input value coercion problems.
  *<p>
- * Added in 2.13 to eventually replace {@link io.clientcore.core.json.implementation.jackson.core.JsonGenerationException}.
+ * Added in 2.13 to eventually replace {@link JsonGenerationException}.
  *
  * @since 2.13
  */
-public abstract class StreamWriteException
-    extends JsonProcessingException
-{
+public abstract class StreamWriteException extends JsonProcessingException {
     private final static long serialVersionUID = 2L;
 
     protected transient JsonGenerator _processor;
@@ -33,16 +34,8 @@ public abstract class StreamWriteException
         _processor = g;
     }
 
-    /**
-     * Fluent method that may be used to assign originating {@link JsonGenerator},
-     * to be accessed using {@link #getProcessor()}.
-     *
-     * @param g Generator to assign
-     *
-     * @return This exception instance (to allow call chaining)
-     */
-    public abstract StreamWriteException withGenerator(JsonGenerator g);
-
     @Override
-    public JsonGenerator getProcessor() { return _processor; }
+    public JsonGenerator getProcessor() {
+        return _processor;
+    }
 }

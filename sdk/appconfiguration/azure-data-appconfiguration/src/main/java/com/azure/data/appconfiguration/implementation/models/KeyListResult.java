@@ -12,7 +12,9 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
 
-/** The result of a list request. */
+/**
+ * The result of a list request.
+ */
 @Fluent
 public final class KeyListResult implements JsonSerializable<KeyListResult> {
     /*
@@ -25,12 +27,15 @@ public final class KeyListResult implements JsonSerializable<KeyListResult> {
      */
     private String nextLink;
 
-    /** Creates an instance of KeyListResult class. */
-    public KeyListResult() {}
+    /**
+     * Creates an instance of KeyListResult class.
+     */
+    public KeyListResult() {
+    }
 
     /**
      * Get the items property: The collection value.
-     *
+     * 
      * @return the items value.
      */
     public List<Key> getItems() {
@@ -39,7 +44,7 @@ public final class KeyListResult implements JsonSerializable<KeyListResult> {
 
     /**
      * Set the items property: The collection value.
-     *
+     * 
      * @param items the items value to set.
      * @return the KeyListResult object itself.
      */
@@ -50,7 +55,7 @@ public final class KeyListResult implements JsonSerializable<KeyListResult> {
 
     /**
      * Get the nextLink property: The URI that can be used to request the next set of paged results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String getNextLink() {
@@ -59,7 +64,7 @@ public final class KeyListResult implements JsonSerializable<KeyListResult> {
 
     /**
      * Set the nextLink property: The URI that can be used to request the next set of paged results.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the KeyListResult object itself.
      */
@@ -68,6 +73,9 @@ public final class KeyListResult implements JsonSerializable<KeyListResult> {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -78,31 +86,30 @@ public final class KeyListResult implements JsonSerializable<KeyListResult> {
 
     /**
      * Reads an instance of KeyListResult from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of KeyListResult if the JsonReader was pointing to an instance of it, or null if it was
-     *     pointing to JSON null.
+     * pointing to JSON null.
      * @throws IOException If an error occurs while reading the KeyListResult.
      */
     public static KeyListResult fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    KeyListResult deserializedKeyListResult = new KeyListResult();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            KeyListResult deserializedKeyListResult = new KeyListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("items".equals(fieldName)) {
-                            List<Key> items = reader.readArray(reader1 -> Key.fromJson(reader1));
-                            deserializedKeyListResult.items = items;
-                        } else if ("@nextLink".equals(fieldName)) {
-                            deserializedKeyListResult.nextLink = reader.getString();
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("items".equals(fieldName)) {
+                    List<Key> items = reader.readArray(reader1 -> Key.fromJson(reader1));
+                    deserializedKeyListResult.items = items;
+                } else if ("@nextLink".equals(fieldName)) {
+                    deserializedKeyListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedKeyListResult;
-                });
+            return deserializedKeyListResult;
+        });
     }
 }

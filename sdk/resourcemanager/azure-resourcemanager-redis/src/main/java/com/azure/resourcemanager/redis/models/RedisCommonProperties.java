@@ -5,22 +5,24 @@
 package com.azure.resourcemanager.redis.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
 /**
  * Create/Update/Get common properties of the redis cache.
  */
 @Fluent
-public class RedisCommonProperties {
+public class RedisCommonProperties implements JsonSerializable<RedisCommonProperties> {
     /*
      * All Redis Settings. Few possible keys:
      * rdb-backup-enabled,rdb-storage-connection-string,rdb-backup-frequency,maxmemory-delta,
      * maxmemory-policy,notify-keyspace-events, aof-backup-enabled, aof-storage-connection-string-0,
      * aof-storage-connection-string-1 etc.
      */
-    @JsonProperty(value = "redisConfiguration")
     private RedisConfiguration redisConfiguration;
 
     /*
@@ -28,44 +30,36 @@ public class RedisCommonProperties {
      * refers to the latest stable Redis version that is available. Supported versions: 4.0, 6.0 (latest). Default value
      * is 'latest'.
      */
-    @JsonProperty(value = "redisVersion")
     private String redisVersion;
 
     /*
      * Specifies whether the non-ssl Redis server port (6379) is enabled.
      */
-    @JsonProperty(value = "enableNonSslPort")
     private Boolean enableNonSslPort;
 
     /*
      * The number of replicas to be created per primary.
      */
-    @JsonProperty(value = "replicasPerMaster")
     private Integer replicasPerMaster;
 
     /*
      * The number of replicas to be created per primary.
      */
-    @JsonProperty(value = "replicasPerPrimary")
     private Integer replicasPerPrimary;
 
     /*
      * A dictionary of tenant settings
      */
-    @JsonProperty(value = "tenantSettings")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tenantSettings;
 
     /*
      * The number of shards to be created on a Premium Cluster Cache.
      */
-    @JsonProperty(value = "shardCount")
     private Integer shardCount;
 
     /*
      * Optional: requires clients to use a specified TLS version (or higher) to connect (e,g, '1.0', '1.1', '1.2')
      */
-    @JsonProperty(value = "minimumTlsVersion")
     private TlsVersion minimumTlsVersion;
 
     /*
@@ -73,7 +67,6 @@ public class RedisCommonProperties {
      * 'Enabled' or 'Disabled'. If 'Disabled', private endpoints are the exclusive access method. Default value is
      * 'Enabled'
      */
-    @JsonProperty(value = "publicNetworkAccess")
     private PublicNetworkAccess publicNetworkAccess;
 
     /*
@@ -81,13 +74,11 @@ public class RedisCommonProperties {
      * 'Preview' update channel get latest Redis updates at least 4 weeks ahead of 'Stable' channel caches. Default
      * value is 'Stable'.
      */
-    @JsonProperty(value = "updateChannel")
     private UpdateChannel updateChannel;
 
     /*
      * Authentication to Redis through access keys is disabled when set as true. Default value is false.
      */
-    @JsonProperty(value = "disableAccessKeyAuthentication")
     private Boolean disableAccessKeyAuthentication;
 
     /**
@@ -347,5 +338,77 @@ public class RedisCommonProperties {
         if (redisConfiguration() != null) {
             redisConfiguration().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("redisConfiguration", this.redisConfiguration);
+        jsonWriter.writeStringField("redisVersion", this.redisVersion);
+        jsonWriter.writeBooleanField("enableNonSslPort", this.enableNonSslPort);
+        jsonWriter.writeNumberField("replicasPerMaster", this.replicasPerMaster);
+        jsonWriter.writeNumberField("replicasPerPrimary", this.replicasPerPrimary);
+        jsonWriter.writeMapField("tenantSettings", this.tenantSettings,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeNumberField("shardCount", this.shardCount);
+        jsonWriter.writeStringField("minimumTlsVersion",
+            this.minimumTlsVersion == null ? null : this.minimumTlsVersion.toString());
+        jsonWriter.writeStringField("publicNetworkAccess",
+            this.publicNetworkAccess == null ? null : this.publicNetworkAccess.toString());
+        jsonWriter.writeStringField("updateChannel", this.updateChannel == null ? null : this.updateChannel.toString());
+        jsonWriter.writeBooleanField("disableAccessKeyAuthentication", this.disableAccessKeyAuthentication);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RedisCommonProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RedisCommonProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RedisCommonProperties.
+     */
+    public static RedisCommonProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RedisCommonProperties deserializedRedisCommonProperties = new RedisCommonProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("redisConfiguration".equals(fieldName)) {
+                    deserializedRedisCommonProperties.redisConfiguration = RedisConfiguration.fromJson(reader);
+                } else if ("redisVersion".equals(fieldName)) {
+                    deserializedRedisCommonProperties.redisVersion = reader.getString();
+                } else if ("enableNonSslPort".equals(fieldName)) {
+                    deserializedRedisCommonProperties.enableNonSslPort = reader.getNullable(JsonReader::getBoolean);
+                } else if ("replicasPerMaster".equals(fieldName)) {
+                    deserializedRedisCommonProperties.replicasPerMaster = reader.getNullable(JsonReader::getInt);
+                } else if ("replicasPerPrimary".equals(fieldName)) {
+                    deserializedRedisCommonProperties.replicasPerPrimary = reader.getNullable(JsonReader::getInt);
+                } else if ("tenantSettings".equals(fieldName)) {
+                    Map<String, String> tenantSettings = reader.readMap(reader1 -> reader1.getString());
+                    deserializedRedisCommonProperties.tenantSettings = tenantSettings;
+                } else if ("shardCount".equals(fieldName)) {
+                    deserializedRedisCommonProperties.shardCount = reader.getNullable(JsonReader::getInt);
+                } else if ("minimumTlsVersion".equals(fieldName)) {
+                    deserializedRedisCommonProperties.minimumTlsVersion = TlsVersion.fromString(reader.getString());
+                } else if ("publicNetworkAccess".equals(fieldName)) {
+                    deserializedRedisCommonProperties.publicNetworkAccess
+                        = PublicNetworkAccess.fromString(reader.getString());
+                } else if ("updateChannel".equals(fieldName)) {
+                    deserializedRedisCommonProperties.updateChannel = UpdateChannel.fromString(reader.getString());
+                } else if ("disableAccessKeyAuthentication".equals(fieldName)) {
+                    deserializedRedisCommonProperties.disableAccessKeyAuthentication
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRedisCommonProperties;
+        });
     }
 }

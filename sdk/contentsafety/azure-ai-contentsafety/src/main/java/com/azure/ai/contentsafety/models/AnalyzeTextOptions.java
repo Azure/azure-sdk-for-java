@@ -19,8 +19,8 @@ import java.util.List;
 public final class AnalyzeTextOptions implements JsonSerializable<AnalyzeTextOptions> {
 
     /*
-     * The text needs to be analyzed. We support a maximum of 10k Unicode characters (Unicode code points) in the text
-     * of one request.
+     * The text to be analyzed. We support a maximum of 10k Unicode characters (Unicode code points) in the text of one
+     * request.
      */
     @Generated
     private final String text;
@@ -63,8 +63,8 @@ public final class AnalyzeTextOptions implements JsonSerializable<AnalyzeTextOpt
     }
 
     /**
-     * Get the text property: The text needs to be analyzed. We support a maximum of 10k Unicode characters (Unicode
-     * code points) in the text of one request.
+     * Get the text property: The text to be analyzed. We support a maximum of 10k Unicode characters (Unicode code
+     * points) in the text of one request.
      *
      * @return the text value.
      */

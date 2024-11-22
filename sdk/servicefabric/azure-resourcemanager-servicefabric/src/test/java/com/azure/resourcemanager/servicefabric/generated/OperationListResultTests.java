@@ -30,14 +30,22 @@ public final class OperationListResultTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         OperationListResult model = new OperationListResult().withValue(Arrays.asList(
-            new OperationResultInner().withName("idtqajzyu").withIsDataAction(true)
-                .withDisplay(new AvailableOperationDisplay().withProvider("jkrlkhbzhfepg").withResource("qex")
-                    .withOperation("ocxscpaierhhbcs").withDescription("ummajtjaod"))
-                .withOrigin("bnbdxkqpxokajion").withNextLink("mexgstxgcp"),
-            new OperationResultInner().withName("gmaajrm").withIsDataAction(false)
+            new OperationResultInner().withName("idtqajzyu")
+                .withIsDataAction(true)
+                .withDisplay(new AvailableOperationDisplay().withProvider("jkrlkhbzhfepg")
+                    .withResource("qex")
+                    .withOperation("ocxscpaierhhbcs")
+                    .withDescription("ummajtjaod"))
+                .withOrigin("bnbdxkqpxokajion")
+                .withNextLink("mexgstxgcp"),
+            new OperationResultInner().withName("gmaajrm")
+                .withIsDataAction(false)
                 .withDisplay(new AvailableOperationDisplay().withProvider("rlovmclwhijcoej")
-                    .withResource("bzaqsqsycbkbfk").withOperation("kdkexxp").withDescription("fmxa"))
-                .withOrigin("fjpgddtocjjxhvp").withNextLink("uexhdzx")));
+                    .withResource("bzaqsqsycbkbfk")
+                    .withOperation("kdkexxp")
+                    .withDescription("fmxa"))
+                .withOrigin("fjpgddtocjjxhvp")
+                .withNextLink("uexhdzx")));
         model = BinaryData.fromObject(model).toObject(OperationListResult.class);
         Assertions.assertEquals("idtqajzyu", model.value().get(0).name());
         Assertions.assertEquals(true, model.value().get(0).isDataAction());

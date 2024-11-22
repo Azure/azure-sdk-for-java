@@ -7,6 +7,8 @@ import com.azure.spring.cloud.autoconfigure.implementation.context.AzureGlobalPr
 import com.azure.spring.cloud.autoconfigure.implementation.storage.blob.AzureStorageBlobAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.implementation.storage.blob.AzureStorageBlobResourceAutoConfiguration;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledOnOs;
+import org.junit.jupiter.api.condition.OS;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
@@ -27,10 +29,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringJUnitConfig
 @Testcontainers
+@EnabledOnOs(OS.LINUX)
 class StorageBlobContainerConnectionDetailsFactoryTests {
     @Container
     @ServiceConnection
-    private static final GenericContainer<?> azurite = new GenericContainer<>(
+    private static final GenericContainer<?> AZURITE_CONTAINER = new GenericContainer<>(
         "mcr.microsoft.com/azure-storage/azurite:latest")
         .withExposedPorts(10000)
         .withCommand("azurite --skipApiVersionCheck && azurite -l /data --blobHost 0.0.0.0 --queueHost 0.0.0.0 --tableHost 0.0.0.0");

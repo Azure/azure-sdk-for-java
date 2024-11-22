@@ -19,12 +19,14 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import static io.clientcore.core.models.SocketConnection.SocketConnectionProperties;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertSame;
@@ -43,6 +45,7 @@ public class SocketConnectionCacheTest {
 
     @BeforeAll
     public static void setup() throws IOException {
+        // Ensure previous server socket is closed if necessary
         if (myServerSocket != null && !myServerSocket.isClosed()) {
             try {
                 myServerSocket.close();
@@ -51,34 +54,59 @@ public class SocketConnectionCacheTest {
             }
         }
 
-        ServerSocket myServer = new ServerSocket(0);
-        int port = myServer.getLocalPort(); // Get the actual port number
+        // Create a CountDownLatch to signal when the server is ready
+        CountDownLatch serverReady = new CountDownLatch(1);
+
+        ServerSocket myServer = new ServerSocket(0);  // Bind to any available port
+        int port = myServer.getLocalPort();  // Get the actual port number
         myServer.setReuseAddress(true);
-        // Update socketConnectionProperties with the actual port number
+
+        // Update connection properties with the actual port number
         socketConnectionProperties = new SocketConnectionProperties("http", "localhost", port, null, 5000);
 
+        // Start the server thread
         server = new Thread(() -> {
             try {
-                myServerSocket = myServer.accept();
+                // Signal that the server is ready to accept connections
+                serverReady.countDown();
 
-                while (!Thread.currentThread().isInterrupted() && keepRunning) { // check the flag
-                    BufferedReader br = new BufferedReader(new InputStreamReader(myServerSocket.getInputStream()));
-                    DataOutputStream out = new DataOutputStream(myServerSocket.getOutputStream());
-                    while (keepRunning) { // check the flag
-                        String line;
-                        StringBuilder request = new StringBuilder();
-                        while ((line = br.readLine()) != null && !line.isEmpty()) {
-                            request.append(line).append("\n");
-                        }
-                        out.writeBytes("HTTP/1.1 200 OK\n\n");
-                        out.flush();
+                myServerSocket = myServer.accept();  // Accept a connection
+
+                // Set up input and output streams
+                BufferedReader br = new BufferedReader(new InputStreamReader(myServerSocket.getInputStream()));
+                DataOutputStream out = new DataOutputStream(myServerSocket.getOutputStream());
+
+                while (!Thread.currentThread().isInterrupted() && keepRunning) {
+                    StringBuilder request = new StringBuilder();
+                    String line;
+                    while ((line = br.readLine()) != null && !line.isEmpty()) {
+                        request.append(line).append("\n");
                     }
+
+                    // Send an HTTP response
+                    out.writeBytes("HTTP/1.1 200 OK\n\n");
+                    out.flush();
                 }
             } catch (IOException e) {
                 e.printStackTrace();
+            } finally {
+                try {
+                    if (myServerSocket != null && !myServerSocket.isClosed()) {
+                        myServerSocket.close();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
         server.start();
+
+        try {
+            // Wait for the server to be ready before proceeding
+            serverReady.await();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @AfterAll
@@ -123,13 +151,25 @@ public class SocketConnectionCacheTest {
     void testReuseConnection() {
         SocketConnectionCache.clearCache();
         SocketConnectionCache instance = SocketConnectionCache.getInstance(true, 10);
+
         try {
             SocketConnection connection = instance.get(socketConnectionProperties);
-            instance.reuseConnection(connection);
-            assertTrue(!connection.getSocket().isClosed(), "Connection is kept open");
+            // Ensure the connection is established and open
+            assertNotNull(connection, "Connection should not be null");
+            assertFalse(connection.getSocket().isClosed(), "Initial connection should be open");
 
+            // Step 2: Reuse the connection
+            instance.reuseConnection(connection);
+
+            // Ensure the connection remains open after reuse
+            assertFalse(connection.getSocket().isClosed(), "Connection should still be open after reuse");
+
+            // Step 3: Fetch the connection again from the cache
             SocketConnection connection2 = instance.get(socketConnectionProperties);
-            assertSame(connection, connection2, "Connections are not the same");
+
+            // Assert that the two connections are the same (i.e., reuse worked)
+            assertSame(connection, connection2, "Connection should be reused");
+
         } catch (IOException e) {
             fail("Exception thrown: " + e.getMessage());
         }
@@ -150,8 +190,8 @@ public class SocketConnectionCacheTest {
             // Access the connection pool size
             Field connectionPoolField = SocketConnectionCache.class.getDeclaredField("CONNECTION_POOL");
             connectionPoolField.setAccessible(true);
-            Map<SocketConnectionProperties, List<SocketConnection>> connectionPool =
-                (Map<SocketConnectionProperties, List<SocketConnection>>) connectionPoolField.get(instance);
+            Map<SocketConnectionProperties, List<SocketConnection>> connectionPool
+                = (Map<SocketConnectionProperties, List<SocketConnection>>) connectionPoolField.get(instance);
             int poolSize = connectionPool.get(socketConnectionProperties).size();
             // connection pool size is 1 because of single threaded request
             assertEquals(1, poolSize, "Connection pool size is not as expected");
@@ -191,8 +231,8 @@ public class SocketConnectionCacheTest {
         try {
             Field connectionPoolField = SocketConnectionCache.class.getDeclaredField("CONNECTION_POOL");
             connectionPoolField.setAccessible(true);
-            Map<SocketConnectionProperties, List<SocketConnection>> connectionPool =
-                (Map<SocketConnectionProperties, List<SocketConnection>>) connectionPoolField.get(instance);
+            Map<SocketConnectionProperties, List<SocketConnection>> connectionPool
+                = (Map<SocketConnectionProperties, List<SocketConnection>>) connectionPoolField.get(instance);
             int poolSize = connectionPool.get(socketConnectionProperties).size();
             assertTrue(poolSize >= 1 && poolSize <= 5, "Connection pool size is not within the expected range (1-5)");
         } catch (NoSuchFieldException | IllegalAccessException e) {
@@ -211,7 +251,16 @@ public class SocketConnectionCacheTest {
             SocketConnection connection2 = instance.get(socketConnectionProperties);
             assertNotSame(connection1, connection2, "Connections are the same");
         } catch (IOException e) {
-            fail("Exception thrown: " + e.getMessage());
+            fail("Test failed due to IOException: " + e.getMessage());
+        } finally {
+            // Clean up and close the server socket
+            if (myServerSocket != null && !myServerSocket.isClosed()) {
+                try {
+                    myServerSocket.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
@@ -229,8 +278,8 @@ public class SocketConnectionCacheTest {
             try {
                 Field connectionPoolField = SocketConnectionCache.class.getDeclaredField("CONNECTION_POOL");
                 connectionPoolField.setAccessible(true);
-                Map<SocketConnectionProperties, List<SocketConnection>> connectionPool =
-                    (Map<SocketConnectionProperties, List<SocketConnection>>) connectionPoolField.get(instance);
+                Map<SocketConnectionProperties, List<SocketConnection>> connectionPool
+                    = (Map<SocketConnectionProperties, List<SocketConnection>>) connectionPoolField.get(instance);
                 int poolSize = connectionPool.get(socketConnectionProperties).size();
                 assertEquals(0, poolSize, "Connection pool size should be 0 as connection is closed");
             } catch (NoSuchFieldException | IllegalAccessException e) {

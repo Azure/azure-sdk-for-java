@@ -44,32 +44,35 @@ public final class PrivateEndpointConnectionProxiesImpl implements PrivateEndpoi
     public Response<Void> validateWithResponse(String resourceGroupName, String accountName,
         String privateEndpointConnectionProxyId, PrivateEndpointConnectionProxyInner privateEndpointConnectionProxy,
         Context context) {
-        return this.serviceClient().validateWithResponse(resourceGroupName, accountName,
-            privateEndpointConnectionProxyId, privateEndpointConnectionProxy, context);
+        return this.serviceClient()
+            .validateWithResponse(resourceGroupName, accountName, privateEndpointConnectionProxyId,
+                privateEndpointConnectionProxy, context);
     }
 
     public void validate(String resourceGroupName, String accountName, String privateEndpointConnectionProxyId,
         PrivateEndpointConnectionProxyInner privateEndpointConnectionProxy) {
-        this.serviceClient().validate(resourceGroupName, accountName, privateEndpointConnectionProxyId,
-            privateEndpointConnectionProxy);
+        this.serviceClient()
+            .validate(resourceGroupName, accountName, privateEndpointConnectionProxyId, privateEndpointConnectionProxy);
     }
 
     public Response<Void> updatePrivateEndpointPropertiesWithResponse(String resourceGroupName, String accountName,
         String privateEndpointConnectionProxyId, PrivateEndpointUpdate privateEndpointUpdate, Context context) {
-        return this.serviceClient().updatePrivateEndpointPropertiesWithResponse(resourceGroupName, accountName,
-            privateEndpointConnectionProxyId, privateEndpointUpdate, context);
+        return this.serviceClient()
+            .updatePrivateEndpointPropertiesWithResponse(resourceGroupName, accountName,
+                privateEndpointConnectionProxyId, privateEndpointUpdate, context);
     }
 
     public void updatePrivateEndpointProperties(String resourceGroupName, String accountName,
         String privateEndpointConnectionProxyId, PrivateEndpointUpdate privateEndpointUpdate) {
-        this.serviceClient().updatePrivateEndpointProperties(resourceGroupName, accountName,
-            privateEndpointConnectionProxyId, privateEndpointUpdate);
+        this.serviceClient()
+            .updatePrivateEndpointProperties(resourceGroupName, accountName, privateEndpointConnectionProxyId,
+                privateEndpointUpdate);
     }
 
     public Response<PrivateEndpointConnectionProxy> getWithResponse(String resourceGroupName, String accountName,
         String privateEndpointConnectionProxyId, Context context) {
-        Response<PrivateEndpointConnectionProxyInner> inner = this.serviceClient().getWithResponse(resourceGroupName,
-            accountName, privateEndpointConnectionProxyId, context);
+        Response<PrivateEndpointConnectionProxyInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, accountName, privateEndpointConnectionProxyId, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new PrivateEndpointConnectionProxyImpl(inner.getValue(), this.manager()));

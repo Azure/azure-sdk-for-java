@@ -6,37 +6,38 @@ package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.models.DeleteOptions;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetPublicIpAddressConfigurationDnsSettings;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Describes a virtual machines scale set IP Configuration's PublicIPAddress configuration.
  */
 @Fluent
-public final class VirtualMachineScaleSetUpdatePublicIpAddressConfigurationProperties {
+public final class VirtualMachineScaleSetUpdatePublicIpAddressConfigurationProperties
+    implements JsonSerializable<VirtualMachineScaleSetUpdatePublicIpAddressConfigurationProperties> {
     /*
      * The idle timeout of the public IP address.
      */
-    @JsonProperty(value = "idleTimeoutInMinutes")
     private Integer idleTimeoutInMinutes;
 
     /*
      * The dns settings to be applied on the publicIP addresses .
      */
-    @JsonProperty(value = "dnsSettings")
     private VirtualMachineScaleSetPublicIpAddressConfigurationDnsSettings dnsSettings;
 
     /*
      * The PublicIPPrefix from which to allocate publicIP addresses.
      */
-    @JsonProperty(value = "publicIPPrefix")
     private SubResource publicIpPrefix;
 
     /*
      * Specify what happens to the public IP when the VM is deleted
      */
-    @JsonProperty(value = "deleteOption")
     private DeleteOptions deleteOption;
 
     /**
@@ -138,5 +139,57 @@ public final class VirtualMachineScaleSetUpdatePublicIpAddressConfigurationPrope
         if (dnsSettings() != null) {
             dnsSettings().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("idleTimeoutInMinutes", this.idleTimeoutInMinutes);
+        jsonWriter.writeJsonField("dnsSettings", this.dnsSettings);
+        jsonWriter.writeJsonField("publicIPPrefix", this.publicIpPrefix);
+        jsonWriter.writeStringField("deleteOption", this.deleteOption == null ? null : this.deleteOption.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualMachineScaleSetUpdatePublicIpAddressConfigurationProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualMachineScaleSetUpdatePublicIpAddressConfigurationProperties if the JsonReader was
+     * pointing to an instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the
+     * VirtualMachineScaleSetUpdatePublicIpAddressConfigurationProperties.
+     */
+    public static VirtualMachineScaleSetUpdatePublicIpAddressConfigurationProperties fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualMachineScaleSetUpdatePublicIpAddressConfigurationProperties deserializedVirtualMachineScaleSetUpdatePublicIpAddressConfigurationProperties
+                = new VirtualMachineScaleSetUpdatePublicIpAddressConfigurationProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("idleTimeoutInMinutes".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetUpdatePublicIpAddressConfigurationProperties.idleTimeoutInMinutes
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("dnsSettings".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetUpdatePublicIpAddressConfigurationProperties.dnsSettings
+                        = VirtualMachineScaleSetPublicIpAddressConfigurationDnsSettings.fromJson(reader);
+                } else if ("publicIPPrefix".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetUpdatePublicIpAddressConfigurationProperties.publicIpPrefix
+                        = SubResource.fromJson(reader);
+                } else if ("deleteOption".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetUpdatePublicIpAddressConfigurationProperties.deleteOption
+                        = DeleteOptions.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualMachineScaleSetUpdatePublicIpAddressConfigurationProperties;
+        });
     }
 }

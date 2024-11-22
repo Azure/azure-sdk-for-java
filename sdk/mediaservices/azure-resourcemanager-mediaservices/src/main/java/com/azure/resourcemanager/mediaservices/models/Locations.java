@@ -7,13 +7,15 @@ package com.azure.resourcemanager.mediaservices.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Locations. */
+/**
+ * Resource collection API of Locations.
+ */
 public interface Locations {
     /**
      * Check Name Availability
-     *
-     * <p>Checks whether the Media Service resource name is available.
-     *
+     * 
+     * Checks whether the Media Service resource name is available.
+     * 
      * @param locationName Location name.
      * @param parameters The request parameters.
      * @param context The context to associate with this operation.
@@ -22,14 +24,14 @@ public interface Locations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response from the check name availability request along with {@link Response}.
      */
-    Response<EntityNameAvailabilityCheckOutput> checkNameAvailabilityWithResponse(
-        String locationName, CheckNameAvailabilityInput parameters, Context context);
+    Response<EntityNameAvailabilityCheckOutput> checkNameAvailabilityWithResponse(String locationName,
+        CheckNameAvailabilityInput parameters, Context context);
 
     /**
      * Check Name Availability
-     *
-     * <p>Checks whether the Media Service resource name is available.
-     *
+     * 
+     * Checks whether the Media Service resource name is available.
+     * 
      * @param locationName Location name.
      * @param parameters The request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

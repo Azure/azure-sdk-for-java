@@ -5,28 +5,39 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The kind of the threat intelligence entity. */
+/**
+ * The kind of the threat intelligence entity.
+ */
 public final class ThreatIntelligenceResourceKindEnum extends ExpandableStringEnum<ThreatIntelligenceResourceKindEnum> {
-    /** Static value indicator for ThreatIntelligenceResourceKindEnum. */
+    /**
+     * Static value indicator for ThreatIntelligenceResourceKindEnum.
+     */
     public static final ThreatIntelligenceResourceKindEnum INDICATOR = fromString("indicator");
 
     /**
+     * Creates a new instance of ThreatIntelligenceResourceKindEnum value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ThreatIntelligenceResourceKindEnum() {
+    }
+
+    /**
      * Creates or finds a ThreatIntelligenceResourceKindEnum from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ThreatIntelligenceResourceKindEnum.
      */
-    @JsonCreator
     public static ThreatIntelligenceResourceKindEnum fromString(String name) {
         return fromString(name, ThreatIntelligenceResourceKindEnum.class);
     }
 
     /**
      * Gets known ThreatIntelligenceResourceKindEnum values.
-     *
+     * 
      * @return known ThreatIntelligenceResourceKindEnum values.
      */
     public static Collection<ThreatIntelligenceResourceKindEnum> values() {

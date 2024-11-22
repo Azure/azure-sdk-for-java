@@ -6,38 +6,38 @@ package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The ImportImageParameters model.
  */
 @Fluent
-public final class ImportImageParameters {
+public final class ImportImageParameters implements JsonSerializable<ImportImageParameters> {
     /*
      * The source of the image.
      */
-    @JsonProperty(value = "source", required = true)
     private ImportSource source;
 
     /*
-     * List of strings of the form repo[:tag]. When tag is omitted the source will be used (or 'latest' if source tag
-     * is also omitted).
+     * List of strings of the form repo[:tag]. When tag is omitted the source will be used (or 'latest' if source tag is
+     * also omitted).
      */
-    @JsonProperty(value = "targetTags")
     private List<String> targetTags;
 
     /*
      * List of strings of repository names to do a manifest only copy. No tag will be created.
      */
-    @JsonProperty(value = "untaggedTargetRepositories")
     private List<String> untaggedTargetRepositories;
 
     /*
      * When Force, any existing target tags will be overwritten. When NoForce, any existing target tags will fail the
      * operation before any copying begins.
      */
-    @JsonProperty(value = "mode")
     private ImportMode mode;
 
     /**
@@ -139,12 +139,61 @@ public final class ImportImageParameters {
      */
     public void validate() {
         if (source() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property source in model ImportImageParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property source in model ImportImageParameters"));
         } else {
             source().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ImportImageParameters.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("source", this.source);
+        jsonWriter.writeArrayField("targetTags", this.targetTags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("untaggedTargetRepositories", this.untaggedTargetRepositories,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("mode", this.mode == null ? null : this.mode.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ImportImageParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ImportImageParameters if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ImportImageParameters.
+     */
+    public static ImportImageParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ImportImageParameters deserializedImportImageParameters = new ImportImageParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("source".equals(fieldName)) {
+                    deserializedImportImageParameters.source = ImportSource.fromJson(reader);
+                } else if ("targetTags".equals(fieldName)) {
+                    List<String> targetTags = reader.readArray(reader1 -> reader1.getString());
+                    deserializedImportImageParameters.targetTags = targetTags;
+                } else if ("untaggedTargetRepositories".equals(fieldName)) {
+                    List<String> untaggedTargetRepositories = reader.readArray(reader1 -> reader1.getString());
+                    deserializedImportImageParameters.untaggedTargetRepositories = untaggedTargetRepositories;
+                } else if ("mode".equals(fieldName)) {
+                    deserializedImportImageParameters.mode = ImportMode.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedImportImageParameters;
+        });
+    }
 }

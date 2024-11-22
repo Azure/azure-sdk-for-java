@@ -16,8 +16,7 @@ public final class FormattedDuration {
     private static final long NANOSECONDS_PER_MINUTE = MINUTES.toNanos(1);
     private static final long NANOSECONDS_PER_SECOND = SECONDS.toNanos(1);
 
-    private static final ThreadLocal<StringBuilder> reusableStringBuilder =
-        ThreadLocal.withInitial(StringBuilder::new);
+    private static final ThreadLocal<StringBuilder> reusableStringBuilder = ThreadLocal.withInitial(StringBuilder::new);
 
     public static String fromNanos(long durationNanos) {
         long remainingNanos = durationNanos;
@@ -45,8 +44,8 @@ public final class FormattedDuration {
         return sb.toString();
     }
 
-    private static void appendDaysHoursMinutesSeconds(
-        StringBuilder sb, long days, long hours, long minutes, long seconds) {
+    private static void appendDaysHoursMinutesSeconds(StringBuilder sb, long days, long hours, long minutes,
+        long seconds) {
         if (days > 0) {
             sb.append(days);
             sb.append('.');

@@ -37,16 +37,14 @@ import java.util.regex.Pattern;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 public class QuickPulseTestBase extends TestProxyTestBase {
-    private static final String APPLICATIONINSIGHTS_AUTHENTICATION_SCOPE =
-        "https://monitor.azure.com//.default";
+    private static final String APPLICATIONINSIGHTS_AUTHENTICATION_SCOPE = "https://monitor.azure.com//.default";
 
     HttpPipeline getHttpPipelineWithAuthentication() {
         if (getTestMode() == TestMode.RECORD || getTestMode() == TestMode.LIVE) {
-            TokenCredential credential =
-                new DefaultAzureCredentialBuilder().managedIdentityClientId("AZURE_CLIENT_ID").build();
+            TokenCredential credential
+                = new DefaultAzureCredentialBuilder().managedIdentityClientId("AZURE_CLIENT_ID").build();
             return getHttpPipeline(
-                new BearerTokenAuthenticationPolicy(
-                    credential, APPLICATIONINSIGHTS_AUTHENTICATION_SCOPE));
+                new BearerTokenAuthenticationPolicy(credential, APPLICATIONINSIGHTS_AUTHENTICATION_SCOPE));
         } else {
             return getHttpPipeline(new BearerTokenAuthenticationPolicy(new MockTokenCredential()));
         }
@@ -62,19 +60,17 @@ public class QuickPulseTestBase extends TestProxyTestBase {
 
         if (getTestMode() == TestMode.PLAYBACK) {
             httpClient = interceptorManager.getPlaybackClient();
-            interceptorManager.addMatchers(
-                Arrays.asList(new BodilessMatcher(), new CustomMatcher()
-                    .setHeadersKeyOnlyMatch(Arrays.asList("x-ms-qps-transmission-time"))));
+            interceptorManager.addMatchers(Arrays.asList(new BodilessMatcher(),
+                new CustomMatcher().setHeadersKeyOnlyMatch(Arrays.asList("x-ms-qps-transmission-time"))));
         }
-        return new HttpPipelineBuilder()
-            .httpClient(httpClient)
+        return new HttpPipelineBuilder().httpClient(httpClient)
             .policies(allPolicies.toArray(new HttpPipelinePolicy[0]))
             .tracer(new NoopTracer())
             .build();
     }
 
-    public static TelemetryItem createRequestTelemetry(
-        String name, Date timestamp, long durationMillis, String responseCode, boolean success) {
+    public static TelemetryItem createRequestTelemetry(String name, Date timestamp, long durationMillis,
+        String responseCode, boolean success) {
         RequestTelemetryBuilder telemetryBuilder = RequestTelemetryBuilder.create();
         telemetryBuilder.addProperty("customProperty", "customValue");
         telemetryBuilder.setName(name);
@@ -86,8 +82,8 @@ public class QuickPulseTestBase extends TestProxyTestBase {
         return telemetryBuilder.build();
     }
 
-    public static TelemetryItem createRemoteDependencyTelemetry(
-        String name, String command, long durationMillis, boolean success) {
+    public static TelemetryItem createRemoteDependencyTelemetry(String name, String command, long durationMillis,
+        boolean success) {
         RemoteDependencyTelemetryBuilder telemetryBuilder = RemoteDependencyTelemetryBuilder.create();
         telemetryBuilder.addProperty("customProperty", "customValue");
         telemetryBuilder.setName(name);
@@ -108,17 +104,14 @@ public class QuickPulseTestBase extends TestProxyTestBase {
         }
 
         @Override
-        public Mono<HttpResponse> process(
-            HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-            Mono<String> asyncString =
-                FluxUtil.collectBytesInByteBufferStream(context.getHttpRequest().getBody())
-                    .map(bytes -> new String(bytes, StandardCharsets.UTF_8));
-            asyncString.subscribe(
-                value -> {
-                    if (Pattern.matches(expectedRequestBody, value)) {
-                        countDown.countDown();
-                    }
-                });
+        public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+            Mono<String> asyncString = FluxUtil.collectBytesInByteBufferStream(context.getHttpRequest().getBody())
+                .map(bytes -> new String(bytes, StandardCharsets.UTF_8));
+            asyncString.subscribe(value -> {
+                if (Pattern.matches(expectedRequestBody, value)) {
+                    countDown.countDown();
+                }
+            });
             return next.process();
         }
     }

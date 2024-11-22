@@ -5,83 +5,75 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * VPN client connection health detail.
  */
 @Immutable
-public final class VpnClientConnectionHealthDetail {
+public final class VpnClientConnectionHealthDetail implements JsonSerializable<VpnClientConnectionHealthDetail> {
     /*
      * The vpn client Id.
      */
-    @JsonProperty(value = "vpnConnectionId", access = JsonProperty.Access.WRITE_ONLY)
     private String vpnConnectionId;
 
     /*
      * The duration time of a connected vpn client.
      */
-    @JsonProperty(value = "vpnConnectionDuration", access = JsonProperty.Access.WRITE_ONLY)
     private Long vpnConnectionDuration;
 
     /*
      * The start time of a connected vpn client.
      */
-    @JsonProperty(value = "vpnConnectionTime", access = JsonProperty.Access.WRITE_ONLY)
     private String vpnConnectionTime;
 
     /*
      * The public Ip of a connected vpn client.
      */
-    @JsonProperty(value = "publicIpAddress", access = JsonProperty.Access.WRITE_ONLY)
     private String publicIpAddress;
 
     /*
      * The assigned private Ip of a connected vpn client.
      */
-    @JsonProperty(value = "privateIpAddress", access = JsonProperty.Access.WRITE_ONLY)
     private String privateIpAddress;
 
     /*
      * The user name of a connected vpn client.
      */
-    @JsonProperty(value = "vpnUserName", access = JsonProperty.Access.WRITE_ONLY)
     private String vpnUsername;
 
     /*
      * The max band width.
      */
-    @JsonProperty(value = "maxBandwidth", access = JsonProperty.Access.WRITE_ONLY)
     private Long maxBandwidth;
 
     /*
      * The egress packets per second.
      */
-    @JsonProperty(value = "egressPacketsTransferred", access = JsonProperty.Access.WRITE_ONLY)
     private Long egressPacketsTransferred;
 
     /*
      * The egress bytes per second.
      */
-    @JsonProperty(value = "egressBytesTransferred", access = JsonProperty.Access.WRITE_ONLY)
     private Long egressBytesTransferred;
 
     /*
      * The ingress packets per second.
      */
-    @JsonProperty(value = "ingressPacketsTransferred", access = JsonProperty.Access.WRITE_ONLY)
     private Long ingressPacketsTransferred;
 
     /*
      * The ingress bytes per second.
      */
-    @JsonProperty(value = "ingressBytesTransferred", access = JsonProperty.Access.WRITE_ONLY)
     private Long ingressBytesTransferred;
 
     /*
      * The max packets transferred per second.
      */
-    @JsonProperty(value = "maxPacketsPerSecond", access = JsonProperty.Access.WRITE_ONLY)
     private Long maxPacketsPerSecond;
 
     /**
@@ -204,5 +196,69 @@ public final class VpnClientConnectionHealthDetail {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VpnClientConnectionHealthDetail from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VpnClientConnectionHealthDetail if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VpnClientConnectionHealthDetail.
+     */
+    public static VpnClientConnectionHealthDetail fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VpnClientConnectionHealthDetail deserializedVpnClientConnectionHealthDetail
+                = new VpnClientConnectionHealthDetail();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("vpnConnectionId".equals(fieldName)) {
+                    deserializedVpnClientConnectionHealthDetail.vpnConnectionId = reader.getString();
+                } else if ("vpnConnectionDuration".equals(fieldName)) {
+                    deserializedVpnClientConnectionHealthDetail.vpnConnectionDuration
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("vpnConnectionTime".equals(fieldName)) {
+                    deserializedVpnClientConnectionHealthDetail.vpnConnectionTime = reader.getString();
+                } else if ("publicIpAddress".equals(fieldName)) {
+                    deserializedVpnClientConnectionHealthDetail.publicIpAddress = reader.getString();
+                } else if ("privateIpAddress".equals(fieldName)) {
+                    deserializedVpnClientConnectionHealthDetail.privateIpAddress = reader.getString();
+                } else if ("vpnUserName".equals(fieldName)) {
+                    deserializedVpnClientConnectionHealthDetail.vpnUsername = reader.getString();
+                } else if ("maxBandwidth".equals(fieldName)) {
+                    deserializedVpnClientConnectionHealthDetail.maxBandwidth = reader.getNullable(JsonReader::getLong);
+                } else if ("egressPacketsTransferred".equals(fieldName)) {
+                    deserializedVpnClientConnectionHealthDetail.egressPacketsTransferred
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("egressBytesTransferred".equals(fieldName)) {
+                    deserializedVpnClientConnectionHealthDetail.egressBytesTransferred
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("ingressPacketsTransferred".equals(fieldName)) {
+                    deserializedVpnClientConnectionHealthDetail.ingressPacketsTransferred
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("ingressBytesTransferred".equals(fieldName)) {
+                    deserializedVpnClientConnectionHealthDetail.ingressBytesTransferred
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("maxPacketsPerSecond".equals(fieldName)) {
+                    deserializedVpnClientConnectionHealthDetail.maxPacketsPerSecond
+                        = reader.getNullable(JsonReader::getLong);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVpnClientConnectionHealthDetail;
+        });
     }
 }

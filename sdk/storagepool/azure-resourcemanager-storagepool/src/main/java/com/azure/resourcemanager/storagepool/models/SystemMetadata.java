@@ -5,55 +5,59 @@
 package com.azure.resourcemanager.storagepool.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** Metadata pertaining to creation and last modification of the resource. */
+/**
+ * Metadata pertaining to creation and last modification of the resource.
+ */
 @Fluent
-public final class SystemMetadata {
+public final class SystemMetadata implements JsonSerializable<SystemMetadata> {
     /*
      * The identity that created the resource.
      */
-    @JsonProperty(value = "createdBy")
     private String createdBy;
 
     /*
      * The type of identity that created the resource.
      */
-    @JsonProperty(value = "createdByType")
     private CreatedByType createdByType;
 
     /*
      * The timestamp of resource creation (UTC).
      */
-    @JsonProperty(value = "createdAt")
     private OffsetDateTime createdAt;
 
     /*
      * The identity that last modified the resource.
      */
-    @JsonProperty(value = "lastModifiedBy")
     private String lastModifiedBy;
 
     /*
      * The type of identity that last modified the resource.
      */
-    @JsonProperty(value = "lastModifiedByType")
     private CreatedByType lastModifiedByType;
 
     /*
      * The type of identity that last modified the resource.
      */
-    @JsonProperty(value = "lastModifiedAt")
     private OffsetDateTime lastModifiedAt;
 
-    /** Creates an instance of SystemMetadata class. */
+    /**
+     * Creates an instance of SystemMetadata class.
+     */
     public SystemMetadata() {
     }
 
     /**
      * Get the createdBy property: The identity that created the resource.
-     *
+     * 
      * @return the createdBy value.
      */
     public String createdBy() {
@@ -62,7 +66,7 @@ public final class SystemMetadata {
 
     /**
      * Set the createdBy property: The identity that created the resource.
-     *
+     * 
      * @param createdBy the createdBy value to set.
      * @return the SystemMetadata object itself.
      */
@@ -73,7 +77,7 @@ public final class SystemMetadata {
 
     /**
      * Get the createdByType property: The type of identity that created the resource.
-     *
+     * 
      * @return the createdByType value.
      */
     public CreatedByType createdByType() {
@@ -82,7 +86,7 @@ public final class SystemMetadata {
 
     /**
      * Set the createdByType property: The type of identity that created the resource.
-     *
+     * 
      * @param createdByType the createdByType value to set.
      * @return the SystemMetadata object itself.
      */
@@ -93,7 +97,7 @@ public final class SystemMetadata {
 
     /**
      * Get the createdAt property: The timestamp of resource creation (UTC).
-     *
+     * 
      * @return the createdAt value.
      */
     public OffsetDateTime createdAt() {
@@ -102,7 +106,7 @@ public final class SystemMetadata {
 
     /**
      * Set the createdAt property: The timestamp of resource creation (UTC).
-     *
+     * 
      * @param createdAt the createdAt value to set.
      * @return the SystemMetadata object itself.
      */
@@ -113,7 +117,7 @@ public final class SystemMetadata {
 
     /**
      * Get the lastModifiedBy property: The identity that last modified the resource.
-     *
+     * 
      * @return the lastModifiedBy value.
      */
     public String lastModifiedBy() {
@@ -122,7 +126,7 @@ public final class SystemMetadata {
 
     /**
      * Set the lastModifiedBy property: The identity that last modified the resource.
-     *
+     * 
      * @param lastModifiedBy the lastModifiedBy value to set.
      * @return the SystemMetadata object itself.
      */
@@ -133,7 +137,7 @@ public final class SystemMetadata {
 
     /**
      * Get the lastModifiedByType property: The type of identity that last modified the resource.
-     *
+     * 
      * @return the lastModifiedByType value.
      */
     public CreatedByType lastModifiedByType() {
@@ -142,7 +146,7 @@ public final class SystemMetadata {
 
     /**
      * Set the lastModifiedByType property: The type of identity that last modified the resource.
-     *
+     * 
      * @param lastModifiedByType the lastModifiedByType value to set.
      * @return the SystemMetadata object itself.
      */
@@ -153,7 +157,7 @@ public final class SystemMetadata {
 
     /**
      * Get the lastModifiedAt property: The type of identity that last modified the resource.
-     *
+     * 
      * @return the lastModifiedAt value.
      */
     public OffsetDateTime lastModifiedAt() {
@@ -162,7 +166,7 @@ public final class SystemMetadata {
 
     /**
      * Set the lastModifiedAt property: The type of identity that last modified the resource.
-     *
+     * 
      * @param lastModifiedAt the lastModifiedAt value to set.
      * @return the SystemMetadata object itself.
      */
@@ -173,9 +177,65 @@ public final class SystemMetadata {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("createdBy", this.createdBy);
+        jsonWriter.writeStringField("createdByType", this.createdByType == null ? null : this.createdByType.toString());
+        jsonWriter.writeStringField("createdAt",
+            this.createdAt == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.createdAt));
+        jsonWriter.writeStringField("lastModifiedBy", this.lastModifiedBy);
+        jsonWriter.writeStringField("lastModifiedByType",
+            this.lastModifiedByType == null ? null : this.lastModifiedByType.toString());
+        jsonWriter.writeStringField("lastModifiedAt",
+            this.lastModifiedAt == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastModifiedAt));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SystemMetadata from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SystemMetadata if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SystemMetadata.
+     */
+    public static SystemMetadata fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SystemMetadata deserializedSystemMetadata = new SystemMetadata();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("createdBy".equals(fieldName)) {
+                    deserializedSystemMetadata.createdBy = reader.getString();
+                } else if ("createdByType".equals(fieldName)) {
+                    deserializedSystemMetadata.createdByType = CreatedByType.fromString(reader.getString());
+                } else if ("createdAt".equals(fieldName)) {
+                    deserializedSystemMetadata.createdAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastModifiedBy".equals(fieldName)) {
+                    deserializedSystemMetadata.lastModifiedBy = reader.getString();
+                } else if ("lastModifiedByType".equals(fieldName)) {
+                    deserializedSystemMetadata.lastModifiedByType = CreatedByType.fromString(reader.getString());
+                } else if ("lastModifiedAt".equals(fieldName)) {
+                    deserializedSystemMetadata.lastModifiedAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSystemMetadata;
+        });
     }
 }

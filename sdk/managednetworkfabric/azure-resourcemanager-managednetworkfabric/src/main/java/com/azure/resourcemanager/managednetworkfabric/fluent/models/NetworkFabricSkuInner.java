@@ -125,10 +125,8 @@ public final class NetworkFabricSkuInner extends ProxyResource {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model NetworkFabricSkuInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerProperties in model NetworkFabricSkuInner"));
         } else {
             innerProperties().validate();
         }

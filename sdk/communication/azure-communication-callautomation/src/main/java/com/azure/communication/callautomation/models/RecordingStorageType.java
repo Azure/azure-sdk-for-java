@@ -21,6 +21,15 @@ public final class RecordingStorageType extends ExpandableStringEnum<RecordingSt
     public RecordingStorageType() {}
 
     /**
+     * Creates an instance of {@link RecordingStorageType} with no string value.
+     *
+     * @deprecated Please use {@link #fromString(String)} to create an instance of RecordingStorageType.
+     */
+    @Deprecated
+    public RecordingStorageType() {
+    }
+
+    /**
      * Creates or finds a RecordingStorageType from its string representation.
      *
      * @param name a name to look for.

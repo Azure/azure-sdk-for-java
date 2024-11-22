@@ -5,7 +5,11 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -13,14 +17,13 @@ import java.util.List;
  * provisioned.
  */
 @Fluent
-public final class OSProfile {
+public final class OSProfile implements JsonSerializable<OSProfile> {
     /*
      * Specifies the host OS name of the virtual machine. This name cannot be updated after the VM is created.
      * **Max-length (Windows):** 15 characters. **Max-length (Linux):** 64 characters. For naming conventions and
      * restrictions see [Azure infrastructure services implementation
      * guidelines](https://docs.microsoft.com/azure/azure-resource-manager/management/resource-name-rules).
      */
-    @JsonProperty(value = "computerName")
     private String computerName;
 
     /*
@@ -32,7 +35,6 @@ public final class OSProfile {
      * (Linux):** 1 character <br><br> **Max-length (Linux):** 64 characters <br><br> **Max-length (Windows):** 20
      * characters.
      */
-    @JsonProperty(value = "adminUsername")
     private String adminUsername;
 
     /*
@@ -47,7 +49,6 @@ public final class OSProfile {
      * password, see [Manage users, SSH, and check or repair disks on Azure Linux VMs using the VMAccess
      * Extension](https://docs.microsoft.com/troubleshoot/azure/virtual-machines/troubleshoot-ssh-connection)
      */
-    @JsonProperty(value = "adminPassword")
     private String adminPassword;
 
     /*
@@ -59,13 +60,11 @@ public final class OSProfile {
      * for your Linux VM, see [Using cloud-init to customize a Linux VM during
      * creation](https://docs.microsoft.com/azure/virtual-machines/linux/using-cloud-init).
      */
-    @JsonProperty(value = "customData")
     private String customData;
 
     /*
      * Specifies Windows operating system settings on the virtual machine.
      */
-    @JsonProperty(value = "windowsConfiguration")
     private WindowsConfiguration windowsConfiguration;
 
     /*
@@ -73,7 +72,6 @@ public final class OSProfile {
      * distributions, see [Linux on Azure-Endorsed
      * Distributions](https://docs.microsoft.com/azure/virtual-machines/linux/endorsed-distros).
      */
-    @JsonProperty(value = "linuxConfiguration")
     private LinuxConfiguration linuxConfiguration;
 
     /*
@@ -83,20 +81,17 @@ public final class OSProfile {
      * virtual machine extension for
      * Windows](https://docs.microsoft.com/azure/virtual-machines/extensions/key-vault-windows).
      */
-    @JsonProperty(value = "secrets")
     private List<VaultSecretGroup> secrets;
 
     /*
      * Specifies whether extension operations should be allowed on the virtual machine. This may only be set to False
      * when no extensions are present on the virtual machine.
      */
-    @JsonProperty(value = "allowExtensionOperations")
     private Boolean allowExtensionOperations;
 
     /*
      * Optional property which must either be set to True or omitted.
      */
-    @JsonProperty(value = "requireGuestProvisionSignal")
     private Boolean requireGuestProvisionSignal;
 
     /**
@@ -368,5 +363,66 @@ public final class OSProfile {
         if (secrets() != null) {
             secrets().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("computerName", this.computerName);
+        jsonWriter.writeStringField("adminUsername", this.adminUsername);
+        jsonWriter.writeStringField("adminPassword", this.adminPassword);
+        jsonWriter.writeStringField("customData", this.customData);
+        jsonWriter.writeJsonField("windowsConfiguration", this.windowsConfiguration);
+        jsonWriter.writeJsonField("linuxConfiguration", this.linuxConfiguration);
+        jsonWriter.writeArrayField("secrets", this.secrets, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeBooleanField("allowExtensionOperations", this.allowExtensionOperations);
+        jsonWriter.writeBooleanField("requireGuestProvisionSignal", this.requireGuestProvisionSignal);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OSProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OSProfile if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the OSProfile.
+     */
+    public static OSProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OSProfile deserializedOSProfile = new OSProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("computerName".equals(fieldName)) {
+                    deserializedOSProfile.computerName = reader.getString();
+                } else if ("adminUsername".equals(fieldName)) {
+                    deserializedOSProfile.adminUsername = reader.getString();
+                } else if ("adminPassword".equals(fieldName)) {
+                    deserializedOSProfile.adminPassword = reader.getString();
+                } else if ("customData".equals(fieldName)) {
+                    deserializedOSProfile.customData = reader.getString();
+                } else if ("windowsConfiguration".equals(fieldName)) {
+                    deserializedOSProfile.windowsConfiguration = WindowsConfiguration.fromJson(reader);
+                } else if ("linuxConfiguration".equals(fieldName)) {
+                    deserializedOSProfile.linuxConfiguration = LinuxConfiguration.fromJson(reader);
+                } else if ("secrets".equals(fieldName)) {
+                    List<VaultSecretGroup> secrets = reader.readArray(reader1 -> VaultSecretGroup.fromJson(reader1));
+                    deserializedOSProfile.secrets = secrets;
+                } else if ("allowExtensionOperations".equals(fieldName)) {
+                    deserializedOSProfile.allowExtensionOperations = reader.getNullable(JsonReader::getBoolean);
+                } else if ("requireGuestProvisionSignal".equals(fieldName)) {
+                    deserializedOSProfile.requireGuestProvisionSignal = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOSProfile;
+        });
     }
 }

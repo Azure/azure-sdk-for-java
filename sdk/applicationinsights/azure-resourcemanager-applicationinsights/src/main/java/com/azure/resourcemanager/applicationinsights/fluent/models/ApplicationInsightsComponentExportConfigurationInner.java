@@ -274,8 +274,8 @@ public final class ApplicationInsightsComponentExportConfigurationInner {
      * @param notificationQueueEnabled the notificationQueueEnabled value to set.
      * @return the ApplicationInsightsComponentExportConfigurationInner object itself.
      */
-    public ApplicationInsightsComponentExportConfigurationInner withNotificationQueueEnabled(
-        String notificationQueueEnabled) {
+    public ApplicationInsightsComponentExportConfigurationInner
+        withNotificationQueueEnabled(String notificationQueueEnabled) {
         this.notificationQueueEnabled = notificationQueueEnabled;
         return this;
     }

@@ -5,37 +5,37 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The configuration of the partition key to be used for partitioning data into multiple partitions.
  */
 @Fluent
-public final class ContainerPartitionKey {
+public final class ContainerPartitionKey implements JsonSerializable<ContainerPartitionKey> {
     /*
      * List of paths using which data within the container can be partitioned
      */
-    @JsonProperty(value = "paths")
     private List<String> paths;
 
     /*
-     * Indicates the kind of algorithm used for partitioning. For MultiHash, multiple partition keys (upto three maximum) are supported for container create
+     * Indicates the kind of algorithm used for partitioning. For MultiHash, multiple partition keys (upto three
+     * maximum) are supported for container create
      */
-    @JsonProperty(value = "kind")
     private PartitionKind kind;
 
     /*
      * Indicates the version of the partition key definition
      */
-    @JsonProperty(value = "version")
     private Integer version;
 
     /*
      * Indicates if the container is using a system generated partition key
      */
-    @JsonProperty(value = "systemKey", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean systemKey;
 
     /**
@@ -46,7 +46,7 @@ public final class ContainerPartitionKey {
 
     /**
      * Get the paths property: List of paths using which data within the container can be partitioned.
-     *
+     * 
      * @return the paths value.
      */
     public List<String> paths() {
@@ -55,7 +55,7 @@ public final class ContainerPartitionKey {
 
     /**
      * Set the paths property: List of paths using which data within the container can be partitioned.
-     *
+     * 
      * @param paths the paths value to set.
      * @return the ContainerPartitionKey object itself.
      */
@@ -67,7 +67,7 @@ public final class ContainerPartitionKey {
     /**
      * Get the kind property: Indicates the kind of algorithm used for partitioning. For MultiHash, multiple partition
      * keys (upto three maximum) are supported for container create.
-     *
+     * 
      * @return the kind value.
      */
     public PartitionKind kind() {
@@ -77,7 +77,7 @@ public final class ContainerPartitionKey {
     /**
      * Set the kind property: Indicates the kind of algorithm used for partitioning. For MultiHash, multiple partition
      * keys (upto three maximum) are supported for container create.
-     *
+     * 
      * @param kind the kind value to set.
      * @return the ContainerPartitionKey object itself.
      */
@@ -88,7 +88,7 @@ public final class ContainerPartitionKey {
 
     /**
      * Get the version property: Indicates the version of the partition key definition.
-     *
+     * 
      * @return the version value.
      */
     public Integer version() {
@@ -97,7 +97,7 @@ public final class ContainerPartitionKey {
 
     /**
      * Set the version property: Indicates the version of the partition key definition.
-     *
+     * 
      * @param version the version value to set.
      * @return the ContainerPartitionKey object itself.
      */
@@ -108,7 +108,7 @@ public final class ContainerPartitionKey {
 
     /**
      * Get the systemKey property: Indicates if the container is using a system generated partition key.
-     *
+     * 
      * @return the systemKey value.
      */
     public Boolean systemKey() {
@@ -117,9 +117,54 @@ public final class ContainerPartitionKey {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("paths", this.paths, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        jsonWriter.writeNumberField("version", this.version);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ContainerPartitionKey from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ContainerPartitionKey if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ContainerPartitionKey.
+     */
+    public static ContainerPartitionKey fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ContainerPartitionKey deserializedContainerPartitionKey = new ContainerPartitionKey();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("paths".equals(fieldName)) {
+                    List<String> paths = reader.readArray(reader1 -> reader1.getString());
+                    deserializedContainerPartitionKey.paths = paths;
+                } else if ("kind".equals(fieldName)) {
+                    deserializedContainerPartitionKey.kind = PartitionKind.fromString(reader.getString());
+                } else if ("version".equals(fieldName)) {
+                    deserializedContainerPartitionKey.version = reader.getNullable(JsonReader::getInt);
+                } else if ("systemKey".equals(fieldName)) {
+                    deserializedContainerPartitionKey.systemKey = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedContainerPartitionKey;
+        });
     }
 }

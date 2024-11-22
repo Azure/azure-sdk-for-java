@@ -73,20 +73,16 @@ public final class CustomCertificateImpl
     }
 
     public CustomCertificate create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWebPubSubCustomCertificates()
-                .createOrUpdate(resourceGroupName, resourceName, certificateName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getWebPubSubCustomCertificates()
+            .createOrUpdate(resourceGroupName, resourceName, certificateName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public CustomCertificate create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWebPubSubCustomCertificates()
-                .createOrUpdate(resourceGroupName, resourceName, certificateName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getWebPubSubCustomCertificates()
+            .createOrUpdate(resourceGroupName, resourceName, certificateName, this.innerModel(), context);
         return this;
     }
 
@@ -101,49 +97,41 @@ public final class CustomCertificateImpl
     }
 
     public CustomCertificate apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWebPubSubCustomCertificates()
-                .createOrUpdate(resourceGroupName, resourceName, certificateName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getWebPubSubCustomCertificates()
+            .createOrUpdate(resourceGroupName, resourceName, certificateName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public CustomCertificate apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWebPubSubCustomCertificates()
-                .createOrUpdate(resourceGroupName, resourceName, certificateName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getWebPubSubCustomCertificates()
+            .createOrUpdate(resourceGroupName, resourceName, certificateName, this.innerModel(), context);
         return this;
     }
 
-    CustomCertificateImpl(
-        CustomCertificateInner innerObject, com.azure.resourcemanager.webpubsub.WebPubSubManager serviceManager) {
+    CustomCertificateImpl(CustomCertificateInner innerObject,
+        com.azure.resourcemanager.webpubsub.WebPubSubManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.resourceName = Utils.getValueFromIdByName(innerObject.id(), "webPubSub");
-        this.certificateName = Utils.getValueFromIdByName(innerObject.id(), "customCertificates");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.resourceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "webPubSub");
+        this.certificateName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "customCertificates");
     }
 
     public CustomCertificate refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWebPubSubCustomCertificates()
-                .getWithResponse(resourceGroupName, resourceName, certificateName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getWebPubSubCustomCertificates()
+            .getWithResponse(resourceGroupName, resourceName, certificateName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public CustomCertificate refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWebPubSubCustomCertificates()
-                .getWithResponse(resourceGroupName, resourceName, certificateName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getWebPubSubCustomCertificates()
+            .getWithResponse(resourceGroupName, resourceName, certificateName, context)
+            .getValue();
         return this;
     }
 

@@ -5,68 +5,67 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.util.HashMap;
+import java.time.format.DateTimeFormatter;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
  * endpoint
- *
- * <p>Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
+ * 
+ * Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
  * entity types.
  */
 @Fluent
 public final class MicrosoftGraphEndpoint extends MicrosoftGraphDirectoryObjectInner {
     /*
-     * Describes the capability that is associated with this resource. (e.g. Messages, Conversations, etc.)  Not
+     * Describes the capability that is associated with this resource. (e.g. Messages, Conversations, etc.) Not
      * nullable. Read-only.
      */
-    @JsonProperty(value = "capability")
     private String capability;
 
     /*
      * Application id of the publishing underlying service. Not nullable. Read-only.
      */
-    @JsonProperty(value = "providerId")
     private String providerId;
 
     /*
      * Name of the publishing underlying service. Read-only.
      */
-    @JsonProperty(value = "providerName")
     private String providerName;
 
     /*
      * For Microsoft 365 groups, this is set to a well-known name for the resource (e.g. Yammer.FeedURL etc.). Not
      * nullable. Read-only.
      */
-    @JsonProperty(value = "providerResourceId")
     private String providerResourceId;
 
     /*
      * URL of the published resource. Not nullable. Read-only.
      */
-    @JsonProperty(value = "uri")
     private String uri;
 
     /*
      * Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
      * entity types.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphEndpoint class. */
+    /**
+     * Creates an instance of MicrosoftGraphEndpoint class.
+     */
     public MicrosoftGraphEndpoint() {
     }
 
     /**
      * Get the capability property: Describes the capability that is associated with this resource. (e.g. Messages,
      * Conversations, etc.) Not nullable. Read-only.
-     *
+     * 
      * @return the capability value.
      */
     public String capability() {
@@ -76,7 +75,7 @@ public final class MicrosoftGraphEndpoint extends MicrosoftGraphDirectoryObjectI
     /**
      * Set the capability property: Describes the capability that is associated with this resource. (e.g. Messages,
      * Conversations, etc.) Not nullable. Read-only.
-     *
+     * 
      * @param capability the capability value to set.
      * @return the MicrosoftGraphEndpoint object itself.
      */
@@ -87,7 +86,7 @@ public final class MicrosoftGraphEndpoint extends MicrosoftGraphDirectoryObjectI
 
     /**
      * Get the providerId property: Application id of the publishing underlying service. Not nullable. Read-only.
-     *
+     * 
      * @return the providerId value.
      */
     public String providerId() {
@@ -96,7 +95,7 @@ public final class MicrosoftGraphEndpoint extends MicrosoftGraphDirectoryObjectI
 
     /**
      * Set the providerId property: Application id of the publishing underlying service. Not nullable. Read-only.
-     *
+     * 
      * @param providerId the providerId value to set.
      * @return the MicrosoftGraphEndpoint object itself.
      */
@@ -107,7 +106,7 @@ public final class MicrosoftGraphEndpoint extends MicrosoftGraphDirectoryObjectI
 
     /**
      * Get the providerName property: Name of the publishing underlying service. Read-only.
-     *
+     * 
      * @return the providerName value.
      */
     public String providerName() {
@@ -116,7 +115,7 @@ public final class MicrosoftGraphEndpoint extends MicrosoftGraphDirectoryObjectI
 
     /**
      * Set the providerName property: Name of the publishing underlying service. Read-only.
-     *
+     * 
      * @param providerName the providerName value to set.
      * @return the MicrosoftGraphEndpoint object itself.
      */
@@ -128,7 +127,7 @@ public final class MicrosoftGraphEndpoint extends MicrosoftGraphDirectoryObjectI
     /**
      * Get the providerResourceId property: For Microsoft 365 groups, this is set to a well-known name for the resource
      * (e.g. Yammer.FeedURL etc.). Not nullable. Read-only.
-     *
+     * 
      * @return the providerResourceId value.
      */
     public String providerResourceId() {
@@ -138,7 +137,7 @@ public final class MicrosoftGraphEndpoint extends MicrosoftGraphDirectoryObjectI
     /**
      * Set the providerResourceId property: For Microsoft 365 groups, this is set to a well-known name for the resource
      * (e.g. Yammer.FeedURL etc.). Not nullable. Read-only.
-     *
+     * 
      * @param providerResourceId the providerResourceId value to set.
      * @return the MicrosoftGraphEndpoint object itself.
      */
@@ -149,7 +148,7 @@ public final class MicrosoftGraphEndpoint extends MicrosoftGraphDirectoryObjectI
 
     /**
      * Get the uri property: URL of the published resource. Not nullable. Read-only.
-     *
+     * 
      * @return the uri value.
      */
     public String uri() {
@@ -158,7 +157,7 @@ public final class MicrosoftGraphEndpoint extends MicrosoftGraphDirectoryObjectI
 
     /**
      * Set the uri property: URL of the published resource. Not nullable. Read-only.
-     *
+     * 
      * @param uri the uri value to set.
      * @return the MicrosoftGraphEndpoint object itself.
      */
@@ -170,10 +169,9 @@ public final class MicrosoftGraphEndpoint extends MicrosoftGraphDirectoryObjectI
     /**
      * Get the additionalProperties property: Represents an Azure Active Directory object. The directoryObject type is
      * the base type for many other directory entity types.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
@@ -181,7 +179,7 @@ public final class MicrosoftGraphEndpoint extends MicrosoftGraphDirectoryObjectI
     /**
      * Set the additionalProperties property: Represents an Azure Active Directory object. The directoryObject type is
      * the base type for many other directory entity types.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphEndpoint object itself.
      */
@@ -190,22 +188,18 @@ public final class MicrosoftGraphEndpoint extends MicrosoftGraphDirectoryObjectI
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphEndpoint withDeletedDateTime(OffsetDateTime deletedDateTime) {
         super.withDeletedDateTime(deletedDateTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphEndpoint withId(String id) {
         super.withId(id);
@@ -214,11 +208,78 @@ public final class MicrosoftGraphEndpoint extends MicrosoftGraphDirectoryObjectI
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeStringField("deletedDateTime",
+            deletedDateTime() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(deletedDateTime()));
+        jsonWriter.writeStringField("capability", this.capability);
+        jsonWriter.writeStringField("providerId", this.providerId);
+        jsonWriter.writeStringField("providerName", this.providerName);
+        jsonWriter.writeStringField("providerResourceId", this.providerResourceId);
+        jsonWriter.writeStringField("uri", this.uri);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphEndpoint from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphEndpoint if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphEndpoint.
+     */
+    public static MicrosoftGraphEndpoint fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphEndpoint deserializedMicrosoftGraphEndpoint = new MicrosoftGraphEndpoint();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphEndpoint.withId(reader.getString());
+                } else if ("deletedDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphEndpoint.withDeletedDateTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("capability".equals(fieldName)) {
+                    deserializedMicrosoftGraphEndpoint.capability = reader.getString();
+                } else if ("providerId".equals(fieldName)) {
+                    deserializedMicrosoftGraphEndpoint.providerId = reader.getString();
+                } else if ("providerName".equals(fieldName)) {
+                    deserializedMicrosoftGraphEndpoint.providerName = reader.getString();
+                } else if ("providerResourceId".equals(fieldName)) {
+                    deserializedMicrosoftGraphEndpoint.providerResourceId = reader.getString();
+                } else if ("uri".equals(fieldName)) {
+                    deserializedMicrosoftGraphEndpoint.uri = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphEndpoint.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphEndpoint;
+        });
     }
 }

@@ -24,10 +24,9 @@ import com.azure.resourcemanager.eventhubs.models.RegenerateAccessKeyParameters;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
+import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
-import java.nio.ByteBuffer;
 
 /**
  * An instance of this class provides access to all the operations defined in NamespacesClient.
@@ -36,7 +35,7 @@ public interface NamespacesClient
     extends InnerSupportsGet<EHNamespaceInner>, InnerSupportsListing<EHNamespaceInner>, InnerSupportsDelete<Void> {
     /**
      * Lists all the available Namespaces within a subscription, irrespective of the resource groups.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of the List Namespace operation as paginated response with {@link PagedFlux}.
@@ -46,7 +45,7 @@ public interface NamespacesClient
 
     /**
      * Lists all the available Namespaces within a subscription, irrespective of the resource groups.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of the List Namespace operation as paginated response with {@link PagedIterable}.
@@ -56,7 +55,7 @@ public interface NamespacesClient
 
     /**
      * Lists all the available Namespaces within a subscription, irrespective of the resource groups.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -68,7 +67,7 @@ public interface NamespacesClient
 
     /**
      * Lists the available Namespaces within a resource group.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -80,7 +79,7 @@ public interface NamespacesClient
 
     /**
      * Lists the available Namespaces within a resource group.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -92,7 +91,7 @@ public interface NamespacesClient
 
     /**
      * Lists the available Namespaces within a resource group.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -106,7 +105,7 @@ public interface NamespacesClient
     /**
      * Creates or updates a namespace. Once created, this namespace's resource manifest is immutable. This operation is
      * idempotent.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param parameters Parameters for creating a namespace resource.
@@ -123,7 +122,7 @@ public interface NamespacesClient
     /**
      * Creates or updates a namespace. Once created, this namespace's resource manifest is immutable. This operation is
      * idempotent.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param parameters Parameters for creating a namespace resource.
@@ -139,7 +138,7 @@ public interface NamespacesClient
     /**
      * Creates or updates a namespace. Once created, this namespace's resource manifest is immutable. This operation is
      * idempotent.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param parameters Parameters for creating a namespace resource.
@@ -155,7 +154,7 @@ public interface NamespacesClient
     /**
      * Creates or updates a namespace. Once created, this namespace's resource manifest is immutable. This operation is
      * idempotent.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param parameters Parameters for creating a namespace resource.
@@ -172,7 +171,7 @@ public interface NamespacesClient
     /**
      * Creates or updates a namespace. Once created, this namespace's resource manifest is immutable. This operation is
      * idempotent.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param parameters Parameters for creating a namespace resource.
@@ -188,7 +187,7 @@ public interface NamespacesClient
     /**
      * Creates or updates a namespace. Once created, this namespace's resource manifest is immutable. This operation is
      * idempotent.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param parameters Parameters for creating a namespace resource.
@@ -203,7 +202,7 @@ public interface NamespacesClient
     /**
      * Creates or updates a namespace. Once created, this namespace's resource manifest is immutable. This operation is
      * idempotent.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param parameters Parameters for creating a namespace resource.
@@ -219,7 +218,7 @@ public interface NamespacesClient
 
     /**
      * Deletes an existing namespace. This operation also removes all associated resources under the namespace.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -232,7 +231,7 @@ public interface NamespacesClient
 
     /**
      * Deletes an existing namespace. This operation also removes all associated resources under the namespace.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -245,7 +244,7 @@ public interface NamespacesClient
 
     /**
      * Deletes an existing namespace. This operation also removes all associated resources under the namespace.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -258,7 +257,7 @@ public interface NamespacesClient
 
     /**
      * Deletes an existing namespace. This operation also removes all associated resources under the namespace.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param context The context to associate with this operation.
@@ -272,7 +271,7 @@ public interface NamespacesClient
 
     /**
      * Deletes an existing namespace. This operation also removes all associated resources under the namespace.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -285,7 +284,7 @@ public interface NamespacesClient
 
     /**
      * Deletes an existing namespace. This operation also removes all associated resources under the namespace.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -297,7 +296,7 @@ public interface NamespacesClient
 
     /**
      * Deletes an existing namespace. This operation also removes all associated resources under the namespace.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param context The context to associate with this operation.
@@ -310,7 +309,7 @@ public interface NamespacesClient
 
     /**
      * Gets the description of the specified namespace.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -325,7 +324,7 @@ public interface NamespacesClient
 
     /**
      * Gets the description of the specified namespace.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -338,7 +337,7 @@ public interface NamespacesClient
 
     /**
      * Gets the description of the specified namespace.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param context The context to associate with this operation.
@@ -353,7 +352,7 @@ public interface NamespacesClient
 
     /**
      * Gets the description of the specified namespace.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -367,7 +366,7 @@ public interface NamespacesClient
     /**
      * Creates or updates a namespace. Once created, this namespace's resource manifest is immutable. This operation is
      * idempotent.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param parameters Parameters for updating a namespace resource.
@@ -384,7 +383,7 @@ public interface NamespacesClient
     /**
      * Creates or updates a namespace. Once created, this namespace's resource manifest is immutable. This operation is
      * idempotent.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param parameters Parameters for updating a namespace resource.
@@ -399,7 +398,7 @@ public interface NamespacesClient
     /**
      * Creates or updates a namespace. Once created, this namespace's resource manifest is immutable. This operation is
      * idempotent.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param parameters Parameters for updating a namespace resource.
@@ -416,7 +415,7 @@ public interface NamespacesClient
     /**
      * Creates or updates a namespace. Once created, this namespace's resource manifest is immutable. This operation is
      * idempotent.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param parameters Parameters for updating a namespace resource.
@@ -430,7 +429,7 @@ public interface NamespacesClient
 
     /**
      * Create or update NetworkRuleSet for a Namespace.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param parameters The Namespace IpFilterRule.
@@ -445,7 +444,7 @@ public interface NamespacesClient
 
     /**
      * Create or update NetworkRuleSet for a Namespace.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param parameters The Namespace IpFilterRule.
@@ -460,7 +459,7 @@ public interface NamespacesClient
 
     /**
      * Create or update NetworkRuleSet for a Namespace.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param parameters The Namespace IpFilterRule.
@@ -476,7 +475,7 @@ public interface NamespacesClient
 
     /**
      * Create or update NetworkRuleSet for a Namespace.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param parameters The Namespace IpFilterRule.
@@ -491,7 +490,7 @@ public interface NamespacesClient
 
     /**
      * Gets NetworkRuleSet for a Namespace.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -505,7 +504,7 @@ public interface NamespacesClient
 
     /**
      * Gets NetworkRuleSet for a Namespace.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -518,7 +517,7 @@ public interface NamespacesClient
 
     /**
      * Gets NetworkRuleSet for a Namespace.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param context The context to associate with this operation.
@@ -533,7 +532,7 @@ public interface NamespacesClient
 
     /**
      * Gets NetworkRuleSet for a Namespace.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -546,7 +545,7 @@ public interface NamespacesClient
 
     /**
      * Gets NetworkRuleSet for a Namespace.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -560,7 +559,7 @@ public interface NamespacesClient
 
     /**
      * Gets NetworkRuleSet for a Namespace.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -573,7 +572,7 @@ public interface NamespacesClient
 
     /**
      * Gets NetworkRuleSet for a Namespace.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param context The context to associate with this operation.
@@ -588,7 +587,7 @@ public interface NamespacesClient
 
     /**
      * Gets NetworkRuleSet for a Namespace.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -601,7 +600,7 @@ public interface NamespacesClient
 
     /**
      * Gets a list of authorization rules for a Namespace.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -614,7 +613,7 @@ public interface NamespacesClient
 
     /**
      * Gets a list of authorization rules for a Namespace.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -627,7 +626,7 @@ public interface NamespacesClient
 
     /**
      * Gets a list of authorization rules for a Namespace.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param context The context to associate with this operation.
@@ -642,7 +641,7 @@ public interface NamespacesClient
 
     /**
      * Creates or updates an AuthorizationRule for a Namespace.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param authorizationRuleName The authorization rule name.
@@ -659,7 +658,7 @@ public interface NamespacesClient
 
     /**
      * Creates or updates an AuthorizationRule for a Namespace.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param authorizationRuleName The authorization rule name.
@@ -675,7 +674,7 @@ public interface NamespacesClient
 
     /**
      * Creates or updates an AuthorizationRule for a Namespace.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param authorizationRuleName The authorization rule name.
@@ -692,7 +691,7 @@ public interface NamespacesClient
 
     /**
      * Creates or updates an AuthorizationRule for a Namespace.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param authorizationRuleName The authorization rule name.
@@ -708,7 +707,7 @@ public interface NamespacesClient
 
     /**
      * Deletes an AuthorizationRule for a Namespace.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param authorizationRuleName The authorization rule name.
@@ -723,7 +722,7 @@ public interface NamespacesClient
 
     /**
      * Deletes an AuthorizationRule for a Namespace.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param authorizationRuleName The authorization rule name.
@@ -738,7 +737,7 @@ public interface NamespacesClient
 
     /**
      * Deletes an AuthorizationRule for a Namespace.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param authorizationRuleName The authorization rule name.
@@ -754,7 +753,7 @@ public interface NamespacesClient
 
     /**
      * Deletes an AuthorizationRule for a Namespace.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param authorizationRuleName The authorization rule name.
@@ -767,7 +766,7 @@ public interface NamespacesClient
 
     /**
      * Gets an AuthorizationRule for a Namespace by rule name.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param authorizationRuleName The authorization rule name.
@@ -783,7 +782,7 @@ public interface NamespacesClient
 
     /**
      * Gets an AuthorizationRule for a Namespace by rule name.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param authorizationRuleName The authorization rule name.
@@ -798,7 +797,7 @@ public interface NamespacesClient
 
     /**
      * Gets an AuthorizationRule for a Namespace by rule name.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param authorizationRuleName The authorization rule name.
@@ -814,7 +813,7 @@ public interface NamespacesClient
 
     /**
      * Gets an AuthorizationRule for a Namespace by rule name.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param authorizationRuleName The authorization rule name.
@@ -829,7 +828,7 @@ public interface NamespacesClient
 
     /**
      * Gets the primary and secondary connection strings for the Namespace.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param authorizationRuleName The authorization rule name.
@@ -845,7 +844,7 @@ public interface NamespacesClient
 
     /**
      * Gets the primary and secondary connection strings for the Namespace.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param authorizationRuleName The authorization rule name.
@@ -859,7 +858,7 @@ public interface NamespacesClient
 
     /**
      * Gets the primary and secondary connection strings for the Namespace.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param authorizationRuleName The authorization rule name.
@@ -875,7 +874,7 @@ public interface NamespacesClient
 
     /**
      * Gets the primary and secondary connection strings for the Namespace.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param authorizationRuleName The authorization rule name.
@@ -889,7 +888,7 @@ public interface NamespacesClient
 
     /**
      * Regenerates the primary or secondary connection strings for the specified Namespace.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param authorizationRuleName The authorization rule name.
@@ -906,7 +905,7 @@ public interface NamespacesClient
 
     /**
      * Regenerates the primary or secondary connection strings for the specified Namespace.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param authorizationRuleName The authorization rule name.
@@ -922,7 +921,7 @@ public interface NamespacesClient
 
     /**
      * Regenerates the primary or secondary connection strings for the specified Namespace.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param authorizationRuleName The authorization rule name.
@@ -939,7 +938,7 @@ public interface NamespacesClient
 
     /**
      * Regenerates the primary or secondary connection strings for the specified Namespace.
-     *
+     * 
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param authorizationRuleName The authorization rule name.
@@ -955,7 +954,7 @@ public interface NamespacesClient
 
     /**
      * Check the give Namespace name availability.
-     *
+     * 
      * @param parameters Parameters to check availability of the given Namespace name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -969,7 +968,7 @@ public interface NamespacesClient
 
     /**
      * Check the give Namespace name availability.
-     *
+     * 
      * @param parameters Parameters to check availability of the given Namespace name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -981,7 +980,7 @@ public interface NamespacesClient
 
     /**
      * Check the give Namespace name availability.
-     *
+     * 
      * @param parameters Parameters to check availability of the given Namespace name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -995,7 +994,7 @@ public interface NamespacesClient
 
     /**
      * Check the give Namespace name availability.
-     *
+     * 
      * @param parameters Parameters to check availability of the given Namespace name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

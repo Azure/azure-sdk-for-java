@@ -8,13 +8,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Users. */
+/**
+ * Resource collection API of Users.
+ */
 public interface Users {
     /**
      * Get all users for a lab.
-     *
-     * <p>Returns a list of all users for a lab.
-     *
+     * 
+     * Returns a list of all users for a lab.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -26,9 +28,9 @@ public interface Users {
 
     /**
      * Get all users for a lab.
-     *
-     * <p>Returns a list of all users for a lab.
-     *
+     * 
+     * Returns a list of all users for a lab.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param filter The filter to apply to the operation.
@@ -42,24 +44,9 @@ public interface Users {
 
     /**
      * Get a lab user.
-     *
-     * <p>Returns the properties of a lab user.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
-     * @param username The name of the user that uniquely identifies it within containing lab. Used in resource URIs.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return user of a lab that can register for and use virtual machines within the lab.
-     */
-    User get(String resourceGroupName, String labName, String username);
-
-    /**
-     * Get a lab user.
-     *
-     * <p>Returns the properties of a lab user.
-     *
+     * 
+     * Returns the properties of a lab user.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param username The name of the user that uniquely identifies it within containing lab. Used in resource URIs.
@@ -72,10 +59,25 @@ public interface Users {
     Response<User> getWithResponse(String resourceGroupName, String labName, String username, Context context);
 
     /**
+     * Get a lab user.
+     * 
+     * Returns the properties of a lab user.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
+     * @param username The name of the user that uniquely identifies it within containing lab. Used in resource URIs.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return user of a lab that can register for and use virtual machines within the lab.
+     */
+    User get(String resourceGroupName, String labName, String username);
+
+    /**
      * Deletes a user resource.
-     *
-     * <p>Operation to delete a user resource.
-     *
+     * 
+     * Operation to delete a user resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param username The name of the user that uniquely identifies it within containing lab. Used in resource URIs.
@@ -87,9 +89,9 @@ public interface Users {
 
     /**
      * Deletes a user resource.
-     *
-     * <p>Operation to delete a user resource.
-     *
+     * 
+     * Operation to delete a user resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param username The name of the user that uniquely identifies it within containing lab. Used in resource URIs.
@@ -102,9 +104,9 @@ public interface Users {
 
     /**
      * Invite a user to a lab.
-     *
-     * <p>Operation to invite a user to a lab.
-     *
+     * 
+     * Operation to invite a user to a lab.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param username The name of the user that uniquely identifies it within containing lab. Used in resource URIs.
@@ -117,9 +119,9 @@ public interface Users {
 
     /**
      * Invite a user to a lab.
-     *
-     * <p>Operation to invite a user to a lab.
-     *
+     * 
+     * Operation to invite a user to a lab.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param username The name of the user that uniquely identifies it within containing lab. Used in resource URIs.
@@ -133,9 +135,9 @@ public interface Users {
 
     /**
      * Get a lab user.
-     *
-     * <p>Returns the properties of a lab user.
-     *
+     * 
+     * Returns the properties of a lab user.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -146,9 +148,9 @@ public interface Users {
 
     /**
      * Get a lab user.
-     *
-     * <p>Returns the properties of a lab user.
-     *
+     * 
+     * Returns the properties of a lab user.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -160,9 +162,9 @@ public interface Users {
 
     /**
      * Deletes a user resource.
-     *
-     * <p>Operation to delete a user resource.
-     *
+     * 
+     * Operation to delete a user resource.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -172,9 +174,9 @@ public interface Users {
 
     /**
      * Deletes a user resource.
-     *
-     * <p>Operation to delete a user resource.
-     *
+     * 
+     * Operation to delete a user resource.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -185,7 +187,7 @@ public interface Users {
 
     /**
      * Begins definition for a new User resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new User definition.
      */

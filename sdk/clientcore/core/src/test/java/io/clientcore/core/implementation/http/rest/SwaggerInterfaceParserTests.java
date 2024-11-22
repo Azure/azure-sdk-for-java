@@ -49,7 +49,7 @@ public class SwaggerInterfaceParserTests {
 
     @ServiceInterface(name = "myService", host = "https://azure.com")
     interface TestInterface4 {
-        @HttpRequestInformation(method = HttpMethod.GET, path = "my/url/path", expectedStatusCodes = {200})
+        @HttpRequestInformation(method = HttpMethod.GET, path = "my/uri/path", expectedStatusCodes = { 200 })
         void testMethod4();
     }
 
@@ -63,7 +63,8 @@ public class SwaggerInterfaceParserTests {
         final SwaggerMethodParser methodParser = interfaceParser.getMethodParser(testMethod4);
 
         assertNotNull(methodParser);
-        assertEquals("io.clientcore.core.implementation.http.rest.SwaggerInterfaceParserTests$TestInterface4.testMethod4",
+        assertEquals(
+            "io.clientcore.core.implementation.http.rest.SwaggerInterfaceParserTests$TestInterface4.testMethod4",
             methodParser.getFullyQualifiedMethodName());
 
         final SwaggerMethodParser methodDetails2 = interfaceParser.getMethodParser(testMethod4);

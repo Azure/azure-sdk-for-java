@@ -42,15 +42,19 @@ public class ClientTests extends TestBase {
 
         Assertions.assertEquals(WebPubSubClientState.STOPPED, asyncClient.getClientState());
 
-        Mono<Void> startMono = asyncClient.start().doOnSuccess(ignored ->
-            Assertions.assertEquals(WebPubSubClientState.CONNECTED, asyncClient.getClientState()));
+        Mono<Void> startMono = asyncClient.start()
+            .doOnSuccess(
+                ignored -> Assertions.assertEquals(WebPubSubClientState.CONNECTED, asyncClient.getClientState()));
         // test transient state of CONNECTING
-        Mono<Void> verifyMono = Mono.delay(Duration.ofMillis(10)).then().doOnSuccess(ignored ->
-            Assertions.assertEquals(WebPubSubClientState.CONNECTING, asyncClient.getClientState()));
+        Mono<Void> verifyMono = Mono.delay(Duration.ofMillis(10))
+            .then()
+            .doOnSuccess(
+                ignored -> Assertions.assertEquals(WebPubSubClientState.CONNECTING, asyncClient.getClientState()));
         startMono.and(verifyMono).block();
 
-        asyncClient.stop().doOnSuccess(ignored ->
-            Assertions.assertEquals(WebPubSubClientState.STOPPED, asyncClient.getClientState())).block();
+        asyncClient.stop()
+            .doOnSuccess(ignored -> Assertions.assertEquals(WebPubSubClientState.STOPPED, asyncClient.getClientState()))
+            .block();
 
         asyncClient.start().block();
         Assertions.assertEquals(WebPubSubClientState.CONNECTED, asyncClient.getClientState());
@@ -64,13 +68,11 @@ public class ClientTests extends TestBase {
         String groupName = "testTwoClients";
         CountDownLatch latch = new CountDownLatch(1);
 
-        WebPubSubClient client1 = getClientBuilder("user1")
-            .buildClient();
+        WebPubSubClient client1 = getClientBuilder("user1").buildClient();
 
         client1.addOnGroupMessageEventHandler(event -> latch.countDown());
 
-        WebPubSubClient client2 = getClientBuilder("user2")
-            .buildClient();
+        WebPubSubClient client2 = getClientBuilder("user2").buildClient();
 
         client1.start();
         client2.start();
@@ -126,8 +128,7 @@ public class ClientTests extends TestBase {
         CountDownLatch latch1 = new CountDownLatch(1);
         CountDownLatch latch2 = new CountDownLatch(1);
 
-        WebPubSubClient client = getClientBuilder()
-            .buildClient();
+        WebPubSubClient client = getClientBuilder().buildClient();
 
         client.addOnGroupMessageEventHandler(event -> {
             if (latch1.getCount() > 0) {
@@ -171,8 +172,7 @@ public class ClientTests extends TestBase {
     public void testConcurrentStop() throws InterruptedException {
         CountDownLatch latch = new CountDownLatch(2);
 
-        WebPubSubClient client = getClientBuilder()
-            .buildClient();
+        WebPubSubClient client = getClientBuilder().buildClient();
 
         // start and stop
         client.start();
@@ -201,8 +201,7 @@ public class ClientTests extends TestBase {
     @Test
     @LiveOnly
     public void testStopWhenStopped() {
-        WebPubSubClient client = getClientBuilder()
-            .buildClient();
+        WebPubSubClient client = getClientBuilder().buildClient();
 
         client.stop();
     }
@@ -212,8 +211,7 @@ public class ClientTests extends TestBase {
     public void testStopBeforeConnected() throws InterruptedException {
         CountDownLatch latch = new CountDownLatch(1);
 
-        WebPubSubClient client = getClientBuilder()
-            .buildClient();
+        WebPubSubClient client = getClientBuilder().buildClient();
 
         Thread thread = new Thread(() -> {
             latch.countDown();
@@ -239,24 +237,24 @@ public class ClientTests extends TestBase {
     @Test
     @LiveOnly
     public void testBothCredential() {
-        Assertions.assertThrows(IllegalStateException.class, () -> new WebPubSubClientBuilder()
-            .credential(new WebPubSubClientCredential(() -> "mock"))
-            .clientAccessUrl("mock")
-            .buildClient());
+        Assertions.assertThrows(IllegalStateException.class,
+            () -> new WebPubSubClientBuilder().credential(new WebPubSubClientCredential(() -> "mock"))
+                .clientAccessUrl("mock")
+                .buildClient());
     }
 
     @Test
     @LiveOnly
     public void testInvalidCredential() {
         WebPubSubServiceAsyncClient client = new WebPubSubServiceClientBuilder()
-            .connectionString(Configuration.getGlobalConfiguration().get("CONNECTION_STRING"))
+            .connectionString(Configuration.getGlobalConfiguration().get("WEB_PUB_SUB_CONNECTION_STRING"))
             .hub("hub1")
             .buildAsyncClient();
 
-        Mono<WebPubSubClientAccessToken> accessToken = client.getClientAccessToken(new GetClientAccessTokenOptions()
-            .setUserId("user1")
-            .addRole("webpubsub.joinLeaveGroup")
-            .addRole("webpubsub.sendToGroup"));
+        Mono<WebPubSubClientAccessToken> accessToken
+            = client.getClientAccessToken(new GetClientAccessTokenOptions().setUserId("user1")
+                .addRole("webpubsub.joinLeaveGroup")
+                .addRole("webpubsub.sendToGroup"));
 
         String invalidClientAccessUrl = accessToken.block().getUrl() + "invalid";
 
@@ -288,8 +286,7 @@ public class ClientTests extends TestBase {
         AtomicBoolean disconnectedEventReceived = new AtomicBoolean(false);
         AtomicBoolean connectedEventReceived = new AtomicBoolean(false);
 
-        WebPubSubClient client = getClientBuilder()
-            .buildClient();
+        WebPubSubClient client = getClientBuilder().buildClient();
 
         client.addOnStoppedEventHandler(stoppedEvent -> {
             stoppedEventReceived.set(true);
@@ -321,8 +318,7 @@ public class ClientTests extends TestBase {
     public void testClientListener() throws InterruptedException {
         CountDownLatch latch = new CountDownLatch(1);
 
-        WebPubSubClient client = getClientBuilder()
-            .buildClient();
+        WebPubSubClient client = getClientBuilder().buildClient();
 
         List<String> messageReceived = new ArrayList<>();
 
@@ -363,8 +359,7 @@ public class ClientTests extends TestBase {
         CountDownLatch latch = new CountDownLatch(1);
         List<String> eventReceived = new ArrayList<>();
 
-        WebPubSubClient client = getClientBuilder()
-            .buildClient();
+        WebPubSubClient client = getClientBuilder().buildClient();
 
         client.addOnConnectedEventHandler(event -> eventReceived.add(event.getClass().getSimpleName()));
         client.addOnDisconnectedEventHandler(event -> eventReceived.add(event.getClass().getSimpleName()));
@@ -386,8 +381,7 @@ public class ClientTests extends TestBase {
         CountDownLatch latch = new CountDownLatch(1);
         List<String> eventReceived = new ArrayList<>();
 
-        WebPubSubClient client = getClientBuilder()
-            .buildClient();
+        WebPubSubClient client = getClientBuilder().buildClient();
 
         client.addOnConnectedEventHandler(event -> eventReceived.add(event.getClass().getSimpleName()));
         client.addOnDisconnectedEventHandler(event -> eventReceived.add(event.getClass().getSimpleName()));
@@ -417,8 +411,7 @@ public class ClientTests extends TestBase {
 
         AtomicReference<String> connectionId = new AtomicReference<>();
 
-        WebPubSubClient client = getClientBuilder()
-            .buildClient();
+        WebPubSubClient client = getClientBuilder().buildClient();
 
         client.addOnConnectedEventHandler(event -> {
             connectionId.compareAndSet(null, event.getConnectionId());
@@ -457,10 +450,8 @@ public class ClientTests extends TestBase {
 
         AtomicReference<String> connectionId = new AtomicReference<>();
 
-        WebPubSubClient client = getClientBuilder()
-            .protocol(WebPubSubProtocolType.JSON_PROTOCOL)
-            .autoReconnect(true)
-            .buildClient();
+        WebPubSubClient client
+            = getClientBuilder().protocol(WebPubSubProtocolType.JSON_PROTOCOL).autoReconnect(true).buildClient();
 
         client.addOnConnectedEventHandler(event -> {
             connectionId.compareAndSet(null, event.getConnectionId());
@@ -497,7 +488,6 @@ public class ClientTests extends TestBase {
         Assertions.assertEquals(DisconnectedEvent.class.getSimpleName(), eventReceived.get(3));
     }
 
-
     @Test
     @LiveOnly
     public void testClientStopOnSocketClose() throws InterruptedException {
@@ -507,10 +497,8 @@ public class ClientTests extends TestBase {
 
         AtomicReference<String> connectionId = new AtomicReference<>();
 
-        WebPubSubClient client = getClientBuilder()
-            .protocol(WebPubSubProtocolType.JSON_PROTOCOL)
-            .autoReconnect(false)
-            .buildClient();
+        WebPubSubClient client
+            = getClientBuilder().protocol(WebPubSubProtocolType.JSON_PROTOCOL).autoReconnect(false).buildClient();
 
         client.addOnConnectedEventHandler(event -> {
             connectionId.compareAndSet(null, event.getConnectionId());
@@ -539,8 +527,7 @@ public class ClientTests extends TestBase {
     public void testStartInStoppedEvent() throws InterruptedException {
         CountDownLatch latch = new CountDownLatch(1);
 
-        WebPubSubClient client = getClientBuilder()
-            .buildClient();
+        WebPubSubClient client = getClientBuilder().buildClient();
 
         client.addOnStoppedEventHandler(event -> {
             if (latch.getCount() > 0) {
@@ -561,9 +548,7 @@ public class ClientTests extends TestBase {
     @Test
     @LiveOnly
     public void testProtocol() {
-        WebPubSubClient client = getClientBuilder()
-            .protocol(WebPubSubProtocolType.JSON_PROTOCOL)
-            .buildClient();
+        WebPubSubClient client = getClientBuilder().protocol(WebPubSubProtocolType.JSON_PROTOCOL).buildClient();
 
         client.start();
         client.joinGroup("testProtocol");

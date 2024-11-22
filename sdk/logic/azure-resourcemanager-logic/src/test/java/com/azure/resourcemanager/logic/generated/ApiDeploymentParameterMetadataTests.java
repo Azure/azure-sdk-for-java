@@ -12,32 +12,28 @@ import org.junit.jupiter.api.Assertions;
 public final class ApiDeploymentParameterMetadataTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApiDeploymentParameterMetadata model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"tgoe\",\"isRequired\":false,\"displayName\":\"abpfhvfs\",\"description\":\"vntjlrigjk\",\"visibility\":\"NotSpecified\"}")
-                .toObject(ApiDeploymentParameterMetadata.class);
-        Assertions.assertEquals("tgoe", model.type());
-        Assertions.assertEquals(false, model.isRequired());
-        Assertions.assertEquals("abpfhvfs", model.displayName());
-        Assertions.assertEquals("vntjlrigjk", model.description());
-        Assertions.assertEquals(ApiDeploymentParameterVisibility.NOT_SPECIFIED, model.visibility());
+        ApiDeploymentParameterMetadata model = BinaryData.fromString(
+            "{\"type\":\"rmhw\",\"isRequired\":true,\"displayName\":\"pyf\",\"description\":\"bhvjglr\",\"visibility\":\"Default\"}")
+            .toObject(ApiDeploymentParameterMetadata.class);
+        Assertions.assertEquals("rmhw", model.type());
+        Assertions.assertEquals(true, model.isRequired());
+        Assertions.assertEquals("pyf", model.displayName());
+        Assertions.assertEquals("bhvjglr", model.description());
+        Assertions.assertEquals(ApiDeploymentParameterVisibility.DEFAULT, model.visibility());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApiDeploymentParameterMetadata model =
-            new ApiDeploymentParameterMetadata()
-                .withType("tgoe")
-                .withIsRequired(false)
-                .withDisplayName("abpfhvfs")
-                .withDescription("vntjlrigjk")
-                .withVisibility(ApiDeploymentParameterVisibility.NOT_SPECIFIED);
+        ApiDeploymentParameterMetadata model = new ApiDeploymentParameterMetadata().withType("rmhw")
+            .withIsRequired(true)
+            .withDisplayName("pyf")
+            .withDescription("bhvjglr")
+            .withVisibility(ApiDeploymentParameterVisibility.DEFAULT);
         model = BinaryData.fromObject(model).toObject(ApiDeploymentParameterMetadata.class);
-        Assertions.assertEquals("tgoe", model.type());
-        Assertions.assertEquals(false, model.isRequired());
-        Assertions.assertEquals("abpfhvfs", model.displayName());
-        Assertions.assertEquals("vntjlrigjk", model.description());
-        Assertions.assertEquals(ApiDeploymentParameterVisibility.NOT_SPECIFIED, model.visibility());
+        Assertions.assertEquals("rmhw", model.type());
+        Assertions.assertEquals(true, model.isRequired());
+        Assertions.assertEquals("pyf", model.displayName());
+        Assertions.assertEquals("bhvjglr", model.description());
+        Assertions.assertEquals(ApiDeploymentParameterVisibility.DEFAULT, model.visibility());
     }
 }

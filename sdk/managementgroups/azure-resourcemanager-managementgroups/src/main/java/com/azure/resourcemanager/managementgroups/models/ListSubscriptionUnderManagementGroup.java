@@ -5,32 +5,39 @@
 package com.azure.resourcemanager.managementgroups.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.managementgroups.fluent.models.SubscriptionUnderManagementGroupInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The details of all subscriptions under management group. */
+/**
+ * The details of all subscriptions under management group.
+ */
 @Fluent
-public final class ListSubscriptionUnderManagementGroup {
+public final class ListSubscriptionUnderManagementGroup
+    implements JsonSerializable<ListSubscriptionUnderManagementGroup> {
     /*
      * The list of subscriptions.
      */
-    @JsonProperty(value = "value")
     private List<SubscriptionUnderManagementGroupInner> value;
 
     /*
      * The URL to use for getting the next set of results.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of ListSubscriptionUnderManagementGroup class. */
+    /**
+     * Creates an instance of ListSubscriptionUnderManagementGroup class.
+     */
     public ListSubscriptionUnderManagementGroup() {
     }
 
     /**
      * Get the value property: The list of subscriptions.
-     *
+     * 
      * @return the value value.
      */
     public List<SubscriptionUnderManagementGroupInner> value() {
@@ -39,7 +46,7 @@ public final class ListSubscriptionUnderManagementGroup {
 
     /**
      * Set the value property: The list of subscriptions.
-     *
+     * 
      * @param value the value value to set.
      * @return the ListSubscriptionUnderManagementGroup object itself.
      */
@@ -50,7 +57,7 @@ public final class ListSubscriptionUnderManagementGroup {
 
     /**
      * Get the nextLink property: The URL to use for getting the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,12 +66,53 @@ public final class ListSubscriptionUnderManagementGroup {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ListSubscriptionUnderManagementGroup from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ListSubscriptionUnderManagementGroup if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ListSubscriptionUnderManagementGroup.
+     */
+    public static ListSubscriptionUnderManagementGroup fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ListSubscriptionUnderManagementGroup deserializedListSubscriptionUnderManagementGroup
+                = new ListSubscriptionUnderManagementGroup();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<SubscriptionUnderManagementGroupInner> value
+                        = reader.readArray(reader1 -> SubscriptionUnderManagementGroupInner.fromJson(reader1));
+                    deserializedListSubscriptionUnderManagementGroup.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedListSubscriptionUnderManagementGroup.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedListSubscriptionUnderManagementGroup;
+        });
     }
 }

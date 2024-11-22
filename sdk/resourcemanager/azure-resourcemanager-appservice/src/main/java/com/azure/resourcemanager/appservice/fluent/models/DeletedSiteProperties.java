@@ -5,59 +5,55 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * DeletedSite resource specific properties.
  */
 @Immutable
-public final class DeletedSiteProperties {
+public final class DeletedSiteProperties implements JsonSerializable<DeletedSiteProperties> {
     /*
      * Numeric id for the deleted site
      */
-    @JsonProperty(value = "deletedSiteId", access = JsonProperty.Access.WRITE_ONLY)
     private Integer deletedSiteId;
 
     /*
      * Time in UTC when the app was deleted.
      */
-    @JsonProperty(value = "deletedTimestamp", access = JsonProperty.Access.WRITE_ONLY)
     private String deletedTimestamp;
 
     /*
      * Subscription containing the deleted site
      */
-    @JsonProperty(value = "subscription", access = JsonProperty.Access.WRITE_ONLY)
     private String subscription;
 
     /*
      * ResourceGroup that contained the deleted site
      */
-    @JsonProperty(value = "resourceGroup", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceGroup;
 
     /*
      * Name of the deleted site
      */
-    @JsonProperty(value = "deletedSiteName", access = JsonProperty.Access.WRITE_ONLY)
     private String deletedSiteName;
 
     /*
      * Slot of the deleted site
      */
-    @JsonProperty(value = "slot", access = JsonProperty.Access.WRITE_ONLY)
     private String slot;
 
     /*
      * Kind of site that was deleted
      */
-    @JsonProperty(value = "kind", access = JsonProperty.Access.WRITE_ONLY)
     private String kind;
 
     /*
      * Geo Region of the deleted site
      */
-    @JsonProperty(value = "geoRegionName", access = JsonProperty.Access.WRITE_ONLY)
     private String geoRegionName;
 
     /**
@@ -144,5 +140,54 @@ public final class DeletedSiteProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DeletedSiteProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DeletedSiteProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DeletedSiteProperties.
+     */
+    public static DeletedSiteProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DeletedSiteProperties deserializedDeletedSiteProperties = new DeletedSiteProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("deletedSiteId".equals(fieldName)) {
+                    deserializedDeletedSiteProperties.deletedSiteId = reader.getNullable(JsonReader::getInt);
+                } else if ("deletedTimestamp".equals(fieldName)) {
+                    deserializedDeletedSiteProperties.deletedTimestamp = reader.getString();
+                } else if ("subscription".equals(fieldName)) {
+                    deserializedDeletedSiteProperties.subscription = reader.getString();
+                } else if ("resourceGroup".equals(fieldName)) {
+                    deserializedDeletedSiteProperties.resourceGroup = reader.getString();
+                } else if ("deletedSiteName".equals(fieldName)) {
+                    deserializedDeletedSiteProperties.deletedSiteName = reader.getString();
+                } else if ("slot".equals(fieldName)) {
+                    deserializedDeletedSiteProperties.slot = reader.getString();
+                } else if ("kind".equals(fieldName)) {
+                    deserializedDeletedSiteProperties.kind = reader.getString();
+                } else if ("geoRegionName".equals(fieldName)) {
+                    deserializedDeletedSiteProperties.geoRegionName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDeletedSiteProperties;
+        });
     }
 }

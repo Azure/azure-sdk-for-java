@@ -25,11 +25,24 @@ public final class MsalToken extends AccessToken {
      */
     public MsalToken(IAuthenticationResult msalResult) {
         super(msalResult.accessToken(),
-                OffsetDateTime.ofInstant(msalResult.expiresOnDate().toInstant(), ZoneOffset.UTC),
-                msalResult.metadata() != null
-                    ? msalResult.metadata().refreshOn() == null ? null
-                        : OffsetDateTime.ofInstant(Instant.ofEpochSecond(msalResult.metadata().refreshOn()), ZoneOffset.UTC)
-                    : null);
+            OffsetDateTime.ofInstant(msalResult.expiresOnDate().toInstant(), ZoneOffset.UTC),
+            msalResult.metadata() != null
+                ? msalResult.metadata().refreshOn() == null
+                    ? null
+                    : OffsetDateTime.ofInstant(Instant.ofEpochSecond(msalResult.metadata().refreshOn()), ZoneOffset.UTC)
+                : null);
+        authenticationResult = msalResult;
+    }
+
+    public MsalToken(IAuthenticationResult msalResult, String tokenType) {
+        super(msalResult.accessToken(),
+            OffsetDateTime.ofInstant(msalResult.expiresOnDate().toInstant(), ZoneOffset.UTC),
+            msalResult.metadata() != null
+                ? msalResult.metadata().refreshOn() == null
+                    ? null
+                    : OffsetDateTime.ofInstant(Instant.ofEpochSecond(msalResult.metadata().refreshOn()), ZoneOffset.UTC)
+                : null,
+            tokenType);
         authenticationResult = msalResult;
     }
 

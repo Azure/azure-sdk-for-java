@@ -17,23 +17,23 @@ public final class AssociationUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AssociationUpdate model = BinaryData.fromString(
-            "{\"tags\":{\"hr\":\"fizuckyf\",\"zwdzuh\":\"idf\",\"wxmnteiwao\":\"ymwisdkft\"},\"properties\":{\"associationType\":\"subnets\",\"subnet\":{\"id\":\"c\"}}}")
+            "{\"tags\":{\"dkfthwxmnt\":\"dzuhtymwi\",\"aop\":\"i\",\"jcmmxdcufufsrp\":\"km\"},\"properties\":{\"associationType\":\"subnets\",\"subnet\":{\"id\":\"sezcxtb\"}}}")
             .toObject(AssociationUpdate.class);
-        Assertions.assertEquals("fizuckyf", model.tags().get("hr"));
+        Assertions.assertEquals("dzuhtymwi", model.tags().get("dkfthwxmnt"));
         Assertions.assertEquals(AssociationType.SUBNETS, model.properties().associationType());
-        Assertions.assertEquals("c", model.properties().subnet().id());
+        Assertions.assertEquals("sezcxtb", model.properties().subnet().id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AssociationUpdate model
-            = new AssociationUpdate().withTags(mapOf("hr", "fizuckyf", "zwdzuh", "idf", "wxmnteiwao", "ymwisdkft"))
+            = new AssociationUpdate().withTags(mapOf("dkfthwxmnt", "dzuhtymwi", "aop", "i", "jcmmxdcufufsrp", "km"))
                 .withProperties(new AssociationUpdateProperties().withAssociationType(AssociationType.SUBNETS)
-                    .withSubnet(new AssociationSubnetUpdate().withId("c")));
+                    .withSubnet(new AssociationSubnetUpdate().withId("sezcxtb")));
         model = BinaryData.fromObject(model).toObject(AssociationUpdate.class);
-        Assertions.assertEquals("fizuckyf", model.tags().get("hr"));
+        Assertions.assertEquals("dzuhtymwi", model.tags().get("dkfthwxmnt"));
         Assertions.assertEquals(AssociationType.SUBNETS, model.properties().associationType());
-        Assertions.assertEquals("c", model.properties().subnet().id());
+        Assertions.assertEquals("sezcxtb", model.properties().subnet().id());
     }
 
     // Use "Map.of" if available

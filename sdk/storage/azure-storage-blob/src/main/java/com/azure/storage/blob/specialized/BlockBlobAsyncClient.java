@@ -19,6 +19,8 @@ import com.azure.storage.blob.implementation.models.BlockBlobsCommitBlockListHea
 import com.azure.storage.blob.implementation.models.BlockBlobsPutBlobFromUrlHeaders;
 import com.azure.storage.blob.implementation.models.BlockBlobsUploadHeaders;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
+import com.azure.storage.blob.implementation.util.BlobConstants;
+import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobImmutabilityPolicy;
@@ -81,7 +83,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
     /**
      * Indicates the maximum number of bytes that can be sent in a call to upload.
      */
-    public static final long MAX_UPLOAD_BLOB_BYTES_LONG = 5000L * Constants.MB;
+    public static final long MAX_UPLOAD_BLOB_BYTES_LONG = BlobConstants.MAX_UPLOAD_BLOB_BYTES_LONG;
 
     /**
      * Indicates the maximum number of bytes that can be sent in a call to stageBlock.
@@ -93,12 +95,12 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
     /**
      * Indicates the maximum number of bytes that can be sent in a call to stageBlock.
      */
-    public static final long MAX_STAGE_BLOCK_BYTES_LONG = 4000L * Constants.MB;
+    public static final long MAX_STAGE_BLOCK_BYTES_LONG = BlobConstants.MAX_STAGE_BLOCK_BYTES_LONG;
 
     /**
      * Indicates the maximum number of blocks allowed in a block blob.
      */
-    public static final int MAX_BLOCKS = 50000;
+    public static final int MAX_BLOCKS = BlobConstants.MAX_BLOCKS;
 
     /**
      * Package-private constructor for use by {@link SpecializedBlobClientBuilder}.
@@ -116,8 +118,8 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      * {@code null} to allow the service to use its own encryption.
      * @param versionId The version identifier for the blob, pass {@code null} to interact with the latest blob version.
      */
-    BlockBlobAsyncClient(HttpPipeline pipeline, String url, BlobServiceVersion serviceVersion,
-        String accountName, String containerName, String blobName, String snapshot, CpkInfo customerProvidedKey,
+    BlockBlobAsyncClient(HttpPipeline pipeline, String url, BlobServiceVersion serviceVersion, String accountName,
+        String containerName, String blobName, String snapshot, CpkInfo customerProvidedKey,
         EncryptionScope encryptionScope, String versionId) {
         super(pipeline, url, serviceVersion, accountName, containerName, blobName, snapshot, customerProvidedKey,
             encryptionScope, versionId);
@@ -151,8 +153,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
     public BlockBlobAsyncClient getCustomerProvidedKeyAsyncClient(CustomerProvidedKey customerProvidedKey) {
         CpkInfo finalCustomerProvidedKey = null;
         if (customerProvidedKey != null) {
-            finalCustomerProvidedKey = new CpkInfo()
-                .setEncryptionKey(customerProvidedKey.getKey())
+            finalCustomerProvidedKey = new CpkInfo().setEncryptionKey(customerProvidedKey.getKey())
                 .setEncryptionKeySha256(customerProvidedKey.getKeySha256())
                 .setEncryptionAlgorithm(customerProvidedKey.getEncryptionAlgorithm());
         }
@@ -295,9 +296,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         if (!overwrite) {
             blobRequestConditions.setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
         }
-        return uploadWithResponse(
-            new BlockBlobSimpleUploadOptions(data)
-                .setRequestConditions(blobRequestConditions))
+        return uploadWithResponse(new BlockBlobSimpleUploadOptions(data).setRequestConditions(blobRequestConditions))
             .flatMap(FluxUtil::toMono);
     }
 
@@ -355,7 +354,10 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         Map<String, String> metadata, AccessTier tier, byte[] contentMd5, BlobRequestConditions requestConditions) {
         try {
             return this.uploadWithResponse(new BlockBlobSimpleUploadOptions(data, length).setHeaders(headers)
-                .setMetadata(metadata).setTier(tier).setContentMd5(contentMd5).setRequestConditions(requestConditions));
+                .setMetadata(metadata)
+                .setTier(tier)
+                .setContentMd5(contentMd5)
+                .setRequestConditions(requestConditions));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -415,28 +417,28 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         Mono<BinaryData> dataMono;
         BinaryData binaryData = options.getData();
         if (binaryData == null) {
-            Flux<ByteBuffer> dataFlux = options.getDataFlux() == null ? Utility.convertStreamToByteBuffer(
-                    options.getDataStream(), options.getLength(), BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE, true)
+            Flux<ByteBuffer> dataFlux = options.getDataFlux() == null
+                ? Utility.convertStreamToByteBuffer(options.getDataStream(), options.getLength(),
+                    BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE, true)
                 : options.getDataFlux();
             dataMono = BinaryData.fromFlux(dataFlux, options.getLength(), false);
         } else {
             dataMono = Mono.just(binaryData);
         }
-        BlobRequestConditions requestConditions = options.getRequestConditions() == null ? new BlobRequestConditions()
-            : options.getRequestConditions();
+        BlobRequestConditions requestConditions
+            = options.getRequestConditions() == null ? new BlobRequestConditions() : options.getRequestConditions();
         Context finalContext = context == null ? Context.NONE : context;
-        BlobImmutabilityPolicy immutabilityPolicy = options.getImmutabilityPolicy() == null
-            ? new BlobImmutabilityPolicy() : options.getImmutabilityPolicy();
+        BlobImmutabilityPolicy immutabilityPolicy
+            = options.getImmutabilityPolicy() == null ? new BlobImmutabilityPolicy() : options.getImmutabilityPolicy();
 
-        return dataMono.flatMap(data ->
-            this.azureBlobStorage.getBlockBlobs().uploadWithResponseAsync(containerName, blobName,
-                options.getLength(), data, null, options.getContentMd5(), options.getMetadata(),
-                requestConditions.getLeaseId(), options.getTier(), requestConditions.getIfModifiedSince(),
-                requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
-                requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null,
-                tagsToString(options.getTags()), immutabilityPolicy.getExpiryTime(), immutabilityPolicy.getPolicyMode(),
-                options.isLegalHold(), null, options.getHeaders(), getCustomerProvidedKey(),
-                encryptionScope, finalContext)
+        return dataMono.flatMap(data -> this.azureBlobStorage.getBlockBlobs()
+            .uploadWithResponseAsync(containerName, blobName, options.getLength(), data, null, options.getContentMd5(),
+                options.getMetadata(), requestConditions.getLeaseId(), options.getTier(),
+                requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(),
+                requestConditions.getIfMatch(), requestConditions.getIfNoneMatch(),
+                requestConditions.getTagsConditions(), null, ModelHelper.tagsToString(options.getTags()),
+                immutabilityPolicy.getExpiryTime(), immutabilityPolicy.getPolicyMode(), options.isLegalHold(), null,
+                null, null, options.getHeaders(), getCustomerProvidedKey(), encryptionScope, finalContext)
             .map(rb -> {
                 BlockBlobsUploadHeaders hd = rb.getDeserializedHeaders();
                 BlockBlobItem item = new BlockBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
@@ -504,9 +506,9 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         }
 
         try {
-            return uploadFromUrlWithResponse(new BlobUploadFromUrlOptions(sourceUrl)
-                .setDestinationRequestConditions(blobRequestConditions))
-                .flatMap(FluxUtil::toMono);
+            return uploadFromUrlWithResponse(
+                new BlobUploadFromUrlOptions(sourceUrl).setDestinationRequestConditions(blobRequestConditions))
+                    .flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -560,15 +562,15 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
 
     Mono<Response<BlockBlobItem>> uploadFromUrlWithResponse(BlobUploadFromUrlOptions options, Context context) {
         StorageImplUtils.assertNotNull("options", options);
-        BlobRequestConditions destinationRequestConditions =
-            options.getDestinationRequestConditions() == null ? new BlobRequestConditions()
+        BlobRequestConditions destinationRequestConditions = options.getDestinationRequestConditions() == null
+            ? new BlobRequestConditions()
             : options.getDestinationRequestConditions();
-        BlobRequestConditions sourceRequestConditions =
-            options.getSourceRequestConditions() == null ? new BlobRequestConditions()
+        BlobRequestConditions sourceRequestConditions = options.getSourceRequestConditions() == null
+            ? new BlobRequestConditions()
             : options.getSourceRequestConditions();
         context = context == null ? Context.NONE : context;
-        String sourceAuth = options.getSourceAuthorization() == null
-            ? null : options.getSourceAuthorization().toString();
+        String sourceAuth
+            = options.getSourceAuthorization() == null ? null : options.getSourceAuthorization().toString();
 
         try {
             new URL(options.getSourceUrl());
@@ -577,19 +579,17 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         }
 
         // TODO (kasobol-msft) add metadata back (https://github.com/Azure/azure-sdk-for-net/issues/15969)
-        return this.azureBlobStorage.getBlockBlobs().putBlobFromUrlWithResponseAsync(
-            containerName, blobName, 0, options.getSourceUrl(), null, null, null,
-            destinationRequestConditions.getLeaseId(), options.getTier(),
-            destinationRequestConditions.getIfModifiedSince(), destinationRequestConditions.getIfUnmodifiedSince(),
-            destinationRequestConditions.getIfMatch(), destinationRequestConditions.getIfNoneMatch(),
-            destinationRequestConditions.getTagsConditions(),
-            sourceRequestConditions.getIfModifiedSince(), sourceRequestConditions.getIfUnmodifiedSince(),
-            sourceRequestConditions.getIfMatch(), sourceRequestConditions.getIfNoneMatch(),
-            sourceRequestConditions.getTagsConditions(),
-            null, options.getContentMd5(), tagsToString(options.getTags()),
-            options.isCopySourceBlobProperties(), sourceAuth, options.getCopySourceTagsMode(), options.getHeaders(),
-            getCustomerProvidedKey(), encryptionScope,
-            context)
+        return this.azureBlobStorage.getBlockBlobs()
+            .putBlobFromUrlWithResponseAsync(containerName, blobName, 0, options.getSourceUrl(), null, null, null,
+                destinationRequestConditions.getLeaseId(), options.getTier(),
+                destinationRequestConditions.getIfModifiedSince(), destinationRequestConditions.getIfUnmodifiedSince(),
+                destinationRequestConditions.getIfMatch(), destinationRequestConditions.getIfNoneMatch(),
+                destinationRequestConditions.getTagsConditions(), sourceRequestConditions.getIfModifiedSince(),
+                sourceRequestConditions.getIfUnmodifiedSince(), sourceRequestConditions.getIfMatch(),
+                sourceRequestConditions.getIfNoneMatch(), sourceRequestConditions.getTagsConditions(), null,
+                options.getContentMd5(), ModelHelper.tagsToString(options.getTags()),
+                options.isCopySourceBlobProperties(), sourceAuth, options.getCopySourceTagsMode(), options.getHeaders(),
+                getCustomerProvidedKey(), encryptionScope, context)
             .map(rb -> {
                 BlockBlobsPutBlobFromUrlHeaders hd = rb.getDeserializedHeaders();
                 BlockBlobItem item = new BlockBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
@@ -699,8 +699,8 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
     public Mono<Response<Void>> stageBlockWithResponse(String base64BlockId, Flux<ByteBuffer> data, long length,
         byte[] contentMd5, String leaseId) {
         try {
-            return withContext(context -> stageBlockWithResponse(base64BlockId, data, length,
-                contentMd5, leaseId, context));
+            return withContext(
+                context -> stageBlockWithResponse(base64BlockId, data, length, contentMd5, leaseId, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -736,8 +736,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
     public Mono<Response<Void>> stageBlockWithResponse(BlockBlobStageBlockOptions options) {
         Objects.requireNonNull(options, "options must not be null");
         try {
-            return withContext(context -> stageBlockWithResponse(
-                options.getBase64BlockId(), options.getData(),
+            return withContext(context -> stageBlockWithResponse(options.getBase64BlockId(), options.getData(),
                 options.getContentMd5(), options.getLeaseId(), context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
@@ -747,18 +746,17 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
     Mono<Response<Void>> stageBlockWithResponse(String base64BlockId, Flux<ByteBuffer> data, long length,
         byte[] contentMd5, String leaseId, Context context) {
         return BinaryData.fromFlux(data, length, false)
-            .flatMap(
-                binaryData -> stageBlockWithResponse(base64BlockId, binaryData, contentMd5, leaseId, context));
+            .flatMap(binaryData -> stageBlockWithResponse(base64BlockId, binaryData, contentMd5, leaseId, context));
     }
 
-    Mono<Response<Void>> stageBlockWithResponse(String base64BlockId, BinaryData data,
-        byte[] contentMd5, String leaseId, Context context) {
+    Mono<Response<Void>> stageBlockWithResponse(String base64BlockId, BinaryData data, byte[] contentMd5,
+        String leaseId, Context context) {
         Objects.requireNonNull(data, "data must not be null");
         Objects.requireNonNull(data.getLength(), "data must have defined length");
         context = context == null ? Context.NONE : context;
-        return this.azureBlobStorage.getBlockBlobs().stageBlockNoCustomHeadersWithResponseAsync(containerName, blobName,
-            base64BlockId, data.getLength(), data, contentMd5, null, null, leaseId, null, getCustomerProvidedKey(),
-            encryptionScope, context);
+        return this.azureBlobStorage.getBlockBlobs()
+            .stageBlockNoCustomHeadersWithResponseAsync(containerName, blobName, base64BlockId, data.getLength(), data,
+                contentMd5, null, null, leaseId, null, null, null, getCustomerProvidedKey(), encryptionScope, context);
     }
 
     /**
@@ -829,9 +827,11 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> stageBlockFromUrlWithResponse(String base64BlockId, String sourceUrl,
         BlobRange sourceRange, byte[] sourceContentMd5, String leaseId, BlobRequestConditions sourceRequestConditions) {
-        return this.stageBlockFromUrlWithResponse(new BlockBlobStageBlockFromUrlOptions(base64BlockId, sourceUrl)
-            .setSourceRange(sourceRange).setSourceContentMd5(sourceContentMd5).setLeaseId(leaseId)
-            .setSourceRequestConditions(sourceRequestConditions));
+        return this.stageBlockFromUrlWithResponse(
+            new BlockBlobStageBlockFromUrlOptions(base64BlockId, sourceUrl).setSourceRange(sourceRange)
+                .setSourceContentMd5(sourceContentMd5)
+                .setLeaseId(leaseId)
+                .setSourceRequestConditions(sourceRequestConditions));
     }
 
     /**
@@ -868,7 +868,8 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
     Mono<Response<Void>> stageBlockFromUrlWithResponse(BlockBlobStageBlockFromUrlOptions options, Context context) {
         BlobRange sourceRange = (options.getSourceRange() == null) ? new BlobRange(0) : options.getSourceRange();
         BlobRequestConditions sourceRequestConditions = (options.getSourceRequestConditions() == null)
-            ? new BlobRequestConditions() : options.getSourceRequestConditions();
+            ? new BlobRequestConditions()
+            : options.getSourceRequestConditions();
 
         try {
             new URL(options.getSourceUrl());
@@ -876,15 +877,16 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("'sourceUrl' is not a valid url.", ex));
         }
         context = context == null ? Context.NONE : context;
-        String sourceAuth = options.getSourceAuthorization() == null
-            ? null : options.getSourceAuthorization().toString();
+        String sourceAuth
+            = options.getSourceAuthorization() == null ? null : options.getSourceAuthorization().toString();
 
-        return this.azureBlobStorage.getBlockBlobs().stageBlockFromURLNoCustomHeadersWithResponseAsync(containerName,
-            blobName, options.getBase64BlockId(), 0, options.getSourceUrl(), sourceRange.toHeaderValue(),
-            options.getSourceContentMd5(), null, null, options.getLeaseId(),
-            sourceRequestConditions.getIfModifiedSince(), sourceRequestConditions.getIfUnmodifiedSince(),
-            sourceRequestConditions.getIfMatch(), sourceRequestConditions.getIfNoneMatch(), null, sourceAuth,
-            getCustomerProvidedKey(), encryptionScope, context);
+        return this.azureBlobStorage.getBlockBlobs()
+            .stageBlockFromURLNoCustomHeadersWithResponseAsync(containerName, blobName, options.getBase64BlockId(), 0,
+                options.getSourceUrl(), sourceRange.toHeaderValue(), options.getSourceContentMd5(), null, null,
+                options.getLeaseId(), sourceRequestConditions.getIfModifiedSince(),
+                sourceRequestConditions.getIfUnmodifiedSince(), sourceRequestConditions.getIfMatch(),
+                sourceRequestConditions.getIfNoneMatch(), null, sourceAuth, getCustomerProvidedKey(), encryptionScope,
+                context);
     }
 
     /**
@@ -985,9 +987,9 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
     Mono<Response<BlockList>> listBlocksWithResponse(BlockBlobListBlocksOptions options, Context context) {
         StorageImplUtils.assertNotNull("options", options);
 
-        return this.azureBlobStorage.getBlockBlobs().getBlockListWithResponseAsync(
-            containerName, blobName, options.getType(), getSnapshotId(), null, options.getLeaseId(),
-            options.getIfTagsMatch(), null, context)
+        return this.azureBlobStorage.getBlockBlobs()
+            .getBlockListWithResponseAsync(containerName, blobName, options.getType(), getSnapshotId(), null,
+                options.getLeaseId(), options.getIfTagsMatch(), null, context)
             .map(response -> new SimpleResponse<>(response, response.getValue()));
     }
 
@@ -1087,10 +1089,12 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BlockBlobItem>> commitBlockListWithResponse(List<String> base64BlockIds,
-            BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier,
-            BlobRequestConditions requestConditions) {
-        return this.commitBlockListWithResponse(new BlockBlobCommitBlockListOptions(base64BlockIds)
-            .setHeaders(headers).setMetadata(metadata).setTier(tier).setRequestConditions(requestConditions));
+        BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier,
+        BlobRequestConditions requestConditions) {
+        return this.commitBlockListWithResponse(new BlockBlobCommitBlockListOptions(base64BlockIds).setHeaders(headers)
+            .setMetadata(metadata)
+            .setTier(tier)
+            .setRequestConditions(requestConditions));
     }
 
     /**
@@ -1140,20 +1144,21 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
     Mono<Response<BlockBlobItem>> commitBlockListWithResponse(BlockBlobCommitBlockListOptions options,
         Context context) {
         StorageImplUtils.assertNotNull("options", options);
-        BlobRequestConditions requestConditions = options.getRequestConditions() == null ? new BlobRequestConditions()
-            : options.getRequestConditions();
+        BlobRequestConditions requestConditions
+            = options.getRequestConditions() == null ? new BlobRequestConditions() : options.getRequestConditions();
         context = context == null ? Context.NONE : context;
-        BlobImmutabilityPolicy immutabilityPolicy = options.getImmutabilityPolicy() == null
-            ? new BlobImmutabilityPolicy() : options.getImmutabilityPolicy();
+        BlobImmutabilityPolicy immutabilityPolicy
+            = options.getImmutabilityPolicy() == null ? new BlobImmutabilityPolicy() : options.getImmutabilityPolicy();
 
-        return this.azureBlobStorage.getBlockBlobs().commitBlockListWithResponseAsync(containerName, blobName,
-            new BlockLookupList().setLatest(options.getBase64BlockIds()), null, null, null, options.getMetadata(),
-            requestConditions.getLeaseId(), options.getTier(), requestConditions.getIfModifiedSince(),
-            requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
-            requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null,
-            tagsToString(options.getTags()), immutabilityPolicy.getExpiryTime(), immutabilityPolicy.getPolicyMode(),
-            options.isLegalHold(), options.getHeaders(), getCustomerProvidedKey(),
-            encryptionScope, context)
+        return this.azureBlobStorage.getBlockBlobs()
+            .commitBlockListWithResponseAsync(containerName, blobName,
+                new BlockLookupList().setLatest(options.getBase64BlockIds()), null, null, null, options.getMetadata(),
+                requestConditions.getLeaseId(), options.getTier(), requestConditions.getIfModifiedSince(),
+                requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
+                requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null,
+                ModelHelper.tagsToString(options.getTags()), immutabilityPolicy.getExpiryTime(),
+                immutabilityPolicy.getPolicyMode(), options.isLegalHold(), options.getHeaders(),
+                getCustomerProvidedKey(), encryptionScope, context)
             .map(rb -> {
                 BlockBlobsCommitBlockListHeaders hd = rb.getDeserializedHeaders();
                 BlockBlobItem item = new BlockBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),

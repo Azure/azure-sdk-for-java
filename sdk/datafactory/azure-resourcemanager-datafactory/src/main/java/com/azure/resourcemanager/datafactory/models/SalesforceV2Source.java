@@ -5,29 +5,26 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * A copy activity Salesforce V2 source.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = SalesforceV2Source.class, visible = true)
-@JsonTypeName("SalesforceV2Source")
 @Fluent
 public final class SalesforceV2Source extends TabularSource {
     /*
      * Copy source type.
      */
-    @JsonTypeId
-    @JsonProperty(value = "type", required = true)
     private String type = "SalesforceV2Source";
 
     /*
      * Deprecating, please use 'query' property instead. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "SOQLQuery")
     private Object soqlQuery;
 
     /*
@@ -37,14 +34,12 @@ public final class SalesforceV2Source extends TabularSource {
      * If query is not specified, all the data of the Salesforce object specified in ObjectApiName/reportId in dataset
      * will be retrieved. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "query")
     private Object query;
 
     /*
      * This property control whether query result contains Deleted objects. Default is false. Type: boolean (or
      * Expression with resultType boolean).
      */
-    @JsonProperty(value = "includeDeletedObjects")
     private Object includeDeletedObjects;
 
     /**
@@ -197,5 +192,79 @@ public final class SalesforceV2Source extends TabularSource {
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("sourceRetryCount", sourceRetryCount());
+        jsonWriter.writeUntypedField("sourceRetryWait", sourceRetryWait());
+        jsonWriter.writeUntypedField("maxConcurrentConnections", maxConcurrentConnections());
+        jsonWriter.writeUntypedField("disableMetricsCollection", disableMetricsCollection());
+        jsonWriter.writeUntypedField("queryTimeout", queryTimeout());
+        jsonWriter.writeUntypedField("additionalColumns", additionalColumns());
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeUntypedField("SOQLQuery", this.soqlQuery);
+        jsonWriter.writeUntypedField("query", this.query);
+        jsonWriter.writeUntypedField("includeDeletedObjects", this.includeDeletedObjects);
+        if (additionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SalesforceV2Source from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SalesforceV2Source if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SalesforceV2Source.
+     */
+    public static SalesforceV2Source fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SalesforceV2Source deserializedSalesforceV2Source = new SalesforceV2Source();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sourceRetryCount".equals(fieldName)) {
+                    deserializedSalesforceV2Source.withSourceRetryCount(reader.readUntyped());
+                } else if ("sourceRetryWait".equals(fieldName)) {
+                    deserializedSalesforceV2Source.withSourceRetryWait(reader.readUntyped());
+                } else if ("maxConcurrentConnections".equals(fieldName)) {
+                    deserializedSalesforceV2Source.withMaxConcurrentConnections(reader.readUntyped());
+                } else if ("disableMetricsCollection".equals(fieldName)) {
+                    deserializedSalesforceV2Source.withDisableMetricsCollection(reader.readUntyped());
+                } else if ("queryTimeout".equals(fieldName)) {
+                    deserializedSalesforceV2Source.withQueryTimeout(reader.readUntyped());
+                } else if ("additionalColumns".equals(fieldName)) {
+                    deserializedSalesforceV2Source.withAdditionalColumns(reader.readUntyped());
+                } else if ("type".equals(fieldName)) {
+                    deserializedSalesforceV2Source.type = reader.getString();
+                } else if ("SOQLQuery".equals(fieldName)) {
+                    deserializedSalesforceV2Source.soqlQuery = reader.readUntyped();
+                } else if ("query".equals(fieldName)) {
+                    deserializedSalesforceV2Source.query = reader.readUntyped();
+                } else if ("includeDeletedObjects".equals(fieldName)) {
+                    deserializedSalesforceV2Source.includeDeletedObjects = reader.readUntyped();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedSalesforceV2Source.withAdditionalProperties(additionalProperties);
+
+            return deserializedSalesforceV2Source;
+        });
     }
 }

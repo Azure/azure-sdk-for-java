@@ -4,19 +4,11 @@
 
 package com.azure.resourcemanager.billing.implementation;
 
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.billing.fluent.models.BillingProfileInner;
-import com.azure.resourcemanager.billing.models.AddressDetails;
-import com.azure.resourcemanager.billing.models.AzurePlan;
 import com.azure.resourcemanager.billing.models.BillingProfile;
-import com.azure.resourcemanager.billing.models.BillingProfileStatus;
-import com.azure.resourcemanager.billing.models.BillingRelationshipType;
-import com.azure.resourcemanager.billing.models.IndirectRelationshipInfo;
-import com.azure.resourcemanager.billing.models.InvoiceSectionsOnExpand;
-import com.azure.resourcemanager.billing.models.SpendingLimit;
-import com.azure.resourcemanager.billing.models.StatusReasonCode;
-import com.azure.resourcemanager.billing.models.TargetCloud;
+import com.azure.resourcemanager.billing.models.BillingProfileProperties;
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 
 public final class BillingProfileImpl implements BillingProfile {
@@ -24,8 +16,8 @@ public final class BillingProfileImpl implements BillingProfile {
 
     private final com.azure.resourcemanager.billing.BillingManager serviceManager;
 
-    BillingProfileImpl(
-        BillingProfileInner innerObject, com.azure.resourcemanager.billing.BillingManager serviceManager) {
+    BillingProfileImpl(BillingProfileInner innerObject,
+        com.azure.resourcemanager.billing.BillingManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -42,80 +34,6 @@ public final class BillingProfileImpl implements BillingProfile {
         return this.innerModel().type();
     }
 
-    public String displayName() {
-        return this.innerModel().displayName();
-    }
-
-    public String poNumber() {
-        return this.innerModel().poNumber();
-    }
-
-    public BillingRelationshipType billingRelationshipType() {
-        return this.innerModel().billingRelationshipType();
-    }
-
-    public AddressDetails billTo() {
-        return this.innerModel().billTo();
-    }
-
-    public IndirectRelationshipInfo indirectRelationshipInfo() {
-        return this.innerModel().indirectRelationshipInfo();
-    }
-
-    public Boolean invoiceEmailOptIn() {
-        return this.innerModel().invoiceEmailOptIn();
-    }
-
-    public Integer invoiceDay() {
-        return this.innerModel().invoiceDay();
-    }
-
-    public String currency() {
-        return this.innerModel().currency();
-    }
-
-    public List<AzurePlan> enabledAzurePlans() {
-        List<AzurePlan> inner = this.innerModel().enabledAzurePlans();
-        if (inner != null) {
-            return Collections.unmodifiableList(inner);
-        } else {
-            return Collections.emptyList();
-        }
-    }
-
-    public InvoiceSectionsOnExpand invoiceSections() {
-        return this.innerModel().invoiceSections();
-    }
-
-    public Boolean hasReadAccess() {
-        return this.innerModel().hasReadAccess();
-    }
-
-    public String systemId() {
-        return this.innerModel().systemId();
-    }
-
-    public BillingProfileStatus status() {
-        return this.innerModel().status();
-    }
-
-    public StatusReasonCode statusReasonCode() {
-        return this.innerModel().statusReasonCode();
-    }
-
-    public SpendingLimit spendingLimit() {
-        return this.innerModel().spendingLimit();
-    }
-
-    public List<TargetCloud> targetClouds() {
-        List<TargetCloud> inner = this.innerModel().targetClouds();
-        if (inner != null) {
-            return Collections.unmodifiableList(inner);
-        } else {
-            return Collections.emptyList();
-        }
-    }
-
     public Map<String, String> tags() {
         Map<String, String> inner = this.innerModel().tags();
         if (inner != null) {
@@ -123,6 +41,14 @@ public final class BillingProfileImpl implements BillingProfile {
         } else {
             return Collections.emptyMap();
         }
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
+    }
+
+    public BillingProfileProperties properties() {
+        return this.innerModel().properties();
     }
 
     public BillingProfileInner innerModel() {

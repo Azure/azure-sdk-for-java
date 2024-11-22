@@ -11,25 +11,21 @@ import org.junit.jupiter.api.Assertions;
 public final class RegistrationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RegistrationProperties model =
-            BinaryData
-                .fromString("{\"objectId\":\"spnqzahmgkb\",\"cloudId\":\"yydhibnuqqk\",\"billingModel\":\"kadrgvt\"}")
+        RegistrationProperties model
+            = BinaryData.fromString("{\"objectId\":\"ped\",\"cloudId\":\"jn\",\"billingModel\":\"ckhsmtxpsieb\"}")
                 .toObject(RegistrationProperties.class);
-        Assertions.assertEquals("spnqzahmgkb", model.objectId());
-        Assertions.assertEquals("yydhibnuqqk", model.cloudId());
-        Assertions.assertEquals("kadrgvt", model.billingModel());
+        Assertions.assertEquals("ped", model.objectId());
+        Assertions.assertEquals("jn", model.cloudId());
+        Assertions.assertEquals("ckhsmtxpsieb", model.billingModel());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RegistrationProperties model =
-            new RegistrationProperties()
-                .withObjectId("spnqzahmgkb")
-                .withCloudId("yydhibnuqqk")
-                .withBillingModel("kadrgvt");
+        RegistrationProperties model
+            = new RegistrationProperties().withObjectId("ped").withCloudId("jn").withBillingModel("ckhsmtxpsieb");
         model = BinaryData.fromObject(model).toObject(RegistrationProperties.class);
-        Assertions.assertEquals("spnqzahmgkb", model.objectId());
-        Assertions.assertEquals("yydhibnuqqk", model.cloudId());
-        Assertions.assertEquals("kadrgvt", model.billingModel());
+        Assertions.assertEquals("ped", model.objectId());
+        Assertions.assertEquals("jn", model.cloudId());
+        Assertions.assertEquals("ckhsmtxpsieb", model.billingModel());
     }
 }

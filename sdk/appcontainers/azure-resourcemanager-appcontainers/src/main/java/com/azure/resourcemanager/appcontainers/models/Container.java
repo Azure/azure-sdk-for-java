@@ -126,9 +126,17 @@ public final class Container extends BaseContainer {
      */
     @Override
     public void validate() {
-        super.validate();
         if (probes() != null) {
             probes().forEach(e -> e.validate());
+        }
+        if (env() != null) {
+            env().forEach(e -> e.validate());
+        }
+        if (resources() != null) {
+            resources().validate();
+        }
+        if (volumeMounts() != null) {
+            volumeMounts().forEach(e -> e.validate());
         }
     }
 

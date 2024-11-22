@@ -14,36 +14,30 @@ import org.junit.jupiter.api.Assertions;
 public final class LiveEventTranscriptionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LiveEventTranscription model =
-            BinaryData
-                .fromString(
-                    "{\"language\":\"yqagvrvm\",\"inputTrackSelection\":[{\"property\":\"kghimdblxgwimfnj\",\"operation\":\"j\",\"value\":\"mszkkfo\"}],\"outputTranscriptionTrack\":{\"trackName\":\"eyfkzikfja\"}}")
-                .toObject(LiveEventTranscription.class);
-        Assertions.assertEquals("yqagvrvm", model.language());
-        Assertions.assertEquals("kghimdblxgwimfnj", model.inputTrackSelection().get(0).property());
-        Assertions.assertEquals("j", model.inputTrackSelection().get(0).operation());
-        Assertions.assertEquals("mszkkfo", model.inputTrackSelection().get(0).value());
-        Assertions.assertEquals("eyfkzikfja", model.outputTranscriptionTrack().trackName());
+        LiveEventTranscription model = BinaryData.fromString(
+            "{\"language\":\"irgzp\",\"inputTrackSelection\":[{\"property\":\"zszrnwoiindfpw\",\"operation\":\"ylwbtlhflsjcdhsz\",\"value\":\"vfbgofeljagrqmqh\"},{\"property\":\"vriiio\",\"operation\":\"al\",\"value\":\"fk\"}],\"outputTranscriptionTrack\":{\"trackName\":\"vsexsowuelu\"}}")
+            .toObject(LiveEventTranscription.class);
+        Assertions.assertEquals("irgzp", model.language());
+        Assertions.assertEquals("zszrnwoiindfpw", model.inputTrackSelection().get(0).property());
+        Assertions.assertEquals("ylwbtlhflsjcdhsz", model.inputTrackSelection().get(0).operation());
+        Assertions.assertEquals("vfbgofeljagrqmqh", model.inputTrackSelection().get(0).value());
+        Assertions.assertEquals("vsexsowuelu", model.outputTranscriptionTrack().trackName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LiveEventTranscription model =
-            new LiveEventTranscription()
-                .withLanguage("yqagvrvm")
-                .withInputTrackSelection(
-                    Arrays
-                        .asList(
-                            new LiveEventInputTrackSelection()
-                                .withProperty("kghimdblxgwimfnj")
-                                .withOperation("j")
-                                .withValue("mszkkfo")))
-                .withOutputTranscriptionTrack(new LiveEventOutputTranscriptionTrack().withTrackName("eyfkzikfja"));
+        LiveEventTranscription model = new LiveEventTranscription().withLanguage("irgzp")
+            .withInputTrackSelection(Arrays.asList(
+                new LiveEventInputTrackSelection().withProperty("zszrnwoiindfpw")
+                    .withOperation("ylwbtlhflsjcdhsz")
+                    .withValue("vfbgofeljagrqmqh"),
+                new LiveEventInputTrackSelection().withProperty("vriiio").withOperation("al").withValue("fk")))
+            .withOutputTranscriptionTrack(new LiveEventOutputTranscriptionTrack().withTrackName("vsexsowuelu"));
         model = BinaryData.fromObject(model).toObject(LiveEventTranscription.class);
-        Assertions.assertEquals("yqagvrvm", model.language());
-        Assertions.assertEquals("kghimdblxgwimfnj", model.inputTrackSelection().get(0).property());
-        Assertions.assertEquals("j", model.inputTrackSelection().get(0).operation());
-        Assertions.assertEquals("mszkkfo", model.inputTrackSelection().get(0).value());
-        Assertions.assertEquals("eyfkzikfja", model.outputTranscriptionTrack().trackName());
+        Assertions.assertEquals("irgzp", model.language());
+        Assertions.assertEquals("zszrnwoiindfpw", model.inputTrackSelection().get(0).property());
+        Assertions.assertEquals("ylwbtlhflsjcdhsz", model.inputTrackSelection().get(0).operation());
+        Assertions.assertEquals("vfbgofeljagrqmqh", model.inputTrackSelection().get(0).value());
+        Assertions.assertEquals("vsexsowuelu", model.outputTranscriptionTrack().trackName());
     }
 }

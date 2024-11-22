@@ -14,17 +14,17 @@ public final class PrivateLinkResourceListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PrivateLinkResourceListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"groupId\":\"cljse\",\"requiredMembers\":[\"pbafvafhlbylc\",\"bevxrhyzd\",\"wrso\"],\"requiredZoneNames\":[\"td\"]},\"id\":\"airrhvhfnracw\",\"name\":\"pqigtuujwouhd\",\"type\":\"wsigrbjbxsj\"},{\"properties\":{\"groupId\":\"i\",\"requiredMembers\":[\"kjyaznumtg\"],\"requiredZoneNames\":[\"wdchozfn\",\"fexl\"]},\"id\":\"noakiz\",\"name\":\"oaiknaqlnuwig\",\"type\":\"yxl\"}],\"nextLink\":\"wphvxz\"}")
+            "{\"value\":[{\"properties\":{\"groupId\":\"czykmktpvw\",\"requiredMembers\":[\"sehch\",\"hufmpq\",\"mqyjgy\"],\"requiredZoneNames\":[\"lod\",\"aeuzanh\",\"fnhsenwphp\",\"fngq\"]},\"id\":\"lidftujwjj\",\"name\":\"fwbeqrkuorh\",\"type\":\"ssruqnmdvhazcvj\"}],\"nextLink\":\"iqswbqer\"}")
             .toObject(PrivateLinkResourceListResult.class);
-        Assertions.assertEquals("td", model.value().get(0).requiredZoneNames().get(0));
+        Assertions.assertEquals("lod", model.value().get(0).requiredZoneNames().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PrivateLinkResourceListResult model = new PrivateLinkResourceListResult()
-            .withValue(Arrays.asList(new PrivateLinkResourceInner().withRequiredZoneNames(Arrays.asList("td")),
-                new PrivateLinkResourceInner().withRequiredZoneNames(Arrays.asList("wdchozfn", "fexl"))));
+        PrivateLinkResourceListResult model
+            = new PrivateLinkResourceListResult().withValue(Arrays.asList(new PrivateLinkResourceInner()
+                .withRequiredZoneNames(Arrays.asList("lod", "aeuzanh", "fnhsenwphp", "fngq"))));
         model = BinaryData.fromObject(model).toObject(PrivateLinkResourceListResult.class);
-        Assertions.assertEquals("td", model.value().get(0).requiredZoneNames().get(0));
+        Assertions.assertEquals("lod", model.value().get(0).requiredZoneNames().get(0));
     }
 }

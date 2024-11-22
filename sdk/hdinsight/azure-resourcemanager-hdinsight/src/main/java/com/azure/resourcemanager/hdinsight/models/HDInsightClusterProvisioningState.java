@@ -5,29 +5,40 @@
 package com.azure.resourcemanager.hdinsight.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The provisioning state, which only appears in the response. */
+/**
+ * The provisioning state, which only appears in the response.
+ */
 public final class HDInsightClusterProvisioningState extends ExpandableStringEnum<HDInsightClusterProvisioningState> {
-    /** Static value InProgress for HDInsightClusterProvisioningState. */
+    /**
+     * Static value InProgress for HDInsightClusterProvisioningState.
+     */
     public static final HDInsightClusterProvisioningState IN_PROGRESS = fromString("InProgress");
 
-    /** Static value Failed for HDInsightClusterProvisioningState. */
+    /**
+     * Static value Failed for HDInsightClusterProvisioningState.
+     */
     public static final HDInsightClusterProvisioningState FAILED = fromString("Failed");
 
-    /** Static value Succeeded for HDInsightClusterProvisioningState. */
+    /**
+     * Static value Succeeded for HDInsightClusterProvisioningState.
+     */
     public static final HDInsightClusterProvisioningState SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Canceled for HDInsightClusterProvisioningState. */
+    /**
+     * Static value Canceled for HDInsightClusterProvisioningState.
+     */
     public static final HDInsightClusterProvisioningState CANCELED = fromString("Canceled");
 
-    /** Static value Deleting for HDInsightClusterProvisioningState. */
+    /**
+     * Static value Deleting for HDInsightClusterProvisioningState.
+     */
     public static final HDInsightClusterProvisioningState DELETING = fromString("Deleting");
 
     /**
      * Creates a new instance of HDInsightClusterProvisioningState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -36,18 +47,17 @@ public final class HDInsightClusterProvisioningState extends ExpandableStringEnu
 
     /**
      * Creates or finds a HDInsightClusterProvisioningState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding HDInsightClusterProvisioningState.
      */
-    @JsonCreator
     public static HDInsightClusterProvisioningState fromString(String name) {
         return fromString(name, HDInsightClusterProvisioningState.class);
     }
 
     /**
      * Gets known HDInsightClusterProvisioningState values.
-     *
+     * 
      * @return known HDInsightClusterProvisioningState values.
      */
     public static Collection<HDInsightClusterProvisioningState> values() {

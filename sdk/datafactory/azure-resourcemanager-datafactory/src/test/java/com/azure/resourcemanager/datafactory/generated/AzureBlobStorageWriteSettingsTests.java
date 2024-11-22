@@ -13,19 +13,19 @@ public final class AzureBlobStorageWriteSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureBlobStorageWriteSettings model = BinaryData.fromString(
-            "{\"type\":\"AzureBlobStorageWriteSettings\",\"blockSizeInMB\":\"datakrgryfnbxwxlh\",\"maxConcurrentConnections\":\"datazhxothfyifjufzlg\",\"disableMetricsCollection\":\"datasmt\",\"copyBehavior\":\"datamnuzyyc\",\"metadata\":[{\"name\":\"datarywdezpry\",\"value\":\"dataxjgyamochpwwyk\"}],\"\":{\"khmoudmcad\":\"datajkztdckwqv\",\"az\":\"dataojfuvmjtx\"}}")
+            "{\"type\":\"AzureBlobStorageWriteSettings\",\"blockSizeInMB\":\"datadcokbpbpqe\",\"maxConcurrentConnections\":\"dataszobtneltnby\",\"disableMetricsCollection\":\"datagrdrum\",\"copyBehavior\":\"datau\",\"metadata\":[{\"name\":\"datadsybiazfvxdkwvc\",\"value\":\"datalyxbyqqonkrekioj\"}],\"\":{\"yykx\":\"datadodkukycntaov\"}}")
             .toObject(AzureBlobStorageWriteSettings.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AzureBlobStorageWriteSettings model
-            = new AzureBlobStorageWriteSettings().withMaxConcurrentConnections("datazhxothfyifjufzlg")
-                .withDisableMetricsCollection("datasmt")
-                .withCopyBehavior("datamnuzyyc")
+            = new AzureBlobStorageWriteSettings().withMaxConcurrentConnections("dataszobtneltnby")
+                .withDisableMetricsCollection("datagrdrum")
+                .withCopyBehavior("datau")
                 .withMetadata(
-                    Arrays.asList(new MetadataItem().withName("datarywdezpry").withValue("dataxjgyamochpwwyk")))
-                .withBlockSizeInMB("datakrgryfnbxwxlh");
+                    Arrays.asList(new MetadataItem().withName("datadsybiazfvxdkwvc").withValue("datalyxbyqqonkrekioj")))
+                .withBlockSizeInMB("datadcokbpbpqe");
         model = BinaryData.fromObject(model).toObject(AzureBlobStorageWriteSettings.class);
     }
 }

@@ -5,66 +5,66 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.util.HashMap;
+import java.time.format.DateTimeFormatter;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/** listItem. */
+/**
+ * listItem.
+ */
 @Fluent
 public final class MicrosoftGraphListItem extends MicrosoftGraphBaseItemInner {
     /*
      * contentTypeInfo
      */
-    @JsonProperty(value = "contentType")
     private MicrosoftGraphContentTypeInfo contentType;
 
     /*
      * sharepointIds
      */
-    @JsonProperty(value = "sharepointIds")
     private MicrosoftGraphSharepointIds sharepointIds;
 
     /*
      * itemAnalytics
      */
-    @JsonProperty(value = "analytics")
     private MicrosoftGraphItemAnalytics analytics;
 
     /*
      * driveItem
      */
-    @JsonProperty(value = "driveItem")
     private MicrosoftGraphDriveItem driveItem;
 
     /*
      * fieldValueSet
      */
-    @JsonProperty(value = "fields")
     private MicrosoftGraphFieldValueSet fields;
 
     /*
      * The list of previous versions of the list item.
      */
-    @JsonProperty(value = "versions")
     private List<MicrosoftGraphListItemVersion> versions;
 
     /*
      * listItem
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphListItem class. */
+    /**
+     * Creates an instance of MicrosoftGraphListItem class.
+     */
     public MicrosoftGraphListItem() {
     }
 
     /**
      * Get the contentType property: contentTypeInfo.
-     *
+     * 
      * @return the contentType value.
      */
     public MicrosoftGraphContentTypeInfo contentType() {
@@ -73,7 +73,7 @@ public final class MicrosoftGraphListItem extends MicrosoftGraphBaseItemInner {
 
     /**
      * Set the contentType property: contentTypeInfo.
-     *
+     * 
      * @param contentType the contentType value to set.
      * @return the MicrosoftGraphListItem object itself.
      */
@@ -84,7 +84,7 @@ public final class MicrosoftGraphListItem extends MicrosoftGraphBaseItemInner {
 
     /**
      * Get the sharepointIds property: sharepointIds.
-     *
+     * 
      * @return the sharepointIds value.
      */
     public MicrosoftGraphSharepointIds sharepointIds() {
@@ -93,7 +93,7 @@ public final class MicrosoftGraphListItem extends MicrosoftGraphBaseItemInner {
 
     /**
      * Set the sharepointIds property: sharepointIds.
-     *
+     * 
      * @param sharepointIds the sharepointIds value to set.
      * @return the MicrosoftGraphListItem object itself.
      */
@@ -104,7 +104,7 @@ public final class MicrosoftGraphListItem extends MicrosoftGraphBaseItemInner {
 
     /**
      * Get the analytics property: itemAnalytics.
-     *
+     * 
      * @return the analytics value.
      */
     public MicrosoftGraphItemAnalytics analytics() {
@@ -113,7 +113,7 @@ public final class MicrosoftGraphListItem extends MicrosoftGraphBaseItemInner {
 
     /**
      * Set the analytics property: itemAnalytics.
-     *
+     * 
      * @param analytics the analytics value to set.
      * @return the MicrosoftGraphListItem object itself.
      */
@@ -124,7 +124,7 @@ public final class MicrosoftGraphListItem extends MicrosoftGraphBaseItemInner {
 
     /**
      * Get the driveItem property: driveItem.
-     *
+     * 
      * @return the driveItem value.
      */
     public MicrosoftGraphDriveItem driveItem() {
@@ -133,7 +133,7 @@ public final class MicrosoftGraphListItem extends MicrosoftGraphBaseItemInner {
 
     /**
      * Set the driveItem property: driveItem.
-     *
+     * 
      * @param driveItem the driveItem value to set.
      * @return the MicrosoftGraphListItem object itself.
      */
@@ -144,7 +144,7 @@ public final class MicrosoftGraphListItem extends MicrosoftGraphBaseItemInner {
 
     /**
      * Get the fields property: fieldValueSet.
-     *
+     * 
      * @return the fields value.
      */
     public MicrosoftGraphFieldValueSet fields() {
@@ -153,7 +153,7 @@ public final class MicrosoftGraphListItem extends MicrosoftGraphBaseItemInner {
 
     /**
      * Set the fields property: fieldValueSet.
-     *
+     * 
      * @param fields the fields value to set.
      * @return the MicrosoftGraphListItem object itself.
      */
@@ -164,7 +164,7 @@ public final class MicrosoftGraphListItem extends MicrosoftGraphBaseItemInner {
 
     /**
      * Get the versions property: The list of previous versions of the list item.
-     *
+     * 
      * @return the versions value.
      */
     public List<MicrosoftGraphListItemVersion> versions() {
@@ -173,7 +173,7 @@ public final class MicrosoftGraphListItem extends MicrosoftGraphBaseItemInner {
 
     /**
      * Set the versions property: The list of previous versions of the list item.
-     *
+     * 
      * @param versions the versions value to set.
      * @return the MicrosoftGraphListItem object itself.
      */
@@ -184,17 +184,16 @@ public final class MicrosoftGraphListItem extends MicrosoftGraphBaseItemInner {
 
     /**
      * Get the additionalProperties property: listItem.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: listItem.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphListItem object itself.
      */
@@ -203,92 +202,108 @@ public final class MicrosoftGraphListItem extends MicrosoftGraphBaseItemInner {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphListItem withCreatedBy(MicrosoftGraphIdentitySet createdBy) {
         super.withCreatedBy(createdBy);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphListItem withCreatedDateTime(OffsetDateTime createdDateTime) {
         super.withCreatedDateTime(createdDateTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphListItem withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphListItem withEtag(String etag) {
         super.withEtag(etag);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphListItem withLastModifiedBy(MicrosoftGraphIdentitySet lastModifiedBy) {
         super.withLastModifiedBy(lastModifiedBy);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphListItem withLastModifiedDateTime(OffsetDateTime lastModifiedDateTime) {
         super.withLastModifiedDateTime(lastModifiedDateTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphListItem withName(String name) {
         super.withName(name);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphListItem withParentReference(MicrosoftGraphItemReference parentReference) {
         super.withParentReference(parentReference);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphListItem withWebUrl(String webUrl) {
         super.withWebUrl(webUrl);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphListItem withCreatedByUser(MicrosoftGraphUserInner createdByUser) {
         super.withCreatedByUser(createdByUser);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphListItem withLastModifiedByUser(MicrosoftGraphUserInner lastModifiedByUser) {
         super.withLastModifiedByUser(lastModifiedByUser);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphListItem withId(String id) {
         super.withId(id);
@@ -297,7 +312,7 @@ public final class MicrosoftGraphListItem extends MicrosoftGraphBaseItemInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -321,5 +336,112 @@ public final class MicrosoftGraphListItem extends MicrosoftGraphBaseItemInner {
         if (versions() != null) {
             versions().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeJsonField("createdBy", createdBy());
+        jsonWriter.writeStringField("createdDateTime",
+            createdDateTime() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(createdDateTime()));
+        jsonWriter.writeStringField("description", description());
+        jsonWriter.writeStringField("eTag", etag());
+        jsonWriter.writeJsonField("lastModifiedBy", lastModifiedBy());
+        jsonWriter.writeStringField("lastModifiedDateTime",
+            lastModifiedDateTime() == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(lastModifiedDateTime()));
+        jsonWriter.writeStringField("name", name());
+        jsonWriter.writeJsonField("parentReference", parentReference());
+        jsonWriter.writeStringField("webUrl", webUrl());
+        jsonWriter.writeJsonField("createdByUser", createdByUser());
+        jsonWriter.writeJsonField("lastModifiedByUser", lastModifiedByUser());
+        jsonWriter.writeJsonField("contentType", this.contentType);
+        jsonWriter.writeJsonField("sharepointIds", this.sharepointIds);
+        jsonWriter.writeJsonField("analytics", this.analytics);
+        jsonWriter.writeJsonField("driveItem", this.driveItem);
+        jsonWriter.writeJsonField("fields", this.fields);
+        jsonWriter.writeArrayField("versions", this.versions, (writer, element) -> writer.writeJson(element));
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphListItem from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphListItem if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphListItem.
+     */
+    public static MicrosoftGraphListItem fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphListItem deserializedMicrosoftGraphListItem = new MicrosoftGraphListItem();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphListItem.withId(reader.getString());
+                } else if ("createdBy".equals(fieldName)) {
+                    deserializedMicrosoftGraphListItem.withCreatedBy(MicrosoftGraphIdentitySet.fromJson(reader));
+                } else if ("createdDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphListItem.withCreatedDateTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("description".equals(fieldName)) {
+                    deserializedMicrosoftGraphListItem.withDescription(reader.getString());
+                } else if ("eTag".equals(fieldName)) {
+                    deserializedMicrosoftGraphListItem.withEtag(reader.getString());
+                } else if ("lastModifiedBy".equals(fieldName)) {
+                    deserializedMicrosoftGraphListItem.withLastModifiedBy(MicrosoftGraphIdentitySet.fromJson(reader));
+                } else if ("lastModifiedDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphListItem.withLastModifiedDateTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("name".equals(fieldName)) {
+                    deserializedMicrosoftGraphListItem.withName(reader.getString());
+                } else if ("parentReference".equals(fieldName)) {
+                    deserializedMicrosoftGraphListItem
+                        .withParentReference(MicrosoftGraphItemReference.fromJson(reader));
+                } else if ("webUrl".equals(fieldName)) {
+                    deserializedMicrosoftGraphListItem.withWebUrl(reader.getString());
+                } else if ("createdByUser".equals(fieldName)) {
+                    deserializedMicrosoftGraphListItem.withCreatedByUser(MicrosoftGraphUserInner.fromJson(reader));
+                } else if ("lastModifiedByUser".equals(fieldName)) {
+                    deserializedMicrosoftGraphListItem.withLastModifiedByUser(MicrosoftGraphUserInner.fromJson(reader));
+                } else if ("contentType".equals(fieldName)) {
+                    deserializedMicrosoftGraphListItem.contentType = MicrosoftGraphContentTypeInfo.fromJson(reader);
+                } else if ("sharepointIds".equals(fieldName)) {
+                    deserializedMicrosoftGraphListItem.sharepointIds = MicrosoftGraphSharepointIds.fromJson(reader);
+                } else if ("analytics".equals(fieldName)) {
+                    deserializedMicrosoftGraphListItem.analytics = MicrosoftGraphItemAnalytics.fromJson(reader);
+                } else if ("driveItem".equals(fieldName)) {
+                    deserializedMicrosoftGraphListItem.driveItem = MicrosoftGraphDriveItem.fromJson(reader);
+                } else if ("fields".equals(fieldName)) {
+                    deserializedMicrosoftGraphListItem.fields = MicrosoftGraphFieldValueSet.fromJson(reader);
+                } else if ("versions".equals(fieldName)) {
+                    List<MicrosoftGraphListItemVersion> versions
+                        = reader.readArray(reader1 -> MicrosoftGraphListItemVersion.fromJson(reader1));
+                    deserializedMicrosoftGraphListItem.versions = versions;
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphListItem.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphListItem;
+        });
     }
 }

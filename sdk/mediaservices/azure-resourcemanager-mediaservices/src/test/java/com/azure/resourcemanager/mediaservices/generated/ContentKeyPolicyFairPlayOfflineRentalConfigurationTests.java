@@ -11,23 +11,21 @@ import org.junit.jupiter.api.Assertions;
 public final class ContentKeyPolicyFairPlayOfflineRentalConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ContentKeyPolicyFairPlayOfflineRentalConfiguration model =
-            BinaryData
-                .fromString(
-                    "{\"playbackDurationSeconds\":6751784121052191451,\"storageDurationSeconds\":3372671534162877362}")
-                .toObject(ContentKeyPolicyFairPlayOfflineRentalConfiguration.class);
-        Assertions.assertEquals(6751784121052191451L, model.playbackDurationSeconds());
-        Assertions.assertEquals(3372671534162877362L, model.storageDurationSeconds());
+        ContentKeyPolicyFairPlayOfflineRentalConfiguration model = BinaryData
+            .fromString(
+                "{\"playbackDurationSeconds\":8144209061033072751,\"storageDurationSeconds\":1627513098218533241}")
+            .toObject(ContentKeyPolicyFairPlayOfflineRentalConfiguration.class);
+        Assertions.assertEquals(8144209061033072751L, model.playbackDurationSeconds());
+        Assertions.assertEquals(1627513098218533241L, model.storageDurationSeconds());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ContentKeyPolicyFairPlayOfflineRentalConfiguration model =
-            new ContentKeyPolicyFairPlayOfflineRentalConfiguration()
-                .withPlaybackDurationSeconds(6751784121052191451L)
-                .withStorageDurationSeconds(3372671534162877362L);
+        ContentKeyPolicyFairPlayOfflineRentalConfiguration model
+            = new ContentKeyPolicyFairPlayOfflineRentalConfiguration().withPlaybackDurationSeconds(8144209061033072751L)
+                .withStorageDurationSeconds(1627513098218533241L);
         model = BinaryData.fromObject(model).toObject(ContentKeyPolicyFairPlayOfflineRentalConfiguration.class);
-        Assertions.assertEquals(6751784121052191451L, model.playbackDurationSeconds());
-        Assertions.assertEquals(3372671534162877362L, model.storageDurationSeconds());
+        Assertions.assertEquals(8144209061033072751L, model.playbackDurationSeconds());
+        Assertions.assertEquals(1627513098218533241L, model.storageDurationSeconds());
     }
 }

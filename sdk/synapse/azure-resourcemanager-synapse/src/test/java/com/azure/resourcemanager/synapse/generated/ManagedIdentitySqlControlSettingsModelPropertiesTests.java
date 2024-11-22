@@ -13,22 +13,20 @@ import org.junit.jupiter.api.Assertions;
 public final class ManagedIdentitySqlControlSettingsModelPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ManagedIdentitySqlControlSettingsModelProperties model =
-            BinaryData
-                .fromString(
-                    "{\"grantSqlControlToManagedIdentity\":{\"desiredState\":\"Enabled\",\"actualState\":\"Disabled\"}}")
-                .toObject(ManagedIdentitySqlControlSettingsModelProperties.class);
-        Assertions.assertEquals(DesiredState.ENABLED, model.grantSqlControlToManagedIdentity().desiredState());
+        ManagedIdentitySqlControlSettingsModelProperties model = BinaryData
+            .fromString(
+                "{\"grantSqlControlToManagedIdentity\":{\"desiredState\":\"Disabled\",\"actualState\":\"Enabling\"}}")
+            .toObject(ManagedIdentitySqlControlSettingsModelProperties.class);
+        Assertions.assertEquals(DesiredState.DISABLED, model.grantSqlControlToManagedIdentity().desiredState());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ManagedIdentitySqlControlSettingsModelProperties model =
-            new ManagedIdentitySqlControlSettingsModelProperties()
-                .withGrantSqlControlToManagedIdentity(
-                    new ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentity()
-                        .withDesiredState(DesiredState.ENABLED));
+        ManagedIdentitySqlControlSettingsModelProperties model
+            = new ManagedIdentitySqlControlSettingsModelProperties().withGrantSqlControlToManagedIdentity(
+                new ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentity()
+                    .withDesiredState(DesiredState.DISABLED));
         model = BinaryData.fromObject(model).toObject(ManagedIdentitySqlControlSettingsModelProperties.class);
-        Assertions.assertEquals(DesiredState.ENABLED, model.grantSqlControlToManagedIdentity().desiredState());
+        Assertions.assertEquals(DesiredState.DISABLED, model.grantSqlControlToManagedIdentity().desiredState());
     }
 }

@@ -12,21 +12,21 @@ public final class PatchPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PatchProperties model = BinaryData.fromString(
-            "{\"targetEnvironmentId\":\"vzidsxwaab\",\"targetContainerAppId\":\"ifrygzn\",\"targetRevisionId\":\"axri\",\"patchApplyStatus\":\"CreatingRevision\",\"createdAt\":\"2021-07-14T03:47:36Z\",\"lastModifiedAt\":\"2021-04-29T04:04:36Z\",\"patchDetails\":[{\"targetContainerName\":\"lhslnelxieixyn\",\"targetImage\":\"lxecwcrojphslh\",\"lastDetectionTime\":\"2021-08-31T01:01:22Z\",\"detectionStatus\":\"RegistryLoginFailed\",\"newImageName\":\"u\",\"newLayer\":{\"name\":\"dwfmvigorqjb\",\"frameworkAndVersion\":\"zhraglkafh\",\"osAndVersion\":\"qjujeickpzvcp\"},\"oldLayer\":{\"name\":\"xelnwc\",\"frameworkAndVersion\":\"yjede\",\"osAndVersion\":\"mlfmkqs\"},\"patchType\":\"Other\"},{\"targetContainerName\":\"uawxtzx\",\"targetImage\":\"uamwabzxrvxc\",\"lastDetectionTime\":\"2021-08-01T16:52:04Z\",\"detectionStatus\":\"RegistryLoginFailed\",\"newImageName\":\"phai\",\"newLayer\":{\"name\":\"yasflvgsgzwy\",\"frameworkAndVersion\":\"koih\",\"osAndVersion\":\"smjblmljhlnym\"},\"oldLayer\":{\"name\":\"qyryuzcbmqqvxm\",\"frameworkAndVersion\":\"fgtayxonsup\",\"osAndVersion\":\"jlzqnhc\"},\"patchType\":\"FrameworkSecurity\"}]}")
+            "{\"targetEnvironmentId\":\"itgvkx\",\"targetContainerAppId\":\"yqdrf\",\"targetRevisionId\":\"cealzxwh\",\"patchApplyStatus\":\"RevisionCreationFailed\",\"createdAt\":\"2021-04-17T10:43:30Z\",\"lastModifiedAt\":\"2021-03-27T07:28:32Z\",\"patchDetails\":[{\"targetContainerName\":\"hlwigdivbkbxg\",\"targetImage\":\"mf\",\"lastDetectionTime\":\"2021-09-11T08:38:54Z\",\"detectionStatus\":\"RegistryLoginFailed\",\"newImageName\":\"asqvd\",\"newLayer\":{\"name\":\"y\",\"frameworkAndVersion\":\"xakjsqzhzb\",\"osAndVersion\":\"kgimsidxasic\"},\"oldLayer\":{\"name\":\"vvjskgfmocwahp\",\"frameworkAndVersion\":\"atjeaahh\",\"osAndVersion\":\"hhnakzybbj\"},\"patchType\":\"FrameworkSecurity\"},{\"targetContainerName\":\"jks\",\"targetImage\":\"xkyxvxevblbj\",\"lastDetectionTime\":\"2021-03-19T03:04:44Z\",\"detectionStatus\":\"Failed\",\"newImageName\":\"jlageu\",\"newLayer\":{\"name\":\"xuns\",\"frameworkAndVersion\":\"bn\",\"osAndVersion\":\"pxynenlsvxeizzg\"},\"oldLayer\":{\"name\":\"nsrmffeycx\",\"frameworkAndVersion\":\"tpiymerteea\",\"osAndVersion\":\"xqiekkkzddrtk\"},\"patchType\":\"OSSecurity\"},{\"targetContainerName\":\"jbmxvavre\",\"targetImage\":\"de\",\"lastDetectionTime\":\"2021-07-20T03:47:36Z\",\"detectionStatus\":\"Failed\",\"newImageName\":\"cuijpxt\",\"newLayer\":{\"name\":\"wprtu\",\"frameworkAndVersion\":\"sawddjibabxvi\",\"osAndVersion\":\"tvtzeexavoxtfg\"},\"oldLayer\":{\"name\":\"dmdqb\",\"frameworkAndVersion\":\"ypq\",\"osAndVersion\":\"sfj\"},\"patchType\":\"FrameworkSecurity\"},{\"targetContainerName\":\"slhhxudbxv\",\"targetImage\":\"d\",\"lastDetectionTime\":\"2021-02-13T16:52:17Z\",\"detectionStatus\":\"Succeeded\",\"newImageName\":\"irudh\",\"newLayer\":{\"name\":\"es\",\"frameworkAndVersion\":\"dlpagzrcxfail\",\"osAndVersion\":\"xwmdboxd\"},\"oldLayer\":{\"name\":\"ft\",\"frameworkAndVersion\":\"qobr\",\"osAndVersion\":\"nac\"},\"patchType\":\"FrameworkAndOSSecurity\"}]}")
             .toObject(PatchProperties.class);
-        Assertions.assertEquals("vzidsxwaab", model.targetEnvironmentId());
-        Assertions.assertEquals("ifrygzn", model.targetContainerAppId());
-        Assertions.assertEquals("axri", model.targetRevisionId());
+        Assertions.assertEquals("itgvkx", model.targetEnvironmentId());
+        Assertions.assertEquals("yqdrf", model.targetContainerAppId());
+        Assertions.assertEquals("cealzxwh", model.targetRevisionId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PatchProperties model = new PatchProperties().withTargetEnvironmentId("vzidsxwaab")
-            .withTargetContainerAppId("ifrygzn")
-            .withTargetRevisionId("axri");
+        PatchProperties model = new PatchProperties().withTargetEnvironmentId("itgvkx")
+            .withTargetContainerAppId("yqdrf")
+            .withTargetRevisionId("cealzxwh");
         model = BinaryData.fromObject(model).toObject(PatchProperties.class);
-        Assertions.assertEquals("vzidsxwaab", model.targetEnvironmentId());
-        Assertions.assertEquals("ifrygzn", model.targetContainerAppId());
-        Assertions.assertEquals("axri", model.targetRevisionId());
+        Assertions.assertEquals("itgvkx", model.targetEnvironmentId());
+        Assertions.assertEquals("yqdrf", model.targetContainerAppId());
+        Assertions.assertEquals("cealzxwh", model.targetRevisionId());
     }
 }

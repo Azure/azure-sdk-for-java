@@ -19,7 +19,7 @@ import reactor.core.publisher.Mono;
 public final class TriggersGetEventSubscriptionStatusWithResponseMockTests {
     @Test
     public void testGetEventSubscriptionStatusWithResponse() throws Exception {
-        String responseStr = "{\"triggerName\":\"lwyet\",\"status\":\"Disabled\"}";
+        String responseStr = "{\"triggerName\":\"dfmz\",\"status\":\"Disabled\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -29,7 +29,7 @@ public final class TriggersGetEventSubscriptionStatusWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         TriggerSubscriptionOperationStatus response = manager.triggers()
-            .getEventSubscriptionStatusWithResponse("fryket", "rzxbmiyifkgmyqnj", "jyppixfubkfj",
+            .getEventSubscriptionStatusWithResponse("jybtwgdlfg", "uojnikwzlowusa", "dmjiz",
                 com.azure.core.util.Context.NONE)
             .getValue();
 

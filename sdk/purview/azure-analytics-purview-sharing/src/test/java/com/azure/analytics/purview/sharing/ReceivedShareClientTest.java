@@ -11,6 +11,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 import java.util.Optional;
 import java.util.UUID;
 
+import com.azure.analytics.purview.sharing.models.BlobAccountSinkProperties;
 import org.junit.jupiter.api.Test;
 
 import com.azure.analytics.purview.sharing.models.BlobAccountSink;
@@ -45,10 +46,9 @@ class ReceivedShareClientTest extends PurviewShareTestBase {
         PagedIterable<BinaryData> receivedShares = receivedSharesClient.listDetachedReceivedShares(requestOptions);
 
         assertTrue(receivedShares.stream().findAny().isPresent());
-        assertTrue(receivedShares
-                    .stream()
-                    .map(binaryData -> binaryData.toObject(InPlaceReceivedShare.class))
-                    .allMatch(share -> share.getShareStatus().equals(ShareStatus.DETACHED)));
+        assertTrue(receivedShares.stream()
+            .map(binaryData -> binaryData.toObject(InPlaceReceivedShare.class))
+            .allMatch(share -> share.getProperties().getShareStatus().equals(ShareStatus.DETACHED_SHARE_STATUS)));
     }
 
     @Test
@@ -61,16 +61,17 @@ class ReceivedShareClientTest extends PurviewShareTestBase {
         RequestOptions requestOptions = new RequestOptions().addQueryParam("$orderBy", "properties/createdAt desc");
         PagedIterable<BinaryData> receivedShares = receivedSharesClient.listDetachedReceivedShares(requestOptions);
 
-        InPlaceReceivedShare receivedShare = receivedShares.stream().findFirst().get().toObject(InPlaceReceivedShare.class);
+        InPlaceReceivedShare receivedShare
+            = receivedShares.stream().findFirst().get().toObject(InPlaceReceivedShare.class);
 
-        InPlaceReceivedShare retrievedShare = this.receivedSharesClient
-                .getReceivedShareWithResponse(receivedShare.getId(), new RequestOptions())
+        InPlaceReceivedShare retrievedShare
+            = this.receivedSharesClient.getReceivedShareWithResponse(receivedShare.getId(), new RequestOptions())
                 .getValue()
                 .toObject(InPlaceReceivedShare.class);
 
         assertNotNull(retrievedShare);
         assertEquals(receivedShare.getId(), retrievedShare.getId());
-        assertEquals(receivedShare.getDisplayName(), retrievedShare.getDisplayName());
+        assertEquals(receivedShare.getProperties().getDisplayName(), retrievedShare.getProperties().getDisplayName());
     }
 
     @Test
@@ -83,7 +84,8 @@ class ReceivedShareClientTest extends PurviewShareTestBase {
         RequestOptions requestOptions = new RequestOptions().addQueryParam("$orderBy", "properties/createdAt desc");
         PagedIterable<BinaryData> receivedShares = receivedSharesClient.listDetachedReceivedShares(requestOptions);
 
-        InPlaceReceivedShare receivedShare = receivedShares.stream().findFirst().get().toObject(InPlaceReceivedShare.class);
+        InPlaceReceivedShare receivedShare
+            = receivedShares.stream().findFirst().get().toObject(InPlaceReceivedShare.class);
 
         SyncPoller<BinaryData, Void> syncPoller = setPlaybackSyncPollerPollInterval(
             this.receivedSharesClient.beginDeleteReceivedShare(receivedShare.getId(), new RequestOptions()));
@@ -111,21 +113,20 @@ class ReceivedShareClientTest extends PurviewShareTestBase {
 
         InPlaceReceivedShare receivedShare = detachedReceivedShare.get().toObject(InPlaceReceivedShare.class);
 
-        StoreReference storeReference = new StoreReference()
-                .setReferenceName(this.consumerStorageAccountResourceId)
-                .setType(ReferenceNameType.ARM_RESOURCE_REFERENCE);
+        StoreReference storeReference = new StoreReference().setReferenceName(this.consumerStorageAccountResourceId)
+            .setType(ReferenceNameType.ARM_RESOURCE_REFERENCE);
 
-        Sink sink = new BlobAccountSink()
-                .setStoreReference(storeReference)
-                .setContainerName(testResourceNamer.randomName("container", 26))
-                .setFolder(testResourceNamer.randomName("folder", 20))
-                .setMountPath(testResourceNamer.randomName("mountpath", 20));
+        Sink sink = new BlobAccountSink().setStoreReference(storeReference)
+            .setProperties(
+                new BlobAccountSinkProperties().setContainerName(testResourceNamer.randomName("container", 26))
+                    .setFolder(testResourceNamer.randomName("folder", 20))
+                    .setMountPath(testResourceNamer.randomName("mountpath", 20)));
 
-        receivedShare.setSink(sink);
+        receivedShare.getProperties().setSink(sink);
 
-        SyncPoller<BinaryData, BinaryData> createResponse = setPlaybackSyncPollerPollInterval(
-            receivedSharesClient.beginCreateOrReplaceReceivedShare(receivedShare.getId(),
-                BinaryData.fromObject(receivedShare), new RequestOptions()));
+        SyncPoller<BinaryData, BinaryData> createResponse
+            = setPlaybackSyncPollerPollInterval(receivedSharesClient.beginCreateOrReplaceReceivedShare(
+                receivedShare.getId(), BinaryData.fromObject(receivedShare), new RequestOptions()));
 
         assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, createResponse.waitForCompletion().getStatus());
     }

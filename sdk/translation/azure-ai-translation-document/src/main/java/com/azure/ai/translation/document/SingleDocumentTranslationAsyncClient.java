@@ -63,9 +63,11 @@ public final class SingleDocumentTranslationAsyncClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * BinaryData
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param targetLanguage Specifies the language of the output document.
      * The target language must be one of the supported languages included in the translation scope.
@@ -80,12 +82,11 @@ public final class SingleDocumentTranslationAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> documentTranslateWithResponse(String targetLanguage, BinaryData documentTranslateContent,
+    Mono<Response<BinaryData>> translateWithResponse(String targetLanguage, BinaryData documentTranslateContent,
         RequestOptions requestOptions) {
-        // Protocol API requires serialization of parts with content-disposition and data, as operation
-        // 'documentTranslate' is 'multipart/form-data'
-        return this.serviceClient.documentTranslateWithResponseAsync(targetLanguage, documentTranslateContent,
-            requestOptions);
+        // Protocol API requires serialization of parts with content-disposition and data, as operation 'translate' is
+        // 'multipart/form-data'
+        return this.serviceClient.translateWithResponseAsync(targetLanguage, documentTranslateContent, requestOptions);
     }
 
     /**
@@ -117,9 +118,9 @@ public final class SingleDocumentTranslationAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> documentTranslate(String targetLanguage, DocumentTranslateContent documentTranslateContent,
+    public Mono<BinaryData> translate(String targetLanguage, DocumentTranslateContent documentTranslateContent,
         String sourceLanguage, String category, Boolean allowFallback) {
-        // Generated convenience method for documentTranslateWithResponse
+        // Generated convenience method for translateWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (sourceLanguage != null) {
             requestOptions.addQueryParam("sourceLanguage", sourceLanguage, false);
@@ -130,7 +131,7 @@ public final class SingleDocumentTranslationAsyncClient {
         if (allowFallback != null) {
             requestOptions.addQueryParam("allowFallback", String.valueOf(allowFallback), false);
         }
-        return documentTranslateWithResponse(targetLanguage,
+        return translateWithResponse(targetLanguage,
             new MultipartFormDataHelper(requestOptions)
                 .serializeFileField("document", documentTranslateContent.getDocument().getContent(),
                     documentTranslateContent.getDocument().getContentType(),
@@ -178,11 +179,10 @@ public final class SingleDocumentTranslationAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BinaryData> documentTranslate(String targetLanguage,
-        DocumentTranslateContent documentTranslateContent) {
-        // Generated convenience method for documentTranslateWithResponse
+    public Mono<BinaryData> translate(String targetLanguage, DocumentTranslateContent documentTranslateContent) {
+        // Generated convenience method for translateWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return documentTranslateWithResponse(targetLanguage,
+        return translateWithResponse(targetLanguage,
             new MultipartFormDataHelper(requestOptions)
                 .serializeFileField("document", documentTranslateContent.getDocument().getContent(),
                     documentTranslateContent.getDocument().getContentType(),

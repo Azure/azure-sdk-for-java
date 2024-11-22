@@ -5,32 +5,39 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.fluent.models.ManagedDatabaseSecurityAlertPolicyInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** A list of the managed database's security alert policies. */
+/**
+ * A list of the managed database's security alert policies.
+ */
 @Immutable
-public final class ManagedDatabaseSecurityAlertPolicyListResult {
+public final class ManagedDatabaseSecurityAlertPolicyListResult
+    implements JsonSerializable<ManagedDatabaseSecurityAlertPolicyListResult> {
     /*
      * Array of results.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<ManagedDatabaseSecurityAlertPolicyInner> value;
 
     /*
      * Link to retrieve next page of results.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of ManagedDatabaseSecurityAlertPolicyListResult class. */
+    /**
+     * Creates an instance of ManagedDatabaseSecurityAlertPolicyListResult class.
+     */
     public ManagedDatabaseSecurityAlertPolicyListResult() {
     }
 
     /**
      * Get the value property: Array of results.
-     *
+     * 
      * @return the value value.
      */
     public List<ManagedDatabaseSecurityAlertPolicyInner> value() {
@@ -39,7 +46,7 @@ public final class ManagedDatabaseSecurityAlertPolicyListResult {
 
     /**
      * Get the nextLink property: Link to retrieve next page of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,12 +55,52 @@ public final class ManagedDatabaseSecurityAlertPolicyListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedDatabaseSecurityAlertPolicyListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedDatabaseSecurityAlertPolicyListResult if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ManagedDatabaseSecurityAlertPolicyListResult.
+     */
+    public static ManagedDatabaseSecurityAlertPolicyListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedDatabaseSecurityAlertPolicyListResult deserializedManagedDatabaseSecurityAlertPolicyListResult
+                = new ManagedDatabaseSecurityAlertPolicyListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<ManagedDatabaseSecurityAlertPolicyInner> value
+                        = reader.readArray(reader1 -> ManagedDatabaseSecurityAlertPolicyInner.fromJson(reader1));
+                    deserializedManagedDatabaseSecurityAlertPolicyListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedManagedDatabaseSecurityAlertPolicyListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagedDatabaseSecurityAlertPolicyListResult;
+        });
     }
 }

@@ -7,7 +7,6 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.Region;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.test.annotation.DoNotRecord;
-import com.azure.core.test.annotation.LiveOnly;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
@@ -30,9 +29,9 @@ import com.azure.resourcemanager.sql.models.ReadWriteEndpointFailoverPolicy;
 import com.azure.resourcemanager.sql.models.RegionCapabilities;
 import com.azure.resourcemanager.sql.models.ReplicationLink;
 import com.azure.resourcemanager.sql.models.SampleName;
-import com.azure.resourcemanager.sql.models.ServerNetworkAccessFlag;
 import com.azure.resourcemanager.sql.models.SecurityAlertPolicyName;
 import com.azure.resourcemanager.sql.models.SecurityAlertPolicyState;
+import com.azure.resourcemanager.sql.models.ServerNetworkAccessFlag;
 import com.azure.resourcemanager.sql.models.ServiceObjectiveName;
 import com.azure.resourcemanager.sql.models.Sku;
 import com.azure.resourcemanager.sql.models.SqlActiveDirectoryAdministrator;
@@ -71,6 +70,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -100,56 +100,49 @@ public class SqlServerOperationsTests extends SqlServerTest {
         final String administratorPassword = password();
 
         // Create
-        SqlServer sqlPrimaryServer =
-            sqlServerManager
-                .sqlServers()
-                .define(sqlServerName)
-                .withRegion(Region.US_WEST3)
-                .withNewResourceGroup(rgName)
-                .withAdministratorLogin(administratorLogin)
-                .withAdministratorPassword(administratorPassword)
-                .defineDatabase(dbName)
-                .fromSample(SampleName.ADVENTURE_WORKS_LT)
-                .withStandardEdition(SqlDatabaseStandardServiceObjective.S0)
-                .attach()
-                .defineDatabase(dbSyncName)
-                .withStandardEdition(SqlDatabaseStandardServiceObjective.S0)
-                .attach()
-                .defineDatabase(dbMemberName)
-                .withStandardEdition(SqlDatabaseStandardServiceObjective.S0)
-                .attach()
-                .create();
+        SqlServer sqlPrimaryServer = sqlServerManager.sqlServers()
+            .define(sqlServerName)
+            .withRegion(Region.US_WEST3)
+            .withNewResourceGroup(rgName)
+            .withAdministratorLogin(administratorLogin)
+            .withAdministratorPassword(administratorPassword)
+            .defineDatabase(dbName)
+            .fromSample(SampleName.ADVENTURE_WORKS_LT)
+            .withStandardEdition(SqlDatabaseStandardServiceObjective.S0)
+            .attach()
+            .defineDatabase(dbSyncName)
+            .withStandardEdition(SqlDatabaseStandardServiceObjective.S0)
+            .attach()
+            .defineDatabase(dbMemberName)
+            .withStandardEdition(SqlDatabaseStandardServiceObjective.S0)
+            .attach()
+            .create();
 
         SqlDatabase dbSource = sqlPrimaryServer.databases().get(dbName);
         SqlDatabase dbSync = sqlPrimaryServer.databases().get(dbSyncName);
         SqlDatabase dbMember = sqlPrimaryServer.databases().get(dbMemberName);
 
-        SqlSyncGroup sqlSyncGroup =
-            dbSync
-                .syncGroups()
-                .define(syncGroupName)
-                .withSyncDatabaseId(dbSource.id())
-                .withDatabaseUserName(administratorLogin)
-                .withDatabasePassword(administratorPassword)
-                .withConflictResolutionPolicyHubWins()
-                .withInterval(-1)
-                .create();
+        SqlSyncGroup sqlSyncGroup = dbSync.syncGroups()
+            .define(syncGroupName)
+            .withSyncDatabaseId(dbSource.id())
+            .withDatabaseUserName(administratorLogin)
+            .withDatabasePassword(administratorPassword)
+            .withConflictResolutionPolicyHubWins()
+            .withInterval(-1)
+            .create();
         Assertions.assertNotNull(sqlSyncGroup);
 
-        SqlSyncMember sqlSyncMember =
-            sqlSyncGroup
-                .syncMembers()
-                .define(syncMemberName)
-                .withMemberSqlDatabase(dbMember)
-                .withMemberUserName(administratorLogin)
-                .withMemberPassword(administratorPassword)
-                .withMemberDatabaseType(SyncMemberDbType.AZURE_SQL_DATABASE)
-                .withDatabaseType(SyncDirection.ONE_WAY_MEMBER_TO_HUB)
-                .create();
+        SqlSyncMember sqlSyncMember = sqlSyncGroup.syncMembers()
+            .define(syncMemberName)
+            .withMemberSqlDatabase(dbMember)
+            .withMemberUserName(administratorLogin)
+            .withMemberPassword(administratorPassword)
+            .withMemberDatabaseType(SyncMemberDbType.AZURE_SQL_DATABASE)
+            .withDatabaseType(SyncDirection.ONE_WAY_MEMBER_TO_HUB)
+            .create();
         Assertions.assertNotNull(sqlSyncMember);
 
-        sqlSyncMember
-            .update()
+        sqlSyncMember.update()
             .withDatabaseType(SyncDirection.BIDIRECTIONAL)
             .withMemberUserName(administratorLogin)
             .withMemberPassword(administratorPassword)
@@ -158,11 +151,9 @@ public class SqlServerOperationsTests extends SqlServerTest {
 
         Assertions.assertFalse(sqlSyncGroup.syncMembers().list().isEmpty());
 
-        sqlSyncMember =
-            sqlServerManager
-                .sqlServers()
-                .syncMembers()
-                .getBySqlServer(rgName, sqlServerName, dbSyncName, syncGroupName, syncMemberName);
+        sqlSyncMember = sqlServerManager.sqlServers()
+            .syncMembers()
+            .getBySqlServer(rgName, sqlServerName, dbSyncName, syncGroupName, syncMemberName);
         Assertions.assertNotNull(sqlSyncMember);
 
         sqlSyncMember.delete();
@@ -179,55 +170,49 @@ public class SqlServerOperationsTests extends SqlServerTest {
         final String administratorPassword = password();
 
         // Create
-        SqlServer sqlPrimaryServer =
-            sqlServerManager
-                .sqlServers()
-                .define(sqlServerName)
-                .withRegion(Region.US_EAST)
-                .withNewResourceGroup(rgName)
-                .withAdministratorLogin(administratorLogin)
-                .withAdministratorPassword(administratorPassword)
-                .defineDatabase(dbName)
-                .fromSample(SampleName.ADVENTURE_WORKS_LT)
-                .withStandardEdition(SqlDatabaseStandardServiceObjective.S0)
-                .attach()
-                .defineDatabase(dbSyncName)
-                .withStandardEdition(SqlDatabaseStandardServiceObjective.S0)
-                .attach()
-                .create();
+        SqlServer sqlPrimaryServer = sqlServerManager.sqlServers()
+            .define(sqlServerName)
+            .withRegion(Region.US_EAST)
+            .withNewResourceGroup(rgName)
+            .withAdministratorLogin(administratorLogin)
+            .withAdministratorPassword(administratorPassword)
+            .defineDatabase(dbName)
+            .fromSample(SampleName.ADVENTURE_WORKS_LT)
+            .withStandardEdition(SqlDatabaseStandardServiceObjective.S0)
+            .attach()
+            .defineDatabase(dbSyncName)
+            .withStandardEdition(SqlDatabaseStandardServiceObjective.S0)
+            .attach()
+            .create();
 
         SqlDatabase dbSource = sqlPrimaryServer.databases().get(dbName);
         SqlDatabase dbSync = sqlPrimaryServer.databases().get(dbSyncName);
 
-        SqlSyncGroup sqlSyncGroup =
-            dbSync
-                .syncGroups()
-                .define(syncGroupName)
-                .withSyncDatabaseId(dbSource.id())
-                .withDatabaseUserName(administratorLogin)
-                .withDatabasePassword(administratorPassword)
-                .withConflictResolutionPolicyHubWins()
-                .withInterval(-1)
-                .create();
+        SqlSyncGroup sqlSyncGroup = dbSync.syncGroups()
+            .define(syncGroupName)
+            .withSyncDatabaseId(dbSource.id())
+            .withDatabaseUserName(administratorLogin)
+            .withDatabasePassword(administratorPassword)
+            .withConflictResolutionPolicyHubWins()
+            .withInterval(-1)
+            .create();
 
         Assertions.assertNotNull(sqlSyncGroup);
 
         // service no longer supports updating ConflictResolutionPolicy
         // sqlSyncGroup.update().withInterval(600).withConflictResolutionPolicyMemberWins().apply();
 
-        Assertions
-            .assertTrue(
-                sqlServerManager
-                    .sqlServers()
-                    .syncGroups()
-                    .listSyncDatabaseIds(Region.US_EAST)
-                    .stream()
-                    .findAny()
-                    .isPresent());
+        Assertions.assertTrue(sqlServerManager.sqlServers()
+            .syncGroups()
+            .listSyncDatabaseIds(Region.US_EAST)
+            .stream()
+            .findAny()
+            .isPresent());
         Assertions.assertFalse(dbSync.syncGroups().list().isEmpty());
 
-        sqlSyncGroup =
-            sqlServerManager.sqlServers().syncGroups().getBySqlServer(rgName, sqlServerName, dbSyncName, syncGroupName);
+        sqlSyncGroup = sqlServerManager.sqlServers()
+            .syncGroups()
+            .getBySqlServer(rgName, sqlServerName, dbSyncName, syncGroupName);
         Assertions.assertNotNull(sqlSyncGroup);
 
         sqlSyncGroup.delete();
@@ -243,43 +228,37 @@ public class SqlServerOperationsTests extends SqlServerTest {
         final String administratorPassword = password();
 
         // Create
-        SqlServer sqlPrimaryServer =
-            sqlServerManager
-                .sqlServers()
-                .define(sqlPrimaryServerName)
-                .withRegion(Region.US_EAST2)
-                .withNewResourceGroup(rgName)
-                .withAdministratorLogin(administratorLogin)
-                .withAdministratorPassword(administratorPassword)
-                .defineElasticPool(epName)
-                .withPremiumPool()
-                .attach()
-                .defineDatabase(dbName)
-                .withExistingElasticPool(epName)
-                .fromSample(SampleName.ADVENTURE_WORKS_LT)
-                .attach()
-                .create();
+        SqlServer sqlPrimaryServer = sqlServerManager.sqlServers()
+            .define(sqlPrimaryServerName)
+            .withRegion(Region.US_EAST2)
+            .withNewResourceGroup(rgName)
+            .withAdministratorLogin(administratorLogin)
+            .withAdministratorPassword(administratorPassword)
+            .defineElasticPool(epName)
+            .withPremiumPool()
+            .attach()
+            .defineDatabase(dbName)
+            .withExistingElasticPool(epName)
+            .fromSample(SampleName.ADVENTURE_WORKS_LT)
+            .attach()
+            .create();
 
-        SqlServer sqlSecondaryServer =
-            sqlServerManager
-                .sqlServers()
-                .define(sqlSecondaryServerName)
-                .withRegion(Region.US_EAST)
-                .withExistingResourceGroup(rgName)
-                .withAdministratorLogin(administratorLogin)
-                .withAdministratorPassword(administratorPassword)
-                .create();
+        SqlServer sqlSecondaryServer = sqlServerManager.sqlServers()
+            .define(sqlSecondaryServerName)
+            .withRegion(Region.US_EAST)
+            .withExistingResourceGroup(rgName)
+            .withAdministratorLogin(administratorLogin)
+            .withAdministratorPassword(administratorPassword)
+            .create();
 
         SqlDatabase dbSample = sqlPrimaryServer.databases().get(dbName);
 
-        SqlDatabase dbCopy =
-            sqlSecondaryServer
-                .databases()
-                .define("dbCopy")
-                .withSourceDatabase(dbSample)
-                .withMode(CreateMode.COPY)
-                .withPremiumEdition(SqlDatabasePremiumServiceObjective.P1)
-                .create();
+        SqlDatabase dbCopy = sqlSecondaryServer.databases()
+            .define("dbCopy")
+            .withSourceDatabase(dbSample)
+            .withMode(CreateMode.COPY)
+            .withPremiumEdition(SqlDatabasePremiumServiceObjective.P1)
+            .create();
 
         Assertions.assertNotNull(dbCopy);
     }
@@ -296,48 +275,40 @@ public class SqlServerOperationsTests extends SqlServerTest {
         final String administratorPassword = password();
 
         // Create
-        SqlServer sqlPrimaryServer =
-            sqlServerManager
-                .sqlServers()
-                .define(sqlPrimaryServerName)
-                .withRegion(Region.US_EAST)
-                .withNewResourceGroup(rgName)
-                .withAdministratorLogin(administratorLogin)
-                .withAdministratorPassword(administratorPassword)
-                .defineDatabase(dbName)
-                .fromSample(SampleName.ADVENTURE_WORKS_LT)
-                .withStandardEdition(SqlDatabaseStandardServiceObjective.S0)
-                .attach()
-                .create();
+        SqlServer sqlPrimaryServer = sqlServerManager.sqlServers()
+            .define(sqlPrimaryServerName)
+            .withRegion(Region.US_EAST)
+            .withNewResourceGroup(rgName)
+            .withAdministratorLogin(administratorLogin)
+            .withAdministratorPassword(administratorPassword)
+            .defineDatabase(dbName)
+            .fromSample(SampleName.ADVENTURE_WORKS_LT)
+            .withStandardEdition(SqlDatabaseStandardServiceObjective.S0)
+            .attach()
+            .create();
 
-        SqlServer sqlSecondaryServer =
-            sqlServerManager
-                .sqlServers()
-                .define(sqlSecondaryServerName)
-                .withRegion(Region.US_EAST2)
-                .withExistingResourceGroup(rgName)
-                .withAdministratorLogin(administratorLogin)
-                .withAdministratorPassword(administratorPassword)
-                .create();
+        SqlServer sqlSecondaryServer = sqlServerManager.sqlServers()
+            .define(sqlSecondaryServerName)
+            .withRegion(Region.US_EAST2)
+            .withExistingResourceGroup(rgName)
+            .withAdministratorLogin(administratorLogin)
+            .withAdministratorPassword(administratorPassword)
+            .create();
 
-        SqlServer sqlOtherServer =
-            sqlServerManager
-                .sqlServers()
-                .define(sqlOtherServerName)
-                .withRegion(Region.US_SOUTH_CENTRAL)
-                .withExistingResourceGroup(rgName)
-                .withAdministratorLogin(administratorLogin)
-                .withAdministratorPassword(administratorPassword)
-                .create();
+        SqlServer sqlOtherServer = sqlServerManager.sqlServers()
+            .define(sqlOtherServerName)
+            .withRegion(Region.US_SOUTH_CENTRAL)
+            .withExistingResourceGroup(rgName)
+            .withAdministratorLogin(administratorLogin)
+            .withAdministratorPassword(administratorPassword)
+            .create();
 
-        SqlFailoverGroup failoverGroup =
-            sqlPrimaryServer
-                .failoverGroups()
-                .define(failoverGroupName)
-                .withManualReadWriteEndpointPolicy()
-                .withPartnerServerId(sqlSecondaryServer.id())
-                .withReadOnlyEndpointPolicyDisabled()
-                .create();
+        SqlFailoverGroup failoverGroup = sqlPrimaryServer.failoverGroups()
+            .define(failoverGroupName)
+            .withManualReadWriteEndpointPolicy()
+            .withPartnerServerId(sqlSecondaryServer.id())
+            .withReadOnlyEndpointPolicyDisabled()
+            .create();
         Assertions.assertNotNull(failoverGroup);
         Assertions.assertEquals(failoverGroupName, failoverGroup.name());
         Assertions.assertEquals(rgName, failoverGroup.resourceGroupName());
@@ -345,9 +316,8 @@ public class SqlServerOperationsTests extends SqlServerTest {
         Assertions.assertEquals(FailoverGroupReplicationRole.PRIMARY, failoverGroup.replicationRole());
         Assertions.assertEquals(1, failoverGroup.partnerServers().size());
         Assertions.assertEquals(sqlSecondaryServer.id(), failoverGroup.partnerServers().get(0).id());
-        Assertions
-            .assertEquals(
-                FailoverGroupReplicationRole.SECONDARY, failoverGroup.partnerServers().get(0).replicationRole());
+        Assertions.assertEquals(FailoverGroupReplicationRole.SECONDARY,
+            failoverGroup.partnerServers().get(0).replicationRole());
         Assertions.assertEquals(0, failoverGroup.databases().size());
         Assertions.assertEquals(0, failoverGroup.readWriteEndpointDataLossGracePeriodMinutes());
         Assertions.assertEquals(ReadWriteEndpointFailoverPolicy.MANUAL, failoverGroup.readWriteEndpointPolicy());
@@ -360,24 +330,21 @@ public class SqlServerOperationsTests extends SqlServerTest {
         Assertions.assertEquals(FailoverGroupReplicationRole.SECONDARY, failoverGroupOnPartner.replicationRole());
         Assertions.assertEquals(1, failoverGroupOnPartner.partnerServers().size());
         Assertions.assertEquals(sqlPrimaryServer.id(), failoverGroupOnPartner.partnerServers().get(0).id());
-        Assertions
-            .assertEquals(
-                FailoverGroupReplicationRole.PRIMARY, failoverGroupOnPartner.partnerServers().get(0).replicationRole());
+        Assertions.assertEquals(FailoverGroupReplicationRole.PRIMARY,
+            failoverGroupOnPartner.partnerServers().get(0).replicationRole());
         Assertions.assertEquals(0, failoverGroupOnPartner.databases().size());
         Assertions.assertEquals(0, failoverGroupOnPartner.readWriteEndpointDataLossGracePeriodMinutes());
-        Assertions
-            .assertEquals(ReadWriteEndpointFailoverPolicy.MANUAL, failoverGroupOnPartner.readWriteEndpointPolicy());
-        Assertions
-            .assertEquals(ReadOnlyEndpointFailoverPolicy.DISABLED, failoverGroupOnPartner.readOnlyEndpointPolicy());
+        Assertions.assertEquals(ReadWriteEndpointFailoverPolicy.MANUAL,
+            failoverGroupOnPartner.readWriteEndpointPolicy());
+        Assertions.assertEquals(ReadOnlyEndpointFailoverPolicy.DISABLED,
+            failoverGroupOnPartner.readOnlyEndpointPolicy());
 
-        SqlFailoverGroup failoverGroup2 =
-            sqlPrimaryServer
-                .failoverGroups()
-                .define(failoverGroupName2)
-                .withAutomaticReadWriteEndpointPolicyAndDataLossGracePeriod(120)
-                .withPartnerServerId(sqlOtherServer.id())
-                .withReadOnlyEndpointPolicyEnabled()
-                .create();
+        SqlFailoverGroup failoverGroup2 = sqlPrimaryServer.failoverGroups()
+            .define(failoverGroupName2)
+            .withAutomaticReadWriteEndpointPolicyAndDataLossGracePeriod(120)
+            .withPartnerServerId(sqlOtherServer.id())
+            .withReadOnlyEndpointPolicyEnabled()
+            .create();
         Assertions.assertNotNull(failoverGroup2);
         Assertions.assertEquals(failoverGroupName2, failoverGroup2.name());
         Assertions.assertEquals(rgName, failoverGroup2.resourceGroupName());
@@ -385,16 +352,14 @@ public class SqlServerOperationsTests extends SqlServerTest {
         Assertions.assertEquals(FailoverGroupReplicationRole.PRIMARY, failoverGroup2.replicationRole());
         Assertions.assertEquals(1, failoverGroup2.partnerServers().size());
         Assertions.assertEquals(sqlOtherServer.id(), failoverGroup2.partnerServers().get(0).id());
-        Assertions
-            .assertEquals(
-                FailoverGroupReplicationRole.SECONDARY, failoverGroup2.partnerServers().get(0).replicationRole());
+        Assertions.assertEquals(FailoverGroupReplicationRole.SECONDARY,
+            failoverGroup2.partnerServers().get(0).replicationRole());
         Assertions.assertEquals(0, failoverGroup2.databases().size());
         Assertions.assertEquals(120, failoverGroup2.readWriteEndpointDataLossGracePeriodMinutes());
         Assertions.assertEquals(ReadWriteEndpointFailoverPolicy.AUTOMATIC, failoverGroup2.readWriteEndpointPolicy());
         Assertions.assertEquals(ReadOnlyEndpointFailoverPolicy.ENABLED, failoverGroup2.readOnlyEndpointPolicy());
 
-        failoverGroup
-            .update()
+        failoverGroup.update()
             .withAutomaticReadWriteEndpointPolicyAndDataLossGracePeriod(120)
             .withReadOnlyEndpointPolicyEnabled()
             .withTag("tag1", "value1")
@@ -404,8 +369,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
         Assertions.assertEquals(ReadOnlyEndpointFailoverPolicy.ENABLED, failoverGroup.readOnlyEndpointPolicy());
 
         SqlDatabase db = sqlPrimaryServer.databases().get(dbName);
-        failoverGroup
-            .update()
+        failoverGroup.update()
             .withManualReadWriteEndpointPolicy()
             .withReadOnlyEndpointPolicyDisabled()
             .withNewDatabaseId(db.id())
@@ -434,19 +398,17 @@ public class SqlServerOperationsTests extends SqlServerTest {
         String storageName = generateRandomResourceName(sqlServerName, 22);
 
         // Create
-        SqlServer sqlServer =
-            sqlServerManager
-                .sqlServers()
-                .define(sqlServerName)
-                .withRegion(Region.US_EAST)
-                .withNewResourceGroup(rgName)
-                .withAdministratorLogin(sqlServerAdminName)
-                .withAdministratorPassword(sqlServerAdminPassword)
-                .defineDatabase(databaseName)
-                .fromSample(SampleName.ADVENTURE_WORKS_LT)
-                .withBasicEdition()
-                .attach()
-                .create();
+        SqlServer sqlServer = sqlServerManager.sqlServers()
+            .define(sqlServerName)
+            .withRegion(Region.US_EAST)
+            .withNewResourceGroup(rgName)
+            .withAdministratorLogin(sqlServerAdminName)
+            .withAdministratorPassword(sqlServerAdminPassword)
+            .defineDatabase(databaseName)
+            .fromSample(SampleName.ADVENTURE_WORKS_LT)
+            .withBasicEdition()
+            .attach()
+            .create();
         SqlDatabase dbFromSample = sqlServer.databases().get(databaseName);
         Assertions.assertNotNull(dbFromSample);
         Assertions.assertEquals(DatabaseEdition.BASIC, dbFromSample.edition());
@@ -456,8 +418,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
         Assertions.assertEquals(AutomaticTuningServerMode.AUTO, serverAutomaticTuning.actualState());
         Assertions.assertEquals(4, serverAutomaticTuning.tuningOptions().size());
 
-        serverAutomaticTuning
-            .update()
+        serverAutomaticTuning.update()
             .withAutomaticTuningMode(AutomaticTuningServerMode.AUTO)
             .withAutomaticTuningOption("createIndex", AutomaticTuningOptionModeDesired.OFF)
             .withAutomaticTuningOption("dropIndex", AutomaticTuningOptionModeDesired.ON)
@@ -465,33 +426,22 @@ public class SqlServerOperationsTests extends SqlServerTest {
             .apply();
         Assertions.assertEquals(AutomaticTuningServerMode.AUTO, serverAutomaticTuning.desiredState());
         Assertions.assertEquals(AutomaticTuningServerMode.AUTO, serverAutomaticTuning.actualState());
-        Assertions
-            .assertEquals(
-                AutomaticTuningOptionModeDesired.OFF,
-                serverAutomaticTuning.tuningOptions().get("createIndex").desiredState());
-        Assertions
-            .assertEquals(
-                AutomaticTuningOptionModeActual.OFF,
-                serverAutomaticTuning.tuningOptions().get("createIndex").actualState());
-        Assertions
-            .assertEquals(
-                AutomaticTuningOptionModeDesired.ON,
-                serverAutomaticTuning.tuningOptions().get("dropIndex").desiredState());
-        Assertions
-            .assertEquals(
-                AutomaticTuningOptionModeActual.ON,
-                serverAutomaticTuning.tuningOptions().get("dropIndex").actualState());
-        Assertions
-            .assertEquals(
-                AutomaticTuningOptionModeDesired.DEFAULT,
-                serverAutomaticTuning.tuningOptions().get("forceLastGoodPlan").desiredState());
+        Assertions.assertEquals(AutomaticTuningOptionModeDesired.OFF,
+            serverAutomaticTuning.tuningOptions().get("createIndex").desiredState());
+        Assertions.assertEquals(AutomaticTuningOptionModeActual.OFF,
+            serverAutomaticTuning.tuningOptions().get("createIndex").actualState());
+        Assertions.assertEquals(AutomaticTuningOptionModeDesired.ON,
+            serverAutomaticTuning.tuningOptions().get("dropIndex").desiredState());
+        Assertions.assertEquals(AutomaticTuningOptionModeActual.ON,
+            serverAutomaticTuning.tuningOptions().get("dropIndex").actualState());
+        Assertions.assertEquals(AutomaticTuningOptionModeDesired.DEFAULT,
+            serverAutomaticTuning.tuningOptions().get("forceLastGoodPlan").desiredState());
 
         SqlDatabaseAutomaticTuning databaseAutomaticTuning = dbFromSample.getDatabaseAutomaticTuning();
         Assertions.assertEquals(4, databaseAutomaticTuning.tuningOptions().size());
 
         // The following results in "InternalServerError" at the moment
-        databaseAutomaticTuning
-            .update()
+        databaseAutomaticTuning.update()
             .withAutomaticTuningMode(AutomaticTuningMode.AUTO)
             .withAutomaticTuningOption("createIndex", AutomaticTuningOptionModeDesired.OFF)
             .withAutomaticTuningOption("dropIndex", AutomaticTuningOptionModeDesired.ON)
@@ -499,26 +449,16 @@ public class SqlServerOperationsTests extends SqlServerTest {
             .apply();
         Assertions.assertEquals(AutomaticTuningMode.AUTO, databaseAutomaticTuning.desiredState());
         Assertions.assertEquals(AutomaticTuningMode.AUTO, databaseAutomaticTuning.actualState());
-        Assertions
-            .assertEquals(
-                AutomaticTuningOptionModeDesired.OFF,
-                databaseAutomaticTuning.tuningOptions().get("createIndex").desiredState());
-        Assertions
-            .assertEquals(
-                AutomaticTuningOptionModeActual.OFF,
-                databaseAutomaticTuning.tuningOptions().get("createIndex").actualState());
-        Assertions
-            .assertEquals(
-                AutomaticTuningOptionModeDesired.ON,
-                databaseAutomaticTuning.tuningOptions().get("dropIndex").desiredState());
-        Assertions
-            .assertEquals(
-                AutomaticTuningOptionModeActual.ON,
-                databaseAutomaticTuning.tuningOptions().get("dropIndex").actualState());
-        Assertions
-            .assertEquals(
-                AutomaticTuningOptionModeDesired.DEFAULT,
-                databaseAutomaticTuning.tuningOptions().get("forceLastGoodPlan").desiredState());
+        Assertions.assertEquals(AutomaticTuningOptionModeDesired.OFF,
+            databaseAutomaticTuning.tuningOptions().get("createIndex").desiredState());
+        Assertions.assertEquals(AutomaticTuningOptionModeActual.OFF,
+            databaseAutomaticTuning.tuningOptions().get("createIndex").actualState());
+        Assertions.assertEquals(AutomaticTuningOptionModeDesired.ON,
+            databaseAutomaticTuning.tuningOptions().get("dropIndex").desiredState());
+        Assertions.assertEquals(AutomaticTuningOptionModeActual.ON,
+            databaseAutomaticTuning.tuningOptions().get("dropIndex").actualState());
+        Assertions.assertEquals(AutomaticTuningOptionModeDesired.DEFAULT,
+            databaseAutomaticTuning.tuningOptions().get("forceLastGoodPlan").desiredState());
 
         // cleanup
         dbFromSample.delete();
@@ -533,15 +473,13 @@ public class SqlServerOperationsTests extends SqlServerTest {
         String sqlServerAdminPassword = password();
 
         // Create
-        SqlServer sqlServer1 =
-            sqlServerManager
-                .sqlServers()
-                .define(sqlServerName1)
-                .withRegion(Region.US_EAST)
-                .withNewResourceGroup(rgName)
-                .withAdministratorLogin(sqlServerAdminName)
-                .withAdministratorPassword(sqlServerAdminPassword)
-                .create();
+        SqlServer sqlServer1 = sqlServerManager.sqlServers()
+            .define(sqlServerName1)
+            .withRegion(Region.US_EAST)
+            .withNewResourceGroup(rgName)
+            .withAdministratorLogin(sqlServerAdminName)
+            .withAdministratorPassword(sqlServerAdminPassword)
+            .create();
         Assertions.assertNotNull(sqlServer1);
 
         SqlServerDnsAlias dnsAlias = sqlServer1.dnsAliases().define(sqlServerName).create();
@@ -557,15 +495,13 @@ public class SqlServerOperationsTests extends SqlServerTest {
 
         Assertions.assertEquals(1, sqlServer1.databases().list().size());
 
-        SqlServer sqlServer2 =
-            sqlServerManager
-                .sqlServers()
-                .define(sqlServerName2)
-                .withRegion(Region.US_EAST)
-                .withNewResourceGroup(rgName)
-                .withAdministratorLogin(sqlServerAdminName)
-                .withAdministratorPassword(sqlServerAdminPassword)
-                .create();
+        SqlServer sqlServer2 = sqlServerManager.sqlServers()
+            .define(sqlServerName2)
+            .withRegion(Region.US_EAST)
+            .withNewResourceGroup(rgName)
+            .withAdministratorLogin(sqlServerAdminName)
+            .withAdministratorPassword(sqlServerAdminPassword)
+            .create();
         Assertions.assertNotNull(sqlServer2);
 
         sqlServer2.dnsAliases().acquire(sqlServerName, sqlServer1.id());
@@ -584,7 +520,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
     }
 
     @Test
-    @LiveOnly
+    @DoNotRecord(skipInPlayback = true)
     public void canGetSqlServerCapabilitiesAndCreateIdentity() throws Exception {
         // LiveOnly because "test timing out after latest test proxy update"
         String sqlServerAdminName = "sqladmin";
@@ -594,47 +530,41 @@ public class SqlServerOperationsTests extends SqlServerTest {
         RegionCapabilities regionCapabilities = sqlServerManager.sqlServers().getCapabilitiesByRegion(Region.US_EAST);
         Assertions.assertNotNull(regionCapabilities);
         Assertions.assertNotNull(regionCapabilities.supportedCapabilitiesByServerVersion().get("12.0"));
-        Assertions
-            .assertTrue(
-                regionCapabilities.supportedCapabilitiesByServerVersion().get("12.0").supportedEditions().size() > 0);
-        Assertions
-            .assertTrue(
-                regionCapabilities
-                        .supportedCapabilitiesByServerVersion()
-                        .get("12.0")
-                        .supportedElasticPoolEditions()
-                        .size()
-                    > 0);
+        Assertions.assertTrue(
+            regionCapabilities.supportedCapabilitiesByServerVersion().get("12.0").supportedEditions().size() > 0);
+        Assertions.assertTrue(
+            regionCapabilities.supportedCapabilitiesByServerVersion().get("12.0").supportedElasticPoolEditions().size()
+                > 0);
 
         // Create
-        SqlServer sqlServer =
-            sqlServerManager
-                .sqlServers()
-                .define(sqlServerName)
-                .withRegion(Region.US_EAST)
-                .withNewResourceGroup(rgName)
-                .withAdministratorLogin(sqlServerAdminName)
-                .withAdministratorPassword(sqlServerAdminPassword)
-                .withSystemAssignedManagedServiceIdentity()
-                .defineDatabase(databaseName)
-                .fromSample(SampleName.ADVENTURE_WORKS_LT)
-                .withBasicEdition()
-                .attach()
-                .create();
+        SqlServer sqlServer = sqlServerManager.sqlServers()
+            .define(sqlServerName)
+            .withRegion(Region.US_EAST)
+            .withNewResourceGroup(rgName)
+            .withAdministratorLogin(sqlServerAdminName)
+            .withAdministratorPassword(sqlServerAdminPassword)
+            .withSystemAssignedManagedServiceIdentity()
+            .defineDatabase(databaseName)
+            .fromSample(SampleName.ADVENTURE_WORKS_LT)
+            .withBasicEdition()
+            .attach()
+            .create();
         SqlDatabase dbFromSample = sqlServer.databases().get(databaseName);
         Assertions.assertNotNull(dbFromSample);
         Assertions.assertEquals(DatabaseEdition.BASIC, dbFromSample.edition());
 
         Assertions.assertTrue(sqlServer.isManagedServiceIdentityEnabled());
         if (!isPlaybackMode()) {
-            Assertions.assertEquals(sqlServerManager.tenantId(), sqlServer.systemAssignedManagedServiceIdentityTenantId());
+            Assertions.assertEquals(sqlServerManager.tenantId(),
+                sqlServer.systemAssignedManagedServiceIdentityTenantId());
         }
         Assertions.assertNotNull(sqlServer.systemAssignedManagedServiceIdentityPrincipalId());
 
         sqlServer.update().withSystemAssignedManagedServiceIdentity().apply();
         Assertions.assertTrue(sqlServer.isManagedServiceIdentityEnabled());
         if (!isPlaybackMode()) {
-            Assertions.assertEquals(sqlServerManager.tenantId(), sqlServer.systemAssignedManagedServiceIdentityTenantId());
+            Assertions.assertEquals(sqlServerManager.tenantId(),
+                sqlServer.systemAssignedManagedServiceIdentityTenantId());
         }
         Assertions.assertNotNull(sqlServer.systemAssignedManagedServiceIdentityPrincipalId());
 
@@ -654,70 +584,58 @@ public class SqlServerOperationsTests extends SqlServerTest {
         String id = generateRandomUuid();
         String storageName = generateRandomResourceName(sqlServerName, 22);
 
-        SqlServer sqlServer =
-            sqlServerManager
-                .sqlServers()
-                .define(sqlServerName)
-                .withRegion(Region.US_EAST)
-                .withNewResourceGroup(rgName)
-                .withAdministratorLogin(sqlServerAdminName)
-                .withAdministratorPassword(sqlServerAdminPassword)
-                .withActiveDirectoryAdministrator("DSEng", id)
-                .create();
+        SqlServer sqlServer = sqlServerManager.sqlServers()
+            .define(sqlServerName)
+            .withRegion(Region.US_EAST)
+            .withNewResourceGroup(rgName)
+            .withAdministratorLogin(sqlServerAdminName)
+            .withAdministratorPassword(sqlServerAdminPassword)
+            .withActiveDirectoryAdministrator("DSEng", id)
+            .create();
 
-        SqlDatabase dbFromSample =
-            sqlServer
-                .databases()
-                .define("db-from-sample")
-                .fromSample(SampleName.ADVENTURE_WORKS_LT)
-                .withBasicEdition()
-                .withTag("tag1", "value1")
-                .create();
+        SqlDatabase dbFromSample = sqlServer.databases()
+            .define("db-from-sample")
+            .fromSample(SampleName.ADVENTURE_WORKS_LT)
+            .withBasicEdition()
+            .withTag("tag1", "value1")
+            .create();
         Assertions.assertNotNull(dbFromSample);
         Assertions.assertEquals(DatabaseEdition.BASIC, dbFromSample.edition());
 
         SqlDatabaseImportExportResponse exportedDB;
         StorageAccount storageAccount = null;
         try {
-            storageAccount =
-                storageManager.storageAccounts().getByResourceGroup(sqlServer.resourceGroupName(), storageName);
+            storageAccount
+                = storageManager.storageAccounts().getByResourceGroup(sqlServer.resourceGroupName(), storageName);
         } catch (ManagementException e) {
             Assertions.assertEquals(404, e.getResponse().getStatusCode());
         }
         if (storageAccount == null) {
-            Creatable<StorageAccount> storageAccountCreatable =
-                storageManager
-                    .storageAccounts()
-                    .define(storageName)
-                    .withRegion(sqlServer.regionName())
-                    .withExistingResourceGroup(sqlServer.resourceGroupName());
+            Creatable<StorageAccount> storageAccountCreatable = storageManager.storageAccounts()
+                .define(storageName)
+                .withRegion(sqlServer.regionName())
+                .withExistingResourceGroup(sqlServer.resourceGroupName());
 
-            exportedDB =
-                dbFromSample
-                    .exportTo(storageAccountCreatable, "from-sample", "dbfromsample.bacpac")
-                    .withSqlAdministratorLoginAndPassword(sqlServerAdminName, sqlServerAdminPassword)
-                    .execute();
-            storageAccount =
-                storageManager.storageAccounts().getByResourceGroup(sqlServer.resourceGroupName(), storageName);
+            exportedDB = dbFromSample.exportTo(storageAccountCreatable, "from-sample", "dbfromsample.bacpac")
+                .withSqlAdministratorLoginAndPassword(sqlServerAdminName, sqlServerAdminPassword)
+                .execute();
+            storageAccount
+                = storageManager.storageAccounts().getByResourceGroup(sqlServer.resourceGroupName(), storageName);
         } else {
-            exportedDB =
-                dbFromSample
-                    .exportTo(storageAccount, "from-sample", "dbfromsample.bacpac")
-                    .withSqlAdministratorLoginAndPassword(sqlServerAdminName, sqlServerAdminPassword)
-                    .execute();
+            exportedDB = dbFromSample.exportTo(storageAccount, "from-sample", "dbfromsample.bacpac")
+                .withSqlAdministratorLoginAndPassword(sqlServerAdminName, sqlServerAdminPassword)
+                .execute();
         }
 
-        SqlDatabase dbFromImport =
-            sqlServer
-                .databases()
-                .define("db-from-import")
-                .defineElasticPool("ep1")
-                .withBasicPool()
-                .attach()
-                .importFrom(storageAccount, "from-sample", "dbfromsample.bacpac")
-                .withSqlAdministratorLoginAndPassword(sqlServerAdminName, sqlServerAdminPassword)
-                .withTag("tag2", "value2")
-                .create();
+        SqlDatabase dbFromImport = sqlServer.databases()
+            .define("db-from-import")
+            .defineElasticPool("ep1")
+            .withBasicPool()
+            .attach()
+            .importFrom(storageAccount, "from-sample", "dbfromsample.bacpac")
+            .withSqlAdministratorLoginAndPassword(sqlServerAdminName, sqlServerAdminPassword)
+            .withTag("tag2", "value2")
+            .create();
         Assertions.assertNotNull(dbFromImport);
         Assertions.assertEquals("ep1", dbFromImport.elasticPoolName());
 
@@ -731,26 +649,21 @@ public class SqlServerOperationsTests extends SqlServerTest {
     public void canCRUDSqlServerWithFirewallRule() throws Exception {
         // Create
         String sqlServerAdminName = "sqladmin";
-        String id = generateRandomUuid();
-        if (!isPlaybackMode()) {
-            id = clientIdFromFile();
-        }
+        String id = azureCliSignedInUser().id();
 
-        SqlServer sqlServer =
-            sqlServerManager
-                .sqlServers()
-                .define(sqlServerName)
-                .withRegion(Region.US_EAST)
-                .withNewResourceGroup(rgName)
-                .withAdministratorLogin(sqlServerAdminName)
-                .withAdministratorPassword(password())
-                .withActiveDirectoryAdministrator("DSEng", id)
-                .withoutAccessFromAzureServices()
-                .defineFirewallRule("somefirewallrule1")
-                .withIpAddress("0.0.0.1")
-                .attach()
-                .withTag("tag1", "value1")
-                .create();
+        SqlServer sqlServer = sqlServerManager.sqlServers()
+            .define(sqlServerName)
+            .withRegion(Region.US_EAST)
+            .withNewResourceGroup(rgName)
+            .withAdministratorLogin(sqlServerAdminName)
+            .withAdministratorPassword(password())
+            .withActiveDirectoryAdministrator("DSEng", id)
+            .withoutAccessFromAzureServices()
+            .defineFirewallRule("somefirewallrule1")
+            .withIpAddress("0.0.0.1")
+            .attach()
+            .withTag("tag1", "value1")
+            .create();
         Assertions.assertEquals(sqlServerAdminName, sqlServer.administratorLogin());
         Assertions.assertEquals("v12.0", sqlServer.kind());
         Assertions.assertEquals("12.0", sqlServer.version());
@@ -776,44 +689,34 @@ public class SqlServerOperationsTests extends SqlServerTest {
         final SqlServer finalSqlServer = sqlServer;
         validateResourceNotFound(() -> finalSqlServer.getActiveDirectoryAdministrator());
 
-        SqlFirewallRule firewallRule =
-            sqlServerManager.sqlServers().firewallRules().getBySqlServer(rgName, sqlServerName, "somefirewallrule1");
+        SqlFirewallRule firewallRule
+            = sqlServerManager.sqlServers().firewallRules().getBySqlServer(rgName, sqlServerName, "somefirewallrule1");
         Assertions.assertEquals("0.0.0.1", firewallRule.startIpAddress());
         Assertions.assertEquals("0.0.0.1", firewallRule.endIpAddress());
 
-        validateResourceNotFound(
-            () ->
-                sqlServerManager
-                    .sqlServers()
-                    .firewallRules()
-                    .getBySqlServer(rgName, sqlServerName, "AllowAllWindowsAzureIps"));
+        validateResourceNotFound(() -> sqlServerManager.sqlServers()
+            .firewallRules()
+            .getBySqlServer(rgName, sqlServerName, "AllowAllWindowsAzureIps"));
 
         sqlServer.enableAccessFromAzureServices();
-        firewallRule =
-            sqlServerManager
-                .sqlServers()
-                .firewallRules()
-                .getBySqlServer(rgName, sqlServerName, "AllowAllWindowsAzureIps");
+        firewallRule = sqlServerManager.sqlServers()
+            .firewallRules()
+            .getBySqlServer(rgName, sqlServerName, "AllowAllWindowsAzureIps");
         Assertions.assertEquals("0.0.0.0", firewallRule.startIpAddress());
         Assertions.assertEquals("0.0.0.0", firewallRule.endIpAddress());
 
-        sqlServer.update().defineFirewallRule("newFirewallRule1")
-            .withIpAddress("0.0.0.2")
-            .attach()
-            .apply();
+        sqlServer.update().defineFirewallRule("newFirewallRule1").withIpAddress("0.0.0.2").attach().apply();
         sqlServer.firewallRules().delete("newFirewallRule2");
 
         final SqlServer finalSqlServer1 = sqlServer;
         validateResourceNotFound(() -> finalSqlServer1.firewallRules().get("newFirewallRule2"));
 
-        firewallRule =
-            sqlServerManager
-                .sqlServers()
-                .firewallRules()
-                .define("newFirewallRule2")
-                .withExistingSqlServer(rgName, sqlServerName)
-                .withIpAddress("0.0.0.3")
-                .create();
+        firewallRule = sqlServerManager.sqlServers()
+            .firewallRules()
+            .define("newFirewallRule2")
+            .withExistingSqlServer(rgName, sqlServerName)
+            .withIpAddress("0.0.0.3")
+            .create();
 
         Assertions.assertEquals("0.0.0.3", firewallRule.startIpAddress());
         Assertions.assertEquals("0.0.0.3", firewallRule.endIpAddress());
@@ -824,19 +727,16 @@ public class SqlServerOperationsTests extends SqlServerTest {
         Assertions.assertEquals("0.0.0.3", firewallRule.endIpAddress());
 
         sqlServer.firewallRules().delete("somefirewallrule1");
-        validateResourceNotFound(
-            () ->
-                sqlServerManager
-                    .sqlServers()
-                    .firewallRules()
-                    .getBySqlServer(rgName, sqlServerName, "somefirewallrule1"));
+        validateResourceNotFound(() -> sqlServerManager.sqlServers()
+            .firewallRules()
+            .getBySqlServer(rgName, sqlServerName, "somefirewallrule1"));
 
         firewallRule = sqlServer.firewallRules().define("somefirewallrule2").withIpAddress("0.0.0.4").create();
 
         Assertions.assertEquals("0.0.0.4", firewallRule.startIpAddress());
         Assertions.assertEquals("0.0.0.4", firewallRule.endIpAddress());
 
-//        sqlServer.enableAccessFromAzureServices();
+        //        sqlServer.enableAccessFromAzureServices();
 
         firewallRule.delete();
     }
@@ -845,8 +745,8 @@ public class SqlServerOperationsTests extends SqlServerTest {
     public void canCRUDSqlServer() throws Exception {
 
         // Check if the name is available
-        CheckNameAvailabilityResult checkNameResult =
-            sqlServerManager.sqlServers().checkNameAvailability(sqlServerName);
+        CheckNameAvailabilityResult checkNameResult
+            = sqlServerManager.sqlServers().checkNameAvailability(sqlServerName);
         Assertions.assertTrue(checkNameResult.isAvailable());
 
         // Create
@@ -857,9 +757,8 @@ public class SqlServerOperationsTests extends SqlServerTest {
         // Confirm the server name is unavailable
         checkNameResult = sqlServerManager.sqlServers().checkNameAvailability(sqlServerName);
         Assertions.assertFalse(checkNameResult.isAvailable());
-        Assertions
-            .assertEquals(
-                CheckNameAvailabilityReason.ALREADY_EXISTS.toString(), checkNameResult.unavailabilityReason());
+        Assertions.assertEquals(CheckNameAvailabilityReason.ALREADY_EXISTS.toString(),
+            checkNameResult.unavailabilityReason());
 
         sqlServer.update().withAdministratorPassword("P@ssword~2").apply();
 
@@ -890,36 +789,45 @@ public class SqlServerOperationsTests extends SqlServerTest {
         String elasticPool1Name = SQL_ELASTIC_POOL_NAME;
 
         // Create
-        SqlServer sqlServer =
-            sqlServerManager
-                .sqlServers()
-                .define(sqlServerName)
-                .withRegion(Region.US_EAST)
-                .withNewResourceGroup(rgName)
-                .withAdministratorLogin("userName")
-                .withAdministratorPassword("Password~1")
-                .withoutAccessFromAzureServices()
-                .defineDatabase(SQL_DATABASE_NAME).attach()
-                .defineDatabase(database2Name).attach()
-                .defineElasticPool(elasticPool1Name).withStandardPool().attach()
-                .defineElasticPool(elasticPool2Name).withPremiumPool().attach()
-                .defineElasticPool(elasticPool3Name).withStandardPool().attach()
-                .defineDatabase(database1InEPName).withExistingElasticPool(elasticPool2Name).attach()
-                .defineDatabase(database2InEPName).withExistingElasticPool(elasticPool2Name).attach()
-                .defineFirewallRule(SQL_FIREWALLRULE_NAME).withIpAddressRange(START_IPADDRESS, END_IPADDRESS).attach()
-                .defineFirewallRule(generateRandomResourceName("firewall_", 15)).withIpAddressRange(START_IPADDRESS, END_IPADDRESS).attach()
-                .defineFirewallRule(generateRandomResourceName("firewall_", 15)).withIpAddress(START_IPADDRESS).attach()
-                .create();
+        SqlServer sqlServer = sqlServerManager.sqlServers()
+            .define(sqlServerName)
+            .withRegion(Region.US_EAST)
+            .withNewResourceGroup(rgName)
+            .withAdministratorLogin("userName")
+            .withAdministratorPassword("Password~1")
+            .withoutAccessFromAzureServices()
+            .defineDatabase(SQL_DATABASE_NAME)
+            .attach()
+            .defineDatabase(database2Name)
+            .attach()
+            .defineElasticPool(elasticPool1Name)
+            .withStandardPool()
+            .attach()
+            .defineElasticPool(elasticPool2Name)
+            .withPremiumPool()
+            .attach()
+            .defineElasticPool(elasticPool3Name)
+            .withStandardPool()
+            .attach()
+            .defineDatabase(database1InEPName)
+            .withExistingElasticPool(elasticPool2Name)
+            .attach()
+            .defineDatabase(database2InEPName)
+            .withExistingElasticPool(elasticPool2Name)
+            .attach()
+            .defineFirewallRule(SQL_FIREWALLRULE_NAME)
+            .withIpAddressRange(START_IPADDRESS, END_IPADDRESS)
+            .attach()
+            .defineFirewallRule(generateRandomResourceName("firewall_", 15))
+            .withIpAddressRange(START_IPADDRESS, END_IPADDRESS)
+            .attach()
+            .defineFirewallRule(generateRandomResourceName("firewall_", 15))
+            .withIpAddress(START_IPADDRESS)
+            .attach()
+            .create();
 
-        validateMultiCreation(
-            database2Name,
-            database1InEPName,
-            database2InEPName,
-            elasticPool1Name,
-            elasticPool2Name,
-            elasticPool3Name,
-            sqlServer,
-            false);
+        validateMultiCreation(database2Name, database1InEPName, database2InEPName, elasticPool1Name, elasticPool2Name,
+            elasticPool3Name, sqlServer, false);
         elasticPool1Name = SQL_ELASTIC_POOL_NAME + " U";
         database2Name = "database2U";
         database1InEPName = "database1InEPU";
@@ -928,31 +836,40 @@ public class SqlServerOperationsTests extends SqlServerTest {
         elasticPool3Name = "elasticPool3U";
 
         // Update
-        sqlServer =
-            sqlServer
-                .update()
-                .defineDatabase(SQL_DATABASE_NAME).attach()
-                .defineDatabase(database2Name).attach()
-                .defineElasticPool(elasticPool1Name).withStandardPool().attach()
-                .defineElasticPool(elasticPool2Name).withPremiumPool().attach()
-                .defineElasticPool(elasticPool3Name).withStandardPool().attach()
-                .defineDatabase(database1InEPName).withExistingElasticPool(elasticPool2Name).attach()
-                .defineDatabase(database2InEPName).withExistingElasticPool(elasticPool2Name).attach()
-                .defineFirewallRule(SQL_FIREWALLRULE_NAME).withIpAddressRange(START_IPADDRESS, END_IPADDRESS).attach()
-                .defineFirewallRule(generateRandomResourceName("firewall_", 15)).withIpAddressRange(START_IPADDRESS, END_IPADDRESS).attach()
-                .defineFirewallRule(generateRandomResourceName("firewall_", 15)).withIpAddress(START_IPADDRESS).attach()
-                .withTag("tag2", "value2")
-                .apply();
+        sqlServer = sqlServer.update()
+            .defineDatabase(SQL_DATABASE_NAME)
+            .attach()
+            .defineDatabase(database2Name)
+            .attach()
+            .defineElasticPool(elasticPool1Name)
+            .withStandardPool()
+            .attach()
+            .defineElasticPool(elasticPool2Name)
+            .withPremiumPool()
+            .attach()
+            .defineElasticPool(elasticPool3Name)
+            .withStandardPool()
+            .attach()
+            .defineDatabase(database1InEPName)
+            .withExistingElasticPool(elasticPool2Name)
+            .attach()
+            .defineDatabase(database2InEPName)
+            .withExistingElasticPool(elasticPool2Name)
+            .attach()
+            .defineFirewallRule(SQL_FIREWALLRULE_NAME)
+            .withIpAddressRange(START_IPADDRESS, END_IPADDRESS)
+            .attach()
+            .defineFirewallRule(generateRandomResourceName("firewall_", 15))
+            .withIpAddressRange(START_IPADDRESS, END_IPADDRESS)
+            .attach()
+            .defineFirewallRule(generateRandomResourceName("firewall_", 15))
+            .withIpAddress(START_IPADDRESS)
+            .attach()
+            .withTag("tag2", "value2")
+            .apply();
 
-        validateMultiCreation(
-            database2Name,
-            database1InEPName,
-            database2InEPName,
-            elasticPool1Name,
-            elasticPool2Name,
-            elasticPool3Name,
-            sqlServer,
-            true);
+        validateMultiCreation(database2Name, database1InEPName, database2InEPName, elasticPool1Name, elasticPool2Name,
+            elasticPool3Name, sqlServer, true);
 
         sqlServer.refresh();
         Assertions.assertEquals(sqlServer.elasticPools().list().size(), 0);
@@ -979,8 +896,10 @@ public class SqlServerOperationsTests extends SqlServerTest {
     public void canCRUDSqlDatabase() throws Exception {
         // Create
         SqlServer sqlServer = createSqlServer();
-        Mono<SqlDatabase> resourceStream =
-            sqlServer.databases().define(SQL_DATABASE_NAME).withStandardEdition(SqlDatabaseStandardServiceObjective.S0).createAsync();
+        Mono<SqlDatabase> resourceStream = sqlServer.databases()
+            .define(SQL_DATABASE_NAME)
+            .withStandardEdition(SqlDatabaseStandardServiceObjective.S0)
+            .createAsync();
 
         SqlDatabase sqlDatabase = resourceStream.block();
 
@@ -990,7 +909,8 @@ public class SqlServerOperationsTests extends SqlServerTest {
         // Test security alert policy settings.
 
         final String storageAccountName = generateRandomResourceName("sqlsa", 20);
-        StorageAccount storageAccount = storageManager.storageAccounts().define(storageAccountName)
+        StorageAccount storageAccount = storageManager.storageAccounts()
+            .define(storageAccountName)
             .withRegion(Region.US_EAST)
             .withExistingResourceGroup(rgName)
             .create();
@@ -1025,8 +945,8 @@ public class SqlServerOperationsTests extends SqlServerTest {
         Assertions.assertNotNull(transparentDataEncryption);
         Assertions.assertEquals(TransparentDataEncryptionState.ENABLED, transparentDataEncryption.status());
 
-        transparentDataEncryption =
-            sqlDatabase.getTransparentDataEncryption().updateStatus(TransparentDataEncryptionState.DISABLED);
+        transparentDataEncryption
+            = sqlDatabase.getTransparentDataEncryption().updateStatus(TransparentDataEncryptionState.DISABLED);
 
         Assertions.assertNotNull(transparentDataEncryption);
         Assertions.assertEquals(TransparentDataEncryptionState.DISABLED, transparentDataEncryption.status());
@@ -1042,17 +962,15 @@ public class SqlServerOperationsTests extends SqlServerTest {
         validateSqlServer(sqlServer);
 
         // Create another database with above created database as source database.
-        Creatable<SqlElasticPool> sqlElasticPoolCreatable =
-            sqlServer.elasticPools().define(SQL_ELASTIC_POOL_NAME).withStandardPool();
+        Creatable<SqlElasticPool> sqlElasticPoolCreatable
+            = sqlServer.elasticPools().define(SQL_ELASTIC_POOL_NAME).withStandardPool();
         String anotherDatabaseName = "anotherDatabase";
-        SqlDatabase anotherDatabase =
-            sqlServer
-                .databases()
-                .define(anotherDatabaseName)
-                .withNewElasticPool(sqlElasticPoolCreatable)
-                .withSourceDatabase(sqlDatabase.id())
-                .withMode(CreateMode.COPY)
-                .create();
+        SqlDatabase anotherDatabase = sqlServer.databases()
+            .define(anotherDatabaseName)
+            .withNewElasticPool(sqlElasticPoolCreatable)
+            .withSourceDatabase(sqlDatabase.id())
+            .withMode(CreateMode.COPY)
+            .create();
 
         validateSqlDatabaseWithElasticPool(anotherDatabase, anotherDatabaseName);
         sqlServer.databases().delete(anotherDatabase.name());
@@ -1068,13 +986,11 @@ public class SqlServerOperationsTests extends SqlServerTest {
         validateSqlDatabaseNotFound(SQL_DATABASE_NAME);
 
         // Add another database to the server
-        resourceStream =
-            sqlServer
-                .databases()
-                .define("newDatabase")
-                .withCollation(COLLATION)
-                .withStandardEdition(SqlDatabaseStandardServiceObjective.S0)
-                .createAsync();
+        resourceStream = sqlServer.databases()
+            .define("newDatabase")
+            .withCollation(COLLATION)
+            .withStandardEdition(SqlDatabaseStandardServiceObjective.S0)
+            .createAsync();
 
         sqlDatabase = resourceStream.block();
 
@@ -1095,34 +1011,30 @@ public class SqlServerOperationsTests extends SqlServerTest {
         SqlServer sqlServer1 = createSqlServer();
         SqlServer sqlServer2 = createSqlServer(anotherSqlServerName);
 
-        Mono<SqlDatabase> resourceStream =
-            sqlServer1
-                .databases()
-                .define(SQL_DATABASE_NAME)
-                .withCollation(COLLATION)
-                .withStandardEdition(SqlDatabaseStandardServiceObjective.S0)
-                .createAsync();
+        Mono<SqlDatabase> resourceStream = sqlServer1.databases()
+            .define(SQL_DATABASE_NAME)
+            .withCollation(COLLATION)
+            .withStandardEdition(SqlDatabaseStandardServiceObjective.S0)
+            .createAsync();
 
         SqlDatabase databaseInServer1 = resourceStream.block();
 
         validateSqlDatabase(databaseInServer1, SQL_DATABASE_NAME);
-        SqlDatabase databaseInServer2 =
-            sqlServer2
-                .databases()
-                .define(SQL_DATABASE_NAME)
-                .withSourceDatabase(databaseInServer1.id())
-                .withMode(CreateMode.ONLINE_SECONDARY)
-                .create();
+        SqlDatabase databaseInServer2 = sqlServer2.databases()
+            .define(SQL_DATABASE_NAME)
+            .withSourceDatabase(databaseInServer1.id())
+            .withMode(CreateMode.ONLINE_SECONDARY)
+            .create();
         ResourceManagerUtils.sleep(Duration.ofSeconds(2));
-        List<ReplicationLink> replicationLinksInDb1 =
-            new ArrayList<>(databaseInServer1.listReplicationLinks().values());
+        List<ReplicationLink> replicationLinksInDb1
+            = new ArrayList<>(databaseInServer1.listReplicationLinks().values());
 
         Assertions.assertEquals(replicationLinksInDb1.size(), 1);
         Assertions.assertEquals(replicationLinksInDb1.get(0).partnerDatabase(), databaseInServer2.name());
         Assertions.assertEquals(replicationLinksInDb1.get(0).partnerServer(), databaseInServer2.sqlServerName());
 
-        List<ReplicationLink> replicationLinksInDb2 =
-            new ArrayList<>(databaseInServer2.listReplicationLinks().values());
+        List<ReplicationLink> replicationLinksInDb2
+            = new ArrayList<>(databaseInServer2.listReplicationLinks().values());
 
         Assertions.assertEquals(replicationLinksInDb2.size(), 1);
         Assertions.assertEquals(replicationLinksInDb2.get(0).partnerDatabase(), databaseInServer1.name());
@@ -1160,15 +1072,13 @@ public class SqlServerOperationsTests extends SqlServerTest {
         validateSqlServer(sqlServer);
 
         // List usages for the server.TODO (xiaofeicao) server backend not deployed
-//        Assertions.assertNotNull(sqlServer.listUsageMetrics());
+        //        Assertions.assertNotNull(sqlServer.listUsageMetrics());
 
-        Mono<SqlDatabase> resourceStream =
-            sqlServer
-                .databases()
-                .define(SQL_DATABASE_NAME)
-                .withCollation(COLLATION)
-                .withSku(DatabaseSku.DATAWAREHOUSE_DW1000C)
-                .createAsync();
+        Mono<SqlDatabase> resourceStream = sqlServer.databases()
+            .define(SQL_DATABASE_NAME)
+            .withCollation(COLLATION)
+            .withSku(DatabaseSku.DATAWAREHOUSE_DW1000C)
+            .createAsync();
 
         SqlDatabase sqlDatabase = resourceStream.block();
         Assertions.assertNotNull(sqlDatabase);
@@ -1187,7 +1097,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
         // List Restore points.
         Assertions.assertNotNull(dataWarehouse.listRestorePoints());
         // Get usages. TODO (xiaofeicao) server backend not deployed
-//        Assertions.assertNotNull(dataWarehouse.listUsageMetrics());
+        //        Assertions.assertNotNull(dataWarehouse.listUsageMetrics());
 
         // Pause warehouse
         dataWarehouse.pauseDataWarehouse();
@@ -1206,20 +1116,14 @@ public class SqlServerOperationsTests extends SqlServerTest {
         // Create
         SqlServer sqlServer = createSqlServer();
 
-        Creatable<SqlElasticPool> sqlElasticPoolCreatable =
-            sqlServer
-                .elasticPools()
-                .define(SQL_ELASTIC_POOL_NAME)
-                .withStandardPool()
-                .withTag("tag1", "value1");
+        Creatable<SqlElasticPool> sqlElasticPoolCreatable
+            = sqlServer.elasticPools().define(SQL_ELASTIC_POOL_NAME).withStandardPool().withTag("tag1", "value1");
 
-        Mono<SqlDatabase> resourceStream =
-            sqlServer
-                .databases()
-                .define(SQL_DATABASE_NAME)
-                .withNewElasticPool(sqlElasticPoolCreatable)
-                .withCollation(COLLATION)
-                .createAsync();
+        Mono<SqlDatabase> resourceStream = sqlServer.databases()
+            .define(SQL_DATABASE_NAME)
+            .withNewElasticPool(sqlElasticPoolCreatable)
+            .withCollation(COLLATION)
+            .createAsync();
 
         SqlDatabase sqlDatabase = resourceStream.block();
 
@@ -1239,11 +1143,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
         validateListSqlDatabase(sqlServer.databases().list());
 
         // Remove database from elastic pools.
-        sqlDatabase
-            .update()
-            .withoutElasticPool()
-            .withStandardEdition(SqlDatabaseStandardServiceObjective.S3)
-            .apply();
+        sqlDatabase.update().withoutElasticPool().withStandardEdition(SqlDatabaseStandardServiceObjective.S3).apply();
         sqlDatabase = sqlServer.databases().get(SQL_DATABASE_NAME);
         Assertions.assertNull(sqlDatabase.elasticPoolName());
 
@@ -1296,13 +1196,11 @@ public class SqlServerOperationsTests extends SqlServerTest {
         SqlElasticPool sqlElasticPool = sqlServer.elasticPools().get(SQL_ELASTIC_POOL_NAME);
 
         // Add another database to the server and pool.
-        resourceStream =
-            sqlServer
-                .databases()
-                .define("newDatabase")
-                .withExistingElasticPool(sqlElasticPool)
-                .withCollation(COLLATION)
-                .createAsync();
+        resourceStream = sqlServer.databases()
+            .define("newDatabase")
+            .withExistingElasticPool(sqlElasticPool)
+            .withCollation(COLLATION)
+            .createAsync();
 
         sqlDatabase = resourceStream.block();
         sqlServer.databases().delete(sqlDatabase.name());
@@ -1321,27 +1219,23 @@ public class SqlServerOperationsTests extends SqlServerTest {
         sqlServer = sqlServerManager.sqlServers().getByResourceGroup(rgName, sqlServerName);
         validateSqlServer(sqlServer);
 
-        Mono<SqlElasticPool> resourceStream =
-            sqlServer
-                .elasticPools()
-                .define(SQL_ELASTIC_POOL_NAME)
-                .withStandardPool()
-                .withTag("tag1", "value1")
-                .createAsync();
+        Mono<SqlElasticPool> resourceStream = sqlServer.elasticPools()
+            .define(SQL_ELASTIC_POOL_NAME)
+            .withStandardPool()
+            .withTag("tag1", "value1")
+            .createAsync();
         SqlElasticPool sqlElasticPool = resourceStream.block();
         validateSqlElasticPool(sqlElasticPool);
         Assertions.assertEquals(sqlElasticPool.listDatabases().size(), 0);
 
-        sqlElasticPool =
-            sqlElasticPool
-                .update()
-                .withReservedDtu(SqlElasticPoolBasicEDTUs.eDTU_100)
-                .withDatabaseMaxCapacity(20)
-                .withDatabaseMinCapacity(10)
-                .withStorageCapacity(102400 * 1024 * 1024L)
-                .withNewDatabase(SQL_DATABASE_NAME)
-                .withTag("tag2", "value2")
-                .apply();
+        sqlElasticPool = sqlElasticPool.update()
+            .withReservedDtu(SqlElasticPoolBasicEDTUs.eDTU_100)
+            .withDatabaseMaxCapacity(20)
+            .withDatabaseMinCapacity(10)
+            .withStorageCapacity(102400 * 1024 * 1024L)
+            .withNewDatabase(SQL_DATABASE_NAME)
+            .withTag("tag2", "value2")
+            .apply();
 
         validateSqlElasticPool(sqlElasticPool);
         Assertions.assertEquals(sqlElasticPool.listDatabases().size(), 1);
@@ -1359,8 +1253,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
         validateSqlElasticPoolNotFound(sqlServer, SQL_ELASTIC_POOL_NAME);
 
         // Add another database to the server
-        resourceStream =
-            sqlServer.elasticPools().define("newElasticPool").withStandardPool().createAsync();
+        resourceStream = sqlServer.elasticPools().define("newElasticPool").withStandardPool().createAsync();
 
         sqlElasticPool = resourceStream.block();
 
@@ -1379,12 +1272,10 @@ public class SqlServerOperationsTests extends SqlServerTest {
         sqlServer = sqlServerManager.sqlServers().getByResourceGroup(rgName, sqlServerName);
         validateSqlServer(sqlServer);
 
-        Mono<SqlFirewallRule> resourceStream =
-            sqlServer
-                .firewallRules()
-                .define(SQL_FIREWALLRULE_NAME)
-                .withIpAddressRange(START_IPADDRESS, END_IPADDRESS)
-                .createAsync();
+        Mono<SqlFirewallRule> resourceStream = sqlServer.firewallRules()
+            .define(SQL_FIREWALLRULE_NAME)
+            .withIpAddressRange(START_IPADDRESS, END_IPADDRESS)
+            .createAsync();
 
         SqlFirewallRule sqlFirewallRule = resourceStream.block();
 
@@ -1392,8 +1283,8 @@ public class SqlServerOperationsTests extends SqlServerTest {
         validateSqlFirewallRule(sqlServer.firewallRules().get(SQL_FIREWALLRULE_NAME), SQL_FIREWALLRULE_NAME);
 
         String secondFirewallRuleName = "secondFireWallRule";
-        SqlFirewallRule secondFirewallRule =
-            sqlServer.firewallRules().define(secondFirewallRuleName).withIpAddress(START_IPADDRESS).create();
+        SqlFirewallRule secondFirewallRule
+            = sqlServer.firewallRules().define(secondFirewallRuleName).withIpAddress(START_IPADDRESS).create();
         Assertions.assertNotNull(secondFirewallRule);
 
         secondFirewallRule = sqlServer.firewallRules().get(secondFirewallRuleName);
@@ -1430,14 +1321,8 @@ public class SqlServerOperationsTests extends SqlServerTest {
         validateSqlServerNotFound(sqlServer);
     }
 
-    private void validateMultiCreation(
-        String database2Name,
-        String database1InEPName,
-        String database2InEPName,
-        String elasticPool1Name,
-        String elasticPool2Name,
-        String elasticPool3Name,
-        SqlServer sqlServer,
+    private void validateMultiCreation(String database2Name, String database1InEPName, String database2InEPName,
+        String elasticPool1Name, String elasticPool2Name, String elasticPool3Name, SqlServer sqlServer,
         boolean deleteUsingUpdate) {
         validateSqlServer(sqlServer);
         validateSqlServer(sqlServerManager.sqlServers().getByResourceGroup(rgName, sqlServerName));
@@ -1503,8 +1388,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
                 firewallRule.delete();
             }
         } else {
-            sqlServer
-                .update()
+            sqlServer.update()
                 .withoutDatabase(database2Name)
                 .withoutElasticPool(elasticPool1Name)
                 .withoutElasticPool(elasticPool2Name)
@@ -1530,13 +1414,10 @@ public class SqlServerOperationsTests extends SqlServerTest {
     }
 
     private void validateSqlFirewallRuleNotFound() {
-        validateResourceNotFound(
-            () ->
-                sqlServerManager
-                    .sqlServers()
-                    .getByResourceGroup(rgName, sqlServerName)
-                    .firewallRules()
-                    .get(SQL_FIREWALLRULE_NAME));
+        validateResourceNotFound(() -> sqlServerManager.sqlServers()
+            .getByResourceGroup(rgName, sqlServerName)
+            .firewallRules()
+            .get(SQL_FIREWALLRULE_NAME));
     }
 
     private void validateSqlElasticPoolNotFound(SqlServer sqlServer, String elasticPoolName) {
@@ -1566,8 +1447,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
     }
 
     private SqlServer createSqlServer(String sqlServerName) {
-        return sqlServerManager
-            .sqlServers()
+        return sqlServerManager.sqlServers()
             .define(sqlServerName)
             .withRegion(Region.US_EAST)
             .withNewResourceGroup(rgName)
@@ -1654,34 +1534,45 @@ public class SqlServerOperationsTests extends SqlServerTest {
     }
 
     @Test
-    @LiveOnly
+    @DoNotRecord(skipInPlayback = true)
     public void testRandomSku() {
         // LiveOnly because "test timing out after latest test proxy update"
         // "M" series is not supported in this region
-        List<DatabaseSku> databaseSkus = DatabaseSku.getAll().stream().filter(sku -> !"M".equals(sku.toSku().family())).collect(Collectors.toCollection(LinkedList::new));
+        List<CapabilityStatus> capabilityStatusList
+            = Arrays.asList(CapabilityStatus.AVAILABLE, CapabilityStatus.DEFAULT);
+        List<DatabaseSku> databaseSkus = DatabaseSku.getAll()
+            .stream()
+            .filter(sku -> !"M".equals(sku.toSku().family()))
+            .collect(Collectors.toCollection(LinkedList::new));
         Collections.shuffle(databaseSkus);
-        List<ElasticPoolSku> elasticPoolSkus = ElasticPoolSku.getAll().stream().filter(sku -> !"M".equals(sku.toSku().family())).collect(Collectors.toCollection(LinkedList::new));
+        List<ElasticPoolSku> elasticPoolSkus = ElasticPoolSku.getAll()
+            .stream()
+            .filter(sku -> !"M".equals(sku.toSku().family()))
+            .collect(Collectors.toCollection(LinkedList::new));
         Collections.shuffle(elasticPoolSkus);
 
-        sqlServerManager.sqlServers().getCapabilitiesByRegion(Region.US_EAST).supportedCapabilitiesByServerVersion()
+        sqlServerManager.sqlServers()
+            .getCapabilitiesByRegion(Region.US_EAST)
+            .supportedCapabilitiesByServerVersion()
             .forEach((x, serverVersionCapability) -> {
                 serverVersionCapability.supportedEditions().forEach(edition -> {
-                    edition.supportedServiceLevelObjectives().forEach(serviceObjective -> {
-                        if (serviceObjective.status() != CapabilityStatus.AVAILABLE && serviceObjective.status() != CapabilityStatus.DEFAULT || "M".equals(serviceObjective.sku().family())) {
-                            databaseSkus.remove(DatabaseSku.fromSku(serviceObjective.sku()));
-                        }
-                    });
+                    edition.supportedServiceLevelObjectives()
+                        .stream()
+                        .filter(serviceObjective -> !capabilityStatusList.contains(serviceObjective.status())
+                            || "M".equals(serviceObjective.sku().family()))
+                        .forEach(serviceObjective -> databaseSkus.remove(DatabaseSku.fromSku(serviceObjective.sku())));
                 });
                 serverVersionCapability.supportedElasticPoolEditions().forEach(edition -> {
-                    edition.supportedElasticPoolPerformanceLevels().forEach(performance -> {
-                        if (performance.status() != CapabilityStatus.AVAILABLE && performance.status() != CapabilityStatus.DEFAULT || "M".equals(performance.sku().family())) {
-                            elasticPoolSkus.remove(ElasticPoolSku.fromSku(performance.sku()));
-                        }
-                    });
+                    edition.supportedElasticPoolPerformanceLevels()
+                        .stream()
+                        .filter(performance -> !capabilityStatusList.contains(performance.status())
+                            || "M".equals(performance.sku().family()))
+                        .forEach(performance -> elasticPoolSkus.remove(ElasticPoolSku.fromSku(performance.sku())));
                 });
             });
 
-        SqlServer sqlServer = sqlServerManager.sqlServers().define(sqlServerName)
+        SqlServer sqlServer = sqlServerManager.sqlServers()
+            .define(sqlServerName)
             .withRegion(Region.US_EAST)
             .withNewResourceGroup(rgName)
             .withAdministratorLogin("userName")
@@ -1692,10 +1583,17 @@ public class SqlServerOperationsTests extends SqlServerTest {
         // https://learn.microsoft.com/en-us/azure/azure-sql/database/resource-limits-logical-server?view=azuresql#logical-server-limits
         Flux.merge(
             Flux.range(0, 3)
-                .flatMap(i -> sqlServer.databases().define("database" + i).withSku(databaseSkus.get(i)).createAsync().cast(Indexable.class)),
+                .flatMap(i -> sqlServer.databases()
+                    .define("database" + i)
+                    .withSku(databaseSkus.get(i))
+                    .createAsync()
+                    .cast(Indexable.class)),
             Flux.range(0, 3)
-                .flatMap(i -> sqlServer.elasticPools().define("elasticPool" + i).withSku(elasticPoolSkus.get(i)).createAsync().cast(Indexable.class))
-        )
+                .flatMap(i -> sqlServer.elasticPools()
+                    .define("elasticPool" + i)
+                    .withSku(elasticPoolSkus.get(i))
+                    .createAsync()
+                    .cast(Indexable.class)))
             .blockLast();
     }
 
@@ -1704,14 +1602,17 @@ public class SqlServerOperationsTests extends SqlServerTest {
     public void generateSku() throws IOException {
         StringBuilder databaseSkuBuilder = new StringBuilder();
         StringBuilder elasticPoolSkuBuilder = new StringBuilder();
-        sqlServerManager.sqlServers().getCapabilitiesByRegion(Region.US_EAST).supportedCapabilitiesByServerVersion()
+        sqlServerManager.sqlServers()
+            .getCapabilitiesByRegion(Region.US_EAST)
+            .supportedCapabilitiesByServerVersion()
             .forEach((x, serverVersionCapability) -> {
                 serverVersionCapability.supportedEditions().forEach(edition -> {
                     if (edition.name().equalsIgnoreCase("System")) {
                         return;
                     }
                     edition.supportedServiceLevelObjectives().forEach(serviceObjective -> {
-                        addStaticSkuDefinition(databaseSkuBuilder, edition.name(), serviceObjective.name(), serviceObjective.sku(), "DatabaseSku");
+                        addStaticSkuDefinition(databaseSkuBuilder, edition.name(), serviceObjective.name(),
+                            serviceObjective.sku(), "DatabaseSku");
                     });
                 });
                 serverVersionCapability.supportedElasticPoolEditions().forEach(edition -> {
@@ -1719,19 +1620,25 @@ public class SqlServerOperationsTests extends SqlServerTest {
                         return;
                     }
                     edition.supportedElasticPoolPerformanceLevels().forEach(performance -> {
-                        String detailName = String.format("%s_%d", performance.sku().name(), performance.sku().capacity());
-                        addStaticSkuDefinition(elasticPoolSkuBuilder, edition.name(), detailName, performance.sku(), "ElasticPoolSku");
+                        String detailName
+                            = String.format("%s_%d", performance.sku().name(), performance.sku().capacity());
+                        addStaticSkuDefinition(elasticPoolSkuBuilder, edition.name(), detailName, performance.sku(),
+                            "ElasticPoolSku");
                     });
                 });
             });
 
-        String databaseSku = new String(readAllBytes(getClass().getResourceAsStream("/DatabaseSku.java")), StandardCharsets.UTF_8);
+        String databaseSku
+            = new String(readAllBytes(getClass().getResourceAsStream("/DatabaseSku.java")), StandardCharsets.UTF_8);
         databaseSku = databaseSku.replace("<Generated>", databaseSkuBuilder.toString());
-        Files.write(new File("src/main/java/com/azure/resourcemanager/sql/models/DatabaseSku.java").toPath(), databaseSku.getBytes(StandardCharsets.UTF_8));
+        Files.write(new File("src/main/java/com/azure/resourcemanager/sql/models/DatabaseSku.java").toPath(),
+            databaseSku.getBytes(StandardCharsets.UTF_8));
 
-        String elasticPoolSku = new String(readAllBytes(getClass().getResourceAsStream("/ElasticPoolSku.java")), StandardCharsets.UTF_8);
+        String elasticPoolSku
+            = new String(readAllBytes(getClass().getResourceAsStream("/ElasticPoolSku.java")), StandardCharsets.UTF_8);
         elasticPoolSku = elasticPoolSku.replace("<Generated>", elasticPoolSkuBuilder.toString());
-        Files.write(new File("src/main/java/com/azure/resourcemanager/sql/models/ElasticPoolSku.java").toPath(), elasticPoolSku.getBytes(StandardCharsets.UTF_8));
+        Files.write(new File("src/main/java/com/azure/resourcemanager/sql/models/ElasticPoolSku.java").toPath(),
+            elasticPoolSku.getBytes(StandardCharsets.UTF_8));
 
         sqlServerManager.resourceManager().resourceGroups().define(rgName).withRegion(Region.US_EAST).create(); // for deletion
     }
@@ -1750,37 +1657,47 @@ public class SqlServerOperationsTests extends SqlServerTest {
         }
     }
 
-    private void addStaticSkuDefinition(StringBuilder builder, String edition, String detailName, Sku sku, String className) {
-        builder
-            .append("\n    ").append("/** ").append(edition).append(" Edition with ").append(detailName).append(" sku. */")
-            .append("\n    ").append("public static final ").append(className).append(" ").append(String.format("%s_%s", edition.toUpperCase(Locale.ROOT), detailName.toUpperCase(Locale.ROOT))).append(" =")
-            .append("\n        new ").append(className).append("(")
-                .append(sku.name() == null ? null : "\"" + sku.name() + "\"")
-                .append(", ")
-                .append(sku.tier() == null ? null : "\"" + sku.tier() + "\"")
-                .append(", ")
-                .append(sku.family() == null ? null : "\"" + sku.family() + "\"")
-                .append(", ")
-                .append(sku.capacity())
-                .append(", ")
-                .append(sku.size() == null ? null : "\"" + sku.size() + "\"")
-                .append(");");
+    private void addStaticSkuDefinition(StringBuilder builder, String edition, String detailName, Sku sku,
+        String className) {
+        builder.append("\n    ")
+            .append("/** ")
+            .append(edition)
+            .append(" Edition with ")
+            .append(detailName)
+            .append(" sku. */")
+            .append("\n    ")
+            .append("public static final ")
+            .append(className)
+            .append(" ")
+            .append(String.format("%s_%s", edition.toUpperCase(Locale.ROOT), detailName.toUpperCase(Locale.ROOT)))
+            .append(" =")
+            .append("\n        new ")
+            .append(className)
+            .append("(")
+            .append(sku.name() == null ? null : "\"" + sku.name() + "\"")
+            .append(", ")
+            .append(sku.tier() == null ? null : "\"" + sku.tier() + "\"")
+            .append(", ")
+            .append(sku.family() == null ? null : "\"" + sku.family() + "\"")
+            .append(", ")
+            .append(sku.capacity())
+            .append(", ")
+            .append(sku.size() == null ? null : "\"" + sku.size() + "\"")
+            .append(");");
     }
 
     @Test
     public void canCreateAndUpdatePublicNetworkAccess() {
         // Create
-        SqlServer sqlServer =
-            sqlServerManager
-                .sqlServers()
-                .define(sqlServerName)
-                .withRegion(Region.US_EAST)
-                .withNewResourceGroup(rgName)
-                .withAdministratorLogin("userName")
-                .withAdministratorPassword("P@ssword~1")
-                .withoutAccessFromAzureServices()
-                .disablePublicNetworkAccess()
-                .create();
+        SqlServer sqlServer = sqlServerManager.sqlServers()
+            .define(sqlServerName)
+            .withRegion(Region.US_EAST)
+            .withNewResourceGroup(rgName)
+            .withAdministratorLogin("userName")
+            .withAdministratorPassword("P@ssword~1")
+            .withoutAccessFromAzureServices()
+            .disablePublicNetworkAccess()
+            .create();
 
         sqlServer.refresh();
         Assertions.assertEquals(ServerNetworkAccessFlag.DISABLED, sqlServer.publicNetworkAccess());

@@ -5,33 +5,46 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** teamsAsyncOperationStatus. */
+/**
+ * teamsAsyncOperationStatus.
+ */
 public final class MicrosoftGraphTeamsAsyncOperationStatus
     extends ExpandableStringEnum<MicrosoftGraphTeamsAsyncOperationStatus> {
-    /** Static value invalid for MicrosoftGraphTeamsAsyncOperationStatus. */
+    /**
+     * Static value invalid for MicrosoftGraphTeamsAsyncOperationStatus.
+     */
     public static final MicrosoftGraphTeamsAsyncOperationStatus INVALID = fromString("invalid");
 
-    /** Static value notStarted for MicrosoftGraphTeamsAsyncOperationStatus. */
+    /**
+     * Static value notStarted for MicrosoftGraphTeamsAsyncOperationStatus.
+     */
     public static final MicrosoftGraphTeamsAsyncOperationStatus NOT_STARTED = fromString("notStarted");
 
-    /** Static value inProgress for MicrosoftGraphTeamsAsyncOperationStatus. */
+    /**
+     * Static value inProgress for MicrosoftGraphTeamsAsyncOperationStatus.
+     */
     public static final MicrosoftGraphTeamsAsyncOperationStatus IN_PROGRESS = fromString("inProgress");
 
-    /** Static value succeeded for MicrosoftGraphTeamsAsyncOperationStatus. */
+    /**
+     * Static value succeeded for MicrosoftGraphTeamsAsyncOperationStatus.
+     */
     public static final MicrosoftGraphTeamsAsyncOperationStatus SUCCEEDED = fromString("succeeded");
 
-    /** Static value failed for MicrosoftGraphTeamsAsyncOperationStatus. */
+    /**
+     * Static value failed for MicrosoftGraphTeamsAsyncOperationStatus.
+     */
     public static final MicrosoftGraphTeamsAsyncOperationStatus FAILED = fromString("failed");
 
-    /** Static value unknownFutureValue for MicrosoftGraphTeamsAsyncOperationStatus. */
+    /**
+     * Static value unknownFutureValue for MicrosoftGraphTeamsAsyncOperationStatus.
+     */
     public static final MicrosoftGraphTeamsAsyncOperationStatus UNKNOWN_FUTURE_VALUE = fromString("unknownFutureValue");
 
     /**
      * Creates a new instance of MicrosoftGraphTeamsAsyncOperationStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -40,18 +53,17 @@ public final class MicrosoftGraphTeamsAsyncOperationStatus
 
     /**
      * Creates or finds a MicrosoftGraphTeamsAsyncOperationStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MicrosoftGraphTeamsAsyncOperationStatus.
      */
-    @JsonCreator
     public static MicrosoftGraphTeamsAsyncOperationStatus fromString(String name) {
         return fromString(name, MicrosoftGraphTeamsAsyncOperationStatus.class);
     }
 
     /**
      * Gets known MicrosoftGraphTeamsAsyncOperationStatus values.
-     *
+     * 
      * @return known MicrosoftGraphTeamsAsyncOperationStatus values.
      */
     public static Collection<MicrosoftGraphTeamsAsyncOperationStatus> values() {

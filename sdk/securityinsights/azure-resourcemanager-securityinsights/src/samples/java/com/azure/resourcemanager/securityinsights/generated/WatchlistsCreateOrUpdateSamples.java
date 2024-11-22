@@ -6,20 +6,23 @@ package com.azure.resourcemanager.securityinsights.generated;
 
 import com.azure.resourcemanager.securityinsights.models.SourceType;
 
-/** Samples for Watchlists CreateOrUpdate. */
+/**
+ * Samples for Watchlists CreateOrUpdate.
+ */
 public final class WatchlistsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/watchlists/CreateWatchlistAndWatchlistItems.json
+     * x-ms-original-file:
+     * specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/
+     * watchlists/CreateWatchlistAndWatchlistItems.json
      */
     /**
      * Sample code: Creates or updates a watchlist and bulk creates watchlist items.
-     *
+     * 
      * @param manager Entry point to SecurityInsightsManager.
      */
     public static void createsOrUpdatesAWatchlistAndBulkCreatesWatchlistItems(
         com.azure.resourcemanager.securityinsights.SecurityInsightsManager manager) {
-        manager
-            .watchlists()
+        manager.watchlists()
             .define("highValueAsset")
             .withExistingWorkspace("myRg", "myWorkspace")
             .withEtag("\"0300bf09-0000-0000-0000-5c37296e0000\"")
@@ -36,17 +39,18 @@ public final class WatchlistsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/watchlists/CreateWatchlist.json
+     * x-ms-original-file:
+     * specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/
+     * watchlists/CreateWatchlist.json
      */
     /**
      * Sample code: Creates or updates a watchlist.
-     *
+     * 
      * @param manager Entry point to SecurityInsightsManager.
      */
-    public static void createsOrUpdatesAWatchlist(
-        com.azure.resourcemanager.securityinsights.SecurityInsightsManager manager) {
-        manager
-            .watchlists()
+    public static void
+        createsOrUpdatesAWatchlist(com.azure.resourcemanager.securityinsights.SecurityInsightsManager manager) {
+        manager.watchlists()
             .define("highValueAsset")
             .withExistingWorkspace("myRg", "myWorkspace")
             .withEtag("\"0300bf09-0000-0000-0000-5c37296e0000\"")

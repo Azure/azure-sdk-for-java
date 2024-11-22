@@ -179,13 +179,8 @@ public final class PurviewScanningClientImpl {
      * @param serviceVersion Service version.
      */
     public PurviewScanningClientImpl(String endpoint, PurviewScanningServiceVersion serviceVersion) {
-        this(
-                new HttpPipelineBuilder()
-                        .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
-                        .build(),
-                JacksonAdapter.createDefaultSerializerAdapter(),
-                endpoint,
-                serviceVersion);
+        this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build(),
+            JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
     }
 
     /**
@@ -196,8 +191,8 @@ public final class PurviewScanningClientImpl {
      *     https://{accountName}.scan.purview.azure.com.
      * @param serviceVersion Service version.
      */
-    public PurviewScanningClientImpl(
-            HttpPipeline httpPipeline, String endpoint, PurviewScanningServiceVersion serviceVersion) {
+    public PurviewScanningClientImpl(HttpPipeline httpPipeline, String endpoint,
+        PurviewScanningServiceVersion serviceVersion) {
         this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
     }
 
@@ -210,11 +205,8 @@ public final class PurviewScanningClientImpl {
      *     https://{accountName}.scan.purview.azure.com.
      * @param serviceVersion Service version.
      */
-    public PurviewScanningClientImpl(
-            HttpPipeline httpPipeline,
-            SerializerAdapter serializerAdapter,
-            String endpoint,
-            PurviewScanningServiceVersion serviceVersion) {
+    public PurviewScanningClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint,
+        PurviewScanningServiceVersion serviceVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;

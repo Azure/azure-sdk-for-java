@@ -3,6 +3,7 @@
 package com.azure.resourcemanager.test;
 
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.ProxyOptions;
@@ -20,18 +21,26 @@ import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.test.utils.ResourceNamer;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.identity.implementation.util.IdentityUtil;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
+import com.azure.resourcemanager.test.model.AzureUser;
 import com.azure.resourcemanager.test.policy.HttpDebugLoggingPolicy;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.InvocationInterceptor;
 import org.junit.jupiter.api.extension.ReflectiveInvocationContext;
 import org.junit.jupiter.api.extension.RegisterExtension;
+import reactor.core.Exceptions;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
@@ -57,7 +66,9 @@ import java.util.Arrays;
 import java.util.Base64;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -85,12 +96,9 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
     private static final String USE_SYSTEM_PROXY = "java.net.useSystemProxies";
     private static final String VALUE_TRUE = "true";
     private static final String PLAYBACK_URI = PLAYBACK_URI_BASE + "1234";
-    private static final AzureProfile PLAYBACK_PROFILE = new AzureProfile(
-        ZERO_TENANT,
-        ZERO_SUBSCRIPTION,
+    private static final AzureProfile PLAYBACK_PROFILE = new AzureProfile(ZERO_TENANT, ZERO_SUBSCRIPTION,
         new AzureEnvironment(Arrays.stream(AzureEnvironment.Endpoint.values())
-            .collect(Collectors.toMap(AzureEnvironment.Endpoint::identifier, endpoint -> PLAYBACK_URI)))
-    );
+            .collect(Collectors.toMap(AzureEnvironment.Endpoint::identifier, endpoint -> PLAYBACK_URI))));
     private static final OutputStream EMPTY_OUTPUT_STREAM = new OutputStream() {
         @Override
         public void write(int b) {
@@ -121,7 +129,8 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
      * bound.
      */
     @RegisterExtension
-    final PlaybackTimeoutInterceptor playbackTimeoutInterceptor = new PlaybackTimeoutInterceptor(() -> Duration.ofSeconds(60));
+    final PlaybackTimeoutInterceptor playbackTimeoutInterceptor
+        = new PlaybackTimeoutInterceptor(() -> Duration.ofSeconds(60));
 
     /**
      * Initializes ResourceManagerTestProxyTestBase class.
@@ -183,7 +192,8 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
                 dos.write(rsaPublicKey.getPublicExponent().toByteArray());
                 dos.writeInt(rsaPublicKey.getModulus().toByteArray().length);
                 dos.write(rsaPublicKey.getModulus().toByteArray());
-                String publicKeyEncoded = new String(Base64.getEncoder().encode(byteOs.toByteArray()), StandardCharsets.US_ASCII);
+                String publicKeyEncoded
+                    = new String(Base64.getEncoder().encode(byteOs.toByteArray()), StandardCharsets.US_ASCII);
                 sshPublicKey = "ssh-rsa " + publicKeyEncoded;
             } catch (NoSuchAlgorithmException | IOException e) {
                 throw LOGGER.logExceptionAsError(new IllegalStateException("failed to generate ssh key", e));
@@ -203,7 +213,8 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
     protected void assertResourceIdEquals(String expected, String actual) {
         String sanitizedExpected = SUBSCRIPTION_ID_PATTERN.matcher(expected).replaceAll(ZERO_UUID);
         String sanitizedActual = SUBSCRIPTION_ID_PATTERN.matcher(actual).replaceAll(ZERO_UUID);
-        Assertions.assertTrue(sanitizedExpected.equalsIgnoreCase(sanitizedActual), String.format("expected: %s but was: %s", expected, actual));
+        Assertions.assertTrue(sanitizedExpected.equalsIgnoreCase(sanitizedActual),
+            String.format("expected: %s but was: %s", expected, actual));
     }
 
     /**
@@ -214,6 +225,102 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
     protected String clientIdFromFile() {
         String clientId = Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_CLIENT_ID);
         return testResourceNamer.recordValueFromConfig(clientId);
+    }
+
+    /**
+     * Return current Azure CLI signed-in user's userPrincipalName.
+     *
+     * @return current Azure CLI signed-in user.
+     */
+    protected AzureUser azureCliSignedInUser() {
+        AzureUser azureCliUser = new AzureUser(testResourceNamer);
+        if (!isPlaybackMode()) {
+            String azCommand = "az ad signed-in-user show --output json";
+
+            final Pattern windowsProcessErrorMessage = Pattern.compile("'azd?' is not recognized");
+            final Pattern shProcessErrorMessage = Pattern.compile("azd?:.*not found");
+            try {
+                String starter;
+                String switcher;
+                if (IdentityUtil.isWindowsPlatform()) {
+                    starter = "cmd.exe";
+                    switcher = "/c";
+                } else {
+                    starter = "/bin/sh";
+                    switcher = "-c";
+                }
+
+                ProcessBuilder builder = new ProcessBuilder(starter, switcher, azCommand.toString());
+                // Redirects stdin to dev null, helps to avoid messages sent in by the cmd process to upgrade etc.
+                builder.redirectInput(ProcessBuilder.Redirect.from(IdentityUtil.NULL_FILE));
+
+                builder.redirectErrorStream(true);
+                Process process = builder.start();
+
+                StringBuilder output = new StringBuilder();
+                try (BufferedReader reader
+                    = new BufferedReader(new InputStreamReader(process.getInputStream(), StandardCharsets.UTF_8))) {
+                    String line;
+                    while (true) {
+                        line = reader.readLine();
+                        if (line == null) {
+                            break;
+                        }
+
+                        if (windowsProcessErrorMessage.matcher(line).find()
+                            || shProcessErrorMessage.matcher(line).find()) {
+                            throw LOGGER.logExceptionAsError(new RuntimeException(
+                                "AzureCliCredential authentication unavailable. Azure CLI not installed."
+                                    + "To mitigate this issue, please refer to the troubleshooting guidelines here at "
+                                    + "https://aka.ms/azsdk/java/identity/azclicredential/troubleshoot"));
+                        }
+                        output.append(line);
+                    }
+                }
+                String processOutput = output.toString();
+
+                // wait(at most) 10 seconds for the process to complete
+                process.waitFor(10, TimeUnit.SECONDS);
+
+                if (process.exitValue() != 0) {
+                    if (processOutput.length() > 0) {
+                        if (processOutput.contains("az login") || processOutput.contains("az account set")) {
+                            throw LOGGER.logExceptionAsError(new RuntimeException(
+                                "AzureCliCredential authentication unavailable. Azure CLI not installed."
+                                    + "To mitigate this issue, please refer to the troubleshooting guidelines here at "
+                                    + "https://aka.ms/azsdk/java/identity/azclicredential/troubleshoot"));
+                        }
+                        throw LOGGER.logExceptionAsError(
+                            new ClientAuthenticationException("get Azure CLI current signed-in user failed", null));
+                    } else {
+                        throw LOGGER.logExceptionAsError(
+                            new ClientAuthenticationException("Failed to invoke Azure CLI ", null));
+                    }
+                }
+
+                LOGGER
+                    .verbose("Get Azure CLI signed-in user => A response was received from Azure CLI, deserializing the"
+                        + " response into an signed-in user.");
+                try (JsonReader reader = JsonProviders.createReader(processOutput)) {
+                    Map<String, Object> signedInUserInfo = reader.readMap(JsonReader::readUntyped);
+                    String userPrincipalName = (String) signedInUserInfo.get("userPrincipalName");
+                    String id = (String) signedInUserInfo.get("id");
+                    azureCliUser = new AzureUser(testResourceNamer, id, userPrincipalName);
+                }
+            } catch (IOException | InterruptedException e) {
+                throw LOGGER.logExceptionAsError(Exceptions.propagate(e));
+            }
+        }
+        return azureCliUser;
+    }
+
+    private static String getSafeWorkingDirectory() {
+        if (IdentityUtil.isWindowsPlatform()) {
+            String windowsSystemRoot = System.getenv("SystemRoot");
+            return CoreUtils.isNullOrEmpty(windowsSystemRoot) ? null : windowsSystemRoot + "\\system32";
+        } else {
+            return "/bin/";
+        }
     }
 
     /**
@@ -255,10 +362,13 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
         } catch (Exception e) {
             if (isPlaybackMode()) {
                 httpLogDetailLevel = HttpLogDetailLevel.NONE;
-                LOGGER.error("Environment variable '{}' has not been set yet. Using 'NONE' for PLAYBACK.", AZURE_TEST_LOG_LEVEL);
+                LOGGER.error("Environment variable '{}' has not been set yet. Using 'NONE' for PLAYBACK.",
+                    AZURE_TEST_LOG_LEVEL);
             } else {
                 httpLogDetailLevel = HttpLogDetailLevel.BODY_AND_HEADERS;
-                LOGGER.error("Environment variable '{}' has not been set yet. Using 'BODY_AND_HEADERS' for RECORD/LIVE.", AZURE_TEST_LOG_LEVEL);
+                LOGGER.error(
+                    "Environment variable '{}' has not been set yet. Using 'BODY_AND_HEADERS' for RECORD/LIVE.",
+                    AZURE_TEST_LOG_LEVEL);
             }
         }
 
@@ -273,29 +383,26 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
         if (isPlaybackMode()) {
             testProfile = PLAYBACK_PROFILE;
             List<HttpPipelinePolicy> policies = new ArrayList<>();
-            httpPipeline = buildHttpPipeline(
-                new MockTokenCredential(),
-                testProfile,
-                new HttpLogOptions().setLogLevel(httpLogDetailLevel),
-                policies,
-                interceptorManager.getPlaybackClient());
+            httpPipeline = buildHttpPipeline(new MockTokenCredential(), testProfile,
+                new HttpLogOptions().setLogLevel(httpLogDetailLevel), policies, interceptorManager.getPlaybackClient());
             if (!testContextManager.doNotRecordTest()) {
                 // don't match api-version when matching url
-                interceptorManager.addMatchers(Collections.singletonList(new CustomMatcher().setIgnoredQueryParameters(Arrays.asList("api-version")).setExcludedHeaders(Arrays.asList("If-Match"))));
+                interceptorManager.addMatchers(Collections
+                    .singletonList(new CustomMatcher().setIgnoredQueryParameters(Arrays.asList("api-version"))
+                        .setExcludedHeaders(Arrays.asList("If-Match"))));
                 addSanitizers();
                 removeSanitizers();
             }
         } else {
             Configuration configuration = Configuration.getGlobalConfiguration();
-            String tenantId = Objects.requireNonNull(
-                configuration.get(Configuration.PROPERTY_AZURE_TENANT_ID),
+            String tenantId = Objects.requireNonNull(configuration.get(Configuration.PROPERTY_AZURE_TENANT_ID),
                 "'AZURE_TENANT_ID' environment variable cannot be null.");
-            String subscriptionId = Objects.requireNonNull(
-                configuration.get(Configuration.PROPERTY_AZURE_SUBSCRIPTION_ID),
-                "'AZURE_SUBSCRIPTION_ID' environment variable cannot be null.");
-            credential = new DefaultAzureCredentialBuilder()
-                .authorityHost(AzureEnvironment.AZURE.getActiveDirectoryEndpoint())
-                .build();
+            String subscriptionId
+                = Objects.requireNonNull(configuration.get(Configuration.PROPERTY_AZURE_SUBSCRIPTION_ID),
+                    "'AZURE_SUBSCRIPTION_ID' environment variable cannot be null.");
+            credential
+                = new DefaultAzureCredentialBuilder().authorityHost(AzureEnvironment.AZURE.getActiveDirectoryEndpoint())
+                    .build();
             testProfile = new AzureProfile(tenantId, subscriptionId, AzureEnvironment.AZURE);
 
             List<HttpPipelinePolicy> policies = new ArrayList<>();
@@ -308,12 +415,9 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
                 policies.add(new HttpDebugLoggingPolicy());
                 httpLogDetailLevel = HttpLogDetailLevel.NONE;
             }
-            httpPipeline = buildHttpPipeline(
-                credential,
-                testProfile,
-                new HttpLogOptions().setLogLevel(httpLogDetailLevel),
-                policies,
-                generateHttpClientWithProxy(null, null));
+            httpPipeline
+                = buildHttpPipeline(credential, testProfile, new HttpLogOptions().setLogLevel(httpLogDetailLevel),
+                    policies, generateHttpClientWithProxy(null, null));
         }
         initializeClients(httpPipeline, testProfile);
     }
@@ -325,7 +429,8 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
      * @param proxyOptions The proxy.
      * @return An HttpClient with a proxy.
      */
-    protected HttpClient generateHttpClientWithProxy(NettyAsyncHttpClientBuilder clientBuilder, ProxyOptions proxyOptions) {
+    protected HttpClient generateHttpClientWithProxy(NettyAsyncHttpClientBuilder clientBuilder,
+        ProxyOptions proxyOptions) {
         if (clientBuilder == null) {
             clientBuilder = new NettyAsyncHttpClientBuilder();
         }
@@ -334,7 +439,8 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
         } else {
             try {
                 System.setProperty(USE_SYSTEM_PROXY, VALUE_TRUE);
-                List<Proxy> proxies = ProxySelector.getDefault().select(new URI(AzureEnvironment.AZURE.getResourceManagerEndpoint()));
+                List<Proxy> proxies
+                    = ProxySelector.getDefault().select(new URI(AzureEnvironment.AZURE.getResourceManagerEndpoint()));
                 if (!proxies.isEmpty()) {
                     for (Proxy proxy : proxies) {
                         if (proxy.address() instanceof InetSocketAddress) {
@@ -342,9 +448,17 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
                             int port = ((InetSocketAddress) proxy.address()).getPort();
                             switch (proxy.type()) {
                                 case HTTP:
-                                    return clientBuilder.proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress(host, port))).build();
+                                    return clientBuilder
+                                        .proxy(
+                                            new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress(host, port)))
+                                        .build();
+
                                 case SOCKS:
-                                    return clientBuilder.proxy(new ProxyOptions(ProxyOptions.Type.SOCKS5, new InetSocketAddress(host, port))).build();
+                                    return clientBuilder
+                                        .proxy(new ProxyOptions(ProxyOptions.Type.SOCKS5,
+                                            new InetSocketAddress(host, port)))
+                                        .build();
+
                                 default:
                             }
                         }
@@ -362,7 +476,8 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
                 if (host != null) {
                     clientBuilder.proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress(host, port)));
                 }
-            } catch (URISyntaxException ignored) { }
+            } catch (URISyntaxException ignored) {
+            }
         }
         return clientBuilder.build();
     }
@@ -445,12 +560,8 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
      * @param httpClient The HttpClient to use in the pipeline.
      * @return A new constructed HttpPipeline.
      */
-    protected abstract HttpPipeline buildHttpPipeline(
-        TokenCredential credential,
-        AzureProfile profile,
-        HttpLogOptions httpLogOptions,
-        List<HttpPipelinePolicy> policies,
-        HttpClient httpClient);
+    protected abstract HttpPipeline buildHttpPipeline(TokenCredential credential, AzureProfile profile,
+        HttpLogOptions httpLogOptions, List<HttpPipelinePolicy> policies, HttpClient httpClient);
 
     /**
      * Initializes service clients used in testing.
@@ -482,30 +593,43 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
             new TestProxySanitizer("$..adminPassword", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
             new TestProxySanitizer("$..Password", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
             new TestProxySanitizer("$..accessSAS", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
-            new TestProxySanitizer("$.properties.osProfile.customData", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY), // likely a false positive
+            new TestProxySanitizer("$.properties.osProfile.customData", null, REDACTED_VALUE,
+                TestProxySanitizerType.BODY_KEY), // likely a false positive
             // SQL password
-            new TestProxySanitizer("$..administratorLoginPassword", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
+            new TestProxySanitizer("$..administratorLoginPassword", null, REDACTED_VALUE,
+                TestProxySanitizerType.BODY_KEY),
             new TestProxySanitizer("$..hubDatabasePassword", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
             // EH/SB key and connection string
-            new TestProxySanitizer("$..aliasPrimaryConnectionString", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
-            new TestProxySanitizer("$..aliasSecondaryConnectionString", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
+            new TestProxySanitizer("$..aliasPrimaryConnectionString", null, REDACTED_VALUE,
+                TestProxySanitizerType.BODY_KEY),
+            new TestProxySanitizer("$..aliasSecondaryConnectionString", null, REDACTED_VALUE,
+                TestProxySanitizerType.BODY_KEY),
             new TestProxySanitizer("$..primaryKey", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
             new TestProxySanitizer("$..secondaryKey", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
             new TestProxySanitizer("$..primaryMasterKey", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
             new TestProxySanitizer("$..secondaryMasterKey", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
-            new TestProxySanitizer("$..primaryReadonlyMasterKey", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
-            new TestProxySanitizer("$..secondaryReadonlyMasterKey", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
+            new TestProxySanitizer("$..primaryReadonlyMasterKey", null, REDACTED_VALUE,
+                TestProxySanitizerType.BODY_KEY),
+            new TestProxySanitizer("$..secondaryReadonlyMasterKey", null, REDACTED_VALUE,
+                TestProxySanitizerType.BODY_KEY),
             // ContainerRegistry
             new TestProxySanitizer("$..passwords[*].value", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
             // ContainerService
             new TestProxySanitizer("$..secret", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
+            // ContainerInstance
+            new TestProxySanitizer("$..storageAccountKey", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
             // AppService
-            new TestProxySanitizer("$.properties.siteConfig.machineKey.decryptionKey", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
+            new TestProxySanitizer("$.properties.siteConfig.machineKey.decryptionKey", null, REDACTED_VALUE,
+                TestProxySanitizerType.BODY_KEY),
             // Replace "AccountKey=<accountKey>;" with "AccountKey=REDACTED;"
-            new TestProxySanitizer("(?:AccountKey=)(?<accountKey>.*?)(?:;)", REDACTED_VALUE, TestProxySanitizerType.BODY_REGEX).setGroupForReplace("accountKey"),
-            new TestProxySanitizer("$.properties.WEBSITE_AUTH_ENCRYPTION_KEY", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
-            new TestProxySanitizer("$.properties.DOCKER_REGISTRY_SERVER_PASSWORD", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY)
-        ));
+            new TestProxySanitizer("(?:AccountKey=)(?<accountKey>.*?)(?:;)", REDACTED_VALUE,
+                TestProxySanitizerType.BODY_REGEX).setGroupForReplace("accountKey"),
+            new TestProxySanitizer("$.properties.WEBSITE_AUTH_ENCRYPTION_KEY", null, REDACTED_VALUE,
+                TestProxySanitizerType.BODY_KEY),
+            new TestProxySanitizer("$.properties.DOCKER_REGISTRY_SERVER_PASSWORD", null, REDACTED_VALUE,
+                TestProxySanitizerType.BODY_KEY),
+            new TestProxySanitizer("$.properties.protectedSettings.storageAccountKey", null, REDACTED_VALUE,
+                TestProxySanitizerType.BODY_KEY)));
         sanitizers.addAll(this.sanitizers);
         interceptorManager.addSanitizers(sanitizers);
     }
@@ -538,8 +662,7 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
 
         @Override
         public void interceptTestMethod(Invocation<Void> invocation,
-                                        ReflectiveInvocationContext<Method> invocationContext,
-                                        ExtensionContext extensionContext) throws Throwable {
+            ReflectiveInvocationContext<Method> invocationContext, ExtensionContext extensionContext) throws Throwable {
             if (isPlaybackMode()) {
                 Assertions.assertTimeoutPreemptively(duration, invocation::proceed);
             } else {

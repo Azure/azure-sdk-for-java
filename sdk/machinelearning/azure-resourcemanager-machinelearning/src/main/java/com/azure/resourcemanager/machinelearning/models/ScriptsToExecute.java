@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Customized setup scripts. */
+/**
+ * Customized setup scripts.
+ */
 @Fluent
-public final class ScriptsToExecute {
+public final class ScriptsToExecute implements JsonSerializable<ScriptsToExecute> {
     /*
      * Script that's run every time the machine starts.
      */
-    @JsonProperty(value = "startupScript")
     private ScriptReference startupScript;
 
     /*
      * Script that's run only once during provision of the compute.
      */
-    @JsonProperty(value = "creationScript")
     private ScriptReference creationScript;
 
-    /** Creates an instance of ScriptsToExecute class. */
+    /**
+     * Creates an instance of ScriptsToExecute class.
+     */
     public ScriptsToExecute() {
     }
 
     /**
      * Get the startupScript property: Script that's run every time the machine starts.
-     *
+     * 
      * @return the startupScript value.
      */
     public ScriptReference startupScript() {
@@ -37,7 +43,7 @@ public final class ScriptsToExecute {
 
     /**
      * Set the startupScript property: Script that's run every time the machine starts.
-     *
+     * 
      * @param startupScript the startupScript value to set.
      * @return the ScriptsToExecute object itself.
      */
@@ -48,7 +54,7 @@ public final class ScriptsToExecute {
 
     /**
      * Get the creationScript property: Script that's run only once during provision of the compute.
-     *
+     * 
      * @return the creationScript value.
      */
     public ScriptReference creationScript() {
@@ -57,7 +63,7 @@ public final class ScriptsToExecute {
 
     /**
      * Set the creationScript property: Script that's run only once during provision of the compute.
-     *
+     * 
      * @param creationScript the creationScript value to set.
      * @return the ScriptsToExecute object itself.
      */
@@ -68,7 +74,7 @@ public final class ScriptsToExecute {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -78,5 +84,44 @@ public final class ScriptsToExecute {
         if (creationScript() != null) {
             creationScript().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("startupScript", this.startupScript);
+        jsonWriter.writeJsonField("creationScript", this.creationScript);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ScriptsToExecute from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ScriptsToExecute if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ScriptsToExecute.
+     */
+    public static ScriptsToExecute fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ScriptsToExecute deserializedScriptsToExecute = new ScriptsToExecute();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("startupScript".equals(fieldName)) {
+                    deserializedScriptsToExecute.startupScript = ScriptReference.fromJson(reader);
+                } else if ("creationScript".equals(fieldName)) {
+                    deserializedScriptsToExecute.creationScript = ScriptReference.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedScriptsToExecute;
+        });
     }
 }

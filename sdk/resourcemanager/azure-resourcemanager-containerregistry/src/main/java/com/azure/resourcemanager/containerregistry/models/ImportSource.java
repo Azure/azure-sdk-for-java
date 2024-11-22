@@ -6,29 +6,30 @@ package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The ImportSource model.
  */
 @Fluent
-public final class ImportSource {
+public final class ImportSource implements JsonSerializable<ImportSource> {
     /*
      * The resource identifier of the source Azure Container Registry.
      */
-    @JsonProperty(value = "resourceId")
     private String resourceId;
 
     /*
      * The address of the source registry (e.g. 'mcr.microsoft.com').
      */
-    @JsonProperty(value = "registryUri")
     private String registryUri;
 
     /*
      * Credentials used when importing from a registry uri.
      */
-    @JsonProperty(value = "credentials")
     private ImportSourceCredentials credentials;
 
     /*
@@ -37,7 +38,6 @@ public final class ImportSource {
      * Specify an image by tag ('hello-world:latest').
      * Specify an image by sha256-based manifest digest ('hello-world@sha256:abc123').
      */
-    @JsonProperty(value = "sourceImage", required = true)
     private String sourceImage;
 
     /**
@@ -110,7 +110,7 @@ public final class ImportSource {
      * Get the sourceImage property: Repository name of the source image.
      * Specify an image by repository ('hello-world'). This will use the 'latest' tag.
      * Specify an image by tag ('hello-world:latest').
-     * Specify an image by sha256-based manifest digest ('hello-world@sha256:abc123').
+     * Specify an image by sha256-based manifest digest ('hello-world&#064;sha256:abc123').
      * 
      * @return the sourceImage value.
      */
@@ -122,7 +122,7 @@ public final class ImportSource {
      * Set the sourceImage property: Repository name of the source image.
      * Specify an image by repository ('hello-world'). This will use the 'latest' tag.
      * Specify an image by tag ('hello-world:latest').
-     * Specify an image by sha256-based manifest digest ('hello-world@sha256:abc123').
+     * Specify an image by sha256-based manifest digest ('hello-world&#064;sha256:abc123').
      * 
      * @param sourceImage the sourceImage value to set.
      * @return the ImportSource object itself.
@@ -142,10 +142,56 @@ public final class ImportSource {
             credentials().validate();
         }
         if (sourceImage() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property sourceImage in model ImportSource"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property sourceImage in model ImportSource"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ImportSource.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("sourceImage", this.sourceImage);
+        jsonWriter.writeStringField("resourceId", this.resourceId);
+        jsonWriter.writeStringField("registryUri", this.registryUri);
+        jsonWriter.writeJsonField("credentials", this.credentials);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ImportSource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ImportSource if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ImportSource.
+     */
+    public static ImportSource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ImportSource deserializedImportSource = new ImportSource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sourceImage".equals(fieldName)) {
+                    deserializedImportSource.sourceImage = reader.getString();
+                } else if ("resourceId".equals(fieldName)) {
+                    deserializedImportSource.resourceId = reader.getString();
+                } else if ("registryUri".equals(fieldName)) {
+                    deserializedImportSource.registryUri = reader.getString();
+                } else if ("credentials".equals(fieldName)) {
+                    deserializedImportSource.credentials = ImportSourceCredentials.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedImportSource;
+        });
+    }
 }

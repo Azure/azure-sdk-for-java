@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class StoragePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        StorageProperties model =
-            BinaryData
-                .fromString(
-                    "{\"provisioningState\":\"Accepted\",\"offeringType\":\"sycbkbfk\",\"storageType\":\"kdkexxp\",\"generation\":\"fmxa\",\"hardwareType\":\"fjpgddtocjjxhvp\",\"workloadType\":\"uexhdzx\",\"storageBillingProperties\":{\"billingMode\":\"eojnxqbzvddn\",\"azureBareMetalStorageInstanceSize\":\"ndei\"}}")
-                .toObject(StorageProperties.class);
+        StorageProperties model = BinaryData.fromString(
+            "{\"provisioningState\":\"Accepted\",\"offeringType\":\"sycbkbfk\",\"storageType\":\"kdkexxp\",\"generation\":\"fmxa\",\"hardwareType\":\"fjpgddtocjjxhvp\",\"workloadType\":\"uexhdzx\",\"storageBillingProperties\":{\"billingMode\":\"eojnxqbzvddn\",\"azureBareMetalStorageInstanceSize\":\"ndei\"}}")
+            .toObject(StorageProperties.class);
         Assertions.assertEquals(ProvisioningState.ACCEPTED, model.provisioningState());
         Assertions.assertEquals("sycbkbfk", model.offeringType());
         Assertions.assertEquals("kdkexxp", model.storageType());
@@ -30,18 +28,14 @@ public final class StoragePropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        StorageProperties model =
-            new StorageProperties()
-                .withProvisioningState(ProvisioningState.ACCEPTED)
-                .withOfferingType("sycbkbfk")
-                .withStorageType("kdkexxp")
-                .withGeneration("fmxa")
-                .withHardwareType("fjpgddtocjjxhvp")
-                .withWorkloadType("uexhdzx")
-                .withStorageBillingProperties(
-                    new StorageBillingProperties()
-                        .withBillingMode("eojnxqbzvddn")
-                        .withAzureBareMetalStorageInstanceSize("ndei"));
+        StorageProperties model = new StorageProperties().withProvisioningState(ProvisioningState.ACCEPTED)
+            .withOfferingType("sycbkbfk")
+            .withStorageType("kdkexxp")
+            .withGeneration("fmxa")
+            .withHardwareType("fjpgddtocjjxhvp")
+            .withWorkloadType("uexhdzx")
+            .withStorageBillingProperties(new StorageBillingProperties().withBillingMode("eojnxqbzvddn")
+                .withAzureBareMetalStorageInstanceSize("ndei"));
         model = BinaryData.fromObject(model).toObject(StorageProperties.class);
         Assertions.assertEquals(ProvisioningState.ACCEPTED, model.provisioningState());
         Assertions.assertEquals("sycbkbfk", model.offeringType());

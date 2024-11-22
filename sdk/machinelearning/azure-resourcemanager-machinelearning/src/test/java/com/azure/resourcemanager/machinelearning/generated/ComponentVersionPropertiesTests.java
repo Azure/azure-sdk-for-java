@@ -13,37 +13,34 @@ import org.junit.jupiter.api.Assertions;
 public final class ComponentVersionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ComponentVersionProperties model =
-            BinaryData
-                .fromString(
-                    "{\"componentSpec\":\"dataqupevzh\",\"isAnonymous\":true,\"isArchived\":false,\"description\":\"hojujbypelmcuv\",\"properties\":{\"fw\":\"bjx\",\"coolsttpkiwkkb\":\"yl\",\"fpncurdo\":\"ujrywvtyl\",\"cbihwqk\":\"wiithtywub\"},\"tags\":{\"dgoihxumwctondzj\":\"ntwjch\",\"fdlwg\":\"uu\",\"gseinq\":\"ytsbwtovv\"}}")
-                .toObject(ComponentVersionProperties.class);
-        Assertions.assertEquals("hojujbypelmcuv", model.description());
-        Assertions.assertEquals("bjx", model.properties().get("fw"));
-        Assertions.assertEquals("ntwjch", model.tags().get("dgoihxumwctondzj"));
-        Assertions.assertEquals(true, model.isAnonymous());
-        Assertions.assertEquals(false, model.isArchived());
+        ComponentVersionProperties model = BinaryData.fromString(
+            "{\"componentSpec\":\"datadntwjchrdgo\",\"provisioningState\":\"Deleting\",\"isArchived\":true,\"isAnonymous\":false,\"description\":\"ond\",\"tags\":{\"fdlwg\":\"uu\",\"gseinq\":\"ytsbwtovv\",\"nepttwqmsni\":\"iufxqknpir\",\"rxfrddhc\":\"fcdmqnrojlpijn\"},\"properties\":{\"hftwesgog\":\"izzronasxiftozqy\",\"sxkkg\":\"zhonnxkrlgnyhmo\",\"rghxjb\":\"h\"}}")
+            .toObject(ComponentVersionProperties.class);
+        Assertions.assertEquals("ond", model.description());
+        Assertions.assertEquals("uu", model.tags().get("fdlwg"));
+        Assertions.assertEquals("izzronasxiftozqy", model.properties().get("hftwesgog"));
+        Assertions.assertEquals(true, model.isArchived());
+        Assertions.assertEquals(false, model.isAnonymous());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ComponentVersionProperties model =
-            new ComponentVersionProperties()
-                .withDescription("hojujbypelmcuv")
-                .withProperties(
-                    mapOf("fw", "bjx", "coolsttpkiwkkb", "yl", "fpncurdo", "ujrywvtyl", "cbihwqk", "wiithtywub"))
-                .withTags(mapOf("dgoihxumwctondzj", "ntwjch", "fdlwg", "uu", "gseinq", "ytsbwtovv"))
-                .withIsAnonymous(true)
-                .withIsArchived(false)
-                .withComponentSpec("dataqupevzh");
+        ComponentVersionProperties model = new ComponentVersionProperties().withDescription("ond")
+            .withTags(
+                mapOf("fdlwg", "uu", "gseinq", "ytsbwtovv", "nepttwqmsni", "iufxqknpir", "rxfrddhc", "fcdmqnrojlpijn"))
+            .withProperties(mapOf("hftwesgog", "izzronasxiftozqy", "sxkkg", "zhonnxkrlgnyhmo", "rghxjb", "h"))
+            .withIsArchived(true)
+            .withIsAnonymous(false)
+            .withComponentSpec("datadntwjchrdgo");
         model = BinaryData.fromObject(model).toObject(ComponentVersionProperties.class);
-        Assertions.assertEquals("hojujbypelmcuv", model.description());
-        Assertions.assertEquals("bjx", model.properties().get("fw"));
-        Assertions.assertEquals("ntwjch", model.tags().get("dgoihxumwctondzj"));
-        Assertions.assertEquals(true, model.isAnonymous());
-        Assertions.assertEquals(false, model.isArchived());
+        Assertions.assertEquals("ond", model.description());
+        Assertions.assertEquals("uu", model.tags().get("fdlwg"));
+        Assertions.assertEquals("izzronasxiftozqy", model.properties().get("hftwesgog"));
+        Assertions.assertEquals(true, model.isArchived());
+        Assertions.assertEquals(false, model.isAnonymous());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

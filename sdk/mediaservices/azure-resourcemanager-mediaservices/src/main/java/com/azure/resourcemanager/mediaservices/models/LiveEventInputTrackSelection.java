@@ -5,42 +5,45 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * A track selection condition. This property is reserved for future use, any value set on this property will be
  * ignored.
  */
 @Fluent
-public final class LiveEventInputTrackSelection {
+public final class LiveEventInputTrackSelection implements JsonSerializable<LiveEventInputTrackSelection> {
     /*
      * Property name to select. This property is reserved for future use, any value set on this property will be
      * ignored.
      */
-    @JsonProperty(value = "property")
     private String property;
 
     /*
      * Comparing operation. This property is reserved for future use, any value set on this property will be ignored.
      */
-    @JsonProperty(value = "operation")
     private String operation;
 
     /*
      * Property value to select. This property is reserved for future use, any value set on this property will be
      * ignored.
      */
-    @JsonProperty(value = "value")
     private String value;
 
-    /** Creates an instance of LiveEventInputTrackSelection class. */
+    /**
+     * Creates an instance of LiveEventInputTrackSelection class.
+     */
     public LiveEventInputTrackSelection() {
     }
 
     /**
      * Get the property property: Property name to select. This property is reserved for future use, any value set on
      * this property will be ignored.
-     *
+     * 
      * @return the property value.
      */
     public String property() {
@@ -50,7 +53,7 @@ public final class LiveEventInputTrackSelection {
     /**
      * Set the property property: Property name to select. This property is reserved for future use, any value set on
      * this property will be ignored.
-     *
+     * 
      * @param property the property value to set.
      * @return the LiveEventInputTrackSelection object itself.
      */
@@ -62,7 +65,7 @@ public final class LiveEventInputTrackSelection {
     /**
      * Get the operation property: Comparing operation. This property is reserved for future use, any value set on this
      * property will be ignored.
-     *
+     * 
      * @return the operation value.
      */
     public String operation() {
@@ -72,7 +75,7 @@ public final class LiveEventInputTrackSelection {
     /**
      * Set the operation property: Comparing operation. This property is reserved for future use, any value set on this
      * property will be ignored.
-     *
+     * 
      * @param operation the operation value to set.
      * @return the LiveEventInputTrackSelection object itself.
      */
@@ -84,7 +87,7 @@ public final class LiveEventInputTrackSelection {
     /**
      * Get the value property: Property value to select. This property is reserved for future use, any value set on this
      * property will be ignored.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -94,7 +97,7 @@ public final class LiveEventInputTrackSelection {
     /**
      * Set the value property: Property value to select. This property is reserved for future use, any value set on this
      * property will be ignored.
-     *
+     * 
      * @param value the value value to set.
      * @return the LiveEventInputTrackSelection object itself.
      */
@@ -105,9 +108,51 @@ public final class LiveEventInputTrackSelection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("property", this.property);
+        jsonWriter.writeStringField("operation", this.operation);
+        jsonWriter.writeStringField("value", this.value);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LiveEventInputTrackSelection from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LiveEventInputTrackSelection if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LiveEventInputTrackSelection.
+     */
+    public static LiveEventInputTrackSelection fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LiveEventInputTrackSelection deserializedLiveEventInputTrackSelection = new LiveEventInputTrackSelection();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("property".equals(fieldName)) {
+                    deserializedLiveEventInputTrackSelection.property = reader.getString();
+                } else if ("operation".equals(fieldName)) {
+                    deserializedLiveEventInputTrackSelection.operation = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    deserializedLiveEventInputTrackSelection.value = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLiveEventInputTrackSelection;
+        });
     }
 }

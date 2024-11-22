@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ApplicationInsightsComponentProactiveDetectionConfigurationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApplicationInsightsComponentProactiveDetectionConfigurationInner model =
-            BinaryData
-                .fromString(
-                    "{\"Name\":\"sfqpteehz\",\"Enabled\":true,\"SendEmailsToSubscriptionOwners\":false,\"CustomEmails\":[\"i\"],\"LastUpdatedTime\":\"inpvswjdkirsoodq\",\"RuleDefinitions\":{\"Name\":\"rmnohj\",\"DisplayName\":\"kwh\",\"Description\":\"oifiyipjxsqwpgr\",\"HelpUrl\":\"znorcj\",\"IsHidden\":false,\"IsEnabledByDefault\":false,\"IsInPreview\":true,\"SupportsEmailNotifications\":true}}")
-                .toObject(ApplicationInsightsComponentProactiveDetectionConfigurationInner.class);
+        ApplicationInsightsComponentProactiveDetectionConfigurationInner model = BinaryData.fromString(
+            "{\"Name\":\"sfqpteehz\",\"Enabled\":true,\"SendEmailsToSubscriptionOwners\":false,\"CustomEmails\":[\"i\"],\"LastUpdatedTime\":\"inpvswjdkirsoodq\",\"RuleDefinitions\":{\"Name\":\"rmnohj\",\"DisplayName\":\"kwh\",\"Description\":\"oifiyipjxsqwpgr\",\"HelpUrl\":\"znorcj\",\"IsHidden\":false,\"IsEnabledByDefault\":false,\"IsInPreview\":true,\"SupportsEmailNotifications\":true}}")
+            .toObject(ApplicationInsightsComponentProactiveDetectionConfigurationInner.class);
         Assertions.assertEquals("sfqpteehz", model.name());
         Assertions.assertEquals(true, model.enabled());
         Assertions.assertEquals(false, model.sendEmailsToSubscriptionOwners());
@@ -35,16 +33,14 @@ public final class ApplicationInsightsComponentProactiveDetectionConfigurationIn
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApplicationInsightsComponentProactiveDetectionConfigurationInner model =
-            new ApplicationInsightsComponentProactiveDetectionConfigurationInner()
-                .withName("sfqpteehz")
+        ApplicationInsightsComponentProactiveDetectionConfigurationInner model
+            = new ApplicationInsightsComponentProactiveDetectionConfigurationInner().withName("sfqpteehz")
                 .withEnabled(true)
                 .withSendEmailsToSubscriptionOwners(false)
                 .withCustomEmails(Arrays.asList("i"))
                 .withLastUpdatedTime("inpvswjdkirsoodq")
                 .withRuleDefinitions(
-                    new ApplicationInsightsComponentProactiveDetectionConfigurationRuleDefinitions()
-                        .withName("rmnohj")
+                    new ApplicationInsightsComponentProactiveDetectionConfigurationRuleDefinitions().withName("rmnohj")
                         .withDisplayName("kwh")
                         .withDescription("oifiyipjxsqwpgr")
                         .withHelpUrl("znorcj")
@@ -52,10 +48,8 @@ public final class ApplicationInsightsComponentProactiveDetectionConfigurationIn
                         .withIsEnabledByDefault(false)
                         .withIsInPreview(true)
                         .withSupportsEmailNotifications(true));
-        model =
-            BinaryData
-                .fromObject(model)
-                .toObject(ApplicationInsightsComponentProactiveDetectionConfigurationInner.class);
+        model = BinaryData.fromObject(model)
+            .toObject(ApplicationInsightsComponentProactiveDetectionConfigurationInner.class);
         Assertions.assertEquals("sfqpteehz", model.name());
         Assertions.assertEquals(true, model.enabled());
         Assertions.assertEquals(false, model.sendEmailsToSubscriptionOwners());

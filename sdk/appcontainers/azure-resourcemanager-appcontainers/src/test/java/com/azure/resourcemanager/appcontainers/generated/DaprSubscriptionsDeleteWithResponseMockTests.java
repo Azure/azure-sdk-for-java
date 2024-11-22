@@ -27,8 +27,7 @@ public final class DaprSubscriptionsDeleteWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.daprSubscriptions()
-            .deleteWithResponse("eubkqiqmlf", "hlq", "skkqjmxptuei", com.azure.core.util.Context.NONE);
+        manager.daprSubscriptions().deleteWithResponse("u", "wvpu", "fddtbfmekjcng", com.azure.core.util.Context.NONE);
 
     }
 }

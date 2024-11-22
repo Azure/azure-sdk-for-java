@@ -113,11 +113,8 @@ public interface WorkbookTemplate {
     WorkbookTemplateInner innerModel();
 
     /** The entirety of the WorkbookTemplate definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithResourceGroup,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithResourceGroup, DefinitionStages.WithCreate {
     }
 
     /** The WorkbookTemplate definition stages. */
@@ -161,12 +158,8 @@ public interface WorkbookTemplate {
          * resource to be created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate
-            extends DefinitionStages.WithTags,
-                DefinitionStages.WithPriority,
-                DefinitionStages.WithAuthor,
-                DefinitionStages.WithTemplateData,
-                DefinitionStages.WithGalleries,
-                DefinitionStages.WithLocalized {
+            extends DefinitionStages.WithTags, DefinitionStages.WithPriority, DefinitionStages.WithAuthor,
+            DefinitionStages.WithTemplateData, DefinitionStages.WithGalleries, DefinitionStages.WithLocalized {
             /**
              * Executes the create request.
              *
@@ -262,13 +255,8 @@ public interface WorkbookTemplate {
     WorkbookTemplate.Update update();
 
     /** The template for WorkbookTemplate update. */
-    interface Update
-        extends UpdateStages.WithTags,
-            UpdateStages.WithPriority,
-            UpdateStages.WithAuthor,
-            UpdateStages.WithTemplateData,
-            UpdateStages.WithGalleries,
-            UpdateStages.WithLocalized {
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithPriority, UpdateStages.WithAuthor,
+        UpdateStages.WithTemplateData, UpdateStages.WithGalleries, UpdateStages.WithLocalized {
         /**
          * Executes the update request.
          *

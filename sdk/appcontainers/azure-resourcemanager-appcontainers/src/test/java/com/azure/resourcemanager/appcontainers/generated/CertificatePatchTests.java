@@ -13,16 +13,18 @@ import org.junit.jupiter.api.Assertions;
 public final class CertificatePatchTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CertificatePatch model
-            = BinaryData.fromString("{\"tags\":{\"ekkezzikhlyfjh\":\"kfcktqum\"}}").toObject(CertificatePatch.class);
-        Assertions.assertEquals("kfcktqum", model.tags().get("ekkezzikhlyfjh"));
+        CertificatePatch model = BinaryData
+            .fromString("{\"tags\":{\"hykojoxafnndlpic\":\"btkuwhh\",\"h\":\"koymkcd\",\"reqnovvqfov\":\"pkkpw\"}}")
+            .toObject(CertificatePatch.class);
+        Assertions.assertEquals("btkuwhh", model.tags().get("hykojoxafnndlpic"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CertificatePatch model = new CertificatePatch().withTags(mapOf("ekkezzikhlyfjh", "kfcktqum"));
+        CertificatePatch model = new CertificatePatch()
+            .withTags(mapOf("hykojoxafnndlpic", "btkuwhh", "h", "koymkcd", "reqnovvqfov", "pkkpw"));
         model = BinaryData.fromObject(model).toObject(CertificatePatch.class);
-        Assertions.assertEquals("kfcktqum", model.tags().get("ekkezzikhlyfjh"));
+        Assertions.assertEquals("btkuwhh", model.tags().get("hykojoxafnndlpic"));
     }
 
     // Use "Map.of" if available

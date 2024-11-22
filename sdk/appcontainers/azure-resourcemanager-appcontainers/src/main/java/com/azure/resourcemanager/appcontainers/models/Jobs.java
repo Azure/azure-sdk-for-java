@@ -84,6 +84,7 @@ public interface Jobs {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName Job Name.
+     * @param apiName Proxy API Name for Container App Job.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
@@ -91,7 +92,7 @@ public interface Jobs {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of a Container App Job along with {@link Response}.
      */
-    Response<Job> proxyGetWithResponse(String resourceGroupName, String jobName, Context context);
+    Response<Job> proxyGetWithResponse(String resourceGroupName, String jobName, String apiName, Context context);
 
     /**
      * Get the properties for a given Container App Job.
@@ -100,13 +101,14 @@ public interface Jobs {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName Job Name.
+     * @param apiName Proxy API Name for Container App Job.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
      * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of a Container App Job.
      */
-    Job proxyGet(String resourceGroupName, String jobName);
+    Job proxyGet(String resourceGroupName, String jobName, String apiName);
 
     /**
      * Get the Container Apps Jobs in a given subscription.
@@ -315,6 +317,56 @@ public interface Jobs {
      * @return container Apps Job Secrets Collection ARM resource.
      */
     JobSecretsCollection listSecrets(String resourceGroupName, String jobName);
+
+    /**
+     * Resumes a suspended job.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param jobName Name of the Job.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return container App Job.
+     */
+    Job resume(String resourceGroupName, String jobName);
+
+    /**
+     * Resumes a suspended job.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param jobName Name of the Job.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return container App Job.
+     */
+    Job resume(String resourceGroupName, String jobName, Context context);
+
+    /**
+     * Suspends a job.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param jobName Name of the Job.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return container App Job.
+     */
+    Job suspend(String resourceGroupName, String jobName);
+
+    /**
+     * Suspends a job.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param jobName Name of the Job.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return container App Job.
+     */
+    Job suspend(String resourceGroupName, String jobName, Context context);
 
     /**
      * Get the properties of a Container Apps Job.

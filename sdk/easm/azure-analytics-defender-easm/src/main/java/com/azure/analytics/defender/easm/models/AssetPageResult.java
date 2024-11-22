@@ -5,41 +5,41 @@ package com.azure.analytics.defender.easm.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The page of assets that match the provided metric.
  */
 @Immutable
-public final class AssetPageResult {
+public final class AssetPageResult implements JsonSerializable<AssetPageResult> {
 
     /*
      * The total number of items available in the full result set.
      */
     @Generated
-    @JsonProperty(value = "totalElements")
     private Long totalElements;
 
     /*
      * The cursor mark to be used on the next request. Not set if using paging.
      */
     @Generated
-    @JsonProperty(value = "mark")
     private String mark;
 
     /*
      * The link to access the next page of results. Not set if at the end of the result set.
      */
     @Generated
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /*
      * The items in the current page of results.
      */
     @Generated
-    @JsonProperty(value = "value")
     private List<AssetResource> value;
 
     /**
@@ -70,8 +70,7 @@ public final class AssetPageResult {
     }
 
     /**
-     * Get the nextLink property: The link to access the next page of results. Not set if at the end of the result
-     * set.
+     * Get the nextLink property: The link to access the next page of results. Not set if at the end of the result set.
      *
      * @return the nextLink value.
      */
@@ -88,5 +87,51 @@ public final class AssetPageResult {
     @Generated
     public List<AssetResource> getValue() {
         return this.value;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("totalElements", this.totalElements);
+        jsonWriter.writeStringField("mark", this.mark);
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AssetPageResult from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AssetPageResult if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AssetPageResult.
+     */
+    @Generated
+    public static AssetPageResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AssetPageResult deserializedAssetPageResult = new AssetPageResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("totalElements".equals(fieldName)) {
+                    deserializedAssetPageResult.totalElements = reader.getNullable(JsonReader::getLong);
+                } else if ("mark".equals(fieldName)) {
+                    deserializedAssetPageResult.mark = reader.getString();
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedAssetPageResult.nextLink = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    List<AssetResource> value = reader.readArray(reader1 -> AssetResource.fromJson(reader1));
+                    deserializedAssetPageResult.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedAssetPageResult;
+        });
     }
 }

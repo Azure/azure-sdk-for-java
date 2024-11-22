@@ -5,10 +5,11 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -16,39 +17,34 @@ import java.util.Map;
  * Cursor methods for Mongodb query.
  */
 @Fluent
-public final class MongoDbCursorMethodsProperties {
+public final class MongoDbCursorMethodsProperties implements JsonSerializable<MongoDbCursorMethodsProperties> {
     /*
      * Specifies the fields to return in the documents that match the query filter. To return all fields in the matching
      * documents, omit this parameter. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "project")
     private Object project;
 
     /*
      * Specifies the order in which the query returns matching documents. Type: string (or Expression with resultType
      * string). Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "sort")
     private Object sort;
 
     /*
      * Specifies the how many documents skipped and where MongoDB begins returning results. This approach may be useful
      * in implementing paginated results. Type: integer (or Expression with resultType integer).
      */
-    @JsonProperty(value = "skip")
     private Object skip;
 
     /*
      * Specifies the maximum number of documents the server returns. limit() is analogous to the LIMIT statement in a
      * SQL database. Type: integer (or Expression with resultType integer).
      */
-    @JsonProperty(value = "limit")
     private Object limit;
 
     /*
      * Cursor methods for Mongodb query
      */
-    @JsonIgnore
     private Map<String, Object> additionalProperties;
 
     /**
@@ -150,7 +146,6 @@ public final class MongoDbCursorMethodsProperties {
      * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
@@ -166,19 +161,68 @@ public final class MongoDbCursorMethodsProperties {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new LinkedHashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("project", this.project);
+        jsonWriter.writeUntypedField("sort", this.sort);
+        jsonWriter.writeUntypedField("skip", this.skip);
+        jsonWriter.writeUntypedField("limit", this.limit);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MongoDbCursorMethodsProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MongoDbCursorMethodsProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MongoDbCursorMethodsProperties.
+     */
+    public static MongoDbCursorMethodsProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MongoDbCursorMethodsProperties deserializedMongoDbCursorMethodsProperties
+                = new MongoDbCursorMethodsProperties();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("project".equals(fieldName)) {
+                    deserializedMongoDbCursorMethodsProperties.project = reader.readUntyped();
+                } else if ("sort".equals(fieldName)) {
+                    deserializedMongoDbCursorMethodsProperties.sort = reader.readUntyped();
+                } else if ("skip".equals(fieldName)) {
+                    deserializedMongoDbCursorMethodsProperties.skip = reader.readUntyped();
+                } else if ("limit".equals(fieldName)) {
+                    deserializedMongoDbCursorMethodsProperties.limit = reader.readUntyped();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMongoDbCursorMethodsProperties.additionalProperties = additionalProperties;
+
+            return deserializedMongoDbCursorMethodsProperties;
+        });
     }
 }

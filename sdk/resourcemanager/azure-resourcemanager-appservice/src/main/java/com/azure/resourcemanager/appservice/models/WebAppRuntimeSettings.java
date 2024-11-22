@@ -5,73 +5,67 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
 /**
  * Web App runtime settings.
  */
 @Immutable
-public final class WebAppRuntimeSettings {
+public final class WebAppRuntimeSettings implements JsonSerializable<WebAppRuntimeSettings> {
     /*
      * Web App stack minor version (runtime only).
      */
-    @JsonProperty(value = "runtimeVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String runtimeVersion;
 
     /*
      * <code>true</code> if remote debugging is supported for the stack; otherwise, <code>false</code>.
      */
-    @JsonProperty(value = "remoteDebuggingSupported", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean remoteDebuggingSupported;
 
     /*
      * Application Insights settings associated with the minor version.
      */
-    @JsonProperty(value = "appInsightsSettings", access = JsonProperty.Access.WRITE_ONLY)
     private AppInsightsWebAppStackSettings appInsightsSettings;
 
     /*
      * GitHub Actions settings associated with the minor version.
      */
-    @JsonProperty(value = "gitHubActionSettings", access = JsonProperty.Access.WRITE_ONLY)
     private GitHubActionWebAppStackSettings gitHubActionSettings;
 
     /*
      * <code>true</code> if the stack is in preview; otherwise, <code>false</code>.
      */
-    @JsonProperty(value = "isPreview", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isPreview;
 
     /*
      * <code>true</code> if the stack is deprecated; otherwise, <code>false</code>.
      */
-    @JsonProperty(value = "isDeprecated", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isDeprecated;
 
     /*
      * <code>true</code> if the stack should be hidden; otherwise, <code>false</code>.
      */
-    @JsonProperty(value = "isHidden", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isHidden;
 
     /*
      * End-of-life date for the minor version.
      */
-    @JsonProperty(value = "endOfLifeDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime endOfLifeDate;
 
     /*
      * <code>true</code> if the stack version is auto-updated; otherwise, <code>false</code>.
      */
-    @JsonProperty(value = "isAutoUpdate", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isAutoUpdate;
 
     /*
      * <code>true</code> if the minor version is early-access; otherwise, <code>false</code>.
      */
-    @JsonProperty(value = "isEarlyAccess", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isEarlyAccess;
 
     /**
@@ -82,7 +76,7 @@ public final class WebAppRuntimeSettings {
 
     /**
      * Get the runtimeVersion property: Web App stack minor version (runtime only).
-     *
+     * 
      * @return the runtimeVersion value.
      */
     public String runtimeVersion() {
@@ -92,7 +86,7 @@ public final class WebAppRuntimeSettings {
     /**
      * Get the remoteDebuggingSupported property: &lt;code&gt;true&lt;/code&gt; if remote debugging is supported for the
      * stack; otherwise, &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @return the remoteDebuggingSupported value.
      */
     public Boolean remoteDebuggingSupported() {
@@ -101,7 +95,7 @@ public final class WebAppRuntimeSettings {
 
     /**
      * Get the appInsightsSettings property: Application Insights settings associated with the minor version.
-     *
+     * 
      * @return the appInsightsSettings value.
      */
     public AppInsightsWebAppStackSettings appInsightsSettings() {
@@ -110,7 +104,7 @@ public final class WebAppRuntimeSettings {
 
     /**
      * Get the gitHubActionSettings property: GitHub Actions settings associated with the minor version.
-     *
+     * 
      * @return the gitHubActionSettings value.
      */
     public GitHubActionWebAppStackSettings gitHubActionSettings() {
@@ -120,7 +114,7 @@ public final class WebAppRuntimeSettings {
     /**
      * Get the isPreview property: &lt;code&gt;true&lt;/code&gt; if the stack is in preview; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @return the isPreview value.
      */
     public Boolean isPreview() {
@@ -130,7 +124,7 @@ public final class WebAppRuntimeSettings {
     /**
      * Get the isDeprecated property: &lt;code&gt;true&lt;/code&gt; if the stack is deprecated; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @return the isDeprecated value.
      */
     public Boolean isDeprecated() {
@@ -140,7 +134,7 @@ public final class WebAppRuntimeSettings {
     /**
      * Get the isHidden property: &lt;code&gt;true&lt;/code&gt; if the stack should be hidden; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @return the isHidden value.
      */
     public Boolean isHidden() {
@@ -149,7 +143,7 @@ public final class WebAppRuntimeSettings {
 
     /**
      * Get the endOfLifeDate property: End-of-life date for the minor version.
-     *
+     * 
      * @return the endOfLifeDate value.
      */
     public OffsetDateTime endOfLifeDate() {
@@ -159,7 +153,7 @@ public final class WebAppRuntimeSettings {
     /**
      * Get the isAutoUpdate property: &lt;code&gt;true&lt;/code&gt; if the stack version is auto-updated; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @return the isAutoUpdate value.
      */
     public Boolean isAutoUpdate() {
@@ -169,7 +163,7 @@ public final class WebAppRuntimeSettings {
     /**
      * Get the isEarlyAccess property: &lt;code&gt;true&lt;/code&gt; if the minor version is early-access; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @return the isEarlyAccess value.
      */
     public Boolean isEarlyAccess() {
@@ -178,7 +172,7 @@ public final class WebAppRuntimeSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -188,5 +182,62 @@ public final class WebAppRuntimeSettings {
         if (gitHubActionSettings() != null) {
             gitHubActionSettings().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WebAppRuntimeSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WebAppRuntimeSettings if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WebAppRuntimeSettings.
+     */
+    public static WebAppRuntimeSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WebAppRuntimeSettings deserializedWebAppRuntimeSettings = new WebAppRuntimeSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("runtimeVersion".equals(fieldName)) {
+                    deserializedWebAppRuntimeSettings.runtimeVersion = reader.getString();
+                } else if ("remoteDebuggingSupported".equals(fieldName)) {
+                    deserializedWebAppRuntimeSettings.remoteDebuggingSupported
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("appInsightsSettings".equals(fieldName)) {
+                    deserializedWebAppRuntimeSettings.appInsightsSettings
+                        = AppInsightsWebAppStackSettings.fromJson(reader);
+                } else if ("gitHubActionSettings".equals(fieldName)) {
+                    deserializedWebAppRuntimeSettings.gitHubActionSettings
+                        = GitHubActionWebAppStackSettings.fromJson(reader);
+                } else if ("isPreview".equals(fieldName)) {
+                    deserializedWebAppRuntimeSettings.isPreview = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isDeprecated".equals(fieldName)) {
+                    deserializedWebAppRuntimeSettings.isDeprecated = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isHidden".equals(fieldName)) {
+                    deserializedWebAppRuntimeSettings.isHidden = reader.getNullable(JsonReader::getBoolean);
+                } else if ("endOfLifeDate".equals(fieldName)) {
+                    deserializedWebAppRuntimeSettings.endOfLifeDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("isAutoUpdate".equals(fieldName)) {
+                    deserializedWebAppRuntimeSettings.isAutoUpdate = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isEarlyAccess".equals(fieldName)) {
+                    deserializedWebAppRuntimeSettings.isEarlyAccess = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWebAppRuntimeSettings;
+        });
     }
 }

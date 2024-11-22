@@ -5,30 +5,31 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * This is the storage profile of a Gallery Image Version.
  */
 @Fluent
-public final class GalleryImageVersionStorageProfile {
+public final class GalleryImageVersionStorageProfile implements JsonSerializable<GalleryImageVersionStorageProfile> {
     /*
      * The source of the gallery artifact version.
      */
-    @JsonProperty(value = "source")
     private GalleryArtifactVersionFullSource source;
 
     /*
      * This is the OS disk image.
      */
-    @JsonProperty(value = "osDiskImage")
     private GalleryOSDiskImage osDiskImage;
 
     /*
      * A list of data disk images.
      */
-    @JsonProperty(value = "dataDiskImages")
     private List<GalleryDataDiskImage> dataDiskImages;
 
     /**
@@ -112,5 +113,52 @@ public final class GalleryImageVersionStorageProfile {
         if (dataDiskImages() != null) {
             dataDiskImages().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("source", this.source);
+        jsonWriter.writeJsonField("osDiskImage", this.osDiskImage);
+        jsonWriter.writeArrayField("dataDiskImages", this.dataDiskImages,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GalleryImageVersionStorageProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GalleryImageVersionStorageProfile if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the GalleryImageVersionStorageProfile.
+     */
+    public static GalleryImageVersionStorageProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GalleryImageVersionStorageProfile deserializedGalleryImageVersionStorageProfile
+                = new GalleryImageVersionStorageProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("source".equals(fieldName)) {
+                    deserializedGalleryImageVersionStorageProfile.source
+                        = GalleryArtifactVersionFullSource.fromJson(reader);
+                } else if ("osDiskImage".equals(fieldName)) {
+                    deserializedGalleryImageVersionStorageProfile.osDiskImage = GalleryOSDiskImage.fromJson(reader);
+                } else if ("dataDiskImages".equals(fieldName)) {
+                    List<GalleryDataDiskImage> dataDiskImages
+                        = reader.readArray(reader1 -> GalleryDataDiskImage.fromJson(reader1));
+                    deserializedGalleryImageVersionStorageProfile.dataDiskImages = dataDiskImages;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGalleryImageVersionStorageProfile;
+        });
     }
 }

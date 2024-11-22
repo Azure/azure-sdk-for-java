@@ -55,14 +55,8 @@ public interface GraphQLApiResolversClient {
      * @return paged Resolver list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ResolverContractInner> listByApi(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String filter,
-        Integer top,
-        Integer skip,
-        Context context);
+    PagedIterable<ResolverContractInner> listByApi(String resourceGroupName, String serviceName, String apiId,
+        String filter, Integer top, Integer skip, Context context);
 
     /**
      * Gets the entity state (Etag) version of the GraphQL API resolver specified by its identifier.
@@ -80,8 +74,8 @@ public interface GraphQLApiResolversClient {
      * @return the entity state (Etag) version of the GraphQL API resolver specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    GraphQLApiResolversGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, String apiId, String resolverId, Context context);
+    GraphQLApiResolversGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,
+        String apiId, String resolverId, Context context);
 
     /**
      * Gets the entity state (Etag) version of the GraphQL API resolver specified by its identifier.
@@ -115,8 +109,8 @@ public interface GraphQLApiResolversClient {
      * @return the details of the GraphQL API Resolver specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    GraphQLApiResolversGetResponse getWithResponse(
-        String resourceGroupName, String serviceName, String apiId, String resolverId, Context context);
+    GraphQLApiResolversGetResponse getWithResponse(String resourceGroupName, String serviceName, String apiId,
+        String resolverId, Context context);
 
     /**
      * Gets the details of the GraphQL API Resolver specified by its identifier.
@@ -153,14 +147,8 @@ public interface GraphQLApiResolversClient {
      * @return graphQL API Resolver details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    GraphQLApiResolversCreateOrUpdateResponse createOrUpdateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String resolverId,
-        ResolverContractInner parameters,
-        String ifMatch,
-        Context context);
+    GraphQLApiResolversCreateOrUpdateResponse createOrUpdateWithResponse(String resourceGroupName, String serviceName,
+        String apiId, String resolverId, ResolverContractInner parameters, String ifMatch, Context context);
 
     /**
      * Creates a new resolver in the GraphQL API or updates an existing one.
@@ -178,11 +166,7 @@ public interface GraphQLApiResolversClient {
      * @return graphQL API Resolver details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ResolverContractInner createOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String resolverId,
+    ResolverContractInner createOrUpdate(String resourceGroupName, String serviceName, String apiId, String resolverId,
         ResolverContractInner parameters);
 
     /**
@@ -204,14 +188,8 @@ public interface GraphQLApiResolversClient {
      * @return graphQL API Resolver details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    GraphQLApiResolversUpdateResponse updateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String resolverId,
-        String ifMatch,
-        ResolverUpdateContract parameters,
-        Context context);
+    GraphQLApiResolversUpdateResponse updateWithResponse(String resourceGroupName, String serviceName, String apiId,
+        String resolverId, String ifMatch, ResolverUpdateContract parameters, Context context);
 
     /**
      * Updates the details of the resolver in the GraphQL API specified by its identifier.
@@ -231,13 +209,8 @@ public interface GraphQLApiResolversClient {
      * @return graphQL API Resolver details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ResolverContractInner update(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String resolverId,
-        String ifMatch,
-        ResolverUpdateContract parameters);
+    ResolverContractInner update(String resourceGroupName, String serviceName, String apiId, String resolverId,
+        String ifMatch, ResolverUpdateContract parameters);
 
     /**
      * Deletes the specified resolver in the GraphQL API.
@@ -257,8 +230,8 @@ public interface GraphQLApiResolversClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String serviceName, String apiId, String resolverId, String ifMatch, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String apiId, String resolverId,
+        String ifMatch, Context context);
 
     /**
      * Deletes the specified resolver in the GraphQL API.

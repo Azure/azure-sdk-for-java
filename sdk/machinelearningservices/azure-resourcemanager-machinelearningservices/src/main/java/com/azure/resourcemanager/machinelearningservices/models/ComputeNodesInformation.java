@@ -19,10 +19,11 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     property = "computeType",
     defaultImpl = ComputeNodesInformation.class)
 @JsonTypeName("ComputeNodesInformation")
-@JsonSubTypes({@JsonSubTypes.Type(name = "AmlCompute", value = AmlComputeNodesInformation.class)})
+@JsonSubTypes({ @JsonSubTypes.Type(name = "AmlCompute", value = AmlComputeNodesInformation.class) })
 @Immutable
 public class ComputeNodesInformation {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ComputeNodesInformation.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ComputeNodesInformation.class);
 
     /*
      * The continuation token.

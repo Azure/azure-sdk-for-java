@@ -5,57 +5,54 @@
 package com.azure.resourcemanager.resources.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.resources.models.DataEffect;
 import com.azure.resourcemanager.resources.models.DataManifestCustomResourceFunctionDefinition;
 import com.azure.resourcemanager.resources.models.ResourceTypeAliases;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The properties of the data policy manifest.
  */
 @Fluent
-public final class DataPolicyManifestProperties {
+public final class DataPolicyManifestProperties implements JsonSerializable<DataPolicyManifestProperties> {
     /*
      * The list of namespaces for the data policy manifest.
      */
-    @JsonProperty(value = "namespaces")
     private List<String> namespaces;
 
     /*
      * The policy mode of the data policy manifest.
      */
-    @JsonProperty(value = "policyMode")
     private String policyMode;
 
     /*
      * A value indicating whether policy mode is allowed only in built-in definitions.
      */
-    @JsonProperty(value = "isBuiltInOnly")
     private Boolean isBuiltInOnly;
 
     /*
      * An array of resource type aliases.
      */
-    @JsonProperty(value = "resourceTypeAliases")
     private List<ResourceTypeAliases> resourceTypeAliases;
 
     /*
      * The effect definition.
      */
-    @JsonProperty(value = "effects")
     private List<DataEffect> effects;
 
     /*
      * The non-alias field accessor values that can be used in the policy rule.
      */
-    @JsonProperty(value = "fieldValues")
     private List<String> fieldValues;
 
     /*
      * The resource functions definition specified in the data manifest.
      */
-    @JsonProperty(value = "resourceFunctions")
     private DataManifestResourceFunctionsDefinition innerResourceFunctions;
 
     /**
@@ -254,5 +251,66 @@ public final class DataPolicyManifestProperties {
         if (innerResourceFunctions() != null) {
             innerResourceFunctions().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("namespaces", this.namespaces, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("policyMode", this.policyMode);
+        jsonWriter.writeBooleanField("isBuiltInOnly", this.isBuiltInOnly);
+        jsonWriter.writeArrayField("resourceTypeAliases", this.resourceTypeAliases,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("effects", this.effects, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("fieldValues", this.fieldValues, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("resourceFunctions", this.innerResourceFunctions);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DataPolicyManifestProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DataPolicyManifestProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DataPolicyManifestProperties.
+     */
+    public static DataPolicyManifestProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DataPolicyManifestProperties deserializedDataPolicyManifestProperties = new DataPolicyManifestProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("namespaces".equals(fieldName)) {
+                    List<String> namespaces = reader.readArray(reader1 -> reader1.getString());
+                    deserializedDataPolicyManifestProperties.namespaces = namespaces;
+                } else if ("policyMode".equals(fieldName)) {
+                    deserializedDataPolicyManifestProperties.policyMode = reader.getString();
+                } else if ("isBuiltInOnly".equals(fieldName)) {
+                    deserializedDataPolicyManifestProperties.isBuiltInOnly = reader.getNullable(JsonReader::getBoolean);
+                } else if ("resourceTypeAliases".equals(fieldName)) {
+                    List<ResourceTypeAliases> resourceTypeAliases
+                        = reader.readArray(reader1 -> ResourceTypeAliases.fromJson(reader1));
+                    deserializedDataPolicyManifestProperties.resourceTypeAliases = resourceTypeAliases;
+                } else if ("effects".equals(fieldName)) {
+                    List<DataEffect> effects = reader.readArray(reader1 -> DataEffect.fromJson(reader1));
+                    deserializedDataPolicyManifestProperties.effects = effects;
+                } else if ("fieldValues".equals(fieldName)) {
+                    List<String> fieldValues = reader.readArray(reader1 -> reader1.getString());
+                    deserializedDataPolicyManifestProperties.fieldValues = fieldValues;
+                } else if ("resourceFunctions".equals(fieldName)) {
+                    deserializedDataPolicyManifestProperties.innerResourceFunctions
+                        = DataManifestResourceFunctionsDefinition.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDataPolicyManifestProperties;
+        });
     }
 }

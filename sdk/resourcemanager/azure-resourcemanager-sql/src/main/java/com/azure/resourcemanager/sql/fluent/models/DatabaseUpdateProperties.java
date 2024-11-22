@@ -5,6 +5,11 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.models.BackupStorageRedundancy;
 import com.azure.resourcemanager.sql.models.CatalogCollationType;
 import com.azure.resourcemanager.sql.models.CreateMode;
@@ -14,183 +19,163 @@ import com.azure.resourcemanager.sql.models.DatabaseStatus;
 import com.azure.resourcemanager.sql.models.SampleName;
 import com.azure.resourcemanager.sql.models.SecondaryType;
 import com.azure.resourcemanager.sql.models.Sku;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 import java.util.UUID;
 
-/** A database update properties. */
+/**
+ * A database update properties.
+ */
 @Fluent
-public final class DatabaseUpdateProperties {
+public final class DatabaseUpdateProperties implements JsonSerializable<DatabaseUpdateProperties> {
     /*
      * Specifies the mode of database creation.
-     *
+     * 
      * Default: regular database creation.
-     *
-     * Copy: creates a database as a copy of an existing database. sourceDatabaseId must be specified as the resource
-     * ID of the source database.
-     *
+     * 
+     * Copy: creates a database as a copy of an existing database. sourceDatabaseId must be specified as the resource ID
+     * of the source database.
+     * 
      * Secondary: creates a database as a secondary replica of an existing database. sourceDatabaseId must be specified
      * as the resource ID of the existing primary database.
-     *
+     * 
      * PointInTimeRestore: Creates a database by restoring a point in time backup of an existing database.
      * sourceDatabaseId must be specified as the resource ID of the existing database, and restorePointInTime must be
      * specified.
-     *
+     * 
      * Recovery: Creates a database by restoring a geo-replicated backup. sourceDatabaseId must be specified as the
      * recoverable database resource ID to restore.
-     *
+     * 
      * Restore: Creates a database by restoring a backup of a deleted database. sourceDatabaseId must be specified. If
      * sourceDatabaseId is the database's original resource ID, then sourceDatabaseDeletionDate must be specified.
      * Otherwise sourceDatabaseId must be the restorable dropped database resource ID and sourceDatabaseDeletionDate is
      * ignored. restorePointInTime may also be specified to restore from an earlier point in time.
-     *
+     * 
      * RestoreLongTermRetentionBackup: Creates a database by restoring from a long term retention vault.
      * recoveryServicesRecoveryPointResourceId must be specified as the recovery point resource ID.
-     *
+     * 
      * Copy, Secondary, and RestoreLongTermRetentionBackup are not supported for DataWarehouse edition.
      */
-    @JsonProperty(value = "createMode")
     private CreateMode createMode;
 
     /*
      * The collation of the database.
      */
-    @JsonProperty(value = "collation")
     private String collation;
 
     /*
      * The max size of the database expressed in bytes.
      */
-    @JsonProperty(value = "maxSizeBytes")
     private Long maxSizeBytes;
 
     /*
      * The name of the sample schema to apply when creating this database.
      */
-    @JsonProperty(value = "sampleName")
     private SampleName sampleName;
 
     /*
      * The resource identifier of the elastic pool containing this database.
      */
-    @JsonProperty(value = "elasticPoolId")
     private String elasticPoolId;
 
     /*
      * The resource identifier of the source database associated with create operation of this database.
      */
-    @JsonProperty(value = "sourceDatabaseId")
     private String sourceDatabaseId;
 
     /*
      * The status of the database.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private DatabaseStatus status;
 
     /*
      * The ID of the database.
      */
-    @JsonProperty(value = "databaseId", access = JsonProperty.Access.WRITE_ONLY)
     private UUID databaseId;
 
     /*
      * The creation date of the database (ISO8601 format).
      */
-    @JsonProperty(value = "creationDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime creationDate;
 
     /*
      * The current service level objective name of the database.
      */
-    @JsonProperty(value = "currentServiceObjectiveName", access = JsonProperty.Access.WRITE_ONLY)
     private String currentServiceObjectiveName;
 
     /*
      * The requested service level objective name of the database.
      */
-    @JsonProperty(value = "requestedServiceObjectiveName", access = JsonProperty.Access.WRITE_ONLY)
     private String requestedServiceObjectiveName;
 
     /*
      * The default secondary region for this database.
      */
-    @JsonProperty(value = "defaultSecondaryLocation", access = JsonProperty.Access.WRITE_ONLY)
     private String defaultSecondaryLocation;
 
     /*
      * Failover Group resource identifier that this database belongs to.
      */
-    @JsonProperty(value = "failoverGroupId", access = JsonProperty.Access.WRITE_ONLY)
     private String failoverGroupId;
 
     /*
      * Specifies the point in time (ISO8601 format) of the source database that will be restored to create the new
      * database.
      */
-    @JsonProperty(value = "restorePointInTime")
     private OffsetDateTime restorePointInTime;
 
     /*
      * Specifies the time that the database was deleted.
      */
-    @JsonProperty(value = "sourceDatabaseDeletionDate")
     private OffsetDateTime sourceDatabaseDeletionDate;
 
     /*
      * The resource identifier of the recovery point associated with create operation of this database.
      */
-    @JsonProperty(value = "recoveryServicesRecoveryPointId")
     private String recoveryServicesRecoveryPointId;
 
     /*
      * The resource identifier of the long term retention backup associated with create operation of this database.
      */
-    @JsonProperty(value = "longTermRetentionBackupResourceId")
     private String longTermRetentionBackupResourceId;
 
     /*
      * The resource identifier of the recoverable database associated with create operation of this database.
      */
-    @JsonProperty(value = "recoverableDatabaseId")
     private String recoverableDatabaseId;
 
     /*
      * The resource identifier of the restorable dropped database associated with create operation of this database.
      */
-    @JsonProperty(value = "restorableDroppedDatabaseId")
     private String restorableDroppedDatabaseId;
 
     /*
      * Collation of the metadata catalog.
      */
-    @JsonProperty(value = "catalogCollation")
     private CatalogCollationType catalogCollation;
 
     /*
      * Whether or not this database is zone redundant, which means the replicas of this database will be spread across
      * multiple availability zones.
      */
-    @JsonProperty(value = "zoneRedundant")
     private Boolean zoneRedundant;
 
     /*
      * The license type to apply for this database. `LicenseIncluded` if you need a license, or `BasePrice` if you have
      * a license and are eligible for the Azure Hybrid Benefit.
      */
-    @JsonProperty(value = "licenseType")
     private DatabaseLicenseType licenseType;
 
     /*
      * The max log size for this database.
      */
-    @JsonProperty(value = "maxLogSizeBytes", access = JsonProperty.Access.WRITE_ONLY)
     private Long maxLogSizeBytes;
 
     /*
      * This records the earliest start date and time that restore is available for this database (ISO8601 format).
      */
-    @JsonProperty(value = "earliestRestoreDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime earliestRestoreDate;
 
     /*
@@ -198,125 +183,112 @@ public final class DatabaseUpdateProperties {
      * connection string may be routed to a readonly secondary replica in the same region. Not applicable to a
      * Hyperscale database within an elastic pool.
      */
-    @JsonProperty(value = "readScale")
     private DatabaseReadScale readScale;
 
     /*
      * The number of secondary replicas associated with the database that are used to provide high availability. Not
      * applicable to a Hyperscale database within an elastic pool.
      */
-    @JsonProperty(value = "highAvailabilityReplicaCount")
     private Integer highAvailabilityReplicaCount;
 
     /*
-     * The secondary type of the database if it is a secondary.  Valid values are Geo and Named.
+     * The secondary type of the database if it is a secondary. Valid values are Geo and Named.
      */
-    @JsonProperty(value = "secondaryType")
     private SecondaryType secondaryType;
 
     /*
      * The name and tier of the SKU.
      */
-    @JsonProperty(value = "currentSku", access = JsonProperty.Access.WRITE_ONLY)
     private Sku currentSku;
 
     /*
      * Time in minutes after which database is automatically paused. A value of -1 means that automatic pause is
      * disabled
      */
-    @JsonProperty(value = "autoPauseDelay")
     private Integer autoPauseDelay;
 
     /*
      * The storage account type used to store backups for this database.
      */
-    @JsonProperty(value = "currentBackupStorageRedundancy", access = JsonProperty.Access.WRITE_ONLY)
     private BackupStorageRedundancy currentBackupStorageRedundancy;
 
     /*
      * The storage account type to be used to store backups for this database.
      */
-    @JsonProperty(value = "requestedBackupStorageRedundancy")
     private BackupStorageRedundancy requestedBackupStorageRedundancy;
 
     /*
      * Minimal capacity that database will always have allocated, if not paused
      */
-    @JsonProperty(value = "minCapacity")
     private Double minCapacity;
 
     /*
-     * The date when database was paused by user configuration or action(ISO8601 format). Null if the database is
-     * ready.
+     * The date when database was paused by user configuration or action(ISO8601 format). Null if the database is ready.
      */
-    @JsonProperty(value = "pausedDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime pausedDate;
 
     /*
      * The date when database was resumed by user action or database login (ISO8601 format). Null if the database is
      * paused.
      */
-    @JsonProperty(value = "resumedDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime resumedDate;
 
     /*
-     * Maintenance configuration id assigned to the database. This configuration defines the period when the
-     * maintenance updates will occur.
+     * Maintenance configuration id assigned to the database. This configuration defines the period when the maintenance
+     * updates will occur.
      */
-    @JsonProperty(value = "maintenanceConfigurationId")
     private String maintenanceConfigurationId;
 
     /*
      * Whether or not this database is a ledger database, which means all tables in the database are ledger tables.
      * Note: the value of this property cannot be changed after the database has been created.
      */
-    @JsonProperty(value = "isLedgerOn")
     private Boolean isLedgerOn;
 
     /*
      * Infra encryption is enabled for this database.
      */
-    @JsonProperty(value = "isInfraEncryptionEnabled", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isInfraEncryptionEnabled;
 
     /*
      * The Client id used for cross tenant per database CMK scenario
      */
-    @JsonProperty(value = "federatedClientId")
     private UUID federatedClientId;
 
-    /** Creates an instance of DatabaseUpdateProperties class. */
+    /**
+     * Creates an instance of DatabaseUpdateProperties class.
+     */
     public DatabaseUpdateProperties() {
     }
 
     /**
      * Get the createMode property: Specifies the mode of database creation.
-     *
-     * <p>Default: regular database creation.
-     *
-     * <p>Copy: creates a database as a copy of an existing database. sourceDatabaseId must be specified as the resource
-     * ID of the source database.
-     *
-     * <p>Secondary: creates a database as a secondary replica of an existing database. sourceDatabaseId must be
-     * specified as the resource ID of the existing primary database.
-     *
-     * <p>PointInTimeRestore: Creates a database by restoring a point in time backup of an existing database.
+     * 
+     * Default: regular database creation.
+     * 
+     * Copy: creates a database as a copy of an existing database. sourceDatabaseId must be specified as the resource ID
+     * of the source database.
+     * 
+     * Secondary: creates a database as a secondary replica of an existing database. sourceDatabaseId must be specified
+     * as the resource ID of the existing primary database.
+     * 
+     * PointInTimeRestore: Creates a database by restoring a point in time backup of an existing database.
      * sourceDatabaseId must be specified as the resource ID of the existing database, and restorePointInTime must be
      * specified.
-     *
-     * <p>Recovery: Creates a database by restoring a geo-replicated backup. sourceDatabaseId must be specified as the
+     * 
+     * Recovery: Creates a database by restoring a geo-replicated backup. sourceDatabaseId must be specified as the
      * recoverable database resource ID to restore.
-     *
-     * <p>Restore: Creates a database by restoring a backup of a deleted database. sourceDatabaseId must be specified.
-     * If sourceDatabaseId is the database's original resource ID, then sourceDatabaseDeletionDate must be specified.
+     * 
+     * Restore: Creates a database by restoring a backup of a deleted database. sourceDatabaseId must be specified. If
+     * sourceDatabaseId is the database's original resource ID, then sourceDatabaseDeletionDate must be specified.
      * Otherwise sourceDatabaseId must be the restorable dropped database resource ID and sourceDatabaseDeletionDate is
      * ignored. restorePointInTime may also be specified to restore from an earlier point in time.
-     *
-     * <p>RestoreLongTermRetentionBackup: Creates a database by restoring from a long term retention vault.
+     * 
+     * RestoreLongTermRetentionBackup: Creates a database by restoring from a long term retention vault.
      * recoveryServicesRecoveryPointResourceId must be specified as the recovery point resource ID.
-     *
-     * <p>Copy, Secondary, and RestoreLongTermRetentionBackup are not supported for DataWarehouse edition.
-     *
+     * 
+     * Copy, Secondary, and RestoreLongTermRetentionBackup are not supported for DataWarehouse edition.
+     * 
      * @return the createMode value.
      */
     public CreateMode createMode() {
@@ -325,32 +297,32 @@ public final class DatabaseUpdateProperties {
 
     /**
      * Set the createMode property: Specifies the mode of database creation.
-     *
-     * <p>Default: regular database creation.
-     *
-     * <p>Copy: creates a database as a copy of an existing database. sourceDatabaseId must be specified as the resource
-     * ID of the source database.
-     *
-     * <p>Secondary: creates a database as a secondary replica of an existing database. sourceDatabaseId must be
-     * specified as the resource ID of the existing primary database.
-     *
-     * <p>PointInTimeRestore: Creates a database by restoring a point in time backup of an existing database.
+     * 
+     * Default: regular database creation.
+     * 
+     * Copy: creates a database as a copy of an existing database. sourceDatabaseId must be specified as the resource ID
+     * of the source database.
+     * 
+     * Secondary: creates a database as a secondary replica of an existing database. sourceDatabaseId must be specified
+     * as the resource ID of the existing primary database.
+     * 
+     * PointInTimeRestore: Creates a database by restoring a point in time backup of an existing database.
      * sourceDatabaseId must be specified as the resource ID of the existing database, and restorePointInTime must be
      * specified.
-     *
-     * <p>Recovery: Creates a database by restoring a geo-replicated backup. sourceDatabaseId must be specified as the
+     * 
+     * Recovery: Creates a database by restoring a geo-replicated backup. sourceDatabaseId must be specified as the
      * recoverable database resource ID to restore.
-     *
-     * <p>Restore: Creates a database by restoring a backup of a deleted database. sourceDatabaseId must be specified.
-     * If sourceDatabaseId is the database's original resource ID, then sourceDatabaseDeletionDate must be specified.
+     * 
+     * Restore: Creates a database by restoring a backup of a deleted database. sourceDatabaseId must be specified. If
+     * sourceDatabaseId is the database's original resource ID, then sourceDatabaseDeletionDate must be specified.
      * Otherwise sourceDatabaseId must be the restorable dropped database resource ID and sourceDatabaseDeletionDate is
      * ignored. restorePointInTime may also be specified to restore from an earlier point in time.
-     *
-     * <p>RestoreLongTermRetentionBackup: Creates a database by restoring from a long term retention vault.
+     * 
+     * RestoreLongTermRetentionBackup: Creates a database by restoring from a long term retention vault.
      * recoveryServicesRecoveryPointResourceId must be specified as the recovery point resource ID.
-     *
-     * <p>Copy, Secondary, and RestoreLongTermRetentionBackup are not supported for DataWarehouse edition.
-     *
+     * 
+     * Copy, Secondary, and RestoreLongTermRetentionBackup are not supported for DataWarehouse edition.
+     * 
      * @param createMode the createMode value to set.
      * @return the DatabaseUpdateProperties object itself.
      */
@@ -361,7 +333,7 @@ public final class DatabaseUpdateProperties {
 
     /**
      * Get the collation property: The collation of the database.
-     *
+     * 
      * @return the collation value.
      */
     public String collation() {
@@ -370,7 +342,7 @@ public final class DatabaseUpdateProperties {
 
     /**
      * Set the collation property: The collation of the database.
-     *
+     * 
      * @param collation the collation value to set.
      * @return the DatabaseUpdateProperties object itself.
      */
@@ -381,7 +353,7 @@ public final class DatabaseUpdateProperties {
 
     /**
      * Get the maxSizeBytes property: The max size of the database expressed in bytes.
-     *
+     * 
      * @return the maxSizeBytes value.
      */
     public Long maxSizeBytes() {
@@ -390,7 +362,7 @@ public final class DatabaseUpdateProperties {
 
     /**
      * Set the maxSizeBytes property: The max size of the database expressed in bytes.
-     *
+     * 
      * @param maxSizeBytes the maxSizeBytes value to set.
      * @return the DatabaseUpdateProperties object itself.
      */
@@ -401,7 +373,7 @@ public final class DatabaseUpdateProperties {
 
     /**
      * Get the sampleName property: The name of the sample schema to apply when creating this database.
-     *
+     * 
      * @return the sampleName value.
      */
     public SampleName sampleName() {
@@ -410,7 +382,7 @@ public final class DatabaseUpdateProperties {
 
     /**
      * Set the sampleName property: The name of the sample schema to apply when creating this database.
-     *
+     * 
      * @param sampleName the sampleName value to set.
      * @return the DatabaseUpdateProperties object itself.
      */
@@ -421,7 +393,7 @@ public final class DatabaseUpdateProperties {
 
     /**
      * Get the elasticPoolId property: The resource identifier of the elastic pool containing this database.
-     *
+     * 
      * @return the elasticPoolId value.
      */
     public String elasticPoolId() {
@@ -430,7 +402,7 @@ public final class DatabaseUpdateProperties {
 
     /**
      * Set the elasticPoolId property: The resource identifier of the elastic pool containing this database.
-     *
+     * 
      * @param elasticPoolId the elasticPoolId value to set.
      * @return the DatabaseUpdateProperties object itself.
      */
@@ -442,7 +414,7 @@ public final class DatabaseUpdateProperties {
     /**
      * Get the sourceDatabaseId property: The resource identifier of the source database associated with create
      * operation of this database.
-     *
+     * 
      * @return the sourceDatabaseId value.
      */
     public String sourceDatabaseId() {
@@ -452,7 +424,7 @@ public final class DatabaseUpdateProperties {
     /**
      * Set the sourceDatabaseId property: The resource identifier of the source database associated with create
      * operation of this database.
-     *
+     * 
      * @param sourceDatabaseId the sourceDatabaseId value to set.
      * @return the DatabaseUpdateProperties object itself.
      */
@@ -463,7 +435,7 @@ public final class DatabaseUpdateProperties {
 
     /**
      * Get the status property: The status of the database.
-     *
+     * 
      * @return the status value.
      */
     public DatabaseStatus status() {
@@ -472,7 +444,7 @@ public final class DatabaseUpdateProperties {
 
     /**
      * Get the databaseId property: The ID of the database.
-     *
+     * 
      * @return the databaseId value.
      */
     public UUID databaseId() {
@@ -481,7 +453,7 @@ public final class DatabaseUpdateProperties {
 
     /**
      * Get the creationDate property: The creation date of the database (ISO8601 format).
-     *
+     * 
      * @return the creationDate value.
      */
     public OffsetDateTime creationDate() {
@@ -490,7 +462,7 @@ public final class DatabaseUpdateProperties {
 
     /**
      * Get the currentServiceObjectiveName property: The current service level objective name of the database.
-     *
+     * 
      * @return the currentServiceObjectiveName value.
      */
     public String currentServiceObjectiveName() {
@@ -499,7 +471,7 @@ public final class DatabaseUpdateProperties {
 
     /**
      * Get the requestedServiceObjectiveName property: The requested service level objective name of the database.
-     *
+     * 
      * @return the requestedServiceObjectiveName value.
      */
     public String requestedServiceObjectiveName() {
@@ -508,7 +480,7 @@ public final class DatabaseUpdateProperties {
 
     /**
      * Get the defaultSecondaryLocation property: The default secondary region for this database.
-     *
+     * 
      * @return the defaultSecondaryLocation value.
      */
     public String defaultSecondaryLocation() {
@@ -517,7 +489,7 @@ public final class DatabaseUpdateProperties {
 
     /**
      * Get the failoverGroupId property: Failover Group resource identifier that this database belongs to.
-     *
+     * 
      * @return the failoverGroupId value.
      */
     public String failoverGroupId() {
@@ -527,7 +499,7 @@ public final class DatabaseUpdateProperties {
     /**
      * Get the restorePointInTime property: Specifies the point in time (ISO8601 format) of the source database that
      * will be restored to create the new database.
-     *
+     * 
      * @return the restorePointInTime value.
      */
     public OffsetDateTime restorePointInTime() {
@@ -537,7 +509,7 @@ public final class DatabaseUpdateProperties {
     /**
      * Set the restorePointInTime property: Specifies the point in time (ISO8601 format) of the source database that
      * will be restored to create the new database.
-     *
+     * 
      * @param restorePointInTime the restorePointInTime value to set.
      * @return the DatabaseUpdateProperties object itself.
      */
@@ -548,7 +520,7 @@ public final class DatabaseUpdateProperties {
 
     /**
      * Get the sourceDatabaseDeletionDate property: Specifies the time that the database was deleted.
-     *
+     * 
      * @return the sourceDatabaseDeletionDate value.
      */
     public OffsetDateTime sourceDatabaseDeletionDate() {
@@ -557,7 +529,7 @@ public final class DatabaseUpdateProperties {
 
     /**
      * Set the sourceDatabaseDeletionDate property: Specifies the time that the database was deleted.
-     *
+     * 
      * @param sourceDatabaseDeletionDate the sourceDatabaseDeletionDate value to set.
      * @return the DatabaseUpdateProperties object itself.
      */
@@ -569,7 +541,7 @@ public final class DatabaseUpdateProperties {
     /**
      * Get the recoveryServicesRecoveryPointId property: The resource identifier of the recovery point associated with
      * create operation of this database.
-     *
+     * 
      * @return the recoveryServicesRecoveryPointId value.
      */
     public String recoveryServicesRecoveryPointId() {
@@ -579,7 +551,7 @@ public final class DatabaseUpdateProperties {
     /**
      * Set the recoveryServicesRecoveryPointId property: The resource identifier of the recovery point associated with
      * create operation of this database.
-     *
+     * 
      * @param recoveryServicesRecoveryPointId the recoveryServicesRecoveryPointId value to set.
      * @return the DatabaseUpdateProperties object itself.
      */
@@ -591,7 +563,7 @@ public final class DatabaseUpdateProperties {
     /**
      * Get the longTermRetentionBackupResourceId property: The resource identifier of the long term retention backup
      * associated with create operation of this database.
-     *
+     * 
      * @return the longTermRetentionBackupResourceId value.
      */
     public String longTermRetentionBackupResourceId() {
@@ -601,7 +573,7 @@ public final class DatabaseUpdateProperties {
     /**
      * Set the longTermRetentionBackupResourceId property: The resource identifier of the long term retention backup
      * associated with create operation of this database.
-     *
+     * 
      * @param longTermRetentionBackupResourceId the longTermRetentionBackupResourceId value to set.
      * @return the DatabaseUpdateProperties object itself.
      */
@@ -613,7 +585,7 @@ public final class DatabaseUpdateProperties {
     /**
      * Get the recoverableDatabaseId property: The resource identifier of the recoverable database associated with
      * create operation of this database.
-     *
+     * 
      * @return the recoverableDatabaseId value.
      */
     public String recoverableDatabaseId() {
@@ -623,7 +595,7 @@ public final class DatabaseUpdateProperties {
     /**
      * Set the recoverableDatabaseId property: The resource identifier of the recoverable database associated with
      * create operation of this database.
-     *
+     * 
      * @param recoverableDatabaseId the recoverableDatabaseId value to set.
      * @return the DatabaseUpdateProperties object itself.
      */
@@ -635,7 +607,7 @@ public final class DatabaseUpdateProperties {
     /**
      * Get the restorableDroppedDatabaseId property: The resource identifier of the restorable dropped database
      * associated with create operation of this database.
-     *
+     * 
      * @return the restorableDroppedDatabaseId value.
      */
     public String restorableDroppedDatabaseId() {
@@ -645,7 +617,7 @@ public final class DatabaseUpdateProperties {
     /**
      * Set the restorableDroppedDatabaseId property: The resource identifier of the restorable dropped database
      * associated with create operation of this database.
-     *
+     * 
      * @param restorableDroppedDatabaseId the restorableDroppedDatabaseId value to set.
      * @return the DatabaseUpdateProperties object itself.
      */
@@ -656,7 +628,7 @@ public final class DatabaseUpdateProperties {
 
     /**
      * Get the catalogCollation property: Collation of the metadata catalog.
-     *
+     * 
      * @return the catalogCollation value.
      */
     public CatalogCollationType catalogCollation() {
@@ -665,7 +637,7 @@ public final class DatabaseUpdateProperties {
 
     /**
      * Set the catalogCollation property: Collation of the metadata catalog.
-     *
+     * 
      * @param catalogCollation the catalogCollation value to set.
      * @return the DatabaseUpdateProperties object itself.
      */
@@ -677,7 +649,7 @@ public final class DatabaseUpdateProperties {
     /**
      * Get the zoneRedundant property: Whether or not this database is zone redundant, which means the replicas of this
      * database will be spread across multiple availability zones.
-     *
+     * 
      * @return the zoneRedundant value.
      */
     public Boolean zoneRedundant() {
@@ -687,7 +659,7 @@ public final class DatabaseUpdateProperties {
     /**
      * Set the zoneRedundant property: Whether or not this database is zone redundant, which means the replicas of this
      * database will be spread across multiple availability zones.
-     *
+     * 
      * @param zoneRedundant the zoneRedundant value to set.
      * @return the DatabaseUpdateProperties object itself.
      */
@@ -699,7 +671,7 @@ public final class DatabaseUpdateProperties {
     /**
      * Get the licenseType property: The license type to apply for this database. `LicenseIncluded` if you need a
      * license, or `BasePrice` if you have a license and are eligible for the Azure Hybrid Benefit.
-     *
+     * 
      * @return the licenseType value.
      */
     public DatabaseLicenseType licenseType() {
@@ -709,7 +681,7 @@ public final class DatabaseUpdateProperties {
     /**
      * Set the licenseType property: The license type to apply for this database. `LicenseIncluded` if you need a
      * license, or `BasePrice` if you have a license and are eligible for the Azure Hybrid Benefit.
-     *
+     * 
      * @param licenseType the licenseType value to set.
      * @return the DatabaseUpdateProperties object itself.
      */
@@ -720,7 +692,7 @@ public final class DatabaseUpdateProperties {
 
     /**
      * Get the maxLogSizeBytes property: The max log size for this database.
-     *
+     * 
      * @return the maxLogSizeBytes value.
      */
     public Long maxLogSizeBytes() {
@@ -730,7 +702,7 @@ public final class DatabaseUpdateProperties {
     /**
      * Get the earliestRestoreDate property: This records the earliest start date and time that restore is available for
      * this database (ISO8601 format).
-     *
+     * 
      * @return the earliestRestoreDate value.
      */
     public OffsetDateTime earliestRestoreDate() {
@@ -741,7 +713,7 @@ public final class DatabaseUpdateProperties {
      * Get the readScale property: The state of read-only routing. If enabled, connections that have application intent
      * set to readonly in their connection string may be routed to a readonly secondary replica in the same region. Not
      * applicable to a Hyperscale database within an elastic pool.
-     *
+     * 
      * @return the readScale value.
      */
     public DatabaseReadScale readScale() {
@@ -752,7 +724,7 @@ public final class DatabaseUpdateProperties {
      * Set the readScale property: The state of read-only routing. If enabled, connections that have application intent
      * set to readonly in their connection string may be routed to a readonly secondary replica in the same region. Not
      * applicable to a Hyperscale database within an elastic pool.
-     *
+     * 
      * @param readScale the readScale value to set.
      * @return the DatabaseUpdateProperties object itself.
      */
@@ -764,7 +736,7 @@ public final class DatabaseUpdateProperties {
     /**
      * Get the highAvailabilityReplicaCount property: The number of secondary replicas associated with the database that
      * are used to provide high availability. Not applicable to a Hyperscale database within an elastic pool.
-     *
+     * 
      * @return the highAvailabilityReplicaCount value.
      */
     public Integer highAvailabilityReplicaCount() {
@@ -774,7 +746,7 @@ public final class DatabaseUpdateProperties {
     /**
      * Set the highAvailabilityReplicaCount property: The number of secondary replicas associated with the database that
      * are used to provide high availability. Not applicable to a Hyperscale database within an elastic pool.
-     *
+     * 
      * @param highAvailabilityReplicaCount the highAvailabilityReplicaCount value to set.
      * @return the DatabaseUpdateProperties object itself.
      */
@@ -786,7 +758,7 @@ public final class DatabaseUpdateProperties {
     /**
      * Get the secondaryType property: The secondary type of the database if it is a secondary. Valid values are Geo and
      * Named.
-     *
+     * 
      * @return the secondaryType value.
      */
     public SecondaryType secondaryType() {
@@ -796,7 +768,7 @@ public final class DatabaseUpdateProperties {
     /**
      * Set the secondaryType property: The secondary type of the database if it is a secondary. Valid values are Geo and
      * Named.
-     *
+     * 
      * @param secondaryType the secondaryType value to set.
      * @return the DatabaseUpdateProperties object itself.
      */
@@ -807,7 +779,7 @@ public final class DatabaseUpdateProperties {
 
     /**
      * Get the currentSku property: The name and tier of the SKU.
-     *
+     * 
      * @return the currentSku value.
      */
     public Sku currentSku() {
@@ -817,7 +789,7 @@ public final class DatabaseUpdateProperties {
     /**
      * Get the autoPauseDelay property: Time in minutes after which database is automatically paused. A value of -1
      * means that automatic pause is disabled.
-     *
+     * 
      * @return the autoPauseDelay value.
      */
     public Integer autoPauseDelay() {
@@ -827,7 +799,7 @@ public final class DatabaseUpdateProperties {
     /**
      * Set the autoPauseDelay property: Time in minutes after which database is automatically paused. A value of -1
      * means that automatic pause is disabled.
-     *
+     * 
      * @param autoPauseDelay the autoPauseDelay value to set.
      * @return the DatabaseUpdateProperties object itself.
      */
@@ -839,7 +811,7 @@ public final class DatabaseUpdateProperties {
     /**
      * Get the currentBackupStorageRedundancy property: The storage account type used to store backups for this
      * database.
-     *
+     * 
      * @return the currentBackupStorageRedundancy value.
      */
     public BackupStorageRedundancy currentBackupStorageRedundancy() {
@@ -849,7 +821,7 @@ public final class DatabaseUpdateProperties {
     /**
      * Get the requestedBackupStorageRedundancy property: The storage account type to be used to store backups for this
      * database.
-     *
+     * 
      * @return the requestedBackupStorageRedundancy value.
      */
     public BackupStorageRedundancy requestedBackupStorageRedundancy() {
@@ -859,19 +831,19 @@ public final class DatabaseUpdateProperties {
     /**
      * Set the requestedBackupStorageRedundancy property: The storage account type to be used to store backups for this
      * database.
-     *
+     * 
      * @param requestedBackupStorageRedundancy the requestedBackupStorageRedundancy value to set.
      * @return the DatabaseUpdateProperties object itself.
      */
-    public DatabaseUpdateProperties withRequestedBackupStorageRedundancy(
-        BackupStorageRedundancy requestedBackupStorageRedundancy) {
+    public DatabaseUpdateProperties
+        withRequestedBackupStorageRedundancy(BackupStorageRedundancy requestedBackupStorageRedundancy) {
         this.requestedBackupStorageRedundancy = requestedBackupStorageRedundancy;
         return this;
     }
 
     /**
      * Get the minCapacity property: Minimal capacity that database will always have allocated, if not paused.
-     *
+     * 
      * @return the minCapacity value.
      */
     public Double minCapacity() {
@@ -880,7 +852,7 @@ public final class DatabaseUpdateProperties {
 
     /**
      * Set the minCapacity property: Minimal capacity that database will always have allocated, if not paused.
-     *
+     * 
      * @param minCapacity the minCapacity value to set.
      * @return the DatabaseUpdateProperties object itself.
      */
@@ -892,7 +864,7 @@ public final class DatabaseUpdateProperties {
     /**
      * Get the pausedDate property: The date when database was paused by user configuration or action(ISO8601 format).
      * Null if the database is ready.
-     *
+     * 
      * @return the pausedDate value.
      */
     public OffsetDateTime pausedDate() {
@@ -902,7 +874,7 @@ public final class DatabaseUpdateProperties {
     /**
      * Get the resumedDate property: The date when database was resumed by user action or database login (ISO8601
      * format). Null if the database is paused.
-     *
+     * 
      * @return the resumedDate value.
      */
     public OffsetDateTime resumedDate() {
@@ -912,7 +884,7 @@ public final class DatabaseUpdateProperties {
     /**
      * Get the maintenanceConfigurationId property: Maintenance configuration id assigned to the database. This
      * configuration defines the period when the maintenance updates will occur.
-     *
+     * 
      * @return the maintenanceConfigurationId value.
      */
     public String maintenanceConfigurationId() {
@@ -922,7 +894,7 @@ public final class DatabaseUpdateProperties {
     /**
      * Set the maintenanceConfigurationId property: Maintenance configuration id assigned to the database. This
      * configuration defines the period when the maintenance updates will occur.
-     *
+     * 
      * @param maintenanceConfigurationId the maintenanceConfigurationId value to set.
      * @return the DatabaseUpdateProperties object itself.
      */
@@ -935,7 +907,7 @@ public final class DatabaseUpdateProperties {
      * Get the isLedgerOn property: Whether or not this database is a ledger database, which means all tables in the
      * database are ledger tables. Note: the value of this property cannot be changed after the database has been
      * created.
-     *
+     * 
      * @return the isLedgerOn value.
      */
     public Boolean isLedgerOn() {
@@ -946,7 +918,7 @@ public final class DatabaseUpdateProperties {
      * Set the isLedgerOn property: Whether or not this database is a ledger database, which means all tables in the
      * database are ledger tables. Note: the value of this property cannot be changed after the database has been
      * created.
-     *
+     * 
      * @param isLedgerOn the isLedgerOn value to set.
      * @return the DatabaseUpdateProperties object itself.
      */
@@ -957,7 +929,7 @@ public final class DatabaseUpdateProperties {
 
     /**
      * Get the isInfraEncryptionEnabled property: Infra encryption is enabled for this database.
-     *
+     * 
      * @return the isInfraEncryptionEnabled value.
      */
     public Boolean isInfraEncryptionEnabled() {
@@ -966,7 +938,7 @@ public final class DatabaseUpdateProperties {
 
     /**
      * Get the federatedClientId property: The Client id used for cross tenant per database CMK scenario.
-     *
+     * 
      * @return the federatedClientId value.
      */
     public UUID federatedClientId() {
@@ -975,7 +947,7 @@ public final class DatabaseUpdateProperties {
 
     /**
      * Set the federatedClientId property: The Client id used for cross tenant per database CMK scenario.
-     *
+     * 
      * @param federatedClientId the federatedClientId value to set.
      * @return the DatabaseUpdateProperties object itself.
      */
@@ -986,12 +958,167 @@ public final class DatabaseUpdateProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (currentSku() != null) {
             currentSku().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("createMode", this.createMode == null ? null : this.createMode.toString());
+        jsonWriter.writeStringField("collation", this.collation);
+        jsonWriter.writeNumberField("maxSizeBytes", this.maxSizeBytes);
+        jsonWriter.writeStringField("sampleName", this.sampleName == null ? null : this.sampleName.toString());
+        jsonWriter.writeStringField("elasticPoolId", this.elasticPoolId);
+        jsonWriter.writeStringField("sourceDatabaseId", this.sourceDatabaseId);
+        jsonWriter.writeStringField("restorePointInTime",
+            this.restorePointInTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.restorePointInTime));
+        jsonWriter.writeStringField("sourceDatabaseDeletionDate",
+            this.sourceDatabaseDeletionDate == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.sourceDatabaseDeletionDate));
+        jsonWriter.writeStringField("recoveryServicesRecoveryPointId", this.recoveryServicesRecoveryPointId);
+        jsonWriter.writeStringField("longTermRetentionBackupResourceId", this.longTermRetentionBackupResourceId);
+        jsonWriter.writeStringField("recoverableDatabaseId", this.recoverableDatabaseId);
+        jsonWriter.writeStringField("restorableDroppedDatabaseId", this.restorableDroppedDatabaseId);
+        jsonWriter.writeStringField("catalogCollation",
+            this.catalogCollation == null ? null : this.catalogCollation.toString());
+        jsonWriter.writeBooleanField("zoneRedundant", this.zoneRedundant);
+        jsonWriter.writeStringField("licenseType", this.licenseType == null ? null : this.licenseType.toString());
+        jsonWriter.writeStringField("readScale", this.readScale == null ? null : this.readScale.toString());
+        jsonWriter.writeNumberField("highAvailabilityReplicaCount", this.highAvailabilityReplicaCount);
+        jsonWriter.writeStringField("secondaryType", this.secondaryType == null ? null : this.secondaryType.toString());
+        jsonWriter.writeNumberField("autoPauseDelay", this.autoPauseDelay);
+        jsonWriter.writeStringField("requestedBackupStorageRedundancy",
+            this.requestedBackupStorageRedundancy == null ? null : this.requestedBackupStorageRedundancy.toString());
+        jsonWriter.writeNumberField("minCapacity", this.minCapacity);
+        jsonWriter.writeStringField("maintenanceConfigurationId", this.maintenanceConfigurationId);
+        jsonWriter.writeBooleanField("isLedgerOn", this.isLedgerOn);
+        jsonWriter.writeStringField("federatedClientId", Objects.toString(this.federatedClientId, null));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DatabaseUpdateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DatabaseUpdateProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DatabaseUpdateProperties.
+     */
+    public static DatabaseUpdateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DatabaseUpdateProperties deserializedDatabaseUpdateProperties = new DatabaseUpdateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("createMode".equals(fieldName)) {
+                    deserializedDatabaseUpdateProperties.createMode = CreateMode.fromString(reader.getString());
+                } else if ("collation".equals(fieldName)) {
+                    deserializedDatabaseUpdateProperties.collation = reader.getString();
+                } else if ("maxSizeBytes".equals(fieldName)) {
+                    deserializedDatabaseUpdateProperties.maxSizeBytes = reader.getNullable(JsonReader::getLong);
+                } else if ("sampleName".equals(fieldName)) {
+                    deserializedDatabaseUpdateProperties.sampleName = SampleName.fromString(reader.getString());
+                } else if ("elasticPoolId".equals(fieldName)) {
+                    deserializedDatabaseUpdateProperties.elasticPoolId = reader.getString();
+                } else if ("sourceDatabaseId".equals(fieldName)) {
+                    deserializedDatabaseUpdateProperties.sourceDatabaseId = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedDatabaseUpdateProperties.status = DatabaseStatus.fromString(reader.getString());
+                } else if ("databaseId".equals(fieldName)) {
+                    deserializedDatabaseUpdateProperties.databaseId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("creationDate".equals(fieldName)) {
+                    deserializedDatabaseUpdateProperties.creationDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("currentServiceObjectiveName".equals(fieldName)) {
+                    deserializedDatabaseUpdateProperties.currentServiceObjectiveName = reader.getString();
+                } else if ("requestedServiceObjectiveName".equals(fieldName)) {
+                    deserializedDatabaseUpdateProperties.requestedServiceObjectiveName = reader.getString();
+                } else if ("defaultSecondaryLocation".equals(fieldName)) {
+                    deserializedDatabaseUpdateProperties.defaultSecondaryLocation = reader.getString();
+                } else if ("failoverGroupId".equals(fieldName)) {
+                    deserializedDatabaseUpdateProperties.failoverGroupId = reader.getString();
+                } else if ("restorePointInTime".equals(fieldName)) {
+                    deserializedDatabaseUpdateProperties.restorePointInTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("sourceDatabaseDeletionDate".equals(fieldName)) {
+                    deserializedDatabaseUpdateProperties.sourceDatabaseDeletionDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("recoveryServicesRecoveryPointId".equals(fieldName)) {
+                    deserializedDatabaseUpdateProperties.recoveryServicesRecoveryPointId = reader.getString();
+                } else if ("longTermRetentionBackupResourceId".equals(fieldName)) {
+                    deserializedDatabaseUpdateProperties.longTermRetentionBackupResourceId = reader.getString();
+                } else if ("recoverableDatabaseId".equals(fieldName)) {
+                    deserializedDatabaseUpdateProperties.recoverableDatabaseId = reader.getString();
+                } else if ("restorableDroppedDatabaseId".equals(fieldName)) {
+                    deserializedDatabaseUpdateProperties.restorableDroppedDatabaseId = reader.getString();
+                } else if ("catalogCollation".equals(fieldName)) {
+                    deserializedDatabaseUpdateProperties.catalogCollation
+                        = CatalogCollationType.fromString(reader.getString());
+                } else if ("zoneRedundant".equals(fieldName)) {
+                    deserializedDatabaseUpdateProperties.zoneRedundant = reader.getNullable(JsonReader::getBoolean);
+                } else if ("licenseType".equals(fieldName)) {
+                    deserializedDatabaseUpdateProperties.licenseType
+                        = DatabaseLicenseType.fromString(reader.getString());
+                } else if ("maxLogSizeBytes".equals(fieldName)) {
+                    deserializedDatabaseUpdateProperties.maxLogSizeBytes = reader.getNullable(JsonReader::getLong);
+                } else if ("earliestRestoreDate".equals(fieldName)) {
+                    deserializedDatabaseUpdateProperties.earliestRestoreDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("readScale".equals(fieldName)) {
+                    deserializedDatabaseUpdateProperties.readScale = DatabaseReadScale.fromString(reader.getString());
+                } else if ("highAvailabilityReplicaCount".equals(fieldName)) {
+                    deserializedDatabaseUpdateProperties.highAvailabilityReplicaCount
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("secondaryType".equals(fieldName)) {
+                    deserializedDatabaseUpdateProperties.secondaryType = SecondaryType.fromString(reader.getString());
+                } else if ("currentSku".equals(fieldName)) {
+                    deserializedDatabaseUpdateProperties.currentSku = Sku.fromJson(reader);
+                } else if ("autoPauseDelay".equals(fieldName)) {
+                    deserializedDatabaseUpdateProperties.autoPauseDelay = reader.getNullable(JsonReader::getInt);
+                } else if ("currentBackupStorageRedundancy".equals(fieldName)) {
+                    deserializedDatabaseUpdateProperties.currentBackupStorageRedundancy
+                        = BackupStorageRedundancy.fromString(reader.getString());
+                } else if ("requestedBackupStorageRedundancy".equals(fieldName)) {
+                    deserializedDatabaseUpdateProperties.requestedBackupStorageRedundancy
+                        = BackupStorageRedundancy.fromString(reader.getString());
+                } else if ("minCapacity".equals(fieldName)) {
+                    deserializedDatabaseUpdateProperties.minCapacity = reader.getNullable(JsonReader::getDouble);
+                } else if ("pausedDate".equals(fieldName)) {
+                    deserializedDatabaseUpdateProperties.pausedDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("resumedDate".equals(fieldName)) {
+                    deserializedDatabaseUpdateProperties.resumedDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("maintenanceConfigurationId".equals(fieldName)) {
+                    deserializedDatabaseUpdateProperties.maintenanceConfigurationId = reader.getString();
+                } else if ("isLedgerOn".equals(fieldName)) {
+                    deserializedDatabaseUpdateProperties.isLedgerOn = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isInfraEncryptionEnabled".equals(fieldName)) {
+                    deserializedDatabaseUpdateProperties.isInfraEncryptionEnabled
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("federatedClientId".equals(fieldName)) {
+                    deserializedDatabaseUpdateProperties.federatedClientId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDatabaseUpdateProperties;
+        });
     }
 }

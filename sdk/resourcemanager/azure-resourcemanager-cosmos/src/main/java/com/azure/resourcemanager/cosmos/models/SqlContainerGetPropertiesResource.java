@@ -5,7 +5,11 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -16,19 +20,16 @@ public final class SqlContainerGetPropertiesResource extends SqlContainerResourc
     /*
      * A system generated property. A unique identifier.
      */
-    @JsonProperty(value = "_rid", access = JsonProperty.Access.WRITE_ONLY)
     private String rid;
 
     /*
      * A system generated property that denotes the last updated timestamp of the resource.
      */
-    @JsonProperty(value = "_ts", access = JsonProperty.Access.WRITE_ONLY)
     private Float ts;
 
     /*
      * A system generated property representing the resource etag required for optimistic concurrency control.
      */
-    @JsonProperty(value = "_etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /**
@@ -172,6 +173,117 @@ public final class SqlContainerGetPropertiesResource extends SqlContainerResourc
      */
     @Override
     public void validate() {
-        super.validate();
+        if (id() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property id in model SqlContainerGetPropertiesResource"));
+        }
+        if (indexingPolicy() != null) {
+            indexingPolicy().validate();
+        }
+        if (partitionKey() != null) {
+            partitionKey().validate();
+        }
+        if (uniqueKeyPolicy() != null) {
+            uniqueKeyPolicy().validate();
+        }
+        if (conflictResolutionPolicy() != null) {
+            conflictResolutionPolicy().validate();
+        }
+        if (clientEncryptionPolicy() != null) {
+            clientEncryptionPolicy().validate();
+        }
+        if (restoreParameters() != null) {
+            restoreParameters().validate();
+        }
+        if (computedProperties() != null) {
+            computedProperties().forEach(e -> e.validate());
+        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SqlContainerGetPropertiesResource.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeJsonField("indexingPolicy", indexingPolicy());
+        jsonWriter.writeJsonField("partitionKey", partitionKey());
+        jsonWriter.writeNumberField("defaultTtl", defaultTtl());
+        jsonWriter.writeJsonField("uniqueKeyPolicy", uniqueKeyPolicy());
+        jsonWriter.writeJsonField("conflictResolutionPolicy", conflictResolutionPolicy());
+        jsonWriter.writeJsonField("clientEncryptionPolicy", clientEncryptionPolicy());
+        jsonWriter.writeNumberField("analyticalStorageTtl", analyticalStorageTtl());
+        jsonWriter.writeJsonField("restoreParameters", restoreParameters());
+        jsonWriter.writeStringField("createMode", createMode() == null ? null : createMode().toString());
+        jsonWriter.writeArrayField("computedProperties", computedProperties(),
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SqlContainerGetPropertiesResource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SqlContainerGetPropertiesResource if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SqlContainerGetPropertiesResource.
+     */
+    public static SqlContainerGetPropertiesResource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SqlContainerGetPropertiesResource deserializedSqlContainerGetPropertiesResource
+                = new SqlContainerGetPropertiesResource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedSqlContainerGetPropertiesResource.withId(reader.getString());
+                } else if ("indexingPolicy".equals(fieldName)) {
+                    deserializedSqlContainerGetPropertiesResource.withIndexingPolicy(IndexingPolicy.fromJson(reader));
+                } else if ("partitionKey".equals(fieldName)) {
+                    deserializedSqlContainerGetPropertiesResource
+                        .withPartitionKey(ContainerPartitionKey.fromJson(reader));
+                } else if ("defaultTtl".equals(fieldName)) {
+                    deserializedSqlContainerGetPropertiesResource
+                        .withDefaultTtl(reader.getNullable(JsonReader::getInt));
+                } else if ("uniqueKeyPolicy".equals(fieldName)) {
+                    deserializedSqlContainerGetPropertiesResource.withUniqueKeyPolicy(UniqueKeyPolicy.fromJson(reader));
+                } else if ("conflictResolutionPolicy".equals(fieldName)) {
+                    deserializedSqlContainerGetPropertiesResource
+                        .withConflictResolutionPolicy(ConflictResolutionPolicy.fromJson(reader));
+                } else if ("clientEncryptionPolicy".equals(fieldName)) {
+                    deserializedSqlContainerGetPropertiesResource
+                        .withClientEncryptionPolicy(ClientEncryptionPolicy.fromJson(reader));
+                } else if ("analyticalStorageTtl".equals(fieldName)) {
+                    deserializedSqlContainerGetPropertiesResource
+                        .withAnalyticalStorageTtl(reader.getNullable(JsonReader::getLong));
+                } else if ("restoreParameters".equals(fieldName)) {
+                    deserializedSqlContainerGetPropertiesResource
+                        .withRestoreParameters(ResourceRestoreParameters.fromJson(reader));
+                } else if ("createMode".equals(fieldName)) {
+                    deserializedSqlContainerGetPropertiesResource
+                        .withCreateMode(CreateMode.fromString(reader.getString()));
+                } else if ("computedProperties".equals(fieldName)) {
+                    List<ComputedProperty> computedProperties
+                        = reader.readArray(reader1 -> ComputedProperty.fromJson(reader1));
+                    deserializedSqlContainerGetPropertiesResource.withComputedProperties(computedProperties);
+                } else if ("_rid".equals(fieldName)) {
+                    deserializedSqlContainerGetPropertiesResource.rid = reader.getString();
+                } else if ("_ts".equals(fieldName)) {
+                    deserializedSqlContainerGetPropertiesResource.ts = reader.getNullable(JsonReader::getFloat);
+                } else if ("_etag".equals(fieldName)) {
+                    deserializedSqlContainerGetPropertiesResource.etag = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSqlContainerGetPropertiesResource;
+        });
     }
 }

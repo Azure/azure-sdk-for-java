@@ -233,10 +233,16 @@ public class SearchIndexerSkill implements JsonSerializable<SearchIndexerSkill> 
                     return TextTranslationSkill.fromJson(readerToUse.reset());
                 } else if ("#Microsoft.Skills.Util.DocumentExtractionSkill".equals(discriminatorValue)) {
                     return DocumentExtractionSkill.fromJson(readerToUse.reset());
+                } else if ("#Microsoft.Skills.Util.DocumentIntelligenceLayoutSkill".equals(discriminatorValue)) {
+                    return DocumentIntelligenceLayoutSkill.fromJson(readerToUse.reset());
                 } else if ("#Microsoft.Skills.Custom.WebApiSkill".equals(discriminatorValue)) {
                     return WebApiSkill.fromJson(readerToUse.reset());
+                } else if ("#Microsoft.Skills.Custom.AmlSkill".equals(discriminatorValue)) {
+                    return AzureMachineLearningSkill.fromJson(readerToUse.reset());
                 } else if ("#Microsoft.Skills.Text.AzureOpenAIEmbeddingSkill".equals(discriminatorValue)) {
                     return AzureOpenAIEmbeddingSkill.fromJson(readerToUse.reset());
+                } else if ("#Microsoft.Skills.Vision.VectorizeSkill".equals(discriminatorValue)) {
+                    return VisionVectorizeSkill.fromJson(readerToUse.reset());
                 } else if ("#Microsoft.Skills.Text.PIIDetectionSkill".equals(discriminatorValue)) {
                     return PiiDetectionSkill.fromJson(readerToUse.reset());
                 } else if ("#Microsoft.Skills.Text.EntityRecognitionSkill".equals(discriminatorValue)) {

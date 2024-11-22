@@ -5,53 +5,51 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Properties of the storage task update assignment.
  */
 @Fluent
-public final class StorageTaskAssignmentUpdateProperties {
+public final class StorageTaskAssignmentUpdateProperties
+    implements JsonSerializable<StorageTaskAssignmentUpdateProperties> {
     /*
      * Id of the corresponding storage task
      */
-    @JsonProperty(value = "taskId", access = JsonProperty.Access.WRITE_ONLY)
     private String taskId;
 
     /*
      * Whether the storage task assignment is enabled or not
      */
-    @JsonProperty(value = "enabled")
     private Boolean enabled;
 
     /*
      * Text that describes the purpose of the storage task assignment
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * The storage task assignment execution context
      */
-    @JsonProperty(value = "executionContext")
     private StorageTaskAssignmentUpdateExecutionContext executionContext;
 
     /*
      * The storage task assignment report
      */
-    @JsonProperty(value = "report")
     private StorageTaskAssignmentUpdateReport report;
 
     /*
      * Represents the provisioning state of the storage task assignment.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * Run status of storage task assignment
      */
-    @JsonProperty(value = "runStatus")
     private StorageTaskReportProperties runStatus;
 
     /**
@@ -194,5 +192,63 @@ public final class StorageTaskAssignmentUpdateProperties {
         if (runStatus() != null) {
             runStatus().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("enabled", this.enabled);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeJsonField("executionContext", this.executionContext);
+        jsonWriter.writeJsonField("report", this.report);
+        jsonWriter.writeJsonField("runStatus", this.runStatus);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StorageTaskAssignmentUpdateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StorageTaskAssignmentUpdateProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the StorageTaskAssignmentUpdateProperties.
+     */
+    public static StorageTaskAssignmentUpdateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StorageTaskAssignmentUpdateProperties deserializedStorageTaskAssignmentUpdateProperties
+                = new StorageTaskAssignmentUpdateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("taskId".equals(fieldName)) {
+                    deserializedStorageTaskAssignmentUpdateProperties.taskId = reader.getString();
+                } else if ("enabled".equals(fieldName)) {
+                    deserializedStorageTaskAssignmentUpdateProperties.enabled
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("description".equals(fieldName)) {
+                    deserializedStorageTaskAssignmentUpdateProperties.description = reader.getString();
+                } else if ("executionContext".equals(fieldName)) {
+                    deserializedStorageTaskAssignmentUpdateProperties.executionContext
+                        = StorageTaskAssignmentUpdateExecutionContext.fromJson(reader);
+                } else if ("report".equals(fieldName)) {
+                    deserializedStorageTaskAssignmentUpdateProperties.report
+                        = StorageTaskAssignmentUpdateReport.fromJson(reader);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedStorageTaskAssignmentUpdateProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("runStatus".equals(fieldName)) {
+                    deserializedStorageTaskAssignmentUpdateProperties.runStatus
+                        = StorageTaskReportProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStorageTaskAssignmentUpdateProperties;
+        });
     }
 }

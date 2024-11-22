@@ -5,41 +5,44 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** employeeOrgData. */
+/**
+ * employeeOrgData.
+ */
 @Fluent
-public final class MicrosoftGraphEmployeeOrgData {
+public final class MicrosoftGraphEmployeeOrgData implements JsonSerializable<MicrosoftGraphEmployeeOrgData> {
     /*
      * The cost center associated with the user. Returned only on $select. Supports $filter.
      */
-    @JsonProperty(value = "costCenter")
     private String costCenter;
 
     /*
      * The name of the division in which the user works. Returned only on $select. Supports $filter.
      */
-    @JsonProperty(value = "division")
     private String division;
 
     /*
      * employeeOrgData
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphEmployeeOrgData class. */
+    /**
+     * Creates an instance of MicrosoftGraphEmployeeOrgData class.
+     */
     public MicrosoftGraphEmployeeOrgData() {
     }
 
     /**
      * Get the costCenter property: The cost center associated with the user. Returned only on $select. Supports
      * $filter.
-     *
+     * 
      * @return the costCenter value.
      */
     public String costCenter() {
@@ -49,7 +52,7 @@ public final class MicrosoftGraphEmployeeOrgData {
     /**
      * Set the costCenter property: The cost center associated with the user. Returned only on $select. Supports
      * $filter.
-     *
+     * 
      * @param costCenter the costCenter value to set.
      * @return the MicrosoftGraphEmployeeOrgData object itself.
      */
@@ -61,7 +64,7 @@ public final class MicrosoftGraphEmployeeOrgData {
     /**
      * Get the division property: The name of the division in which the user works. Returned only on $select. Supports
      * $filter.
-     *
+     * 
      * @return the division value.
      */
     public String division() {
@@ -71,7 +74,7 @@ public final class MicrosoftGraphEmployeeOrgData {
     /**
      * Set the division property: The name of the division in which the user works. Returned only on $select. Supports
      * $filter.
-     *
+     * 
      * @param division the division value to set.
      * @return the MicrosoftGraphEmployeeOrgData object itself.
      */
@@ -82,17 +85,16 @@ public final class MicrosoftGraphEmployeeOrgData {
 
     /**
      * Get the additionalProperties property: employeeOrgData.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: employeeOrgData.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphEmployeeOrgData object itself.
      */
@@ -101,19 +103,62 @@ public final class MicrosoftGraphEmployeeOrgData {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("costCenter", this.costCenter);
+        jsonWriter.writeStringField("division", this.division);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphEmployeeOrgData from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphEmployeeOrgData if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphEmployeeOrgData.
+     */
+    public static MicrosoftGraphEmployeeOrgData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphEmployeeOrgData deserializedMicrosoftGraphEmployeeOrgData
+                = new MicrosoftGraphEmployeeOrgData();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("costCenter".equals(fieldName)) {
+                    deserializedMicrosoftGraphEmployeeOrgData.costCenter = reader.getString();
+                } else if ("division".equals(fieldName)) {
+                    deserializedMicrosoftGraphEmployeeOrgData.division = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphEmployeeOrgData.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphEmployeeOrgData;
+        });
     }
 }

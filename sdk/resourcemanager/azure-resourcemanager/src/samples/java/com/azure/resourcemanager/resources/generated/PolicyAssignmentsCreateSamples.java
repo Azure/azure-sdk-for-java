@@ -28,7 +28,8 @@ import java.util.Map;
  */
 public final class PolicyAssignmentsCreateSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2022-06-01/examples/createPolicyAssignmentWithResourceSelectors.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2022-06-01/examples/
+     * createPolicyAssignmentWithResourceSelectors.json
      */
     /**
      * Sample code: Create or update a policy assignment with resource selectors.
@@ -55,7 +56,8 @@ public final class PolicyAssignmentsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2022-06-01/examples/createPolicyAssignment.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2022-06-01/examples/
+     * createPolicyAssignment.json
      */
     /**
      * Sample code: Create or update a policy assignment.
@@ -83,7 +85,8 @@ public final class PolicyAssignmentsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2022-06-01/examples/createPolicyAssignmentWithIdentity.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2022-06-01/examples/
+     * createPolicyAssignmentWithIdentity.json
      */
     /**
      * Sample code: Create or update a policy assignment with a system assigned identity.
@@ -112,7 +115,8 @@ public final class PolicyAssignmentsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2022-06-01/examples/createPolicyAssignmentNonComplianceMessages.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2022-06-01/examples/
+     * createPolicyAssignmentNonComplianceMessages.json
      */
     /**
      * Sample code: Create or update a policy assignment with multiple non-compliance messages.
@@ -140,7 +144,8 @@ public final class PolicyAssignmentsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2022-06-01/examples/createPolicyAssignmentWithUserAssignedIdentity.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2022-06-01/examples/
+     * createPolicyAssignmentWithUserAssignedIdentity.json
      */
     /**
      * Sample code: Create or update a policy assignment with a user assigned identity.
@@ -172,7 +177,8 @@ public final class PolicyAssignmentsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2022-06-01/examples/createPolicyAssignmentWithOverrides.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2022-06-01/examples/
+     * createPolicyAssignmentWithOverrides.json
      */
     /**
      * Sample code: Create or update a policy assignment with overrides.
@@ -201,7 +207,8 @@ public final class PolicyAssignmentsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2022-06-01/examples/createPolicyAssignmentWithoutEnforcement.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2022-06-01/examples/
+     * createPolicyAssignmentWithoutEnforcement.json
      */
     /**
      * Sample code: Create or update a policy assignment without enforcing policy effect during resource creation or

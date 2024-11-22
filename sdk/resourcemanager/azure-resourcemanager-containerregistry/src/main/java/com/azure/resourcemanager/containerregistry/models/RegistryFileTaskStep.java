@@ -23,17 +23,14 @@ public interface RegistryFileTaskStep extends RegistryTaskStep {
 
     /** Container interface for all the definitions related to a RegistryFileTaskStep. */
     interface Definition
-        extends RegistryFileTaskStep.DefinitionStages.Blank,
-            RegistryFileTaskStep.DefinitionStages.FileTaskPath,
-            RegistryFileTaskStep.DefinitionStages.FileTaskStepAttachable {
+        extends RegistryFileTaskStep.DefinitionStages.Blank, RegistryFileTaskStep.DefinitionStages.FileTaskPath,
+        RegistryFileTaskStep.DefinitionStages.FileTaskStepAttachable {
     }
 
     /** Container interface for all the updates related to a RegistryFileTaskStep. */
     interface Update
-        extends RegistryFileTaskStep.UpdateStages.FileTaskPath,
-            RegistryFileTaskStep.UpdateStages.ValuePath,
-            RegistryFileTaskStep.UpdateStages.OverridingValues,
-            Settable<RegistryTask.Update> {
+        extends RegistryFileTaskStep.UpdateStages.FileTaskPath, RegistryFileTaskStep.UpdateStages.ValuePath,
+        RegistryFileTaskStep.UpdateStages.OverridingValues, Settable<RegistryTask.Update> {
     }
 
     /** Grouping of registry file task definition stages. */

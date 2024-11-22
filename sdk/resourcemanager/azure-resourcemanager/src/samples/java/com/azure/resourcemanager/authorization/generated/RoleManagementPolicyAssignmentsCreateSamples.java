@@ -6,25 +6,27 @@ package com.azure.resourcemanager.authorization.generated;
 
 import com.azure.resourcemanager.authorization.fluent.models.RoleManagementPolicyAssignmentInner;
 
-/** Samples for RoleManagementPolicyAssignments Create. */
+/**
+ * Samples for RoleManagementPolicyAssignments Create.
+ */
 public final class RoleManagementPolicyAssignmentsCreateSamples {
     /*
-     * x-ms-original-file: specification/authorization/resource-manager/Microsoft.Authorization/stable/2020-10-01/examples/PutRoleManagementPolicyAssignment.json
+     * x-ms-original-file:
+     * specification/authorization/resource-manager/Microsoft.Authorization/stable/2020-10-01/examples/
+     * PutRoleManagementPolicyAssignment.json
      */
     /**
      * Sample code: PutRoleManagementPolicyAssignment.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void putRoleManagementPolicyAssignment(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .accessManagement()
+        azure.accessManagement()
             .roleAssignments()
             .manager()
             .roleServiceClient()
             .getRoleManagementPolicyAssignments()
-            .createWithResponse(
-                "providers/Microsoft.Subscription/subscriptions/129ff972-28f8-46b8-a726-e497be039368",
+            .createWithResponse("providers/Microsoft.Subscription/subscriptions/129ff972-28f8-46b8-a726-e497be039368",
                 "b959d571-f0b5-4042-88a7-01be6cb22db9_a1705bd2-3a8f-45a5-8683-466fcfd5cc24",
                 new RoleManagementPolicyAssignmentInner()
                     .withScope("/subscriptions/129ff972-28f8-46b8-a726-e497be039368")

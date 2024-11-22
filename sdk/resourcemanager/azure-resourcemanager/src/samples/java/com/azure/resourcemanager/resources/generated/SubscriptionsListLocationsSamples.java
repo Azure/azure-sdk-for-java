@@ -9,7 +9,8 @@ package com.azure.resourcemanager.resources.generated;
  */
 public final class SubscriptionsListLocationsSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2022-12-01/examples/GetLocationsWithExtendedLocations.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2022-12-01/examples/
+     * GetLocationsWithExtendedLocations.json
      */
     /**
      * Sample code: GetLocationsWithExtendedLocations.
@@ -25,7 +26,8 @@ public final class SubscriptionsListLocationsSamples {
     }
 
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2022-12-01/examples/GetLocations.json
+     * x-ms-original-file:
+     * specification/resources/resource-manager/Microsoft.Resources/stable/2022-12-01/examples/GetLocations.json
      */
     /**
      * Sample code: GetLocationsWithASubscriptionId.

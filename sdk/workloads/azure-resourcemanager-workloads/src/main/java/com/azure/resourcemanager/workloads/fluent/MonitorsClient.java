@@ -89,8 +89,8 @@ public interface MonitorsClient {
      *     {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<MonitorInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String monitorName, Context context);
+    Response<MonitorInner> getByResourceGroupWithResponse(String resourceGroupName, String monitorName,
+        Context context);
 
     /**
      * Gets properties of a SAP monitor.
@@ -122,8 +122,8 @@ public interface MonitorsClient {
      *     properties).
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<MonitorInner>, MonitorInner> beginCreate(
-        String resourceGroupName, String monitorName, MonitorInner monitorParameter);
+    SyncPoller<PollResult<MonitorInner>, MonitorInner> beginCreate(String resourceGroupName, String monitorName,
+        MonitorInner monitorParameter);
 
     /**
      * Creates a SAP monitor.
@@ -141,8 +141,8 @@ public interface MonitorsClient {
      *     properties).
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<MonitorInner>, MonitorInner> beginCreate(
-        String resourceGroupName, String monitorName, MonitorInner monitorParameter, Context context);
+    SyncPoller<PollResult<MonitorInner>, MonitorInner> beginCreate(String resourceGroupName, String monitorName,
+        MonitorInner monitorParameter, Context context);
 
     /**
      * Creates a SAP monitor.
@@ -190,8 +190,8 @@ public interface MonitorsClient {
      * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginDelete(
-        String resourceGroupName, String monitorName);
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginDelete(String resourceGroupName,
+        String monitorName);
 
     /**
      * Deletes a SAP monitor.
@@ -207,8 +207,8 @@ public interface MonitorsClient {
      * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginDelete(
-        String resourceGroupName, String monitorName, Context context);
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginDelete(String resourceGroupName,
+        String monitorName, Context context);
 
     /**
      * Deletes a SAP monitor.
@@ -256,8 +256,8 @@ public interface MonitorsClient {
      * @return sAP monitor info on Azure (ARM properties and SAP monitor properties) along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<MonitorInner> updateWithResponse(
-        String resourceGroupName, String monitorName, UpdateMonitorRequest body, Context context);
+    Response<MonitorInner> updateWithResponse(String resourceGroupName, String monitorName, UpdateMonitorRequest body,
+        Context context);
 
     /**
      * Patches the Tags field of a SAP monitor.

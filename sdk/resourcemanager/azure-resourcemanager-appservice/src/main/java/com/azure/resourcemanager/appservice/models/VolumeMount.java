@@ -6,35 +6,35 @@ package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The VolumeMount model.
  */
 @Fluent
-public final class VolumeMount {
+public final class VolumeMount implements JsonSerializable<VolumeMount> {
     /*
      * Sub path in the volume where volume is mounted from.
      */
-    @JsonProperty(value = "volumeSubPath", required = true)
     private String volumeSubPath;
 
     /*
      * Target path on the container where volume is mounted on
      */
-    @JsonProperty(value = "containerMountPath", required = true)
     private String containerMountPath;
 
     /*
      * Config Data to be mounted on the volume
      */
-    @JsonProperty(value = "data")
     private String data;
 
     /*
      * Boolean to specify if the mount is read only on the container
      */
-    @JsonProperty(value = "readOnly")
     private Boolean readOnly;
 
     /**
@@ -140,4 +140,50 @@ public final class VolumeMount {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(VolumeMount.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("volumeSubPath", this.volumeSubPath);
+        jsonWriter.writeStringField("containerMountPath", this.containerMountPath);
+        jsonWriter.writeStringField("data", this.data);
+        jsonWriter.writeBooleanField("readOnly", this.readOnly);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VolumeMount from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VolumeMount if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the VolumeMount.
+     */
+    public static VolumeMount fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VolumeMount deserializedVolumeMount = new VolumeMount();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("volumeSubPath".equals(fieldName)) {
+                    deserializedVolumeMount.volumeSubPath = reader.getString();
+                } else if ("containerMountPath".equals(fieldName)) {
+                    deserializedVolumeMount.containerMountPath = reader.getString();
+                } else if ("data".equals(fieldName)) {
+                    deserializedVolumeMount.data = reader.getString();
+                } else if ("readOnly".equals(fieldName)) {
+                    deserializedVolumeMount.readOnly = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVolumeMount;
+        });
+    }
 }

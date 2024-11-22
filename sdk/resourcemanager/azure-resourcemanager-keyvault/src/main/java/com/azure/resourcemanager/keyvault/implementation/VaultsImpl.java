@@ -34,8 +34,8 @@ public class VaultsImpl extends GroupableResourcesImpl<Vault, VaultImpl, VaultIn
     private final AuthorizationManager authorizationManager;
     private final String tenantId;
 
-    public VaultsImpl(
-        final KeyVaultManager keyVaultManager, final AuthorizationManager authorizationManager, final String tenantId) {
+    public VaultsImpl(final KeyVaultManager keyVaultManager, final AuthorizationManager authorizationManager,
+        final String tenantId) {
         super(keyVaultManager.serviceClient().getVaults(), keyVaultManager);
         this.authorizationManager = authorizationManager;
         this.tenantId = tenantId;
@@ -49,8 +49,8 @@ public class VaultsImpl extends GroupableResourcesImpl<Vault, VaultImpl, VaultIn
     @Override
     public PagedFlux<Vault> listByResourceGroupAsync(String resourceGroupName) {
         if (CoreUtils.isNullOrEmpty(resourceGroupName)) {
-            return new PagedFlux<>(() -> Mono.error(
-                new IllegalArgumentException("Parameter 'resourceGroupName' is required and cannot be null.")));
+            return new PagedFlux<>(() -> Mono
+                .error(new IllegalArgumentException("Parameter 'resourceGroupName' is required and cannot be null.")));
         }
         return wrapPageAsync(this.inner().listByResourceGroupAsync(resourceGroupName, null));
     }
@@ -68,12 +68,11 @@ public class VaultsImpl extends GroupableResourcesImpl<Vault, VaultImpl, VaultIn
     @Override
     public Mono<Void> deleteByResourceGroupAsync(String resourceGroupName, String name) {
         if (CoreUtils.isNullOrEmpty(resourceGroupName)) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter 'resourceGroupName' is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter 'resourceGroupName' is required and cannot be null."));
         }
         if (CoreUtils.isNullOrEmpty(name)) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter 'name' is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter 'name' is required and cannot be null."));
         }
         return this.inner().deleteAsync(resourceGroupName, name);
     }
@@ -134,8 +133,8 @@ public class VaultsImpl extends GroupableResourcesImpl<Vault, VaultImpl, VaultIn
 
     @Override
     public CheckNameAvailabilityResult checkNameAvailability(String name) {
-        return new CheckNameAvailabilityResultImpl(inner().checkNameAvailability(
-            new VaultCheckNameAvailabilityParameters().withName(name)));
+        return new CheckNameAvailabilityResultImpl(
+            inner().checkNameAvailability(new VaultCheckNameAvailabilityParameters().withName(name)));
     }
 
     @Override
@@ -150,24 +149,18 @@ public class VaultsImpl extends GroupableResourcesImpl<Vault, VaultImpl, VaultIn
     }
 
     @Override
-    public Mono<Vault> recoverSoftDeletedVaultAsync(
-        final String resourceGroupName, final String vaultName, String location) {
+    public Mono<Vault> recoverSoftDeletedVaultAsync(final String resourceGroupName, final String vaultName,
+        String location) {
         final KeyVaultManager manager = this.manager();
-        return getDeletedAsync(vaultName, location)
-            .flatMap(
-                deletedVault -> {
-                    VaultCreateOrUpdateParameters parameters = new VaultCreateOrUpdateParameters();
-                    parameters.withLocation(deletedVault.location());
-                    parameters.withTags(deletedVault.innerModel().properties().tags());
-                    parameters
-                        .withProperties(
-                            new VaultProperties()
-                                .withCreateMode(CreateMode.RECOVER)
-                                .withSku(new Sku().withName(SkuName.STANDARD).withFamily(SkuFamily.A))
-                                .withTenantId(UUID.fromString(tenantId)));
-                    return inner()
-                        .createOrUpdateAsync(resourceGroupName, vaultName, parameters)
-                        .map(inner -> (Vault) new VaultImpl(inner.id(), inner, manager, authorizationManager));
-                });
+        return getDeletedAsync(vaultName, location).flatMap(deletedVault -> {
+            VaultCreateOrUpdateParameters parameters = new VaultCreateOrUpdateParameters();
+            parameters.withLocation(deletedVault.location());
+            parameters.withTags(deletedVault.innerModel().properties().tags());
+            parameters.withProperties(new VaultProperties().withCreateMode(CreateMode.RECOVER)
+                .withSku(new Sku().withName(SkuName.STANDARD).withFamily(SkuFamily.A))
+                .withTenantId(UUID.fromString(tenantId)));
+            return inner().createOrUpdateAsync(resourceGroupName, vaultName, parameters)
+                .map(inner -> (Vault) new VaultImpl(inner.id(), inner, manager, authorizationManager));
+        });
     }
 }

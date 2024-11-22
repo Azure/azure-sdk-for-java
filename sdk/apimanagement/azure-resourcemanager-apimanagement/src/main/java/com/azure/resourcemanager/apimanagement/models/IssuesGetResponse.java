@@ -20,11 +20,7 @@ public final class IssuesGetResponse extends ResponseBase<IssuesGetHeaders, Issu
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public IssuesGetResponse(
-        HttpRequest request,
-        int statusCode,
-        HttpHeaders rawHeaders,
-        IssueContractInner value,
+    public IssuesGetResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, IssueContractInner value,
         IssuesGetHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }

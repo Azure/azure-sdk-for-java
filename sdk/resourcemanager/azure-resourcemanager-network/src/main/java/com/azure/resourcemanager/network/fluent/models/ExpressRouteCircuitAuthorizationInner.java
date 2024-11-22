@@ -6,9 +6,12 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.AuthorizationUseStatus;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Authorization in an ExpressRouteCircuit resource.
@@ -18,25 +21,21 @@ public final class ExpressRouteCircuitAuthorizationInner extends SubResource {
     /*
      * Properties of the express route circuit authorization.
      */
-    @JsonProperty(value = "properties")
     private AuthorizationPropertiesFormat innerProperties;
 
     /*
      * The name of the resource that is unique within a resource group. This name can be used to access the resource.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /*
      * Type of the resource.
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /**
@@ -178,5 +177,53 @@ public final class ExpressRouteCircuitAuthorizationInner extends SubResource {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("name", this.name);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExpressRouteCircuitAuthorizationInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExpressRouteCircuitAuthorizationInner if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ExpressRouteCircuitAuthorizationInner.
+     */
+    public static ExpressRouteCircuitAuthorizationInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExpressRouteCircuitAuthorizationInner deserializedExpressRouteCircuitAuthorizationInner
+                = new ExpressRouteCircuitAuthorizationInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedExpressRouteCircuitAuthorizationInner.withId(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedExpressRouteCircuitAuthorizationInner.innerProperties
+                        = AuthorizationPropertiesFormat.fromJson(reader);
+                } else if ("name".equals(fieldName)) {
+                    deserializedExpressRouteCircuitAuthorizationInner.name = reader.getString();
+                } else if ("etag".equals(fieldName)) {
+                    deserializedExpressRouteCircuitAuthorizationInner.etag = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedExpressRouteCircuitAuthorizationInner.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExpressRouteCircuitAuthorizationInner;
+        });
     }
 }

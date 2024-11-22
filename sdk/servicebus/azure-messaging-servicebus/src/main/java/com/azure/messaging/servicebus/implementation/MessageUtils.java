@@ -7,6 +7,7 @@ import com.azure.core.amqp.AmqpRetryMode;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.implementation.AmqpConstants;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.logging.LoggingEventBuilder;
 import com.azure.messaging.servicebus.ServiceBusTransactionContext;
 import com.azure.messaging.servicebus.administration.implementation.EntityHelper;
 import com.azure.messaging.servicebus.administration.implementation.models.RuleDescriptionImpl;
@@ -30,6 +31,9 @@ import org.apache.qpid.proton.amqp.messaging.Released;
 import org.apache.qpid.proton.amqp.transaction.TransactionalState;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
+import reactor.core.Disposable;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.net.URI;
 import java.nio.ByteBuffer;
@@ -93,6 +97,49 @@ public final class MessageUtils {
         }
         return Duration.ofNanos(totalTimeout);
     }
+
+    /**
+     * Subscribes to the given Mono by providing empty subscription handlers.
+     *
+     * @param source the source Mono to subscribe.
+     * @return the disposable to the subscription.
+     * @param <T> the Mono item type.
+     */
+    public static <T> Disposable subscribe(Mono<T> source) {
+        return source.subscribe(ignored -> {
+        }, e -> {
+        }, () -> {
+        });
+    }
+
+    /**
+     * Subscribes to the given Flux by providing empty subscription handlers.
+     *
+     * @param source the source Flux to subscribe.
+     * @return the disposable to the subscription.
+     * @param <T> the Flux item type.
+     */
+    public static <T> Disposable subscribe(Flux<T> source) {
+        return source.subscribe(ignored -> {
+        }, e -> {
+        }, () -> {
+        });
+    }
+
+    /**
+     * Subscribes to the given Mono by providing subscription handlers that logs terminal states.
+     *
+     * @param source the source Mono to subscribe.
+     * @param message the message to log.
+     * @param logger the logger to use.
+     * @return the disposable to the subscription.
+     * @param <T> the Mono item type.
+     */
+    public static <T> Disposable subscribe(Mono<T> source, String message, LoggingEventBuilder logger) {
+        return source.subscribe(ignored -> {
+        }, e -> logger.log(message + " (terminal-error)", e), () -> logger.log(message + " (terminal-completion)"));
+    }
+
     /**
      * Converts a .NET GUID to its Java UUID representation.
      *
@@ -171,6 +218,7 @@ public final class MessageUtils {
                     state = Accepted.getInstance();
                 }
                 break;
+
             case SUSPENDED:
                 final Rejected rejected = new Rejected();
                 final ErrorCondition error = new ErrorCondition(DEAD_LETTER_OPERATION, null);
@@ -193,6 +241,7 @@ public final class MessageUtils {
                     state = rejected;
                 }
                 break;
+
             case ABANDONED:
                 final Modified outcome = new Modified();
                 if (propertiesToModify != null) {
@@ -205,6 +254,7 @@ public final class MessageUtils {
                     state = outcome;
                 }
                 break;
+
             case DEFERRED:
                 final Modified deferredOutcome = new Modified();
                 deferredOutcome.setUndeliverableHere(true);
@@ -218,9 +268,11 @@ public final class MessageUtils {
                     state = deferredOutcome;
                 }
                 break;
+
             case RELEASED:
                 state = Released.getInstance();
                 break;
+
             default:
                 state = null;
         }
@@ -266,27 +318,35 @@ public final class MessageUtils {
                 case 0:
                     indexInReorderedBytes = 3;
                     break;
+
                 case 1:
                     indexInReorderedBytes = 2;
                     break;
+
                 case 2:
                     indexInReorderedBytes = 1;
                     break;
+
                 case 3:
                     indexInReorderedBytes = 0;
                     break;
+
                 case 4:
                     indexInReorderedBytes = 5;
                     break;
+
                 case 5:
                     indexInReorderedBytes = 4;
                     break;
+
                 case 6:
                     indexInReorderedBytes = 7;
                     break;
+
                 case 7:
                     indexInReorderedBytes = 6;
                     break;
+
                 default:
                     indexInReorderedBytes = i;
             }
@@ -366,7 +426,8 @@ public final class MessageUtils {
 
             descriptionMap.put(ManagementConstants.CORRELATION_FILTER, filterMap);
         } else {
-            throw new IllegalArgumentException("This API supports the addition of only SQLFilters and CorrelationFilters.");
+            throw new IllegalArgumentException(
+                "This API supports the addition of only SQLFilters and CorrelationFilters.");
         }
 
         RuleAction action = options.getAction();
@@ -401,15 +462,18 @@ public final class MessageUtils {
 
         RuleDescriptionImpl ruleDescription = new RuleDescriptionImpl();
         if (ruleDescribedType.getDescribed() instanceof Iterable) {
-            @SuppressWarnings("unchecked") Iterator<Object> describedRule = ((Iterable<Object>) ruleDescribedType.getDescribed()).iterator();
+            @SuppressWarnings("unchecked")
+            Iterator<Object> describedRule = ((Iterable<Object>) ruleDescribedType.getDescribed()).iterator();
             if (describedRule.hasNext()) {
                 RuleFilter ruleFilter = decodeFilter((DescribedType) describedRule.next());
-                ruleDescription.setFilter(Objects.isNull(ruleFilter) ? null : EntityHelper.toImplementation(ruleFilter));
+                ruleDescription
+                    .setFilter(Objects.isNull(ruleFilter) ? null : EntityHelper.toImplementation(ruleFilter));
             }
 
             if (describedRule.hasNext()) {
                 RuleAction ruleAction = decodeRuleAction((DescribedType) describedRule.next());
-                ruleDescription.setAction(Objects.isNull(ruleAction) ? null : EntityHelper.toImplementation(ruleAction));
+                ruleDescription
+                    .setAction(Objects.isNull(ruleAction) ? null : EntityHelper.toImplementation(ruleAction));
             }
 
             if (describedRule.hasNext()) {
@@ -437,7 +501,8 @@ public final class MessageUtils {
         } else if (describedFilter.getDescriptor().equals(ServiceBusConstants.CORRELATION_FILTER_NAME)
             && describedFilter.getDescribed() instanceof Iterable) {
             CorrelationRuleFilter correlationFilter = new CorrelationRuleFilter();
-            Iterator<Object> describedCorrelationFilter = ((Iterable<Object>) describedFilter.getDescribed()).iterator();
+            Iterator<Object> describedCorrelationFilter
+                = ((Iterable<Object>) describedFilter.getDescribed()).iterator();
             if (describedCorrelationFilter.hasNext()) {
                 correlationFilter.setCorrelationId((String) (describedCorrelationFilter.next()));
             }
@@ -475,7 +540,8 @@ public final class MessageUtils {
         } else if (describedFilter.getDescriptor().equals(ServiceBusConstants.FALSE_FILTER_NAME)) {
             return new FalseRuleFilter();
         } else {
-            throw new UnsupportedOperationException("This client cannot support filter with descriptor: " + describedFilter.getDescriptor());
+            throw new UnsupportedOperationException(
+                "This client cannot support filter with descriptor: " + describedFilter.getDescriptor());
         }
 
         return null;
@@ -492,7 +558,8 @@ public final class MessageUtils {
             return null;
         } else if (describedAction.getDescriptor().equals(ServiceBusConstants.SQL_RULE_ACTION_NAME)
             && describedAction.getDescribed() instanceof Iterable) {
-            @SuppressWarnings("unchecked") Iterator<Object> describedSqlAction = ((Iterable<Object>) describedAction.getDescribed()).iterator();
+            @SuppressWarnings("unchecked")
+            Iterator<Object> describedSqlAction = ((Iterable<Object>) describedAction.getDescribed()).iterator();
             if (describedSqlAction.hasNext()) {
                 return new SqlRuleAction((String) describedSqlAction.next());
             }
@@ -500,5 +567,4 @@ public final class MessageUtils {
 
         return null;
     }
-
 }

@@ -43,7 +43,8 @@ public final class DocumentClassifierDetails {
     private Map<String, ClassifierDocumentTypeDetails> documentTypes;
 
     /** Creates an instance of DocumentClassifierDetails class. */
-    public DocumentClassifierDetails() {}
+    public DocumentClassifierDetails() {
+    }
 
     /**
      * Get the classifierId property: Unique document classifier name.
@@ -154,35 +155,40 @@ public final class DocumentClassifierDetails {
     }
 
     static {
-        DocumentClassifierDetailsHelper.setAccessor(new DocumentClassifierDetailsHelper.DocumentClassifierDetailsAccessor() {
-            @Override
-            public void setClassifierId(DocumentClassifierDetails documentClassifierDetails, String modelId) {
-                documentClassifierDetails.setClassifierId(modelId);
-            }
+        DocumentClassifierDetailsHelper
+            .setAccessor(new DocumentClassifierDetailsHelper.DocumentClassifierDetailsAccessor() {
+                @Override
+                public void setClassifierId(DocumentClassifierDetails documentClassifierDetails, String modelId) {
+                    documentClassifierDetails.setClassifierId(modelId);
+                }
 
-            @Override
-            public void setServiceVersion(DocumentClassifierDetails documentClassifierDetails, String description) {
-                documentClassifierDetails.setServiceVersion(description);
-            }
+                @Override
+                public void setServiceVersion(DocumentClassifierDetails documentClassifierDetails, String description) {
+                    documentClassifierDetails.setServiceVersion(description);
+                }
 
-            @Override
-            public void setDescription(DocumentClassifierDetails documentClassifierDetails, String description) {
-                documentClassifierDetails.setDescription(description);
-            }
+                @Override
+                public void setDescription(DocumentClassifierDetails documentClassifierDetails, String description) {
+                    documentClassifierDetails.setDescription(description);
+                }
 
-            @Override
-            public void setCreatedOn(DocumentClassifierDetails documentClassifierDetails, OffsetDateTime createdDateTime) {
-                documentClassifierDetails.setCreatedDateTime(createdDateTime);
-            }
+                @Override
+                public void setCreatedOn(DocumentClassifierDetails documentClassifierDetails,
+                    OffsetDateTime createdDateTime) {
+                    documentClassifierDetails.setCreatedDateTime(createdDateTime);
+                }
 
-            @Override
-            public void setExpiresOn(DocumentClassifierDetails documentClassifierDetails, OffsetDateTime createdDateTime) {
-                documentClassifierDetails.setExpirationDateTime(createdDateTime);
-            }
-            @Override
-            public void setDocTypes(DocumentClassifierDetails documentClassifierDetails, Map<String, ClassifierDocumentTypeDetails> docTypes) {
-                documentClassifierDetails.setDocumentTypes(docTypes);
-            }
-        });
+                @Override
+                public void setExpiresOn(DocumentClassifierDetails documentClassifierDetails,
+                    OffsetDateTime createdDateTime) {
+                    documentClassifierDetails.setExpirationDateTime(createdDateTime);
+                }
+
+                @Override
+                public void setDocTypes(DocumentClassifierDetails documentClassifierDetails,
+                    Map<String, ClassifierDocumentTypeDetails> docTypes) {
+                    documentClassifierDetails.setDocumentTypes(docTypes);
+                }
+            });
     }
 }

@@ -11,16 +11,15 @@ public final class PrestoDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PrestoDatasetTypeProperties model = BinaryData
-            .fromString(
-                "{\"tableName\":\"databcjywkdywkszavua\",\"table\":\"datanefictptplko\",\"schema\":\"datajbz\"}")
+            .fromString("{\"tableName\":\"datawb\",\"table\":\"dataiwtwfgoc\",\"schema\":\"datalvemnnzugabk\"}")
             .toObject(PrestoDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PrestoDatasetTypeProperties model = new PrestoDatasetTypeProperties().withTableName("databcjywkdywkszavua")
-            .withTable("datanefictptplko")
-            .withSchema("datajbz");
+        PrestoDatasetTypeProperties model = new PrestoDatasetTypeProperties().withTableName("datawb")
+            .withTable("dataiwtwfgoc")
+            .withSchema("datalvemnnzugabk");
         model = BinaryData.fromObject(model).toObject(PrestoDatasetTypeProperties.class);
     }
 }

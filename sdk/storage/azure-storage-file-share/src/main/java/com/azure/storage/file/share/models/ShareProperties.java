@@ -126,6 +126,42 @@ public final class ShareProperties implements XmlSerializable<ShareProperties> {
      */
     private Boolean enableSnapshotVirtualDirectoryAccess;
 
+    /*
+     * If paid bursting is enabled.
+     */
+    private Boolean enablePaidBursting;
+
+    /*
+     * The maximum IOPS for paid bursting.
+     */
+    private Long paidBurstingMaxIops;
+
+    /*
+     * The maximum MiB/sec for paid bursting.
+     */
+    private Long paidBurstingMaxBandwidthMibps;
+
+    /*
+     * Only applicable to provisioned v2 storage accounts. The calculated burst IOPS of the share.
+     */
+    private Long includedBurstIops;
+
+    /*
+     * Only applicable to provisioned v2 storage accounts. The calculated maximum burst credits.
+     * This is not the current burst credit level, but the maximum burst credits the share can have.
+     */
+    private Long maxBurstCreditsForIops;
+
+    /*
+     * Only applicable to provisioned v2 storage accounts. The time the share can be downgraded to lower provisioned IOPs.
+     */
+    private OffsetDateTime nextAllowedProvisionedIopsDowngradeTime;
+
+    /*
+     * Only applicable to provisioned v2 storage accounts. The time the share can be downgraded to lower provisioned bandwidth.
+     */
+    private OffsetDateTime nextAllowedProvisionedBandwidthDowngradeTime;
+
     /**
      * Get the lastModified property: The lastModified property.
      *
@@ -585,9 +621,172 @@ public final class ShareProperties implements XmlSerializable<ShareProperties> {
      * @param enableSnapshotVirtualDirectoryAccess the enableSnapshotVirtualDirectoryAccess value to set.
      * @return the ShareProperties object itself.
      */
-    public ShareProperties setSnapshotVirtualDirectoryAccessEnabled(
-        Boolean enableSnapshotVirtualDirectoryAccess) {
+    public ShareProperties setSnapshotVirtualDirectoryAccessEnabled(Boolean enableSnapshotVirtualDirectoryAccess) {
         this.enableSnapshotVirtualDirectoryAccess = enableSnapshotVirtualDirectoryAccess;
+        return this;
+    }
+
+    /**
+     * Get the enablePaidBursting property:
+     * Optional. Supported in version 2023-11-03 and above. Only applicable for premium file storage accounts.
+     * This property enables paid bursting on premium file storage accounts.
+     * @return the enablePaidBursting value.
+     */
+    public Boolean isPaidBurstingEnabled() {
+        return enablePaidBursting;
+    }
+
+    /**
+     * Set the enablePaidBursting property:
+     * Optional. Supported in version 2023-11-03 and above. Only applicable for premium file storage accounts.
+     * This property enables paid bursting on premium file storage accounts.
+     * @param enablePaidBursting the enablePaidBursting value to set.
+     * @return the ShareSetPropertiesOptions object itself.
+     */
+    public ShareProperties setPaidBurstingEnabled(Boolean enablePaidBursting) {
+        this.enablePaidBursting = enablePaidBursting;
+        return this;
+    }
+
+    /**
+     * Get the paidBurstingMaxIops property:
+     * Optional. Supported in version 2023-11-03 and above. Only applicable for premium file storage accounts.
+     * Default if not specified is the maximum IOPS the file share can support.
+     * Current maximum for a file share is 102,400 IOPS.
+     * @return the paidBurstingMaxIops value.
+     */
+    public Long getPaidBurstingMaxIops() {
+        return paidBurstingMaxIops;
+    }
+
+    /**
+     * Set the paidBurstingMaxIops property:
+     * Optional. Supported in version 2023-11-03 and above. Only applicable for premium file storage accounts.
+     * Default if not specified is the maximum IOPS the file share can support.
+     * Current maximum for a file share is 102,400 IOPS.
+     * @param paidBurstingMaxIops the paidBurstingMaxIops value to set.
+     * @return the ShareSetPropertiesOptions object itself.
+     */
+    public ShareProperties setPaidBurstingMaxIops(Long paidBurstingMaxIops) {
+        this.paidBurstingMaxIops = paidBurstingMaxIops;
+        return this;
+    }
+
+    /**
+     * Get the paidBurstingMaxBandwidthMibps property:
+     * Optional. Supported in version 2023-11-03 and above. Only applicable for premium file storage accounts.
+     * Default if not specified is the maximum throughput the file share can support.
+     * Current maximum for a file share is 10,340 MiB/sec.
+     * @return the paidBurstingMaxBandwidthMibps value.
+     */
+    public Long getPaidBurstingMaxBandwidthMibps() {
+        return paidBurstingMaxBandwidthMibps;
+    }
+
+    /**
+     * Set the paidBurstingMaxBandwidthMibps property:
+     * Optional. Supported in version 2023-11-03 and above. Only applicable for premium file storage accounts.
+     * Default if not specified is the maximum throughput the file share can support.
+     * Current maximum for a file share is 10,340 MiB/sec.
+     * @param paidBurstingMaxBandwidthMibps the paidBurstingMaxBandwidthMibps value to set.
+     * @return the ShareSetPropertiesOptions object itself.
+     */
+    public ShareProperties setPaidBurstingMaxBandwidthMibps(Long paidBurstingMaxBandwidthMibps) {
+        this.paidBurstingMaxBandwidthMibps = paidBurstingMaxBandwidthMibps;
+        return this;
+    }
+
+    /**
+     * Get the includedBurstIops property.
+     * Only applicable to provisioned v2 storage accounts. The calculated burst IOPS of the share.
+     *
+     * @return the includedBurstIops value itself.
+     */
+    public Long getIncludedBurstIops() {
+        return includedBurstIops;
+    }
+
+    /**
+     * Set the includedBurstIops property.
+     * Only applicable to provisioned v2 storage accounts. The calculated burst IOPS of the share.
+     *
+     * @param includedBurstIops the includedBurstIops value to set.
+     * @return the ShareProperties object itself.
+     */
+    public ShareProperties setIncludedBurstIops(Long includedBurstIops) {
+        this.includedBurstIops = includedBurstIops;
+        return this;
+    }
+
+    /**
+     * Get the maxBurstCreditsForIops property.
+     * Only applicable to provisioned v2 storage accounts. The calculated maximum burst credits.
+     * This is not the current burst credit level, but the maximum burst credits the share can have.
+     *
+     * @return the maxBurstCreditsForIops value itself.
+     */
+    public Long getMaxBurstCreditsForIops() {
+        return maxBurstCreditsForIops;
+    }
+
+    /**
+     * Set the maxBurstCreditsForIops property.
+     * Only applicable to provisioned v2 storage accounts. The calculated maximum burst credits.
+     * This is not the current burst credit level, but the maximum burst credits the share can have.
+     *
+     * @param maxBurstCreditsForIops the maxBurstCreditsForIops value to set.
+     * @return the ShareProperties object itself.
+     */
+    public ShareProperties setMaxBurstCreditsForIops(Long maxBurstCreditsForIops) {
+        this.maxBurstCreditsForIops = maxBurstCreditsForIops;
+        return this;
+    }
+
+    /**
+     * Get the nextAllowedProvisionedIopsDowngradeTime property.
+     * Only applicable to provisioned v2 storage accounts. The time the share can be downgraded to lower provisioned IOPs.
+     *
+     * @return the nextAllowedProvisionedIopsDowngradeTime value itself.
+     */
+    public OffsetDateTime getNextAllowedProvisionedIopsDowngradeTime() {
+        return nextAllowedProvisionedIopsDowngradeTime;
+    }
+
+    /**
+     * Set the nextAllowedProvisionedIopsDowngradeTime property.
+     * Only applicable to provisioned v2 storage accounts. The time the share can be downgraded to lower provisioned IOPs.
+     *
+     * @param nextAllowedProvisionedIopsDowngradeTime the nextAllowedProvisionedIopsDowngradeTime value to set.
+     * @return the ShareProperties object itself.
+     */
+    public ShareProperties
+        setNextAllowedProvisionedIopsDowngradeTime(OffsetDateTime nextAllowedProvisionedIopsDowngradeTime) {
+        this.nextAllowedProvisionedIopsDowngradeTime = nextAllowedProvisionedIopsDowngradeTime;
+        return this;
+    }
+
+    /**
+     * Get the nextAllowedProvisionedBandwidthDowngradeTime property.
+     * Only applicable to provisioned v2 storage accounts.
+     * The time the share can be downgraded to lower provisioned bandwidth.
+     *
+     * @return the nextAllowedProvisionedBandwidthDowngradeTime value itself.
+     */
+    public OffsetDateTime getNextAllowedProvisionedBandwidthDowngradeTime() {
+        return nextAllowedProvisionedBandwidthDowngradeTime;
+    }
+
+    /**
+     * Set the nextAllowedProvisionedBandwidthDowngradeTime property.
+     * Only applicable to provisioned v2 storage accounts.
+     * The time the share can be downgraded to lower provisioned bandwidth.
+     *
+     * @param nextAllowedProvisionedBandwidthDowngradeTime the nextAllowedProvisionedBandwidthDowngradeTime value to set.
+     * @return the ShareProperties object itself.
+     */
+    public ShareProperties
+        setNextAllowedProvisionedBandwidthDowngradeTime(OffsetDateTime nextAllowedProvisionedBandwidthDowngradeTime) {
+        this.nextAllowedProvisionedBandwidthDowngradeTime = nextAllowedProvisionedBandwidthDowngradeTime;
         return this;
     }
 

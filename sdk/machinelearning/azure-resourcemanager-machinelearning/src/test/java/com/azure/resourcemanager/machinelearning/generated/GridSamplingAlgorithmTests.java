@@ -10,8 +10,8 @@ import com.azure.resourcemanager.machinelearning.models.GridSamplingAlgorithm;
 public final class GridSamplingAlgorithmTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GridSamplingAlgorithm model =
-            BinaryData.fromString("{\"samplingAlgorithmType\":\"Grid\"}").toObject(GridSamplingAlgorithm.class);
+        GridSamplingAlgorithm model
+            = BinaryData.fromString("{\"samplingAlgorithmType\":\"Grid\"}").toObject(GridSamplingAlgorithm.class);
     }
 
     @org.junit.jupiter.api.Test

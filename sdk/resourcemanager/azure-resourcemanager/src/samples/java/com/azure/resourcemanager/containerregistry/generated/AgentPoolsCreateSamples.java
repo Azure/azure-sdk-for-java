@@ -24,10 +24,17 @@ public final class AgentPoolsCreateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void agentPoolsCreate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.containerRegistries().manager().serviceClient().getAgentPools().create(
-            "myResourceGroup", "myRegistry", "myAgentPool", new AgentPoolInner().withLocation("WESTUS")
-                .withTags(mapOf("key", "fakeTokenPlaceholder")).withCount(1).withTier("S1").withOs(OS.LINUX),
-            com.azure.core.util.Context.NONE);
+        azure.containerRegistries()
+            .manager()
+            .serviceClient()
+            .getAgentPools()
+            .create("myResourceGroup", "myRegistry", "myAgentPool",
+                new AgentPoolInner().withLocation("WESTUS")
+                    .withTags(mapOf("key", "fakeTokenPlaceholder"))
+                    .withCount(1)
+                    .withTier("S1")
+                    .withOs(OS.LINUX),
+                com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

@@ -12,7 +12,8 @@ import com.azure.storage.blob.models.BlobDownloadHeaders;
 public final class BlobDownloadHeadersConstructorProxy {
     private static BlobDownloadHeadersConstructorAccessor accessor;
 
-    private BlobDownloadHeadersConstructorProxy() { }
+    private BlobDownloadHeadersConstructorProxy() {
+    }
 
     /**
      * Type defining the methods to set the non-public properties of a {@link BlobDownloadHeadersConstructorAccessor}

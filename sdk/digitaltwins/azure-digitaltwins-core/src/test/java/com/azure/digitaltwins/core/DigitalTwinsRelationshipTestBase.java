@@ -4,9 +4,9 @@
 package com.azure.digitaltwins.core;
 
 import com.azure.core.http.HttpClient;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -28,36 +28,45 @@ public abstract class DigitalTwinsRelationshipTestBase extends DigitalTwinsTestB
     static final String HVAC_COOLS_FLOOR_RELATIONSHIP_ID = "HvacToFloorRelationship";
     static final String ROOM_CONTAINED_IN_FLOOR_RELATIONSHIP_ID = "RoomToFloorRelationship";
 
-    // Relationships list operation default max item count is 10. We create 31 to make sure we will get over 3 pages of response.
-    // Ideally, service team would let us set max items per page when listing, but that isn't a feature yet
+    // Relationships list operation default max item count is 10. We create 31 to make sure we will get over 3 pages of
+    // response. Ideally, service team would let us set max items per page when listing, but that isn't a feature yet
     static final int BULK_RELATIONSHIP_COUNT = 21;
     static final int RELATIONSHIP_PAGE_SIZE_DEFAULT = 10;
 
     @Test
-    public abstract void relationshipLifecycleTest(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) throws JsonProcessingException;
+    public abstract void relationshipLifecycleTest(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion)
+        throws IOException;
 
     @Test
-    public abstract void relationshipListOperationWithMultiplePages(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) throws JsonProcessingException, InterruptedException;
+    public abstract void relationshipListOperationWithMultiplePages(HttpClient httpClient,
+        DigitalTwinsServiceVersion serviceVersion) throws IOException, InterruptedException;
 
     @Test
-    public abstract void createOrReplaceRelationshipFailsWhenIfNoneMatchStar(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) throws JsonProcessingException;
+    public abstract void createOrReplaceRelationshipFailsWhenIfNoneMatchStar(HttpClient httpClient,
+        DigitalTwinsServiceVersion serviceVersion) throws IOException;
 
     @Test
-    public abstract void createOrReplaceRelationshipSucceedsWhenNoIfNoneHeader(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) throws JsonProcessingException;
+    public abstract void createOrReplaceRelationshipSucceedsWhenNoIfNoneHeader(HttpClient httpClient,
+        DigitalTwinsServiceVersion serviceVersion) throws IOException;
 
     @Test
-    public abstract void patchRelationshipFailsWhenETagDoesNotMatch(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) throws JsonProcessingException;
+    public abstract void patchRelationshipFailsWhenETagDoesNotMatch(HttpClient httpClient,
+        DigitalTwinsServiceVersion serviceVersion) throws IOException;
 
     @Test
-    public abstract void patchRelationshipSucceedsWhenETagMatches(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) throws JsonProcessingException;
+    public abstract void patchRelationshipSucceedsWhenETagMatches(HttpClient httpClient,
+        DigitalTwinsServiceVersion serviceVersion) throws IOException;
 
     @Test
-    public abstract void deleteRelationshipFailsWhenETagDoesNotMatch(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) throws JsonProcessingException;
+    public abstract void deleteRelationshipFailsWhenETagDoesNotMatch(HttpClient httpClient,
+        DigitalTwinsServiceVersion serviceVersion) throws IOException;
 
     @Test
-    public abstract void deleteRelationshipSucceedsWhenETagMatches(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) throws JsonProcessingException;
+    public abstract void deleteRelationshipSucceedsWhenETagMatches(HttpClient httpClient,
+        DigitalTwinsServiceVersion serviceVersion) throws IOException;
 
-    void createModelsRunner(String floorModelId, String roomModelId, String hvacModelId, Consumer<List<String>> createModelsTestRunner) {
+    void createModelsRunner(String floorModelId, String roomModelId, String hvacModelId,
+        Consumer<List<String>> createModelsTestRunner) {
         String floorModel = TestAssetsHelper.getFloorModelPayload(floorModelId, roomModelId, hvacModelId);
         String roomModel = TestAssetsHelper.getRoomModelPayload(roomModelId, floorModelId);
         String hvacModel = TestAssetsHelper.getHvacModelPayload(hvacModelId, floorModelId);
@@ -65,22 +74,29 @@ public abstract class DigitalTwinsRelationshipTestBase extends DigitalTwinsTestB
         createModelsTestRunner.accept(asList(floorModel, roomModel, hvacModel));
     }
 
-    void createFloorTwinRunner(String floorTwinId, String floorModelId, BiConsumer<String, BasicDigitalTwin> createFloorTwinTestRunner) throws JsonProcessingException {
+    void createFloorTwinRunner(String floorTwinId, String floorModelId,
+        BiConsumer<String, BasicDigitalTwin> createFloorTwinTestRunner) throws IOException {
         String floorTwin = TestAssetsHelper.getFloorTwinPayload(floorModelId);
-        createTwinRunner(floorTwinId, deserializeJsonString(floorTwin, BasicDigitalTwin.class), createFloorTwinTestRunner);
+        createTwinRunner(floorTwinId, deserializeJsonString(floorTwin, BasicDigitalTwin::fromJson),
+            createFloorTwinTestRunner);
     }
 
-    void createRoomTwinRunner(String roomTwinId, String roomModelId, BiConsumer<String, BasicDigitalTwin> createRoomTwinTestRunner) throws JsonProcessingException {
+    void createRoomTwinRunner(String roomTwinId, String roomModelId,
+        BiConsumer<String, BasicDigitalTwin> createRoomTwinTestRunner) throws IOException {
         String roomTwin = TestAssetsHelper.getRoomTwinPayload(roomModelId);
-        createTwinRunner(roomTwinId, deserializeJsonString(roomTwin, BasicDigitalTwin.class), createRoomTwinTestRunner);
+        createTwinRunner(roomTwinId, deserializeJsonString(roomTwin, BasicDigitalTwin::fromJson),
+            createRoomTwinTestRunner);
     }
 
-    void createHvacTwinRunner(String hvacTwinId, String hvacModelId, BiConsumer<String, BasicDigitalTwin> createHvacTwinTestRunner) throws JsonProcessingException {
+    void createHvacTwinRunner(String hvacTwinId, String hvacModelId,
+        BiConsumer<String, BasicDigitalTwin> createHvacTwinTestRunner) throws IOException {
         String hvacTwin = TestAssetsHelper.getHvacTwinPayload(hvacModelId);
-        createTwinRunner(hvacTwinId, deserializeJsonString(hvacTwin, BasicDigitalTwin.class), createHvacTwinTestRunner);
+        createTwinRunner(hvacTwinId, deserializeJsonString(hvacTwin, BasicDigitalTwin::fromJson),
+            createHvacTwinTestRunner);
     }
 
-    void createTwinRunner(String twinId, BasicDigitalTwin twin, BiConsumer<String, BasicDigitalTwin> createTwinTestRunner) {
+    void createTwinRunner(String twinId, BasicDigitalTwin twin,
+        BiConsumer<String, BasicDigitalTwin> createTwinTestRunner) {
         createTwinTestRunner.accept(twinId, twin);
     }
 }

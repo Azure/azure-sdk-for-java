@@ -117,14 +117,9 @@ public interface GatewayHostnameConfigurationContract {
          * The stage of the GatewayHostnameConfigurationContract definition which contains all the minimum required
          * properties for the resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithHostname,
-                DefinitionStages.WithCertificateId,
-                DefinitionStages.WithNegotiateClientCertificate,
-                DefinitionStages.WithTls10Enabled,
-                DefinitionStages.WithTls11Enabled,
-                DefinitionStages.WithHttp2Enabled,
-                DefinitionStages.WithIfMatch {
+        interface WithCreate extends DefinitionStages.WithHostname, DefinitionStages.WithCertificateId,
+            DefinitionStages.WithNegotiateClientCertificate, DefinitionStages.WithTls10Enabled,
+            DefinitionStages.WithTls11Enabled, DefinitionStages.WithHttp2Enabled, DefinitionStages.WithIfMatch {
             /**
              * Executes the create request.
              *
@@ -234,14 +229,9 @@ public interface GatewayHostnameConfigurationContract {
     GatewayHostnameConfigurationContract.Update update();
 
     /** The template for GatewayHostnameConfigurationContract update. */
-    interface Update
-        extends UpdateStages.WithHostname,
-            UpdateStages.WithCertificateId,
-            UpdateStages.WithNegotiateClientCertificate,
-            UpdateStages.WithTls10Enabled,
-            UpdateStages.WithTls11Enabled,
-            UpdateStages.WithHttp2Enabled,
-            UpdateStages.WithIfMatch {
+    interface Update extends UpdateStages.WithHostname, UpdateStages.WithCertificateId,
+        UpdateStages.WithNegotiateClientCertificate, UpdateStages.WithTls10Enabled, UpdateStages.WithTls11Enabled,
+        UpdateStages.WithHttp2Enabled, UpdateStages.WithIfMatch {
         /**
          * Executes the update request.
          *

@@ -15,27 +15,17 @@ import org.junit.jupiter.api.Assertions;
 public final class DigitalTwinsIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DigitalTwinsIdentity model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"UserAssigned\",\"principalId\":\"qvkoc\",\"tenantId\":\"jdkwtnhxbnjb\",\"userAssignedIdentities\":{\"xsabkyqdu\":{\"clientId\":\"rglssainqpj\",\"principalId\":\"zlljfmppeebvm\"},\"d\":{\"clientId\":\"itcjczdz\",\"principalId\":\"ndhkrw\"},\"usnhutje\":{\"clientId\":\"p\",\"principalId\":\"bdkvwrwjf\"}}}")
-                .toObject(DigitalTwinsIdentity.class);
+        DigitalTwinsIdentity model = BinaryData.fromString(
+            "{\"type\":\"UserAssigned\",\"principalId\":\"qvkoc\",\"tenantId\":\"jdkwtnhxbnjb\",\"userAssignedIdentities\":{\"xsabkyqdu\":{\"clientId\":\"rglssainqpj\",\"principalId\":\"zlljfmppeebvm\"},\"d\":{\"clientId\":\"itcjczdz\",\"principalId\":\"ndhkrw\"},\"usnhutje\":{\"clientId\":\"p\",\"principalId\":\"bdkvwrwjf\"}}}")
+            .toObject(DigitalTwinsIdentity.class);
         Assertions.assertEquals(DigitalTwinsIdentityType.USER_ASSIGNED, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DigitalTwinsIdentity model =
-            new DigitalTwinsIdentity()
-                .withType(DigitalTwinsIdentityType.USER_ASSIGNED)
-                .withUserAssignedIdentities(
-                    mapOf(
-                        "xsabkyqdu",
-                        new UserAssignedIdentity(),
-                        "d",
-                        new UserAssignedIdentity(),
-                        "usnhutje",
-                        new UserAssignedIdentity()));
+        DigitalTwinsIdentity model = new DigitalTwinsIdentity().withType(DigitalTwinsIdentityType.USER_ASSIGNED)
+            .withUserAssignedIdentities(mapOf("xsabkyqdu", new UserAssignedIdentity(), "d", new UserAssignedIdentity(),
+                "usnhutje", new UserAssignedIdentity()));
         model = BinaryData.fromObject(model).toObject(DigitalTwinsIdentity.class);
         Assertions.assertEquals(DigitalTwinsIdentityType.USER_ASSIGNED, model.type());
     }

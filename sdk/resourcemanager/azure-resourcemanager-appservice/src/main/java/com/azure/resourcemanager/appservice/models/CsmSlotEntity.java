@@ -6,23 +6,25 @@ package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Deployment slot parameters.
  */
 @Fluent
-public final class CsmSlotEntity {
+public final class CsmSlotEntity implements JsonSerializable<CsmSlotEntity> {
     /*
      * Destination deployment slot during swap operation.
      */
-    @JsonProperty(value = "targetSlot", required = true)
     private String targetSlot;
 
     /*
      * <code>true</code> to preserve Virtual Network to the slot during swap; otherwise, <code>false</code>.
      */
-    @JsonProperty(value = "preserveVnet", required = true)
     private boolean preserveVnet;
 
     /**
@@ -86,4 +88,44 @@ public final class CsmSlotEntity {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(CsmSlotEntity.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("targetSlot", this.targetSlot);
+        jsonWriter.writeBooleanField("preserveVnet", this.preserveVnet);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CsmSlotEntity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CsmSlotEntity if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CsmSlotEntity.
+     */
+    public static CsmSlotEntity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CsmSlotEntity deserializedCsmSlotEntity = new CsmSlotEntity();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("targetSlot".equals(fieldName)) {
+                    deserializedCsmSlotEntity.targetSlot = reader.getString();
+                } else if ("preserveVnet".equals(fieldName)) {
+                    deserializedCsmSlotEntity.preserveVnet = reader.getBoolean();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCsmSlotEntity;
+        });
+    }
 }

@@ -48,10 +48,8 @@ public class AzureResourceReference {
      */
     public void validate() {
         if (sourceArmResourceId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property sourceArmResourceId in model AzureResourceReference"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property sourceArmResourceId in model AzureResourceReference"));
         }
     }
 

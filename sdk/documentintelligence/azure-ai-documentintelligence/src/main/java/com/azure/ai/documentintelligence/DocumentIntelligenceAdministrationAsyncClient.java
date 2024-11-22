@@ -5,12 +5,15 @@
 package com.azure.ai.documentintelligence;
 
 import com.azure.ai.documentintelligence.implementation.DocumentIntelligenceAdministrationClientImpl;
+import com.azure.ai.documentintelligence.models.AuthorizeClassifierCopyRequest;
 import com.azure.ai.documentintelligence.models.AuthorizeCopyRequest;
 import com.azure.ai.documentintelligence.models.BuildDocumentClassifierRequest;
 import com.azure.ai.documentintelligence.models.BuildDocumentModelRequest;
+import com.azure.ai.documentintelligence.models.ClassifierCopyAuthorization;
 import com.azure.ai.documentintelligence.models.ComposeDocumentModelRequest;
 import com.azure.ai.documentintelligence.models.CopyAuthorization;
 import com.azure.ai.documentintelligence.models.DocumentClassifierBuildOperationDetails;
+import com.azure.ai.documentintelligence.models.DocumentClassifierCopyToOperationDetails;
 import com.azure.ai.documentintelligence.models.DocumentClassifierDetails;
 import com.azure.ai.documentintelligence.models.DocumentModelBuildOperationDetails;
 import com.azure.ai.documentintelligence.models.DocumentModelComposeOperationDetails;
@@ -60,11 +63,12 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
      * Builds a custom document analysis model.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     modelId: String (Required)
      *     description: String (Optional)
-     *     buildMode: String(template/neural) (Required)
+     *     buildMode: String(template/neural/generative) (Required)
      *     azureBlobSource (Optional): {
      *         containerUrl: String (Required)
      *         prefix: String (Optional)
@@ -76,8 +80,11 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
      *     tags (Optional): {
      *         String: String (Required)
      *     }
+     *     maxTrainingHours: Double (Optional)
+     *     allowOverwrite: Boolean (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param buildRequest Build request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -98,20 +105,48 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
      * Creates a new document model from document types of existing document models.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     modelId: String (Required)
      *     description: String (Optional)
-     *     componentModels (Required): [
-     *          (Required){
-     *             modelId: String (Required)
+     *     classifierId: String (Required)
+     *     split: String(auto/none/perPage) (Optional)
+     *     docTypes (Required): {
+     *         String (Required): {
+     *             description: String (Optional)
+     *             buildMode: String(template/neural/generative) (Optional)
+     *             fieldSchema (Optional): {
+     *                 String (Required): {
+     *                     type: String(string/date/time/phoneNumber/number/integer/selectionMark/countryRegion/signature/array/object/currency/address/boolean/selectionGroup) (Required)
+     *                     description: String (Optional)
+     *                     example: String (Optional)
+     *                     items (Optional): (recursive schema, see items above)
+     *                     properties (Optional): {
+     *                         String (Required): (recursive schema, see String above)
+     *                     }
+     *                 }
+     *             }
+     *             fieldConfidence (Optional): {
+     *                 String: double (Required)
+     *             }
+     *             modelId: String (Optional)
+     *             confidenceThreshold: Double (Optional)
+     *             features (Optional): [
+     *                 String(ocrHighResolution/languages/barcodes/formulas/keyValuePairs/styleFont/queryFields) (Optional)
+     *             ]
+     *             queryFields (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             maxDocumentsToAnalyze: Integer (Optional)
      *         }
-     *     ]
+     *     }
      *     tags (Optional): {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param composeRequest Compose request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -133,7 +168,8 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
      * specified modelId and optional description.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     modelId: String (Required)
      *     description: String (Optional)
@@ -141,11 +177,13 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     targetResourceId: String (Required)
      *     targetResourceRegion: String (Required)
@@ -154,7 +192,8 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
      *     accessToken: String (Required)
      *     expirationDateTime: OffsetDateTime (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param authorizeCopyRequest Authorize copy request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -176,7 +215,8 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
      * Copies document model to the target resource, region, and modelId.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     targetResourceId: String (Required)
      *     targetResourceRegion: String (Required)
@@ -185,7 +225,8 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
      *     accessToken: String (Required)
      *     expirationDateTime: OffsetDateTime (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param modelId Unique document model name.
      * @param copyToRequest Copy to request parameters.
@@ -207,7 +248,8 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
      * Gets detailed document model information.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     modelId: String (Required)
      *     description: String (Optional)
@@ -217,7 +259,7 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
      *     tags (Optional): {
      *         String: String (Required)
      *     }
-     *     buildMode: String(template/neural) (Optional)
+     *     buildMode: String(template/neural/generative) (Optional)
      *     azureBlobSource (Optional): {
      *         containerUrl: String (Required)
      *         prefix: String (Optional)
@@ -226,11 +268,13 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
      *         containerUrl: String (Required)
      *         fileList: String (Required)
      *     }
+     *     classifierId: String (Optional)
+     *     split: String(auto/none/perPage) (Optional)
      *     docTypes (Optional): {
      *         String (Required): {
      *             description: String (Optional)
-     *             buildMode: String(template/neural) (Optional)
-     *             fieldSchema (Required): {
+     *             buildMode: String(template/neural/generative) (Optional)
+     *             fieldSchema (Optional): {
      *                 String (Required): {
      *                     type: String(string/date/time/phoneNumber/number/integer/selectionMark/countryRegion/signature/array/object/currency/address/boolean/selectionGroup) (Required)
      *                     description: String (Optional)
@@ -244,6 +288,15 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
      *             fieldConfidence (Optional): {
      *                 String: double (Required)
      *             }
+     *             modelId: String (Optional)
+     *             confidenceThreshold: Double (Optional)
+     *             features (Optional): [
+     *                 String(ocrHighResolution/languages/barcodes/formulas/keyValuePairs/styleFont/queryFields) (Optional)
+     *             ]
+     *             queryFields (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             maxDocumentsToAnalyze: Integer (Optional)
      *         }
      *     }
      *     warnings (Optional): [
@@ -253,8 +306,10 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
      *             target: String (Optional)
      *         }
      *     ]
+     *     trainingHours: Double (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param modelId Unique document model name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -274,7 +329,8 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
      * List all document models.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     modelId: String (Required)
      *     description: String (Optional)
@@ -284,7 +340,7 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
      *     tags (Optional): {
      *         String: String (Required)
      *     }
-     *     buildMode: String(template/neural) (Optional)
+     *     buildMode: String(template/neural/generative) (Optional)
      *     azureBlobSource (Optional): {
      *         containerUrl: String (Required)
      *         prefix: String (Optional)
@@ -293,11 +349,13 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
      *         containerUrl: String (Required)
      *         fileList: String (Required)
      *     }
+     *     classifierId: String (Optional)
+     *     split: String(auto/none/perPage) (Optional)
      *     docTypes (Optional): {
      *         String (Required): {
      *             description: String (Optional)
-     *             buildMode: String(template/neural) (Optional)
-     *             fieldSchema (Required): {
+     *             buildMode: String(template/neural/generative) (Optional)
+     *             fieldSchema (Optional): {
      *                 String (Required): {
      *                     type: String(string/date/time/phoneNumber/number/integer/selectionMark/countryRegion/signature/array/object/currency/address/boolean/selectionGroup) (Required)
      *                     description: String (Optional)
@@ -311,6 +369,15 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
      *             fieldConfidence (Optional): {
      *                 String: double (Required)
      *             }
+     *             modelId: String (Optional)
+     *             confidenceThreshold: Double (Optional)
+     *             features (Optional): [
+     *                 String(ocrHighResolution/languages/barcodes/formulas/keyValuePairs/styleFont/queryFields) (Optional)
+     *             ]
+     *             queryFields (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             maxDocumentsToAnalyze: Integer (Optional)
      *         }
      *     }
      *     warnings (Optional): [
@@ -320,8 +387,10 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
      *             target: String (Optional)
      *         }
      *     ]
+     *     trainingHours: Double (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -357,19 +426,16 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
      * Return information about the current resource.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     customDocumentModels (Required): {
      *         count: int (Required)
      *         limit: int (Required)
      *     }
-     *     customNeuralDocumentModelBuilds (Required): {
-     *         used: int (Required)
-     *         quota: int (Required)
-     *         quotaResetDateTime: OffsetDateTime (Required)
-     *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -389,9 +455,10 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
      * Gets operation info.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
-     *     kind: String(documentModelBuild/documentModelCompose/documentModelCopyTo/documentClassifierBuild) (Required)
+     *     kind: String(documentModelBuild/documentModelCompose/documentModelCopyTo/documentClassifierCopyTo/documentClassifierBuild) (Required)
      *     operationId: String (Required)
      *     status: String(notStarted/running/failed/succeeded/completed/canceled) (Required)
      *     percentCompleted: Integer (Optional)
@@ -416,7 +483,8 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param operationId Operation ID.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -436,9 +504,10 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
      * Lists all operations.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
-     *     kind: String(documentModelBuild/documentModelCompose/documentModelCopyTo/documentClassifierBuild) (Required)
+     *     kind: String(documentModelBuild/documentModelCompose/documentModelCopyTo/documentClassifierCopyTo/documentClassifierBuild) (Required)
      *     operationId: String (Required)
      *     status: String(notStarted/running/failed/succeeded/completed/canceled) (Required)
      *     percentCompleted: Integer (Optional)
@@ -463,7 +532,8 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -482,7 +552,8 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
      * Builds a custom document classifier.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     classifierId: String (Required)
      *     description: String (Optional)
@@ -500,8 +571,10 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
      *             }
      *         }
      *     }
+     *     allowOverwrite: Boolean (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param buildRequest Build request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -519,10 +592,92 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
     }
 
     /**
+     * Generates authorization to copy a document classifier to this location with
+     * specified classifierId and optional description.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     classifierId: String (Required)
+     *     description: String (Optional)
+     *     tags (Optional): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     targetResourceId: String (Required)
+     *     targetResourceRegion: String (Required)
+     *     targetClassifierId: String (Required)
+     *     targetClassifierLocation: String (Required)
+     *     accessToken: String (Required)
+     *     expirationDateTime: OffsetDateTime (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param authorizeCopyRequest Authorize copy request parameters.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return authorization to copy a document classifier to the specified target resource and
+     * classifierId along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> authorizeClassifierCopyWithResponse(BinaryData authorizeCopyRequest,
+        RequestOptions requestOptions) {
+        return this.serviceClient.authorizeClassifierCopyWithResponseAsync(authorizeCopyRequest, requestOptions);
+    }
+
+    /**
+     * Copies document classifier to the target resource, region, and classifierId.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     targetResourceId: String (Required)
+     *     targetResourceRegion: String (Required)
+     *     targetClassifierId: String (Required)
+     *     targetClassifierLocation: String (Required)
+     *     accessToken: String (Required)
+     *     expirationDateTime: OffsetDateTime (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param classifierId Unique document classifier name.
+     * @param copyToRequest Copy to request parameters.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginCopyClassifierTo(String classifierId, BinaryData copyToRequest,
+        RequestOptions requestOptions) {
+        return this.serviceClient.beginCopyClassifierToAsync(classifierId, copyToRequest, requestOptions);
+    }
+
+    /**
      * Gets detailed document classifier information.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     classifierId: String (Required)
      *     description: String (Optional)
@@ -551,7 +706,8 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param classifierId Unique document classifier name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -572,7 +728,8 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
      * List all document classifiers.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     classifierId: String (Required)
      *     description: String (Optional)
@@ -601,7 +758,8 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -883,6 +1041,54 @@ public final class DocumentIntelligenceAdministrationAsyncClient {
         // Generated convenience method for beginBuildClassifierWithModel
         RequestOptions requestOptions = new RequestOptions();
         return serviceClient.beginBuildClassifierWithModelAsync(BinaryData.fromObject(buildRequest), requestOptions);
+    }
+
+    /**
+     * Generates authorization to copy a document classifier to this location with
+     * specified classifierId and optional description.
+     * 
+     * @param authorizeCopyRequest Authorize copy request parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return authorization to copy a document classifier to the specified target resource and
+     * classifierId on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ClassifierCopyAuthorization>
+        authorizeClassifierCopy(AuthorizeClassifierCopyRequest authorizeCopyRequest) {
+        // Generated convenience method for authorizeClassifierCopyWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return authorizeClassifierCopyWithResponse(BinaryData.fromObject(authorizeCopyRequest), requestOptions)
+            .flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(ClassifierCopyAuthorization.class));
+    }
+
+    /**
+     * Copies document classifier to the target resource, region, and classifierId.
+     * 
+     * @param classifierId Unique document classifier name.
+     * @param copyToRequest Copy to request parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<DocumentClassifierCopyToOperationDetails, DocumentClassifierDetails>
+        beginCopyClassifierTo(String classifierId, ClassifierCopyAuthorization copyToRequest) {
+        // Generated convenience method for beginCopyClassifierToWithModel
+        RequestOptions requestOptions = new RequestOptions();
+        return serviceClient.beginCopyClassifierToWithModelAsync(classifierId, BinaryData.fromObject(copyToRequest),
+            requestOptions);
     }
 
     /**

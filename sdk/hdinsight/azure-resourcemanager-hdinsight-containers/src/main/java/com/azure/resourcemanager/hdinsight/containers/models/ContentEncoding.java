@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.hdinsight.containers.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -38,7 +37,6 @@ public final class ContentEncoding extends ExpandableStringEnum<ContentEncoding>
      * @param name a name to look for.
      * @return the corresponding ContentEncoding.
      */
-    @JsonCreator
     public static ContentEncoding fromString(String name) {
         return fromString(name, ContentEncoding.class);
     }

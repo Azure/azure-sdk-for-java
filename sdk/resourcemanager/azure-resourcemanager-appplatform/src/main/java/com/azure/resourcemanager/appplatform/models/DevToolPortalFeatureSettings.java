@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Settings for Dev Tool Portal.
  */
 @Fluent
-public final class DevToolPortalFeatureSettings {
+public final class DevToolPortalFeatureSettings implements JsonSerializable<DevToolPortalFeatureSettings> {
     /*
      * Detail of Accelerator plugin
      */
-    @JsonProperty(value = "applicationAccelerator")
     private DevToolPortalFeatureDetail applicationAccelerator;
 
     /*
      * Detail of App Live View plugin
      */
-    @JsonProperty(value = "applicationLiveView")
     private DevToolPortalFeatureDetail applicationLiveView;
 
     /**
@@ -82,5 +84,46 @@ public final class DevToolPortalFeatureSettings {
         if (applicationLiveView() != null) {
             applicationLiveView().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("applicationAccelerator", this.applicationAccelerator);
+        jsonWriter.writeJsonField("applicationLiveView", this.applicationLiveView);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DevToolPortalFeatureSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DevToolPortalFeatureSettings if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DevToolPortalFeatureSettings.
+     */
+    public static DevToolPortalFeatureSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DevToolPortalFeatureSettings deserializedDevToolPortalFeatureSettings = new DevToolPortalFeatureSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("applicationAccelerator".equals(fieldName)) {
+                    deserializedDevToolPortalFeatureSettings.applicationAccelerator
+                        = DevToolPortalFeatureDetail.fromJson(reader);
+                } else if ("applicationLiveView".equals(fieldName)) {
+                    deserializedDevToolPortalFeatureSettings.applicationLiveView
+                        = DevToolPortalFeatureDetail.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDevToolPortalFeatureSettings;
+        });
     }
 }

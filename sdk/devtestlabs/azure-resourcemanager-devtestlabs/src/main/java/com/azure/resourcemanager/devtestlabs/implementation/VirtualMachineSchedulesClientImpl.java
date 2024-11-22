@@ -55,9 +55,8 @@ public final class VirtualMachineSchedulesClientImpl implements VirtualMachineSc
      * @param client the instance of the service client containing this operation class.
      */
     VirtualMachineSchedulesClientImpl(DevTestLabsClientImpl client) {
-        this.service =
-            RestProxy
-                .create(VirtualMachineSchedulesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(VirtualMachineSchedulesService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -68,117 +67,77 @@ public final class VirtualMachineSchedulesClientImpl implements VirtualMachineSc
     @Host("{$host}")
     @ServiceInterface(name = "DevTestLabsClientVir")
     public interface VirtualMachineSchedulesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/virtualmachines/{virtualMachineName}/schedules")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/virtualmachines/{virtualMachineName}/schedules")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ScheduleList>> list(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ScheduleList>> list(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("labName") String labName,
-            @PathParam("virtualMachineName") String virtualMachineName,
-            @QueryParam("$expand") String expand,
-            @QueryParam("$filter") String filter,
-            @QueryParam("$top") Integer top,
-            @QueryParam("$orderby") String orderby,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("labName") String labName,
+            @PathParam("virtualMachineName") String virtualMachineName, @QueryParam("$expand") String expand,
+            @QueryParam("$filter") String filter, @QueryParam("$top") Integer top,
+            @QueryParam("$orderby") String orderby, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/virtualmachines/{virtualMachineName}/schedules/{name}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/virtualmachines/{virtualMachineName}/schedules/{name}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ScheduleInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ScheduleInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("labName") String labName,
-            @PathParam("virtualMachineName") String virtualMachineName,
-            @PathParam("name") String name,
-            @QueryParam("$expand") String expand,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("labName") String labName,
+            @PathParam("virtualMachineName") String virtualMachineName, @PathParam("name") String name,
+            @QueryParam("$expand") String expand, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/virtualmachines/{virtualMachineName}/schedules/{name}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/virtualmachines/{virtualMachineName}/schedules/{name}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ScheduleInner>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ScheduleInner>> createOrUpdate(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("labName") String labName,
-            @PathParam("virtualMachineName") String virtualMachineName,
-            @PathParam("name") String name,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") ScheduleInner schedule,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("labName") String labName,
+            @PathParam("virtualMachineName") String virtualMachineName, @PathParam("name") String name,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") ScheduleInner schedule,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/virtualmachines/{virtualMachineName}/schedules/{name}")
-        @ExpectedResponses({200, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/virtualmachines/{virtualMachineName}/schedules/{name}")
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("labName") String labName,
-            @PathParam("virtualMachineName") String virtualMachineName,
-            @PathParam("name") String name,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("labName") String labName,
+            @PathParam("virtualMachineName") String virtualMachineName, @PathParam("name") String name,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/virtualmachines/{virtualMachineName}/schedules/{name}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/virtualmachines/{virtualMachineName}/schedules/{name}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ScheduleInner>> update(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ScheduleInner>> update(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("labName") String labName,
-            @PathParam("virtualMachineName") String virtualMachineName,
-            @PathParam("name") String name,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") ScheduleFragment schedule,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("labName") String labName,
+            @PathParam("virtualMachineName") String virtualMachineName, @PathParam("name") String name,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") ScheduleFragment schedule,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/virtualmachines/{virtualMachineName}/schedules/{name}/execute")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/virtualmachines/{virtualMachineName}/schedules/{name}/execute")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> execute(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> execute(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("labName") String labName,
-            @PathParam("virtualMachineName") String virtualMachineName,
-            @PathParam("name") String name,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("labName") String labName,
+            @PathParam("virtualMachineName") String virtualMachineName, @PathParam("name") String name,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ScheduleList>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ScheduleList>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -198,25 +157,15 @@ public final class VirtualMachineSchedulesClientImpl implements VirtualMachineSc
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ScheduleInner>> listSinglePageAsync(
-        String resourceGroupName,
-        String labName,
-        String virtualMachineName,
-        String expand,
-        String filter,
-        Integer top,
-        String orderby) {
+    private Mono<PagedResponse<ScheduleInner>> listSinglePageAsync(String resourceGroupName, String labName,
+        String virtualMachineName, String expand, String filter, Integer top, String orderby) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -231,31 +180,11 @@ public final class VirtualMachineSchedulesClientImpl implements VirtualMachineSc
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            labName,
-                            virtualMachineName,
-                            expand,
-                            filter,
-                            top,
-                            orderby,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<ScheduleInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, labName, virtualMachineName, expand, filter, top, orderby,
+                this.client.getApiVersion(), accept, context))
+            .<PagedResponse<ScheduleInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -277,26 +206,15 @@ public final class VirtualMachineSchedulesClientImpl implements VirtualMachineSc
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ScheduleInner>> listSinglePageAsync(
-        String resourceGroupName,
-        String labName,
-        String virtualMachineName,
-        String expand,
-        String filter,
-        Integer top,
-        String orderby,
-        Context context) {
+    private Mono<PagedResponse<ScheduleInner>> listSinglePageAsync(String resourceGroupName, String labName,
+        String virtualMachineName, String expand, String filter, Integer top, String orderby, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -312,28 +230,10 @@ public final class VirtualMachineSchedulesClientImpl implements VirtualMachineSc
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                labName,
-                virtualMachineName,
-                expand,
-                filter,
-                top,
-                orderby,
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, labName,
+                virtualMachineName, expand, filter, top, orderby, this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -352,14 +252,8 @@ public final class VirtualMachineSchedulesClientImpl implements VirtualMachineSc
      * @return the response of a list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ScheduleInner> listAsync(
-        String resourceGroupName,
-        String labName,
-        String virtualMachineName,
-        String expand,
-        String filter,
-        Integer top,
-        String orderby) {
+    private PagedFlux<ScheduleInner> listAsync(String resourceGroupName, String labName, String virtualMachineName,
+        String expand, String filter, Integer top, String orderby) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, labName, virtualMachineName, expand, filter, top, orderby),
             nextLink -> listNextSinglePageAsync(nextLink));
@@ -404,20 +298,10 @@ public final class VirtualMachineSchedulesClientImpl implements VirtualMachineSc
      * @return the response of a list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ScheduleInner> listAsync(
-        String resourceGroupName,
-        String labName,
-        String virtualMachineName,
-        String expand,
-        String filter,
-        Integer top,
-        String orderby,
-        Context context) {
-        return new PagedFlux<>(
-            () ->
-                listSinglePageAsync(
-                    resourceGroupName, labName, virtualMachineName, expand, filter, top, orderby, context),
-            nextLink -> listNextSinglePageAsync(nextLink, context));
+    private PagedFlux<ScheduleInner> listAsync(String resourceGroupName, String labName, String virtualMachineName,
+        String expand, String filter, Integer top, String orderby, Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, labName, virtualMachineName, expand, filter,
+            top, orderby, context), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -458,15 +342,8 @@ public final class VirtualMachineSchedulesClientImpl implements VirtualMachineSc
      * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ScheduleInner> list(
-        String resourceGroupName,
-        String labName,
-        String virtualMachineName,
-        String expand,
-        String filter,
-        Integer top,
-        String orderby,
-        Context context) {
+    public PagedIterable<ScheduleInner> list(String resourceGroupName, String labName, String virtualMachineName,
+        String expand, String filter, Integer top, String orderby, Context context) {
         return new PagedIterable<>(
             listAsync(resourceGroupName, labName, virtualMachineName, expand, filter, top, orderby, context));
     }
@@ -485,19 +362,15 @@ public final class VirtualMachineSchedulesClientImpl implements VirtualMachineSc
      * @return schedule along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ScheduleInner>> getWithResponseAsync(
-        String resourceGroupName, String labName, String virtualMachineName, String name, String expand) {
+    private Mono<Response<ScheduleInner>> getWithResponseAsync(String resourceGroupName, String labName,
+        String virtualMachineName, String name, String expand) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -516,19 +389,8 @@ public final class VirtualMachineSchedulesClientImpl implements VirtualMachineSc
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            labName,
-                            virtualMachineName,
-                            name,
-                            expand,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+                context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                    labName, virtualMachineName, name, expand, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -547,24 +409,15 @@ public final class VirtualMachineSchedulesClientImpl implements VirtualMachineSc
      * @return schedule along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ScheduleInner>> getWithResponseAsync(
-        String resourceGroupName,
-        String labName,
-        String virtualMachineName,
-        String name,
-        String expand,
-        Context context) {
+    private Mono<Response<ScheduleInner>> getWithResponseAsync(String resourceGroupName, String labName,
+        String virtualMachineName, String name, String expand, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -582,18 +435,8 @@ public final class VirtualMachineSchedulesClientImpl implements VirtualMachineSc
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                labName,
-                virtualMachineName,
-                name,
-                expand,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, labName,
+            virtualMachineName, name, expand, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -609,8 +452,8 @@ public final class VirtualMachineSchedulesClientImpl implements VirtualMachineSc
      * @return schedule on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ScheduleInner> getAsync(
-        String resourceGroupName, String labName, String virtualMachineName, String name) {
+    private Mono<ScheduleInner> getAsync(String resourceGroupName, String labName, String virtualMachineName,
+        String name) {
         final String expand = null;
         return getWithResponseAsync(resourceGroupName, labName, virtualMachineName, name, expand)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
@@ -631,13 +474,8 @@ public final class VirtualMachineSchedulesClientImpl implements VirtualMachineSc
      * @return schedule along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ScheduleInner> getWithResponse(
-        String resourceGroupName,
-        String labName,
-        String virtualMachineName,
-        String name,
-        String expand,
-        Context context) {
+    public Response<ScheduleInner> getWithResponse(String resourceGroupName, String labName, String virtualMachineName,
+        String name, String expand, Context context) {
         return getWithResponseAsync(resourceGroupName, labName, virtualMachineName, name, expand, context).block();
     }
 
@@ -673,19 +511,15 @@ public final class VirtualMachineSchedulesClientImpl implements VirtualMachineSc
      * @return a schedule along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ScheduleInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String labName, String virtualMachineName, String name, ScheduleInner schedule) {
+    private Mono<Response<ScheduleInner>> createOrUpdateWithResponseAsync(String resourceGroupName, String labName,
+        String virtualMachineName, String name, ScheduleInner schedule) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -708,20 +542,9 @@ public final class VirtualMachineSchedulesClientImpl implements VirtualMachineSc
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            labName,
-                            virtualMachineName,
-                            name,
-                            this.client.getApiVersion(),
-                            schedule,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, labName, virtualMachineName, name, this.client.getApiVersion(), schedule, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -740,24 +563,15 @@ public final class VirtualMachineSchedulesClientImpl implements VirtualMachineSc
      * @return a schedule along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ScheduleInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String labName,
-        String virtualMachineName,
-        String name,
-        ScheduleInner schedule,
-        Context context) {
+    private Mono<Response<ScheduleInner>> createOrUpdateWithResponseAsync(String resourceGroupName, String labName,
+        String virtualMachineName, String name, ScheduleInner schedule, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -780,18 +594,8 @@ public final class VirtualMachineSchedulesClientImpl implements VirtualMachineSc
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                labName,
-                virtualMachineName,
-                name,
-                this.client.getApiVersion(),
-                schedule,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            labName, virtualMachineName, name, this.client.getApiVersion(), schedule, accept, context);
     }
 
     /**
@@ -808,8 +612,8 @@ public final class VirtualMachineSchedulesClientImpl implements VirtualMachineSc
      * @return a schedule on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ScheduleInner> createOrUpdateAsync(
-        String resourceGroupName, String labName, String virtualMachineName, String name, ScheduleInner schedule) {
+    private Mono<ScheduleInner> createOrUpdateAsync(String resourceGroupName, String labName, String virtualMachineName,
+        String name, ScheduleInner schedule) {
         return createOrUpdateWithResponseAsync(resourceGroupName, labName, virtualMachineName, name, schedule)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -829,13 +633,8 @@ public final class VirtualMachineSchedulesClientImpl implements VirtualMachineSc
      * @return a schedule along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ScheduleInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String labName,
-        String virtualMachineName,
-        String name,
-        ScheduleInner schedule,
-        Context context) {
+    public Response<ScheduleInner> createOrUpdateWithResponse(String resourceGroupName, String labName,
+        String virtualMachineName, String name, ScheduleInner schedule, Context context) {
         return createOrUpdateWithResponseAsync(resourceGroupName, labName, virtualMachineName, name, schedule, context)
             .block();
     }
@@ -854,8 +653,8 @@ public final class VirtualMachineSchedulesClientImpl implements VirtualMachineSc
      * @return a schedule.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ScheduleInner createOrUpdate(
-        String resourceGroupName, String labName, String virtualMachineName, String name, ScheduleInner schedule) {
+    public ScheduleInner createOrUpdate(String resourceGroupName, String labName, String virtualMachineName,
+        String name, ScheduleInner schedule) {
         return createOrUpdateWithResponse(resourceGroupName, labName, virtualMachineName, name, schedule, Context.NONE)
             .getValue();
     }
@@ -873,19 +672,15 @@ public final class VirtualMachineSchedulesClientImpl implements VirtualMachineSc
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String labName, String virtualMachineName, String name) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String labName,
+        String virtualMachineName, String name) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -903,19 +698,8 @@ public final class VirtualMachineSchedulesClientImpl implements VirtualMachineSc
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            labName,
-                            virtualMachineName,
-                            name,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, labName, virtualMachineName, name, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -933,19 +717,15 @@ public final class VirtualMachineSchedulesClientImpl implements VirtualMachineSc
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String labName, String virtualMachineName, String name, Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String labName,
+        String virtualMachineName, String name, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -963,17 +743,8 @@ public final class VirtualMachineSchedulesClientImpl implements VirtualMachineSc
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                labName,
-                virtualMachineName,
-                name,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, labName,
+            virtualMachineName, name, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -1008,8 +779,8 @@ public final class VirtualMachineSchedulesClientImpl implements VirtualMachineSc
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String labName, String virtualMachineName, String name, Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String labName, String virtualMachineName,
+        String name, Context context) {
         return deleteWithResponseAsync(resourceGroupName, labName, virtualMachineName, name, context).block();
     }
 
@@ -1043,19 +814,15 @@ public final class VirtualMachineSchedulesClientImpl implements VirtualMachineSc
      * @return a schedule along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ScheduleInner>> updateWithResponseAsync(
-        String resourceGroupName, String labName, String virtualMachineName, String name, ScheduleFragment schedule) {
+    private Mono<Response<ScheduleInner>> updateWithResponseAsync(String resourceGroupName, String labName,
+        String virtualMachineName, String name, ScheduleFragment schedule) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1079,19 +846,8 @@ public final class VirtualMachineSchedulesClientImpl implements VirtualMachineSc
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            labName,
-                            virtualMachineName,
-                            name,
-                            this.client.getApiVersion(),
-                            schedule,
-                            accept,
-                            context))
+                context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                    labName, virtualMachineName, name, this.client.getApiVersion(), schedule, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1110,24 +866,15 @@ public final class VirtualMachineSchedulesClientImpl implements VirtualMachineSc
      * @return a schedule along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ScheduleInner>> updateWithResponseAsync(
-        String resourceGroupName,
-        String labName,
-        String virtualMachineName,
-        String name,
-        ScheduleFragment schedule,
-        Context context) {
+    private Mono<Response<ScheduleInner>> updateWithResponseAsync(String resourceGroupName, String labName,
+        String virtualMachineName, String name, ScheduleFragment schedule, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1150,18 +897,8 @@ public final class VirtualMachineSchedulesClientImpl implements VirtualMachineSc
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                labName,
-                virtualMachineName,
-                name,
-                this.client.getApiVersion(),
-                schedule,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, labName,
+            virtualMachineName, name, this.client.getApiVersion(), schedule, accept, context);
     }
 
     /**
@@ -1178,8 +915,8 @@ public final class VirtualMachineSchedulesClientImpl implements VirtualMachineSc
      * @return a schedule on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ScheduleInner> updateAsync(
-        String resourceGroupName, String labName, String virtualMachineName, String name, ScheduleFragment schedule) {
+    private Mono<ScheduleInner> updateAsync(String resourceGroupName, String labName, String virtualMachineName,
+        String name, ScheduleFragment schedule) {
         return updateWithResponseAsync(resourceGroupName, labName, virtualMachineName, name, schedule)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -1199,13 +936,8 @@ public final class VirtualMachineSchedulesClientImpl implements VirtualMachineSc
      * @return a schedule along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ScheduleInner> updateWithResponse(
-        String resourceGroupName,
-        String labName,
-        String virtualMachineName,
-        String name,
-        ScheduleFragment schedule,
-        Context context) {
+    public Response<ScheduleInner> updateWithResponse(String resourceGroupName, String labName,
+        String virtualMachineName, String name, ScheduleFragment schedule, Context context) {
         return updateWithResponseAsync(resourceGroupName, labName, virtualMachineName, name, schedule, context).block();
     }
 
@@ -1223,8 +955,8 @@ public final class VirtualMachineSchedulesClientImpl implements VirtualMachineSc
      * @return a schedule.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ScheduleInner update(
-        String resourceGroupName, String labName, String virtualMachineName, String name, ScheduleFragment schedule) {
+    public ScheduleInner update(String resourceGroupName, String labName, String virtualMachineName, String name,
+        ScheduleFragment schedule) {
         return updateWithResponse(resourceGroupName, labName, virtualMachineName, name, schedule, Context.NONE)
             .getValue();
     }
@@ -1242,19 +974,15 @@ public final class VirtualMachineSchedulesClientImpl implements VirtualMachineSc
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> executeWithResponseAsync(
-        String resourceGroupName, String labName, String virtualMachineName, String name) {
+    private Mono<Response<Flux<ByteBuffer>>> executeWithResponseAsync(String resourceGroupName, String labName,
+        String virtualMachineName, String name) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1272,19 +1000,8 @@ public final class VirtualMachineSchedulesClientImpl implements VirtualMachineSc
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .execute(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            labName,
-                            virtualMachineName,
-                            name,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.execute(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, labName, virtualMachineName, name, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1302,19 +1019,15 @@ public final class VirtualMachineSchedulesClientImpl implements VirtualMachineSc
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> executeWithResponseAsync(
-        String resourceGroupName, String labName, String virtualMachineName, String name, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> executeWithResponseAsync(String resourceGroupName, String labName,
+        String virtualMachineName, String name, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1332,17 +1045,8 @@ public final class VirtualMachineSchedulesClientImpl implements VirtualMachineSc
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .execute(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                labName,
-                virtualMachineName,
-                name,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.execute(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, labName,
+            virtualMachineName, name, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -1358,14 +1062,12 @@ public final class VirtualMachineSchedulesClientImpl implements VirtualMachineSc
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginExecuteAsync(
-        String resourceGroupName, String labName, String virtualMachineName, String name) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            executeWithResponseAsync(resourceGroupName, labName, virtualMachineName, name);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginExecuteAsync(String resourceGroupName, String labName,
+        String virtualMachineName, String name) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = executeWithResponseAsync(resourceGroupName, labName, virtualMachineName, name);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
@@ -1382,14 +1084,13 @@ public final class VirtualMachineSchedulesClientImpl implements VirtualMachineSc
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginExecuteAsync(
-        String resourceGroupName, String labName, String virtualMachineName, String name, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginExecuteAsync(String resourceGroupName, String labName,
+        String virtualMachineName, String name, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            executeWithResponseAsync(resourceGroupName, labName, virtualMachineName, name, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = executeWithResponseAsync(resourceGroupName, labName, virtualMachineName, name, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
@@ -1405,8 +1106,8 @@ public final class VirtualMachineSchedulesClientImpl implements VirtualMachineSc
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginExecute(
-        String resourceGroupName, String labName, String virtualMachineName, String name) {
+    public SyncPoller<PollResult<Void>, Void> beginExecute(String resourceGroupName, String labName,
+        String virtualMachineName, String name) {
         return this.beginExecuteAsync(resourceGroupName, labName, virtualMachineName, name).getSyncPoller();
     }
 
@@ -1424,8 +1125,8 @@ public final class VirtualMachineSchedulesClientImpl implements VirtualMachineSc
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginExecute(
-        String resourceGroupName, String labName, String virtualMachineName, String name, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginExecute(String resourceGroupName, String labName,
+        String virtualMachineName, String name, Context context) {
         return this.beginExecuteAsync(resourceGroupName, labName, virtualMachineName, name, context).getSyncPoller();
     }
 
@@ -1443,8 +1144,7 @@ public final class VirtualMachineSchedulesClientImpl implements VirtualMachineSc
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> executeAsync(String resourceGroupName, String labName, String virtualMachineName, String name) {
-        return beginExecuteAsync(resourceGroupName, labName, virtualMachineName, name)
-            .last()
+        return beginExecuteAsync(resourceGroupName, labName, virtualMachineName, name).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1462,10 +1162,9 @@ public final class VirtualMachineSchedulesClientImpl implements VirtualMachineSc
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> executeAsync(
-        String resourceGroupName, String labName, String virtualMachineName, String name, Context context) {
-        return beginExecuteAsync(resourceGroupName, labName, virtualMachineName, name, context)
-            .last()
+    private Mono<Void> executeAsync(String resourceGroupName, String labName, String virtualMachineName, String name,
+        Context context) {
+        return beginExecuteAsync(resourceGroupName, labName, virtualMachineName, name, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1498,8 +1197,8 @@ public final class VirtualMachineSchedulesClientImpl implements VirtualMachineSc
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void execute(
-        String resourceGroupName, String labName, String virtualMachineName, String name, Context context) {
+    public void execute(String resourceGroupName, String labName, String virtualMachineName, String name,
+        Context context) {
         executeAsync(resourceGroupName, labName, virtualMachineName, name, context).block();
     }
 
@@ -1520,23 +1219,13 @@ public final class VirtualMachineSchedulesClientImpl implements VirtualMachineSc
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ScheduleInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<ScheduleInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1558,23 +1247,13 @@ public final class VirtualMachineSchedulesClientImpl implements VirtualMachineSc
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

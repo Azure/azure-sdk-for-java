@@ -5,48 +5,46 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Describes the HTTP configuration.
  */
 @Fluent
-public final class ConnectionMonitorHttpConfiguration {
+public final class ConnectionMonitorHttpConfiguration implements JsonSerializable<ConnectionMonitorHttpConfiguration> {
     /*
      * The port to connect to.
      */
-    @JsonProperty(value = "port")
     private Integer port;
 
     /*
      * The HTTP method to use.
      */
-    @JsonProperty(value = "method")
     private HttpConfigurationMethod method;
 
     /*
      * The path component of the URI. For instance, "/dir1/dir2".
      */
-    @JsonProperty(value = "path")
     private String path;
 
     /*
      * The HTTP headers to transmit with the request.
      */
-    @JsonProperty(value = "requestHeaders")
     private List<HttpHeader> requestHeaders;
 
     /*
      * HTTP status codes to consider successful. For instance, "2xx,301-304,418".
      */
-    @JsonProperty(value = "validStatusCodeRanges")
     private List<String> validStatusCodeRanges;
 
     /*
      * Value indicating whether HTTPS is preferred over HTTP in cases where the choice is not explicit.
      */
-    @JsonProperty(value = "preferHTTPS")
     private Boolean preferHttps;
 
     /**
@@ -188,5 +186,63 @@ public final class ConnectionMonitorHttpConfiguration {
         if (requestHeaders() != null) {
             requestHeaders().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("port", this.port);
+        jsonWriter.writeStringField("method", this.method == null ? null : this.method.toString());
+        jsonWriter.writeStringField("path", this.path);
+        jsonWriter.writeArrayField("requestHeaders", this.requestHeaders,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("validStatusCodeRanges", this.validStatusCodeRanges,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeBooleanField("preferHTTPS", this.preferHttps);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConnectionMonitorHttpConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConnectionMonitorHttpConfiguration if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ConnectionMonitorHttpConfiguration.
+     */
+    public static ConnectionMonitorHttpConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConnectionMonitorHttpConfiguration deserializedConnectionMonitorHttpConfiguration
+                = new ConnectionMonitorHttpConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("port".equals(fieldName)) {
+                    deserializedConnectionMonitorHttpConfiguration.port = reader.getNullable(JsonReader::getInt);
+                } else if ("method".equals(fieldName)) {
+                    deserializedConnectionMonitorHttpConfiguration.method
+                        = HttpConfigurationMethod.fromString(reader.getString());
+                } else if ("path".equals(fieldName)) {
+                    deserializedConnectionMonitorHttpConfiguration.path = reader.getString();
+                } else if ("requestHeaders".equals(fieldName)) {
+                    List<HttpHeader> requestHeaders = reader.readArray(reader1 -> HttpHeader.fromJson(reader1));
+                    deserializedConnectionMonitorHttpConfiguration.requestHeaders = requestHeaders;
+                } else if ("validStatusCodeRanges".equals(fieldName)) {
+                    List<String> validStatusCodeRanges = reader.readArray(reader1 -> reader1.getString());
+                    deserializedConnectionMonitorHttpConfiguration.validStatusCodeRanges = validStatusCodeRanges;
+                } else if ("preferHTTPS".equals(fieldName)) {
+                    deserializedConnectionMonitorHttpConfiguration.preferHttps
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConnectionMonitorHttpConfiguration;
+        });
     }
 }

@@ -5,7 +5,12 @@
 package com.azure.resourcemanager.cosmos.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.cosmos.models.MetricName;
+import com.azure.resourcemanager.cosmos.models.UnitType;
+import java.io.IOException;
 
 /**
  * The partition level usage data for a usage request.
@@ -15,14 +20,37 @@ public final class PartitionUsageInner extends UsageInner {
     /*
      * The partition id (GUID identifier) of the usages.
      */
-    @JsonProperty(value = "partitionId", access = JsonProperty.Access.WRITE_ONLY)
     private String partitionId;
 
     /*
      * The partition key range id (integer identifier) of the usages.
      */
-    @JsonProperty(value = "partitionKeyRangeId", access = JsonProperty.Access.WRITE_ONLY)
     private String partitionKeyRangeId;
+
+    /*
+     * Current value for this metric
+     */
+    private Long currentValue;
+
+    /*
+     * Maximum value for this metric
+     */
+    private Long limit;
+
+    /*
+     * The quota period used to summarize the usage values.
+     */
+    private String quotaPeriod;
+
+    /*
+     * The name information for the metric.
+     */
+    private MetricName name;
+
+    /*
+     * The unit of the metric.
+     */
+    private UnitType unit;
 
     /**
      * Creates an instance of PartitionUsageInner class.
@@ -49,12 +77,111 @@ public final class PartitionUsageInner extends UsageInner {
     }
 
     /**
+     * Get the currentValue property: Current value for this metric.
+     * 
+     * @return the currentValue value.
+     */
+    @Override
+    public Long currentValue() {
+        return this.currentValue;
+    }
+
+    /**
+     * Get the limit property: Maximum value for this metric.
+     * 
+     * @return the limit value.
+     */
+    @Override
+    public Long limit() {
+        return this.limit;
+    }
+
+    /**
+     * Get the quotaPeriod property: The quota period used to summarize the usage values.
+     * 
+     * @return the quotaPeriod value.
+     */
+    @Override
+    public String quotaPeriod() {
+        return this.quotaPeriod;
+    }
+
+    /**
+     * Get the name property: The name information for the metric.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public MetricName name() {
+        return this.name;
+    }
+
+    /**
+     * Get the unit property: The unit of the metric.
+     * 
+     * @return the unit value.
+     */
+    @Override
+    public UnitType unit() {
+        return this.unit;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+        if (name() != null) {
+            name().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PartitionUsageInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PartitionUsageInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PartitionUsageInner.
+     */
+    public static PartitionUsageInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PartitionUsageInner deserializedPartitionUsageInner = new PartitionUsageInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("unit".equals(fieldName)) {
+                    deserializedPartitionUsageInner.unit = UnitType.fromString(reader.getString());
+                } else if ("name".equals(fieldName)) {
+                    deserializedPartitionUsageInner.name = MetricName.fromJson(reader);
+                } else if ("quotaPeriod".equals(fieldName)) {
+                    deserializedPartitionUsageInner.quotaPeriod = reader.getString();
+                } else if ("limit".equals(fieldName)) {
+                    deserializedPartitionUsageInner.limit = reader.getNullable(JsonReader::getLong);
+                } else if ("currentValue".equals(fieldName)) {
+                    deserializedPartitionUsageInner.currentValue = reader.getNullable(JsonReader::getLong);
+                } else if ("partitionId".equals(fieldName)) {
+                    deserializedPartitionUsageInner.partitionId = reader.getString();
+                } else if ("partitionKeyRangeId".equals(fieldName)) {
+                    deserializedPartitionUsageInner.partitionKeyRangeId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPartitionUsageInner;
+        });
     }
 }

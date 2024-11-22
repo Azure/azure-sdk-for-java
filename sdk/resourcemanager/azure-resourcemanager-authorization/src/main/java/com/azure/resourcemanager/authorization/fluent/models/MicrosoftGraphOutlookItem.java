@@ -5,57 +5,59 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.util.HashMap;
+import java.time.format.DateTimeFormatter;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/** outlookItem. */
+/**
+ * outlookItem.
+ */
 @Fluent
 public class MicrosoftGraphOutlookItem extends MicrosoftGraphEntity {
     /*
      * The categories associated with the item
      */
-    @JsonProperty(value = "categories")
     private List<String> categories;
 
     /*
      * Identifies the version of the item. Every time the item is changed, changeKey changes as well. This allows
      * Exchange to apply changes to the correct version of the object. Read-only.
      */
-    @JsonProperty(value = "changeKey")
     private String changeKey;
 
     /*
      * The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For
      * example, midnight UTC on Jan 1, 2014 would look like this: '2014-01-01T00:00:00Z'
      */
-    @JsonProperty(value = "createdDateTime")
     private OffsetDateTime createdDateTime;
 
     /*
      * The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For
      * example, midnight UTC on Jan 1, 2014 would look like this: '2014-01-01T00:00:00Z'
      */
-    @JsonProperty(value = "lastModifiedDateTime")
     private OffsetDateTime lastModifiedDateTime;
 
     /*
      * outlookItem
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphOutlookItem class. */
+    /**
+     * Creates an instance of MicrosoftGraphOutlookItem class.
+     */
     public MicrosoftGraphOutlookItem() {
     }
 
     /**
      * Get the categories property: The categories associated with the item.
-     *
+     * 
      * @return the categories value.
      */
     public List<String> categories() {
@@ -64,7 +66,7 @@ public class MicrosoftGraphOutlookItem extends MicrosoftGraphEntity {
 
     /**
      * Set the categories property: The categories associated with the item.
-     *
+     * 
      * @param categories the categories value to set.
      * @return the MicrosoftGraphOutlookItem object itself.
      */
@@ -76,7 +78,7 @@ public class MicrosoftGraphOutlookItem extends MicrosoftGraphEntity {
     /**
      * Get the changeKey property: Identifies the version of the item. Every time the item is changed, changeKey changes
      * as well. This allows Exchange to apply changes to the correct version of the object. Read-only.
-     *
+     * 
      * @return the changeKey value.
      */
     public String changeKey() {
@@ -86,7 +88,7 @@ public class MicrosoftGraphOutlookItem extends MicrosoftGraphEntity {
     /**
      * Set the changeKey property: Identifies the version of the item. Every time the item is changed, changeKey changes
      * as well. This allows Exchange to apply changes to the correct version of the object. Read-only.
-     *
+     * 
      * @param changeKey the changeKey value to set.
      * @return the MicrosoftGraphOutlookItem object itself.
      */
@@ -98,7 +100,7 @@ public class MicrosoftGraphOutlookItem extends MicrosoftGraphEntity {
     /**
      * Get the createdDateTime property: The Timestamp type represents date and time information using ISO 8601 format
      * and is always in UTC time. For example, midnight UTC on Jan 1, 2014 would look like this: '2014-01-01T00:00:00Z'.
-     *
+     * 
      * @return the createdDateTime value.
      */
     public OffsetDateTime createdDateTime() {
@@ -108,7 +110,7 @@ public class MicrosoftGraphOutlookItem extends MicrosoftGraphEntity {
     /**
      * Set the createdDateTime property: The Timestamp type represents date and time information using ISO 8601 format
      * and is always in UTC time. For example, midnight UTC on Jan 1, 2014 would look like this: '2014-01-01T00:00:00Z'.
-     *
+     * 
      * @param createdDateTime the createdDateTime value to set.
      * @return the MicrosoftGraphOutlookItem object itself.
      */
@@ -121,7 +123,7 @@ public class MicrosoftGraphOutlookItem extends MicrosoftGraphEntity {
      * Get the lastModifiedDateTime property: The Timestamp type represents date and time information using ISO 8601
      * format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 would look like this:
      * '2014-01-01T00:00:00Z'.
-     *
+     * 
      * @return the lastModifiedDateTime value.
      */
     public OffsetDateTime lastModifiedDateTime() {
@@ -132,7 +134,7 @@ public class MicrosoftGraphOutlookItem extends MicrosoftGraphEntity {
      * Set the lastModifiedDateTime property: The Timestamp type represents date and time information using ISO 8601
      * format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 would look like this:
      * '2014-01-01T00:00:00Z'.
-     *
+     * 
      * @param lastModifiedDateTime the lastModifiedDateTime value to set.
      * @return the MicrosoftGraphOutlookItem object itself.
      */
@@ -143,17 +145,16 @@ public class MicrosoftGraphOutlookItem extends MicrosoftGraphEntity {
 
     /**
      * Get the additionalProperties property: outlookItem.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: outlookItem.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphOutlookItem object itself.
      */
@@ -162,15 +163,9 @@ public class MicrosoftGraphOutlookItem extends MicrosoftGraphEntity {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphOutlookItem withId(String id) {
         super.withId(id);
@@ -179,11 +174,77 @@ public class MicrosoftGraphOutlookItem extends MicrosoftGraphEntity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeArrayField("categories", this.categories, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("changeKey", this.changeKey);
+        jsonWriter.writeStringField("createdDateTime",
+            this.createdDateTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.createdDateTime));
+        jsonWriter.writeStringField("lastModifiedDateTime",
+            this.lastModifiedDateTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastModifiedDateTime));
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphOutlookItem from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphOutlookItem if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphOutlookItem.
+     */
+    public static MicrosoftGraphOutlookItem fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphOutlookItem deserializedMicrosoftGraphOutlookItem = new MicrosoftGraphOutlookItem();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphOutlookItem.withId(reader.getString());
+                } else if ("categories".equals(fieldName)) {
+                    List<String> categories = reader.readArray(reader1 -> reader1.getString());
+                    deserializedMicrosoftGraphOutlookItem.categories = categories;
+                } else if ("changeKey".equals(fieldName)) {
+                    deserializedMicrosoftGraphOutlookItem.changeKey = reader.getString();
+                } else if ("createdDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphOutlookItem.createdDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastModifiedDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphOutlookItem.lastModifiedDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphOutlookItem.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphOutlookItem;
+        });
     }
 }

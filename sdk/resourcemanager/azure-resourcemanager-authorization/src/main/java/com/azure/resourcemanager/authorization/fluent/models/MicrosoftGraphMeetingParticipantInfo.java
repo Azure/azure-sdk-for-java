@@ -5,46 +5,49 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** meetingParticipantInfo. */
+/**
+ * meetingParticipantInfo.
+ */
 @Fluent
-public final class MicrosoftGraphMeetingParticipantInfo {
+public final class MicrosoftGraphMeetingParticipantInfo
+    implements JsonSerializable<MicrosoftGraphMeetingParticipantInfo> {
     /*
      * identitySet
      */
-    @JsonProperty(value = "identity")
     private MicrosoftGraphIdentitySet identity;
 
     /*
      * onlineMeetingRole
      */
-    @JsonProperty(value = "role")
     private MicrosoftGraphOnlineMeetingRole role;
 
     /*
      * User principal name of the participant.
      */
-    @JsonProperty(value = "upn")
     private String upn;
 
     /*
      * meetingParticipantInfo
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphMeetingParticipantInfo class. */
+    /**
+     * Creates an instance of MicrosoftGraphMeetingParticipantInfo class.
+     */
     public MicrosoftGraphMeetingParticipantInfo() {
     }
 
     /**
      * Get the identity property: identitySet.
-     *
+     * 
      * @return the identity value.
      */
     public MicrosoftGraphIdentitySet identity() {
@@ -53,7 +56,7 @@ public final class MicrosoftGraphMeetingParticipantInfo {
 
     /**
      * Set the identity property: identitySet.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the MicrosoftGraphMeetingParticipantInfo object itself.
      */
@@ -64,7 +67,7 @@ public final class MicrosoftGraphMeetingParticipantInfo {
 
     /**
      * Get the role property: onlineMeetingRole.
-     *
+     * 
      * @return the role value.
      */
     public MicrosoftGraphOnlineMeetingRole role() {
@@ -73,7 +76,7 @@ public final class MicrosoftGraphMeetingParticipantInfo {
 
     /**
      * Set the role property: onlineMeetingRole.
-     *
+     * 
      * @param role the role value to set.
      * @return the MicrosoftGraphMeetingParticipantInfo object itself.
      */
@@ -84,7 +87,7 @@ public final class MicrosoftGraphMeetingParticipantInfo {
 
     /**
      * Get the upn property: User principal name of the participant.
-     *
+     * 
      * @return the upn value.
      */
     public String upn() {
@@ -93,7 +96,7 @@ public final class MicrosoftGraphMeetingParticipantInfo {
 
     /**
      * Set the upn property: User principal name of the participant.
-     *
+     * 
      * @param upn the upn value to set.
      * @return the MicrosoftGraphMeetingParticipantInfo object itself.
      */
@@ -104,17 +107,16 @@ public final class MicrosoftGraphMeetingParticipantInfo {
 
     /**
      * Get the additionalProperties property: meetingParticipantInfo.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: meetingParticipantInfo.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphMeetingParticipantInfo object itself.
      */
@@ -123,22 +125,70 @@ public final class MicrosoftGraphMeetingParticipantInfo {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (identity() != null) {
             identity().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("identity", this.identity);
+        jsonWriter.writeStringField("role", this.role == null ? null : this.role.toString());
+        jsonWriter.writeStringField("upn", this.upn);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphMeetingParticipantInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphMeetingParticipantInfo if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphMeetingParticipantInfo.
+     */
+    public static MicrosoftGraphMeetingParticipantInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphMeetingParticipantInfo deserializedMicrosoftGraphMeetingParticipantInfo
+                = new MicrosoftGraphMeetingParticipantInfo();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("identity".equals(fieldName)) {
+                    deserializedMicrosoftGraphMeetingParticipantInfo.identity
+                        = MicrosoftGraphIdentitySet.fromJson(reader);
+                } else if ("role".equals(fieldName)) {
+                    deserializedMicrosoftGraphMeetingParticipantInfo.role
+                        = MicrosoftGraphOnlineMeetingRole.fromString(reader.getString());
+                } else if ("upn".equals(fieldName)) {
+                    deserializedMicrosoftGraphMeetingParticipantInfo.upn = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphMeetingParticipantInfo.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphMeetingParticipantInfo;
+        });
     }
 }

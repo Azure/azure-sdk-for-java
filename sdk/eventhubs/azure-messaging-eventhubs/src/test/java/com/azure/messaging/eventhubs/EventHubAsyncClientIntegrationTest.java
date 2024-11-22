@@ -4,13 +4,9 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.AmqpTransportType;
-import com.azure.core.amqp.implementation.ConnectionStringProperties;
-import com.azure.core.credential.AzureNamedKeyCredential;
-import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
@@ -25,9 +21,8 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 import static com.azure.messaging.eventhubs.EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME;
+import static com.azure.messaging.eventhubs.TestUtils.getEventHubName;
 import static com.azure.messaging.eventhubs.TestUtils.isMatchingEvent;
-import static java.nio.charset.StandardCharsets.UTF_8;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Tests scenarios on {@link EventHubAsyncClient}.
@@ -38,7 +33,8 @@ class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
     private static final int NUMBER_OF_EVENTS = 5;
     private static final String PARTITION_ID = "1";
     private IntegrationTestEventData testEventData;
-    private static final String TEST_CONTENTS = "SSLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vehicula posuere lobortis. Aliquam finibus volutpat dolor, faucibus pellentesque ipsum bibendum vitae. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Ut sit amet urna hendrerit, dapibus justo a, sodales justo. Mauris finibus augue id pulvinar congue. Nam maximus luctus ipsum, at commodo ligula euismod ac. Phasellus vitae lacus sit amet diam porta placerat. \nUt sodales efficitur sapien ut posuere. Morbi sed tellus est. Proin eu erat purus. Proin massa nunc, condimentum id iaculis dignissim, consectetur et odio. Cras suscipit sem eu libero aliquam tincidunt. Nullam ut arcu suscipit, eleifend velit in, cursus libero. Ut eleifend facilisis odio sit amet feugiat. Phasellus at nunc sit amet elit sagittis commodo ac in nisi. Fusce vitae aliquam quam. Integer vel nibh euismod, tempus elit vitae, pharetra est. Duis vulputate enim a elementum dignissim. Morbi dictum enim id elit scelerisque, in elementum nulla pharetra. \nAenean aliquet aliquet condimentum. Proin dapibus dui id libero tempus feugiat. Sed commodo ligula a lectus mattis, vitae tincidunt velit auctor. Fusce quis semper dui. Phasellus eu efficitur sem. Ut non sem sit amet enim condimentum venenatis id dictum massa. Nullam sagittis lacus a neque sodales, et ultrices arcu mattis. Aliquam erat volutpat. \nAenean fringilla quam elit, id mattis purus vestibulum nec. Praesent porta eros in dapibus molestie. Vestibulum orci libero, tincidunt et turpis eget, condimentum lobortis enim. Fusce suscipit ante et mauris consequat cursus nec laoreet lorem. Maecenas in sollicitudin diam, non tincidunt purus. Nunc mauris purus, laoreet eget interdum vitae, placerat a sapien. In mi risus, blandit eu facilisis nec, molestie suscipit leo. Pellentesque molestie urna vitae dui faucibus bibendum. \nDonec quis ipsum ultricies, imperdiet ex vel, scelerisque eros. Ut at urna arcu. Vestibulum rutrum odio dolor, vitae cursus nunc pulvinar vel. Donec accumsan sapien in malesuada tempor. Maecenas in condimentum eros. Sed vestibulum facilisis massa a iaculis. Etiam et nibh felis. Donec maximus, sem quis vestibulum gravida, turpis risus congue dolor, pharetra tincidunt lectus nisi at velit.";
+    private static final String TEST_CONTENTS
+        = "SSLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vehicula posuere lobortis. Aliquam finibus volutpat dolor, faucibus pellentesque ipsum bibendum vitae. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Ut sit amet urna hendrerit, dapibus justo a, sodales justo. Mauris finibus augue id pulvinar congue. Nam maximus luctus ipsum, at commodo ligula euismod ac. Phasellus vitae lacus sit amet diam porta placerat. \nUt sodales efficitur sapien ut posuere. Morbi sed tellus est. Proin eu erat purus. Proin massa nunc, condimentum id iaculis dignissim, consectetur et odio. Cras suscipit sem eu libero aliquam tincidunt. Nullam ut arcu suscipit, eleifend velit in, cursus libero. Ut eleifend facilisis odio sit amet feugiat. Phasellus at nunc sit amet elit sagittis commodo ac in nisi. Fusce vitae aliquam quam. Integer vel nibh euismod, tempus elit vitae, pharetra est. Duis vulputate enim a elementum dignissim. Morbi dictum enim id elit scelerisque, in elementum nulla pharetra. \nAenean aliquet aliquet condimentum. Proin dapibus dui id libero tempus feugiat. Sed commodo ligula a lectus mattis, vitae tincidunt velit auctor. Fusce quis semper dui. Phasellus eu efficitur sem. Ut non sem sit amet enim condimentum venenatis id dictum massa. Nullam sagittis lacus a neque sodales, et ultrices arcu mattis. Aliquam erat volutpat. \nAenean fringilla quam elit, id mattis purus vestibulum nec. Praesent porta eros in dapibus molestie. Vestibulum orci libero, tincidunt et turpis eget, condimentum lobortis enim. Fusce suscipit ante et mauris consequat cursus nec laoreet lorem. Maecenas in sollicitudin diam, non tincidunt purus. Nunc mauris purus, laoreet eget interdum vitae, placerat a sapien. In mi risus, blandit eu facilisis nec, molestie suscipit leo. Pellentesque molestie urna vitae dui faucibus bibendum. \nDonec quis ipsum ultricies, imperdiet ex vel, scelerisque eros. Ut at urna arcu. Vestibulum rutrum odio dolor, vitae cursus nunc pulvinar vel. Donec accumsan sapien in malesuada tempor. Maecenas in condimentum eros. Sed vestibulum facilisis massa a iaculis. Etiam et nibh felis. Donec maximus, sem quis vestibulum gravida, turpis risus congue dolor, pharetra tincidunt lectus nisi at velit.";
 
     EventHubAsyncClientIntegrationTest() {
         super(new ClientLogger(EventHubAsyncClientIntegrationTest.class));
@@ -59,8 +55,7 @@ class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
     @EnumSource(value = AmqpTransportType.class)
     void receiveMessage(AmqpTransportType transportType) {
         // Arrange
-        final EventHubConsumerAsyncClient consumer = toClose(createBuilder()
-            .consumerGroup(DEFAULT_CONSUMER_GROUP_NAME)
+        final EventHubConsumerAsyncClient consumer = toClose(createBuilder().consumerGroup(DEFAULT_CONSUMER_GROUP_NAME)
             .transportType(transportType)
             .buildAsyncConsumerClient());
 
@@ -68,8 +63,7 @@ class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
         final EventPosition startingPosition = EventPosition.fromEnqueuedTime(lastEnqueued);
 
         // Act & Assert
-        StepVerifier.create(consumer.receiveFromPartition(PARTITION_ID, startingPosition)
-            .take(NUMBER_OF_EVENTS))
+        StepVerifier.create(consumer.receiveFromPartition(PARTITION_ID, startingPosition).take(NUMBER_OF_EVENTS))
             .expectNextCount(NUMBER_OF_EVENTS)
             .expectComplete()
             .verify(TIMEOUT);
@@ -85,9 +79,8 @@ class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
         final int numberOfClients = 3;
         final int numberOfEvents = testEventData.getEvents().size() - 2;
         final CountDownLatch countDownLatch = new CountDownLatch(numberOfClients);
-        final EventHubClientBuilder builder = createBuilder()
-            .transportType(transportType)
-            .consumerGroup(DEFAULT_CONSUMER_GROUP_NAME);
+        final EventHubClientBuilder builder
+            = createBuilder().transportType(transportType).consumerGroup(DEFAULT_CONSUMER_GROUP_NAME);
 
         final EventHubConsumerAsyncClient[] clients = new EventHubConsumerAsyncClient[numberOfClients];
         for (int i = 0; i < numberOfClients; i++) {
@@ -129,63 +122,11 @@ class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
         // Arrange
 
         // Act & Assert
-        try (EventHubAsyncClient client = createBuilder(true)
-            .buildAsyncClient()) {
-            StepVerifier.create(client.getProperties())
-                .assertNext(properties -> {
-                    Assertions.assertEquals(getEventHubName(), properties.getName());
-                    Assertions.assertEquals(NUMBER_OF_PARTITIONS, properties.getPartitionIds().stream().count());
-                })
-                .expectComplete()
-                .verify(TIMEOUT);
+        try (EventHubAsyncClient client = createBuilder(true).buildAsyncClient()) {
+            StepVerifier.create(client.getProperties()).assertNext(properties -> {
+                Assertions.assertEquals(getEventHubName(), properties.getName());
+                Assertions.assertEquals(NUMBER_OF_PARTITIONS, properties.getPartitionIds().stream().count());
+            }).expectComplete().verify(TIMEOUT);
         }
-    }
-
-    @Test
-    public void sendAndReceiveEventByAzureNameKeyCredential() {
-        ConnectionStringProperties properties = TestUtils.getConnectionStringProperties();
-        String fullyQualifiedNamespace = properties.getEndpoint().getHost();
-        String sharedAccessKeyName = properties.getSharedAccessKeyName();
-        String sharedAccessKey = properties.getSharedAccessKey();
-        String eventHubName = properties.getEntityPath();
-
-        final EventData testData = new EventData(TEST_CONTENTS.getBytes(UTF_8));
-
-        EventHubProducerAsyncClient asyncProducerClient = toClose(new EventHubClientBuilder()
-            .credential(fullyQualifiedNamespace, eventHubName,
-                new AzureNamedKeyCredential(sharedAccessKeyName, sharedAccessKey))
-            .buildAsyncProducerClient());
-
-        StepVerifier.create(asyncProducerClient.createBatch().flatMap(batch -> {
-            assertTrue(batch.tryAdd(testData));
-            return asyncProducerClient.send(batch);
-        }))
-            .expectComplete()
-            .verify(TIMEOUT);
-    }
-
-    @Test
-    public void sendAndReceiveEventByAzureSasCredential() {
-        Assumptions.assumeTrue(TestUtils.getConnectionString(true) != null,
-                "SAS was not set. Can't run test scenario.");
-
-        ConnectionStringProperties properties = TestUtils.getConnectionStringProperties(true);
-        String fullyQualifiedNamespace = properties.getEndpoint().getHost();
-        String sharedAccessSignature = properties.getSharedAccessSignature();
-        String eventHubName = properties.getEntityPath();
-
-        final EventData testData = new EventData(TEST_CONTENTS.getBytes(UTF_8));
-
-        EventHubProducerAsyncClient asyncProducerClient = toClose(new EventHubClientBuilder()
-                .credential(fullyQualifiedNamespace, eventHubName,
-                        new AzureSasCredential(sharedAccessSignature))
-                .buildAsyncProducerClient());
-
-        StepVerifier.create(asyncProducerClient.createBatch().flatMap(batch -> {
-            assertTrue(batch.tryAdd(testData));
-            return asyncProducerClient.send(batch);
-        }))
-            .expectComplete()
-            .verify(TIMEOUT);
     }
 }

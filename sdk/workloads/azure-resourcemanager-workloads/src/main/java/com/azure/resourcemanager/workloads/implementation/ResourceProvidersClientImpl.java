@@ -47,8 +47,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @param client the instance of the service client containing this operation class.
      */
     ResourceProvidersClientImpl(WorkloadsClientImpl client) {
-        this.service =
-            RestProxy.create(ResourceProvidersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(ResourceProvidersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -59,61 +59,45 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     @Host("{$host}")
     @ServiceInterface(name = "WorkloadsClientResou")
     public interface ResourceProvidersService {
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Workloads/locations/{location}/sapVirtualInstanceMetadata/default/getSizingRecommendations")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.Workloads/locations/{location}/sapVirtualInstanceMetadata/default/getSizingRecommendations")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SapSizingRecommendationResultInner>> sapSizingRecommendations(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("location") String location,
+        Mono<Response<SapSizingRecommendationResultInner>> sapSizingRecommendations(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("location") String location,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") SapSizingRecommendationRequest sapSizingRecommendation,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Workloads/locations/{location}/sapVirtualInstanceMetadata/default/getSapSupportedSku")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.Workloads/locations/{location}/sapVirtualInstanceMetadata/default/getSapSupportedSku")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SapSupportedResourceSkusResultInner>> sapSupportedSku(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("location") String location,
+        Mono<Response<SapSupportedResourceSkusResultInner>> sapSupportedSku(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("location") String location,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") SapSupportedSkusRequest sapSupportedSku,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Workloads/locations/{location}/sapVirtualInstanceMetadata/default/getDiskConfigurations")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.Workloads/locations/{location}/sapVirtualInstanceMetadata/default/getDiskConfigurations")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SapDiskConfigurationsResultInner>> sapDiskConfigurations(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("location") String location,
+        Mono<Response<SapDiskConfigurationsResultInner>> sapDiskConfigurations(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("location") String location,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") SapDiskConfigurationsRequest sapDiskConfigurations,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Workloads/locations/{location}/sapVirtualInstanceMetadata/default/getAvailabilityZoneDetails")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.Workloads/locations/{location}/sapVirtualInstanceMetadata/default/getAvailabilityZoneDetails")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SapAvailabilityZoneDetailsResultInner>> sapAvailabilityZoneDetails(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("location") String location,
-            @QueryParam("api-version") String apiVersion,
+            @HostParam("$host") String endpoint, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("location") String location, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") SapAvailabilityZoneDetailsRequest sapAvailabilityZoneDetails,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -132,16 +116,12 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     private Mono<Response<SapSizingRecommendationResultInner>> sapSizingRecommendationsWithResponseAsync(
         String location, SapSizingRecommendationRequest sapSizingRecommendation) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
@@ -152,16 +132,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .sapSizingRecommendations(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            location,
-                            this.client.getApiVersion(),
-                            sapSizingRecommendation,
-                            accept,
-                            context))
+                context -> service.sapSizingRecommendations(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    location, this.client.getApiVersion(), sapSizingRecommendation, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -182,16 +154,12 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     private Mono<Response<SapSizingRecommendationResultInner>> sapSizingRecommendationsWithResponseAsync(
         String location, SapSizingRecommendationRequest sapSizingRecommendation, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
@@ -201,15 +169,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .sapSizingRecommendations(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                location,
-                this.client.getApiVersion(),
-                sapSizingRecommendation,
-                accept,
-                context);
+        return service.sapSizingRecommendations(this.client.getEndpoint(), this.client.getSubscriptionId(), location,
+            this.client.getApiVersion(), sapSizingRecommendation, accept, context);
     }
 
     /**
@@ -244,8 +205,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      *     tier along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SapSizingRecommendationResultInner> sapSizingRecommendationsWithResponse(
-        String location, SapSizingRecommendationRequest sapSizingRecommendation, Context context) {
+    public Response<SapSizingRecommendationResultInner> sapSizingRecommendationsWithResponse(String location,
+        SapSizingRecommendationRequest sapSizingRecommendation, Context context) {
         return sapSizingRecommendationsWithResponseAsync(location, sapSizingRecommendation, context).block();
     }
 
@@ -278,19 +239,15 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SapSupportedResourceSkusResultInner>> sapSupportedSkuWithResponseAsync(
-        String location, SapSupportedSkusRequest sapSupportedSku) {
+    private Mono<Response<SapSupportedResourceSkusResultInner>> sapSupportedSkuWithResponseAsync(String location,
+        SapSupportedSkusRequest sapSupportedSku) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
@@ -300,17 +257,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .sapSupportedSku(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            location,
-                            this.client.getApiVersion(),
-                            sapSupportedSku,
-                            accept,
-                            context))
+            .withContext(context -> service.sapSupportedSku(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                location, this.client.getApiVersion(), sapSupportedSku, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -327,19 +275,15 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SapSupportedResourceSkusResultInner>> sapSupportedSkuWithResponseAsync(
-        String location, SapSupportedSkusRequest sapSupportedSku, Context context) {
+    private Mono<Response<SapSupportedResourceSkusResultInner>> sapSupportedSkuWithResponseAsync(String location,
+        SapSupportedSkusRequest sapSupportedSku, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
@@ -349,15 +293,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .sapSupportedSku(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                location,
-                this.client.getApiVersion(),
-                sapSupportedSku,
-                accept,
-                context);
+        return service.sapSupportedSku(this.client.getEndpoint(), this.client.getSubscriptionId(), location,
+            this.client.getApiVersion(), sapSupportedSku, accept, context);
     }
 
     /**
@@ -389,8 +326,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return a list of SAP supported SKUs for ASCS, Application and Database tier along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SapSupportedResourceSkusResultInner> sapSupportedSkuWithResponse(
-        String location, SapSupportedSkusRequest sapSupportedSku, Context context) {
+    public Response<SapSupportedResourceSkusResultInner> sapSupportedSkuWithResponse(String location,
+        SapSupportedSkusRequest sapSupportedSku, Context context) {
         return sapSupportedSkuWithResponseAsync(location, sapSupportedSku, context).block();
     }
 
@@ -421,19 +358,15 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SapDiskConfigurationsResultInner>> sapDiskConfigurationsWithResponseAsync(
-        String location, SapDiskConfigurationsRequest sapDiskConfigurations) {
+    private Mono<Response<SapDiskConfigurationsResultInner>> sapDiskConfigurationsWithResponseAsync(String location,
+        SapDiskConfigurationsRequest sapDiskConfigurations) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
@@ -444,16 +377,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .sapDiskConfigurations(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            location,
-                            this.client.getApiVersion(),
-                            sapDiskConfigurations,
-                            accept,
-                            context))
+                context -> service.sapDiskConfigurations(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    location, this.client.getApiVersion(), sapDiskConfigurations, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -470,19 +395,15 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SapDiskConfigurationsResultInner>> sapDiskConfigurationsWithResponseAsync(
-        String location, SapDiskConfigurationsRequest sapDiskConfigurations, Context context) {
+    private Mono<Response<SapDiskConfigurationsResultInner>> sapDiskConfigurationsWithResponseAsync(String location,
+        SapDiskConfigurationsRequest sapDiskConfigurations, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
@@ -492,15 +413,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .sapDiskConfigurations(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                location,
-                this.client.getApiVersion(),
-                sapDiskConfigurations,
-                accept,
-                context);
+        return service.sapDiskConfigurations(this.client.getEndpoint(), this.client.getSubscriptionId(), location,
+            this.client.getApiVersion(), sapDiskConfigurations, accept, context);
     }
 
     /**
@@ -531,8 +445,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return the SAP Disk Configuration Layout prod/non-prod SAP System along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SapDiskConfigurationsResultInner> sapDiskConfigurationsWithResponse(
-        String location, SapDiskConfigurationsRequest sapDiskConfigurations, Context context) {
+    public Response<SapDiskConfigurationsResultInner> sapDiskConfigurationsWithResponse(String location,
+        SapDiskConfigurationsRequest sapDiskConfigurations, Context context) {
         return sapDiskConfigurationsWithResponseAsync(location, sapDiskConfigurations, context).block();
     }
 
@@ -566,16 +480,12 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     private Mono<Response<SapAvailabilityZoneDetailsResultInner>> sapAvailabilityZoneDetailsWithResponseAsync(
         String location, SapAvailabilityZoneDetailsRequest sapAvailabilityZoneDetails) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
@@ -585,17 +495,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .sapAvailabilityZoneDetails(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            location,
-                            this.client.getApiVersion(),
-                            sapAvailabilityZoneDetails,
-                            accept,
-                            context))
+            .withContext(context -> service.sapAvailabilityZoneDetails(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), location, this.client.getApiVersion(), sapAvailabilityZoneDetails,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -615,16 +517,12 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     private Mono<Response<SapAvailabilityZoneDetailsResultInner>> sapAvailabilityZoneDetailsWithResponseAsync(
         String location, SapAvailabilityZoneDetailsRequest sapAvailabilityZoneDetails, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
@@ -634,15 +532,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .sapAvailabilityZoneDetails(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                location,
-                this.client.getApiVersion(),
-                sapAvailabilityZoneDetails,
-                accept,
-                context);
+        return service.sapAvailabilityZoneDetails(this.client.getEndpoint(), this.client.getSubscriptionId(), location,
+            this.client.getApiVersion(), sapAvailabilityZoneDetails, accept, context);
     }
 
     /**
@@ -674,8 +565,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return the recommended SAP Availability Zone Pair Details for your region along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SapAvailabilityZoneDetailsResultInner> sapAvailabilityZoneDetailsWithResponse(
-        String location, SapAvailabilityZoneDetailsRequest sapAvailabilityZoneDetails, Context context) {
+    public Response<SapAvailabilityZoneDetailsResultInner> sapAvailabilityZoneDetailsWithResponse(String location,
+        SapAvailabilityZoneDetailsRequest sapAvailabilityZoneDetails, Context context) {
         return sapAvailabilityZoneDetailsWithResponseAsync(location, sapAvailabilityZoneDetails, context).block();
     }
 

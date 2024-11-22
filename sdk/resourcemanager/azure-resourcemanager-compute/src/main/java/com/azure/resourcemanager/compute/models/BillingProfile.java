@@ -5,13 +5,17 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Specifies the billing related details of a Azure Spot VM or VMSS. Minimum api-version: 2019-03-01.
  */
 @Fluent
-public final class BillingProfile {
+public final class BillingProfile implements JsonSerializable<BillingProfile> {
     /*
      * Specifies the maximum price you are willing to pay for a Azure Spot VM/VMSS. This price is in US Dollars.
      * <br><br> This price will be compared with the current Azure Spot price for the VM size. Also, the prices are
@@ -23,7 +27,6 @@ public final class BillingProfile {
      * should not be evicted for price reasons. Also, the default max price is -1 if it is not provided by you.
      * <br><br>Minimum api-version: 2019-03-01.
      */
-    @JsonProperty(value = "maxPrice")
     private Double maxPrice;
 
     /**
@@ -76,5 +79,41 @@ public final class BillingProfile {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("maxPrice", this.maxPrice);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BillingProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BillingProfile if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BillingProfile.
+     */
+    public static BillingProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BillingProfile deserializedBillingProfile = new BillingProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("maxPrice".equals(fieldName)) {
+                    deserializedBillingProfile.maxPrice = reader.getNullable(JsonReader::getDouble);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBillingProfile;
+        });
     }
 }

@@ -5,39 +5,50 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Uploaded War binary for a deployment.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("War")
 @Fluent
 public final class WarUploadedUserSourceInfo extends UploadedUserSourceInfo {
     /*
+     * Type of the source uploaded
+     */
+    private String type = "War";
+
+    /*
      * Runtime version of the war file
      */
-    @JsonProperty(value = "runtimeVersion")
     private String runtimeVersion;
 
     /*
      * JVM parameter
      */
-    @JsonProperty(value = "jvmOptions")
     private String jvmOptions;
 
     /*
      * Server version, currently only Apache Tomcat is supported
      */
-    @JsonProperty(value = "serverVersion")
     private String serverVersion;
 
     /**
      * Creates an instance of WarUploadedUserSourceInfo class.
      */
     public WarUploadedUserSourceInfo() {
+    }
+
+    /**
+     * Get the type property: Type of the source uploaded.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -126,5 +137,56 @@ public final class WarUploadedUserSourceInfo extends UploadedUserSourceInfo {
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("version", version());
+        jsonWriter.writeStringField("relativePath", relativePath());
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("runtimeVersion", this.runtimeVersion);
+        jsonWriter.writeStringField("jvmOptions", this.jvmOptions);
+        jsonWriter.writeStringField("serverVersion", this.serverVersion);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WarUploadedUserSourceInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WarUploadedUserSourceInfo if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WarUploadedUserSourceInfo.
+     */
+    public static WarUploadedUserSourceInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WarUploadedUserSourceInfo deserializedWarUploadedUserSourceInfo = new WarUploadedUserSourceInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("version".equals(fieldName)) {
+                    deserializedWarUploadedUserSourceInfo.withVersion(reader.getString());
+                } else if ("relativePath".equals(fieldName)) {
+                    deserializedWarUploadedUserSourceInfo.withRelativePath(reader.getString());
+                } else if ("type".equals(fieldName)) {
+                    deserializedWarUploadedUserSourceInfo.type = reader.getString();
+                } else if ("runtimeVersion".equals(fieldName)) {
+                    deserializedWarUploadedUserSourceInfo.runtimeVersion = reader.getString();
+                } else if ("jvmOptions".equals(fieldName)) {
+                    deserializedWarUploadedUserSourceInfo.jvmOptions = reader.getString();
+                } else if ("serverVersion".equals(fieldName)) {
+                    deserializedWarUploadedUserSourceInfo.serverVersion = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWarUploadedUserSourceInfo;
+        });
     }
 }

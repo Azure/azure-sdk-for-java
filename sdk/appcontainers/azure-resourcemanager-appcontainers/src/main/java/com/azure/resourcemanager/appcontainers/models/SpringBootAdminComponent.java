@@ -90,6 +90,15 @@ public final class SpringBootAdminComponent extends JavaComponentProperties {
      * {@inheritDoc}
      */
     @Override
+    public SpringBootAdminComponent withScale(JavaComponentPropertiesScale scale) {
+        super.withScale(scale);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public SpringBootAdminComponent withServiceBinds(List<JavaComponentServiceBind> serviceBinds) {
         super.withServiceBinds(serviceBinds);
         return this;
@@ -102,9 +111,17 @@ public final class SpringBootAdminComponent extends JavaComponentProperties {
      */
     @Override
     public void validate() {
-        super.validate();
         if (ingress() != null) {
             ingress().validate();
+        }
+        if (configurations() != null) {
+            configurations().forEach(e -> e.validate());
+        }
+        if (scale() != null) {
+            scale().validate();
+        }
+        if (serviceBinds() != null) {
+            serviceBinds().forEach(e -> e.validate());
         }
     }
 
@@ -115,6 +132,7 @@ public final class SpringBootAdminComponent extends JavaComponentProperties {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeArrayField("configurations", configurations(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("scale", scale());
         jsonWriter.writeArrayField("serviceBinds", serviceBinds(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("componentType", this.componentType == null ? null : this.componentType.toString());
         jsonWriter.writeJsonField("ingress", this.ingress);
@@ -143,6 +161,8 @@ public final class SpringBootAdminComponent extends JavaComponentProperties {
                     List<JavaComponentConfigurationProperty> configurations
                         = reader.readArray(reader1 -> JavaComponentConfigurationProperty.fromJson(reader1));
                     deserializedSpringBootAdminComponent.withConfigurations(configurations);
+                } else if ("scale".equals(fieldName)) {
+                    deserializedSpringBootAdminComponent.withScale(JavaComponentPropertiesScale.fromJson(reader));
                 } else if ("serviceBinds".equals(fieldName)) {
                     List<JavaComponentServiceBind> serviceBinds
                         = reader.readArray(reader1 -> JavaComponentServiceBind.fromJson(reader1));

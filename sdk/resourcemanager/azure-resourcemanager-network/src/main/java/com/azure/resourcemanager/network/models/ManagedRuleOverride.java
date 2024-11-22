@@ -6,30 +6,36 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Defines a managed rule group override setting.
  */
 @Fluent
-public final class ManagedRuleOverride {
+public final class ManagedRuleOverride implements JsonSerializable<ManagedRuleOverride> {
     /*
      * Identifier for the managed rule.
      */
-    @JsonProperty(value = "ruleId", required = true)
     private String ruleId;
 
     /*
      * The state of the managed rule. Defaults to Disabled if not specified.
      */
-    @JsonProperty(value = "state")
     private ManagedRuleEnabledState state;
 
     /*
      * Describes the override action to be applied when rule matches.
      */
-    @JsonProperty(value = "action")
     private ActionType action;
+
+    /*
+     * Describes the override sensitivity to be applied when rule matches.
+     */
+    private SensitivityType sensitivity;
 
     /**
      * Creates an instance of ManagedRuleOverride class.
@@ -98,6 +104,26 @@ public final class ManagedRuleOverride {
     }
 
     /**
+     * Get the sensitivity property: Describes the override sensitivity to be applied when rule matches.
+     * 
+     * @return the sensitivity value.
+     */
+    public SensitivityType sensitivity() {
+        return this.sensitivity;
+    }
+
+    /**
+     * Set the sensitivity property: Describes the override sensitivity to be applied when rule matches.
+     * 
+     * @param sensitivity the sensitivity value to set.
+     * @return the ManagedRuleOverride object itself.
+     */
+    public ManagedRuleOverride withSensitivity(SensitivityType sensitivity) {
+        this.sensitivity = sensitivity;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -110,4 +136,50 @@ public final class ManagedRuleOverride {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ManagedRuleOverride.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("ruleId", this.ruleId);
+        jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
+        jsonWriter.writeStringField("action", this.action == null ? null : this.action.toString());
+        jsonWriter.writeStringField("sensitivity", this.sensitivity == null ? null : this.sensitivity.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedRuleOverride from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedRuleOverride if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ManagedRuleOverride.
+     */
+    public static ManagedRuleOverride fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedRuleOverride deserializedManagedRuleOverride = new ManagedRuleOverride();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("ruleId".equals(fieldName)) {
+                    deserializedManagedRuleOverride.ruleId = reader.getString();
+                } else if ("state".equals(fieldName)) {
+                    deserializedManagedRuleOverride.state = ManagedRuleEnabledState.fromString(reader.getString());
+                } else if ("action".equals(fieldName)) {
+                    deserializedManagedRuleOverride.action = ActionType.fromString(reader.getString());
+                } else if ("sensitivity".equals(fieldName)) {
+                    deserializedManagedRuleOverride.sensitivity = SensitivityType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagedRuleOverride;
+        });
+    }
 }

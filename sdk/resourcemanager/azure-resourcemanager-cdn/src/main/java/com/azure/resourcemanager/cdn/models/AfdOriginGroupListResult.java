@@ -5,8 +5,12 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cdn.fluent.models.AfdOriginGroupInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -14,17 +18,15 @@ import java.util.List;
  * next set of results.
  */
 @Fluent
-public final class AfdOriginGroupListResult {
+public final class AfdOriginGroupListResult implements JsonSerializable<AfdOriginGroupListResult> {
     /*
      * List of Azure Front Door origin groups within an Azure Front Door endpoint
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<AfdOriginGroupInner> value;
 
     /*
      * URL to get the next set of origin objects if there are any.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
@@ -71,5 +73,45 @@ public final class AfdOriginGroupListResult {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AfdOriginGroupListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AfdOriginGroupListResult if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AfdOriginGroupListResult.
+     */
+    public static AfdOriginGroupListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AfdOriginGroupListResult deserializedAfdOriginGroupListResult = new AfdOriginGroupListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<AfdOriginGroupInner> value
+                        = reader.readArray(reader1 -> AfdOriginGroupInner.fromJson(reader1));
+                    deserializedAfdOriginGroupListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedAfdOriginGroupListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAfdOriginGroupListResult;
+        });
     }
 }

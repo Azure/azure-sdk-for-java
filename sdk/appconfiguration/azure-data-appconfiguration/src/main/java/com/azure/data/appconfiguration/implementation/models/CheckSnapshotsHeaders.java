@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 
-/** The CheckSnapshotsHeaders model. */
+/**
+ * The CheckSnapshotsHeaders model.
+ */
 @Fluent
 public final class CheckSnapshotsHeaders {
     /*
@@ -21,7 +23,7 @@ public final class CheckSnapshotsHeaders {
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of CheckSnapshotsHeaders class.
-     *
+     * 
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public CheckSnapshotsHeaders(HttpHeaders rawHeaders) {
@@ -30,7 +32,7 @@ public final class CheckSnapshotsHeaders {
 
     /**
      * Get the syncToken property: The Sync-Token property.
-     *
+     * 
      * @return the syncToken value.
      */
     public String getSyncToken() {
@@ -39,7 +41,7 @@ public final class CheckSnapshotsHeaders {
 
     /**
      * Set the syncToken property: The Sync-Token property.
-     *
+     * 
      * @param syncToken the syncToken value to set.
      * @return the CheckSnapshotsHeaders object itself.
      */

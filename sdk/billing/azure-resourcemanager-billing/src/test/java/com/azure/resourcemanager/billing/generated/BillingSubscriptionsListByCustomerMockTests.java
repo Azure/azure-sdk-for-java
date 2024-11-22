@@ -6,67 +6,51 @@ package com.azure.resourcemanager.billing.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.billing.BillingManager;
+import com.azure.resourcemanager.billing.models.AutoRenew;
 import com.azure.resourcemanager.billing.models.BillingSubscription;
-import com.azure.resourcemanager.billing.models.BillingSubscriptionStatusType;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class BillingSubscriptionsListByCustomerMockTests {
     @Test
     public void testListByCustomer() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"autoRenew\":\"On\",\"beneficiaryTenantId\":\"irnygtixkgyo\",\"beneficiary\":{\"tenantId\":\"phvd\",\"objectId\":\"rxzpqditu\"},\"billingFrequency\":\"ltfci\",\"billingProfileId\":\"lee\",\"billingPolicies\":{\"kkmibnmdp\":\"kehldopjsxvbbwsg\",\"pwtgzwmzhcmrloqa\":\"d\",\"nmbj\":\"styzavkyjjlu\",\"optythctoxo\":\"bngzldvvd\"},\"billingProfileDisplayName\":\"mqnerwh\",\"billingProfileName\":\"vidsssfzsgzgu\",\"consumptionCostCenter\":\"ejomeqgxhwi\",\"customerId\":\"so\",\"customerDisplayName\":\"blw\",\"customerName\":\"baqxaxtuxirppb\",\"displayName\":\"c\",\"enrollmentAccountId\":\"y\",\"enrollmentAccountDisplayName\":\"vuixwonkrn\",\"enrollmentAccountSubscriptionDetails\":{\"enrollmentAccountStartDate\":\"2021-06-04T07:56:37Z\",\"subscriptionEnrollmentAccountStatus\":\"Deleted\"},\"invoiceSectionId\":\"bkitnip\",\"invoiceSectionDisplayName\":\"tgvnaqyj\",\"invoiceSectionName\":\"kajnnewltonop\",\"lastMonthCharges\":{\"currency\":\"miw\",\"value\":51.6954},\"monthToDateCharges\":{\"currency\":\"ba\",\"value\":4.8740387},\"nextBillingCycleDetails\":{\"billingFrequency\":\"cdikqnxydgzfoiqz\"},\"offerId\":\"spa\",\"productCategory\":\"vs\",\"productType\":\"eronzeafkx\",\"productTypeId\":\"uwdbvytqav\",\"purchaseDate\":\"2021-05-20T18:06:38Z\",\"quantity\":348358612136790240,\"reseller\":{\"resellerId\":\"qxlv\",\"description\":\"fdkaxgbiwpgop\"},\"renewalTermDetails\":{\"billingFrequency\":\"tth\",\"productId\":\"rrmtrxgjmpdvrjz\",\"productTypeId\":\"wpewa\",\"skuId\":\"csdjuzmuijt\",\"termDuration\":\"kzo\",\"quantity\":852832535005547504,\"termEndDate\":\"2021-05-31T16:34:29Z\"},\"skuId\":\"xhhboigzxk\",\"skuDescription\":\"qlrzhtocjzfp\",\"systemOverrides\":{\"cancellation\":\"Allowed\",\"cancellationAllowedEndDate\":\"2021-06-06T10:52:23Z\"},\"resourceUri\":\"zwn\",\"termDuration\":\"wgiitvjcmimbms\",\"termStartDate\":\"2021-09-16T17:42:14Z\",\"termEndDate\":\"2021-01-08T07:35:59Z\",\"provisioningTenantId\":\"joypplodaqrbk\",\"status\":\"Deleted\",\"operationStatus\":\"Other\",\"provisioningState\":\"PendingBilling\",\"subscriptionId\":\"ggvalcrqaxlmbrtv\",\"suspensionReasons\":[\"lmlplgt\",\"ayyxhxjvo\"],\"suspensionReasonDetails\":[{\"effectiveDate\":\"2021-11-26T22:01:32Z\",\"reason\":\"PolicyViolation\"},{\"effectiveDate\":\"2021-08-27T00:12:05Z\",\"reason\":\"PastDue\"},{\"effectiveDate\":\"2021-09-11T21:02:19Z\",\"reason\":\"PastDue\"},{\"effectiveDate\":\"2021-07-10T02:52:50Z\",\"reason\":\"SuspiciousActivity\"}]},\"tags\":{\"wssydv\":\"ozvcd\",\"vywotjnjuvtzij\":\"ryb\"},\"id\":\"lxbaeyocpk\",\"name\":\"ltjfd\",\"type\":\"fmnpbdrcibj\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"displayName\":\"qpofvwbc\",\"subscriptionId\":\"014c0863-e775-41aa-8863-c42b70db6758\",\"subscriptionBillingStatus\":\"Active\",\"lastMonthCharges\":{\"currency\":\"kbwvqvxkdiv\",\"value\":15.006906},\"monthToDateCharges\":{\"currency\":\"wtswbzuwfmdur\",\"value\":30.223448},\"billingProfileId\":\"izvcjfe\",\"billingProfileDisplayName\":\"sdjubggbqigkxkbs\",\"costCenter\":\"gak\",\"customerId\":\"cyrcmjdmspo\",\"customerDisplayName\":\"pv\",\"invoiceSectionId\":\"rylniofrzg\",\"invoiceSectionDisplayName\":\"jed\",\"reseller\":{\"resellerId\":\"kvnlvxbcuiiznkt\",\"description\":\"ansnvp\"},\"skuId\":\"bmikost\",\"skuDescription\":\"bkiw\",\"suspensionReasons\":[\"n\",\"ophzfylsgcrp\",\"bcunezzceze\"]},\"id\":\"fwyfwlwxjwet\",\"name\":\"psihcla\",\"type\":\"zvaylptrsqqw\"}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        BillingManager manager = BillingManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PagedIterable<BillingSubscription> response = manager.billingSubscriptions()
+            .listByCustomer("jy", "kr", "xsg", false, "knklthqw", "pvi", "bmwrvpvdrohul", 4939402553869338194L,
+                5092083955941308417L, false, "vxjua", com.azure.core.util.Context.NONE);
 
-        BillingManager manager =
-            BillingManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<BillingSubscription> response =
-            manager.billingSubscriptions().listByCustomer("iiqbi", "htmwwinh", com.azure.core.util.Context.NONE);
-
-        Assertions
-            .assertEquals(BillingSubscriptionStatusType.ACTIVE, response.iterator().next().subscriptionBillingStatus());
-        Assertions.assertEquals("gak", response.iterator().next().costCenter());
-        Assertions.assertEquals("bmikost", response.iterator().next().skuId());
+        Assertions.assertEquals("ozvcd", response.iterator().next().tags().get("wssydv"));
+        Assertions.assertEquals(AutoRenew.ON, response.iterator().next().autoRenew());
+        Assertions.assertEquals("irnygtixkgyo", response.iterator().next().beneficiaryTenantId());
+        Assertions.assertEquals("phvd", response.iterator().next().beneficiary().tenantId());
+        Assertions.assertEquals("rxzpqditu", response.iterator().next().beneficiary().objectId());
+        Assertions.assertEquals("ltfci", response.iterator().next().billingFrequency());
+        Assertions.assertEquals("lee", response.iterator().next().billingProfileId());
+        Assertions.assertEquals("ejomeqgxhwi", response.iterator().next().consumptionCostCenter());
+        Assertions.assertEquals("so", response.iterator().next().customerId());
+        Assertions.assertEquals("c", response.iterator().next().displayName());
+        Assertions.assertEquals("bkitnip", response.iterator().next().invoiceSectionId());
+        Assertions.assertEquals("uwdbvytqav", response.iterator().next().productTypeId());
+        Assertions.assertEquals(348358612136790240L, response.iterator().next().quantity());
+        Assertions.assertEquals("xhhboigzxk", response.iterator().next().skuId());
+        Assertions.assertEquals("wgiitvjcmimbms", response.iterator().next().termDuration());
+        Assertions.assertEquals("joypplodaqrbk", response.iterator().next().provisioningTenantId());
     }
 }

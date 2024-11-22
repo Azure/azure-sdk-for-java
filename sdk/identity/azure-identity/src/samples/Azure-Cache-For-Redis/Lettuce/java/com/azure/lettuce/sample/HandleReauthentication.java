@@ -10,21 +10,29 @@ import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import io.lettuce.core.ClientOptions;
 import io.lettuce.core.RedisClient;
 import io.lettuce.core.RedisException;
 import io.lettuce.core.RedisURI;
+import io.lettuce.core.SocketOptions;
 import io.lettuce.core.api.StatefulRedisConnection;
 import io.lettuce.core.api.sync.RedisCommands;
 import io.lettuce.core.codec.StringCodec;
 import io.lettuce.core.protocol.ProtocolVersion;
-import io.lettuce.core.ClientOptions;
-import io.lettuce.core.SocketOptions;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
+/**
+ * A sample where reauthentication is handled.
+ */
 public class HandleReauthentication {
 
+    /**
+     * The runnable sample.
+     *
+     * @param args Ignored.
+     */
     public static void main(String[] args) {
         //Construct a Token Credential from Identity library, e.g. DefaultAzureCredential / ClientSecretCredential / Client CertificateCredential / ManagedIdentityCredential etc.
         DefaultAzureCredential defaultAzureCredential = new DefaultAzureCredentialBuilder().build();
@@ -103,13 +111,11 @@ public class HandleReauthentication {
         String[] parts = token.split("\\.");
         String base64 = parts[1];
 
-        switch (base64.length() % 4) {
-            case 2:
-                base64 += "==";
-                break;
-            case 3:
-                base64 += "=";
-                break;
+        int modulo = base64.length() % 4;
+        if (modulo == 2) {
+            base64 += "==";
+        } else if (modulo == 3) {
+            base64 += "=";
         }
 
         byte[] jsonBytes = Base64.getDecoder().decode(base64);

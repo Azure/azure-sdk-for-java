@@ -18,7 +18,6 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.developer.loadtesting.implementation.LoadTestAdministrationsImpl;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.time.Duration;
 
 /**
@@ -28,8 +27,6 @@ import java.time.Duration;
 public final class LoadTestAdministrationClient {
 
     private static final ClientLogger LOGGER = new ClientLogger(LoadTestAdministrationClient.class);
-
-    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     @Generated
     private final LoadTestAdministrationsImpl serviceClient;
@@ -46,10 +43,10 @@ public final class LoadTestAdministrationClient {
 
     /**
      * Configure server metrics for a test.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     testId: String (Optional)
      *     metrics (Optional): {
@@ -69,11 +66,13 @@ public final class LoadTestAdministrationClient {
      *     lastModifiedDateTime: OffsetDateTime (Optional)
      *     lastModifiedBy: String (Optional)
      * }
-     * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     testId: String (Optional)
      *     metrics (Optional): {
@@ -93,7 +92,8 @@ public final class LoadTestAdministrationClient {
      *     lastModifiedDateTime: OffsetDateTime (Optional)
      *     lastModifiedBy: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param testId Unique name for the load test, must contain only lower-case alphabetic, numeric, underscore or
      * hyphen characters.
@@ -130,24 +130,22 @@ public final class LoadTestAdministrationClient {
         if (fileUploadRequestOptions != null) {
             defaultRequestOptions.setContext(fileUploadRequestOptions.getContext());
         }
-        return SyncPoller.createPoller(Duration.ofSeconds(2), (context) -> {
-            Response<BinaryData> fileResponse
-                = uploadTestFileWithResponse(testId, fileName, body, fileUploadRequestOptions);
-            return PollingUtils.getValidationStatus(fileResponse.getValue(), OBJECT_MAPPER);
-        }, (context) -> {
-            Response<BinaryData> fileResponse = getTestFileWithResponse(testId, fileName, defaultRequestOptions);
-            return PollingUtils.getValidationStatus(fileResponse.getValue(), OBJECT_MAPPER);
-        }, (activationResponse, context) -> {
-            throw LOGGER.logExceptionAsError(new RuntimeException("Cancellation is not supported"));
-        }, (context) -> getTestFileWithResponse(testId, fileName, defaultRequestOptions).getValue());
+        return SyncPoller.createPoller(Duration.ofSeconds(2),
+            (context) -> PollingUtils.getValidationStatus(
+                uploadTestFileWithResponse(testId, fileName, body, fileUploadRequestOptions).getValue()),
+            (context) -> PollingUtils
+                .getValidationStatus(getTestFileWithResponse(testId, fileName, defaultRequestOptions).getValue()),
+            (activationResponse, context) -> {
+                throw LOGGER.logExceptionAsError(new RuntimeException("Cancellation is not supported"));
+            }, (context) -> getTestFileWithResponse(testId, fileName, defaultRequestOptions).getValue());
     }
 
     /**
      * Get all test files.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     url: String (Optional)
      *     fileName: String (Optional)
@@ -156,7 +154,8 @@ public final class LoadTestAdministrationClient {
      *     validationStatus: String(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED) (Optional)
      *     validationFailureDetails: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param testId Unique name for the load test, must contain only lower-case alphabetic, numeric, underscore or
      * hyphen characters.
@@ -175,10 +174,10 @@ public final class LoadTestAdministrationClient {
 
     /**
      * Create a new test or update an existing test.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     passFailCriteria (Optional): {
      *         passFailMetrics (Optional): {
@@ -246,11 +245,13 @@ public final class LoadTestAdministrationClient {
      *     lastModifiedDateTime: OffsetDateTime (Optional)
      *     lastModifiedBy: String (Optional)
      * }
-     * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     passFailCriteria (Optional): {
      *         passFailMetrics (Optional): {
@@ -318,7 +319,8 @@ public final class LoadTestAdministrationClient {
      *     lastModifiedDateTime: OffsetDateTime (Optional)
      *     lastModifiedBy: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param testId Unique name for the load test, must contain only lower-case alphabetic, numeric, underscore or
      * hyphen characters.
@@ -357,10 +359,10 @@ public final class LoadTestAdministrationClient {
 
     /**
      * Get load test details by test name.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     passFailCriteria (Optional): {
      *         passFailMetrics (Optional): {
@@ -428,7 +430,8 @@ public final class LoadTestAdministrationClient {
      *     lastModifiedDateTime: OffsetDateTime (Optional)
      *     lastModifiedBy: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param testId Unique name for the load test, must contain only lower-case alphabetic, numeric, underscore or
      * hyphen characters.
@@ -448,55 +451,26 @@ public final class LoadTestAdministrationClient {
     /**
      * Get all load tests by the fully qualified resource Id e.g
      * subscriptions/{subId}/resourceGroups/{rg}/providers/Microsoft.LoadTestService/loadtests/{resName}.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>orderby</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Sort on the supported fields in (field asc/desc) format. eg: lastModifiedDateTime asc. Supported fields -
-     * lastModifiedDateTime</td>
-     * </tr>
-     * <tr>
-     * <td>search</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Prefix based, case sensitive search on searchable fields - displayName, createdBy. For example, to search for
-     * a test, with display name is Login Test, the search parameter can be Login.</td>
-     * </tr>
-     * <tr>
-     * <td>lastModifiedStartTime</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>Start DateTime(ISO 8601 literal format) of the last updated time range to filter tests.</td>
-     * </tr>
-     * <tr>
-     * <td>lastModifiedEndTime</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>End DateTime(ISO 8601 literal format) of the last updated time range to filter tests.</td>
-     * </tr>
-     * <tr>
-     * <td>maxpagesize</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>Number of results in response.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>orderby</td><td>String</td><td>No</td><td>Sort on the supported fields in (field asc/desc) format. eg:
+     * lastModifiedDateTime asc. Supported fields - lastModifiedDateTime</td></tr>
+     * <tr><td>search</td><td>String</td><td>No</td><td>Prefix based, case sensitive search on searchable fields -
+     * displayName, createdBy. For example, to search for a test, with display name is Login Test, the search parameter
+     * can be Login.</td></tr>
+     * <tr><td>lastModifiedStartTime</td><td>OffsetDateTime</td><td>No</td><td>Start DateTime(ISO 8601 literal format)
+     * of the last updated time range to filter tests.</td></tr>
+     * <tr><td>lastModifiedEndTime</td><td>OffsetDateTime</td><td>No</td><td>End DateTime(ISO 8601 literal format) of
+     * the last updated time range to filter tests.</td></tr>
+     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of results in response.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     passFailCriteria (Optional): {
      *         passFailMetrics (Optional): {
@@ -564,7 +538,8 @@ public final class LoadTestAdministrationClient {
      *     lastModifiedDateTime: OffsetDateTime (Optional)
      *     lastModifiedBy: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -609,14 +584,17 @@ public final class LoadTestAdministrationClient {
      * <p>
      * <strong>Request Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * BinaryData
-     * }</pre>
+     * }
+     * </pre>
      *
      * <p>
      * <strong>Response Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     url: String (Optional)
      *     fileName: String (Optional)
@@ -625,7 +603,8 @@ public final class LoadTestAdministrationClient {
      *     validationStatus: String(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED) (Optional)
      *     validationFailureDetails: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param testId Unique name for the load test, must contain only lower-case alphabetic, numeric, underscore or
      * hyphen characters.
@@ -646,10 +625,10 @@ public final class LoadTestAdministrationClient {
 
     /**
      * Get test file by the file name.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     url: String (Optional)
      *     fileName: String (Optional)
@@ -658,7 +637,8 @@ public final class LoadTestAdministrationClient {
      *     validationStatus: String(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED) (Optional)
      *     validationFailureDetails: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param testId Unique name for the load test, must contain only lower-case alphabetic, numeric, underscore or
      * hyphen characters.
@@ -697,10 +677,10 @@ public final class LoadTestAdministrationClient {
 
     /**
      * Associate an app component (collection of azure resources) to a test.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     components (Required): {
      *         String (Required): {
@@ -719,11 +699,13 @@ public final class LoadTestAdministrationClient {
      *     lastModifiedDateTime: OffsetDateTime (Optional)
      *     lastModifiedBy: String (Optional)
      * }
-     * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     components (Required): {
      *         String (Required): {
@@ -742,7 +724,8 @@ public final class LoadTestAdministrationClient {
      *     lastModifiedDateTime: OffsetDateTime (Optional)
      *     lastModifiedBy: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param testId Unique name for the load test, must contain only lower-case alphabetic, numeric, underscore or
      * hyphen characters.
@@ -763,10 +746,10 @@ public final class LoadTestAdministrationClient {
 
     /**
      * Get associated app component (collection of azure resources) for the given test.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     components (Required): {
      *         String (Required): {
@@ -785,7 +768,8 @@ public final class LoadTestAdministrationClient {
      *     lastModifiedDateTime: OffsetDateTime (Optional)
      *     lastModifiedBy: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param testId Unique name for the load test, must contain only lower-case alphabetic, numeric, underscore or
      * hyphen characters.
@@ -804,10 +788,10 @@ public final class LoadTestAdministrationClient {
 
     /**
      * List server metrics configuration for the given test.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     testId: String (Optional)
      *     metrics (Optional): {
@@ -827,7 +811,8 @@ public final class LoadTestAdministrationClient {
      *     lastModifiedDateTime: OffsetDateTime (Optional)
      *     lastModifiedBy: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param testId Unique name for the load test, must contain only lower-case alphabetic, numeric, underscore or
      * hyphen characters.

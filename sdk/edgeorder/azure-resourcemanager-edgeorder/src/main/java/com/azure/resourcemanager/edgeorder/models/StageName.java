@@ -5,59 +5,96 @@
 package com.azure.resourcemanager.edgeorder.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for StageName. */
+/**
+ * Stage name.
+ */
 public final class StageName extends ExpandableStringEnum<StageName> {
-    /** Static value Placed for StageName. */
+    /**
+     * Static value Placed for StageName.
+     */
     public static final StageName PLACED = fromString("Placed");
 
-    /** Static value InReview for StageName. */
+    /**
+     * Static value InReview for StageName.
+     */
     public static final StageName IN_REVIEW = fromString("InReview");
 
-    /** Static value Confirmed for StageName. */
+    /**
+     * Static value Confirmed for StageName.
+     */
     public static final StageName CONFIRMED = fromString("Confirmed");
 
-    /** Static value ReadyToShip for StageName. */
+    /**
+     * Static value ReadyToShip for StageName.
+     */
     public static final StageName READY_TO_SHIP = fromString("ReadyToShip");
 
-    /** Static value Shipped for StageName. */
+    /**
+     * Static value Shipped for StageName.
+     */
     public static final StageName SHIPPED = fromString("Shipped");
 
-    /** Static value Delivered for StageName. */
+    /**
+     * Static value Delivered for StageName.
+     */
     public static final StageName DELIVERED = fromString("Delivered");
 
-    /** Static value InUse for StageName. */
+    /**
+     * Static value InUse for StageName.
+     */
     public static final StageName IN_USE = fromString("InUse");
 
-    /** Static value ReturnInitiated for StageName. */
+    /**
+     * Static value ReturnInitiated for StageName.
+     */
     public static final StageName RETURN_INITIATED = fromString("ReturnInitiated");
 
-    /** Static value ReturnPickedUp for StageName. */
+    /**
+     * Static value ReturnPickedUp for StageName.
+     */
     public static final StageName RETURN_PICKED_UP = fromString("ReturnPickedUp");
 
-    /** Static value ReturnedToMicrosoft for StageName. */
+    /**
+     * Static value ReturnedToMicrosoft for StageName.
+     */
     public static final StageName RETURNED_TO_MICROSOFT = fromString("ReturnedToMicrosoft");
 
-    /** Static value ReturnCompleted for StageName. */
+    /**
+     * Static value ReturnCompleted for StageName.
+     */
     public static final StageName RETURN_COMPLETED = fromString("ReturnCompleted");
 
-    /** Static value Cancelled for StageName. */
+    /**
+     * Static value Cancelled for StageName.
+     */
     public static final StageName CANCELLED = fromString("Cancelled");
 
     /**
+     * Creates a new instance of StageName value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public StageName() {
+    }
+
+    /**
      * Creates or finds a StageName from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding StageName.
      */
-    @JsonCreator
     public static StageName fromString(String name) {
         return fromString(name, StageName.class);
     }
 
-    /** @return known StageName values. */
+    /**
+     * Gets known StageName values.
+     * 
+     * @return known StageName values.
+     */
     public static Collection<StageName> values() {
         return values(StageName.class);
     }

@@ -5,35 +5,35 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * An alert status.
  */
 @Fluent
-public final class MetricAlertStatus {
+public final class MetricAlertStatus implements JsonSerializable<MetricAlertStatus> {
     /*
      * The status name.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The alert rule arm id.
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * The extended resource type name.
      */
-    @JsonProperty(value = "type")
     private String type;
 
     /*
      * The alert status properties of the metric alert status.
      */
-    @JsonProperty(value = "properties")
     private MetricAlertStatusProperties properties;
 
     /**
@@ -131,5 +131,50 @@ public final class MetricAlertStatus {
         if (properties() != null) {
             properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MetricAlertStatus from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MetricAlertStatus if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MetricAlertStatus.
+     */
+    public static MetricAlertStatus fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MetricAlertStatus deserializedMetricAlertStatus = new MetricAlertStatus();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedMetricAlertStatus.name = reader.getString();
+                } else if ("id".equals(fieldName)) {
+                    deserializedMetricAlertStatus.id = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedMetricAlertStatus.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedMetricAlertStatus.properties = MetricAlertStatusProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMetricAlertStatus;
+        });
     }
 }

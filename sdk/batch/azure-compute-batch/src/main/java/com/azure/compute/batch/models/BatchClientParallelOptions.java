@@ -32,7 +32,8 @@ public class BatchClientParallelOptions {
      */
     public BatchClientParallelOptions setMaxDegreeOfParallelism(Integer maxDegreeOfParallelism) {
         if (maxDegreeOfParallelism != null && maxDegreeOfParallelism <= 0) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("maxDegreeOfParallelism must be greater than 0 or null"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("maxDegreeOfParallelism must be greater than 0 or null"));
         }
         this.maxDegreeOfParallelism = maxDegreeOfParallelism;
         return this;
@@ -41,6 +42,7 @@ public class BatchClientParallelOptions {
     /**
      * Initializes a new instance of the {@link BatchClientParallelOptions} class.
      */
-    public BatchClientParallelOptions() {}
+    public BatchClientParallelOptions() {
+    }
 
 }

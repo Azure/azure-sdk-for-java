@@ -5,43 +5,36 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Base properties for any task step.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "type",
-    defaultImpl = TaskStepProperties.class)
-@JsonTypeName("TaskStepProperties")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "FileTask", value = FileTaskStep.class),
-    @JsonSubTypes.Type(name = "EncodedTask", value = EncodedTaskStep.class),
-    @JsonSubTypes.Type(name = "Docker", value = DockerTaskStep.class) })
 @Fluent
-public class TaskStepProperties {
+public class TaskStepProperties implements JsonSerializable<TaskStepProperties> {
+    /*
+     * The type of the step.
+     */
+    private StepType type = StepType.fromString("TaskStepProperties");
+
     /*
      * List of base image dependencies for a step.
      */
-    @JsonProperty(value = "baseImageDependencies", access = JsonProperty.Access.WRITE_ONLY)
     private List<BaseImageDependency> baseImageDependencies;
 
     /*
      * The URL(absolute or relative) of the source context for the task step.
      */
-    @JsonProperty(value = "contextPath")
     private String contextPath;
 
     /*
      * The token (git PAT or SAS token of storage account blob) associated with the context for a step.
      */
-    @JsonProperty(value = "contextAccessToken")
     private String contextAccessToken;
 
     /**
@@ -51,12 +44,32 @@ public class TaskStepProperties {
     }
 
     /**
+     * Get the type property: The type of the step.
+     * 
+     * @return the type value.
+     */
+    public StepType type() {
+        return this.type;
+    }
+
+    /**
      * Get the baseImageDependencies property: List of base image dependencies for a step.
      * 
      * @return the baseImageDependencies value.
      */
     public List<BaseImageDependency> baseImageDependencies() {
         return this.baseImageDependencies;
+    }
+
+    /**
+     * Set the baseImageDependencies property: List of base image dependencies for a step.
+     * 
+     * @param baseImageDependencies the baseImageDependencies value to set.
+     * @return the TaskStepProperties object itself.
+     */
+    TaskStepProperties withBaseImageDependencies(List<BaseImageDependency> baseImageDependencies) {
+        this.baseImageDependencies = baseImageDependencies;
+        return this;
     }
 
     /**
@@ -80,8 +93,8 @@ public class TaskStepProperties {
     }
 
     /**
-     * Get the contextAccessToken property: The token (git PAT or SAS token of storage account blob) associated with
-     * the context for a step.
+     * Get the contextAccessToken property: The token (git PAT or SAS token of storage account blob) associated with the
+     * context for a step.
      * 
      * @return the contextAccessToken value.
      */
@@ -90,8 +103,8 @@ public class TaskStepProperties {
     }
 
     /**
-     * Set the contextAccessToken property: The token (git PAT or SAS token of storage account blob) associated with
-     * the context for a step.
+     * Set the contextAccessToken property: The token (git PAT or SAS token of storage account blob) associated with the
+     * context for a step.
      * 
      * @param contextAccessToken the contextAccessToken value to set.
      * @return the TaskStepProperties object itself.
@@ -110,5 +123,80 @@ public class TaskStepProperties {
         if (baseImageDependencies() != null) {
             baseImageDependencies().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("contextPath", this.contextPath);
+        jsonWriter.writeStringField("contextAccessToken", this.contextAccessToken);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TaskStepProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TaskStepProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TaskStepProperties.
+     */
+    public static TaskStepProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("type".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("FileTask".equals(discriminatorValue)) {
+                    return FileTaskStep.fromJson(readerToUse.reset());
+                } else if ("EncodedTask".equals(discriminatorValue)) {
+                    return EncodedTaskStep.fromJson(readerToUse.reset());
+                } else if ("Docker".equals(discriminatorValue)) {
+                    return DockerTaskStep.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static TaskStepProperties fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TaskStepProperties deserializedTaskStepProperties = new TaskStepProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedTaskStepProperties.type = StepType.fromString(reader.getString());
+                } else if ("baseImageDependencies".equals(fieldName)) {
+                    List<BaseImageDependency> baseImageDependencies
+                        = reader.readArray(reader1 -> BaseImageDependency.fromJson(reader1));
+                    deserializedTaskStepProperties.baseImageDependencies = baseImageDependencies;
+                } else if ("contextPath".equals(fieldName)) {
+                    deserializedTaskStepProperties.contextPath = reader.getString();
+                } else if ("contextAccessToken".equals(fieldName)) {
+                    deserializedTaskStepProperties.contextAccessToken = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTaskStepProperties;
+        });
     }
 }

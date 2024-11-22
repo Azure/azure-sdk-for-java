@@ -8,6 +8,7 @@ import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.ResourceType;
+import com.azure.cosmos.implementation.query.hybridsearch.HybridSearchQueryInfo;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
@@ -28,10 +29,11 @@ public final class PipelinedQueryExecutionContext<T> extends PipelinedQueryExecu
 
     private PipelinedQueryExecutionContext(IDocumentQueryExecutionComponent<T> component, int actualPageSize,
                                            QueryInfo queryInfo,
+                                           HybridSearchQueryInfo hybridSearchQueryInfo,
                                            CosmosItemSerializer itemSerializer,
                                            Class<T> classOfT) {
 
-        super(actualPageSize, queryInfo, itemSerializer, classOfT);
+        super(actualPageSize, queryInfo, hybridSearchQueryInfo, itemSerializer, classOfT);
 
         this.component = component;
     }
@@ -95,6 +97,7 @@ public final class PipelinedQueryExecutionContext<T> extends PipelinedQueryExecu
                         c,
                         pageSize,
                         queryInfo,
+                        null,
                         itemSerializer,
                         classOfT));
     }
@@ -124,6 +127,7 @@ public final class PipelinedQueryExecutionContext<T> extends PipelinedQueryExecu
             .map(c -> new PipelinedQueryExecutionContext<>(
                 c,
                 -1,
+                null,
                 null,
                 itemSerializer,
                 klass));

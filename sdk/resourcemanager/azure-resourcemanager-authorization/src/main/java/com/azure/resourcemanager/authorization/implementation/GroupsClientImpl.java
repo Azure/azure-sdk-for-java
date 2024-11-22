@@ -41,17 +41,23 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in GroupsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in GroupsClient.
+ */
 public final class GroupsClientImpl implements GroupsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final GroupsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final MicrosoftGraphClientImpl client;
 
     /**
      * Initializes an instance of GroupsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     GroupsClientImpl(MicrosoftGraphClientImpl client) {
@@ -66,117 +72,88 @@ public final class GroupsClientImpl implements GroupsClient {
     @Host("{$host}")
     @ServiceInterface(name = "MicrosoftGraphClient")
     public interface GroupsService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/groups/{group-id}/acceptedSenders")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(OdataErrorMainException.class)
-        Mono<Response<CollectionOfDirectoryObject>> listAcceptedSenders(
-            @HostParam("$host") String endpoint,
-            @PathParam("group-id") String groupId,
-            @QueryParam("$top") Integer top,
-            @QueryParam("$skip") Integer skip,
-            @QueryParam("$search") String search,
-            @QueryParam("$filter") String filter,
-            @QueryParam("$count") Boolean count,
-            @QueryParam("$orderby") String orderby,
-            @QueryParam("$select") String select,
-            @QueryParam("$expand") String expand,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<CollectionOfDirectoryObject>> listAcceptedSenders(@HostParam("$host") String endpoint,
+            @PathParam("group-id") String groupId, @QueryParam("$top") Integer top, @QueryParam("$skip") Integer skip,
+            @QueryParam("$search") String search, @QueryParam("$filter") String filter,
+            @QueryParam("$count") Boolean count, @QueryParam("$orderby") String orderby,
+            @QueryParam("$select") String select, @QueryParam("$expand") String expand,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Post("/groups/{group-id}/acceptedSenders")
-        @ExpectedResponses({201})
+        @ExpectedResponses({ 201 })
         @UnexpectedResponseExceptionType(OdataErrorMainException.class)
-        Mono<Response<MicrosoftGraphDirectoryObjectInner>> createAcceptedSenders(
-            @HostParam("$host") String endpoint,
+        Mono<Response<MicrosoftGraphDirectoryObjectInner>> createAcceptedSenders(@HostParam("$host") String endpoint,
             @PathParam("group-id") String groupId,
             @BodyParam("application/json") MicrosoftGraphDirectoryObjectInner body,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/groups/{group-id}/members")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(OdataErrorMainException.class)
-        Mono<Response<CollectionOfDirectoryObject0>> listMembers(
-            @HostParam("$host") String endpoint,
-            @PathParam("group-id") String groupId,
-            @QueryParam("$top") Integer top,
-            @QueryParam("$skip") Integer skip,
-            @QueryParam("$search") String search,
-            @QueryParam("$filter") String filter,
-            @QueryParam("$count") Boolean count,
-            @QueryParam("$orderby") String orderby,
-            @QueryParam("$select") String select,
-            @QueryParam("$expand") String expand,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<CollectionOfDirectoryObject0>> listMembers(@HostParam("$host") String endpoint,
+            @PathParam("group-id") String groupId, @QueryParam("$top") Integer top, @QueryParam("$skip") Integer skip,
+            @QueryParam("$search") String search, @QueryParam("$filter") String filter,
+            @QueryParam("$count") Boolean count, @QueryParam("$orderby") String orderby,
+            @QueryParam("$select") String select, @QueryParam("$expand") String expand,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/groups/{group-id}/members/$ref")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(OdataErrorMainException.class)
-        Mono<Response<CollectionOfLinksOfDirectoryObject>> listRefMembers(
-            @HostParam("$host") String endpoint,
-            @PathParam("group-id") String groupId,
-            @QueryParam("$top") Integer top,
-            @QueryParam("$skip") Integer skip,
-            @QueryParam("$search") String search,
-            @QueryParam("$filter") String filter,
-            @QueryParam("$count") Boolean count,
-            @QueryParam("$orderby") String orderby,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<CollectionOfLinksOfDirectoryObject>> listRefMembers(@HostParam("$host") String endpoint,
+            @PathParam("group-id") String groupId, @QueryParam("$top") Integer top, @QueryParam("$skip") Integer skip,
+            @QueryParam("$search") String search, @QueryParam("$filter") String filter,
+            @QueryParam("$count") Boolean count, @QueryParam("$orderby") String orderby,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Post("/groups/{group-id}/members/$ref")
-        @ExpectedResponses({204})
+        @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(OdataErrorMainException.class)
-        Mono<Response<Void>> createRefMembers(
-            @HostParam("$host") String endpoint,
-            @PathParam("group-id") String groupId,
-            @BodyParam("application/json") Map<String, Object> body,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Void>> createRefMembers(@HostParam("$host") String endpoint,
+            @PathParam("group-id") String groupId, @BodyParam("application/json") Map<String, Object> body,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Delete("/groups/{group-id}/members/{directoryObject-id}/$ref")
-        @ExpectedResponses({204})
+        @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(OdataErrorMainException.class)
-        Mono<Response<Void>> deleteRefMember(
-            @HostParam("$host") String endpoint,
-            @PathParam("group-id") String groupId,
-            @PathParam("directoryObject-id") String directoryObjectId,
-            @HeaderParam("If-Match") String ifMatch,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Void>> deleteRefMember(@HostParam("$host") String endpoint, @PathParam("group-id") String groupId,
+            @PathParam("directoryObject-id") String directoryObjectId, @HeaderParam("If-Match") String ifMatch,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({ "Accept: application/json", "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(OdataErrorMainException.class)
-        Mono<Response<CollectionOfDirectoryObject>> listMore(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+        Mono<Response<CollectionOfDirectoryObject>>
+            listMore(@PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({ "Accept: application/json", "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(OdataErrorMainException.class)
-        Mono<Response<CollectionOfDirectoryObject0>> listMembersNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+        Mono<Response<CollectionOfDirectoryObject0>>
+            listMembersNext(@PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({ "Accept: application/json", "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(OdataErrorMainException.class)
-        Mono<Response<CollectionOfLinksOfDirectoryObject>> listRefMembersNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+        Mono<Response<CollectionOfLinksOfDirectoryObject>>
+            listRefMembersNext(@PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
     /**
      * Get acceptedSenders from groups.
-     *
+     * 
      * @param groupId key: id of group.
      * @param top Show only the first n items.
      * @param skip Skip the first n items.
@@ -192,79 +169,43 @@ public final class GroupsClientImpl implements GroupsClient {
      * @return acceptedSenders from groups along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<MicrosoftGraphDirectoryObjectInner>> listAcceptedSendersSinglePageAsync(
-        String groupId,
-        Integer top,
-        Integer skip,
-        String search,
-        String filter,
-        Boolean count,
-        List<GroupsOrderby> orderby,
-        List<GroupsSelect> select,
-        List<String> expand) {
+    private Mono<PagedResponse<MicrosoftGraphDirectoryObjectInner>> listAcceptedSendersSinglePageAsync(String groupId,
+        Integer top, Integer skip, String search, String filter, Boolean count, List<GroupsOrderby> orderby,
+        List<GroupsSelect> select, List<String> expand) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (groupId == null) {
             return Mono.error(new IllegalArgumentException("Parameter groupId is required and cannot be null."));
         }
         final String accept = "application/json";
-        String orderbyConverted =
-            (orderby == null)
-                ? null
-                : orderby
-                    .stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(","));
-        String selectConverted =
-            (select == null)
-                ? null
-                : select
-                    .stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(","));
-        String expandConverted =
-            (expand == null)
-                ? null
-                : expand
-                    .stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(","));
+        String orderbyConverted = (orderby == null)
+            ? null
+            : orderby.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
+        String selectConverted = (select == null)
+            ? null
+            : select.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
+        String expandConverted = (expand == null)
+            ? null
+            : expand.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listAcceptedSenders(
-                            this.client.getEndpoint(),
-                            groupId,
-                            top,
-                            skip,
-                            search,
-                            filter,
-                            count,
-                            orderbyConverted,
-                            selectConverted,
-                            expandConverted,
-                            accept,
-                            context))
-            .<PagedResponse<MicrosoftGraphDirectoryObjectInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null))
+            .withContext(context -> service.listAcceptedSenders(this.client.getEndpoint(), groupId, top, skip, search,
+                filter, count, orderbyConverted, selectConverted, expandConverted, accept, context))
+            .<PagedResponse<MicrosoftGraphDirectoryObjectInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().odataNextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get acceptedSenders from groups.
-     *
+     * 
      * @param groupId key: id of group.
      * @param top Show only the first n items.
      * @param skip Skip the first n items.
@@ -281,77 +222,43 @@ public final class GroupsClientImpl implements GroupsClient {
      * @return acceptedSenders from groups along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<MicrosoftGraphDirectoryObjectInner>> listAcceptedSendersSinglePageAsync(
-        String groupId,
-        Integer top,
-        Integer skip,
-        String search,
-        String filter,
-        Boolean count,
-        List<GroupsOrderby> orderby,
-        List<GroupsSelect> select,
-        List<String> expand,
-        Context context) {
+    private Mono<PagedResponse<MicrosoftGraphDirectoryObjectInner>> listAcceptedSendersSinglePageAsync(String groupId,
+        Integer top, Integer skip, String search, String filter, Boolean count, List<GroupsOrderby> orderby,
+        List<GroupsSelect> select, List<String> expand, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (groupId == null) {
             return Mono.error(new IllegalArgumentException("Parameter groupId is required and cannot be null."));
         }
         final String accept = "application/json";
-        String orderbyConverted =
-            (orderby == null)
-                ? null
-                : orderby
-                    .stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(","));
-        String selectConverted =
-            (select == null)
-                ? null
-                : select
-                    .stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(","));
-        String expandConverted =
-            (expand == null)
-                ? null
-                : expand
-                    .stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(","));
+        String orderbyConverted = (orderby == null)
+            ? null
+            : orderby.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
+        String selectConverted = (select == null)
+            ? null
+            : select.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
+        String expandConverted = (expand == null)
+            ? null
+            : expand.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         context = this.client.mergeContext(context);
         return service
-            .listAcceptedSenders(
-                this.client.getEndpoint(),
-                groupId,
-                top,
-                skip,
-                search,
-                filter,
-                count,
-                orderbyConverted,
-                selectConverted,
-                expandConverted,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null));
+            .listAcceptedSenders(this.client.getEndpoint(), groupId, top, skip, search, filter, count, orderbyConverted,
+                selectConverted, expandConverted, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().odataNextLink(), null));
     }
 
     /**
      * Get acceptedSenders from groups.
-     *
+     * 
      * @param groupId key: id of group.
      * @param top Show only the first n items.
      * @param skip Skip the first n items.
@@ -367,25 +274,16 @@ public final class GroupsClientImpl implements GroupsClient {
      * @return acceptedSenders from groups as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<MicrosoftGraphDirectoryObjectInner> listAcceptedSendersAsync(
-        String groupId,
-        Integer top,
-        Integer skip,
-        String search,
-        String filter,
-        Boolean count,
-        List<GroupsOrderby> orderby,
-        List<GroupsSelect> select,
-        List<String> expand) {
-        return new PagedFlux<>(
-            () ->
-                listAcceptedSendersSinglePageAsync(groupId, top, skip, search, filter, count, orderby, select, expand),
-            nextLink -> listMoreSinglePageAsync(nextLink));
+    public PagedFlux<MicrosoftGraphDirectoryObjectInner> listAcceptedSendersAsync(String groupId, Integer top,
+        Integer skip, String search, String filter, Boolean count, List<GroupsOrderby> orderby,
+        List<GroupsSelect> select, List<String> expand) {
+        return new PagedFlux<>(() -> listAcceptedSendersSinglePageAsync(groupId, top, skip, search, filter, count,
+            orderby, select, expand), nextLink -> listMoreSinglePageAsync(nextLink));
     }
 
     /**
      * Get acceptedSenders from groups.
-     *
+     * 
      * @param groupId key: id of group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
@@ -402,15 +300,13 @@ public final class GroupsClientImpl implements GroupsClient {
         final List<GroupsOrderby> orderby = null;
         final List<GroupsSelect> select = null;
         final List<String> expand = null;
-        return new PagedFlux<>(
-            () ->
-                listAcceptedSendersSinglePageAsync(groupId, top, skip, search, filter, count, orderby, select, expand),
-            nextLink -> listMoreSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listAcceptedSendersSinglePageAsync(groupId, top, skip, search, filter, count,
+            orderby, select, expand), nextLink -> listMoreSinglePageAsync(nextLink));
     }
 
     /**
      * Get acceptedSenders from groups.
-     *
+     * 
      * @param groupId key: id of group.
      * @param top Show only the first n items.
      * @param skip Skip the first n items.
@@ -427,27 +323,16 @@ public final class GroupsClientImpl implements GroupsClient {
      * @return acceptedSenders from groups as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<MicrosoftGraphDirectoryObjectInner> listAcceptedSendersAsync(
-        String groupId,
-        Integer top,
-        Integer skip,
-        String search,
-        String filter,
-        Boolean count,
-        List<GroupsOrderby> orderby,
-        List<GroupsSelect> select,
-        List<String> expand,
-        Context context) {
-        return new PagedFlux<>(
-            () ->
-                listAcceptedSendersSinglePageAsync(
-                    groupId, top, skip, search, filter, count, orderby, select, expand, context),
-            nextLink -> listMoreSinglePageAsync(nextLink, context));
+    private PagedFlux<MicrosoftGraphDirectoryObjectInner> listAcceptedSendersAsync(String groupId, Integer top,
+        Integer skip, String search, String filter, Boolean count, List<GroupsOrderby> orderby,
+        List<GroupsSelect> select, List<String> expand, Context context) {
+        return new PagedFlux<>(() -> listAcceptedSendersSinglePageAsync(groupId, top, skip, search, filter, count,
+            orderby, select, expand, context), nextLink -> listMoreSinglePageAsync(nextLink, context));
     }
 
     /**
      * Get acceptedSenders from groups.
-     *
+     * 
      * @param groupId key: id of group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
@@ -470,7 +355,7 @@ public final class GroupsClientImpl implements GroupsClient {
 
     /**
      * Get acceptedSenders from groups.
-     *
+     * 
      * @param groupId key: id of group.
      * @param top Show only the first n items.
      * @param skip Skip the first n items.
@@ -487,24 +372,16 @@ public final class GroupsClientImpl implements GroupsClient {
      * @return acceptedSenders from groups as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<MicrosoftGraphDirectoryObjectInner> listAcceptedSenders(
-        String groupId,
-        Integer top,
-        Integer skip,
-        String search,
-        String filter,
-        Boolean count,
-        List<GroupsOrderby> orderby,
-        List<GroupsSelect> select,
-        List<String> expand,
-        Context context) {
+    public PagedIterable<MicrosoftGraphDirectoryObjectInner> listAcceptedSenders(String groupId, Integer top,
+        Integer skip, String search, String filter, Boolean count, List<GroupsOrderby> orderby,
+        List<GroupsSelect> select, List<String> expand, Context context) {
         return new PagedIterable<>(
             listAcceptedSendersAsync(groupId, top, skip, search, filter, count, orderby, select, expand, context));
     }
 
     /**
      * Create new navigation property to acceptedSenders for groups.
-     *
+     * 
      * @param groupId key: id of group.
      * @param body New navigation property.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -513,13 +390,11 @@ public final class GroupsClientImpl implements GroupsClient {
      * @return directoryObject along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<MicrosoftGraphDirectoryObjectInner>> createAcceptedSendersWithResponseAsync(
-        String groupId, MicrosoftGraphDirectoryObjectInner body) {
+    public Mono<Response<MicrosoftGraphDirectoryObjectInner>> createAcceptedSendersWithResponseAsync(String groupId,
+        MicrosoftGraphDirectoryObjectInner body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (groupId == null) {
             return Mono.error(new IllegalArgumentException("Parameter groupId is required and cannot be null."));
@@ -538,7 +413,7 @@ public final class GroupsClientImpl implements GroupsClient {
 
     /**
      * Create new navigation property to acceptedSenders for groups.
-     *
+     * 
      * @param groupId key: id of group.
      * @param body New navigation property.
      * @param context The context to associate with this operation.
@@ -548,13 +423,11 @@ public final class GroupsClientImpl implements GroupsClient {
      * @return directoryObject along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<MicrosoftGraphDirectoryObjectInner>> createAcceptedSendersWithResponseAsync(
-        String groupId, MicrosoftGraphDirectoryObjectInner body, Context context) {
+    private Mono<Response<MicrosoftGraphDirectoryObjectInner>> createAcceptedSendersWithResponseAsync(String groupId,
+        MicrosoftGraphDirectoryObjectInner body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (groupId == null) {
             return Mono.error(new IllegalArgumentException("Parameter groupId is required and cannot be null."));
@@ -571,7 +444,7 @@ public final class GroupsClientImpl implements GroupsClient {
 
     /**
      * Create new navigation property to acceptedSenders for groups.
-     *
+     * 
      * @param groupId key: id of group.
      * @param body New navigation property.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -580,14 +453,14 @@ public final class GroupsClientImpl implements GroupsClient {
      * @return directoryObject on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<MicrosoftGraphDirectoryObjectInner> createAcceptedSendersAsync(
-        String groupId, MicrosoftGraphDirectoryObjectInner body) {
+    public Mono<MicrosoftGraphDirectoryObjectInner> createAcceptedSendersAsync(String groupId,
+        MicrosoftGraphDirectoryObjectInner body) {
         return createAcceptedSendersWithResponseAsync(groupId, body).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Create new navigation property to acceptedSenders for groups.
-     *
+     * 
      * @param groupId key: id of group.
      * @param body New navigation property.
      * @param context The context to associate with this operation.
@@ -597,14 +470,14 @@ public final class GroupsClientImpl implements GroupsClient {
      * @return directoryObject along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<MicrosoftGraphDirectoryObjectInner> createAcceptedSendersWithResponse(
-        String groupId, MicrosoftGraphDirectoryObjectInner body, Context context) {
+    public Response<MicrosoftGraphDirectoryObjectInner> createAcceptedSendersWithResponse(String groupId,
+        MicrosoftGraphDirectoryObjectInner body, Context context) {
         return createAcceptedSendersWithResponseAsync(groupId, body, context).block();
     }
 
     /**
      * Create new navigation property to acceptedSenders for groups.
-     *
+     * 
      * @param groupId key: id of group.
      * @param body New navigation property.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -613,14 +486,14 @@ public final class GroupsClientImpl implements GroupsClient {
      * @return directoryObject.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public MicrosoftGraphDirectoryObjectInner createAcceptedSenders(
-        String groupId, MicrosoftGraphDirectoryObjectInner body) {
+    public MicrosoftGraphDirectoryObjectInner createAcceptedSenders(String groupId,
+        MicrosoftGraphDirectoryObjectInner body) {
         return createAcceptedSendersWithResponse(groupId, body, Context.NONE).getValue();
     }
 
     /**
      * Get members from groups.
-     *
+     * 
      * @param groupId key: id of group.
      * @param top Show only the first n items.
      * @param skip Skip the first n items.
@@ -636,79 +509,43 @@ public final class GroupsClientImpl implements GroupsClient {
      * @return members from groups along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<MicrosoftGraphDirectoryObjectInner>> listMembersSinglePageAsync(
-        String groupId,
-        Integer top,
-        Integer skip,
-        String search,
-        String filter,
-        Boolean count,
-        List<GroupsOrderby> orderby,
-        List<GroupsSelect> select,
-        List<String> expand) {
+    private Mono<PagedResponse<MicrosoftGraphDirectoryObjectInner>> listMembersSinglePageAsync(String groupId,
+        Integer top, Integer skip, String search, String filter, Boolean count, List<GroupsOrderby> orderby,
+        List<GroupsSelect> select, List<String> expand) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (groupId == null) {
             return Mono.error(new IllegalArgumentException("Parameter groupId is required and cannot be null."));
         }
         final String accept = "application/json";
-        String orderbyConverted =
-            (orderby == null)
-                ? null
-                : orderby
-                    .stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(","));
-        String selectConverted =
-            (select == null)
-                ? null
-                : select
-                    .stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(","));
-        String expandConverted =
-            (expand == null)
-                ? null
-                : expand
-                    .stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(","));
+        String orderbyConverted = (orderby == null)
+            ? null
+            : orderby.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
+        String selectConverted = (select == null)
+            ? null
+            : select.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
+        String expandConverted = (expand == null)
+            ? null
+            : expand.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listMembers(
-                            this.client.getEndpoint(),
-                            groupId,
-                            top,
-                            skip,
-                            search,
-                            filter,
-                            count,
-                            orderbyConverted,
-                            selectConverted,
-                            expandConverted,
-                            accept,
-                            context))
-            .<PagedResponse<MicrosoftGraphDirectoryObjectInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null))
+            .withContext(context -> service.listMembers(this.client.getEndpoint(), groupId, top, skip, search, filter,
+                count, orderbyConverted, selectConverted, expandConverted, accept, context))
+            .<PagedResponse<MicrosoftGraphDirectoryObjectInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().odataNextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get members from groups.
-     *
+     * 
      * @param groupId key: id of group.
      * @param top Show only the first n items.
      * @param skip Skip the first n items.
@@ -725,77 +562,43 @@ public final class GroupsClientImpl implements GroupsClient {
      * @return members from groups along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<MicrosoftGraphDirectoryObjectInner>> listMembersSinglePageAsync(
-        String groupId,
-        Integer top,
-        Integer skip,
-        String search,
-        String filter,
-        Boolean count,
-        List<GroupsOrderby> orderby,
-        List<GroupsSelect> select,
-        List<String> expand,
-        Context context) {
+    private Mono<PagedResponse<MicrosoftGraphDirectoryObjectInner>> listMembersSinglePageAsync(String groupId,
+        Integer top, Integer skip, String search, String filter, Boolean count, List<GroupsOrderby> orderby,
+        List<GroupsSelect> select, List<String> expand, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (groupId == null) {
             return Mono.error(new IllegalArgumentException("Parameter groupId is required and cannot be null."));
         }
         final String accept = "application/json";
-        String orderbyConverted =
-            (orderby == null)
-                ? null
-                : orderby
-                    .stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(","));
-        String selectConverted =
-            (select == null)
-                ? null
-                : select
-                    .stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(","));
-        String expandConverted =
-            (expand == null)
-                ? null
-                : expand
-                    .stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(","));
+        String orderbyConverted = (orderby == null)
+            ? null
+            : orderby.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
+        String selectConverted = (select == null)
+            ? null
+            : select.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
+        String expandConverted = (expand == null)
+            ? null
+            : expand.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         context = this.client.mergeContext(context);
         return service
-            .listMembers(
-                this.client.getEndpoint(),
-                groupId,
-                top,
-                skip,
-                search,
-                filter,
-                count,
-                orderbyConverted,
-                selectConverted,
-                expandConverted,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null));
+            .listMembers(this.client.getEndpoint(), groupId, top, skip, search, filter, count, orderbyConverted,
+                selectConverted, expandConverted, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().odataNextLink(), null));
     }
 
     /**
      * Get members from groups.
-     *
+     * 
      * @param groupId key: id of group.
      * @param top Show only the first n items.
      * @param skip Skip the first n items.
@@ -811,15 +614,8 @@ public final class GroupsClientImpl implements GroupsClient {
      * @return members from groups as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<MicrosoftGraphDirectoryObjectInner> listMembersAsync(
-        String groupId,
-        Integer top,
-        Integer skip,
-        String search,
-        String filter,
-        Boolean count,
-        List<GroupsOrderby> orderby,
-        List<GroupsSelect> select,
+    public PagedFlux<MicrosoftGraphDirectoryObjectInner> listMembersAsync(String groupId, Integer top, Integer skip,
+        String search, String filter, Boolean count, List<GroupsOrderby> orderby, List<GroupsSelect> select,
         List<String> expand) {
         return new PagedFlux<>(
             () -> listMembersSinglePageAsync(groupId, top, skip, search, filter, count, orderby, select, expand),
@@ -828,7 +624,7 @@ public final class GroupsClientImpl implements GroupsClient {
 
     /**
      * Get members from groups.
-     *
+     * 
      * @param groupId key: id of group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
@@ -852,7 +648,7 @@ public final class GroupsClientImpl implements GroupsClient {
 
     /**
      * Get members from groups.
-     *
+     * 
      * @param groupId key: id of group.
      * @param top Show only the first n items.
      * @param skip Skip the first n items.
@@ -869,26 +665,16 @@ public final class GroupsClientImpl implements GroupsClient {
      * @return members from groups as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<MicrosoftGraphDirectoryObjectInner> listMembersAsync(
-        String groupId,
-        Integer top,
-        Integer skip,
-        String search,
-        String filter,
-        Boolean count,
-        List<GroupsOrderby> orderby,
-        List<GroupsSelect> select,
-        List<String> expand,
-        Context context) {
-        return new PagedFlux<>(
-            () ->
-                listMembersSinglePageAsync(groupId, top, skip, search, filter, count, orderby, select, expand, context),
-            nextLink -> listMembersNextSinglePageAsync(nextLink, context));
+    private PagedFlux<MicrosoftGraphDirectoryObjectInner> listMembersAsync(String groupId, Integer top, Integer skip,
+        String search, String filter, Boolean count, List<GroupsOrderby> orderby, List<GroupsSelect> select,
+        List<String> expand, Context context) {
+        return new PagedFlux<>(() -> listMembersSinglePageAsync(groupId, top, skip, search, filter, count, orderby,
+            select, expand, context), nextLink -> listMembersNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Get members from groups.
-     *
+     * 
      * @param groupId key: id of group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
@@ -911,7 +697,7 @@ public final class GroupsClientImpl implements GroupsClient {
 
     /**
      * Get members from groups.
-     *
+     * 
      * @param groupId key: id of group.
      * @param top Show only the first n items.
      * @param skip Skip the first n items.
@@ -928,24 +714,16 @@ public final class GroupsClientImpl implements GroupsClient {
      * @return members from groups as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<MicrosoftGraphDirectoryObjectInner> listMembers(
-        String groupId,
-        Integer top,
-        Integer skip,
-        String search,
-        String filter,
-        Boolean count,
-        List<GroupsOrderby> orderby,
-        List<GroupsSelect> select,
-        List<String> expand,
-        Context context) {
+    public PagedIterable<MicrosoftGraphDirectoryObjectInner> listMembers(String groupId, Integer top, Integer skip,
+        String search, String filter, Boolean count, List<GroupsOrderby> orderby, List<GroupsSelect> select,
+        List<String> expand, Context context) {
         return new PagedIterable<>(
             listMembersAsync(groupId, top, skip, search, filter, count, orderby, select, expand, context));
     }
 
     /**
      * Get ref of members from groups.
-     *
+     * 
      * @param groupId key: id of group.
      * @param top Show only the first n items.
      * @param skip Skip the first n items.
@@ -959,61 +737,32 @@ public final class GroupsClientImpl implements GroupsClient {
      * @return ref of members from groups along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<String>> listRefMembersSinglePageAsync(
-        String groupId,
-        Integer top,
-        Integer skip,
-        String search,
-        String filter,
-        Boolean count,
-        List<GroupsOrderby> orderby) {
+    private Mono<PagedResponse<String>> listRefMembersSinglePageAsync(String groupId, Integer top, Integer skip,
+        String search, String filter, Boolean count, List<GroupsOrderby> orderby) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (groupId == null) {
             return Mono.error(new IllegalArgumentException("Parameter groupId is required and cannot be null."));
         }
         final String accept = "application/json";
-        String orderbyConverted =
-            (orderby == null)
-                ? null
-                : orderby
-                    .stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(","));
+        String orderbyConverted = (orderby == null)
+            ? null
+            : orderby.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listRefMembers(
-                            this.client.getEndpoint(),
-                            groupId,
-                            top,
-                            skip,
-                            search,
-                            filter,
-                            count,
-                            orderbyConverted,
-                            accept,
-                            context))
-            .<PagedResponse<String>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null))
+            .withContext(context -> service.listRefMembers(this.client.getEndpoint(), groupId, top, skip, search,
+                filter, count, orderbyConverted, accept, context))
+            .<PagedResponse<String>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().odataNextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get ref of members from groups.
-     *
+     * 
      * @param groupId key: id of group.
      * @param top Show only the first n items.
      * @param skip Skip the first n items.
@@ -1028,50 +777,32 @@ public final class GroupsClientImpl implements GroupsClient {
      * @return ref of members from groups along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<String>> listRefMembersSinglePageAsync(
-        String groupId,
-        Integer top,
-        Integer skip,
-        String search,
-        String filter,
-        Boolean count,
-        List<GroupsOrderby> orderby,
-        Context context) {
+    private Mono<PagedResponse<String>> listRefMembersSinglePageAsync(String groupId, Integer top, Integer skip,
+        String search, String filter, Boolean count, List<GroupsOrderby> orderby, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (groupId == null) {
             return Mono.error(new IllegalArgumentException("Parameter groupId is required and cannot be null."));
         }
         final String accept = "application/json";
-        String orderbyConverted =
-            (orderby == null)
-                ? null
-                : orderby
-                    .stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(","));
+        String orderbyConverted = (orderby == null)
+            ? null
+            : orderby.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         context = this.client.mergeContext(context);
         return service
-            .listRefMembers(
-                this.client.getEndpoint(), groupId, top, skip, search, filter, count, orderbyConverted, accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null));
+            .listRefMembers(this.client.getEndpoint(), groupId, top, skip, search, filter, count, orderbyConverted,
+                accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().odataNextLink(), null));
     }
 
     /**
      * Get ref of members from groups.
-     *
+     * 
      * @param groupId key: id of group.
      * @param top Show only the first n items.
      * @param skip Skip the first n items.
@@ -1085,22 +816,15 @@ public final class GroupsClientImpl implements GroupsClient {
      * @return ref of members from groups as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<String> listRefMembersAsync(
-        String groupId,
-        Integer top,
-        Integer skip,
-        String search,
-        String filter,
-        Boolean count,
-        List<GroupsOrderby> orderby) {
-        return new PagedFlux<>(
-            () -> listRefMembersSinglePageAsync(groupId, top, skip, search, filter, count, orderby),
+    public PagedFlux<String> listRefMembersAsync(String groupId, Integer top, Integer skip, String search,
+        String filter, Boolean count, List<GroupsOrderby> orderby) {
+        return new PagedFlux<>(() -> listRefMembersSinglePageAsync(groupId, top, skip, search, filter, count, orderby),
             nextLink -> listRefMembersNextSinglePageAsync(nextLink));
     }
 
     /**
      * Get ref of members from groups.
-     *
+     * 
      * @param groupId key: id of group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
@@ -1115,14 +839,13 @@ public final class GroupsClientImpl implements GroupsClient {
         final String filter = null;
         final Boolean count = null;
         final List<GroupsOrderby> orderby = null;
-        return new PagedFlux<>(
-            () -> listRefMembersSinglePageAsync(groupId, top, skip, search, filter, count, orderby),
+        return new PagedFlux<>(() -> listRefMembersSinglePageAsync(groupId, top, skip, search, filter, count, orderby),
             nextLink -> listRefMembersNextSinglePageAsync(nextLink));
     }
 
     /**
      * Get ref of members from groups.
-     *
+     * 
      * @param groupId key: id of group.
      * @param top Show only the first n items.
      * @param skip Skip the first n items.
@@ -1137,15 +860,8 @@ public final class GroupsClientImpl implements GroupsClient {
      * @return ref of members from groups as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<String> listRefMembersAsync(
-        String groupId,
-        Integer top,
-        Integer skip,
-        String search,
-        String filter,
-        Boolean count,
-        List<GroupsOrderby> orderby,
-        Context context) {
+    private PagedFlux<String> listRefMembersAsync(String groupId, Integer top, Integer skip, String search,
+        String filter, Boolean count, List<GroupsOrderby> orderby, Context context) {
         return new PagedFlux<>(
             () -> listRefMembersSinglePageAsync(groupId, top, skip, search, filter, count, orderby, context),
             nextLink -> listRefMembersNextSinglePageAsync(nextLink, context));
@@ -1153,7 +869,7 @@ public final class GroupsClientImpl implements GroupsClient {
 
     /**
      * Get ref of members from groups.
-     *
+     * 
      * @param groupId key: id of group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
@@ -1173,7 +889,7 @@ public final class GroupsClientImpl implements GroupsClient {
 
     /**
      * Get ref of members from groups.
-     *
+     * 
      * @param groupId key: id of group.
      * @param top Show only the first n items.
      * @param skip Skip the first n items.
@@ -1188,21 +904,14 @@ public final class GroupsClientImpl implements GroupsClient {
      * @return ref of members from groups as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<String> listRefMembers(
-        String groupId,
-        Integer top,
-        Integer skip,
-        String search,
-        String filter,
-        Boolean count,
-        List<GroupsOrderby> orderby,
-        Context context) {
+    public PagedIterable<String> listRefMembers(String groupId, Integer top, Integer skip, String search, String filter,
+        Boolean count, List<GroupsOrderby> orderby, Context context) {
         return new PagedIterable<>(listRefMembersAsync(groupId, top, skip, search, filter, count, orderby, context));
     }
 
     /**
      * Create new navigation property ref to members for groups.
-     *
+     * 
      * @param groupId key: id of group.
      * @param body New navigation property ref value.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1213,10 +922,8 @@ public final class GroupsClientImpl implements GroupsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> createRefMembersWithResponseAsync(String groupId, Map<String, Object> body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (groupId == null) {
             return Mono.error(new IllegalArgumentException("Parameter groupId is required and cannot be null."));
@@ -1232,7 +939,7 @@ public final class GroupsClientImpl implements GroupsClient {
 
     /**
      * Create new navigation property ref to members for groups.
-     *
+     * 
      * @param groupId key: id of group.
      * @param body New navigation property ref value.
      * @param context The context to associate with this operation.
@@ -1242,13 +949,11 @@ public final class GroupsClientImpl implements GroupsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> createRefMembersWithResponseAsync(
-        String groupId, Map<String, Object> body, Context context) {
+    private Mono<Response<Void>> createRefMembersWithResponseAsync(String groupId, Map<String, Object> body,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (groupId == null) {
             return Mono.error(new IllegalArgumentException("Parameter groupId is required and cannot be null."));
@@ -1263,7 +968,7 @@ public final class GroupsClientImpl implements GroupsClient {
 
     /**
      * Create new navigation property ref to members for groups.
-     *
+     * 
      * @param groupId key: id of group.
      * @param body New navigation property ref value.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1278,7 +983,7 @@ public final class GroupsClientImpl implements GroupsClient {
 
     /**
      * Create new navigation property ref to members for groups.
-     *
+     * 
      * @param groupId key: id of group.
      * @param body New navigation property ref value.
      * @param context The context to associate with this operation.
@@ -1294,7 +999,7 @@ public final class GroupsClientImpl implements GroupsClient {
 
     /**
      * Create new navigation property ref to members for groups.
-     *
+     * 
      * @param groupId key: id of group.
      * @param body New navigation property ref value.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1308,7 +1013,7 @@ public final class GroupsClientImpl implements GroupsClient {
 
     /**
      * Delete ref of member from groups.
-     *
+     * 
      * @param groupId key: id of group.
      * @param directoryObjectId key: directoryObject-id.
      * @param ifMatch ETag.
@@ -1318,13 +1023,11 @@ public final class GroupsClientImpl implements GroupsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteRefMemberWithResponseAsync(
-        String groupId, String directoryObjectId, String ifMatch) {
+    public Mono<Response<Void>> deleteRefMemberWithResponseAsync(String groupId, String directoryObjectId,
+        String ifMatch) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (groupId == null) {
             return Mono.error(new IllegalArgumentException("Parameter groupId is required and cannot be null."));
@@ -1335,17 +1038,14 @@ public final class GroupsClientImpl implements GroupsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .deleteRefMember(
-                            this.client.getEndpoint(), groupId, directoryObjectId, ifMatch, accept, context))
+            .withContext(context -> service.deleteRefMember(this.client.getEndpoint(), groupId, directoryObjectId,
+                ifMatch, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Delete ref of member from groups.
-     *
+     * 
      * @param groupId key: id of group.
      * @param directoryObjectId key: directoryObject-id.
      * @param ifMatch ETag.
@@ -1356,13 +1056,11 @@ public final class GroupsClientImpl implements GroupsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteRefMemberWithResponseAsync(
-        String groupId, String directoryObjectId, String ifMatch, Context context) {
+    private Mono<Response<Void>> deleteRefMemberWithResponseAsync(String groupId, String directoryObjectId,
+        String ifMatch, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (groupId == null) {
             return Mono.error(new IllegalArgumentException("Parameter groupId is required and cannot be null."));
@@ -1378,7 +1076,7 @@ public final class GroupsClientImpl implements GroupsClient {
 
     /**
      * Delete ref of member from groups.
-     *
+     * 
      * @param groupId key: id of group.
      * @param directoryObjectId key: directoryObject-id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1394,7 +1092,7 @@ public final class GroupsClientImpl implements GroupsClient {
 
     /**
      * Delete ref of member from groups.
-     *
+     * 
      * @param groupId key: id of group.
      * @param directoryObjectId key: directoryObject-id.
      * @param ifMatch ETag.
@@ -1405,14 +1103,14 @@ public final class GroupsClientImpl implements GroupsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteRefMemberWithResponse(
-        String groupId, String directoryObjectId, String ifMatch, Context context) {
+    public Response<Void> deleteRefMemberWithResponse(String groupId, String directoryObjectId, String ifMatch,
+        Context context) {
         return deleteRefMemberWithResponseAsync(groupId, directoryObjectId, ifMatch, context).block();
     }
 
     /**
      * Delete ref of member from groups.
-     *
+     * 
      * @param groupId key: id of group.
      * @param directoryObjectId key: directoryObject-id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1427,9 +1125,8 @@ public final class GroupsClientImpl implements GroupsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1440,25 +1137,16 @@ public final class GroupsClientImpl implements GroupsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
-        return FluxUtil
-            .withContext(context -> service.listMore(nextLink, context))
-            .<PagedResponse<MicrosoftGraphDirectoryObjectInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listMore(nextLink, context))
+            .<PagedResponse<MicrosoftGraphDirectoryObjectInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().odataNextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
@@ -1466,30 +1154,21 @@ public final class GroupsClientImpl implements GroupsClient {
      * @return collection of directoryObject along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<MicrosoftGraphDirectoryObjectInner>> listMoreSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<MicrosoftGraphDirectoryObjectInner>> listMoreSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         context = this.client.mergeContext(context);
-        return service
-            .listMore(nextLink, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null));
+        return service.listMore(nextLink, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().odataNextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1500,25 +1179,16 @@ public final class GroupsClientImpl implements GroupsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
-        return FluxUtil
-            .withContext(context -> service.listMembersNext(nextLink, context))
-            .<PagedResponse<MicrosoftGraphDirectoryObjectInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listMembersNext(nextLink, context))
+            .<PagedResponse<MicrosoftGraphDirectoryObjectInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().odataNextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
@@ -1526,66 +1196,48 @@ public final class GroupsClientImpl implements GroupsClient {
      * @return collection of directoryObject along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<MicrosoftGraphDirectoryObjectInner>> listMembersNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<MicrosoftGraphDirectoryObjectInner>> listMembersNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         context = this.client.mergeContext(context);
-        return service
-            .listMembersNext(nextLink, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null));
+        return service.listMembersNext(nextLink, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().odataNextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of links of directoryObject along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<String>> listRefMembersNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
-        return FluxUtil
-            .withContext(context -> service.listRefMembersNext(nextLink, context))
-            .<PagedResponse<String>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listRefMembersNext(nextLink, context))
+            .<PagedResponse<String>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().odataNextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of links of directoryObject along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<String>> listRefMembersNextSinglePageAsync(String nextLink, Context context) {
@@ -1593,16 +1245,8 @@ public final class GroupsClientImpl implements GroupsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         context = this.client.mergeContext(context);
-        return service
-            .listRefMembersNext(nextLink, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null));
+        return service.listRefMembersNext(nextLink, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().odataNextLink(), null));
     }
 }

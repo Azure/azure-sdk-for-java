@@ -5,36 +5,36 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Input for InstallPatches on a Linux VM, as directly received by the API.
  */
 @Fluent
-public final class LinuxParameters {
+public final class LinuxParameters implements JsonSerializable<LinuxParameters> {
     /*
      * The update classifications to select when installing patches for Linux.
      */
-    @JsonProperty(value = "classificationsToInclude")
     private List<VMGuestPatchClassificationLinux> classificationsToInclude;
 
     /*
      * packages to include in the patch operation. Format: packageName_packageVersion
      */
-    @JsonProperty(value = "packageNameMasksToInclude")
     private List<String> packageNameMasksToInclude;
 
     /*
      * packages to exclude in the patch operation. Format: packageName_packageVersion
      */
-    @JsonProperty(value = "packageNameMasksToExclude")
     private List<String> packageNameMasksToExclude;
 
     /*
      * This is used as a maintenance run identifier for Auto VM Guest Patching in Linux.
      */
-    @JsonProperty(value = "maintenanceRunId")
     private String maintenanceRunId;
 
     /**
@@ -138,5 +138,57 @@ public final class LinuxParameters {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("classificationsToInclude", this.classificationsToInclude,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeArrayField("packageNameMasksToInclude", this.packageNameMasksToInclude,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("packageNameMasksToExclude", this.packageNameMasksToExclude,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("maintenanceRunId", this.maintenanceRunId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LinuxParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LinuxParameters if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LinuxParameters.
+     */
+    public static LinuxParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LinuxParameters deserializedLinuxParameters = new LinuxParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("classificationsToInclude".equals(fieldName)) {
+                    List<VMGuestPatchClassificationLinux> classificationsToInclude
+                        = reader.readArray(reader1 -> VMGuestPatchClassificationLinux.fromString(reader1.getString()));
+                    deserializedLinuxParameters.classificationsToInclude = classificationsToInclude;
+                } else if ("packageNameMasksToInclude".equals(fieldName)) {
+                    List<String> packageNameMasksToInclude = reader.readArray(reader1 -> reader1.getString());
+                    deserializedLinuxParameters.packageNameMasksToInclude = packageNameMasksToInclude;
+                } else if ("packageNameMasksToExclude".equals(fieldName)) {
+                    List<String> packageNameMasksToExclude = reader.readArray(reader1 -> reader1.getString());
+                    deserializedLinuxParameters.packageNameMasksToExclude = packageNameMasksToExclude;
+                } else if ("maintenanceRunId".equals(fieldName)) {
+                    deserializedLinuxParameters.maintenanceRunId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLinuxParameters;
+        });
     }
 }

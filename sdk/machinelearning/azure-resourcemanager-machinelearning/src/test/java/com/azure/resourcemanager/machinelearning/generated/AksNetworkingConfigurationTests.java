@@ -11,29 +11,25 @@ import org.junit.jupiter.api.Assertions;
 public final class AksNetworkingConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AksNetworkingConfiguration model =
-            BinaryData
-                .fromString(
-                    "{\"subnetId\":\"pilguooqjag\",\"serviceCidr\":\"itgueiookjbs\",\"dnsServiceIP\":\"rtdtpdelq\",\"dockerBridgeCidr\":\"slmot\"}")
-                .toObject(AksNetworkingConfiguration.class);
-        Assertions.assertEquals("pilguooqjag", model.subnetId());
-        Assertions.assertEquals("itgueiookjbs", model.serviceCidr());
-        Assertions.assertEquals("rtdtpdelq", model.dnsServiceIp());
-        Assertions.assertEquals("slmot", model.dockerBridgeCidr());
+        AksNetworkingConfiguration model = BinaryData.fromString(
+            "{\"subnetId\":\"mffngdyfcixr\",\"serviceCidr\":\"cqvhoejgoiutgwrm\",\"dnsServiceIP\":\"hpqhazyntacihn\",\"dockerBridgeCidr\":\"gmipnmliqmvlbhik\"}")
+            .toObject(AksNetworkingConfiguration.class);
+        Assertions.assertEquals("mffngdyfcixr", model.subnetId());
+        Assertions.assertEquals("cqvhoejgoiutgwrm", model.serviceCidr());
+        Assertions.assertEquals("hpqhazyntacihn", model.dnsServiceIp());
+        Assertions.assertEquals("gmipnmliqmvlbhik", model.dockerBridgeCidr());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AksNetworkingConfiguration model =
-            new AksNetworkingConfiguration()
-                .withSubnetId("pilguooqjag")
-                .withServiceCidr("itgueiookjbs")
-                .withDnsServiceIp("rtdtpdelq")
-                .withDockerBridgeCidr("slmot");
+        AksNetworkingConfiguration model = new AksNetworkingConfiguration().withSubnetId("mffngdyfcixr")
+            .withServiceCidr("cqvhoejgoiutgwrm")
+            .withDnsServiceIp("hpqhazyntacihn")
+            .withDockerBridgeCidr("gmipnmliqmvlbhik");
         model = BinaryData.fromObject(model).toObject(AksNetworkingConfiguration.class);
-        Assertions.assertEquals("pilguooqjag", model.subnetId());
-        Assertions.assertEquals("itgueiookjbs", model.serviceCidr());
-        Assertions.assertEquals("rtdtpdelq", model.dnsServiceIp());
-        Assertions.assertEquals("slmot", model.dockerBridgeCidr());
+        Assertions.assertEquals("mffngdyfcixr", model.subnetId());
+        Assertions.assertEquals("cqvhoejgoiutgwrm", model.serviceCidr());
+        Assertions.assertEquals("hpqhazyntacihn", model.dnsServiceIp());
+        Assertions.assertEquals("gmipnmliqmvlbhik", model.dockerBridgeCidr());
     }
 }

@@ -5,24 +5,26 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Open authentication access policy defined by user.
  */
 @Fluent
-public final class OpenAuthenticationAccessPolicy {
+public final class OpenAuthenticationAccessPolicy implements JsonSerializable<OpenAuthenticationAccessPolicy> {
     /*
      * Type of provider for OAuth.
      */
-    @JsonProperty(value = "type")
     private OpenAuthenticationProviderType type;
 
     /*
      * The access policy claims.
      */
-    @JsonProperty(value = "claims")
     private List<OpenAuthenticationPolicyClaim> claims;
 
     /**
@@ -80,5 +82,48 @@ public final class OpenAuthenticationAccessPolicy {
         if (claims() != null) {
             claims().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeArrayField("claims", this.claims, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OpenAuthenticationAccessPolicy from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OpenAuthenticationAccessPolicy if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OpenAuthenticationAccessPolicy.
+     */
+    public static OpenAuthenticationAccessPolicy fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OpenAuthenticationAccessPolicy deserializedOpenAuthenticationAccessPolicy
+                = new OpenAuthenticationAccessPolicy();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedOpenAuthenticationAccessPolicy.type
+                        = OpenAuthenticationProviderType.fromString(reader.getString());
+                } else if ("claims".equals(fieldName)) {
+                    List<OpenAuthenticationPolicyClaim> claims
+                        = reader.readArray(reader1 -> OpenAuthenticationPolicyClaim.fromJson(reader1));
+                    deserializedOpenAuthenticationAccessPolicy.claims = claims;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOpenAuthenticationAccessPolicy;
+        });
     }
 }

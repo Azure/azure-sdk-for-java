@@ -5,28 +5,50 @@
 package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Properties of data center and transport preference validation response. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "validationType")
-@JsonTypeName("ValidatePreferences")
+/**
+ * Properties of data center and transport preference validation response.
+ */
 @Immutable
 public final class PreferencesValidationResponseProperties extends ValidationInputResponse {
     /*
+     * Identifies the type of validation response.
+     */
+    private ValidationInputDiscriminator validationType = ValidationInputDiscriminator.VALIDATE_PREFERENCES;
+
+    /*
      * Validation status of requested data center and transport.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private ValidationStatus status;
 
-    /** Creates an instance of PreferencesValidationResponseProperties class. */
+    /*
+     * Error code and message of validation response.
+     */
+    private CloudError error;
+
+    /**
+     * Creates an instance of PreferencesValidationResponseProperties class.
+     */
     public PreferencesValidationResponseProperties() {
     }
 
     /**
+     * Get the validationType property: Identifies the type of validation response.
+     * 
+     * @return the validationType value.
+     */
+    @Override
+    public ValidationInputDiscriminator validationType() {
+        return this.validationType;
+    }
+
+    /**
      * Get the status property: Validation status of requested data center and transport.
-     *
+     * 
      * @return the status value.
      */
     public ValidationStatus status() {
@@ -34,12 +56,68 @@ public final class PreferencesValidationResponseProperties extends ValidationInp
     }
 
     /**
+     * Get the error property: Error code and message of validation response.
+     * 
+     * @return the error value.
+     */
+    @Override
+    public CloudError error() {
+        return this.error;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+        if (error() != null) {
+            error().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("validationType",
+            this.validationType == null ? null : this.validationType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PreferencesValidationResponseProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PreferencesValidationResponseProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PreferencesValidationResponseProperties.
+     */
+    public static PreferencesValidationResponseProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PreferencesValidationResponseProperties deserializedPreferencesValidationResponseProperties
+                = new PreferencesValidationResponseProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("error".equals(fieldName)) {
+                    deserializedPreferencesValidationResponseProperties.error = CloudError.fromJson(reader);
+                } else if ("validationType".equals(fieldName)) {
+                    deserializedPreferencesValidationResponseProperties.validationType
+                        = ValidationInputDiscriminator.fromString(reader.getString());
+                } else if ("status".equals(fieldName)) {
+                    deserializedPreferencesValidationResponseProperties.status
+                        = ValidationStatus.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPreferencesValidationResponseProperties;
+        });
     }
 }

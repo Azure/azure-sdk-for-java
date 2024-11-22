@@ -32,14 +32,14 @@ public class LicenseProfileArmEsuPropertiesWithoutAssignedLicense extends Licens
     private EsuKeyState esuKeyState;
 
     /*
-     * The guid id of the license.
-     */
-    private String assignedLicenseImmutableId;
-
-    /*
      * The list of ESU keys.
      */
     private List<EsuKey> esuKeys;
+
+    /*
+     * The guid id of the license.
+     */
+    private String assignedLicenseImmutableId;
 
     /**
      * Creates an instance of LicenseProfileArmEsuPropertiesWithoutAssignedLicense class.
@@ -108,16 +108,6 @@ public class LicenseProfileArmEsuPropertiesWithoutAssignedLicense extends Licens
     }
 
     /**
-     * Get the assignedLicenseImmutableId property: The guid id of the license.
-     * 
-     * @return the assignedLicenseImmutableId value.
-     */
-    @Override
-    public String assignedLicenseImmutableId() {
-        return this.assignedLicenseImmutableId;
-    }
-
-    /**
      * Get the esuKeys property: The list of ESU keys.
      * 
      * @return the esuKeys value.
@@ -128,13 +118,25 @@ public class LicenseProfileArmEsuPropertiesWithoutAssignedLicense extends Licens
     }
 
     /**
+     * Get the assignedLicenseImmutableId property: The guid id of the license.
+     * 
+     * @return the assignedLicenseImmutableId value.
+     */
+    @Override
+    public String assignedLicenseImmutableId() {
+        return this.assignedLicenseImmutableId;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+        if (esuKeys() != null) {
+            esuKeys().forEach(e -> e.validate());
+        }
     }
 
     /**

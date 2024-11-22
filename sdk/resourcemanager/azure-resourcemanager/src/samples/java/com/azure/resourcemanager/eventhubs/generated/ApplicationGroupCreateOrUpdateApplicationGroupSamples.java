@@ -7,7 +7,6 @@ package com.azure.resourcemanager.eventhubs.generated;
 import com.azure.resourcemanager.eventhubs.fluent.models.ApplicationGroupInner;
 import com.azure.resourcemanager.eventhubs.models.MetricId;
 import com.azure.resourcemanager.eventhubs.models.ThrottlingPolicy;
-
 import java.util.Arrays;
 
 /**
@@ -21,7 +20,7 @@ public final class ApplicationGroupCreateOrUpdateApplicationGroupSamples {
      */
     /**
      * Sample code: ApplicationGroupCreate.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void applicationGroupCreate(com.azure.resourcemanager.AzureResourceManager azure) {

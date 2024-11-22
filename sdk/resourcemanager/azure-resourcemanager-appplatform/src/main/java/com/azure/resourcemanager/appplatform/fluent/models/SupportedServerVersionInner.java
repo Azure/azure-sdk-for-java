@@ -5,29 +5,30 @@
 package com.azure.resourcemanager.appplatform.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Supported server version.
  */
 @Fluent
-public final class SupportedServerVersionInner {
+public final class SupportedServerVersionInner implements JsonSerializable<SupportedServerVersionInner> {
     /*
      * The raw server version value which could be passed to deployment CRUD operations.
      */
-    @JsonProperty(value = "value")
     private String value;
 
     /*
      * The server name.
      */
-    @JsonProperty(value = "server")
     private String server;
 
     /*
      * The Server version.
      */
-    @JsonProperty(value = "version")
     private String version;
 
     /**
@@ -102,5 +103,47 @@ public final class SupportedServerVersionInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("value", this.value);
+        jsonWriter.writeStringField("server", this.server);
+        jsonWriter.writeStringField("version", this.version);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SupportedServerVersionInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SupportedServerVersionInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SupportedServerVersionInner.
+     */
+    public static SupportedServerVersionInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SupportedServerVersionInner deserializedSupportedServerVersionInner = new SupportedServerVersionInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    deserializedSupportedServerVersionInner.value = reader.getString();
+                } else if ("server".equals(fieldName)) {
+                    deserializedSupportedServerVersionInner.server = reader.getString();
+                } else if ("version".equals(fieldName)) {
+                    deserializedSupportedServerVersionInner.version = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSupportedServerVersionInner;
+        });
     }
 }

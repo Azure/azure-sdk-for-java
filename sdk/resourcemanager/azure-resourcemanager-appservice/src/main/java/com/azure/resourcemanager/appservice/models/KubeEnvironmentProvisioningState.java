@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.appservice.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * Provisioning state of the Kubernetes Environment.
  */
@@ -76,7 +73,6 @@ public enum KubeEnvironmentProvisioningState {
      * @param value the serialized value to parse.
      * @return the parsed KubeEnvironmentProvisioningState object, or null if unable to parse.
      */
-    @JsonCreator
     public static KubeEnvironmentProvisioningState fromString(String value) {
         if (value == null) {
             return null;
@@ -93,7 +89,6 @@ public enum KubeEnvironmentProvisioningState {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

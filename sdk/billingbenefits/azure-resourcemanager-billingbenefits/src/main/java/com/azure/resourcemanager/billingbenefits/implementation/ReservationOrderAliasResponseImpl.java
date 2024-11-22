@@ -22,8 +22,7 @@ public final class ReservationOrderAliasResponseImpl implements ReservationOrder
 
     private final com.azure.resourcemanager.billingbenefits.BillingBenefitsManager serviceManager;
 
-    ReservationOrderAliasResponseImpl(
-        ReservationOrderAliasResponseInner innerObject,
+    ReservationOrderAliasResponseImpl(ReservationOrderAliasResponseInner innerObject,
         com.azure.resourcemanager.billingbenefits.BillingBenefitsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

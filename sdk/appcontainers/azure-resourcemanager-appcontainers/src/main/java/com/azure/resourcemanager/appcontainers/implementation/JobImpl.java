@@ -18,6 +18,7 @@ import com.azure.resourcemanager.appcontainers.models.JobExecutionTemplate;
 import com.azure.resourcemanager.appcontainers.models.JobPatchProperties;
 import com.azure.resourcemanager.appcontainers.models.JobPatchPropertiesProperties;
 import com.azure.resourcemanager.appcontainers.models.JobProvisioningState;
+import com.azure.resourcemanager.appcontainers.models.JobRunningState;
 import com.azure.resourcemanager.appcontainers.models.JobSecretsCollection;
 import com.azure.resourcemanager.appcontainers.models.JobTemplate;
 import com.azure.resourcemanager.appcontainers.models.ManagedServiceIdentity;
@@ -69,6 +70,10 @@ public final class JobImpl implements Job, Job.Definition, Job.Update {
 
     public JobProvisioningState provisioningState() {
         return this.innerModel().provisioningState();
+    }
+
+    public JobRunningState runningState() {
+        return this.innerModel().runningState();
     }
 
     public String environmentId() {
@@ -214,6 +219,22 @@ public final class JobImpl implements Job, Job.Definition, Job.Update {
 
     public JobSecretsCollection listSecrets() {
         return serviceManager.jobs().listSecrets(resourceGroupName, jobName);
+    }
+
+    public Job resume() {
+        return serviceManager.jobs().resume(resourceGroupName, jobName);
+    }
+
+    public Job resume(Context context) {
+        return serviceManager.jobs().resume(resourceGroupName, jobName, context);
+    }
+
+    public Job suspend() {
+        return serviceManager.jobs().suspend(resourceGroupName, jobName);
+    }
+
+    public Job suspend(Context context) {
+        return serviceManager.jobs().suspend(resourceGroupName, jobName, context);
     }
 
     public JobImpl withRegion(Region location) {

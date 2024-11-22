@@ -5,39 +5,37 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.containerregistry.fluent.models.TaskRunPropertiesUpdateParameters;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
 /**
  * The parameters for updating a task run.
  */
 @Fluent
-public final class TaskRunUpdateParameters {
+public final class TaskRunUpdateParameters implements JsonSerializable<TaskRunUpdateParameters> {
     /*
      * Identity for the resource.
      */
-    @JsonProperty(value = "identity")
     private IdentityProperties identity;
 
     /*
      * The properties for updating a task run.
      */
-    @JsonProperty(value = "properties")
     private TaskRunPropertiesUpdateParameters innerProperties;
 
     /*
      * The location of the resource
      */
-    @JsonProperty(value = "location")
     private String location;
 
     /*
      * The ARM resource tags.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /**
@@ -175,5 +173,52 @@ public final class TaskRunUpdateParameters {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("identity", this.identity);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("location", this.location);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TaskRunUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TaskRunUpdateParameters if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TaskRunUpdateParameters.
+     */
+    public static TaskRunUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TaskRunUpdateParameters deserializedTaskRunUpdateParameters = new TaskRunUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("identity".equals(fieldName)) {
+                    deserializedTaskRunUpdateParameters.identity = IdentityProperties.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedTaskRunUpdateParameters.innerProperties
+                        = TaskRunPropertiesUpdateParameters.fromJson(reader);
+                } else if ("location".equals(fieldName)) {
+                    deserializedTaskRunUpdateParameters.location = reader.getString();
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedTaskRunUpdateParameters.tags = tags;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTaskRunUpdateParameters;
+        });
     }
 }

@@ -49,9 +49,6 @@ parameters:
   - name: JavaBuildVersion
     type: string
     default: $(JavaBuildVersion)
-  - name: JavadocSafeJavaBuildVersion
-    type: string
-    default: $(JavadocSafeJavaBuildVersion)
   - name: IgnoreVerifyTypeSpecCodeGenerationError
     type: boolean
     default: false
@@ -61,6 +58,9 @@ parameters:
   - name: EnvVars
     type: object
     default: {}
+  - name: VersionOverride
+    type: string
+    default: $(VersionOverride)
 
 jobs:
   - job: 'Build'
@@ -70,6 +70,7 @@ jobs:
       Codeql.Enabled: true
       Codeql.BuildIdentifier: ${{ parameters.ServiceDirectory }}
       Codeql.SkipTaskAutoInjection: false
+      SDKType: ${{ parameters.SDKType }}
 
     pool:
       name: $(LINUXPOOL)
@@ -162,15 +163,15 @@ jobs:
           python -m pip install markdown2==2.4.6 BeautifulSoup4==4.11.1
         displayName: 'pip install markdown2 and BeautifulSoup4'
 
-      - task: Maven@3
-        displayName: 'Build and Package, JDK Version: ${{ parameters.JavadocSafeJavaBuildVersion }}'
+      - task: Maven@4
+        displayName: 'Build and Package, JDK Version: ${{ parameters.JavaBuildVersion }}'
         inputs:
           mavenPomFile: pom.xml
           goals: 'deploy'
           options: '$(DefaultOptions) -T ${{parameters.BuildParallelization}} -DskipTests -Dgenerate-overview -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -Dspotless.apply.skip=true -pl $(ProjectList) -am -DaltDeploymentRepository=id::default::file://$(System.DefaultWorkingDirectory)/build' # We include template-module so we ensure it always builds in CI
           mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
-          jdkVersionOption: ${{ parameters.JavadocSafeJavaBuildVersion }} # TODO (vcolin7): Change to ${{ parameters.JavaBuildVersion }} once Javadoc migration to Java 21 is complete.
+          jdkVersionOption: ${{ parameters.JavaBuildVersion }}
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
 
@@ -196,6 +197,15 @@ jobs:
             -TargetDirectory $(Build.ArtifactStagingDirectory)
             -Artifacts ('${{ replace(convertToJson(parameters.ReleaseArtifacts), '''', '`''') }}' | ConvertFrom-Json | Where-Object -Not skipPublishPackage )
             -InformationAction Continue
+
+      - task: Powershell@2
+        inputs:
+          filePath: $(Build.SourcesDirectory)/eng/scripts/Save-Package-Namespaces-Property.ps1
+          arguments: >
+            -ArtifactStagingDirectory $(Build.ArtifactStagingDirectory)
+          pwsh: true
+          workingDirectory: $(Pipeline.Workspace)
+        displayName: Update package properties with namespaces
 
       - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
         parameters:
@@ -358,7 +368,6 @@ jobs:
       - template: /eng/pipelines/templates/steps/run-and-validate-linting.yml
         parameters:
           JavaBuildVersion: ${{ parameters.JavaBuildVersion }}
-          JavadocSafeJavaBuildVersion: ${{ parameters.JavadocSafeJavaBuildVersion }}
           AdditionalLintingOptions: ${{ parameters.AdditionalLintingOptions }}
           BuildParallelization: ${{ parameters.BuildParallelization }}
           RunLinting: true
@@ -409,3 +418,4 @@ jobs:
         AdditionalLintingOptions: ${{ parameters.AdditionalLintingOptions }}
         TimeoutInMinutes: ${{ parameters.TimeoutInMinutes }}
         EnvVars: ${{ parameters.EnvVars }}
+        VersionOverride: ${{ parameters.VersionOverride }}

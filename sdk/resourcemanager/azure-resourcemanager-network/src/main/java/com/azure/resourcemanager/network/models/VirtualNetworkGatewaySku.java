@@ -5,29 +5,30 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * VirtualNetworkGatewaySku details.
  */
 @Fluent
-public final class VirtualNetworkGatewaySku {
+public final class VirtualNetworkGatewaySku implements JsonSerializable<VirtualNetworkGatewaySku> {
     /*
      * Gateway SKU name.
      */
-    @JsonProperty(value = "name")
     private VirtualNetworkGatewaySkuName name;
 
     /*
      * Gateway SKU tier.
      */
-    @JsonProperty(value = "tier")
     private VirtualNetworkGatewaySkuTier tier;
 
     /*
      * The capacity.
      */
-    @JsonProperty(value = "capacity", access = JsonProperty.Access.WRITE_ONLY)
     private Integer capacity;
 
     /**
@@ -91,5 +92,48 @@ public final class VirtualNetworkGatewaySku {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name == null ? null : this.name.toString());
+        jsonWriter.writeStringField("tier", this.tier == null ? null : this.tier.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualNetworkGatewaySku from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualNetworkGatewaySku if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualNetworkGatewaySku.
+     */
+    public static VirtualNetworkGatewaySku fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualNetworkGatewaySku deserializedVirtualNetworkGatewaySku = new VirtualNetworkGatewaySku();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedVirtualNetworkGatewaySku.name
+                        = VirtualNetworkGatewaySkuName.fromString(reader.getString());
+                } else if ("tier".equals(fieldName)) {
+                    deserializedVirtualNetworkGatewaySku.tier
+                        = VirtualNetworkGatewaySkuTier.fromString(reader.getString());
+                } else if ("capacity".equals(fieldName)) {
+                    deserializedVirtualNetworkGatewaySku.capacity = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualNetworkGatewaySku;
+        });
     }
 }

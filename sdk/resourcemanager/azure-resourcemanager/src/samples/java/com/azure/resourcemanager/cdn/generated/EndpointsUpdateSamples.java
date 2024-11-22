@@ -22,9 +22,13 @@ public final class EndpointsUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void endpointsUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.cdnProfiles().manager().serviceClient().getEndpoints().update("RG", "profile1", "endpoint1",
-            new EndpointUpdateParameters().withTags(mapOf("additionalProperties", "Tag1")),
-            com.azure.core.util.Context.NONE);
+        azure.cdnProfiles()
+            .manager()
+            .serviceClient()
+            .getEndpoints()
+            .update("RG", "profile1", "endpoint1",
+                new EndpointUpdateParameters().withTags(mapOf("additionalProperties", "Tag1")),
+                com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

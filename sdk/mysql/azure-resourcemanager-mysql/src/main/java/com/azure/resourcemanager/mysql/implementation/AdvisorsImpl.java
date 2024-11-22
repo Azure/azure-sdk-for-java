@@ -16,7 +16,8 @@ import com.azure.resourcemanager.mysql.models.Advisors;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class AdvisorsImpl implements Advisors {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AdvisorsImpl.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(AdvisorsImpl.class);
 
     private final AdvisorsClient innerClient;
 
@@ -36,15 +37,12 @@ public final class AdvisorsImpl implements Advisors {
         }
     }
 
-    public Response<Advisor> getWithResponse(
-        String resourceGroupName, String serverName, String advisorName, Context context) {
-        Response<AdvisorInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, serverName, advisorName, context);
+    public Response<Advisor> getWithResponse(String resourceGroupName, String serverName, String advisorName,
+        Context context) {
+        Response<AdvisorInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, serverName, advisorName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new AdvisorImpl(inner.getValue(), this.manager()));
         } else {
             return null;

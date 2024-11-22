@@ -7,12 +7,16 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.network.models.ApplicationGatewayForContainersReferenceDefinition;
 import com.azure.resourcemanager.network.models.ManagedRulesDefinition;
 import com.azure.resourcemanager.network.models.PolicySettings;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.WebApplicationFirewallCustomRule;
 import com.azure.resourcemanager.network.models.WebApplicationFirewallPolicyResourceState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -24,20 +28,27 @@ public final class WebApplicationFirewallPolicyInner extends Resource {
     /*
      * Properties of the web application firewall policy.
      */
-    @JsonProperty(value = "properties")
     private WebApplicationFirewallPolicyPropertiesFormat innerProperties;
 
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /*
      * Resource ID.
      */
-    @JsonProperty(value = "id")
     private String id;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
 
     /**
      * Creates an instance of WebApplicationFirewallPolicyInner class.
@@ -81,6 +92,26 @@ public final class WebApplicationFirewallPolicyInner extends Resource {
     public WebApplicationFirewallPolicyInner withId(String id) {
         this.id = id;
         return this;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
     }
 
     /**
@@ -216,6 +247,16 @@ public final class WebApplicationFirewallPolicyInner extends Resource {
     }
 
     /**
+     * Get the applicationGatewayForContainers property: A collection of references to application gateway for
+     * containers.
+     * 
+     * @return the applicationGatewayForContainers value.
+     */
+    public List<ApplicationGatewayForContainersReferenceDefinition> applicationGatewayForContainers() {
+        return this.innerProperties() == null ? null : this.innerProperties().applicationGatewayForContainers();
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -224,5 +265,60 @@ public final class WebApplicationFirewallPolicyInner extends Resource {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("id", this.id);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WebApplicationFirewallPolicyInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WebApplicationFirewallPolicyInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the WebApplicationFirewallPolicyInner.
+     */
+    public static WebApplicationFirewallPolicyInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WebApplicationFirewallPolicyInner deserializedWebApplicationFirewallPolicyInner
+                = new WebApplicationFirewallPolicyInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedWebApplicationFirewallPolicyInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedWebApplicationFirewallPolicyInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedWebApplicationFirewallPolicyInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedWebApplicationFirewallPolicyInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedWebApplicationFirewallPolicyInner.innerProperties
+                        = WebApplicationFirewallPolicyPropertiesFormat.fromJson(reader);
+                } else if ("etag".equals(fieldName)) {
+                    deserializedWebApplicationFirewallPolicyInner.etag = reader.getString();
+                } else if ("id".equals(fieldName)) {
+                    deserializedWebApplicationFirewallPolicyInner.id = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWebApplicationFirewallPolicyInner;
+        });
     }
 }

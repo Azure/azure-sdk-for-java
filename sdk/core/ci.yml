@@ -99,7 +99,6 @@ extends:
   template: /eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: core
-    JavadocSafeJavaBuildVersion: '1.21'
     TimeoutInMinutes: 90
     ReleaseDependsOnLiveTests: ${{ parameters.release_dependsonlivetests }}
     Artifacts:
@@ -164,13 +163,13 @@ extends:
         safeName: azurecoretracingopentelemetry
         releaseInBatch: ${{ parameters.release_azurecoretracingopentelemetry }}
     AdditionalModules:
+      - name: azure-core-tracing-opentelemetry-samples
+        groupId: com.azure
       - name: azure-core-perf
         groupId: com.azure
         # required by the above perf library
       - name: perf-test-core
         groupId: com.azure
-    MatrixReplace:
-      - TestGoals=(surefire:test)/$1 failsafe:integration-test failsafe:verify
     AdditionalStagesAfterBuild:
       - stage: DependencyVersionOverridesTests
         displayName: 'Dependency Version Overrides'
@@ -186,13 +185,16 @@ extends:
                 - jackson_2.10
                 - jackson_2.11
                 - jackson_2.12
+                - jackson_2.13
                 - jackson_2.14
                 - jackson_2.15
                 - jackson_2.16
                 - jackson_2.17
+                - jackson_2.18
                 - reactor_2020
                 - reactor_2022
                 - reactor_2023
+                - reactor_2024
               TestGoals: surefire:test
 
     LiveTestStages:

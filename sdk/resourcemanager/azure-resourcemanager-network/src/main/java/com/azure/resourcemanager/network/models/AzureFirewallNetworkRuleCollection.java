@@ -6,8 +6,11 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.fluent.models.AzureFirewallNetworkRuleCollectionPropertiesFormat;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -18,19 +21,16 @@ public final class AzureFirewallNetworkRuleCollection extends SubResource {
     /*
      * Properties of the azure firewall network rule collection.
      */
-    @JsonProperty(value = "properties")
     private AzureFirewallNetworkRuleCollectionPropertiesFormat innerProperties;
 
     /*
      * The name of the resource that is unique within the Azure firewall. This name can be used to access the resource.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /**
@@ -175,5 +175,51 @@ public final class AzureFirewallNetworkRuleCollection extends SubResource {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("name", this.name);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureFirewallNetworkRuleCollection from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureFirewallNetworkRuleCollection if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureFirewallNetworkRuleCollection.
+     */
+    public static AzureFirewallNetworkRuleCollection fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureFirewallNetworkRuleCollection deserializedAzureFirewallNetworkRuleCollection
+                = new AzureFirewallNetworkRuleCollection();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedAzureFirewallNetworkRuleCollection.withId(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedAzureFirewallNetworkRuleCollection.innerProperties
+                        = AzureFirewallNetworkRuleCollectionPropertiesFormat.fromJson(reader);
+                } else if ("name".equals(fieldName)) {
+                    deserializedAzureFirewallNetworkRuleCollection.name = reader.getString();
+                } else if ("etag".equals(fieldName)) {
+                    deserializedAzureFirewallNetworkRuleCollection.etag = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureFirewallNetworkRuleCollection;
+        });
     }
 }

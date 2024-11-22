@@ -5,10 +5,12 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -18,35 +20,30 @@ import java.util.Map;
  * Error definition for managed integration runtime.
  */
 @Fluent
-public final class ManagedIntegrationRuntimeError {
+public final class ManagedIntegrationRuntimeError implements JsonSerializable<ManagedIntegrationRuntimeError> {
     /*
      * The time when the error occurred.
      */
-    @JsonProperty(value = "time", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime time;
 
     /*
      * Error code.
      */
-    @JsonProperty(value = "code", access = JsonProperty.Access.WRITE_ONLY)
     private String code;
 
     /*
      * Managed integration runtime error parameters.
      */
-    @JsonProperty(value = "parameters", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> parameters;
 
     /*
      * Error message.
      */
-    @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
     private String message;
 
     /*
      * Error definition for managed integration runtime.
      */
-    @JsonIgnore
     private Map<String, Object> additionalProperties;
 
     /**
@@ -96,7 +93,6 @@ public final class ManagedIntegrationRuntimeError {
      * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
@@ -112,19 +108,66 @@ public final class ManagedIntegrationRuntimeError {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new LinkedHashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedIntegrationRuntimeError from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedIntegrationRuntimeError if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ManagedIntegrationRuntimeError.
+     */
+    public static ManagedIntegrationRuntimeError fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedIntegrationRuntimeError deserializedManagedIntegrationRuntimeError
+                = new ManagedIntegrationRuntimeError();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("time".equals(fieldName)) {
+                    deserializedManagedIntegrationRuntimeError.time = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("code".equals(fieldName)) {
+                    deserializedManagedIntegrationRuntimeError.code = reader.getString();
+                } else if ("parameters".equals(fieldName)) {
+                    List<String> parameters = reader.readArray(reader1 -> reader1.getString());
+                    deserializedManagedIntegrationRuntimeError.parameters = parameters;
+                } else if ("message".equals(fieldName)) {
+                    deserializedManagedIntegrationRuntimeError.message = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedManagedIntegrationRuntimeError.additionalProperties = additionalProperties;
+
+            return deserializedManagedIntegrationRuntimeError;
+        });
     }
 }

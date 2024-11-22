@@ -16,48 +16,48 @@ public final class AvailableWorkloadProfilesCollectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AvailableWorkloadProfilesCollection model = BinaryData.fromString(
-            "{\"value\":[{\"location\":\"dmoh\",\"properties\":{\"category\":\"qvudwxdndnvowgu\",\"applicability\":\"LocationDefault\",\"cores\":247911704,\"memoryGiB\":175400299,\"gpus\":2105007169,\"displayName\":\"hslazjdyggdtj\"},\"id\":\"hbkuofqwey\",\"name\":\"hmenevfyexfwhybc\",\"type\":\"bvyvdcsity\"},{\"location\":\"aamdect\",\"properties\":{\"category\":\"iqscjeypv\",\"applicability\":\"Custom\",\"cores\":902064602,\"memoryGiB\":177141497,\"gpus\":61185346,\"displayName\":\"refovgmkqsleyyvx\"},\"id\":\"jpkcattpng\",\"name\":\"cr\",\"type\":\"czsqpjhvm\"},{\"location\":\"jvnysounqe\",\"properties\":{\"category\":\"oaeupfhyhltrpmo\",\"applicability\":\"Custom\",\"cores\":1490971149,\"memoryGiB\":557848148,\"gpus\":860799201,\"displayName\":\"thfuiuaodsfcpkvx\"},\"id\":\"puozmyzydag\",\"name\":\"uaxbezyiuokkt\",\"type\":\"hrdxwzywqsmbs\"}],\"nextLink\":\"exim\"}")
+            "{\"value\":[{\"location\":\"wdslfhotwmcy\",\"properties\":{\"category\":\"lbjnpgacftadehx\",\"applicability\":\"Custom\",\"cores\":1099330569,\"memoryGiB\":737203180,\"gpus\":1772029927,\"displayName\":\"suesnzw\"},\"id\":\"jbavorxzdm\",\"name\":\"hctbqvudwxdn\",\"type\":\"nvowgujju\"},{\"location\":\"dkcglhsl\",\"properties\":{\"category\":\"dyggdtjixhbku\",\"applicability\":\"Custom\",\"cores\":194127225,\"memoryGiB\":363488888,\"gpus\":1047075786,\"displayName\":\"n\"},\"id\":\"fyexfwhy\",\"name\":\"cibvyvdcsitynn\",\"type\":\"amdecte\"},{\"location\":\"iqscjeypv\",\"properties\":{\"category\":\"rkgqhcjrefo\",\"applicability\":\"Custom\",\"cores\":668805249,\"memoryGiB\":1422729812,\"gpus\":1834153709,\"displayName\":\"vxyqjpkcattpngjc\"},\"id\":\"czsqpjhvm\",\"name\":\"ajvnysounqe\",\"type\":\"a\"}],\"nextLink\":\"ae\"}")
             .toObject(AvailableWorkloadProfilesCollection.class);
-        Assertions.assertEquals("dmoh", model.value().get(0).location());
-        Assertions.assertEquals("qvudwxdndnvowgu", model.value().get(0).properties().category());
-        Assertions.assertEquals(Applicability.LOCATION_DEFAULT, model.value().get(0).properties().applicability());
-        Assertions.assertEquals(247911704, model.value().get(0).properties().cores());
-        Assertions.assertEquals(175400299, model.value().get(0).properties().memoryGiB());
-        Assertions.assertEquals(2105007169, model.value().get(0).properties().gpus());
-        Assertions.assertEquals("hslazjdyggdtj", model.value().get(0).properties().displayName());
+        Assertions.assertEquals("wdslfhotwmcy", model.value().get(0).location());
+        Assertions.assertEquals("lbjnpgacftadehx", model.value().get(0).properties().category());
+        Assertions.assertEquals(Applicability.CUSTOM, model.value().get(0).properties().applicability());
+        Assertions.assertEquals(1099330569, model.value().get(0).properties().cores());
+        Assertions.assertEquals(737203180, model.value().get(0).properties().memoryGiB());
+        Assertions.assertEquals(1772029927, model.value().get(0).properties().gpus());
+        Assertions.assertEquals("suesnzw", model.value().get(0).properties().displayName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AvailableWorkloadProfilesCollection model = new AvailableWorkloadProfilesCollection().withValue(Arrays.asList(
-            new AvailableWorkloadProfileInner().withLocation("dmoh")
-                .withProperties(new AvailableWorkloadProfileProperties().withCategory("qvudwxdndnvowgu")
-                    .withApplicability(Applicability.LOCATION_DEFAULT)
-                    .withCores(247911704)
-                    .withMemoryGiB(175400299)
-                    .withGpus(2105007169)
-                    .withDisplayName("hslazjdyggdtj")),
-            new AvailableWorkloadProfileInner().withLocation("aamdect")
-                .withProperties(new AvailableWorkloadProfileProperties().withCategory("iqscjeypv")
+            new AvailableWorkloadProfileInner().withLocation("wdslfhotwmcy")
+                .withProperties(new AvailableWorkloadProfileProperties().withCategory("lbjnpgacftadehx")
                     .withApplicability(Applicability.CUSTOM)
-                    .withCores(902064602)
-                    .withMemoryGiB(177141497)
-                    .withGpus(61185346)
-                    .withDisplayName("refovgmkqsleyyvx")),
-            new AvailableWorkloadProfileInner().withLocation("jvnysounqe")
-                .withProperties(new AvailableWorkloadProfileProperties().withCategory("oaeupfhyhltrpmo")
+                    .withCores(1099330569)
+                    .withMemoryGiB(737203180)
+                    .withGpus(1772029927)
+                    .withDisplayName("suesnzw")),
+            new AvailableWorkloadProfileInner().withLocation("dkcglhsl")
+                .withProperties(new AvailableWorkloadProfileProperties().withCategory("dyggdtjixhbku")
                     .withApplicability(Applicability.CUSTOM)
-                    .withCores(1490971149)
-                    .withMemoryGiB(557848148)
-                    .withGpus(860799201)
-                    .withDisplayName("thfuiuaodsfcpkvx"))));
+                    .withCores(194127225)
+                    .withMemoryGiB(363488888)
+                    .withGpus(1047075786)
+                    .withDisplayName("n")),
+            new AvailableWorkloadProfileInner().withLocation("iqscjeypv")
+                .withProperties(new AvailableWorkloadProfileProperties().withCategory("rkgqhcjrefo")
+                    .withApplicability(Applicability.CUSTOM)
+                    .withCores(668805249)
+                    .withMemoryGiB(1422729812)
+                    .withGpus(1834153709)
+                    .withDisplayName("vxyqjpkcattpngjc"))));
         model = BinaryData.fromObject(model).toObject(AvailableWorkloadProfilesCollection.class);
-        Assertions.assertEquals("dmoh", model.value().get(0).location());
-        Assertions.assertEquals("qvudwxdndnvowgu", model.value().get(0).properties().category());
-        Assertions.assertEquals(Applicability.LOCATION_DEFAULT, model.value().get(0).properties().applicability());
-        Assertions.assertEquals(247911704, model.value().get(0).properties().cores());
-        Assertions.assertEquals(175400299, model.value().get(0).properties().memoryGiB());
-        Assertions.assertEquals(2105007169, model.value().get(0).properties().gpus());
-        Assertions.assertEquals("hslazjdyggdtj", model.value().get(0).properties().displayName());
+        Assertions.assertEquals("wdslfhotwmcy", model.value().get(0).location());
+        Assertions.assertEquals("lbjnpgacftadehx", model.value().get(0).properties().category());
+        Assertions.assertEquals(Applicability.CUSTOM, model.value().get(0).properties().applicability());
+        Assertions.assertEquals(1099330569, model.value().get(0).properties().cores());
+        Assertions.assertEquals(737203180, model.value().get(0).properties().memoryGiB());
+        Assertions.assertEquals(1772029927, model.value().get(0).properties().gpus());
+        Assertions.assertEquals("suesnzw", model.value().get(0).properties().displayName());
     }
 }

@@ -38,51 +38,37 @@ public final class SapVirtualInstancesCreateMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"identity\":{\"type\":\"None\",\"userAssignedIdentities\":{}},\"properties\":{\"environment\":\"NonProd\",\"sapProduct\":\"Other\",\"configuration\":{\"configurationType\":\"SapConfiguration\"},\"managedResourceGroupConfiguration\":{\"name\":\"ydzgkrvqeevtoe\"},\"status\":\"SoftShutdown\",\"health\":\"Unknown\",\"state\":\"RegistrationComplete\",\"provisioningState\":\"Succeeded\",\"errors\":{}},\"location\":\"mov\",\"tags\":{\"wzqa\":\"va\",\"gzuriglaecxndt\":\"f\"},\"id\":\"cokpv\",\"name\":\"mlqtmldgxob\",\"type\":\"irclnpk\"}";
+        String responseStr
+            = "{\"identity\":{\"type\":\"None\",\"userAssignedIdentities\":{}},\"properties\":{\"environment\":\"NonProd\",\"sapProduct\":\"Other\",\"configuration\":{\"configurationType\":\"SapConfiguration\"},\"managedResourceGroupConfiguration\":{\"name\":\"ydzgkrvqeevtoe\"},\"status\":\"SoftShutdown\",\"health\":\"Unknown\",\"state\":\"RegistrationComplete\",\"provisioningState\":\"Succeeded\",\"errors\":{}},\"location\":\"mov\",\"tags\":{\"wzqa\":\"va\",\"gzuriglaecxndt\":\"f\"},\"id\":\"cokpv\",\"name\":\"mlqtmldgxob\",\"type\":\"irclnpk\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        WorkloadsManager manager =
-            WorkloadsManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        WorkloadsManager manager = WorkloadsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        SapVirtualInstance response =
-            manager
-                .sapVirtualInstances()
-                .define("vwzjbhyz")
-                .withRegion("tjb")
-                .withExistingResourceGroup("vdwxfzwi")
-                .withEnvironment(SapEnvironmentType.PROD)
-                .withSapProduct(SapProductType.OTHER)
-                .withConfiguration(new SapConfiguration())
-                .withTags(mapOf("jlxr", "mflvest", "wk", "ilozapeewchpxlk"))
-                .withIdentity(
-                    new UserAssignedServiceIdentity()
-                        .withType(ManagedServiceIdentityType.USER_ASSIGNED)
-                        .withUserAssignedIdentities(mapOf()))
-                .withManagedResourceGroupConfiguration(new ManagedRGConfiguration().withName("rnegvmn"))
-                .create();
+        SapVirtualInstance response = manager.sapVirtualInstances()
+            .define("vwzjbhyz")
+            .withRegion("tjb")
+            .withExistingResourceGroup("vdwxfzwi")
+            .withEnvironment(SapEnvironmentType.PROD)
+            .withSapProduct(SapProductType.OTHER)
+            .withConfiguration(new SapConfiguration())
+            .withTags(mapOf("jlxr", "mflvest", "wk", "ilozapeewchpxlk"))
+            .withIdentity(new UserAssignedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
+                .withUserAssignedIdentities(mapOf()))
+            .withManagedResourceGroupConfiguration(new ManagedRGConfiguration().withName("rnegvmn"))
+            .create();
 
         Assertions.assertEquals("mov", response.location());
         Assertions.assertEquals("va", response.tags().get("wzqa"));

@@ -16,29 +16,35 @@ public final class BackupVaultsListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BackupVaultsList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"gohbuffkmrq\"},\"location\":\"vvhmxtdrj\",\"tags\":{\"ewzcjznmwcp\":\"acoebj\"},\"id\":\"guaadraufactkahz\",\"name\":\"v\",\"type\":\"jjziuxxpsh\"},{\"properties\":{\"provisioningState\":\"kulfg\"},\"location\":\"qubkw\",\"tags\":{\"inyflnorwmduvwp\":\"nrdsutujbazpjuoh\"},\"id\":\"lvxwmyg\",\"name\":\"xpgpq\",\"type\":\"hiszepnnbjcrxgib\"},{\"properties\":{\"provisioningState\":\"xconfozauors\"},\"location\":\"okwbqplh\",\"tags\":{\"yuqdu\":\"uuepzlrphwzsoldw\",\"biorktal\":\"vmnnrw\",\"miloxggdufiqndie\":\"wjhhgdnhxmsivf\"},\"id\":\"zaofjchvcyy\",\"name\":\"s\",\"type\":\"gdotcubiipuipwo\"},{\"properties\":{\"provisioningState\":\"macjekn\"},\"location\":\"shqvcimpev\",\"tags\":{\"rrilbywdxsmic\":\"b\",\"qujizdvo\":\"wrwfscjfnyns\",\"blgyavutpthj\":\"ytibyow\"},\"id\":\"xoi\",\"name\":\"msksbp\",\"type\":\"mlqoljx\"}],\"nextLink\":\"gxxlxsffgcvizq\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"tjuewbcihx\"},\"location\":\"whcjyxcc\",\"tags\":{\"px\":\"payakkud\",\"stcyohpfkyrkdbd\":\"wjplma\",\"nobaiyhddviacegf\":\"iogsjkmnwq\"},\"id\":\"m\",\"name\":\"tfpmvmemfnczdw\",\"type\":\"vbalxlllc\"},{\"properties\":{\"provisioningState\":\"db\"},\"location\":\"vwrdnhfukuvsj\",\"tags\":{\"lerchpq\":\"smystuluqypfc\",\"dfc\":\"mfpjbabw\",\"qddrihpfhoqcaae\":\"sspuunnoxyhkx\",\"djvlpj\":\"dao\"},\"id\":\"xkzb\",\"name\":\"msgeivsiykzk\",\"type\":\"ncj\"},{\"properties\":{\"provisioningState\":\"nbzoggcu\"},\"location\":\"p\",\"tags\":{\"ylbf\":\"rpgogtqxep\"},\"id\":\"ajlyjtlvofqzhv\",\"name\":\"cib\",\"type\":\"fmo\"},{\"properties\":{\"provisioningState\":\"rkjpvdwxfzwii\"},\"location\":\"zjb\",\"tags\":{\"mbtrnegvmnvu\":\"sxjrk\",\"bkkd\":\"eqvldspast\",\"apeewchpxlkt\":\"flvestmjlxrrilo\",\"ufuztcktyhjtq\":\"kuziycsle\"},\"id\":\"dcgzul\",\"name\":\"mmrqz\",\"type\":\"rr\"}],\"nextLink\":\"pglydz\"}")
             .toObject(BackupVaultsList.class);
-        Assertions.assertEquals("vvhmxtdrj", model.value().get(0).location());
-        Assertions.assertEquals("acoebj", model.value().get(0).tags().get("ewzcjznmwcp"));
-        Assertions.assertEquals("gxxlxsffgcvizq", model.nextLink());
+        Assertions.assertEquals("whcjyxcc", model.value().get(0).location());
+        Assertions.assertEquals("payakkud", model.value().get(0).tags().get("px"));
+        Assertions.assertEquals("pglydz", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BackupVaultsList model = new BackupVaultsList()
-            .withValue(
-                Arrays.asList(new BackupVaultInner().withLocation("vvhmxtdrj").withTags(mapOf("ewzcjznmwcp", "acoebj")),
-                    new BackupVaultInner().withLocation("qubkw").withTags(mapOf("inyflnorwmduvwp", "nrdsutujbazpjuoh")),
-                    new BackupVaultInner().withLocation("okwbqplh")
-                        .withTags(mapOf("yuqdu", "uuepzlrphwzsoldw", "biorktal", "vmnnrw", "miloxggdufiqndie",
-                            "wjhhgdnhxmsivf")),
-                    new BackupVaultInner().withLocation("shqvcimpev")
-                        .withTags(mapOf("rrilbywdxsmic", "b", "qujizdvo", "wrwfscjfnyns", "blgyavutpthj", "ytibyow"))))
-            .withNextLink("gxxlxsffgcvizq");
+        BackupVaultsList model
+            = new BackupVaultsList()
+                .withValue(
+                    Arrays
+                        .asList(
+                            new BackupVaultInner().withLocation("whcjyxcc")
+                                .withTags(mapOf("px", "payakkud", "stcyohpfkyrkdbd", "wjplma", "nobaiyhddviacegf",
+                                    "iogsjkmnwq")),
+                            new BackupVaultInner().withLocation("vwrdnhfukuvsj")
+                                .withTags(mapOf("lerchpq", "smystuluqypfc", "dfc", "mfpjbabw", "qddrihpfhoqcaae",
+                                    "sspuunnoxyhkx", "djvlpj", "dao")),
+                            new BackupVaultInner().withLocation("p").withTags(mapOf("ylbf", "rpgogtqxep")),
+                            new BackupVaultInner().withLocation("zjb")
+                                .withTags(mapOf("mbtrnegvmnvu", "sxjrk", "bkkd", "eqvldspast", "apeewchpxlkt",
+                                    "flvestmjlxrrilo", "ufuztcktyhjtq", "kuziycsle"))))
+                .withNextLink("pglydz");
         model = BinaryData.fromObject(model).toObject(BackupVaultsList.class);
-        Assertions.assertEquals("vvhmxtdrj", model.value().get(0).location());
-        Assertions.assertEquals("acoebj", model.value().get(0).tags().get("ewzcjznmwcp"));
-        Assertions.assertEquals("gxxlxsffgcvizq", model.nextLink());
+        Assertions.assertEquals("whcjyxcc", model.value().get(0).location());
+        Assertions.assertEquals("payakkud", model.value().get(0).tags().get("px"));
+        Assertions.assertEquals("pglydz", model.nextLink());
     }
 
     // Use "Map.of" if available

@@ -5,31 +5,37 @@
 package com.azure.resourcemanager.managementgroups.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Management group patch parameters. */
+/**
+ * Management group patch parameters.
+ */
 @Fluent
-public final class PatchManagementGroupRequest {
+public final class PatchManagementGroupRequest implements JsonSerializable<PatchManagementGroupRequest> {
     /*
      * The friendly name of the management group.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
-     * (Optional) The fully qualified ID for the parent management group.  For example,
+     * (Optional) The fully qualified ID for the parent management group. For example,
      * /providers/Microsoft.Management/managementGroups/0000000-0000-0000-0000-000000000000
      */
-    @JsonProperty(value = "parentGroupId")
     private String parentGroupId;
 
-    /** Creates an instance of PatchManagementGroupRequest class. */
+    /**
+     * Creates an instance of PatchManagementGroupRequest class.
+     */
     public PatchManagementGroupRequest() {
     }
 
     /**
      * Get the displayName property: The friendly name of the management group.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -38,7 +44,7 @@ public final class PatchManagementGroupRequest {
 
     /**
      * Set the displayName property: The friendly name of the management group.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the PatchManagementGroupRequest object itself.
      */
@@ -50,7 +56,7 @@ public final class PatchManagementGroupRequest {
     /**
      * Get the parentGroupId property: (Optional) The fully qualified ID for the parent management group. For example,
      * /providers/Microsoft.Management/managementGroups/0000000-0000-0000-0000-000000000000.
-     *
+     * 
      * @return the parentGroupId value.
      */
     public String parentGroupId() {
@@ -60,7 +66,7 @@ public final class PatchManagementGroupRequest {
     /**
      * Set the parentGroupId property: (Optional) The fully qualified ID for the parent management group. For example,
      * /providers/Microsoft.Management/managementGroups/0000000-0000-0000-0000-000000000000.
-     *
+     * 
      * @param parentGroupId the parentGroupId value to set.
      * @return the PatchManagementGroupRequest object itself.
      */
@@ -71,9 +77,48 @@ public final class PatchManagementGroupRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("parentGroupId", this.parentGroupId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PatchManagementGroupRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PatchManagementGroupRequest if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PatchManagementGroupRequest.
+     */
+    public static PatchManagementGroupRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PatchManagementGroupRequest deserializedPatchManagementGroupRequest = new PatchManagementGroupRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("displayName".equals(fieldName)) {
+                    deserializedPatchManagementGroupRequest.displayName = reader.getString();
+                } else if ("parentGroupId".equals(fieldName)) {
+                    deserializedPatchManagementGroupRequest.parentGroupId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPatchManagementGroupRequest;
+        });
     }
 }

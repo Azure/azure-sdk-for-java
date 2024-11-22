@@ -5,52 +5,81 @@
 package com.azure.resourcemanager.botservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The parameters to provide for the DirectLine Speech channel. */
+/**
+ * The parameters to provide for the DirectLine Speech channel.
+ */
 @Fluent
-public final class DirectLineSpeechChannelProperties {
+public final class DirectLineSpeechChannelProperties implements JsonSerializable<DirectLineSpeechChannelProperties> {
+    /*
+     * The cognitive service id with this channel registration.
+     */
+    private String cognitiveServiceResourceId;
+
     /*
      * The cognitive service region with this channel registration.
      */
-    @JsonProperty(value = "cognitiveServiceRegion", required = true)
     private String cognitiveServiceRegion;
 
     /*
-     * The cognitive service subscription key to use with this channel
-     * registration.
+     * The cognitive service subscription key to use with this channel registration.
      */
-    @JsonProperty(value = "cognitiveServiceSubscriptionKey", required = true)
     private String cognitiveServiceSubscriptionKey;
 
     /*
      * Whether this channel is enabled or not.
      */
-    @JsonProperty(value = "isEnabled")
     private Boolean isEnabled;
 
     /*
      * Custom speech model id (optional).
      */
-    @JsonProperty(value = "customVoiceDeploymentId")
     private String customVoiceDeploymentId;
 
     /*
      * Custom voice deployment id (optional).
      */
-    @JsonProperty(value = "customSpeechModelId")
     private String customSpeechModelId;
 
     /*
      * Make this a default bot for chosen cognitive service account.
      */
-    @JsonProperty(value = "isDefaultBotForCogSvcAccount")
     private Boolean isDefaultBotForCogSvcAccount;
 
     /**
+     * Creates an instance of DirectLineSpeechChannelProperties class.
+     */
+    public DirectLineSpeechChannelProperties() {
+    }
+
+    /**
+     * Get the cognitiveServiceResourceId property: The cognitive service id with this channel registration.
+     * 
+     * @return the cognitiveServiceResourceId value.
+     */
+    public String cognitiveServiceResourceId() {
+        return this.cognitiveServiceResourceId;
+    }
+
+    /**
+     * Set the cognitiveServiceResourceId property: The cognitive service id with this channel registration.
+     * 
+     * @param cognitiveServiceResourceId the cognitiveServiceResourceId value to set.
+     * @return the DirectLineSpeechChannelProperties object itself.
+     */
+    public DirectLineSpeechChannelProperties withCognitiveServiceResourceId(String cognitiveServiceResourceId) {
+        this.cognitiveServiceResourceId = cognitiveServiceResourceId;
+        return this;
+    }
+
+    /**
      * Get the cognitiveServiceRegion property: The cognitive service region with this channel registration.
-     *
+     * 
      * @return the cognitiveServiceRegion value.
      */
     public String cognitiveServiceRegion() {
@@ -59,7 +88,7 @@ public final class DirectLineSpeechChannelProperties {
 
     /**
      * Set the cognitiveServiceRegion property: The cognitive service region with this channel registration.
-     *
+     * 
      * @param cognitiveServiceRegion the cognitiveServiceRegion value to set.
      * @return the DirectLineSpeechChannelProperties object itself.
      */
@@ -71,7 +100,7 @@ public final class DirectLineSpeechChannelProperties {
     /**
      * Get the cognitiveServiceSubscriptionKey property: The cognitive service subscription key to use with this channel
      * registration.
-     *
+     * 
      * @return the cognitiveServiceSubscriptionKey value.
      */
     public String cognitiveServiceSubscriptionKey() {
@@ -81,19 +110,19 @@ public final class DirectLineSpeechChannelProperties {
     /**
      * Set the cognitiveServiceSubscriptionKey property: The cognitive service subscription key to use with this channel
      * registration.
-     *
+     * 
      * @param cognitiveServiceSubscriptionKey the cognitiveServiceSubscriptionKey value to set.
      * @return the DirectLineSpeechChannelProperties object itself.
      */
-    public DirectLineSpeechChannelProperties withCognitiveServiceSubscriptionKey(
-        String cognitiveServiceSubscriptionKey) {
+    public DirectLineSpeechChannelProperties
+        withCognitiveServiceSubscriptionKey(String cognitiveServiceSubscriptionKey) {
         this.cognitiveServiceSubscriptionKey = cognitiveServiceSubscriptionKey;
         return this;
     }
 
     /**
      * Get the isEnabled property: Whether this channel is enabled or not.
-     *
+     * 
      * @return the isEnabled value.
      */
     public Boolean isEnabled() {
@@ -102,7 +131,7 @@ public final class DirectLineSpeechChannelProperties {
 
     /**
      * Set the isEnabled property: Whether this channel is enabled or not.
-     *
+     * 
      * @param isEnabled the isEnabled value to set.
      * @return the DirectLineSpeechChannelProperties object itself.
      */
@@ -113,7 +142,7 @@ public final class DirectLineSpeechChannelProperties {
 
     /**
      * Get the customVoiceDeploymentId property: Custom speech model id (optional).
-     *
+     * 
      * @return the customVoiceDeploymentId value.
      */
     public String customVoiceDeploymentId() {
@@ -122,7 +151,7 @@ public final class DirectLineSpeechChannelProperties {
 
     /**
      * Set the customVoiceDeploymentId property: Custom speech model id (optional).
-     *
+     * 
      * @param customVoiceDeploymentId the customVoiceDeploymentId value to set.
      * @return the DirectLineSpeechChannelProperties object itself.
      */
@@ -133,7 +162,7 @@ public final class DirectLineSpeechChannelProperties {
 
     /**
      * Get the customSpeechModelId property: Custom voice deployment id (optional).
-     *
+     * 
      * @return the customSpeechModelId value.
      */
     public String customSpeechModelId() {
@@ -142,7 +171,7 @@ public final class DirectLineSpeechChannelProperties {
 
     /**
      * Set the customSpeechModelId property: Custom voice deployment id (optional).
-     *
+     * 
      * @param customSpeechModelId the customSpeechModelId value to set.
      * @return the DirectLineSpeechChannelProperties object itself.
      */
@@ -153,7 +182,7 @@ public final class DirectLineSpeechChannelProperties {
 
     /**
      * Get the isDefaultBotForCogSvcAccount property: Make this a default bot for chosen cognitive service account.
-     *
+     * 
      * @return the isDefaultBotForCogSvcAccount value.
      */
     public Boolean isDefaultBotForCogSvcAccount() {
@@ -162,7 +191,7 @@ public final class DirectLineSpeechChannelProperties {
 
     /**
      * Set the isDefaultBotForCogSvcAccount property: Make this a default bot for chosen cognitive service account.
-     *
+     * 
      * @param isDefaultBotForCogSvcAccount the isDefaultBotForCogSvcAccount value to set.
      * @return the DirectLineSpeechChannelProperties object itself.
      */
@@ -173,24 +202,66 @@ public final class DirectLineSpeechChannelProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (cognitiveServiceRegion() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property cognitiveServiceRegion in model DirectLineSpeechChannelProperties"));
-        }
-        if (cognitiveServiceSubscriptionKey() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property cognitiveServiceSubscriptionKey in model"
-                            + " DirectLineSpeechChannelProperties"));
-        }
     }
 
-    private static final ClientLogger LOGGER = new ClientLogger(DirectLineSpeechChannelProperties.class);
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("cognitiveServiceResourceId", this.cognitiveServiceResourceId);
+        jsonWriter.writeStringField("cognitiveServiceRegion", this.cognitiveServiceRegion);
+        jsonWriter.writeStringField("cognitiveServiceSubscriptionKey", this.cognitiveServiceSubscriptionKey);
+        jsonWriter.writeBooleanField("isEnabled", this.isEnabled);
+        jsonWriter.writeStringField("customVoiceDeploymentId", this.customVoiceDeploymentId);
+        jsonWriter.writeStringField("customSpeechModelId", this.customSpeechModelId);
+        jsonWriter.writeBooleanField("isDefaultBotForCogSvcAccount", this.isDefaultBotForCogSvcAccount);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DirectLineSpeechChannelProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DirectLineSpeechChannelProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DirectLineSpeechChannelProperties.
+     */
+    public static DirectLineSpeechChannelProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DirectLineSpeechChannelProperties deserializedDirectLineSpeechChannelProperties
+                = new DirectLineSpeechChannelProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("cognitiveServiceResourceId".equals(fieldName)) {
+                    deserializedDirectLineSpeechChannelProperties.cognitiveServiceResourceId = reader.getString();
+                } else if ("cognitiveServiceRegion".equals(fieldName)) {
+                    deserializedDirectLineSpeechChannelProperties.cognitiveServiceRegion = reader.getString();
+                } else if ("cognitiveServiceSubscriptionKey".equals(fieldName)) {
+                    deserializedDirectLineSpeechChannelProperties.cognitiveServiceSubscriptionKey = reader.getString();
+                } else if ("isEnabled".equals(fieldName)) {
+                    deserializedDirectLineSpeechChannelProperties.isEnabled
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("customVoiceDeploymentId".equals(fieldName)) {
+                    deserializedDirectLineSpeechChannelProperties.customVoiceDeploymentId = reader.getString();
+                } else if ("customSpeechModelId".equals(fieldName)) {
+                    deserializedDirectLineSpeechChannelProperties.customSpeechModelId = reader.getString();
+                } else if ("isDefaultBotForCogSvcAccount".equals(fieldName)) {
+                    deserializedDirectLineSpeechChannelProperties.isDefaultBotForCogSvcAccount
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDirectLineSpeechChannelProperties;
+        });
+    }
 }

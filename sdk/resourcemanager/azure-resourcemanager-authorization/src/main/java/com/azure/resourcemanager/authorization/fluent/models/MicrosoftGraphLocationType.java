@@ -5,44 +5,65 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** locationType. */
+/**
+ * locationType.
+ */
 public final class MicrosoftGraphLocationType extends ExpandableStringEnum<MicrosoftGraphLocationType> {
-    /** Static value default for MicrosoftGraphLocationType. */
+    /**
+     * Static value default for MicrosoftGraphLocationType.
+     */
     public static final MicrosoftGraphLocationType DEFAULT = fromString("default");
 
-    /** Static value conferenceRoom for MicrosoftGraphLocationType. */
+    /**
+     * Static value conferenceRoom for MicrosoftGraphLocationType.
+     */
     public static final MicrosoftGraphLocationType CONFERENCE_ROOM = fromString("conferenceRoom");
 
-    /** Static value homeAddress for MicrosoftGraphLocationType. */
+    /**
+     * Static value homeAddress for MicrosoftGraphLocationType.
+     */
     public static final MicrosoftGraphLocationType HOME_ADDRESS = fromString("homeAddress");
 
-    /** Static value businessAddress for MicrosoftGraphLocationType. */
+    /**
+     * Static value businessAddress for MicrosoftGraphLocationType.
+     */
     public static final MicrosoftGraphLocationType BUSINESS_ADDRESS = fromString("businessAddress");
 
-    /** Static value geoCoordinates for MicrosoftGraphLocationType. */
+    /**
+     * Static value geoCoordinates for MicrosoftGraphLocationType.
+     */
     public static final MicrosoftGraphLocationType GEO_COORDINATES = fromString("geoCoordinates");
 
-    /** Static value streetAddress for MicrosoftGraphLocationType. */
+    /**
+     * Static value streetAddress for MicrosoftGraphLocationType.
+     */
     public static final MicrosoftGraphLocationType STREET_ADDRESS = fromString("streetAddress");
 
-    /** Static value hotel for MicrosoftGraphLocationType. */
+    /**
+     * Static value hotel for MicrosoftGraphLocationType.
+     */
     public static final MicrosoftGraphLocationType HOTEL = fromString("hotel");
 
-    /** Static value restaurant for MicrosoftGraphLocationType. */
+    /**
+     * Static value restaurant for MicrosoftGraphLocationType.
+     */
     public static final MicrosoftGraphLocationType RESTAURANT = fromString("restaurant");
 
-    /** Static value localBusiness for MicrosoftGraphLocationType. */
+    /**
+     * Static value localBusiness for MicrosoftGraphLocationType.
+     */
     public static final MicrosoftGraphLocationType LOCAL_BUSINESS = fromString("localBusiness");
 
-    /** Static value postalAddress for MicrosoftGraphLocationType. */
+    /**
+     * Static value postalAddress for MicrosoftGraphLocationType.
+     */
     public static final MicrosoftGraphLocationType POSTAL_ADDRESS = fromString("postalAddress");
 
     /**
      * Creates a new instance of MicrosoftGraphLocationType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -51,18 +72,17 @@ public final class MicrosoftGraphLocationType extends ExpandableStringEnum<Micro
 
     /**
      * Creates or finds a MicrosoftGraphLocationType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MicrosoftGraphLocationType.
      */
-    @JsonCreator
     public static MicrosoftGraphLocationType fromString(String name) {
         return fromString(name, MicrosoftGraphLocationType.class);
     }
 
     /**
      * Gets known MicrosoftGraphLocationType values.
-     *
+     * 
      * @return known MicrosoftGraphLocationType values.
      */
     public static Collection<MicrosoftGraphLocationType> values() {

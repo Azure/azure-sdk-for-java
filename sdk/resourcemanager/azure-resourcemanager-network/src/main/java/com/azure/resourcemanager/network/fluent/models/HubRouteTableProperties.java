@@ -5,44 +5,43 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.HubRoute;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Parameters for RouteTable.
  */
 @Fluent
-public final class HubRouteTableProperties {
+public final class HubRouteTableProperties implements JsonSerializable<HubRouteTableProperties> {
     /*
      * List of all routes.
      */
-    @JsonProperty(value = "routes")
     private List<HubRoute> routes;
 
     /*
      * List of labels associated with this route table.
      */
-    @JsonProperty(value = "labels")
     private List<String> labels;
 
     /*
      * List of all connections associated with this route table.
      */
-    @JsonProperty(value = "associatedConnections", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> associatedConnections;
 
     /*
      * List of all connections that advertise to this route table.
      */
-    @JsonProperty(value = "propagatingConnections", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> propagatingConnections;
 
     /*
      * The provisioning state of the RouteTable resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /**
@@ -127,5 +126,55 @@ public final class HubRouteTableProperties {
         if (routes() != null) {
             routes().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("routes", this.routes, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("labels", this.labels, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HubRouteTableProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HubRouteTableProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the HubRouteTableProperties.
+     */
+    public static HubRouteTableProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HubRouteTableProperties deserializedHubRouteTableProperties = new HubRouteTableProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("routes".equals(fieldName)) {
+                    List<HubRoute> routes = reader.readArray(reader1 -> HubRoute.fromJson(reader1));
+                    deserializedHubRouteTableProperties.routes = routes;
+                } else if ("labels".equals(fieldName)) {
+                    List<String> labels = reader.readArray(reader1 -> reader1.getString());
+                    deserializedHubRouteTableProperties.labels = labels;
+                } else if ("associatedConnections".equals(fieldName)) {
+                    List<String> associatedConnections = reader.readArray(reader1 -> reader1.getString());
+                    deserializedHubRouteTableProperties.associatedConnections = associatedConnections;
+                } else if ("propagatingConnections".equals(fieldName)) {
+                    List<String> propagatingConnections = reader.readArray(reader1 -> reader1.getString());
+                    deserializedHubRouteTableProperties.propagatingConnections = propagatingConnections;
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedHubRouteTableProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHubRouteTableProperties;
+        });
     }
 }

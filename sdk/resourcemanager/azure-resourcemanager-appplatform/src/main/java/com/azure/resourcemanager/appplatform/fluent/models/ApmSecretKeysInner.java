@@ -5,18 +5,21 @@
 package com.azure.resourcemanager.appplatform.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Keys of APM sensitive properties.
  */
 @Fluent
-public final class ApmSecretKeysInner {
+public final class ApmSecretKeysInner implements JsonSerializable<ApmSecretKeysInner> {
     /*
      * Collection of the keys for the APM sensitive properties
      */
-    @JsonProperty(value = "value")
     private List<String> value;
 
     /**
@@ -51,5 +54,42 @@ public final class ApmSecretKeysInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApmSecretKeysInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApmSecretKeysInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApmSecretKeysInner.
+     */
+    public static ApmSecretKeysInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApmSecretKeysInner deserializedApmSecretKeysInner = new ApmSecretKeysInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<String> value = reader.readArray(reader1 -> reader1.getString());
+                    deserializedApmSecretKeysInner.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApmSecretKeysInner;
+        });
     }
 }

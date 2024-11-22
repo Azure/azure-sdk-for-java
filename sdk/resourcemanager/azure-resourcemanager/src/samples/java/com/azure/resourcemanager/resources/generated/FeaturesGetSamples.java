@@ -9,7 +9,8 @@ package com.azure.resourcemanager.resources.generated;
  */
 public final class FeaturesGetSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Features/stable/2021-07-01/examples/getFeature.json
+     * x-ms-original-file:
+     * specification/resources/resource-manager/Microsoft.Features/stable/2021-07-01/examples/getFeature.json
      */
     /**
      * Sample code: Get feature.

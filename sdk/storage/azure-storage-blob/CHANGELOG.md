@@ -1,5 +1,73 @@
 # Release History
 
+## 12.30.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 12.29.0 (2024-11-13)
+
+### Features Added
+- Added BlobErrorCode BlobAccessTierNotSupportedForAccountType value.
+- Added support for service version 2025-01-05.
+
+### Bugs Fixed
+- Fixed an issue where BlobClient.upload(InputStream data) would overwrite an existing blob by default.
+- Fixed an issue where you couldn't set an immutability policy on a blob version or blob snapshot.
+- Fixed an issue where you couldn't set a legal hold on a blob version.
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.52.0` to version `1.54.0`.
+- Upgraded `azure-core-http-netty` from `1.15.4` to version `1.15.6`.
+- Upgraded `azure-storage-common` from `12.27.0` to version `12.28.0`.
+- Upgraded `azure-storage-internal-avro` from `12.13.0` to version `12.14.0`.
+
+## 12.29.0-beta.1 (2024-10-17)
+
+### Features Added
+- Added BlobErrorCode BlobAccessTierNotSupportedForAccountType value.
+- Added support for service version 2025-01-05.
+
+### Bugs Fixed
+- Fixed an issue where you couldn't set an immutability policy on a blob version or blob snapshot.
+- Fixed an issue where you couldn't set a legal hold on a blob version.
+
+## 12.28.1 (2024-10-08)
+
+### Bugs Fixed
+- Fixed a bug where downloadToFile and openInputStream was throwing an InvalidRange exception if the target file size was a multiple of the
+  authenticated region length.
+
+#### Dependency Updates
+- Upgraded `azure-storage-common` from `12.27.0` to version `12.27.1`.
+
+## 12.28.0 (2024-09-17)
+
+### Features Added
+- Added ability to retrieve SAS string to sign for debugging purposes.
+- Added support for service version 2024-11-04.
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.50.0` to version `1.52.0`.
+- Upgraded `azure-core-http-netty` from `1.15.2` to version `1.15.4`.
+- Upgraded `azure-storage-common` from `12.26.0` to version `12.27.0`.
+- Upgraded `azure-storage-internal-avro` from `12.12.0` to version `12.13.0`.
+
+## 12.28.0-beta.1 (2024-08-06)
+
+### Features Added
+- Added ability to retrieve SAS string to sign for debugging purposes.
+- Added support for service version 2024-11-04.
+
 ## 12.27.0 (2024-07-18)
 
 ### Features Added

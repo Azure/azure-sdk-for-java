@@ -48,23 +48,29 @@ public final class MetadataSchemasCreateOrUpdateWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        ApiCenterManager manager = ApiCenterManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        ApiCenterManager manager = ApiCenterManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        MetadataSchema response
-            = manager.metadataSchemas().define("apvhelxprgly").withExistingService("jqg", "ysmocmbqfqvmkcxo")
-                .withProperties(new MetadataSchemaProperties().withSchema("dd")
-                    .withAssignedTo(Arrays.asList(
-                        new MetadataAssignment().withEntity(MetadataAssignmentEntity.ENVIRONMENT).withRequired(true)
-                            .withDeprecated(true),
-                        new MetadataAssignment().withEntity(MetadataAssignmentEntity.DEPLOYMENT).withRequired(true)
-                            .withDeprecated(true),
-                        new MetadataAssignment().withEntity(MetadataAssignmentEntity.ENVIRONMENT).withRequired(false)
-                            .withDeprecated(true),
-                        new MetadataAssignment().withEntity(MetadataAssignmentEntity.DEPLOYMENT).withRequired(true)
-                            .withDeprecated(true))))
-                .create();
+        MetadataSchema response = manager.metadataSchemas()
+            .define("apvhelxprgly")
+            .withExistingService("jqg", "ysmocmbqfqvmkcxo")
+            .withProperties(new MetadataSchemaProperties().withSchema("dd")
+                .withAssignedTo(Arrays.asList(
+                    new MetadataAssignment().withEntity(MetadataAssignmentEntity.ENVIRONMENT)
+                        .withRequired(true)
+                        .withDeprecated(true),
+                    new MetadataAssignment().withEntity(MetadataAssignmentEntity.DEPLOYMENT)
+                        .withRequired(true)
+                        .withDeprecated(true),
+                    new MetadataAssignment().withEntity(MetadataAssignmentEntity.ENVIRONMENT)
+                        .withRequired(false)
+                        .withDeprecated(true),
+                    new MetadataAssignment().withEntity(MetadataAssignmentEntity.DEPLOYMENT)
+                        .withRequired(true)
+                        .withDeprecated(true))))
+            .create();
 
         Assertions.assertEquals("zdtmhrkwofy", response.properties().schema());
         Assertions.assertEquals(MetadataAssignmentEntity.DEPLOYMENT,

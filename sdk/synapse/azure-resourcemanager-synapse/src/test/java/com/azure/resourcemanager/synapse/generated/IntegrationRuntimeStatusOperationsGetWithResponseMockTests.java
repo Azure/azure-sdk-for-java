@@ -6,62 +6,32 @@ package com.azure.resourcemanager.synapse.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.synapse.SynapseManager;
 import com.azure.resourcemanager.synapse.models.IntegrationRuntimeStatusResponse;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class IntegrationRuntimeStatusOperationsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"name\":\"eurdeewlsuxp\",\"properties\":{\"type\":\"IntegrationRuntimeStatus\",\"dataFactoryName\":\"wkdwjyjiznioroof\",\"state\":\"Starting\",\"\":{\"trnighm\":\"datapmcreihu\",\"gwfmsxjwdylwxm\":\"datanuwqxungro\",\"ugeerclbltbhpwac\":\"datazjow\",\"r\":\"datayeurjwmv\"}}}";
 
-        String responseStr =
-            "{\"name\":\"gjpytpmpvdnogehl\",\"properties\":{\"type\":\"IntegrationRuntimeStatus\",\"dataFactoryName\":\"b\",\"state\":\"AccessDenied\",\"\":{\"k\":\"datau\",\"bx\":\"dataaxzs\",\"clflioe\":\"datayjisskobq\"}}}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        SynapseManager manager = SynapseManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        IntegrationRuntimeStatusResponse response = manager.integrationRuntimeStatusOperations()
+            .getWithResponse("ublehhkplobz", "ottaksadz", "ghmmtbtdvucfvvra", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        SynapseManager manager =
-            SynapseManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        IntegrationRuntimeStatusResponse response =
-            manager
-                .integrationRuntimeStatusOperations()
-                .getWithResponse("jjtpdyzoutxfptof", "gnuywezygva", "gaaqw", com.azure.core.util.Context.NONE)
-                .getValue();
     }
 }

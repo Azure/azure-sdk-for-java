@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class StepType extends ExpandableStringEnum<StepType> {
      * @param name a name to look for.
      * @return the corresponding StepType.
      */
-    @JsonCreator
     public static StepType fromString(String name) {
         return fromString(name, StepType.class);
     }

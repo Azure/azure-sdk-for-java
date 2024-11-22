@@ -5,31 +5,37 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Properties of sync group schema. */
+/**
+ * Properties of sync group schema.
+ */
 @Fluent
-public final class SyncGroupSchema {
+public final class SyncGroupSchema implements JsonSerializable<SyncGroupSchema> {
     /*
      * List of tables in sync group schema.
      */
-    @JsonProperty(value = "tables")
     private List<SyncGroupSchemaTable> tables;
 
     /*
      * Name of master sync member where the schema is from.
      */
-    @JsonProperty(value = "masterSyncMemberName")
     private String masterSyncMemberName;
 
-    /** Creates an instance of SyncGroupSchema class. */
+    /**
+     * Creates an instance of SyncGroupSchema class.
+     */
     public SyncGroupSchema() {
     }
 
     /**
      * Get the tables property: List of tables in sync group schema.
-     *
+     * 
      * @return the tables value.
      */
     public List<SyncGroupSchemaTable> tables() {
@@ -38,7 +44,7 @@ public final class SyncGroupSchema {
 
     /**
      * Set the tables property: List of tables in sync group schema.
-     *
+     * 
      * @param tables the tables value to set.
      * @return the SyncGroupSchema object itself.
      */
@@ -49,7 +55,7 @@ public final class SyncGroupSchema {
 
     /**
      * Get the masterSyncMemberName property: Name of master sync member where the schema is from.
-     *
+     * 
      * @return the masterSyncMemberName value.
      */
     public String masterSyncMemberName() {
@@ -58,7 +64,7 @@ public final class SyncGroupSchema {
 
     /**
      * Set the masterSyncMemberName property: Name of master sync member where the schema is from.
-     *
+     * 
      * @param masterSyncMemberName the masterSyncMemberName value to set.
      * @return the SyncGroupSchema object itself.
      */
@@ -69,12 +75,53 @@ public final class SyncGroupSchema {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (tables() != null) {
             tables().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("tables", this.tables, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("masterSyncMemberName", this.masterSyncMemberName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SyncGroupSchema from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SyncGroupSchema if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SyncGroupSchema.
+     */
+    public static SyncGroupSchema fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SyncGroupSchema deserializedSyncGroupSchema = new SyncGroupSchema();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tables".equals(fieldName)) {
+                    List<SyncGroupSchemaTable> tables
+                        = reader.readArray(reader1 -> SyncGroupSchemaTable.fromJson(reader1));
+                    deserializedSyncGroupSchema.tables = tables;
+                } else if ("masterSyncMemberName".equals(fieldName)) {
+                    deserializedSyncGroupSchema.masterSyncMemberName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSyncGroupSchema;
+        });
     }
 }

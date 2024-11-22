@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.3 (Unreleased)
+## 1.0.0-beta.4 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,756 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.3 (2024-08-22)
+
+- Azure Resource Manager HDInsightContainers client library for Java. This package contains Microsoft Azure SDK for HDInsightContainers Management SDK. HDInsight Containers Management Client. Package tag package-preview-2024-05. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.ClusterHotfixUpgradeProperties` was modified
+
+* `targetBuildNumber()` was removed
+* `targetClusterVersion()` was removed
+* `componentName()` was removed
+* `targetOssVersion()` was removed
+
+#### `models.ClusterAvailableUpgradeHotfixUpgradeProperties` was modified
+
+* `componentName()` was removed
+* `description()` was removed
+* `sourceOssVersion()` was removed
+* `extendedProperties()` was removed
+* `targetOssVersion()` was removed
+* `sourceClusterVersion()` was removed
+* `targetBuildNumber()` was removed
+* `createdTime()` was removed
+* `sourceBuildNumber()` was removed
+* `severity()` was removed
+* `targetClusterVersion()` was removed
+
+#### `models.KafkaProfile` was modified
+
+* `clusterIdentity()` was removed
+
+### Features Added
+
+* `models.ClusterPatchVersionUpgradeRollbackHistoryProperties` was added
+
+* `models.PyPiLibraryProperties` was added
+
+* `models.ClusterPoolUpgradeHistoryListResult` was added
+
+* `models.ClusterAvailableUpgradePatchVersionUpgradeProperties` was added
+
+* `models.ClusterLibraryManagementOperation` was added
+
+* `models.ClusterPoolUpgradeHistoryType` was added
+
+* `models.ClusterAvailableInPlaceUpgradeProperties` was added
+
+* `models.ManagedIdentityType` was added
+
+* `models.ClusterPoolUpgradeHistories` was added
+
+* `models.ClusterPoolNodeOsUpgradeHistoryProperties` was added
+
+* `models.ClusterUpgradeHistoryType` was added
+
+* `models.ClusterUpgradeHistory` was added
+
+* `models.Category` was added
+
+* `models.Status` was added
+
+* `models.ClusterLibraries` was added
+
+* `models.ClusterUpgradeHistorySeverityType` was added
+
+* `models.ClusterAksPatchUpgradeHistoryProperties` was added
+
+* `models.ClusterLibraryManagementOperationProperties` was added
+
+* `models.MavenLibraryProperties` was added
+
+* `models.ClusterUpgradeHistoryListResult` was added
+
+* `models.ClusterUpgradeRollback` was added
+
+* `models.ClusterHotfixUpgradeHistoryProperties` was added
+
+* `models.ClusterInPlaceUpgradeHistoryProperties` was added
+
+* `models.ClusterLibraryList` was added
+
+* `models.ClusterPatchVersionUpgradeProperties` was added
+
+* `models.Type` was added
+
+* `models.ClusterPoolUpgradeHistoryUpgradeResultType` was added
+
+* `models.ClusterUpgradeHistories` was added
+
+* `models.ClusterUpgradeRollbackProperties` was added
+
+* `models.ClusterPoolUpgradeHistory` was added
+
+* `models.ManagedIdentityProfile` was added
+
+* `models.ClusterInPlaceUpgradeProperties` was added
+
+* `models.IpTag` was added
+
+* `models.ClusterLibrary` was added
+
+* `models.ClusterPatchVersionUpgradeHistoryProperties` was added
+
+* `models.ClusterPoolUpgradeHistoryProperties` was added
+
+* `models.ClusterLibraryProperties` was added
+
+* `models.ClusterPoolAksPatchUpgradeHistoryProperties` was added
+
+* `models.LibraryManagementAction` was added
+
+* `models.ClusterUpgradeHistoryUpgradeResultType` was added
+
+* `models.ClusterUpgradeHistoryProperties` was added
+
+* `models.ManagedIdentitySpec` was added
+
+* `models.ClusterHotfixUpgradeRollbackHistoryProperties` was added
+
+#### `models.ClusterServiceConfig` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.ClusterUpgradeProperties` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+* `upgradeType()` was added
+
+#### `models.RangerAdminSpecDatabase` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.ClusterInstanceViewStatus` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.ClusterListResult` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.ScriptActionProfile` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.ServiceConfigResultProperties` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.RangerUsersyncSpec` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.ClusterPatchProperties` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.ClusterPoolResourcePropertiesAksClusterProfile` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `aksVersion()` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.ClusterPoolNodeOsImageUpdateProperties` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `upgradeType()` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.TrinoCoordinator` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.ClusterPoolResourcePropertiesComputeProfile` was modified
+
+* `count()` was added
+* `withAvailabilityZones(java.util.List)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.ClusterAccessProfile` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.SecretReference` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.Cluster` was modified
+
+* `upgradeManualRollback(models.ClusterUpgradeRollback)` was added
+* `upgradeManualRollback(models.ClusterUpgradeRollback,com.azure.core.util.Context)` was added
+
+#### `models.ServiceConfigListResultProperties` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.FlinkProfile` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.TrinoUserPlugin` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.FlinkCatalogOptions` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.ClusterPoolListResult` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.ClusterProfile` was modified
+
+* `managedIdentityProfile()` was added
+* `withManagedIdentityProfile(models.ManagedIdentityProfile)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.ClusterAvailableUpgradeAksPatchUpgradeProperties` was modified
+
+* `upgradeType()` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.SparkUserPlugins` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.CatalogOptions` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.SparkProfile` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.ClusterPatch` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.ClusterResizeProperties` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.ClusterRangerPluginProfile` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.ClusterInstanceViewsResult` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.ServiceConfigListResultValueEntity` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.ClusterHotfixUpgradeProperties` was modified
+
+* `withTargetOssVersion(java.lang.String)` was added
+* `upgradeType()` was added
+* `withTargetBuildNumber(java.lang.String)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+* `withComponentName(java.lang.String)` was added
+* `withTargetClusterVersion(java.lang.String)` was added
+
+#### `models.ComputeProfile` was modified
+
+* `availabilityZones()` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+* `withAvailabilityZones(java.util.List)` was added
+
+#### `models.ClusterLogAnalyticsApplicationLogs` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.ConnectivityProfileWeb` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.ClusterAvailableUpgradeProperties` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `upgradeType()` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.ClusterPoolVersionsListResult` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.TrinoUserPlugins` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `HDInsightContainersManager` was modified
+
+* `clusterLibraries()` was added
+* `clusterPoolUpgradeHistories()` was added
+* `clusterUpgradeHistories()` was added
+
+#### `models.ClusterPoolResourcePropertiesNetworkProfile` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.LoadBasedConfig` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.ClusterAvailableUpgradeHotfixUpgradeProperties` was modified
+
+* `withTargetBuildNumber(java.lang.String)` was added
+* `withSourceClusterVersion(java.lang.String)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+* `withCreatedTime(java.time.OffsetDateTime)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+* `withComponentName(java.lang.String)` was added
+* `upgradeType()` was added
+* `withExtendedProperties(java.lang.String)` was added
+* `withSourceOssVersion(java.lang.String)` was added
+* `withTargetClusterVersion(java.lang.String)` was added
+* `withDescription(java.lang.String)` was added
+* `withSourceBuildNumber(java.lang.String)` was added
+* `withSeverity(models.Severity)` was added
+* `withTargetOssVersion(java.lang.String)` was added
+
+#### `models.ClusterServiceConfigsProfile` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.SecretsProfile` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.SparkUserPlugin` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.WebConnectivityEndpoint` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.TrinoDebugConfig` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.ClusterVersionsListResult` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.ClusterAksPatchVersionUpgradeProperties` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `upgradeType()` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.ScheduleBasedConfig` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.TrinoWorker` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.ClusterPoolAvailableUpgradeList` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.ClusterPoolVersionProperties` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.SshConnectivityEndpoint` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.TagsObject` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.TrinoTelemetryConfig` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.KafkaProfile` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.ClusterPoolComputeProfile` was modified
+
+* `withAvailabilityZones(java.util.List)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+* `availabilityZones()` was added
+
+#### `models.ClusterResizeData` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `id()` was added
+* `type()` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+* `name()` was added
+
+#### `models.DiskStorageProfile` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.AksClusterProfileAksClusterAgentPoolIdentityProfile` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.AutoscaleProfile` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.ClusterPoolResourcePropertiesLogAnalyticsProfile` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.KafkaConnectivityEndpoints` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.RangerAuditSpec` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.SshProfile` was modified
+
+* `withVmSize(java.lang.String)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+* `vmSize()` was added
+
+#### `models.ClusterVersionProperties` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.AksClusterProfile` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.NameAvailabilityParameters` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.TrinoUserTelemetry` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.ClusterPoolResourcePropertiesClusterPoolProfile` was modified
+
+* `withPublicIpTag(models.IpTag)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.ClusterPoolUpgrade` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.ClusterJobList` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.ClusterPoolAvailableUpgradeNodeOsUpgradeProperties` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+* `upgradeType()` was added
+
+#### `models.ClusterPoolAksPatchVersionUpgradeProperties` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+* `upgradeType()` was added
+
+#### `models.ClusterComponentsItem` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.FlinkJobProfile` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.ConnectivityProfile` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.ClusterPoolProfile` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `withPublicIpTag(models.IpTag)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+* `publicIpTag()` was added
+
+#### `models.FlinkJobProperties` was modified
+
+* `jobType()` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.OperationDisplay` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.ComparisonRule` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.TrinoProfile` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.RangerProfile` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.ClusterAvailableUpgradeList` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.ScalingRule` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.RangerAdminSpec` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.ServiceConfigListResult` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.ClusterLogAnalyticsProfile` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.ClusterPoolNetworkProfile` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.ClusterInstanceViewResultProperties` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.ClusterUpgrade` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.AuthorizationProfile` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.FlinkStorageProfile` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.Schedule` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.NodeProfile` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.ClusterInstanceViewPropertiesStatus` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.ClusterResourceProperties` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.SparkMetastoreSpec` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.IdentityProfile` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.ClusterInstanceViewProperties` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.ClusterJobProperties` was modified
+
+* `jobType()` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.ClusterPoolLogAnalyticsProfile` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.Clusters` was modified
+
+* `upgradeManualRollback(java.lang.String,java.lang.String,java.lang.String,models.ClusterUpgradeRollback,com.azure.core.util.Context)` was added
+* `upgradeManualRollback(java.lang.String,java.lang.String,java.lang.String,models.ClusterUpgradeRollback)` was added
+
+#### `models.UpdatableClusterProfile` was modified
+
+* `secretsProfile()` was added
+* `withTrinoProfile(models.TrinoProfile)` was added
+* `withSecretsProfile(models.SecretsProfile)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+* `trinoProfile()` was added
+
+#### `models.OperationListResult` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.ClusterPoolAvailableUpgradeProperties` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+* `upgradeType()` was added
+
+#### `models.ClusterPrometheusProfile` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.FlinkHiveCatalogOption` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.ClusterPoolResourceProperties` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.HiveCatalogOption` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.ClusterConfigFile` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.ComputeResourceDefinition` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.ServiceStatus` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.ClusterPoolAvailableUpgradeAksPatchUpgradeProperties` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+* `upgradeType()` was added
+
+#### `models.ClusterPoolUpgradeProperties` was modified
+
+* `upgradeType()` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
 
 ## 1.0.0-beta.2 (2024-04-03)
 

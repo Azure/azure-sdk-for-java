@@ -17,69 +17,63 @@ import org.junit.jupiter.api.Assertions;
 public final class RemoteRenderingAccountInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RemoteRenderingAccountInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"storageAccountName\":\"cqibycnojv\",\"accountId\":\"mefqsgzvahapjyzh\",\"accountDomain\":\"gqzcjr\"},\"identity\":{\"principalId\":\"jzlmw\",\"tenantId\":\"kvugfhzovawjvzun\",\"type\":\"SystemAssigned\"},\"plan\":{\"principalId\":\"n\",\"tenantId\":\"nxipeil\",\"type\":\"SystemAssigned\"},\"sku\":{\"name\":\"aejxd\",\"tier\":\"Premium\",\"size\":\"kzbbtd\",\"family\":\"mv\",\"capacity\":1487921664},\"kind\":{\"name\":\"pwo\",\"tier\":\"Basic\",\"size\":\"fpbsjyofdxl\",\"family\":\"sd\",\"capacity\":1422945070},\"location\":\"waboe\",\"tags\":{\"hhcaal\":\"kelnsmvbxwyjsf\"},\"id\":\"jixisxyawjoyaqcs\",\"name\":\"yjpkiidzyexz\",\"type\":\"eli\"}")
-                .toObject(RemoteRenderingAccountInner.class);
-        Assertions.assertEquals("waboe", model.location());
-        Assertions.assertEquals("kelnsmvbxwyjsf", model.tags().get("hhcaal"));
+        RemoteRenderingAccountInner model = BinaryData.fromString(
+            "{\"properties\":{\"storageAccountName\":\"jyoxgvclt\",\"accountId\":\"sncghkjeszz\",\"accountDomain\":\"ijhtxf\"},\"identity\":{\"principalId\":\"bfs\",\"tenantId\":\"nehmpvecx\",\"type\":\"SystemAssigned\"},\"plan\":{\"principalId\":\"fqkkr\",\"tenantId\":\"pukgriwflzlfb\",\"type\":\"SystemAssigned\"},\"sku\":{\"name\":\"zycispn\",\"tier\":\"Basic\",\"size\":\"mgkbrpyydhibn\",\"family\":\"qkpikadrgvtqagnb\",\"capacity\":855671205},\"kind\":{\"name\":\"ijggmebfsiar\",\"tier\":\"Standard\",\"size\":\"cvpnazzmhjrunmpx\",\"family\":\"dbhrbnlankxm\",\"capacity\":266718281},\"location\":\"bhenbtkcxywnyt\",\"tags\":{\"qidybyx\":\"yn\",\"aaxdbabphlwrq\":\"zfcl\",\"hsucoc\":\"fkts\",\"ckzywbiexzfeyue\":\"nyyazttbtwwrqpue\"},\"id\":\"xibxujwbhqwalm\",\"name\":\"zyoxaepdkzjan\",\"type\":\"ux\"}")
+            .toObject(RemoteRenderingAccountInner.class);
+        Assertions.assertEquals("bhenbtkcxywnyt", model.location());
+        Assertions.assertEquals("yn", model.tags().get("qidybyx"));
         Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
         Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED, model.plan().type());
-        Assertions.assertEquals("aejxd", model.sku().name());
-        Assertions.assertEquals(SkuTier.PREMIUM, model.sku().tier());
-        Assertions.assertEquals("kzbbtd", model.sku().size());
-        Assertions.assertEquals("mv", model.sku().family());
-        Assertions.assertEquals(1487921664, model.sku().capacity());
-        Assertions.assertEquals("pwo", model.kind().name());
-        Assertions.assertEquals(SkuTier.BASIC, model.kind().tier());
-        Assertions.assertEquals("fpbsjyofdxl", model.kind().size());
-        Assertions.assertEquals("sd", model.kind().family());
-        Assertions.assertEquals(1422945070, model.kind().capacity());
-        Assertions.assertEquals("cqibycnojv", model.storageAccountName());
+        Assertions.assertEquals("zycispn", model.sku().name());
+        Assertions.assertEquals(SkuTier.BASIC, model.sku().tier());
+        Assertions.assertEquals("mgkbrpyydhibn", model.sku().size());
+        Assertions.assertEquals("qkpikadrgvtqagnb", model.sku().family());
+        Assertions.assertEquals(855671205, model.sku().capacity());
+        Assertions.assertEquals("ijggmebfsiar", model.kind().name());
+        Assertions.assertEquals(SkuTier.STANDARD, model.kind().tier());
+        Assertions.assertEquals("cvpnazzmhjrunmpx", model.kind().size());
+        Assertions.assertEquals("dbhrbnlankxm", model.kind().family());
+        Assertions.assertEquals(266718281, model.kind().capacity());
+        Assertions.assertEquals("jyoxgvclt", model.storageAccountName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RemoteRenderingAccountInner model =
-            new RemoteRenderingAccountInner()
-                .withLocation("waboe")
-                .withTags(mapOf("hhcaal", "kelnsmvbxwyjsf"))
-                .withIdentity(new Identity().withType(ResourceIdentityType.SYSTEM_ASSIGNED))
-                .withPlan(new Identity().withType(ResourceIdentityType.SYSTEM_ASSIGNED))
-                .withSku(
-                    new Sku()
-                        .withName("aejxd")
-                        .withTier(SkuTier.PREMIUM)
-                        .withSize("kzbbtd")
-                        .withFamily("mv")
-                        .withCapacity(1487921664))
-                .withKind(
-                    new Sku()
-                        .withName("pwo")
-                        .withTier(SkuTier.BASIC)
-                        .withSize("fpbsjyofdxl")
-                        .withFamily("sd")
-                        .withCapacity(1422945070))
-                .withStorageAccountName("cqibycnojv");
+        RemoteRenderingAccountInner model = new RemoteRenderingAccountInner().withLocation("bhenbtkcxywnyt")
+            .withTags(mapOf("qidybyx", "yn", "aaxdbabphlwrq", "zfcl", "hsucoc", "fkts", "ckzywbiexzfeyue",
+                "nyyazttbtwwrqpue"))
+            .withIdentity(new Identity().withType(ResourceIdentityType.SYSTEM_ASSIGNED))
+            .withPlan(new Identity().withType(ResourceIdentityType.SYSTEM_ASSIGNED))
+            .withSku(new Sku().withName("zycispn")
+                .withTier(SkuTier.BASIC)
+                .withSize("mgkbrpyydhibn")
+                .withFamily("qkpikadrgvtqagnb")
+                .withCapacity(855671205))
+            .withKind(new Sku().withName("ijggmebfsiar")
+                .withTier(SkuTier.STANDARD)
+                .withSize("cvpnazzmhjrunmpx")
+                .withFamily("dbhrbnlankxm")
+                .withCapacity(266718281))
+            .withStorageAccountName("jyoxgvclt");
         model = BinaryData.fromObject(model).toObject(RemoteRenderingAccountInner.class);
-        Assertions.assertEquals("waboe", model.location());
-        Assertions.assertEquals("kelnsmvbxwyjsf", model.tags().get("hhcaal"));
+        Assertions.assertEquals("bhenbtkcxywnyt", model.location());
+        Assertions.assertEquals("yn", model.tags().get("qidybyx"));
         Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
         Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED, model.plan().type());
-        Assertions.assertEquals("aejxd", model.sku().name());
-        Assertions.assertEquals(SkuTier.PREMIUM, model.sku().tier());
-        Assertions.assertEquals("kzbbtd", model.sku().size());
-        Assertions.assertEquals("mv", model.sku().family());
-        Assertions.assertEquals(1487921664, model.sku().capacity());
-        Assertions.assertEquals("pwo", model.kind().name());
-        Assertions.assertEquals(SkuTier.BASIC, model.kind().tier());
-        Assertions.assertEquals("fpbsjyofdxl", model.kind().size());
-        Assertions.assertEquals("sd", model.kind().family());
-        Assertions.assertEquals(1422945070, model.kind().capacity());
-        Assertions.assertEquals("cqibycnojv", model.storageAccountName());
+        Assertions.assertEquals("zycispn", model.sku().name());
+        Assertions.assertEquals(SkuTier.BASIC, model.sku().tier());
+        Assertions.assertEquals("mgkbrpyydhibn", model.sku().size());
+        Assertions.assertEquals("qkpikadrgvtqagnb", model.sku().family());
+        Assertions.assertEquals(855671205, model.sku().capacity());
+        Assertions.assertEquals("ijggmebfsiar", model.kind().name());
+        Assertions.assertEquals(SkuTier.STANDARD, model.kind().tier());
+        Assertions.assertEquals("cvpnazzmhjrunmpx", model.kind().size());
+        Assertions.assertEquals("dbhrbnlankxm", model.kind().family());
+        Assertions.assertEquals(266718281, model.kind().capacity());
+        Assertions.assertEquals("jyoxgvclt", model.storageAccountName());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

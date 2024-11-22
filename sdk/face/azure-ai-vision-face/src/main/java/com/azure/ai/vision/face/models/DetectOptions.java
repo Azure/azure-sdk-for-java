@@ -58,7 +58,8 @@ public final class DetectOptions {
      * with 'recognition_03', and its overall accuracy is improved compared with 'recognition_01' and 'recognition_02'.
      * @param returnFaceId Return faceIds of the detected faces or not. The default value is true.
      */
-    public DetectOptions(FaceDetectionModel detectionModel, FaceRecognitionModel recognitionModel, boolean returnFaceId) {
+    public DetectOptions(FaceDetectionModel detectionModel, FaceRecognitionModel recognitionModel,
+        boolean returnFaceId) {
         this.detectionModel = detectionModel;
         this.recognitionModel = recognitionModel;
         this.returnFaceId = returnFaceId;

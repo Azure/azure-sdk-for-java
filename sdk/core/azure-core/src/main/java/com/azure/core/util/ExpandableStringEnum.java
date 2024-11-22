@@ -20,7 +20,7 @@ import java.util.concurrent.ConcurrentHashMap;
  *
  * @param <T> a specific expandable enum type
  */
-public abstract class ExpandableStringEnum<T extends ExpandableStringEnum<T>> {
+public abstract class ExpandableStringEnum<T extends ExpandableStringEnum<T>> implements ExpandableEnum<String> {
     private static final Map<Class<?>, ReflectiveInvoker> CONSTRUCTORS = new ConcurrentHashMap<>();
     private static final Map<Class<?>, ConcurrentHashMap<String, ? extends ExpandableStringEnum<?>>> VALUES
         = new ConcurrentHashMap<>();
@@ -123,6 +123,11 @@ public abstract class ExpandableStringEnum<T extends ExpandableStringEnum<T>> {
     @Override
     @JsonValue
     public String toString() {
+        return this.name;
+    }
+
+    @Override
+    public String getValue() {
         return this.name;
     }
 

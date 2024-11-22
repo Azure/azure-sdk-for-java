@@ -13,18 +13,16 @@ import org.junit.jupiter.api.Assertions;
 public final class DeinterlaceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Deinterlace model =
-            BinaryData.fromString("{\"parity\":\"TopFieldFirst\",\"mode\":\"Off\"}").toObject(Deinterlace.class);
-        Assertions.assertEquals(DeinterlaceParity.TOP_FIELD_FIRST, model.parity());
+        Deinterlace model = BinaryData.fromString("{\"parity\":\"Auto\",\"mode\":\"Off\"}").toObject(Deinterlace.class);
+        Assertions.assertEquals(DeinterlaceParity.AUTO, model.parity());
         Assertions.assertEquals(DeinterlaceMode.OFF, model.mode());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Deinterlace model =
-            new Deinterlace().withParity(DeinterlaceParity.TOP_FIELD_FIRST).withMode(DeinterlaceMode.OFF);
+        Deinterlace model = new Deinterlace().withParity(DeinterlaceParity.AUTO).withMode(DeinterlaceMode.OFF);
         model = BinaryData.fromObject(model).toObject(Deinterlace.class);
-        Assertions.assertEquals(DeinterlaceParity.TOP_FIELD_FIRST, model.parity());
+        Assertions.assertEquals(DeinterlaceParity.AUTO, model.parity());
         Assertions.assertEquals(DeinterlaceMode.OFF, model.mode());
     }
 }

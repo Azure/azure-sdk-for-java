@@ -18,28 +18,19 @@ public final class SqlPoolRecommendedSensitivityLabelsImpl implements SqlPoolRec
 
     private final com.azure.resourcemanager.synapse.SynapseManager serviceManager;
 
-    public SqlPoolRecommendedSensitivityLabelsImpl(
-        SqlPoolRecommendedSensitivityLabelsClient innerClient,
+    public SqlPoolRecommendedSensitivityLabelsImpl(SqlPoolRecommendedSensitivityLabelsClient innerClient,
         com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<Void> updateWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        RecommendedSensitivityLabelUpdateList parameters,
-        Context context) {
-        return this
-            .serviceClient()
+    public Response<Void> updateWithResponse(String resourceGroupName, String workspaceName, String sqlPoolName,
+        RecommendedSensitivityLabelUpdateList parameters, Context context) {
+        return this.serviceClient()
             .updateWithResponse(resourceGroupName, workspaceName, sqlPoolName, parameters, context);
     }
 
-    public void update(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
+    public void update(String resourceGroupName, String workspaceName, String sqlPoolName,
         RecommendedSensitivityLabelUpdateList parameters) {
         this.serviceClient().update(resourceGroupName, workspaceName, sqlPoolName, parameters);
     }

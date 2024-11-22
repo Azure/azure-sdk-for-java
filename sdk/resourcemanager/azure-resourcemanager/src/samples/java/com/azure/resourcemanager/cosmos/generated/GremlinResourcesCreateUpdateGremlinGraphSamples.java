@@ -19,7 +19,6 @@ import com.azure.resourcemanager.cosmos.models.IndexingPolicy;
 import com.azure.resourcemanager.cosmos.models.PartitionKind;
 import com.azure.resourcemanager.cosmos.models.UniqueKey;
 import com.azure.resourcemanager.cosmos.models.UniqueKeyPolicy;
-
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -29,11 +28,12 @@ import java.util.Map;
  */
 public final class GremlinResourcesCreateUpdateGremlinGraphSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBGremlinGraphCreateUpdate.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-08-15/examples/
+     * CosmosDBGremlinGraphCreateUpdate.json
      */
     /**
      * Sample code: CosmosDBGremlinGraphCreateUpdate.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void cosmosDBGremlinGraphCreateUpdate(com.azure.resourcemanager.AzureResourceManager azure) {

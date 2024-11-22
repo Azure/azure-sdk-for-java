@@ -212,7 +212,8 @@ public final class DocumentSentiment implements JsonSerializable<DocumentSentime
                 } else if ("confidenceScores".equals(fieldName)) {
                     deserializedDocumentSentiment.confidenceScores = SentimentConfidenceScorePerLabel.fromJson(reader);
                 } else if ("sentences".equals(fieldName)) {
-                    deserializedDocumentSentiment.sentences = reader.readArray(reader1 -> SentenceSentiment.fromJson(reader1));
+                    deserializedDocumentSentiment.sentences
+                        = reader.readArray(reader1 -> SentenceSentiment.fromJson(reader1));
                 } else if ("warnings".equals(fieldName)) {
                     List<DocumentWarning> warnings = reader.readArray(reader1 -> DocumentWarning.fromJson(reader1));
                     deserializedDocumentSentiment.warnings = warnings;

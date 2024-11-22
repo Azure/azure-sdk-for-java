@@ -5,19 +5,23 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
 /**
  * The metadata related to an access key for a given database account.
  */
 @Immutable
-public final class AccountKeyMetadata {
+public final class AccountKeyMetadata implements JsonSerializable<AccountKeyMetadata> {
     /*
-     * Generation time in UTC of the key in ISO-8601 format. If the value is missing from the object, it means that the last key regeneration was triggered before 2022-06-18.
+     * Generation time in UTC of the key in ISO-8601 format. If the value is missing from the object, it means that the
+     * last key regeneration was triggered before 2022-06-18.
      */
-    @JsonProperty(value = "generationTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime generationTime;
 
     /**
@@ -29,7 +33,7 @@ public final class AccountKeyMetadata {
     /**
      * Get the generationTime property: Generation time in UTC of the key in ISO-8601 format. If the value is missing
      * from the object, it means that the last key regeneration was triggered before 2022-06-18.
-     *
+     * 
      * @return the generationTime value.
      */
     public OffsetDateTime generationTime() {
@@ -38,9 +42,45 @@ public final class AccountKeyMetadata {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AccountKeyMetadata from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AccountKeyMetadata if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AccountKeyMetadata.
+     */
+    public static AccountKeyMetadata fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AccountKeyMetadata deserializedAccountKeyMetadata = new AccountKeyMetadata();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("generationTime".equals(fieldName)) {
+                    deserializedAccountKeyMetadata.generationTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAccountKeyMetadata;
+        });
     }
 }

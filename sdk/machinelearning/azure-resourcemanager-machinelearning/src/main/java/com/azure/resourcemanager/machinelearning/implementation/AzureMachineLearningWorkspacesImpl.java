@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.machinelearning.implementation;
 
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
@@ -12,8 +13,8 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.exception.ManagementError;
 import com.azure.core.management.exception.ManagementException;
-import com.azure.core.management.polling.PollResult;
 import com.azure.core.management.polling.PollerFactory;
+import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -31,11 +32,19 @@ import com.azure.resourcemanager.machinelearning.fluent.ComponentContainersClien
 import com.azure.resourcemanager.machinelearning.fluent.ComponentVersionsClient;
 import com.azure.resourcemanager.machinelearning.fluent.ComputesClient;
 import com.azure.resourcemanager.machinelearning.fluent.DataContainersClient;
-import com.azure.resourcemanager.machinelearning.fluent.DataVersionsClient;
 import com.azure.resourcemanager.machinelearning.fluent.DatastoresClient;
+import com.azure.resourcemanager.machinelearning.fluent.DataVersionsClient;
 import com.azure.resourcemanager.machinelearning.fluent.EnvironmentContainersClient;
 import com.azure.resourcemanager.machinelearning.fluent.EnvironmentVersionsClient;
+import com.azure.resourcemanager.machinelearning.fluent.FeaturesClient;
+import com.azure.resourcemanager.machinelearning.fluent.FeaturesetContainersClient;
+import com.azure.resourcemanager.machinelearning.fluent.FeaturesetVersionsClient;
+import com.azure.resourcemanager.machinelearning.fluent.FeaturestoreEntityContainersClient;
+import com.azure.resourcemanager.machinelearning.fluent.FeaturestoreEntityVersionsClient;
 import com.azure.resourcemanager.machinelearning.fluent.JobsClient;
+import com.azure.resourcemanager.machinelearning.fluent.ManagedNetworkProvisionsClient;
+import com.azure.resourcemanager.machinelearning.fluent.ManagedNetworkSettingsRulesClient;
+import com.azure.resourcemanager.machinelearning.fluent.MarketplaceSubscriptionsClient;
 import com.azure.resourcemanager.machinelearning.fluent.ModelContainersClient;
 import com.azure.resourcemanager.machinelearning.fluent.ModelVersionsClient;
 import com.azure.resourcemanager.machinelearning.fluent.OnlineDeploymentsClient;
@@ -44,7 +53,20 @@ import com.azure.resourcemanager.machinelearning.fluent.OperationsClient;
 import com.azure.resourcemanager.machinelearning.fluent.PrivateEndpointConnectionsClient;
 import com.azure.resourcemanager.machinelearning.fluent.PrivateLinkResourcesClient;
 import com.azure.resourcemanager.machinelearning.fluent.QuotasClient;
+import com.azure.resourcemanager.machinelearning.fluent.RegistriesClient;
+import com.azure.resourcemanager.machinelearning.fluent.RegistryCodeContainersClient;
+import com.azure.resourcemanager.machinelearning.fluent.RegistryCodeVersionsClient;
+import com.azure.resourcemanager.machinelearning.fluent.RegistryComponentContainersClient;
+import com.azure.resourcemanager.machinelearning.fluent.RegistryComponentVersionsClient;
+import com.azure.resourcemanager.machinelearning.fluent.RegistryDataContainersClient;
+import com.azure.resourcemanager.machinelearning.fluent.RegistryDataReferencesClient;
+import com.azure.resourcemanager.machinelearning.fluent.RegistryDataVersionsClient;
+import com.azure.resourcemanager.machinelearning.fluent.RegistryEnvironmentContainersClient;
+import com.azure.resourcemanager.machinelearning.fluent.RegistryEnvironmentVersionsClient;
+import com.azure.resourcemanager.machinelearning.fluent.RegistryModelContainersClient;
+import com.azure.resourcemanager.machinelearning.fluent.RegistryModelVersionsClient;
 import com.azure.resourcemanager.machinelearning.fluent.SchedulesClient;
+import com.azure.resourcemanager.machinelearning.fluent.ServerlessEndpointsClient;
 import com.azure.resourcemanager.machinelearning.fluent.UsagesClient;
 import com.azure.resourcemanager.machinelearning.fluent.VirtualMachineSizesClient;
 import com.azure.resourcemanager.machinelearning.fluent.WorkspaceConnectionsClient;
@@ -59,399 +81,761 @@ import java.time.Duration;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the AzureMachineLearningWorkspacesImpl type. */
+/**
+ * Initializes a new instance of the AzureMachineLearningWorkspacesImpl type.
+ */
 @ServiceClient(builder = AzureMachineLearningWorkspacesBuilder.class)
 public final class AzureMachineLearningWorkspacesImpl implements AzureMachineLearningWorkspaces {
-    /** The ID of the target subscription. */
+    /**
+     * The ID of the target subscription.
+     */
     private final String subscriptionId;
 
     /**
      * Gets The ID of the target subscription.
-     *
+     * 
      * @return the subscriptionId value.
      */
     public String getSubscriptionId() {
         return this.subscriptionId;
     }
 
-    /** server parameter. */
+    /**
+     * server parameter.
+     */
     private final String endpoint;
 
     /**
      * Gets server parameter.
-     *
+     * 
      * @return the endpoint value.
      */
     public String getEndpoint() {
         return this.endpoint;
     }
 
-    /** Api Version. */
+    /**
+     * Api Version.
+     */
     private final String apiVersion;
 
     /**
      * Gets Api Version.
-     *
+     * 
      * @return the apiVersion value.
      */
     public String getApiVersion() {
         return this.apiVersion;
     }
 
-    /** The HTTP pipeline to send requests through. */
+    /**
+     * The HTTP pipeline to send requests through.
+     */
     private final HttpPipeline httpPipeline;
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
         return this.httpPipeline;
     }
 
-    /** The serializer to serialize an object into a string. */
+    /**
+     * The serializer to serialize an object into a string.
+     */
     private final SerializerAdapter serializerAdapter;
 
     /**
      * Gets The serializer to serialize an object into a string.
-     *
+     * 
      * @return the serializerAdapter value.
      */
     SerializerAdapter getSerializerAdapter() {
         return this.serializerAdapter;
     }
 
-    /** The default poll interval for long-running operation. */
+    /**
+     * The default poll interval for long-running operation.
+     */
     private final Duration defaultPollInterval;
 
     /**
      * Gets The default poll interval for long-running operation.
-     *
+     * 
      * @return the defaultPollInterval value.
      */
     public Duration getDefaultPollInterval() {
         return this.defaultPollInterval;
     }
 
-    /** The OperationsClient object to access its operations. */
+    /**
+     * The OperationsClient object to access its operations.
+     */
     private final OperationsClient operations;
 
     /**
      * Gets the OperationsClient object to access its operations.
-     *
+     * 
      * @return the OperationsClient object.
      */
     public OperationsClient getOperations() {
         return this.operations;
     }
 
-    /** The WorkspacesClient object to access its operations. */
+    /**
+     * The WorkspacesClient object to access its operations.
+     */
     private final WorkspacesClient workspaces;
 
     /**
      * Gets the WorkspacesClient object to access its operations.
-     *
+     * 
      * @return the WorkspacesClient object.
      */
     public WorkspacesClient getWorkspaces() {
         return this.workspaces;
     }
 
-    /** The UsagesClient object to access its operations. */
+    /**
+     * The UsagesClient object to access its operations.
+     */
     private final UsagesClient usages;
 
     /**
      * Gets the UsagesClient object to access its operations.
-     *
+     * 
      * @return the UsagesClient object.
      */
     public UsagesClient getUsages() {
         return this.usages;
     }
 
-    /** The VirtualMachineSizesClient object to access its operations. */
+    /**
+     * The VirtualMachineSizesClient object to access its operations.
+     */
     private final VirtualMachineSizesClient virtualMachineSizes;
 
     /**
      * Gets the VirtualMachineSizesClient object to access its operations.
-     *
+     * 
      * @return the VirtualMachineSizesClient object.
      */
     public VirtualMachineSizesClient getVirtualMachineSizes() {
         return this.virtualMachineSizes;
     }
 
-    /** The QuotasClient object to access its operations. */
+    /**
+     * The QuotasClient object to access its operations.
+     */
     private final QuotasClient quotas;
 
     /**
      * Gets the QuotasClient object to access its operations.
-     *
+     * 
      * @return the QuotasClient object.
      */
     public QuotasClient getQuotas() {
         return this.quotas;
     }
 
-    /** The ComputesClient object to access its operations. */
+    /**
+     * The ComputesClient object to access its operations.
+     */
     private final ComputesClient computes;
 
     /**
      * Gets the ComputesClient object to access its operations.
-     *
+     * 
      * @return the ComputesClient object.
      */
     public ComputesClient getComputes() {
         return this.computes;
     }
 
-    /** The PrivateEndpointConnectionsClient object to access its operations. */
+    /**
+     * The PrivateEndpointConnectionsClient object to access its operations.
+     */
     private final PrivateEndpointConnectionsClient privateEndpointConnections;
 
     /**
      * Gets the PrivateEndpointConnectionsClient object to access its operations.
-     *
+     * 
      * @return the PrivateEndpointConnectionsClient object.
      */
     public PrivateEndpointConnectionsClient getPrivateEndpointConnections() {
         return this.privateEndpointConnections;
     }
 
-    /** The PrivateLinkResourcesClient object to access its operations. */
+    /**
+     * The PrivateLinkResourcesClient object to access its operations.
+     */
     private final PrivateLinkResourcesClient privateLinkResources;
 
     /**
      * Gets the PrivateLinkResourcesClient object to access its operations.
-     *
+     * 
      * @return the PrivateLinkResourcesClient object.
      */
     public PrivateLinkResourcesClient getPrivateLinkResources() {
         return this.privateLinkResources;
     }
 
-    /** The WorkspaceConnectionsClient object to access its operations. */
+    /**
+     * The WorkspaceConnectionsClient object to access its operations.
+     */
     private final WorkspaceConnectionsClient workspaceConnections;
 
     /**
      * Gets the WorkspaceConnectionsClient object to access its operations.
-     *
+     * 
      * @return the WorkspaceConnectionsClient object.
      */
     public WorkspaceConnectionsClient getWorkspaceConnections() {
         return this.workspaceConnections;
     }
 
-    /** The BatchEndpointsClient object to access its operations. */
+    /**
+     * The ManagedNetworkSettingsRulesClient object to access its operations.
+     */
+    private final ManagedNetworkSettingsRulesClient managedNetworkSettingsRules;
+
+    /**
+     * Gets the ManagedNetworkSettingsRulesClient object to access its operations.
+     * 
+     * @return the ManagedNetworkSettingsRulesClient object.
+     */
+    public ManagedNetworkSettingsRulesClient getManagedNetworkSettingsRules() {
+        return this.managedNetworkSettingsRules;
+    }
+
+    /**
+     * The ManagedNetworkProvisionsClient object to access its operations.
+     */
+    private final ManagedNetworkProvisionsClient managedNetworkProvisions;
+
+    /**
+     * Gets the ManagedNetworkProvisionsClient object to access its operations.
+     * 
+     * @return the ManagedNetworkProvisionsClient object.
+     */
+    public ManagedNetworkProvisionsClient getManagedNetworkProvisions() {
+        return this.managedNetworkProvisions;
+    }
+
+    /**
+     * The RegistryCodeContainersClient object to access its operations.
+     */
+    private final RegistryCodeContainersClient registryCodeContainers;
+
+    /**
+     * Gets the RegistryCodeContainersClient object to access its operations.
+     * 
+     * @return the RegistryCodeContainersClient object.
+     */
+    public RegistryCodeContainersClient getRegistryCodeContainers() {
+        return this.registryCodeContainers;
+    }
+
+    /**
+     * The RegistryCodeVersionsClient object to access its operations.
+     */
+    private final RegistryCodeVersionsClient registryCodeVersions;
+
+    /**
+     * Gets the RegistryCodeVersionsClient object to access its operations.
+     * 
+     * @return the RegistryCodeVersionsClient object.
+     */
+    public RegistryCodeVersionsClient getRegistryCodeVersions() {
+        return this.registryCodeVersions;
+    }
+
+    /**
+     * The RegistryComponentContainersClient object to access its operations.
+     */
+    private final RegistryComponentContainersClient registryComponentContainers;
+
+    /**
+     * Gets the RegistryComponentContainersClient object to access its operations.
+     * 
+     * @return the RegistryComponentContainersClient object.
+     */
+    public RegistryComponentContainersClient getRegistryComponentContainers() {
+        return this.registryComponentContainers;
+    }
+
+    /**
+     * The RegistryComponentVersionsClient object to access its operations.
+     */
+    private final RegistryComponentVersionsClient registryComponentVersions;
+
+    /**
+     * Gets the RegistryComponentVersionsClient object to access its operations.
+     * 
+     * @return the RegistryComponentVersionsClient object.
+     */
+    public RegistryComponentVersionsClient getRegistryComponentVersions() {
+        return this.registryComponentVersions;
+    }
+
+    /**
+     * The RegistryDataContainersClient object to access its operations.
+     */
+    private final RegistryDataContainersClient registryDataContainers;
+
+    /**
+     * Gets the RegistryDataContainersClient object to access its operations.
+     * 
+     * @return the RegistryDataContainersClient object.
+     */
+    public RegistryDataContainersClient getRegistryDataContainers() {
+        return this.registryDataContainers;
+    }
+
+    /**
+     * The RegistryDataVersionsClient object to access its operations.
+     */
+    private final RegistryDataVersionsClient registryDataVersions;
+
+    /**
+     * Gets the RegistryDataVersionsClient object to access its operations.
+     * 
+     * @return the RegistryDataVersionsClient object.
+     */
+    public RegistryDataVersionsClient getRegistryDataVersions() {
+        return this.registryDataVersions;
+    }
+
+    /**
+     * The RegistryDataReferencesClient object to access its operations.
+     */
+    private final RegistryDataReferencesClient registryDataReferences;
+
+    /**
+     * Gets the RegistryDataReferencesClient object to access its operations.
+     * 
+     * @return the RegistryDataReferencesClient object.
+     */
+    public RegistryDataReferencesClient getRegistryDataReferences() {
+        return this.registryDataReferences;
+    }
+
+    /**
+     * The RegistryEnvironmentContainersClient object to access its operations.
+     */
+    private final RegistryEnvironmentContainersClient registryEnvironmentContainers;
+
+    /**
+     * Gets the RegistryEnvironmentContainersClient object to access its operations.
+     * 
+     * @return the RegistryEnvironmentContainersClient object.
+     */
+    public RegistryEnvironmentContainersClient getRegistryEnvironmentContainers() {
+        return this.registryEnvironmentContainers;
+    }
+
+    /**
+     * The RegistryEnvironmentVersionsClient object to access its operations.
+     */
+    private final RegistryEnvironmentVersionsClient registryEnvironmentVersions;
+
+    /**
+     * Gets the RegistryEnvironmentVersionsClient object to access its operations.
+     * 
+     * @return the RegistryEnvironmentVersionsClient object.
+     */
+    public RegistryEnvironmentVersionsClient getRegistryEnvironmentVersions() {
+        return this.registryEnvironmentVersions;
+    }
+
+    /**
+     * The RegistryModelContainersClient object to access its operations.
+     */
+    private final RegistryModelContainersClient registryModelContainers;
+
+    /**
+     * Gets the RegistryModelContainersClient object to access its operations.
+     * 
+     * @return the RegistryModelContainersClient object.
+     */
+    public RegistryModelContainersClient getRegistryModelContainers() {
+        return this.registryModelContainers;
+    }
+
+    /**
+     * The RegistryModelVersionsClient object to access its operations.
+     */
+    private final RegistryModelVersionsClient registryModelVersions;
+
+    /**
+     * Gets the RegistryModelVersionsClient object to access its operations.
+     * 
+     * @return the RegistryModelVersionsClient object.
+     */
+    public RegistryModelVersionsClient getRegistryModelVersions() {
+        return this.registryModelVersions;
+    }
+
+    /**
+     * The BatchEndpointsClient object to access its operations.
+     */
     private final BatchEndpointsClient batchEndpoints;
 
     /**
      * Gets the BatchEndpointsClient object to access its operations.
-     *
+     * 
      * @return the BatchEndpointsClient object.
      */
     public BatchEndpointsClient getBatchEndpoints() {
         return this.batchEndpoints;
     }
 
-    /** The BatchDeploymentsClient object to access its operations. */
+    /**
+     * The BatchDeploymentsClient object to access its operations.
+     */
     private final BatchDeploymentsClient batchDeployments;
 
     /**
      * Gets the BatchDeploymentsClient object to access its operations.
-     *
+     * 
      * @return the BatchDeploymentsClient object.
      */
     public BatchDeploymentsClient getBatchDeployments() {
         return this.batchDeployments;
     }
 
-    /** The CodeContainersClient object to access its operations. */
+    /**
+     * The CodeContainersClient object to access its operations.
+     */
     private final CodeContainersClient codeContainers;
 
     /**
      * Gets the CodeContainersClient object to access its operations.
-     *
+     * 
      * @return the CodeContainersClient object.
      */
     public CodeContainersClient getCodeContainers() {
         return this.codeContainers;
     }
 
-    /** The CodeVersionsClient object to access its operations. */
+    /**
+     * The CodeVersionsClient object to access its operations.
+     */
     private final CodeVersionsClient codeVersions;
 
     /**
      * Gets the CodeVersionsClient object to access its operations.
-     *
+     * 
      * @return the CodeVersionsClient object.
      */
     public CodeVersionsClient getCodeVersions() {
         return this.codeVersions;
     }
 
-    /** The ComponentContainersClient object to access its operations. */
+    /**
+     * The ComponentContainersClient object to access its operations.
+     */
     private final ComponentContainersClient componentContainers;
 
     /**
      * Gets the ComponentContainersClient object to access its operations.
-     *
+     * 
      * @return the ComponentContainersClient object.
      */
     public ComponentContainersClient getComponentContainers() {
         return this.componentContainers;
     }
 
-    /** The ComponentVersionsClient object to access its operations. */
+    /**
+     * The ComponentVersionsClient object to access its operations.
+     */
     private final ComponentVersionsClient componentVersions;
 
     /**
      * Gets the ComponentVersionsClient object to access its operations.
-     *
+     * 
      * @return the ComponentVersionsClient object.
      */
     public ComponentVersionsClient getComponentVersions() {
         return this.componentVersions;
     }
 
-    /** The DataContainersClient object to access its operations. */
+    /**
+     * The DataContainersClient object to access its operations.
+     */
     private final DataContainersClient dataContainers;
 
     /**
      * Gets the DataContainersClient object to access its operations.
-     *
+     * 
      * @return the DataContainersClient object.
      */
     public DataContainersClient getDataContainers() {
         return this.dataContainers;
     }
 
-    /** The DataVersionsClient object to access its operations. */
+    /**
+     * The DataVersionsClient object to access its operations.
+     */
     private final DataVersionsClient dataVersions;
 
     /**
      * Gets the DataVersionsClient object to access its operations.
-     *
+     * 
      * @return the DataVersionsClient object.
      */
     public DataVersionsClient getDataVersions() {
         return this.dataVersions;
     }
 
-    /** The DatastoresClient object to access its operations. */
+    /**
+     * The DatastoresClient object to access its operations.
+     */
     private final DatastoresClient datastores;
 
     /**
      * Gets the DatastoresClient object to access its operations.
-     *
+     * 
      * @return the DatastoresClient object.
      */
     public DatastoresClient getDatastores() {
         return this.datastores;
     }
 
-    /** The EnvironmentContainersClient object to access its operations. */
+    /**
+     * The EnvironmentContainersClient object to access its operations.
+     */
     private final EnvironmentContainersClient environmentContainers;
 
     /**
      * Gets the EnvironmentContainersClient object to access its operations.
-     *
+     * 
      * @return the EnvironmentContainersClient object.
      */
     public EnvironmentContainersClient getEnvironmentContainers() {
         return this.environmentContainers;
     }
 
-    /** The EnvironmentVersionsClient object to access its operations. */
+    /**
+     * The EnvironmentVersionsClient object to access its operations.
+     */
     private final EnvironmentVersionsClient environmentVersions;
 
     /**
      * Gets the EnvironmentVersionsClient object to access its operations.
-     *
+     * 
      * @return the EnvironmentVersionsClient object.
      */
     public EnvironmentVersionsClient getEnvironmentVersions() {
         return this.environmentVersions;
     }
 
-    /** The JobsClient object to access its operations. */
+    /**
+     * The FeaturesetContainersClient object to access its operations.
+     */
+    private final FeaturesetContainersClient featuresetContainers;
+
+    /**
+     * Gets the FeaturesetContainersClient object to access its operations.
+     * 
+     * @return the FeaturesetContainersClient object.
+     */
+    public FeaturesetContainersClient getFeaturesetContainers() {
+        return this.featuresetContainers;
+    }
+
+    /**
+     * The FeaturesClient object to access its operations.
+     */
+    private final FeaturesClient features;
+
+    /**
+     * Gets the FeaturesClient object to access its operations.
+     * 
+     * @return the FeaturesClient object.
+     */
+    public FeaturesClient getFeatures() {
+        return this.features;
+    }
+
+    /**
+     * The FeaturesetVersionsClient object to access its operations.
+     */
+    private final FeaturesetVersionsClient featuresetVersions;
+
+    /**
+     * Gets the FeaturesetVersionsClient object to access its operations.
+     * 
+     * @return the FeaturesetVersionsClient object.
+     */
+    public FeaturesetVersionsClient getFeaturesetVersions() {
+        return this.featuresetVersions;
+    }
+
+    /**
+     * The FeaturestoreEntityContainersClient object to access its operations.
+     */
+    private final FeaturestoreEntityContainersClient featurestoreEntityContainers;
+
+    /**
+     * Gets the FeaturestoreEntityContainersClient object to access its operations.
+     * 
+     * @return the FeaturestoreEntityContainersClient object.
+     */
+    public FeaturestoreEntityContainersClient getFeaturestoreEntityContainers() {
+        return this.featurestoreEntityContainers;
+    }
+
+    /**
+     * The FeaturestoreEntityVersionsClient object to access its operations.
+     */
+    private final FeaturestoreEntityVersionsClient featurestoreEntityVersions;
+
+    /**
+     * Gets the FeaturestoreEntityVersionsClient object to access its operations.
+     * 
+     * @return the FeaturestoreEntityVersionsClient object.
+     */
+    public FeaturestoreEntityVersionsClient getFeaturestoreEntityVersions() {
+        return this.featurestoreEntityVersions;
+    }
+
+    /**
+     * The JobsClient object to access its operations.
+     */
     private final JobsClient jobs;
 
     /**
      * Gets the JobsClient object to access its operations.
-     *
+     * 
      * @return the JobsClient object.
      */
     public JobsClient getJobs() {
         return this.jobs;
     }
 
-    /** The ModelContainersClient object to access its operations. */
+    /**
+     * The MarketplaceSubscriptionsClient object to access its operations.
+     */
+    private final MarketplaceSubscriptionsClient marketplaceSubscriptions;
+
+    /**
+     * Gets the MarketplaceSubscriptionsClient object to access its operations.
+     * 
+     * @return the MarketplaceSubscriptionsClient object.
+     */
+    public MarketplaceSubscriptionsClient getMarketplaceSubscriptions() {
+        return this.marketplaceSubscriptions;
+    }
+
+    /**
+     * The ModelContainersClient object to access its operations.
+     */
     private final ModelContainersClient modelContainers;
 
     /**
      * Gets the ModelContainersClient object to access its operations.
-     *
+     * 
      * @return the ModelContainersClient object.
      */
     public ModelContainersClient getModelContainers() {
         return this.modelContainers;
     }
 
-    /** The ModelVersionsClient object to access its operations. */
+    /**
+     * The ModelVersionsClient object to access its operations.
+     */
     private final ModelVersionsClient modelVersions;
 
     /**
      * Gets the ModelVersionsClient object to access its operations.
-     *
+     * 
      * @return the ModelVersionsClient object.
      */
     public ModelVersionsClient getModelVersions() {
         return this.modelVersions;
     }
 
-    /** The OnlineEndpointsClient object to access its operations. */
+    /**
+     * The OnlineEndpointsClient object to access its operations.
+     */
     private final OnlineEndpointsClient onlineEndpoints;
 
     /**
      * Gets the OnlineEndpointsClient object to access its operations.
-     *
+     * 
      * @return the OnlineEndpointsClient object.
      */
     public OnlineEndpointsClient getOnlineEndpoints() {
         return this.onlineEndpoints;
     }
 
-    /** The OnlineDeploymentsClient object to access its operations. */
+    /**
+     * The OnlineDeploymentsClient object to access its operations.
+     */
     private final OnlineDeploymentsClient onlineDeployments;
 
     /**
      * Gets the OnlineDeploymentsClient object to access its operations.
-     *
+     * 
      * @return the OnlineDeploymentsClient object.
      */
     public OnlineDeploymentsClient getOnlineDeployments() {
         return this.onlineDeployments;
     }
 
-    /** The SchedulesClient object to access its operations. */
+    /**
+     * The SchedulesClient object to access its operations.
+     */
     private final SchedulesClient schedules;
 
     /**
      * Gets the SchedulesClient object to access its operations.
-     *
+     * 
      * @return the SchedulesClient object.
      */
     public SchedulesClient getSchedules() {
         return this.schedules;
     }
 
-    /** The WorkspaceFeaturesClient object to access its operations. */
+    /**
+     * The ServerlessEndpointsClient object to access its operations.
+     */
+    private final ServerlessEndpointsClient serverlessEndpoints;
+
+    /**
+     * Gets the ServerlessEndpointsClient object to access its operations.
+     * 
+     * @return the ServerlessEndpointsClient object.
+     */
+    public ServerlessEndpointsClient getServerlessEndpoints() {
+        return this.serverlessEndpoints;
+    }
+
+    /**
+     * The RegistriesClient object to access its operations.
+     */
+    private final RegistriesClient registries;
+
+    /**
+     * Gets the RegistriesClient object to access its operations.
+     * 
+     * @return the RegistriesClient object.
+     */
+    public RegistriesClient getRegistries() {
+        return this.registries;
+    }
+
+    /**
+     * The WorkspaceFeaturesClient object to access its operations.
+     */
     private final WorkspaceFeaturesClient workspaceFeatures;
 
     /**
      * Gets the WorkspaceFeaturesClient object to access its operations.
-     *
+     * 
      * @return the WorkspaceFeaturesClient object.
      */
     public WorkspaceFeaturesClient getWorkspaceFeatures() {
@@ -460,7 +844,7 @@ public final class AzureMachineLearningWorkspacesImpl implements AzureMachineLea
 
     /**
      * Initializes an instance of AzureMachineLearningWorkspaces client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
@@ -468,19 +852,14 @@ public final class AzureMachineLearningWorkspacesImpl implements AzureMachineLea
      * @param subscriptionId The ID of the target subscription.
      * @param endpoint server parameter.
      */
-    AzureMachineLearningWorkspacesImpl(
-        HttpPipeline httpPipeline,
-        SerializerAdapter serializerAdapter,
-        Duration defaultPollInterval,
-        AzureEnvironment environment,
-        String subscriptionId,
-        String endpoint) {
+    AzureMachineLearningWorkspacesImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
+        Duration defaultPollInterval, AzureEnvironment environment, String subscriptionId, String endpoint) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2022-10-01";
+        this.apiVersion = "2024-04-01";
         this.operations = new OperationsClientImpl(this);
         this.workspaces = new WorkspacesClientImpl(this);
         this.usages = new UsagesClientImpl(this);
@@ -490,6 +869,19 @@ public final class AzureMachineLearningWorkspacesImpl implements AzureMachineLea
         this.privateEndpointConnections = new PrivateEndpointConnectionsClientImpl(this);
         this.privateLinkResources = new PrivateLinkResourcesClientImpl(this);
         this.workspaceConnections = new WorkspaceConnectionsClientImpl(this);
+        this.managedNetworkSettingsRules = new ManagedNetworkSettingsRulesClientImpl(this);
+        this.managedNetworkProvisions = new ManagedNetworkProvisionsClientImpl(this);
+        this.registryCodeContainers = new RegistryCodeContainersClientImpl(this);
+        this.registryCodeVersions = new RegistryCodeVersionsClientImpl(this);
+        this.registryComponentContainers = new RegistryComponentContainersClientImpl(this);
+        this.registryComponentVersions = new RegistryComponentVersionsClientImpl(this);
+        this.registryDataContainers = new RegistryDataContainersClientImpl(this);
+        this.registryDataVersions = new RegistryDataVersionsClientImpl(this);
+        this.registryDataReferences = new RegistryDataReferencesClientImpl(this);
+        this.registryEnvironmentContainers = new RegistryEnvironmentContainersClientImpl(this);
+        this.registryEnvironmentVersions = new RegistryEnvironmentVersionsClientImpl(this);
+        this.registryModelContainers = new RegistryModelContainersClientImpl(this);
+        this.registryModelVersions = new RegistryModelVersionsClientImpl(this);
         this.batchEndpoints = new BatchEndpointsClientImpl(this);
         this.batchDeployments = new BatchDeploymentsClientImpl(this);
         this.codeContainers = new CodeContainersClientImpl(this);
@@ -501,18 +893,26 @@ public final class AzureMachineLearningWorkspacesImpl implements AzureMachineLea
         this.datastores = new DatastoresClientImpl(this);
         this.environmentContainers = new EnvironmentContainersClientImpl(this);
         this.environmentVersions = new EnvironmentVersionsClientImpl(this);
+        this.featuresetContainers = new FeaturesetContainersClientImpl(this);
+        this.features = new FeaturesClientImpl(this);
+        this.featuresetVersions = new FeaturesetVersionsClientImpl(this);
+        this.featurestoreEntityContainers = new FeaturestoreEntityContainersClientImpl(this);
+        this.featurestoreEntityVersions = new FeaturestoreEntityVersionsClientImpl(this);
         this.jobs = new JobsClientImpl(this);
+        this.marketplaceSubscriptions = new MarketplaceSubscriptionsClientImpl(this);
         this.modelContainers = new ModelContainersClientImpl(this);
         this.modelVersions = new ModelVersionsClientImpl(this);
         this.onlineEndpoints = new OnlineEndpointsClientImpl(this);
         this.onlineDeployments = new OnlineDeploymentsClientImpl(this);
         this.schedules = new SchedulesClientImpl(this);
+        this.serverlessEndpoints = new ServerlessEndpointsClientImpl(this);
+        this.registries = new RegistriesClientImpl(this);
         this.workspaceFeatures = new WorkspaceFeaturesClientImpl(this);
     }
 
     /**
      * Gets default client context.
-     *
+     * 
      * @return the default client context.
      */
     public Context getContext() {
@@ -521,7 +921,7 @@ public final class AzureMachineLearningWorkspacesImpl implements AzureMachineLea
 
     /**
      * Merges default client context with provided context.
-     *
+     * 
      * @param context the context to be merged with default client context.
      * @return the merged context.
      */
@@ -531,7 +931,7 @@ public final class AzureMachineLearningWorkspacesImpl implements AzureMachineLea
 
     /**
      * Gets long running operation result.
-     *
+     * 
      * @param activationResponse the response of activation operation.
      * @param httpPipeline the http pipeline.
      * @param pollResultType type of poll result.
@@ -541,26 +941,15 @@ public final class AzureMachineLearningWorkspacesImpl implements AzureMachineLea
      * @param <U> type of final result.
      * @return poller flux for poll result and final result.
      */
-    public <T, U> PollerFlux<PollResult<T>, U> getLroResult(
-        Mono<Response<Flux<ByteBuffer>>> activationResponse,
-        HttpPipeline httpPipeline,
-        Type pollResultType,
-        Type finalResultType,
-        Context context) {
-        return PollerFactory
-            .create(
-                serializerAdapter,
-                httpPipeline,
-                pollResultType,
-                finalResultType,
-                defaultPollInterval,
-                activationResponse,
-                context);
+    public <T, U> PollerFlux<PollResult<T>, U> getLroResult(Mono<Response<Flux<ByteBuffer>>> activationResponse,
+        HttpPipeline httpPipeline, Type pollResultType, Type finalResultType, Context context) {
+        return PollerFactory.create(serializerAdapter, httpPipeline, pollResultType, finalResultType,
+            defaultPollInterval, activationResponse, context);
     }
 
     /**
      * Gets the final result, or an error, based on last async poll response.
-     *
+     * 
      * @param response the last async poll response.
      * @param <T> type of poll result.
      * @param <U> type of final result.
@@ -573,19 +962,16 @@ public final class AzureMachineLearningWorkspacesImpl implements AzureMachineLea
             HttpResponse errorResponse = null;
             PollResult.Error lroError = response.getValue().getError();
             if (lroError != null) {
-                errorResponse =
-                    new HttpResponseImpl(
-                        lroError.getResponseStatusCode(), lroError.getResponseHeaders(), lroError.getResponseBody());
+                errorResponse = new HttpResponseImpl(lroError.getResponseStatusCode(), lroError.getResponseHeaders(),
+                    lroError.getResponseBody());
 
                 errorMessage = response.getValue().getError().getMessage();
                 String errorBody = response.getValue().getError().getResponseBody();
                 if (errorBody != null) {
                     // try to deserialize error body to ManagementError
                     try {
-                        managementError =
-                            this
-                                .getSerializerAdapter()
-                                .deserialize(errorBody, ManagementError.class, SerializerEncoding.JSON);
+                        managementError = this.getSerializerAdapter()
+                            .deserialize(errorBody, ManagementError.class, SerializerEncoding.JSON);
                         if (managementError.getCode() == null || managementError.getMessage() == null) {
                             managementError = null;
                         }
@@ -626,7 +1012,7 @@ public final class AzureMachineLearningWorkspacesImpl implements AzureMachineLea
         }
 
         public String getHeaderValue(String s) {
-            return httpHeaders.getValue(s);
+            return httpHeaders.getValue(HttpHeaderName.fromString(s));
         }
 
         public HttpHeaders getHeaders() {

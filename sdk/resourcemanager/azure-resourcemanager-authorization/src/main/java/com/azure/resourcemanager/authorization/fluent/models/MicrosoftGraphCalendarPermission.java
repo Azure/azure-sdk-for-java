@@ -5,15 +5,17 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/** calendarPermission. */
+/**
+ * calendarPermission.
+ */
 @Fluent
 public final class MicrosoftGraphCalendarPermission extends MicrosoftGraphEntity {
     /*
@@ -21,19 +23,16 @@ public final class MicrosoftGraphCalendarPermission extends MicrosoftGraphEntity
      * freeBusyRead, limitedRead, read, write, delegateWithoutPrivateEventAccess, delegateWithPrivateEventAccess,
      * custom.
      */
-    @JsonProperty(value = "allowedRoles")
     private List<MicrosoftGraphCalendarRoleType> allowedRoles;
 
     /*
      * emailAddress
      */
-    @JsonProperty(value = "emailAddress")
     private MicrosoftGraphEmailAddress emailAddress;
 
     /*
      * True if the user in context (sharee or delegate) is inside the same organization as the calendar owner.
      */
-    @JsonProperty(value = "isInsideOrganization")
     private Boolean isInsideOrganization;
 
     /*
@@ -41,21 +40,21 @@ public final class MicrosoftGraphCalendarPermission extends MicrosoftGraphEntity
      * otherwise. The 'My organization' user determines the permissions other people within your organization have to
      * the given calendar. You cannot remove 'My organization' as a sharee to a calendar.
      */
-    @JsonProperty(value = "isRemovable")
     private Boolean isRemovable;
 
     /*
      * calendarRoleType
      */
-    @JsonProperty(value = "role")
     private MicrosoftGraphCalendarRoleType role;
 
     /*
      * calendarPermission
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphCalendarPermission class. */
+    /**
+     * Creates an instance of MicrosoftGraphCalendarPermission class.
+     */
     public MicrosoftGraphCalendarPermission() {
     }
 
@@ -63,7 +62,7 @@ public final class MicrosoftGraphCalendarPermission extends MicrosoftGraphEntity
      * Get the allowedRoles property: List of allowed sharing or delegating permission levels for the calendar. Possible
      * values are: none, freeBusyRead, limitedRead, read, write, delegateWithoutPrivateEventAccess,
      * delegateWithPrivateEventAccess, custom.
-     *
+     * 
      * @return the allowedRoles value.
      */
     public List<MicrosoftGraphCalendarRoleType> allowedRoles() {
@@ -74,7 +73,7 @@ public final class MicrosoftGraphCalendarPermission extends MicrosoftGraphEntity
      * Set the allowedRoles property: List of allowed sharing or delegating permission levels for the calendar. Possible
      * values are: none, freeBusyRead, limitedRead, read, write, delegateWithoutPrivateEventAccess,
      * delegateWithPrivateEventAccess, custom.
-     *
+     * 
      * @param allowedRoles the allowedRoles value to set.
      * @return the MicrosoftGraphCalendarPermission object itself.
      */
@@ -85,7 +84,7 @@ public final class MicrosoftGraphCalendarPermission extends MicrosoftGraphEntity
 
     /**
      * Get the emailAddress property: emailAddress.
-     *
+     * 
      * @return the emailAddress value.
      */
     public MicrosoftGraphEmailAddress emailAddress() {
@@ -94,7 +93,7 @@ public final class MicrosoftGraphCalendarPermission extends MicrosoftGraphEntity
 
     /**
      * Set the emailAddress property: emailAddress.
-     *
+     * 
      * @param emailAddress the emailAddress value to set.
      * @return the MicrosoftGraphCalendarPermission object itself.
      */
@@ -106,7 +105,7 @@ public final class MicrosoftGraphCalendarPermission extends MicrosoftGraphEntity
     /**
      * Get the isInsideOrganization property: True if the user in context (sharee or delegate) is inside the same
      * organization as the calendar owner.
-     *
+     * 
      * @return the isInsideOrganization value.
      */
     public Boolean isInsideOrganization() {
@@ -116,7 +115,7 @@ public final class MicrosoftGraphCalendarPermission extends MicrosoftGraphEntity
     /**
      * Set the isInsideOrganization property: True if the user in context (sharee or delegate) is inside the same
      * organization as the calendar owner.
-     *
+     * 
      * @param isInsideOrganization the isInsideOrganization value to set.
      * @return the MicrosoftGraphCalendarPermission object itself.
      */
@@ -129,7 +128,7 @@ public final class MicrosoftGraphCalendarPermission extends MicrosoftGraphEntity
      * Get the isRemovable property: True if the user can be removed from the list of sharees or delegates for the
      * specified calendar, false otherwise. The 'My organization' user determines the permissions other people within
      * your organization have to the given calendar. You cannot remove 'My organization' as a sharee to a calendar.
-     *
+     * 
      * @return the isRemovable value.
      */
     public Boolean isRemovable() {
@@ -140,7 +139,7 @@ public final class MicrosoftGraphCalendarPermission extends MicrosoftGraphEntity
      * Set the isRemovable property: True if the user can be removed from the list of sharees or delegates for the
      * specified calendar, false otherwise. The 'My organization' user determines the permissions other people within
      * your organization have to the given calendar. You cannot remove 'My organization' as a sharee to a calendar.
-     *
+     * 
      * @param isRemovable the isRemovable value to set.
      * @return the MicrosoftGraphCalendarPermission object itself.
      */
@@ -151,7 +150,7 @@ public final class MicrosoftGraphCalendarPermission extends MicrosoftGraphEntity
 
     /**
      * Get the role property: calendarRoleType.
-     *
+     * 
      * @return the role value.
      */
     public MicrosoftGraphCalendarRoleType role() {
@@ -160,7 +159,7 @@ public final class MicrosoftGraphCalendarPermission extends MicrosoftGraphEntity
 
     /**
      * Set the role property: calendarRoleType.
-     *
+     * 
      * @param role the role value to set.
      * @return the MicrosoftGraphCalendarPermission object itself.
      */
@@ -171,17 +170,16 @@ public final class MicrosoftGraphCalendarPermission extends MicrosoftGraphEntity
 
     /**
      * Get the additionalProperties property: calendarPermission.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: calendarPermission.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphCalendarPermission object itself.
      */
@@ -190,15 +188,9 @@ public final class MicrosoftGraphCalendarPermission extends MicrosoftGraphEntity
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphCalendarPermission withId(String id) {
         super.withId(id);
@@ -207,7 +199,7 @@ public final class MicrosoftGraphCalendarPermission extends MicrosoftGraphEntity
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -216,5 +208,75 @@ public final class MicrosoftGraphCalendarPermission extends MicrosoftGraphEntity
         if (emailAddress() != null) {
             emailAddress().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeArrayField("allowedRoles", this.allowedRoles,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeJsonField("emailAddress", this.emailAddress);
+        jsonWriter.writeBooleanField("isInsideOrganization", this.isInsideOrganization);
+        jsonWriter.writeBooleanField("isRemovable", this.isRemovable);
+        jsonWriter.writeStringField("role", this.role == null ? null : this.role.toString());
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphCalendarPermission from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphCalendarPermission if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphCalendarPermission.
+     */
+    public static MicrosoftGraphCalendarPermission fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphCalendarPermission deserializedMicrosoftGraphCalendarPermission
+                = new MicrosoftGraphCalendarPermission();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphCalendarPermission.withId(reader.getString());
+                } else if ("allowedRoles".equals(fieldName)) {
+                    List<MicrosoftGraphCalendarRoleType> allowedRoles
+                        = reader.readArray(reader1 -> MicrosoftGraphCalendarRoleType.fromString(reader1.getString()));
+                    deserializedMicrosoftGraphCalendarPermission.allowedRoles = allowedRoles;
+                } else if ("emailAddress".equals(fieldName)) {
+                    deserializedMicrosoftGraphCalendarPermission.emailAddress
+                        = MicrosoftGraphEmailAddress.fromJson(reader);
+                } else if ("isInsideOrganization".equals(fieldName)) {
+                    deserializedMicrosoftGraphCalendarPermission.isInsideOrganization
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isRemovable".equals(fieldName)) {
+                    deserializedMicrosoftGraphCalendarPermission.isRemovable
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("role".equals(fieldName)) {
+                    deserializedMicrosoftGraphCalendarPermission.role
+                        = MicrosoftGraphCalendarRoleType.fromString(reader.getString());
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphCalendarPermission.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphCalendarPermission;
+        });
     }
 }

@@ -5,86 +5,83 @@
 package com.azure.resourcemanager.reservations.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Properties for calculate price response. */
+/**
+ * Properties for calculate price response.
+ */
 @Fluent
-public final class CalculatePriceResponseProperties {
+public final class CalculatePriceResponseProperties implements JsonSerializable<CalculatePriceResponseProperties> {
     /*
      * Currency and amount that customer will be charged in customer's local currency. Tax is not included.
      */
-    @JsonProperty(value = "billingCurrencyTotal")
     private CalculatePriceResponsePropertiesBillingCurrencyTotal billingCurrencyTotal;
 
     /*
      * Net total amount in pricing currency.
      */
-    @JsonProperty(value = "netTotal")
     private Double netTotal;
 
     /*
      * Tax amount in pricing currency.
      */
-    @JsonProperty(value = "taxTotal")
     private Double taxTotal;
 
     /*
      * Total amount in pricing currency.
      */
-    @JsonProperty(value = "grandTotal")
     private Double grandTotal;
 
     /*
      * Whether or not tax is included in grand total
      */
-    @JsonProperty(value = "isTaxIncluded")
     private Boolean isTaxIncluded;
 
     /*
      * True if billing is managed by Microsoft Partner. Used only for CSP accounts.
      */
-    @JsonProperty(value = "isBillingPartnerManaged")
     private Boolean isBillingPartnerManaged;
 
     /*
      * GUID that represents reservation order that can be placed after calculating price.
      */
-    @JsonProperty(value = "reservationOrderId")
     private String reservationOrderId;
 
     /*
      * Title of sku that is being purchased.
      */
-    @JsonProperty(value = "skuTitle")
     private String skuTitle;
 
     /*
      * Description of sku that is being purchased.
      */
-    @JsonProperty(value = "skuDescription")
     private String skuDescription;
 
     /*
      * Amount that Microsoft uses for record. Used during refund for calculating refund limit. Tax is not included.
      */
-    @JsonProperty(value = "pricingCurrencyTotal")
     private CalculatePriceResponsePropertiesPricingCurrencyTotal pricingCurrencyTotal;
 
     /*
      * The paymentSchedule property.
      */
-    @JsonProperty(value = "paymentSchedule")
     private List<PaymentDetail> paymentSchedule;
 
-    /** Creates an instance of CalculatePriceResponseProperties class. */
+    /**
+     * Creates an instance of CalculatePriceResponseProperties class.
+     */
     public CalculatePriceResponseProperties() {
     }
 
     /**
      * Get the billingCurrencyTotal property: Currency and amount that customer will be charged in customer's local
      * currency. Tax is not included.
-     *
+     * 
      * @return the billingCurrencyTotal value.
      */
     public CalculatePriceResponsePropertiesBillingCurrencyTotal billingCurrencyTotal() {
@@ -94,19 +91,19 @@ public final class CalculatePriceResponseProperties {
     /**
      * Set the billingCurrencyTotal property: Currency and amount that customer will be charged in customer's local
      * currency. Tax is not included.
-     *
+     * 
      * @param billingCurrencyTotal the billingCurrencyTotal value to set.
      * @return the CalculatePriceResponseProperties object itself.
      */
-    public CalculatePriceResponseProperties withBillingCurrencyTotal(
-        CalculatePriceResponsePropertiesBillingCurrencyTotal billingCurrencyTotal) {
+    public CalculatePriceResponseProperties
+        withBillingCurrencyTotal(CalculatePriceResponsePropertiesBillingCurrencyTotal billingCurrencyTotal) {
         this.billingCurrencyTotal = billingCurrencyTotal;
         return this;
     }
 
     /**
      * Get the netTotal property: Net total amount in pricing currency.
-     *
+     * 
      * @return the netTotal value.
      */
     public Double netTotal() {
@@ -115,7 +112,7 @@ public final class CalculatePriceResponseProperties {
 
     /**
      * Set the netTotal property: Net total amount in pricing currency.
-     *
+     * 
      * @param netTotal the netTotal value to set.
      * @return the CalculatePriceResponseProperties object itself.
      */
@@ -126,7 +123,7 @@ public final class CalculatePriceResponseProperties {
 
     /**
      * Get the taxTotal property: Tax amount in pricing currency.
-     *
+     * 
      * @return the taxTotal value.
      */
     public Double taxTotal() {
@@ -135,7 +132,7 @@ public final class CalculatePriceResponseProperties {
 
     /**
      * Set the taxTotal property: Tax amount in pricing currency.
-     *
+     * 
      * @param taxTotal the taxTotal value to set.
      * @return the CalculatePriceResponseProperties object itself.
      */
@@ -146,7 +143,7 @@ public final class CalculatePriceResponseProperties {
 
     /**
      * Get the grandTotal property: Total amount in pricing currency.
-     *
+     * 
      * @return the grandTotal value.
      */
     public Double grandTotal() {
@@ -155,7 +152,7 @@ public final class CalculatePriceResponseProperties {
 
     /**
      * Set the grandTotal property: Total amount in pricing currency.
-     *
+     * 
      * @param grandTotal the grandTotal value to set.
      * @return the CalculatePriceResponseProperties object itself.
      */
@@ -166,7 +163,7 @@ public final class CalculatePriceResponseProperties {
 
     /**
      * Get the isTaxIncluded property: Whether or not tax is included in grand total.
-     *
+     * 
      * @return the isTaxIncluded value.
      */
     public Boolean isTaxIncluded() {
@@ -175,7 +172,7 @@ public final class CalculatePriceResponseProperties {
 
     /**
      * Set the isTaxIncluded property: Whether or not tax is included in grand total.
-     *
+     * 
      * @param isTaxIncluded the isTaxIncluded value to set.
      * @return the CalculatePriceResponseProperties object itself.
      */
@@ -187,7 +184,7 @@ public final class CalculatePriceResponseProperties {
     /**
      * Get the isBillingPartnerManaged property: True if billing is managed by Microsoft Partner. Used only for CSP
      * accounts.
-     *
+     * 
      * @return the isBillingPartnerManaged value.
      */
     public Boolean isBillingPartnerManaged() {
@@ -197,7 +194,7 @@ public final class CalculatePriceResponseProperties {
     /**
      * Set the isBillingPartnerManaged property: True if billing is managed by Microsoft Partner. Used only for CSP
      * accounts.
-     *
+     * 
      * @param isBillingPartnerManaged the isBillingPartnerManaged value to set.
      * @return the CalculatePriceResponseProperties object itself.
      */
@@ -209,7 +206,7 @@ public final class CalculatePriceResponseProperties {
     /**
      * Get the reservationOrderId property: GUID that represents reservation order that can be placed after calculating
      * price.
-     *
+     * 
      * @return the reservationOrderId value.
      */
     public String reservationOrderId() {
@@ -219,7 +216,7 @@ public final class CalculatePriceResponseProperties {
     /**
      * Set the reservationOrderId property: GUID that represents reservation order that can be placed after calculating
      * price.
-     *
+     * 
      * @param reservationOrderId the reservationOrderId value to set.
      * @return the CalculatePriceResponseProperties object itself.
      */
@@ -230,7 +227,7 @@ public final class CalculatePriceResponseProperties {
 
     /**
      * Get the skuTitle property: Title of sku that is being purchased.
-     *
+     * 
      * @return the skuTitle value.
      */
     public String skuTitle() {
@@ -239,7 +236,7 @@ public final class CalculatePriceResponseProperties {
 
     /**
      * Set the skuTitle property: Title of sku that is being purchased.
-     *
+     * 
      * @param skuTitle the skuTitle value to set.
      * @return the CalculatePriceResponseProperties object itself.
      */
@@ -250,7 +247,7 @@ public final class CalculatePriceResponseProperties {
 
     /**
      * Get the skuDescription property: Description of sku that is being purchased.
-     *
+     * 
      * @return the skuDescription value.
      */
     public String skuDescription() {
@@ -259,7 +256,7 @@ public final class CalculatePriceResponseProperties {
 
     /**
      * Set the skuDescription property: Description of sku that is being purchased.
-     *
+     * 
      * @param skuDescription the skuDescription value to set.
      * @return the CalculatePriceResponseProperties object itself.
      */
@@ -271,7 +268,7 @@ public final class CalculatePriceResponseProperties {
     /**
      * Get the pricingCurrencyTotal property: Amount that Microsoft uses for record. Used during refund for calculating
      * refund limit. Tax is not included.
-     *
+     * 
      * @return the pricingCurrencyTotal value.
      */
     public CalculatePriceResponsePropertiesPricingCurrencyTotal pricingCurrencyTotal() {
@@ -281,19 +278,19 @@ public final class CalculatePriceResponseProperties {
     /**
      * Set the pricingCurrencyTotal property: Amount that Microsoft uses for record. Used during refund for calculating
      * refund limit. Tax is not included.
-     *
+     * 
      * @param pricingCurrencyTotal the pricingCurrencyTotal value to set.
      * @return the CalculatePriceResponseProperties object itself.
      */
-    public CalculatePriceResponseProperties withPricingCurrencyTotal(
-        CalculatePriceResponsePropertiesPricingCurrencyTotal pricingCurrencyTotal) {
+    public CalculatePriceResponseProperties
+        withPricingCurrencyTotal(CalculatePriceResponsePropertiesPricingCurrencyTotal pricingCurrencyTotal) {
         this.pricingCurrencyTotal = pricingCurrencyTotal;
         return this;
     }
 
     /**
      * Get the paymentSchedule property: The paymentSchedule property.
-     *
+     * 
      * @return the paymentSchedule value.
      */
     public List<PaymentDetail> paymentSchedule() {
@@ -302,7 +299,7 @@ public final class CalculatePriceResponseProperties {
 
     /**
      * Set the paymentSchedule property: The paymentSchedule property.
-     *
+     * 
      * @param paymentSchedule the paymentSchedule value to set.
      * @return the CalculatePriceResponseProperties object itself.
      */
@@ -313,7 +310,7 @@ public final class CalculatePriceResponseProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -326,5 +323,78 @@ public final class CalculatePriceResponseProperties {
         if (paymentSchedule() != null) {
             paymentSchedule().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("billingCurrencyTotal", this.billingCurrencyTotal);
+        jsonWriter.writeNumberField("netTotal", this.netTotal);
+        jsonWriter.writeNumberField("taxTotal", this.taxTotal);
+        jsonWriter.writeNumberField("grandTotal", this.grandTotal);
+        jsonWriter.writeBooleanField("isTaxIncluded", this.isTaxIncluded);
+        jsonWriter.writeBooleanField("isBillingPartnerManaged", this.isBillingPartnerManaged);
+        jsonWriter.writeStringField("reservationOrderId", this.reservationOrderId);
+        jsonWriter.writeStringField("skuTitle", this.skuTitle);
+        jsonWriter.writeStringField("skuDescription", this.skuDescription);
+        jsonWriter.writeJsonField("pricingCurrencyTotal", this.pricingCurrencyTotal);
+        jsonWriter.writeArrayField("paymentSchedule", this.paymentSchedule,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CalculatePriceResponseProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CalculatePriceResponseProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CalculatePriceResponseProperties.
+     */
+    public static CalculatePriceResponseProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CalculatePriceResponseProperties deserializedCalculatePriceResponseProperties
+                = new CalculatePriceResponseProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("billingCurrencyTotal".equals(fieldName)) {
+                    deserializedCalculatePriceResponseProperties.billingCurrencyTotal
+                        = CalculatePriceResponsePropertiesBillingCurrencyTotal.fromJson(reader);
+                } else if ("netTotal".equals(fieldName)) {
+                    deserializedCalculatePriceResponseProperties.netTotal = reader.getNullable(JsonReader::getDouble);
+                } else if ("taxTotal".equals(fieldName)) {
+                    deserializedCalculatePriceResponseProperties.taxTotal = reader.getNullable(JsonReader::getDouble);
+                } else if ("grandTotal".equals(fieldName)) {
+                    deserializedCalculatePriceResponseProperties.grandTotal = reader.getNullable(JsonReader::getDouble);
+                } else if ("isTaxIncluded".equals(fieldName)) {
+                    deserializedCalculatePriceResponseProperties.isTaxIncluded
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isBillingPartnerManaged".equals(fieldName)) {
+                    deserializedCalculatePriceResponseProperties.isBillingPartnerManaged
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("reservationOrderId".equals(fieldName)) {
+                    deserializedCalculatePriceResponseProperties.reservationOrderId = reader.getString();
+                } else if ("skuTitle".equals(fieldName)) {
+                    deserializedCalculatePriceResponseProperties.skuTitle = reader.getString();
+                } else if ("skuDescription".equals(fieldName)) {
+                    deserializedCalculatePriceResponseProperties.skuDescription = reader.getString();
+                } else if ("pricingCurrencyTotal".equals(fieldName)) {
+                    deserializedCalculatePriceResponseProperties.pricingCurrencyTotal
+                        = CalculatePriceResponsePropertiesPricingCurrencyTotal.fromJson(reader);
+                } else if ("paymentSchedule".equals(fieldName)) {
+                    List<PaymentDetail> paymentSchedule = reader.readArray(reader1 -> PaymentDetail.fromJson(reader1));
+                    deserializedCalculatePriceResponseProperties.paymentSchedule = paymentSchedule;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCalculatePriceResponseProperties;
+        });
     }
 }

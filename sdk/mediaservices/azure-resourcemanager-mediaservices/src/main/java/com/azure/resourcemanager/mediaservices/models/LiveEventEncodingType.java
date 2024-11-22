@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -16,24 +15,34 @@ import java.util.Collection;
  * event is created.
  */
 public final class LiveEventEncodingType extends ExpandableStringEnum<LiveEventEncodingType> {
-    /** Static value None for LiveEventEncodingType. */
+    /**
+     * Static value None for LiveEventEncodingType.
+     */
     public static final LiveEventEncodingType NONE = fromString("None");
 
-    /** Static value Standard for LiveEventEncodingType. */
+    /**
+     * Static value Standard for LiveEventEncodingType.
+     */
     public static final LiveEventEncodingType STANDARD = fromString("Standard");
 
-    /** Static value Premium1080p for LiveEventEncodingType. */
+    /**
+     * Static value Premium1080p for LiveEventEncodingType.
+     */
     public static final LiveEventEncodingType PREMIUM1080P = fromString("Premium1080p");
 
-    /** Static value PassthroughBasic for LiveEventEncodingType. */
+    /**
+     * Static value PassthroughBasic for LiveEventEncodingType.
+     */
     public static final LiveEventEncodingType PASSTHROUGH_BASIC = fromString("PassthroughBasic");
 
-    /** Static value PassthroughStandard for LiveEventEncodingType. */
+    /**
+     * Static value PassthroughStandard for LiveEventEncodingType.
+     */
     public static final LiveEventEncodingType PASSTHROUGH_STANDARD = fromString("PassthroughStandard");
 
     /**
      * Creates a new instance of LiveEventEncodingType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -42,18 +51,17 @@ public final class LiveEventEncodingType extends ExpandableStringEnum<LiveEventE
 
     /**
      * Creates or finds a LiveEventEncodingType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding LiveEventEncodingType.
      */
-    @JsonCreator
     public static LiveEventEncodingType fromString(String name) {
         return fromString(name, LiveEventEncodingType.class);
     }
 
     /**
      * Gets known LiveEventEncodingType values.
-     *
+     * 
      * @return known LiveEventEncodingType values.
      */
     public static Collection<LiveEventEncodingType> values() {

@@ -5,32 +5,105 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The desired maximum forecast horizon in units of time-series frequency. */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "mode",
-    defaultImpl = ForecastHorizon.class)
-@JsonTypeName("ForecastHorizon")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "Auto", value = AutoForecastHorizon.class),
-    @JsonSubTypes.Type(name = "Custom", value = CustomForecastHorizon.class)
-})
+/**
+ * The desired maximum forecast horizon in units of time-series frequency.
+ */
 @Immutable
-public class ForecastHorizon {
-    /** Creates an instance of ForecastHorizon class. */
+public class ForecastHorizon implements JsonSerializable<ForecastHorizon> {
+    /*
+     * [Required] Set forecast horizon value selection mode.
+     */
+    private ForecastHorizonMode mode = ForecastHorizonMode.fromString("ForecastHorizon");
+
+    /**
+     * Creates an instance of ForecastHorizon class.
+     */
     public ForecastHorizon() {
     }
 
     /**
+     * Get the mode property: [Required] Set forecast horizon value selection mode.
+     * 
+     * @return the mode value.
+     */
+    public ForecastHorizonMode mode() {
+        return this.mode;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("mode", this.mode == null ? null : this.mode.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ForecastHorizon from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ForecastHorizon if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ForecastHorizon.
+     */
+    public static ForecastHorizon fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("mode".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("Auto".equals(discriminatorValue)) {
+                    return AutoForecastHorizon.fromJson(readerToUse.reset());
+                } else if ("Custom".equals(discriminatorValue)) {
+                    return CustomForecastHorizon.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static ForecastHorizon fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ForecastHorizon deserializedForecastHorizon = new ForecastHorizon();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("mode".equals(fieldName)) {
+                    deserializedForecastHorizon.mode = ForecastHorizonMode.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedForecastHorizon;
+        });
     }
 }

@@ -5,38 +5,39 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.NetworkIntentPolicyBasedService;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Defines the security admin configuration properties.
  */
 @Fluent
-public final class SecurityAdminConfigurationPropertiesFormat {
+public final class SecurityAdminConfigurationPropertiesFormat
+    implements JsonSerializable<SecurityAdminConfigurationPropertiesFormat> {
     /*
      * A description of the security configuration.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * Enum list of network intent policy based services.
      */
-    @JsonProperty(value = "applyOnNetworkIntentPolicyBasedServices")
     private List<NetworkIntentPolicyBasedService> applyOnNetworkIntentPolicyBasedServices;
 
     /*
      * The provisioning state of the resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * Unique identifier for this resource.
      */
-    @JsonProperty(value = "resourceGuid", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceGuid;
 
     /**
@@ -110,5 +111,55 @@ public final class SecurityAdminConfigurationPropertiesFormat {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeArrayField("applyOnNetworkIntentPolicyBasedServices",
+            this.applyOnNetworkIntentPolicyBasedServices,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SecurityAdminConfigurationPropertiesFormat from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SecurityAdminConfigurationPropertiesFormat if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SecurityAdminConfigurationPropertiesFormat.
+     */
+    public static SecurityAdminConfigurationPropertiesFormat fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SecurityAdminConfigurationPropertiesFormat deserializedSecurityAdminConfigurationPropertiesFormat
+                = new SecurityAdminConfigurationPropertiesFormat();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("description".equals(fieldName)) {
+                    deserializedSecurityAdminConfigurationPropertiesFormat.description = reader.getString();
+                } else if ("applyOnNetworkIntentPolicyBasedServices".equals(fieldName)) {
+                    List<NetworkIntentPolicyBasedService> applyOnNetworkIntentPolicyBasedServices
+                        = reader.readArray(reader1 -> NetworkIntentPolicyBasedService.fromString(reader1.getString()));
+                    deserializedSecurityAdminConfigurationPropertiesFormat.applyOnNetworkIntentPolicyBasedServices
+                        = applyOnNetworkIntentPolicyBasedServices;
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedSecurityAdminConfigurationPropertiesFormat.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("resourceGuid".equals(fieldName)) {
+                    deserializedSecurityAdminConfigurationPropertiesFormat.resourceGuid = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSecurityAdminConfigurationPropertiesFormat;
+        });
     }
 }

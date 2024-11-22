@@ -5,55 +5,55 @@ package com.azure.analytics.defender.easm.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * The AlexaDetails model.
  */
 @Immutable
-public final class AlexaDetails {
+public final class AlexaDetails implements JsonSerializable<AlexaDetails> {
 
     /*
      * The alexaRank property.
      */
     @Generated
-    @JsonProperty(value = "alexaRank")
     private Long alexaRank;
 
     /*
      * The category property.
      */
     @Generated
-    @JsonProperty(value = "category")
     private String category;
 
     /*
      * The firstSeen property.
      */
     @Generated
-    @JsonProperty(value = "firstSeen")
     private OffsetDateTime firstSeen;
 
     /*
      * The lastSeen property.
      */
     @Generated
-    @JsonProperty(value = "lastSeen")
     private OffsetDateTime lastSeen;
 
     /*
      * The count property.
      */
     @Generated
-    @JsonProperty(value = "count")
     private Long count;
 
     /*
      * The recent property.
      */
     @Generated
-    @JsonProperty(value = "recent")
     private Boolean recent;
 
     /**
@@ -121,5 +121,60 @@ public final class AlexaDetails {
     @Generated
     public Boolean isRecent() {
         return this.recent;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("alexaRank", this.alexaRank);
+        jsonWriter.writeStringField("category", this.category);
+        jsonWriter.writeStringField("firstSeen",
+            this.firstSeen == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.firstSeen));
+        jsonWriter.writeStringField("lastSeen",
+            this.lastSeen == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastSeen));
+        jsonWriter.writeNumberField("count", this.count);
+        jsonWriter.writeBooleanField("recent", this.recent);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AlexaDetails from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AlexaDetails if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AlexaDetails.
+     */
+    @Generated
+    public static AlexaDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AlexaDetails deserializedAlexaDetails = new AlexaDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("alexaRank".equals(fieldName)) {
+                    deserializedAlexaDetails.alexaRank = reader.getNullable(JsonReader::getLong);
+                } else if ("category".equals(fieldName)) {
+                    deserializedAlexaDetails.category = reader.getString();
+                } else if ("firstSeen".equals(fieldName)) {
+                    deserializedAlexaDetails.firstSeen = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastSeen".equals(fieldName)) {
+                    deserializedAlexaDetails.lastSeen = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("count".equals(fieldName)) {
+                    deserializedAlexaDetails.count = reader.getNullable(JsonReader::getLong);
+                } else if ("recent".equals(fieldName)) {
+                    deserializedAlexaDetails.recent = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedAlexaDetails;
+        });
     }
 }

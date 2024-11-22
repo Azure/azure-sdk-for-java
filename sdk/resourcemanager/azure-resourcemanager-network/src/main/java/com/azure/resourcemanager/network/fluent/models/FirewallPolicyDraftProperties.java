@@ -6,6 +6,10 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.AzureFirewallThreatIntelMode;
 import com.azure.resourcemanager.network.models.DnsSettings;
 import com.azure.resourcemanager.network.models.ExplicitProxy;
@@ -14,65 +18,56 @@ import com.azure.resourcemanager.network.models.FirewallPolicyIntrusionDetection
 import com.azure.resourcemanager.network.models.FirewallPolicySnat;
 import com.azure.resourcemanager.network.models.FirewallPolicySql;
 import com.azure.resourcemanager.network.models.FirewallPolicyThreatIntelWhitelist;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * The FirewallPolicyDraftProperties model.
  */
 @Fluent
-public final class FirewallPolicyDraftProperties {
+public final class FirewallPolicyDraftProperties implements JsonSerializable<FirewallPolicyDraftProperties> {
     /*
      * The parent firewall policy from which rules are inherited.
      */
-    @JsonProperty(value = "basePolicy")
     private SubResource basePolicy;
 
     /*
      * The operation mode for Threat Intelligence.
      */
-    @JsonProperty(value = "threatIntelMode")
     private AzureFirewallThreatIntelMode threatIntelMode;
 
     /*
      * ThreatIntel Whitelist for Firewall Policy.
      */
-    @JsonProperty(value = "threatIntelWhitelist")
     private FirewallPolicyThreatIntelWhitelist threatIntelWhitelist;
 
     /*
      * Insights on Firewall Policy.
      */
-    @JsonProperty(value = "insights")
     private FirewallPolicyInsights insights;
 
     /*
      * The private IP addresses/IP ranges to which traffic will not be SNAT.
      */
-    @JsonProperty(value = "snat")
     private FirewallPolicySnat snat;
 
     /*
      * SQL Settings definition.
      */
-    @JsonProperty(value = "sql")
     private FirewallPolicySql sql;
 
     /*
      * DNS Proxy Settings definition.
      */
-    @JsonProperty(value = "dnsSettings")
     private DnsSettings dnsSettings;
 
     /*
      * Explicit Proxy Settings definition.
      */
-    @JsonProperty(value = "explicitProxy")
     private ExplicitProxy explicitProxy;
 
     /*
      * The configuration for Intrusion detection.
      */
-    @JsonProperty(value = "intrusionDetection")
     private FirewallPolicyIntrusionDetection intrusionDetection;
 
     /**
@@ -289,5 +284,70 @@ public final class FirewallPolicyDraftProperties {
         if (intrusionDetection() != null) {
             intrusionDetection().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("basePolicy", this.basePolicy);
+        jsonWriter.writeStringField("threatIntelMode",
+            this.threatIntelMode == null ? null : this.threatIntelMode.toString());
+        jsonWriter.writeJsonField("threatIntelWhitelist", this.threatIntelWhitelist);
+        jsonWriter.writeJsonField("insights", this.insights);
+        jsonWriter.writeJsonField("snat", this.snat);
+        jsonWriter.writeJsonField("sql", this.sql);
+        jsonWriter.writeJsonField("dnsSettings", this.dnsSettings);
+        jsonWriter.writeJsonField("explicitProxy", this.explicitProxy);
+        jsonWriter.writeJsonField("intrusionDetection", this.intrusionDetection);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FirewallPolicyDraftProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FirewallPolicyDraftProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FirewallPolicyDraftProperties.
+     */
+    public static FirewallPolicyDraftProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FirewallPolicyDraftProperties deserializedFirewallPolicyDraftProperties
+                = new FirewallPolicyDraftProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("basePolicy".equals(fieldName)) {
+                    deserializedFirewallPolicyDraftProperties.basePolicy = SubResource.fromJson(reader);
+                } else if ("threatIntelMode".equals(fieldName)) {
+                    deserializedFirewallPolicyDraftProperties.threatIntelMode
+                        = AzureFirewallThreatIntelMode.fromString(reader.getString());
+                } else if ("threatIntelWhitelist".equals(fieldName)) {
+                    deserializedFirewallPolicyDraftProperties.threatIntelWhitelist
+                        = FirewallPolicyThreatIntelWhitelist.fromJson(reader);
+                } else if ("insights".equals(fieldName)) {
+                    deserializedFirewallPolicyDraftProperties.insights = FirewallPolicyInsights.fromJson(reader);
+                } else if ("snat".equals(fieldName)) {
+                    deserializedFirewallPolicyDraftProperties.snat = FirewallPolicySnat.fromJson(reader);
+                } else if ("sql".equals(fieldName)) {
+                    deserializedFirewallPolicyDraftProperties.sql = FirewallPolicySql.fromJson(reader);
+                } else if ("dnsSettings".equals(fieldName)) {
+                    deserializedFirewallPolicyDraftProperties.dnsSettings = DnsSettings.fromJson(reader);
+                } else if ("explicitProxy".equals(fieldName)) {
+                    deserializedFirewallPolicyDraftProperties.explicitProxy = ExplicitProxy.fromJson(reader);
+                } else if ("intrusionDetection".equals(fieldName)) {
+                    deserializedFirewallPolicyDraftProperties.intrusionDetection
+                        = FirewallPolicyIntrusionDetection.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFirewallPolicyDraftProperties;
+        });
     }
 }

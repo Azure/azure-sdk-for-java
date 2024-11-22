@@ -5,47 +5,46 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The definition of Azure Monitoring metric.
  */
 @Fluent
-public final class OperationMetricSpecificationDefinition {
+public final class OperationMetricSpecificationDefinition
+    implements JsonSerializable<OperationMetricSpecificationDefinition> {
     /*
      * Metric name.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Metric display name.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * Metric description.
      */
-    @JsonProperty(value = "displayDescription")
     private String displayDescription;
 
     /*
      * Metric unit.
      */
-    @JsonProperty(value = "unit")
     private String unit;
 
     /*
      * Metric aggregation type.
      */
-    @JsonProperty(value = "aggregationType")
     private String aggregationType;
 
     /*
      * Internal metric name.
      */
-    @JsonProperty(value = "internalMetricName")
     private String internalMetricName;
 
     /**
@@ -180,5 +179,57 @@ public final class OperationMetricSpecificationDefinition {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("displayDescription", this.displayDescription);
+        jsonWriter.writeStringField("unit", this.unit);
+        jsonWriter.writeStringField("aggregationType", this.aggregationType);
+        jsonWriter.writeStringField("internalMetricName", this.internalMetricName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OperationMetricSpecificationDefinition from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OperationMetricSpecificationDefinition if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OperationMetricSpecificationDefinition.
+     */
+    public static OperationMetricSpecificationDefinition fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OperationMetricSpecificationDefinition deserializedOperationMetricSpecificationDefinition
+                = new OperationMetricSpecificationDefinition();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedOperationMetricSpecificationDefinition.name = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedOperationMetricSpecificationDefinition.displayName = reader.getString();
+                } else if ("displayDescription".equals(fieldName)) {
+                    deserializedOperationMetricSpecificationDefinition.displayDescription = reader.getString();
+                } else if ("unit".equals(fieldName)) {
+                    deserializedOperationMetricSpecificationDefinition.unit = reader.getString();
+                } else if ("aggregationType".equals(fieldName)) {
+                    deserializedOperationMetricSpecificationDefinition.aggregationType = reader.getString();
+                } else if ("internalMetricName".equals(fieldName)) {
+                    deserializedOperationMetricSpecificationDefinition.internalMetricName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOperationMetricSpecificationDefinition;
+        });
     }
 }

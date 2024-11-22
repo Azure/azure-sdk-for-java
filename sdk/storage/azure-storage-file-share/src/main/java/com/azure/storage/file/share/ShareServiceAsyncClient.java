@@ -40,12 +40,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.pagedFluxError;
 import static com.azure.core.util.FluxUtil.withContext;
-
 
 /**
  * This class provides a azureFileStorageClient that contains all the operations for interacting with a file account in
@@ -249,24 +249,19 @@ public final class ShareServiceAsyncClient {
             }
         }
 
-        BiFunction<String, Integer, Mono<PagedResponse<ShareItem>>> retriever =
-            (nextMarker, pageSize) -> StorageImplUtils.applyOptionalTimeout(this.azureFileStorageClient.getServices()
-                    .listSharesSegmentSinglePageAsync(
-                        prefix, nextMarker, pageSize == null ? maxResultsPerPage : pageSize, include, null, context)
-                    .map(response -> {
-                        List<ShareItem> value = response.getValue() == null
-                            ? Collections.emptyList()
-                            : response.getValue().stream()
-                            .map(ModelHelper::populateShareItem)
-                            .collect(Collectors.toList());
+        BiFunction<String, Integer, Mono<PagedResponse<ShareItem>>> retriever = (nextMarker,
+            pageSize) -> StorageImplUtils.applyOptionalTimeout(this.azureFileStorageClient.getServices()
+                .listSharesSegmentSinglePageAsync(prefix, nextMarker, pageSize == null ? maxResultsPerPage : pageSize,
+                    include, null, context)
+                .map(response -> {
+                    List<ShareItem> value = response.getValue() == null
+                        ? Collections.emptyList()
+                        : response.getValue().stream().map(ModelHelper::populateShareItem).collect(Collectors.toList());
 
-                        return new PagedResponseBase<>(response.getRequest(),
-                            response.getStatusCode(),
-                            response.getHeaders(),
-                            value,
-                            response.getContinuationToken(),
-                            ModelHelper.transformListSharesHeaders(response.getHeaders()));
-                    }), timeout);
+                    return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(),
+                        response.getHeaders(), value, response.getContinuationToken(),
+                        ModelHelper.transformListSharesHeaders(response.getHeaders()));
+                }), timeout);
         return new PagedFlux<>(pageSize -> retriever.apply(marker, pageSize), retriever);
     }
 
@@ -333,7 +328,8 @@ public final class ShareServiceAsyncClient {
 
     Mono<Response<ShareServiceProperties>> getPropertiesWithResponse(Context context) {
         context = context == null ? Context.NONE : context;
-        return azureFileStorageClient.getServices().getPropertiesWithResponseAsync(null, context)
+        return azureFileStorageClient.getServices()
+            .getPropertiesWithResponseAsync(null, context)
             .map(response -> new SimpleResponse<>(response, response.getValue()));
     }
 
@@ -524,10 +520,13 @@ public final class ShareServiceAsyncClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-share">Azure Docs</a>.</p>
      *
+     * <p>For more information on updated max file share size values, see the
+     * <a href="https://learn.microsoft.com/azure/storage/files/storage-files-scale-targets#azure-file-share-scale-targets">Azure Docs</a>.</p>
+     *
      * @param shareName Name of the share
      * @param metadata Optional metadata to associate with the share
-     * @param quotaInGB Optional maximum size the share is allowed to grow to in GB. This must be greater than 0 and
-     * less than or equal to 5120. The default value is 5120.
+     * @param quotaInGB Optional maximum size the share is allowed to grow to in GB.
+     * The default value is 5120. Refer to the Azure Docs for updated values.
      * @return A response containing the {@link ShareAsyncClient ShareAsyncClient} and the status of creating the share.
      * @throws ShareStorageException If a share with the same name already exists or {@code quotaInGB} is outside the
      * allowed range.
@@ -535,8 +534,8 @@ public final class ShareServiceAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ShareAsyncClient>> createShareWithResponse(String shareName, Map<String, String> metadata,
         Integer quotaInGB) {
-        return createShareWithResponse(shareName, new ShareCreateOptions().setMetadata(metadata)
-            .setQuotaInGb(quotaInGB));
+        return createShareWithResponse(shareName,
+            new ShareCreateOptions().setMetadata(metadata).setQuotaInGb(quotaInGB));
     }
 
     /**
@@ -578,11 +577,11 @@ public final class ShareServiceAsyncClient {
 
     Mono<Response<ShareAsyncClient>> createShareWithResponse(String shareName, ShareCreateOptions options,
         Context context) {
-        ShareAsyncClient shareAsyncClient = new ShareAsyncClient(azureFileStorageClient, shareName, null,
-            accountName, serviceVersion, sasToken);
+        ShareAsyncClient shareAsyncClient
+            = new ShareAsyncClient(azureFileStorageClient, shareName, null, accountName, serviceVersion, sasToken);
 
-        return shareAsyncClient.createWithResponse(options, context).map(response ->
-            new SimpleResponse<>(response, shareAsyncClient));
+        return shareAsyncClient.createWithResponse(options, context)
+            .map(response -> new SimpleResponse<>(response, shareAsyncClient));
     }
 
     /**
@@ -736,8 +735,25 @@ public final class ShareServiceAsyncClient {
      * @return A {@code String} representing the SAS query parameters.
      */
     public String generateAccountSas(AccountSasSignatureValues accountSasSignatureValues, Context context) {
+        return generateAccountSas(accountSasSignatureValues, null, context);
+    }
+
+    /**
+     * Generates an account SAS for the Azure Storage account using the specified {@link AccountSasSignatureValues}.
+     * <p>Note : The client must be authenticated via {@link StorageSharedKeyCredential}
+     * <p>See {@link AccountSasSignatureValues} for more information on how to construct an account SAS.</p>
+     *
+     * @param accountSasSignatureValues {@link AccountSasSignatureValues}
+     * @param stringToSignHandler For debugging purposes only. Returns the string to sign that was used to generate the
+     * signature.
+     * @param context Additional context that is passed through the code when generating a SAS.
+     *
+     * @return A {@code String} representing the SAS query parameters.
+     */
+    public String generateAccountSas(AccountSasSignatureValues accountSasSignatureValues,
+        Consumer<String> stringToSignHandler, Context context) {
         return new AccountSasImplUtil(accountSasSignatureValues, null)
-            .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), context);
+            .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), stringToSignHandler, context);
     }
 
     /**
@@ -829,10 +845,10 @@ public final class ShareServiceAsyncClient {
         }
     }
 
-    Mono<Response<ShareAsyncClient>> undeleteShareWithResponse(
-        String deletedShareName, String deletedShareVersion, Context context) {
-        return this.azureFileStorageClient.getShares().restoreWithResponseAsync(
-            deletedShareName, null, null, deletedShareName, deletedShareVersion, context)
-        .map(response -> new SimpleResponse<>(response, getShareAsyncClient(deletedShareName)));
+    Mono<Response<ShareAsyncClient>> undeleteShareWithResponse(String deletedShareName, String deletedShareVersion,
+        Context context) {
+        return this.azureFileStorageClient.getShares()
+            .restoreWithResponseAsync(deletedShareName, null, null, deletedShareName, deletedShareVersion, context)
+            .map(response -> new SimpleResponse<>(response, getShareAsyncClient(deletedShareName)));
     }
 }

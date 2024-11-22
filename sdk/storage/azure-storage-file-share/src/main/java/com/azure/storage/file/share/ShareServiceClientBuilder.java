@@ -126,15 +126,11 @@ import java.util.Objects;
  * @see ShareServiceAsyncClient
  * @see StorageSharedKeyCredential
  */
-@ServiceClientBuilder(serviceClients = {ShareServiceClient.class, ShareServiceAsyncClient.class})
-public final class ShareServiceClientBuilder implements
-    TokenCredentialTrait<ShareServiceClientBuilder>,
-    HttpTrait<ShareServiceClientBuilder>,
-    ConnectionStringTrait<ShareServiceClientBuilder>,
-    AzureNamedKeyCredentialTrait<ShareServiceClientBuilder>,
-    AzureSasCredentialTrait<ShareServiceClientBuilder>,
-    ConfigurationTrait<ShareServiceClientBuilder>,
-    EndpointTrait<ShareServiceClientBuilder> {
+@ServiceClientBuilder(serviceClients = { ShareServiceClient.class, ShareServiceAsyncClient.class })
+public final class ShareServiceClientBuilder implements TokenCredentialTrait<ShareServiceClientBuilder>,
+    HttpTrait<ShareServiceClientBuilder>, ConnectionStringTrait<ShareServiceClientBuilder>,
+    AzureNamedKeyCredentialTrait<ShareServiceClientBuilder>, AzureSasCredentialTrait<ShareServiceClientBuilder>,
+    ConfigurationTrait<ShareServiceClientBuilder>, EndpointTrait<ShareServiceClientBuilder> {
     private static final ClientLogger LOGGER = new ClientLogger(ShareServiceClientBuilder.class);
 
     private String endpoint;
@@ -238,8 +234,8 @@ public final class ShareServiceClientBuilder implements
 
             // TODO (gapra) : What happens if a user has custom queries?
             // Attempt to get the SAS token from the URL passed
-            String sasToken = new CommonSasQueryParameters(
-                SasImplUtils.parseQueryString(fullUrl.getQuery()), false).encode();
+            String sasToken
+                = new CommonSasQueryParameters(SasImplUtils.parseQueryString(fullUrl.getQuery()), false).encode();
             if (!CoreUtils.isNullOrEmpty(sasToken)) {
                 this.sasToken(sasToken);
             }
@@ -307,8 +303,7 @@ public final class ShareServiceClientBuilder implements
      * @throws NullPointerException If {@code sasToken} is {@code null}.
      */
     public ShareServiceClientBuilder sasToken(String sasToken) {
-        this.sasToken = Objects.requireNonNull(sasToken,
-            "'sasToken' cannot be null.");
+        this.sasToken = Objects.requireNonNull(sasToken, "'sasToken' cannot be null.");
         this.storageSharedKeyCredential = null;
         return this;
     }
@@ -322,8 +317,7 @@ public final class ShareServiceClientBuilder implements
      */
     @Override
     public ShareServiceClientBuilder credential(AzureSasCredential credential) {
-        this.azureSasCredential = Objects.requireNonNull(credential,
-            "'credential' cannot be null.");
+        this.azureSasCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
         return this;
     }
 
@@ -336,13 +330,11 @@ public final class ShareServiceClientBuilder implements
      */
     @Override
     public ShareServiceClientBuilder connectionString(String connectionString) {
-        StorageConnectionString storageConnectionString
-                = StorageConnectionString.create(connectionString, LOGGER);
+        StorageConnectionString storageConnectionString = StorageConnectionString.create(connectionString, LOGGER);
         StorageEndpoint endpoint = storageConnectionString.getFileEndpoint();
         if (endpoint == null || endpoint.getPrimaryUri() == null) {
-            throw LOGGER
-                    .logExceptionAsError(new IllegalArgumentException(
-                            "connectionString missing required settings to derive file service endpoint."));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "connectionString missing required settings to derive file service endpoint."));
         }
         this.endpoint(endpoint.getPrimaryUri());
         if (storageConnectionString.getAccountName() != null) {
@@ -351,7 +343,7 @@ public final class ShareServiceClientBuilder implements
         StorageAuthenticationSettings authSettings = storageConnectionString.getStorageAuthSettings();
         if (authSettings.getType() == StorageAuthenticationSettings.Type.ACCOUNT_NAME_KEY) {
             this.credential(new StorageSharedKeyCredential(authSettings.getAccount().getName(),
-                    authSettings.getAccount().getAccessKey()));
+                authSettings.getAccount().getAccessKey()));
         } else if (authSettings.getType() == StorageAuthenticationSettings.Type.SAS_TOKEN) {
             this.sasToken(authSettings.getSasToken());
         }
@@ -603,17 +595,18 @@ public final class ShareServiceClientBuilder implements
     }
 
     AzureFileStorageImpl buildFileStorageImplClient() {
-        CredentialValidator.validateSingleCredentialIsPresent(
-            storageSharedKeyCredential, null, azureSasCredential, sasToken, LOGGER);
+        CredentialValidator.validateSingleCredentialIsPresent(storageSharedKeyCredential, null, azureSasCredential,
+            sasToken, LOGGER);
         ShareServiceVersion serviceVersion = version != null ? version : ShareServiceVersion.getLatest();
         this.serviceVersion(serviceVersion);
 
-        HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
-            storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken,
-            endpoint, retryOptions, coreRetryOptions, logOptions,
-            clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, audience, LOGGER);
+        HttpPipeline pipeline = (httpPipeline != null)
+            ? httpPipeline
+            : BuilderHelper.buildPipeline(storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken,
+                endpoint, retryOptions, coreRetryOptions, logOptions, clientOptions, httpClient, perCallPolicies,
+                perRetryPolicies, configuration, audience, LOGGER);
 
-        return new AzureFileStorageImpl(pipeline, serviceVersion.getVersion(),
-            shareTokenIntent, endpoint, allowTrailingDot, allowSourceTrailingDot);
+        return new AzureFileStorageImpl(pipeline, serviceVersion.getVersion(), shareTokenIntent, endpoint,
+            allowTrailingDot, allowSourceTrailingDot);
     }
 }

@@ -52,16 +52,15 @@ import java.util.function.Consumer;
  *
  * <!-- src_embed com.azure.identity.credential.devicecodecredential.construct -->
  * <pre>
- * TokenCredential deviceCodeCredential = new DeviceCodeCredentialBuilder&#40;&#41;
- *     .build&#40;&#41;;
+ * TokenCredential deviceCodeCredential = new DeviceCodeCredentialBuilder&#40;&#41;.build&#40;&#41;;
  * </pre>
  * <!-- end com.azure.identity.credential.devicecodecredential.construct -->
  *
  * @see DeviceCodeCredential
  */
 public class DeviceCodeCredentialBuilder extends AadCredentialBuilderBase<DeviceCodeCredentialBuilder> {
-    private Consumer<DeviceCodeInfo> challengeConsumer =
-        deviceCodeInfo -> System.out.println(deviceCodeInfo.getMessage());
+    private Consumer<DeviceCodeInfo> challengeConsumer
+        = deviceCodeInfo -> System.out.println(deviceCodeInfo.getMessage());
 
     private boolean automaticAuthentication = true;
 
@@ -73,14 +72,28 @@ public class DeviceCodeCredentialBuilder extends AadCredentialBuilderBase<Device
     }
 
     /**
+     * Sets the client ID of the Microsoft Entra application that users will sign in to. It is recommended
+     * that developers register their applications and assign appropriate roles. For more information,
+     * visit this doc for <a href="https://aka.ms/identity/AppRegistrationAndRoleAssignment">app registration</a>.
+     * If not specified, users will authenticate to an Azure development application, which is not recommended
+     * for production scenarios.
+     *
+     * @param clientId the client ID of the application.
+     * @return An updated instance of this builder with the client ID configured.
+     */
+    @Override
+    public DeviceCodeCredentialBuilder clientId(String clientId) {
+        return super.clientId(clientId);
+    }
+
+    /**
      * Sets the consumer to meet the device code challenge. If not specified a default consumer is used which prints
      * the device code info message to stdout.
      *
      * @param challengeConsumer A method allowing the user to meet the device code challenge.
-     * @return the InteractiveBrowserCredentialBuilder itself
+     * @return An updated instance of this builder with the challenge consumer configured.
      */
-    public DeviceCodeCredentialBuilder challengeConsumer(
-        Consumer<DeviceCodeInfo> challengeConsumer) {
+    public DeviceCodeCredentialBuilder challengeConsumer(Consumer<DeviceCodeInfo> challengeConsumer) {
         this.challengeConsumer = challengeConsumer;
         return this;
     }
@@ -93,8 +106,8 @@ public class DeviceCodeCredentialBuilder extends AadCredentialBuilderBase<Device
      * @param tokenCachePersistenceOptions the token cache configuration options
      * @return An updated instance of this builder with the token cache options configured.
      */
-    public DeviceCodeCredentialBuilder tokenCachePersistenceOptions(TokenCachePersistenceOptions
-                                                                          tokenCachePersistenceOptions) {
+    public DeviceCodeCredentialBuilder
+        tokenCachePersistenceOptions(TokenCachePersistenceOptions tokenCachePersistenceOptions) {
         this.identityClientOptions.setTokenCacheOptions(tokenCachePersistenceOptions);
         return this;
     }
@@ -137,8 +150,8 @@ public class DeviceCodeCredentialBuilder extends AadCredentialBuilderBase<Device
      */
     @Override
     public DeviceCodeCredentialBuilder additionallyAllowedTenants(String... additionallyAllowedTenants) {
-        identityClientOptions
-            .setAdditionallyAllowedTenants(IdentityUtil.resolveAdditionalTenants(Arrays.asList(additionallyAllowedTenants)));
+        identityClientOptions.setAdditionallyAllowedTenants(
+            IdentityUtil.resolveAdditionalTenants(Arrays.asList(additionallyAllowedTenants)));
         return this;
     }
 
@@ -153,7 +166,8 @@ public class DeviceCodeCredentialBuilder extends AadCredentialBuilderBase<Device
      */
     @Override
     public DeviceCodeCredentialBuilder additionallyAllowedTenants(List<String> additionallyAllowedTenants) {
-        identityClientOptions.setAdditionallyAllowedTenants(IdentityUtil.resolveAdditionalTenants(additionallyAllowedTenants));
+        identityClientOptions
+            .setAdditionallyAllowedTenants(IdentityUtil.resolveAdditionalTenants(additionallyAllowedTenants));
         return this;
     }
 
@@ -165,6 +179,6 @@ public class DeviceCodeCredentialBuilder extends AadCredentialBuilderBase<Device
     public DeviceCodeCredential build() {
         String clientId = this.clientId != null ? this.clientId : IdentityConstants.DEVELOPER_SINGLE_SIGN_ON_ID;
         return new DeviceCodeCredential(clientId, tenantId, challengeConsumer, automaticAuthentication,
-                identityClientOptions);
+            identityClientOptions);
     }
 }

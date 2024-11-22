@@ -12,10 +12,7 @@ import java.util.regex.Pattern;
 /**
  * The implementation of {@link Feature}.
  */
-final class FeatureImpl extends
-        IndexableWrapperImpl<FeatureResultInner>
-        implements
-        Feature {
+final class FeatureImpl extends IndexableWrapperImpl<FeatureResultInner> implements Feature {
 
     FeatureImpl(FeatureResultInner innerModel) {
         super(innerModel);

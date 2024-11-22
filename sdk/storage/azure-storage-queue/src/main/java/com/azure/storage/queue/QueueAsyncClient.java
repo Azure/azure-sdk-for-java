@@ -58,7 +58,6 @@ import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.pagedFluxError;
 import static com.azure.core.util.FluxUtil.withContext;
 
-
 /**
  * This class provides a client that contains all the operations for interacting with a queue in Azure Storage Queue.
  * Operations allowed by the client are creating and deleting the queue, retrieving and updating metadata and access
@@ -291,8 +290,8 @@ public final class QueueAsyncClient {
         try {
             return withContext(context -> createWithResponse(metadata, context)
                 .map(response -> (Response<Boolean>) new SimpleResponse<>(response, true))
-                .onErrorResume(t -> t instanceof QueueStorageException
-                        && ((QueueStorageException) t).getStatusCode() == 409,
+                .onErrorResume(
+                    t -> t instanceof QueueStorageException && ((QueueStorageException) t).getStatusCode() == 409,
                     t -> {
                         HttpResponse response = ((QueueStorageException) t).getResponse();
                         return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
@@ -424,8 +423,8 @@ public final class QueueAsyncClient {
         try {
             return withContext(context -> deleteWithResponse(context)
                 .map(response -> (Response<Boolean>) new SimpleResponse<>(response, true))
-                .onErrorResume(t -> t instanceof QueueStorageException
-                        && ((QueueStorageException) t).getStatusCode() == 404,
+                .onErrorResume(
+                    t -> t instanceof QueueStorageException && ((QueueStorageException) t).getStatusCode() == 404,
                     t -> {
                         HttpResponse response = ((QueueStorageException) t).getResponse();
                         return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
@@ -493,8 +492,8 @@ public final class QueueAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<QueueProperties>> getPropertiesWithResponse() {
         try {
-            return withContext(context -> client.getQueues().getPropertiesWithResponseAsync(queueName, null, null,
-                    context)
+            return withContext(context -> client.getQueues()
+                .getPropertiesWithResponseAsync(queueName, null, null, context)
                 .map(response -> new SimpleResponse<>(response,
                     ModelHelper.transformQueueProperties(response.getDeserializedHeaders()))));
         } catch (RuntimeException ex) {
@@ -697,17 +696,17 @@ public final class QueueAsyncClient {
         if (permissions != null) {
             for (QueueSignedIdentifier permission : permissions) {
                 if (permission.getAccessPolicy() != null && permission.getAccessPolicy().getStartsOn() != null) {
-                    permission.getAccessPolicy().setStartsOn(
-                        permission.getAccessPolicy().getStartsOn().truncatedTo(ChronoUnit.SECONDS));
+                    permission.getAccessPolicy()
+                        .setStartsOn(permission.getAccessPolicy().getStartsOn().truncatedTo(ChronoUnit.SECONDS));
                 }
                 if (permission.getAccessPolicy() != null && permission.getAccessPolicy().getExpiresOn() != null) {
-                    permission.getAccessPolicy().setExpiresOn(
-                        permission.getAccessPolicy().getExpiresOn().truncatedTo(ChronoUnit.SECONDS));
+                    permission.getAccessPolicy()
+                        .setExpiresOn(permission.getAccessPolicy().getExpiresOn().truncatedTo(ChronoUnit.SECONDS));
                 }
             }
         }
-        List<QueueSignedIdentifier> permissionsList = StreamSupport.stream(
-            permissions != null ? permissions.spliterator() : Spliterators.emptySpliterator(), false)
+        List<QueueSignedIdentifier> permissionsList = StreamSupport
+            .stream(permissions != null ? permissions.spliterator() : Spliterators.emptySpliterator(), false)
             .collect(Collectors.toList());
 
         return client.getQueues()
@@ -763,8 +762,8 @@ public final class QueueAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> clearMessagesWithResponse() {
         try {
-            return withContext(context -> client.getMessages()
-                .clearNoCustomHeadersWithResponseAsync(queueName, null, null, context));
+            return withContext(
+                context -> client.getMessages().clearNoCustomHeadersWithResponseAsync(queueName, null, null, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -947,8 +946,9 @@ public final class QueueAsyncClient {
             return withContext(context -> Mono.fromCallable(() -> ModelHelper.encodeMessage(message, messageEncoding))
                 .flatMap(messageText -> {
                     QueueMessage queueMessage = new QueueMessage().setMessageText(messageText);
-                    return client.getMessages().enqueueWithResponseAsync(queueName, queueMessage,
-                            visibilityTimeoutInSeconds, timeToLiveInSeconds, null, null, context)
+                    return client.getMessages()
+                        .enqueueWithResponseAsync(queueName, queueMessage, visibilityTimeoutInSeconds,
+                            timeToLiveInSeconds, null, null, context)
                         .map(response -> new SimpleResponse<>(response, response.getValue().items().get(0)));
                 }));
         } catch (RuntimeException ex) {
@@ -1062,10 +1062,10 @@ public final class QueueAsyncClient {
     public PagedFlux<QueueMessageItem> receiveMessages(Integer maxMessages, Duration visibilityTimeout) {
         Integer visibilityTimeoutInSeconds = (visibilityTimeout == null) ? null : (int) visibilityTimeout.getSeconds();
         try {
-            Function<String, Mono<PagedResponse<QueueMessageItem>>> retriever = marker -> withContext(context ->
-                this.client.getMessages().dequeueWithResponseAsync(queueName, maxMessages, visibilityTimeoutInSeconds,
-                    null, null, context))
-                .flatMap(this::transformMessagesDequeueResponse);
+            Function<String, Mono<PagedResponse<QueueMessageItem>>> retriever
+                = marker -> withContext(context -> this.client.getMessages()
+                    .dequeueWithResponseAsync(queueName, maxMessages, visibilityTimeoutInSeconds, null, null, context))
+                        .flatMap(this::transformMessagesDequeueResponse);
 
             return new PagedFlux<>(() -> retriever.apply(null), retriever);
         } catch (RuntimeException ex) {
@@ -1081,20 +1081,24 @@ public final class QueueAsyncClient {
         }
 
         return Flux.fromIterable(queueMessageInternalItems)
-            .flatMapSequential(queueMessageItemInternal -> Mono.fromCallable(() ->
-                        ModelHelper.transformQueueMessageItemInternal(queueMessageItemInternal, messageEncoding))
+            .flatMapSequential(queueMessageItemInternal -> Mono
+                .fromCallable(
+                    () -> ModelHelper.transformQueueMessageItemInternal(queueMessageItemInternal, messageEncoding))
                 .onErrorResume(IllegalArgumentException.class, e -> {
                     if (processMessageDecodingErrorAsyncHandler != null) {
-                        return Mono.fromCallable(() -> ModelHelper.transformQueueMessageItemInternal(
-                            queueMessageItemInternal, QueueMessageEncoding.NONE))
-                            .flatMap(messageItem -> processMessageDecodingErrorAsyncHandler.apply(
-                                new QueueMessageDecodingError(this, queueClient, messageItem, null, e)))
+                        return Mono
+                            .fromCallable(() -> ModelHelper.transformQueueMessageItemInternal(queueMessageItemInternal,
+                                QueueMessageEncoding.NONE))
+                            .flatMap(messageItem -> processMessageDecodingErrorAsyncHandler
+                                .apply(new QueueMessageDecodingError(this, queueClient, messageItem, null, e)))
                             .then(Mono.empty());
                     } else if (processMessageDecodingErrorHandler != null) {
-                        return Mono.fromCallable(() -> ModelHelper.transformQueueMessageItemInternal(
-                            queueMessageItemInternal, QueueMessageEncoding.NONE))
-                            .flatMap(messageItem -> Mono.fromRunnable(() -> processMessageDecodingErrorHandler.accept(
-                                new QueueMessageDecodingError(this, queueClient, messageItem, null, e)))
+                        return Mono
+                            .fromCallable(() -> ModelHelper.transformQueueMessageItemInternal(queueMessageItemInternal,
+                                QueueMessageEncoding.NONE))
+                            .flatMap(messageItem -> Mono
+                                .fromRunnable(() -> processMessageDecodingErrorHandler
+                                    .accept(new QueueMessageDecodingError(this, queueClient, messageItem, null, e)))
                                 .subscribeOn(Schedulers.boundedElastic()))
                             .subscribeOn(Schedulers.boundedElastic())
                             .then(Mono.empty());
@@ -1172,8 +1176,9 @@ public final class QueueAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PeekedMessageItem> peekMessages(Integer maxMessages) {
         try {
-            Function<String, Mono<PagedResponse<PeekedMessageItem>>> retriever = marker -> withContext(context ->
-                this.client.getMessages().peekWithResponseAsync(queueName, maxMessages, null, null, context)
+            Function<String, Mono<PagedResponse<PeekedMessageItem>>> retriever
+                = marker -> withContext(context -> this.client.getMessages()
+                    .peekWithResponseAsync(queueName, maxMessages, null, null, context)
                     .flatMap(this::transformMessagesPeekResponse));
 
             return new PagedFlux<>(() -> retriever.apply(null), retriever);
@@ -1182,30 +1187,32 @@ public final class QueueAsyncClient {
         }
     }
 
-    private Mono<PagedResponseBase<MessagesPeekHeaders, PeekedMessageItem>> transformMessagesPeekResponse(
-        ResponseBase<MessagesPeekHeaders, PeekedMessageItemInternalWrapper> response) {
+    private Mono<PagedResponseBase<MessagesPeekHeaders, PeekedMessageItem>>
+        transformMessagesPeekResponse(ResponseBase<MessagesPeekHeaders, PeekedMessageItemInternalWrapper> response) {
         List<PeekedMessageItemInternal> peekedMessageInternalItems = response.getValue().items();
         if (peekedMessageInternalItems == null) {
             peekedMessageInternalItems = Collections.emptyList();
         }
 
         return Flux.fromIterable(peekedMessageInternalItems)
-            .flatMapSequential(peekedMessageItemInternal -> Mono.fromCallable(() ->
-                    ModelHelper.transformPeekedMessageItemInternal(peekedMessageItemInternal, messageEncoding))
+            .flatMapSequential(peekedMessageItemInternal -> Mono
+                .fromCallable(
+                    () -> ModelHelper.transformPeekedMessageItemInternal(peekedMessageItemInternal, messageEncoding))
                 .onErrorResume(IllegalArgumentException.class, e -> {
                     if (processMessageDecodingErrorAsyncHandler != null) {
-                        return Mono.fromCallable(() ->
-                                ModelHelper.transformPeekedMessageItemInternal(peekedMessageItemInternal,
-                                    QueueMessageEncoding.NONE))
-                            .flatMap(messageItem -> processMessageDecodingErrorAsyncHandler.apply(
-                                new QueueMessageDecodingError(this, queueClient, null, messageItem, e)))
+                        return Mono
+                            .fromCallable(() -> ModelHelper.transformPeekedMessageItemInternal(
+                                peekedMessageItemInternal, QueueMessageEncoding.NONE))
+                            .flatMap(messageItem -> processMessageDecodingErrorAsyncHandler
+                                .apply(new QueueMessageDecodingError(this, queueClient, null, messageItem, e)))
                             .then(Mono.empty());
                     } else if (processMessageDecodingErrorHandler != null) {
-                        return Mono.fromCallable(() ->
-                                ModelHelper.transformPeekedMessageItemInternal(peekedMessageItemInternal,
-                                    QueueMessageEncoding.NONE))
-                            .flatMap(messageItem -> Mono.fromRunnable(() -> processMessageDecodingErrorHandler.accept(
-                                new QueueMessageDecodingError(this, queueClient, null, messageItem, e)))
+                        return Mono
+                            .fromCallable(() -> ModelHelper.transformPeekedMessageItemInternal(
+                                peekedMessageItemInternal, QueueMessageEncoding.NONE))
+                            .flatMap(messageItem -> Mono
+                                .fromRunnable(() -> processMessageDecodingErrorHandler
+                                    .accept(new QueueMessageDecodingError(this, queueClient, null, messageItem, e)))
                                 .subscribeOn(Schedulers.boundedElastic()))
                             .subscribeOn(Schedulers.boundedElastic())
                             .then(Mono.empty());
@@ -1316,11 +1323,12 @@ public final class QueueAsyncClient {
         }
         Duration visTimeout = visibilityTimeout == null ? Duration.ZERO : visibilityTimeout;
         try {
-            return withContext(context -> client.getMessageIds().updateWithResponseAsync(queueName, messageId,
-                    popReceipt, (int) visTimeout.getSeconds(), null, null, message, context)
-                .map(response -> new SimpleResponse<>(response, new UpdateMessageResult(
-                    response.getDeserializedHeaders().getXMsPopreceipt(),
-                    response.getDeserializedHeaders().getXMsTimeNextVisible()))));
+            return withContext(context -> client.getMessageIds()
+                .updateWithResponseAsync(queueName, messageId, popReceipt, (int) visTimeout.getSeconds(), null, null,
+                    message, context)
+                .map(response -> new SimpleResponse<>(response,
+                    new UpdateMessageResult(response.getDeserializedHeaders().getXMsPopreceipt(),
+                        response.getDeserializedHeaders().getXMsTimeNextVisible()))));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -1426,7 +1434,6 @@ public final class QueueAsyncClient {
         return queueName;
     }
 
-
     /**
      * Get associated account name.
      *
@@ -1489,7 +1496,24 @@ public final class QueueAsyncClient {
      * @return A {@code String} representing the SAS query parameters.
      */
     public String generateSas(QueueServiceSasSignatureValues queueServiceSasSignatureValues, Context context) {
+        return generateSas(queueServiceSasSignatureValues, null, context);
+    }
+
+    /**
+     * Generates a service sas for the queue using the specified {@link QueueServiceSasSignatureValues}
+     * <p>Note : The client must be authenticated via {@link StorageSharedKeyCredential}
+     * <p>See {@link QueueServiceSasSignatureValues} for more information on how to construct a service SAS.</p>
+     *
+     * @param queueServiceSasSignatureValues {@link QueueServiceSasSignatureValues}
+     * @param stringToSignHandler For debugging purposes only. Returns the string to sign that was used to generate the
+     * signature.
+     * @param context Additional context that is passed through the code when generating a SAS.
+     *
+     * @return A {@code String} representing the SAS query parameters.
+     */
+    public String generateSas(QueueServiceSasSignatureValues queueServiceSasSignatureValues,
+        Consumer<String> stringToSignHandler, Context context) {
         return new QueueSasImplUtil(queueServiceSasSignatureValues, getQueueName())
-            .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), context);
+            .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), stringToSignHandler, context);
     }
 }

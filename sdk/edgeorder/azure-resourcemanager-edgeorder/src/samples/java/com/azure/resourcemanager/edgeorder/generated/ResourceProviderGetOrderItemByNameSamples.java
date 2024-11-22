@@ -4,19 +4,22 @@
 
 package com.azure.resourcemanager.edgeorder.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for ResourceProvider GetOrderItemByName. */
+/**
+ * Samples for ResourceProvider GetOrderItemByName.
+ */
 public final class ResourceProviderGetOrderItemByNameSamples {
     /*
-     * x-ms-original-file: specification/edgeorder/resource-manager/Microsoft.EdgeOrder/stable/2021-12-01/examples/GetOrderItemByName.json
+     * x-ms-original-file:
+     * specification/edgeorder/resource-manager/Microsoft.EdgeOrder/stable/2021-12-01/examples/GetOrderItemByName.json
      */
     /**
      * Sample code: GetOrderItemByName.
-     *
+     * 
      * @param manager Entry point to EdgeOrderManager.
      */
     public static void getOrderItemByName(com.azure.resourcemanager.edgeorder.EdgeOrderManager manager) {
-        manager.resourceProviders().getOrderItemByNameWithResponse("TestOrderItemName01", "TestRG", null, Context.NONE);
+        manager.resourceProviders()
+            .getOrderItemByNameWithResponse("TestOrderItemName1", "YourResourceGroupName", null,
+                com.azure.core.util.Context.NONE);
     }
 }

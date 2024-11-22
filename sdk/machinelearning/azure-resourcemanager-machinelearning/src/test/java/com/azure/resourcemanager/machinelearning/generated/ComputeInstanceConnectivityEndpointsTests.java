@@ -10,9 +10,8 @@ import com.azure.resourcemanager.machinelearning.models.ComputeInstanceConnectiv
 public final class ComputeInstanceConnectivityEndpointsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ComputeInstanceConnectivityEndpoints model =
-            BinaryData
-                .fromString("{\"publicIpAddress\":\"vbrdfjmzsyzfho\",\"privateIpAddress\":\"h\"}")
+        ComputeInstanceConnectivityEndpoints model
+            = BinaryData.fromString("{\"publicIpAddress\":\"ffbbcngkegxcypxb\",\"privateIpAddress\":\"etwilyrzoxpd\"}")
                 .toObject(ComputeInstanceConnectivityEndpoints.class);
     }
 

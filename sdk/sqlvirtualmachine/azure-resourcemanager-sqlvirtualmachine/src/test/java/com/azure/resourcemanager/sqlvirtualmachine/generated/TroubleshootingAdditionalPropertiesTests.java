@@ -12,19 +12,17 @@ import org.junit.jupiter.api.Assertions;
 public final class TroubleshootingAdditionalPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TroubleshootingAdditionalProperties model =
-            BinaryData
-                .fromString("{\"unhealthyReplicaInfo\":{\"availabilityGroupName\":\"pxjmflbvvnchr\"}}")
+        TroubleshootingAdditionalProperties model
+            = BinaryData.fromString("{\"unhealthyReplicaInfo\":{\"availabilityGroupName\":\"f\"}}")
                 .toObject(TroubleshootingAdditionalProperties.class);
-        Assertions.assertEquals("pxjmflbvvnchr", model.unhealthyReplicaInfo().availabilityGroupName());
+        Assertions.assertEquals("f", model.unhealthyReplicaInfo().availabilityGroupName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TroubleshootingAdditionalProperties model =
-            new TroubleshootingAdditionalProperties()
-                .withUnhealthyReplicaInfo(new UnhealthyReplicaInfo().withAvailabilityGroupName("pxjmflbvvnchr"));
+        TroubleshootingAdditionalProperties model = new TroubleshootingAdditionalProperties()
+            .withUnhealthyReplicaInfo(new UnhealthyReplicaInfo().withAvailabilityGroupName("f"));
         model = BinaryData.fromObject(model).toObject(TroubleshootingAdditionalProperties.class);
-        Assertions.assertEquals("pxjmflbvvnchr", model.unhealthyReplicaInfo().availabilityGroupName());
+        Assertions.assertEquals("f", model.unhealthyReplicaInfo().availabilityGroupName());
     }
 }

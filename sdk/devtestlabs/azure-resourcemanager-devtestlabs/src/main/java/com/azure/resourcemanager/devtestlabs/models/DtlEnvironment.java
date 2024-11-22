@@ -118,11 +118,8 @@ public interface DtlEnvironment {
     DtlEnvironmentInner innerModel();
 
     /** The entirety of the DtlEnvironment definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithParentResource,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
 
     /** The DtlEnvironment definition stages. */
@@ -167,10 +164,8 @@ public interface DtlEnvironment {
          * The stage of the DtlEnvironment definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithTags,
-                DefinitionStages.WithDeploymentProperties,
-                DefinitionStages.WithArmTemplateDisplayName {
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithDeploymentProperties,
+            DefinitionStages.WithArmTemplateDisplayName {
             /**
              * Executes the create request.
              *

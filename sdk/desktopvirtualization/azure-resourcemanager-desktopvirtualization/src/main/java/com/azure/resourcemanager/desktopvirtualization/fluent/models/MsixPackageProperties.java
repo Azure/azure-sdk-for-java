@@ -5,88 +5,87 @@
 package com.azure.resourcemanager.desktopvirtualization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.desktopvirtualization.models.MsixPackageApplications;
 import com.azure.resourcemanager.desktopvirtualization.models.MsixPackageDependencies;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-/** Schema for MSIX Package properties. */
+/**
+ * Schema for MSIX Package properties.
+ */
 @Fluent
-public final class MsixPackageProperties {
+public final class MsixPackageProperties implements JsonSerializable<MsixPackageProperties> {
     /*
      * VHD/CIM image path on Network Share.
      */
-    @JsonProperty(value = "imagePath")
     private String imagePath;
 
     /*
      * Package Name from appxmanifest.xml.
      */
-    @JsonProperty(value = "packageName")
     private String packageName;
 
     /*
      * Package Family Name from appxmanifest.xml. Contains Package Name and Publisher name.
      */
-    @JsonProperty(value = "packageFamilyName")
     private String packageFamilyName;
 
     /*
      * User friendly Name to be displayed in the portal.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * Relative Path to the package inside the image.
      */
-    @JsonProperty(value = "packageRelativePath")
     private String packageRelativePath;
 
     /*
      * Specifies how to register Package in feed.
      */
-    @JsonProperty(value = "isRegularRegistration")
     private Boolean isRegularRegistration;
 
     /*
      * Make this version of the package the active one across the hostpool.
      */
-    @JsonProperty(value = "isActive")
     private Boolean isActive;
 
     /*
      * List of package dependencies.
      */
-    @JsonProperty(value = "packageDependencies")
     private List<MsixPackageDependencies> packageDependencies;
 
     /*
-     * Package Version found in the appxmanifest.xml.
+     * Package version found in the appxmanifest.xml.
      */
-    @JsonProperty(value = "version")
     private String version;
 
     /*
      * Date Package was last updated, found in the appxmanifest.xml.
      */
-    @JsonProperty(value = "lastUpdated")
     private OffsetDateTime lastUpdated;
 
     /*
      * List of package applications.
      */
-    @JsonProperty(value = "packageApplications")
     private List<MsixPackageApplications> packageApplications;
 
-    /** Creates an instance of MsixPackageProperties class. */
+    /**
+     * Creates an instance of MsixPackageProperties class.
+     */
     public MsixPackageProperties() {
     }
 
     /**
      * Get the imagePath property: VHD/CIM image path on Network Share.
-     *
+     * 
      * @return the imagePath value.
      */
     public String imagePath() {
@@ -95,7 +94,7 @@ public final class MsixPackageProperties {
 
     /**
      * Set the imagePath property: VHD/CIM image path on Network Share.
-     *
+     * 
      * @param imagePath the imagePath value to set.
      * @return the MsixPackageProperties object itself.
      */
@@ -106,7 +105,7 @@ public final class MsixPackageProperties {
 
     /**
      * Get the packageName property: Package Name from appxmanifest.xml.
-     *
+     * 
      * @return the packageName value.
      */
     public String packageName() {
@@ -115,7 +114,7 @@ public final class MsixPackageProperties {
 
     /**
      * Set the packageName property: Package Name from appxmanifest.xml.
-     *
+     * 
      * @param packageName the packageName value to set.
      * @return the MsixPackageProperties object itself.
      */
@@ -127,7 +126,7 @@ public final class MsixPackageProperties {
     /**
      * Get the packageFamilyName property: Package Family Name from appxmanifest.xml. Contains Package Name and
      * Publisher name.
-     *
+     * 
      * @return the packageFamilyName value.
      */
     public String packageFamilyName() {
@@ -137,7 +136,7 @@ public final class MsixPackageProperties {
     /**
      * Set the packageFamilyName property: Package Family Name from appxmanifest.xml. Contains Package Name and
      * Publisher name.
-     *
+     * 
      * @param packageFamilyName the packageFamilyName value to set.
      * @return the MsixPackageProperties object itself.
      */
@@ -148,7 +147,7 @@ public final class MsixPackageProperties {
 
     /**
      * Get the displayName property: User friendly Name to be displayed in the portal.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -157,7 +156,7 @@ public final class MsixPackageProperties {
 
     /**
      * Set the displayName property: User friendly Name to be displayed in the portal.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the MsixPackageProperties object itself.
      */
@@ -168,7 +167,7 @@ public final class MsixPackageProperties {
 
     /**
      * Get the packageRelativePath property: Relative Path to the package inside the image.
-     *
+     * 
      * @return the packageRelativePath value.
      */
     public String packageRelativePath() {
@@ -177,7 +176,7 @@ public final class MsixPackageProperties {
 
     /**
      * Set the packageRelativePath property: Relative Path to the package inside the image.
-     *
+     * 
      * @param packageRelativePath the packageRelativePath value to set.
      * @return the MsixPackageProperties object itself.
      */
@@ -188,7 +187,7 @@ public final class MsixPackageProperties {
 
     /**
      * Get the isRegularRegistration property: Specifies how to register Package in feed.
-     *
+     * 
      * @return the isRegularRegistration value.
      */
     public Boolean isRegularRegistration() {
@@ -197,7 +196,7 @@ public final class MsixPackageProperties {
 
     /**
      * Set the isRegularRegistration property: Specifies how to register Package in feed.
-     *
+     * 
      * @param isRegularRegistration the isRegularRegistration value to set.
      * @return the MsixPackageProperties object itself.
      */
@@ -208,7 +207,7 @@ public final class MsixPackageProperties {
 
     /**
      * Get the isActive property: Make this version of the package the active one across the hostpool.
-     *
+     * 
      * @return the isActive value.
      */
     public Boolean isActive() {
@@ -217,7 +216,7 @@ public final class MsixPackageProperties {
 
     /**
      * Set the isActive property: Make this version of the package the active one across the hostpool.
-     *
+     * 
      * @param isActive the isActive value to set.
      * @return the MsixPackageProperties object itself.
      */
@@ -228,7 +227,7 @@ public final class MsixPackageProperties {
 
     /**
      * Get the packageDependencies property: List of package dependencies.
-     *
+     * 
      * @return the packageDependencies value.
      */
     public List<MsixPackageDependencies> packageDependencies() {
@@ -237,7 +236,7 @@ public final class MsixPackageProperties {
 
     /**
      * Set the packageDependencies property: List of package dependencies.
-     *
+     * 
      * @param packageDependencies the packageDependencies value to set.
      * @return the MsixPackageProperties object itself.
      */
@@ -247,8 +246,8 @@ public final class MsixPackageProperties {
     }
 
     /**
-     * Get the version property: Package Version found in the appxmanifest.xml.
-     *
+     * Get the version property: Package version found in the appxmanifest.xml.
+     * 
      * @return the version value.
      */
     public String version() {
@@ -256,8 +255,8 @@ public final class MsixPackageProperties {
     }
 
     /**
-     * Set the version property: Package Version found in the appxmanifest.xml.
-     *
+     * Set the version property: Package version found in the appxmanifest.xml.
+     * 
      * @param version the version value to set.
      * @return the MsixPackageProperties object itself.
      */
@@ -268,7 +267,7 @@ public final class MsixPackageProperties {
 
     /**
      * Get the lastUpdated property: Date Package was last updated, found in the appxmanifest.xml.
-     *
+     * 
      * @return the lastUpdated value.
      */
     public OffsetDateTime lastUpdated() {
@@ -277,7 +276,7 @@ public final class MsixPackageProperties {
 
     /**
      * Set the lastUpdated property: Date Package was last updated, found in the appxmanifest.xml.
-     *
+     * 
      * @param lastUpdated the lastUpdated value to set.
      * @return the MsixPackageProperties object itself.
      */
@@ -288,7 +287,7 @@ public final class MsixPackageProperties {
 
     /**
      * Get the packageApplications property: List of package applications.
-     *
+     * 
      * @return the packageApplications value.
      */
     public List<MsixPackageApplications> packageApplications() {
@@ -297,7 +296,7 @@ public final class MsixPackageProperties {
 
     /**
      * Set the packageApplications property: List of package applications.
-     *
+     * 
      * @param packageApplications the packageApplications value to set.
      * @return the MsixPackageProperties object itself.
      */
@@ -308,7 +307,7 @@ public final class MsixPackageProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -318,5 +317,80 @@ public final class MsixPackageProperties {
         if (packageApplications() != null) {
             packageApplications().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("imagePath", this.imagePath);
+        jsonWriter.writeStringField("packageName", this.packageName);
+        jsonWriter.writeStringField("packageFamilyName", this.packageFamilyName);
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("packageRelativePath", this.packageRelativePath);
+        jsonWriter.writeBooleanField("isRegularRegistration", this.isRegularRegistration);
+        jsonWriter.writeBooleanField("isActive", this.isActive);
+        jsonWriter.writeArrayField("packageDependencies", this.packageDependencies,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("version", this.version);
+        jsonWriter.writeStringField("lastUpdated",
+            this.lastUpdated == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastUpdated));
+        jsonWriter.writeArrayField("packageApplications", this.packageApplications,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MsixPackageProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MsixPackageProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MsixPackageProperties.
+     */
+    public static MsixPackageProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MsixPackageProperties deserializedMsixPackageProperties = new MsixPackageProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("imagePath".equals(fieldName)) {
+                    deserializedMsixPackageProperties.imagePath = reader.getString();
+                } else if ("packageName".equals(fieldName)) {
+                    deserializedMsixPackageProperties.packageName = reader.getString();
+                } else if ("packageFamilyName".equals(fieldName)) {
+                    deserializedMsixPackageProperties.packageFamilyName = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedMsixPackageProperties.displayName = reader.getString();
+                } else if ("packageRelativePath".equals(fieldName)) {
+                    deserializedMsixPackageProperties.packageRelativePath = reader.getString();
+                } else if ("isRegularRegistration".equals(fieldName)) {
+                    deserializedMsixPackageProperties.isRegularRegistration
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isActive".equals(fieldName)) {
+                    deserializedMsixPackageProperties.isActive = reader.getNullable(JsonReader::getBoolean);
+                } else if ("packageDependencies".equals(fieldName)) {
+                    List<MsixPackageDependencies> packageDependencies
+                        = reader.readArray(reader1 -> MsixPackageDependencies.fromJson(reader1));
+                    deserializedMsixPackageProperties.packageDependencies = packageDependencies;
+                } else if ("version".equals(fieldName)) {
+                    deserializedMsixPackageProperties.version = reader.getString();
+                } else if ("lastUpdated".equals(fieldName)) {
+                    deserializedMsixPackageProperties.lastUpdated = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("packageApplications".equals(fieldName)) {
+                    List<MsixPackageApplications> packageApplications
+                        = reader.readArray(reader1 -> MsixPackageApplications.fromJson(reader1));
+                    deserializedMsixPackageProperties.packageApplications = packageApplications;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMsixPackageProperties;
+        });
     }
 }

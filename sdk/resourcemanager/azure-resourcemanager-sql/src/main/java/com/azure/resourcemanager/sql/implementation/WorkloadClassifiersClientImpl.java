@@ -38,22 +38,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in WorkloadClassifiersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in WorkloadClassifiersClient.
+ */
 public final class WorkloadClassifiersClientImpl implements WorkloadClassifiersClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final WorkloadClassifiersService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SqlManagementClientImpl client;
 
     /**
      * Initializes an instance of WorkloadClassifiersClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     WorkloadClassifiersClientImpl(SqlManagementClientImpl client) {
-        this.service =
-            RestProxy.create(WorkloadClassifiersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(WorkloadClassifiersService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -64,96 +70,64 @@ public final class WorkloadClassifiersClientImpl implements WorkloadClassifiersC
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientW")
     public interface WorkloadClassifiersService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/workloadGroups/{workloadGroupName}/workloadClassifiers")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/workloadGroups/{workloadGroupName}/workloadClassifiers")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<WorkloadClassifierListResult>> listByWorkloadGroup(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
-            @PathParam("databaseName") String databaseName,
-            @PathParam("workloadGroupName") String workloadGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<WorkloadClassifierListResult>> listByWorkloadGroup(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
+            @PathParam("databaseName") String databaseName, @PathParam("workloadGroupName") String workloadGroupName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/workloadGroups/{workloadGroupName}/workloadClassifiers"
-                + "/{workloadClassifierName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/workloadGroups/{workloadGroupName}/workloadClassifiers/{workloadClassifierName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<WorkloadClassifierInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
-            @PathParam("databaseName") String databaseName,
-            @PathParam("workloadGroupName") String workloadGroupName,
+        Mono<Response<WorkloadClassifierInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
+            @PathParam("databaseName") String databaseName, @PathParam("workloadGroupName") String workloadGroupName,
             @PathParam("workloadClassifierName") String workloadClassifierName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/workloadGroups/{workloadGroupName}/workloadClassifiers"
-                + "/{workloadClassifierName}")
-        @ExpectedResponses({200, 201, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/workloadGroups/{workloadGroupName}/workloadClassifiers/{workloadClassifierName}")
+        @ExpectedResponses({ 200, 201, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
-            @PathParam("databaseName") String databaseName,
-            @PathParam("workloadGroupName") String workloadGroupName,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
+            @PathParam("databaseName") String databaseName, @PathParam("workloadGroupName") String workloadGroupName,
             @PathParam("workloadClassifierName") String workloadClassifierName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") WorkloadClassifierInner parameters,
-            @HeaderParam("Accept") String accept,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") WorkloadClassifierInner parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/workloadGroups/{workloadGroupName}/workloadClassifiers"
-                + "/{workloadClassifierName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/workloadGroups/{workloadGroupName}/workloadClassifiers/{workloadClassifierName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
-            @PathParam("databaseName") String databaseName,
-            @PathParam("workloadGroupName") String workloadGroupName,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
+            @PathParam("databaseName") String databaseName, @PathParam("workloadGroupName") String workloadGroupName,
             @PathParam("workloadClassifierName") String workloadClassifierName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<WorkloadClassifierListResult>> listByWorkloadGroupNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Gets the list of workload classifiers for a workload group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param workloadGroupName The name of the workload group from which to receive the classifiers from.
@@ -161,16 +135,14 @@ public final class WorkloadClassifiersClientImpl implements WorkloadClassifiersC
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of workload classifiers for a workload group along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<WorkloadClassifierInner>> listByWorkloadGroupSinglePageAsync(
-        String resourceGroupName, String serverName, String databaseName, String workloadGroupName) {
+    private Mono<PagedResponse<WorkloadClassifierInner>> listByWorkloadGroupSinglePageAsync(String resourceGroupName,
+        String serverName, String databaseName, String workloadGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -187,43 +159,24 @@ public final class WorkloadClassifiersClientImpl implements WorkloadClassifiersC
                 .error(new IllegalArgumentException("Parameter workloadGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByWorkloadGroup(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serverName,
-                            databaseName,
-                            workloadGroupName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<WorkloadClassifierInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByWorkloadGroup(this.client.getEndpoint(), resourceGroupName,
+                serverName, databaseName, workloadGroupName, this.client.getSubscriptionId(),
+                this.client.getApiVersion(), accept, context))
+            .<PagedResponse<WorkloadClassifierInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the list of workload classifiers for a workload group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param workloadGroupName The name of the workload group from which to receive the classifiers from.
@@ -232,16 +185,14 @@ public final class WorkloadClassifiersClientImpl implements WorkloadClassifiersC
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of workload classifiers for a workload group along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<WorkloadClassifierInner>> listByWorkloadGroupSinglePageAsync(
-        String resourceGroupName, String serverName, String databaseName, String workloadGroupName, Context context) {
+    private Mono<PagedResponse<WorkloadClassifierInner>> listByWorkloadGroupSinglePageAsync(String resourceGroupName,
+        String serverName, String databaseName, String workloadGroupName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -258,40 +209,23 @@ public final class WorkloadClassifiersClientImpl implements WorkloadClassifiersC
                 .error(new IllegalArgumentException("Parameter workloadGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByWorkloadGroup(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serverName,
-                databaseName,
-                workloadGroupName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByWorkloadGroup(this.client.getEndpoint(), resourceGroupName, serverName, databaseName,
+                workloadGroupName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Gets the list of workload classifiers for a workload group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param workloadGroupName The name of the workload group from which to receive the classifiers from.
@@ -301,8 +235,8 @@ public final class WorkloadClassifiersClientImpl implements WorkloadClassifiersC
      * @return the list of workload classifiers for a workload group as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<WorkloadClassifierInner> listByWorkloadGroupAsync(
-        String resourceGroupName, String serverName, String databaseName, String workloadGroupName) {
+    public PagedFlux<WorkloadClassifierInner> listByWorkloadGroupAsync(String resourceGroupName, String serverName,
+        String databaseName, String workloadGroupName) {
         return new PagedFlux<>(
             () -> listByWorkloadGroupSinglePageAsync(resourceGroupName, serverName, databaseName, workloadGroupName),
             nextLink -> listByWorkloadGroupNextSinglePageAsync(nextLink));
@@ -310,9 +244,9 @@ public final class WorkloadClassifiersClientImpl implements WorkloadClassifiersC
 
     /**
      * Gets the list of workload classifiers for a workload group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param workloadGroupName The name of the workload group from which to receive the classifiers from.
@@ -323,20 +257,17 @@ public final class WorkloadClassifiersClientImpl implements WorkloadClassifiersC
      * @return the list of workload classifiers for a workload group as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<WorkloadClassifierInner> listByWorkloadGroupAsync(
-        String resourceGroupName, String serverName, String databaseName, String workloadGroupName, Context context) {
-        return new PagedFlux<>(
-            () ->
-                listByWorkloadGroupSinglePageAsync(
-                    resourceGroupName, serverName, databaseName, workloadGroupName, context),
-            nextLink -> listByWorkloadGroupNextSinglePageAsync(nextLink, context));
+    private PagedFlux<WorkloadClassifierInner> listByWorkloadGroupAsync(String resourceGroupName, String serverName,
+        String databaseName, String workloadGroupName, Context context) {
+        return new PagedFlux<>(() -> listByWorkloadGroupSinglePageAsync(resourceGroupName, serverName, databaseName,
+            workloadGroupName, context), nextLink -> listByWorkloadGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Gets the list of workload classifiers for a workload group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param workloadGroupName The name of the workload group from which to receive the classifiers from.
@@ -346,17 +277,17 @@ public final class WorkloadClassifiersClientImpl implements WorkloadClassifiersC
      * @return the list of workload classifiers for a workload group as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<WorkloadClassifierInner> listByWorkloadGroup(
-        String resourceGroupName, String serverName, String databaseName, String workloadGroupName) {
+    public PagedIterable<WorkloadClassifierInner> listByWorkloadGroup(String resourceGroupName, String serverName,
+        String databaseName, String workloadGroupName) {
         return new PagedIterable<>(
             listByWorkloadGroupAsync(resourceGroupName, serverName, databaseName, workloadGroupName));
     }
 
     /**
      * Gets the list of workload classifiers for a workload group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param workloadGroupName The name of the workload group from which to receive the classifiers from.
@@ -367,17 +298,17 @@ public final class WorkloadClassifiersClientImpl implements WorkloadClassifiersC
      * @return the list of workload classifiers for a workload group as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<WorkloadClassifierInner> listByWorkloadGroup(
-        String resourceGroupName, String serverName, String databaseName, String workloadGroupName, Context context) {
+    public PagedIterable<WorkloadClassifierInner> listByWorkloadGroup(String resourceGroupName, String serverName,
+        String databaseName, String workloadGroupName, Context context) {
         return new PagedIterable<>(
             listByWorkloadGroupAsync(resourceGroupName, serverName, databaseName, workloadGroupName, context));
     }
 
     /**
      * Gets a workload classifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param workloadGroupName The name of the workload group from which to receive the classifier from.
@@ -388,17 +319,11 @@ public final class WorkloadClassifiersClientImpl implements WorkloadClassifiersC
      * @return a workload classifier along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<WorkloadClassifierInner>> getWithResponseAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String workloadGroupName,
-        String workloadClassifierName) {
+    public Mono<Response<WorkloadClassifierInner>> getWithResponseAsync(String resourceGroupName, String serverName,
+        String databaseName, String workloadGroupName, String workloadClassifierName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -415,40 +340,26 @@ public final class WorkloadClassifiersClientImpl implements WorkloadClassifiersC
                 .error(new IllegalArgumentException("Parameter workloadGroupName is required and cannot be null."));
         }
         if (workloadClassifierName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter workloadClassifierName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter workloadClassifierName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serverName,
-                            databaseName,
-                            workloadGroupName,
-                            workloadClassifierName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, serverName, databaseName,
+                workloadGroupName, workloadClassifierName, this.client.getSubscriptionId(), this.client.getApiVersion(),
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a workload classifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param workloadGroupName The name of the workload group from which to receive the classifier from.
@@ -460,18 +371,11 @@ public final class WorkloadClassifiersClientImpl implements WorkloadClassifiersC
      * @return a workload classifier along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<WorkloadClassifierInner>> getWithResponseAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String workloadGroupName,
-        String workloadClassifierName,
-        Context context) {
+    private Mono<Response<WorkloadClassifierInner>> getWithResponseAsync(String resourceGroupName, String serverName,
+        String databaseName, String workloadGroupName, String workloadClassifierName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -488,37 +392,24 @@ public final class WorkloadClassifiersClientImpl implements WorkloadClassifiersC
                 .error(new IllegalArgumentException("Parameter workloadGroupName is required and cannot be null."));
         }
         if (workloadClassifierName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter workloadClassifierName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter workloadClassifierName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serverName,
-                databaseName,
-                workloadGroupName,
-                workloadClassifierName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), resourceGroupName, serverName, databaseName, workloadGroupName,
+            workloadClassifierName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Gets a workload classifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param workloadGroupName The name of the workload group from which to receive the classifier from.
@@ -529,22 +420,17 @@ public final class WorkloadClassifiersClientImpl implements WorkloadClassifiersC
      * @return a workload classifier on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<WorkloadClassifierInner> getAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String workloadGroupName,
-        String workloadClassifierName) {
-        return getWithResponseAsync(
-                resourceGroupName, serverName, databaseName, workloadGroupName, workloadClassifierName)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    public Mono<WorkloadClassifierInner> getAsync(String resourceGroupName, String serverName, String databaseName,
+        String workloadGroupName, String workloadClassifierName) {
+        return getWithResponseAsync(resourceGroupName, serverName, databaseName, workloadGroupName,
+            workloadClassifierName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets a workload classifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param workloadGroupName The name of the workload group from which to receive the classifier from.
@@ -556,23 +442,17 @@ public final class WorkloadClassifiersClientImpl implements WorkloadClassifiersC
      * @return a workload classifier along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<WorkloadClassifierInner> getWithResponse(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String workloadGroupName,
-        String workloadClassifierName,
-        Context context) {
-        return getWithResponseAsync(
-                resourceGroupName, serverName, databaseName, workloadGroupName, workloadClassifierName, context)
-            .block();
+    public Response<WorkloadClassifierInner> getWithResponse(String resourceGroupName, String serverName,
+        String databaseName, String workloadGroupName, String workloadClassifierName, Context context) {
+        return getWithResponseAsync(resourceGroupName, serverName, databaseName, workloadGroupName,
+            workloadClassifierName, context).block();
     }
 
     /**
      * Gets a workload classifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param workloadGroupName The name of the workload group from which to receive the classifier from.
@@ -583,22 +463,17 @@ public final class WorkloadClassifiersClientImpl implements WorkloadClassifiersC
      * @return a workload classifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public WorkloadClassifierInner get(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String workloadGroupName,
-        String workloadClassifierName) {
-        return getWithResponse(
-                resourceGroupName, serverName, databaseName, workloadGroupName, workloadClassifierName, Context.NONE)
-            .getValue();
+    public WorkloadClassifierInner get(String resourceGroupName, String serverName, String databaseName,
+        String workloadGroupName, String workloadClassifierName) {
+        return getWithResponse(resourceGroupName, serverName, databaseName, workloadGroupName, workloadClassifierName,
+            Context.NONE).getValue();
     }
 
     /**
      * Creates or updates a workload classifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param workloadGroupName The name of the workload group from which to receive the classifier from.
@@ -608,21 +483,15 @@ public final class WorkloadClassifiersClientImpl implements WorkloadClassifiersC
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return workload classifier operations for a data warehouse along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String workloadGroupName,
-        String workloadClassifierName,
+    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String serverName,
+        String databaseName, String workloadGroupName, String workloadClassifierName,
         WorkloadClassifierInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -639,15 +508,12 @@ public final class WorkloadClassifiersClientImpl implements WorkloadClassifiersC
                 .error(new IllegalArgumentException("Parameter workloadGroupName is required and cannot be null."));
         }
         if (workloadClassifierName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter workloadClassifierName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter workloadClassifierName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -656,29 +522,17 @@ public final class WorkloadClassifiersClientImpl implements WorkloadClassifiersC
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serverName,
-                            databaseName,
-                            workloadGroupName,
-                            workloadClassifierName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, serverName,
+                databaseName, workloadGroupName, workloadClassifierName, this.client.getSubscriptionId(),
+                this.client.getApiVersion(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates or updates a workload classifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param workloadGroupName The name of the workload group from which to receive the classifier from.
@@ -689,22 +543,15 @@ public final class WorkloadClassifiersClientImpl implements WorkloadClassifiersC
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return workload classifier operations for a data warehouse along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String workloadGroupName,
-        String workloadClassifierName,
-        WorkloadClassifierInner parameters,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String serverName, String databaseName, String workloadGroupName, String workloadClassifierName,
+        WorkloadClassifierInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -721,15 +568,12 @@ public final class WorkloadClassifiersClientImpl implements WorkloadClassifiersC
                 .error(new IllegalArgumentException("Parameter workloadGroupName is required and cannot be null."));
         }
         if (workloadClassifierName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter workloadClassifierName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter workloadClassifierName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -738,26 +582,16 @@ public final class WorkloadClassifiersClientImpl implements WorkloadClassifiersC
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serverName,
-                databaseName,
-                workloadGroupName,
-                workloadClassifierName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, serverName, databaseName,
+            workloadGroupName, workloadClassifierName, this.client.getSubscriptionId(), this.client.getApiVersion(),
+            parameters, accept, context);
     }
 
     /**
      * Creates or updates a workload classifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param workloadGroupName The name of the workload group from which to receive the classifier from.
@@ -770,30 +604,20 @@ public final class WorkloadClassifiersClientImpl implements WorkloadClassifiersC
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<WorkloadClassifierInner>, WorkloadClassifierInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String workloadGroupName,
-        String workloadClassifierName,
-        WorkloadClassifierInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, serverName, databaseName, workloadGroupName, workloadClassifierName, parameters);
-        return this
-            .client
-            .<WorkloadClassifierInner, WorkloadClassifierInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                WorkloadClassifierInner.class,
-                WorkloadClassifierInner.class,
-                this.client.getContext());
+        String resourceGroupName, String serverName, String databaseName, String workloadGroupName,
+        String workloadClassifierName, WorkloadClassifierInner parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, serverName,
+            databaseName, workloadGroupName, workloadClassifierName, parameters);
+        return this.client.<WorkloadClassifierInner, WorkloadClassifierInner>getLroResult(mono,
+            this.client.getHttpPipeline(), WorkloadClassifierInner.class, WorkloadClassifierInner.class,
+            this.client.getContext());
     }
 
     /**
      * Creates or updates a workload classifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param workloadGroupName The name of the workload group from which to receive the classifier from.
@@ -807,66 +631,45 @@ public final class WorkloadClassifiersClientImpl implements WorkloadClassifiersC
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<WorkloadClassifierInner>, WorkloadClassifierInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String workloadGroupName,
-        String workloadClassifierName,
-        WorkloadClassifierInner parameters,
-        Context context) {
+        String resourceGroupName, String serverName, String databaseName, String workloadGroupName,
+        String workloadClassifierName, WorkloadClassifierInner parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName,
-                serverName,
-                databaseName,
-                workloadGroupName,
-                workloadClassifierName,
-                parameters,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, serverName,
+            databaseName, workloadGroupName, workloadClassifierName, parameters, context);
+        return this.client.<WorkloadClassifierInner, WorkloadClassifierInner>getLroResult(mono,
+            this.client.getHttpPipeline(), WorkloadClassifierInner.class, WorkloadClassifierInner.class, context);
+    }
+
+    /**
+     * Creates or updates a workload classifier.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param workloadGroupName The name of the workload group from which to receive the classifier from.
+     * @param workloadClassifierName The name of the workload classifier to create/update.
+     * @param parameters The properties of the workload classifier.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of workload classifier operations for a data warehouse.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<WorkloadClassifierInner>, WorkloadClassifierInner> beginCreateOrUpdate(
+        String resourceGroupName, String serverName, String databaseName, String workloadGroupName,
+        String workloadClassifierName, WorkloadClassifierInner parameters) {
         return this
-            .client
-            .<WorkloadClassifierInner, WorkloadClassifierInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                WorkloadClassifierInner.class,
-                WorkloadClassifierInner.class,
-                context);
-    }
-
-    /**
-     * Creates or updates a workload classifier.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param workloadGroupName The name of the workload group from which to receive the classifier from.
-     * @param workloadClassifierName The name of the workload classifier to create/update.
-     * @param parameters The properties of the workload classifier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of workload classifier operations for a data warehouse.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<WorkloadClassifierInner>, WorkloadClassifierInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String workloadGroupName,
-        String workloadClassifierName,
-        WorkloadClassifierInner parameters) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName, serverName, databaseName, workloadGroupName, workloadClassifierName, parameters)
+            .beginCreateOrUpdateAsync(resourceGroupName, serverName, databaseName, workloadGroupName,
+                workloadClassifierName, parameters)
             .getSyncPoller();
     }
 
     /**
      * Creates or updates a workload classifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param workloadGroupName The name of the workload group from which to receive the classifier from.
@@ -880,29 +683,19 @@ public final class WorkloadClassifiersClientImpl implements WorkloadClassifiersC
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadClassifierInner>, WorkloadClassifierInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String workloadGroupName,
-        String workloadClassifierName,
-        WorkloadClassifierInner parameters,
-        Context context) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName,
-                serverName,
-                databaseName,
-                workloadGroupName,
-                workloadClassifierName,
-                parameters,
-                context)
+        String resourceGroupName, String serverName, String databaseName, String workloadGroupName,
+        String workloadClassifierName, WorkloadClassifierInner parameters, Context context) {
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, serverName, databaseName, workloadGroupName,
+                workloadClassifierName, parameters, context)
             .getSyncPoller();
     }
 
     /**
      * Creates or updates a workload classifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param workloadGroupName The name of the workload group from which to receive the classifier from.
@@ -914,24 +707,18 @@ public final class WorkloadClassifiersClientImpl implements WorkloadClassifiersC
      * @return workload classifier operations for a data warehouse on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<WorkloadClassifierInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String workloadGroupName,
-        String workloadClassifierName,
+    public Mono<WorkloadClassifierInner> createOrUpdateAsync(String resourceGroupName, String serverName,
+        String databaseName, String workloadGroupName, String workloadClassifierName,
         WorkloadClassifierInner parameters) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName, serverName, databaseName, workloadGroupName, workloadClassifierName, parameters)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+        return beginCreateOrUpdateAsync(resourceGroupName, serverName, databaseName, workloadGroupName,
+            workloadClassifierName, parameters).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates or updates a workload classifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param workloadGroupName The name of the workload group from which to receive the classifier from.
@@ -944,31 +731,18 @@ public final class WorkloadClassifiersClientImpl implements WorkloadClassifiersC
      * @return workload classifier operations for a data warehouse on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<WorkloadClassifierInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String workloadGroupName,
-        String workloadClassifierName,
-        WorkloadClassifierInner parameters,
-        Context context) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName,
-                serverName,
-                databaseName,
-                workloadGroupName,
-                workloadClassifierName,
-                parameters,
-                context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+    private Mono<WorkloadClassifierInner> createOrUpdateAsync(String resourceGroupName, String serverName,
+        String databaseName, String workloadGroupName, String workloadClassifierName,
+        WorkloadClassifierInner parameters, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, serverName, databaseName, workloadGroupName,
+            workloadClassifierName, parameters, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates or updates a workload classifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param workloadGroupName The name of the workload group from which to receive the classifier from.
@@ -980,23 +754,17 @@ public final class WorkloadClassifiersClientImpl implements WorkloadClassifiersC
      * @return workload classifier operations for a data warehouse.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public WorkloadClassifierInner createOrUpdate(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String workloadGroupName,
-        String workloadClassifierName,
-        WorkloadClassifierInner parameters) {
-        return createOrUpdateAsync(
-                resourceGroupName, serverName, databaseName, workloadGroupName, workloadClassifierName, parameters)
-            .block();
+    public WorkloadClassifierInner createOrUpdate(String resourceGroupName, String serverName, String databaseName,
+        String workloadGroupName, String workloadClassifierName, WorkloadClassifierInner parameters) {
+        return createOrUpdateAsync(resourceGroupName, serverName, databaseName, workloadGroupName,
+            workloadClassifierName, parameters).block();
     }
 
     /**
      * Creates or updates a workload classifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param workloadGroupName The name of the workload group from which to receive the classifier from.
@@ -1009,30 +777,17 @@ public final class WorkloadClassifiersClientImpl implements WorkloadClassifiersC
      * @return workload classifier operations for a data warehouse.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public WorkloadClassifierInner createOrUpdate(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String workloadGroupName,
-        String workloadClassifierName,
-        WorkloadClassifierInner parameters,
-        Context context) {
-        return createOrUpdateAsync(
-                resourceGroupName,
-                serverName,
-                databaseName,
-                workloadGroupName,
-                workloadClassifierName,
-                parameters,
-                context)
-            .block();
+    public WorkloadClassifierInner createOrUpdate(String resourceGroupName, String serverName, String databaseName,
+        String workloadGroupName, String workloadClassifierName, WorkloadClassifierInner parameters, Context context) {
+        return createOrUpdateAsync(resourceGroupName, serverName, databaseName, workloadGroupName,
+            workloadClassifierName, parameters, context).block();
     }
 
     /**
      * Deletes a workload classifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param workloadGroupName The name of the workload group from which to receive the classifier from.
@@ -1043,17 +798,11 @@ public final class WorkloadClassifiersClientImpl implements WorkloadClassifiersC
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String workloadGroupName,
-        String workloadClassifierName) {
+    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String serverName,
+        String databaseName, String workloadGroupName, String workloadClassifierName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1070,38 +819,25 @@ public final class WorkloadClassifiersClientImpl implements WorkloadClassifiersC
                 .error(new IllegalArgumentException("Parameter workloadGroupName is required and cannot be null."));
         }
         if (workloadClassifierName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter workloadClassifierName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter workloadClassifierName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serverName,
-                            databaseName,
-                            workloadGroupName,
-                            workloadClassifierName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, serverName,
+                databaseName, workloadGroupName, workloadClassifierName, this.client.getSubscriptionId(),
+                this.client.getApiVersion(), context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes a workload classifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param workloadGroupName The name of the workload group from which to receive the classifier from.
@@ -1113,18 +849,11 @@ public final class WorkloadClassifiersClientImpl implements WorkloadClassifiersC
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String workloadGroupName,
-        String workloadClassifierName,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String serverName,
+        String databaseName, String workloadGroupName, String workloadClassifierName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1141,35 +870,23 @@ public final class WorkloadClassifiersClientImpl implements WorkloadClassifiersC
                 .error(new IllegalArgumentException("Parameter workloadGroupName is required and cannot be null."));
         }
         if (workloadClassifierName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter workloadClassifierName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter workloadClassifierName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serverName,
-                databaseName,
-                workloadGroupName,
-                workloadClassifierName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                context);
+        return service.delete(this.client.getEndpoint(), resourceGroupName, serverName, databaseName, workloadGroupName,
+            workloadClassifierName, this.client.getSubscriptionId(), this.client.getApiVersion(), context);
     }
 
     /**
      * Deletes a workload classifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param workloadGroupName The name of the workload group from which to receive the classifier from.
@@ -1180,26 +897,19 @@ public final class WorkloadClassifiersClientImpl implements WorkloadClassifiersC
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String workloadGroupName,
-        String workloadClassifierName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(
-                resourceGroupName, serverName, databaseName, workloadGroupName, workloadClassifierName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String serverName,
+        String databaseName, String workloadGroupName, String workloadClassifierName) {
+        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, serverName, databaseName,
+            workloadGroupName, workloadClassifierName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Deletes a workload classifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param workloadGroupName The name of the workload group from which to receive the classifier from.
@@ -1211,52 +921,42 @@ public final class WorkloadClassifiersClientImpl implements WorkloadClassifiersC
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String workloadGroupName,
-        String workloadClassifierName,
-        Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String serverName,
+        String databaseName, String workloadGroupName, String workloadClassifierName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(
-                resourceGroupName, serverName, databaseName, workloadGroupName, workloadClassifierName, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, serverName, databaseName,
+            workloadGroupName, workloadClassifierName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
+    }
+
+    /**
+     * Deletes a workload classifier.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param workloadGroupName The name of the workload group from which to receive the classifier from.
+     * @param workloadClassifierName The name of the workload classifier to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serverName,
+        String databaseName, String workloadGroupName, String workloadClassifierName) {
         return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
-    }
-
-    /**
-     * Deletes a workload classifier.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param workloadGroupName The name of the workload group from which to receive the classifier from.
-     * @param workloadClassifierName The name of the workload classifier to delete.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String workloadGroupName,
-        String workloadClassifierName) {
-        return beginDeleteAsync(resourceGroupName, serverName, databaseName, workloadGroupName, workloadClassifierName)
+            .beginDeleteAsync(resourceGroupName, serverName, databaseName, workloadGroupName, workloadClassifierName)
             .getSyncPoller();
     }
 
     /**
      * Deletes a workload classifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param workloadGroupName The name of the workload group from which to receive the classifier from.
@@ -1268,23 +968,19 @@ public final class WorkloadClassifiersClientImpl implements WorkloadClassifiersC
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String workloadGroupName,
-        String workloadClassifierName,
-        Context context) {
-        return beginDeleteAsync(
-                resourceGroupName, serverName, databaseName, workloadGroupName, workloadClassifierName, context)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serverName,
+        String databaseName, String workloadGroupName, String workloadClassifierName, Context context) {
+        return this
+            .beginDeleteAsync(resourceGroupName, serverName, databaseName, workloadGroupName, workloadClassifierName,
+                context)
             .getSyncPoller();
     }
 
     /**
      * Deletes a workload classifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param workloadGroupName The name of the workload group from which to receive the classifier from.
@@ -1295,12 +991,8 @@ public final class WorkloadClassifiersClientImpl implements WorkloadClassifiersC
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String workloadGroupName,
-        String workloadClassifierName) {
+    public Mono<Void> deleteAsync(String resourceGroupName, String serverName, String databaseName,
+        String workloadGroupName, String workloadClassifierName) {
         return beginDeleteAsync(resourceGroupName, serverName, databaseName, workloadGroupName, workloadClassifierName)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -1308,9 +1000,9 @@ public final class WorkloadClassifiersClientImpl implements WorkloadClassifiersC
 
     /**
      * Deletes a workload classifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param workloadGroupName The name of the workload group from which to receive the classifier from.
@@ -1322,24 +1014,17 @@ public final class WorkloadClassifiersClientImpl implements WorkloadClassifiersC
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String workloadGroupName,
-        String workloadClassifierName,
-        Context context) {
-        return beginDeleteAsync(
-                resourceGroupName, serverName, databaseName, workloadGroupName, workloadClassifierName, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+    private Mono<Void> deleteAsync(String resourceGroupName, String serverName, String databaseName,
+        String workloadGroupName, String workloadClassifierName, Context context) {
+        return beginDeleteAsync(resourceGroupName, serverName, databaseName, workloadGroupName, workloadClassifierName,
+            context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes a workload classifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param workloadGroupName The name of the workload group from which to receive the classifier from.
@@ -1349,20 +1034,16 @@ public final class WorkloadClassifiersClientImpl implements WorkloadClassifiersC
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String workloadGroupName,
+    public void delete(String resourceGroupName, String serverName, String databaseName, String workloadGroupName,
         String workloadClassifierName) {
         deleteAsync(resourceGroupName, serverName, databaseName, workloadGroupName, workloadClassifierName).block();
     }
 
     /**
      * Deletes a workload classifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param workloadGroupName The name of the workload group from which to receive the classifier from.
@@ -1373,27 +1054,21 @@ public final class WorkloadClassifiersClientImpl implements WorkloadClassifiersC
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String workloadGroupName,
-        String workloadClassifierName,
-        Context context) {
+    public void delete(String resourceGroupName, String serverName, String databaseName, String workloadGroupName,
+        String workloadClassifierName, Context context) {
         deleteAsync(resourceGroupName, serverName, databaseName, workloadGroupName, workloadClassifierName, context)
             .block();
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of workload classifiers for a workload group along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkloadClassifierInner>> listByWorkloadGroupNextSinglePageAsync(String nextLink) {
@@ -1401,63 +1076,43 @@ public final class WorkloadClassifiersClientImpl implements WorkloadClassifiersC
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByWorkloadGroupNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<WorkloadClassifierInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<WorkloadClassifierInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of workload classifiers for a workload group along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<WorkloadClassifierInner>> listByWorkloadGroupNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<WorkloadClassifierInner>> listByWorkloadGroupNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByWorkloadGroupNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByWorkloadGroupNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

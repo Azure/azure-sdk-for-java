@@ -17,8 +17,8 @@ public final class DataSourceSqlServerConnectionString extends DataSourceCredent
     private String connectionString;
 
     static {
-        DataSourceSqlServerConnectionStringAccessor.setAccessor(
-            new DataSourceSqlServerConnectionStringAccessor.Accessor() {
+        DataSourceSqlServerConnectionStringAccessor
+            .setAccessor(new DataSourceSqlServerConnectionStringAccessor.Accessor() {
                 @Override
                 public void setId(DataSourceSqlServerConnectionString entity, String id) {
                     entity.setId(id);
@@ -86,7 +86,7 @@ public final class DataSourceSqlServerConnectionString extends DataSourceCredent
      * @return an updated object with description set
      */
     public DataSourceSqlServerConnectionString setDescription(String description) {
-        this .description = description;
+        this.description = description;
         return this;
     }
 

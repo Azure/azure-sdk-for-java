@@ -1,6 +1,6 @@
 # Release History
 
-## 4.9.0-beta.2 (Unreleased)
+## 4.10.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,38 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+
+## 4.9.0 (2024-10-15)
+- Added a new configuration flag to cryptography clients that allows deferring all cryptographic operations to the Key Vault service. ([#40384](https://github.com/Azure/azure-sdk-for-java/pull/40384))
+- Added support for Continuous Access Evaluation (CAE). ([#41814](https://github.com/Azure/azure-sdk-for-java/pull/41814))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.52.0` to version `1.53.0`.
+- Upgraded `azure-core-http-netty` from `1.15.4` to version `1.15.5`.
+
+## 4.8.8 (2024-09-27)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-json` from `1.2.0` to version `1.3.0`.
+- Upgraded `azure-core-http-netty` from `1.15.3` to version `1.15.4`.
+- Upgraded `azure-core` from `1.51.0` to version `1.52.0`.
+
+## 4.8.7 (2024-08-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.50.0` to version `1.51.0`.
+- Upgraded `azure-core-http-netty` from `1.15.2` to version `1.15.3`.
+
 
 ## 4.9.0-beta.1 (2024-07-29)
 
@@ -76,7 +108,6 @@
 
 - Upgraded `azure-core` from `1.46.0` to version `1.47.0`.
 - Upgraded `azure-core-http-netty` from `1.14.0` to version `1.14.1`.
-
 
 ## 4.8.0 (2024-02-22)
 Changes when compared to the last stable release (`4.7.3`) include:
@@ -162,7 +193,6 @@ Changes when compared to the last stable release (`4.7.3`) include:
 
 - Upgraded `azure-core` from `1.40.0` to version `1.41.0`.
 - Upgraded `azure-core-http-netty` from `1.13.4` to version `1.13.5`.
-
 
 ## 4.6.3 (2023-06-20)
 
@@ -759,7 +789,6 @@ Changes when compared to the last stable release (`4.7.3`) include:
 - Added `Import` operation to `KeyOperation`.
 - Added support for `7.1-Preview` service version
 
-
 ## 4.2.0-beta.1
 - `KeyVaultKey` model can be instantiated using `fromKeyId(String keyId, JsonWebKey jsonWebKey)` and `fromName(String name, JsonWebKey jsonWebKey)` methods on the `KeyVaultKey` model.
 - Allows `KeyEncryptionKeyClientBuilder` to consume `KeyVaultKey` model and build `KeyEncryptionKey` and `AsyncKeyEncryptionKey` via`buildKeyEncryptionKey(KeyVaultKey key) ` and `buildAsyncKeyEncryptionKey(KeyVaultKey key)` methods respectively.
@@ -773,7 +802,6 @@ Changes when compared to the last stable release (`4.7.3`) include:
 ### Major changes
 - `KeyEncryptionKeyClientBuilder.buildKeyEncryptionKey` and `KeyEncryptionKeyClientBuilder.buildAsyncKeyEncryptionKey`supports consumption of a secret id representing the symmetric key stored in the Key Vault as a secret.
 - Dropped third party dependency on apache commons codec library.
-
 
 ### Breaking changes
 - Key has been renamed to KeyVaultKey to avoid ambiguity with other libraries and to yield better search results.
@@ -840,7 +868,6 @@ This package's
 and
 [samples](https://github.com/Azure/azure-sdk-for-java/tree/azure-keyvault-keys_4.0.0-preview.1/keyvault/client/keys/src/samples/java)
 demonstrate the new API.
-
 
 ### Major changes from `azure-keyvault`
 - Packages scoped by functionality

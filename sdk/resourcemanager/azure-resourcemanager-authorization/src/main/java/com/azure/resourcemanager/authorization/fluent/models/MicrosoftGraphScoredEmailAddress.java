@@ -5,26 +5,27 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** scoredEmailAddress. */
+/**
+ * scoredEmailAddress.
+ */
 @Fluent
-public final class MicrosoftGraphScoredEmailAddress {
+public final class MicrosoftGraphScoredEmailAddress implements JsonSerializable<MicrosoftGraphScoredEmailAddress> {
     /*
      * The email address.
      */
-    @JsonProperty(value = "address")
     private String address;
 
     /*
      * The itemId property.
      */
-    @JsonProperty(value = "itemId")
     private String itemId;
 
     /*
@@ -32,27 +33,27 @@ public final class MicrosoftGraphScoredEmailAddress {
      * returned results. A higher relevance score value corresponds to a more relevant result. Relevance is determined
      * by the user’s communication and collaboration patterns and business relationships.
      */
-    @JsonProperty(value = "relevanceScore")
     private Double relevanceScore;
 
     /*
      * selectionLikelihoodInfo
      */
-    @JsonProperty(value = "selectionLikelihood")
     private MicrosoftGraphSelectionLikelihoodInfo selectionLikelihood;
 
     /*
      * scoredEmailAddress
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphScoredEmailAddress class. */
+    /**
+     * Creates an instance of MicrosoftGraphScoredEmailAddress class.
+     */
     public MicrosoftGraphScoredEmailAddress() {
     }
 
     /**
      * Get the address property: The email address.
-     *
+     * 
      * @return the address value.
      */
     public String address() {
@@ -61,7 +62,7 @@ public final class MicrosoftGraphScoredEmailAddress {
 
     /**
      * Set the address property: The email address.
-     *
+     * 
      * @param address the address value to set.
      * @return the MicrosoftGraphScoredEmailAddress object itself.
      */
@@ -72,7 +73,7 @@ public final class MicrosoftGraphScoredEmailAddress {
 
     /**
      * Get the itemId property: The itemId property.
-     *
+     * 
      * @return the itemId value.
      */
     public String itemId() {
@@ -81,7 +82,7 @@ public final class MicrosoftGraphScoredEmailAddress {
 
     /**
      * Set the itemId property: The itemId property.
-     *
+     * 
      * @param itemId the itemId value to set.
      * @return the MicrosoftGraphScoredEmailAddress object itself.
      */
@@ -95,7 +96,7 @@ public final class MicrosoftGraphScoredEmailAddress {
      * key, in relation to the other returned results. A higher relevance score value corresponds to a more relevant
      * result. Relevance is determined by the user’s communication and collaboration patterns and business
      * relationships.
-     *
+     * 
      * @return the relevanceScore value.
      */
     public Double relevanceScore() {
@@ -107,7 +108,7 @@ public final class MicrosoftGraphScoredEmailAddress {
      * key, in relation to the other returned results. A higher relevance score value corresponds to a more relevant
      * result. Relevance is determined by the user’s communication and collaboration patterns and business
      * relationships.
-     *
+     * 
      * @param relevanceScore the relevanceScore value to set.
      * @return the MicrosoftGraphScoredEmailAddress object itself.
      */
@@ -118,7 +119,7 @@ public final class MicrosoftGraphScoredEmailAddress {
 
     /**
      * Get the selectionLikelihood property: selectionLikelihoodInfo.
-     *
+     * 
      * @return the selectionLikelihood value.
      */
     public MicrosoftGraphSelectionLikelihoodInfo selectionLikelihood() {
@@ -127,29 +128,28 @@ public final class MicrosoftGraphScoredEmailAddress {
 
     /**
      * Set the selectionLikelihood property: selectionLikelihoodInfo.
-     *
+     * 
      * @param selectionLikelihood the selectionLikelihood value to set.
      * @return the MicrosoftGraphScoredEmailAddress object itself.
      */
-    public MicrosoftGraphScoredEmailAddress withSelectionLikelihood(
-        MicrosoftGraphSelectionLikelihoodInfo selectionLikelihood) {
+    public MicrosoftGraphScoredEmailAddress
+        withSelectionLikelihood(MicrosoftGraphSelectionLikelihoodInfo selectionLikelihood) {
         this.selectionLikelihood = selectionLikelihood;
         return this;
     }
 
     /**
      * Get the additionalProperties property: scoredEmailAddress.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: scoredEmailAddress.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphScoredEmailAddress object itself.
      */
@@ -158,19 +158,71 @@ public final class MicrosoftGraphScoredEmailAddress {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("address", this.address);
+        jsonWriter.writeStringField("itemId", this.itemId);
+        jsonWriter.writeNumberField("relevanceScore", this.relevanceScore);
+        jsonWriter.writeStringField("selectionLikelihood",
+            this.selectionLikelihood == null ? null : this.selectionLikelihood.toString());
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphScoredEmailAddress from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphScoredEmailAddress if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphScoredEmailAddress.
+     */
+    public static MicrosoftGraphScoredEmailAddress fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphScoredEmailAddress deserializedMicrosoftGraphScoredEmailAddress
+                = new MicrosoftGraphScoredEmailAddress();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("address".equals(fieldName)) {
+                    deserializedMicrosoftGraphScoredEmailAddress.address = reader.getString();
+                } else if ("itemId".equals(fieldName)) {
+                    deserializedMicrosoftGraphScoredEmailAddress.itemId = reader.getString();
+                } else if ("relevanceScore".equals(fieldName)) {
+                    deserializedMicrosoftGraphScoredEmailAddress.relevanceScore
+                        = reader.getNullable(JsonReader::getDouble);
+                } else if ("selectionLikelihood".equals(fieldName)) {
+                    deserializedMicrosoftGraphScoredEmailAddress.selectionLikelihood
+                        = MicrosoftGraphSelectionLikelihoodInfo.fromString(reader.getString());
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphScoredEmailAddress.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphScoredEmailAddress;
+        });
     }
 }

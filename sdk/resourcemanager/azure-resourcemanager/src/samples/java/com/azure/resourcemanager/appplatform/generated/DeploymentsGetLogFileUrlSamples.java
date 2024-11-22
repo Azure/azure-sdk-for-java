@@ -18,7 +18,11 @@ public final class DeploymentsGetLogFileUrlSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void deploymentsGetLogFileUrl(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.springServices().manager().serviceClient().getDeployments().getLogFileUrlWithResponse("myResourceGroup",
-            "myservice", "myapp", "mydeployment", com.azure.core.util.Context.NONE);
+        azure.springServices()
+            .manager()
+            .serviceClient()
+            .getDeployments()
+            .getLogFileUrlWithResponse("myResourceGroup", "myservice", "myapp", "mydeployment",
+                com.azure.core.util.Context.NONE);
     }
 }

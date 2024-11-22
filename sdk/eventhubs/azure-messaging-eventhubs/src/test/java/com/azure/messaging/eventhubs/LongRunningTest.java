@@ -33,44 +33,35 @@ class LongRunningTest extends IntegrationTestBase {
     void twoConsumersAndSender() throws InterruptedException {
         final EventPosition firstPosition = EventPosition.fromEnqueuedTime(Instant.now());
 
-        EventHubProducerAsyncClient producer = toClose(new EventHubClientBuilder()
-            .connectionString(TestUtils.getConnectionString())
-            .retry(RETRY_OPTIONS)
-            .buildAsyncProducerClient());
-        EventHubConsumerAsyncClient consumer = toClose(new EventHubClientBuilder()
-            .connectionString(TestUtils.getConnectionString())
-            .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
-            .retry(RETRY_OPTIONS)
-            .buildAsyncConsumerClient());
+        EventHubProducerAsyncClient producer = toClose(createBuilder().buildAsyncProducerClient());
+        EventHubConsumerAsyncClient consumer
+            = toClose(createBuilder().consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
+                .buildAsyncConsumerClient());
 
-        toClose(consumer.receiveFromPartition("0", firstPosition)
-            .subscribe(event -> {
-                logger.info("[#0]: [{}]: {}", event.getData().getEnqueuedTime(),
-                    event.getData().getSequenceNumber());
-            }, error -> {
-                    logger.error("Exception occurred in receive.", error);
-                }, () -> logger.info("Completed receiving.")));
+        toClose(consumer.receiveFromPartition("0", firstPosition).subscribe(event -> {
+            logger.info("[#0]: [{}]: {}", event.getData().getEnqueuedTime(), event.getData().getSequenceNumber());
+        }, error -> {
+            logger.error("Exception occurred in receive.", error);
+        }, () -> logger.info("Completed receiving.")));
 
-        toClose(consumer.receiveFromPartition("1", firstPosition)
-            .subscribe(event -> {
-                logger.info("[#1]: [{}]: {}", event.getData().getEnqueuedTime(),
-                    event.getData().getSequenceNumber());
-            }, error -> {
-                    logger.error("Exception occurred in receive.", error);
-                }, () -> logger.info("Completed receiving.")));
+        toClose(consumer.receiveFromPartition("1", firstPosition).subscribe(event -> {
+            logger.info("[#1]: [{}]: {}", event.getData().getEnqueuedTime(), event.getData().getSequenceNumber());
+        }, error -> {
+            logger.error("Exception occurred in receive.", error);
+        }, () -> logger.info("Completed receiving.")));
 
-        toClose(Flux.interval(Duration.ofSeconds(1))
-            .flatMap(position -> producer.createBatch().flatMap(batch -> {
-                IntStream.range(0, 3).mapToObj(number -> new EventData("Position" + position + ": " + number))
-                    .forEach(event -> {
-                        if (!batch.tryAdd(event)) {
-                            logger.error("Could not add event. Size: {}. Max: {}. Content: {}",
-                                batch.getSizeInBytes(), batch.getMaxSizeInBytes(), event.getBodyAsString());
-                        }
-                    });
+        toClose(Flux.interval(Duration.ofSeconds(1)).flatMap(position -> producer.createBatch().flatMap(batch -> {
+            IntStream.range(0, 3)
+                .mapToObj(number -> new EventData("Position" + position + ": " + number))
+                .forEach(event -> {
+                    if (!batch.tryAdd(event)) {
+                        logger.error("Could not add event. Size: {}. Max: {}. Content: {}", batch.getSizeInBytes(),
+                            batch.getMaxSizeInBytes(), event.getBodyAsString());
+                    }
+                });
 
-                return producer.send(batch).thenReturn(Instant.now());
-            }))
+            return producer.send(batch).thenReturn(Instant.now());
+        }))
             .subscribe(instant -> logger.log(LogLevel.VERBOSE, () -> "Sent batch at: " + instant),
                 error -> logger.error("Error sending batch: ", error), () -> logger.info("Complete.")));
 
@@ -82,24 +73,22 @@ class LongRunningTest extends IntegrationTestBase {
     @Disabled("Testing idle clients. Connections are timed out at 30 mins.")
     @Test
     void idleConnection() throws InterruptedException {
-        try (EventHubProducerAsyncClient idleProducer = new EventHubClientBuilder()
-            .connectionString(TestUtils.getConnectionString())
-            .buildAsyncProducerClient()) {
+        try (EventHubProducerAsyncClient idleProducer = createBuilder().buildAsyncProducerClient()) {
             for (int i = 0; i < 4; i++) {
                 logger.verbose("Iteration: " + i);
 
                 toClose(idleProducer.createBatch().flatMap(batch -> {
-                    IntStream.range(0, 3).mapToObj(number -> new EventData("Number : " + number))
-                        .forEach(event -> {
-                            if (!batch.tryAdd(event)) {
-                                logger.error("Could not add event. Size: {}. Max: {}. Content: {}",
-                                    batch.getSizeInBytes(), batch.getMaxSizeInBytes(), event.getBodyAsString());
-                            }
-                        });
+                    IntStream.range(0, 3).mapToObj(number -> new EventData("Number : " + number)).forEach(event -> {
+                        if (!batch.tryAdd(event)) {
+                            logger.error("Could not add event. Size: {}. Max: {}. Content: {}", batch.getSizeInBytes(),
+                                batch.getMaxSizeInBytes(), event.getBodyAsString());
+                        }
+                    });
 
                     return idleProducer.send(batch).thenReturn(Instant.now());
-                }).subscribe(instant -> logger.log(LogLevel.VERBOSE, () -> "Sent batch at: " + instant),
-                    error -> logger.error("Error sending batch: ", error), () -> logger.info("Complete.")));
+                })
+                    .subscribe(instant -> logger.log(LogLevel.VERBOSE, () -> "Sent batch at: " + instant),
+                        error -> logger.error("Error sending batch: ", error), () -> logger.info("Complete.")));
 
                 logger.log(LogLevel.VERBOSE, () -> "Sleeping 40 mins.");
                 TimeUnit.MINUTES.sleep(40);
@@ -111,32 +100,28 @@ class LongRunningTest extends IntegrationTestBase {
     @Disabled("Testing idle clients. Connections are timed out at 30 mins.")
     @Test
     void idleSendLinks() throws InterruptedException {
-        try (EventHubProducerAsyncClient idleProducer = new EventHubClientBuilder()
-            .connectionString(TestUtils.getConnectionString())
-            .buildAsyncProducerClient()) {
+        try (EventHubProducerAsyncClient idleProducer = createBuilder().buildAsyncProducerClient()) {
 
             for (int i = 0; i < 4; i++) {
                 logger.verbose("Iteration: " + i);
 
                 toClose(idleProducer.getEventHubProperties().subscribe(properties -> {
                     logger.log(LogLevel.VERBOSE, () -> String.format("[%s]: ids[%s]. Received: %s%n",
-                        properties.getName(),
-                        String.join(",", properties.getPartitionIds()),
-                        Instant.now()));
+                        properties.getName(), String.join(",", properties.getPartitionIds()), Instant.now()));
                 }, error -> logger.log(LogLevel.VERBOSE, () -> "Error receiving ids", error)));
 
                 toClose(idleProducer.createBatch().flatMap(batch -> {
-                    IntStream.range(0, 3).mapToObj(number -> new EventData("Number : " + number))
-                        .forEach(event -> {
-                            if (!batch.tryAdd(event)) {
-                                logger.error("Could not add event. Size: {}. Max: {}. Content: {}",
-                                    batch.getSizeInBytes(), batch.getMaxSizeInBytes(), event.getBodyAsString());
-                            }
-                        });
+                    IntStream.range(0, 3).mapToObj(number -> new EventData("Number : " + number)).forEach(event -> {
+                        if (!batch.tryAdd(event)) {
+                            logger.error("Could not add event. Size: {}. Max: {}. Content: {}", batch.getSizeInBytes(),
+                                batch.getMaxSizeInBytes(), event.getBodyAsString());
+                        }
+                    });
 
                     return idleProducer.send(batch).thenReturn(Instant.now());
-                }).subscribe(instant -> logger.log(LogLevel.VERBOSE, () -> "Sent batch at: " + instant),
-                    error -> logger.log(LogLevel.VERBOSE, () -> "Error sending batch", error)));
+                })
+                    .subscribe(instant -> logger.log(LogLevel.VERBOSE, () -> "Sent batch at: " + instant),
+                        error -> logger.log(LogLevel.VERBOSE, () -> "Error sending batch", error)));
 
                 logger.log(LogLevel.VERBOSE, () -> "Sleeping 15 mins.");
                 TimeUnit.MINUTES.sleep(15);
@@ -151,14 +136,8 @@ class LongRunningTest extends IntegrationTestBase {
         final String partitionId = "0";
         final CreateBatchOptions options = new CreateBatchOptions().setPartitionId(partitionId);
 
-        EventHubProducerAsyncClient producer = toClose(new EventHubClientBuilder()
-            .connectionString(TestUtils.getConnectionString())
-            .retry(RETRY_OPTIONS)
-            .buildAsyncProducerClient());
-
-        EventHubAsyncClient client = toClose(new EventHubClientBuilder()
-            .connectionString(TestUtils.getConnectionString())
-            .buildAsyncClient());
+        EventHubProducerAsyncClient producer = toClose(createBuilder().buildAsyncProducerClient());
+        EventHubAsyncClient client = toClose(createBuilder().buildAsyncClient());
 
         toClose(Flux.interval(Duration.ofSeconds(1))
             .flatMap(position -> client.getPartitionIds().collectList())
@@ -166,20 +145,21 @@ class LongRunningTest extends IntegrationTestBase {
                 logger.log(LogLevel.VERBOSE,
                     () -> String.format("Ids %s: {%s}%n", Instant.now(), String.join(",", partitionIds)));
             }, error -> logger.error("Error fetching info.", error), () -> logger.info("Complete.")));
-        toClose(Flux.interval(Duration.ofSeconds(5))
-            .flatMap(position -> producer.createBatch(options).flatMap(batch -> {
-                IntStream.range(0, 3).mapToObj(number -> new EventData("Position" + position + ": " + number))
+        toClose(
+            Flux.interval(Duration.ofSeconds(5)).flatMap(position -> producer.createBatch(options).flatMap(batch -> {
+                IntStream.range(0, 3)
+                    .mapToObj(number -> new EventData("Position" + position + ": " + number))
                     .forEach(event -> {
                         if (!batch.tryAdd(event)) {
-                            logger.error("Could not add event. Size: {}. Max: {}. Content: {}",
-                                batch.getSizeInBytes(), batch.getMaxSizeInBytes(), event.getBodyAsString());
+                            logger.error("Could not add event. Size: {}. Max: {}. Content: {}", batch.getSizeInBytes(),
+                                batch.getMaxSizeInBytes(), event.getBodyAsString());
                         }
                     });
 
                 return producer.send(batch).thenReturn(Instant.now());
             }))
-            .subscribe(instant -> logger.log(LogLevel.VERBOSE, () -> "---- Sent batch at: " + instant),
-                error -> logger.error("---- Error sending batch: ", error), () -> logger.info("---- Complete.")));
+                .subscribe(instant -> logger.log(LogLevel.VERBOSE, () -> "---- Sent batch at: " + instant),
+                    error -> logger.error("---- Error sending batch: ", error), () -> logger.info("---- Complete.")));
 
         logger.log(LogLevel.VERBOSE, () -> "Sleeping while performing work.");
         TimeUnit.MINUTES.sleep(30);

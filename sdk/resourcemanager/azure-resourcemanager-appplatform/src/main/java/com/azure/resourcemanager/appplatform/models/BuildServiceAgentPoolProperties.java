@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Build service agent pool properties.
  */
 @Fluent
-public final class BuildServiceAgentPoolProperties {
+public final class BuildServiceAgentPoolProperties implements JsonSerializable<BuildServiceAgentPoolProperties> {
     /*
      * Provisioning state of the build service agent pool
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /*
      * build service agent pool size properties
      */
-    @JsonProperty(value = "poolSize")
     private BuildServiceAgentPoolSizeProperties poolSize;
 
     /**
@@ -68,5 +70,45 @@ public final class BuildServiceAgentPoolProperties {
         if (poolSize() != null) {
             poolSize().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("poolSize", this.poolSize);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BuildServiceAgentPoolProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BuildServiceAgentPoolProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BuildServiceAgentPoolProperties.
+     */
+    public static BuildServiceAgentPoolProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BuildServiceAgentPoolProperties deserializedBuildServiceAgentPoolProperties
+                = new BuildServiceAgentPoolProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedBuildServiceAgentPoolProperties.provisioningState = reader.getString();
+                } else if ("poolSize".equals(fieldName)) {
+                    deserializedBuildServiceAgentPoolProperties.poolSize
+                        = BuildServiceAgentPoolSizeProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBuildServiceAgentPoolProperties;
+        });
     }
 }

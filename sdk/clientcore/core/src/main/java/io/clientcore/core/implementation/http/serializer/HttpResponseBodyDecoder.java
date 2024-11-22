@@ -8,7 +8,7 @@ import io.clientcore.core.http.exception.HttpResponseException;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.implementation.TypeUtil;
-import io.clientcore.core.implementation.util.Base64Url;
+import io.clientcore.core.implementation.util.Base64Uri;
 import io.clientcore.core.implementation.util.DateTimeRfc1123;
 import io.clientcore.core.util.ClientLogger;
 import io.clientcore.core.util.binarydata.BinaryData;
@@ -47,7 +47,7 @@ public final class HttpResponseBodyDecoder {
      * @throws HttpResponseException If the body cannot be decoded.
      */
     public static Object decodeByteArray(BinaryData body, Response<?> response, ObjectSerializer serializer,
-                                         HttpResponseDecodeData decodeData) {
+        HttpResponseDecodeData decodeData) {
         ensureRequestSet(response);
 
         // Check for the HEAD HTTP method first as it's possible for the underlying HttpClient to treat a non-existent
@@ -57,15 +57,18 @@ public final class HttpResponseBodyDecoder {
             return null;
         } else if (isErrorStatus(response.getStatusCode(), decodeData)) {
             try {
-                return deserializeBody(body, decodeData.getUnexpectedException(
-                    response.getStatusCode()).getExceptionBodyClass(), null, serializer);
+                return deserializeBody(body,
+                    decodeData.getUnexpectedException(response.getStatusCode()).getExceptionBodyClass(), null,
+                    serializer);
             } catch (IOException e) {
                 return LOGGER.atWarning().log("Failed to deserialize the error entity.", e);
             } catch (RuntimeException e) {
                 Throwable cause = e.getCause();
 
-                if (cause instanceof InvocationTargetException || cause instanceof IllegalAccessException
-                    || cause instanceof NoSuchMethodException || cause instanceof IOException) {
+                if (cause instanceof InvocationTargetException
+                    || cause instanceof IllegalAccessException
+                    || cause instanceof NoSuchMethodException
+                    || cause instanceof IOException) {
                     // - InvocationTargetException is thrown by the deserializer when the fromJson() method in the
                     // type to deserialize to throws an exception.
                     // - IllegalAccessException is thrown when the deserializer cannot access said fromJson() method in
@@ -173,8 +176,8 @@ public final class HttpResponseBodyDecoder {
         Objects.requireNonNull(wireType);
 
         if (resultType == byte[].class) {
-            if (wireType == Base64Url.class) {
-                return Base64Url.class;
+            if (wireType == Base64Uri.class) {
+                return Base64Uri.class;
             }
         } else if (resultType == OffsetDateTime.class) {
             if (wireType == DateTimeRfc1123.class) {
@@ -191,8 +194,8 @@ public final class HttpResponseBodyDecoder {
             final Type resultValueType = typeArguments[1];
             final Type wireResponseValueType = constructWireResponseType(resultValueType, wireType);
 
-            return TypeUtil.createParameterizedType(((ParameterizedType) resultType).getRawType(),
-                typeArguments[0], wireResponseValueType);
+            return TypeUtil.createParameterizedType(((ParameterizedType) resultType).getRawType(), typeArguments[0],
+                wireResponseValueType);
         }
 
         return resultType;
@@ -210,8 +213,8 @@ public final class HttpResponseBodyDecoder {
      */
     private static Object convertToResultType(final Object wireResponse, final Type resultType, final Type wireType) {
         if (resultType == byte[].class) {
-            if (wireType == Base64Url.class) {
-                return (new Base64Url(wireResponse.toString())).decodedBytes();
+            if (wireType == Base64Uri.class) {
+                return (new Base64Uri(wireResponse.toString())).decodedBytes();
             }
         } else if (resultType == OffsetDateTime.class) {
             if (wireType == DateTimeRfc1123.class) {
@@ -222,7 +225,8 @@ public final class HttpResponseBodyDecoder {
         } else if (TypeUtil.isTypeOrSubTypeOf(resultType, List.class)) {
             final Type resultElementType = TypeUtil.getTypeArgument(resultType);
 
-            @SuppressWarnings("unchecked") final List<Object> wireResponseList = (List<Object>) wireResponse;
+            @SuppressWarnings("unchecked")
+            final List<Object> wireResponseList = (List<Object>) wireResponse;
 
             final int wireResponseListSize = wireResponseList.size();
 
@@ -238,8 +242,8 @@ public final class HttpResponseBodyDecoder {
         } else if (TypeUtil.isTypeOrSubTypeOf(resultType, Map.class)) {
             final Type resultValueType = TypeUtil.getTypeArguments(resultType)[1];
 
-            @SuppressWarnings("unchecked") final Map<String, Object> wireResponseMap
-                = (Map<String, Object>) wireResponse;
+            @SuppressWarnings("unchecked")
+            final Map<String, Object> wireResponseMap = (Map<String, Object>) wireResponse;
 
             final Set<Map.Entry<String, Object>> wireResponseEntries = wireResponseMap.entrySet();
 
@@ -282,4 +286,3 @@ public final class HttpResponseBodyDecoder {
         Objects.requireNonNull(response.getRequest());
     }
 }
-

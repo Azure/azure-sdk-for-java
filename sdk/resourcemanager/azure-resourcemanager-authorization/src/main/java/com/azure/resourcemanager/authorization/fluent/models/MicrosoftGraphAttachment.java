@@ -5,60 +5,61 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.util.HashMap;
+import java.time.format.DateTimeFormatter;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** attachment. */
+/**
+ * attachment.
+ */
 @Fluent
 public final class MicrosoftGraphAttachment extends MicrosoftGraphEntity {
     /*
      * The MIME type.
      */
-    @JsonProperty(value = "contentType")
     private String contentType;
 
     /*
      * true if the attachment is an inline attachment; otherwise, false.
      */
-    @JsonProperty(value = "isInline")
     private Boolean isInline;
 
     /*
      * The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For
      * example, midnight UTC on Jan 1, 2014 would look like this: '2014-01-01T00:00:00Z'
      */
-    @JsonProperty(value = "lastModifiedDateTime")
     private OffsetDateTime lastModifiedDateTime;
 
     /*
      * The attachment's file name.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The length of the attachment in bytes.
      */
-    @JsonProperty(value = "size")
     private Integer size;
 
     /*
      * attachment
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphAttachment class. */
+    /**
+     * Creates an instance of MicrosoftGraphAttachment class.
+     */
     public MicrosoftGraphAttachment() {
     }
 
     /**
      * Get the contentType property: The MIME type.
-     *
+     * 
      * @return the contentType value.
      */
     public String contentType() {
@@ -67,7 +68,7 @@ public final class MicrosoftGraphAttachment extends MicrosoftGraphEntity {
 
     /**
      * Set the contentType property: The MIME type.
-     *
+     * 
      * @param contentType the contentType value to set.
      * @return the MicrosoftGraphAttachment object itself.
      */
@@ -78,7 +79,7 @@ public final class MicrosoftGraphAttachment extends MicrosoftGraphEntity {
 
     /**
      * Get the isInline property: true if the attachment is an inline attachment; otherwise, false.
-     *
+     * 
      * @return the isInline value.
      */
     public Boolean isInline() {
@@ -87,7 +88,7 @@ public final class MicrosoftGraphAttachment extends MicrosoftGraphEntity {
 
     /**
      * Set the isInline property: true if the attachment is an inline attachment; otherwise, false.
-     *
+     * 
      * @param isInline the isInline value to set.
      * @return the MicrosoftGraphAttachment object itself.
      */
@@ -100,7 +101,7 @@ public final class MicrosoftGraphAttachment extends MicrosoftGraphEntity {
      * Get the lastModifiedDateTime property: The Timestamp type represents date and time information using ISO 8601
      * format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 would look like this:
      * '2014-01-01T00:00:00Z'.
-     *
+     * 
      * @return the lastModifiedDateTime value.
      */
     public OffsetDateTime lastModifiedDateTime() {
@@ -111,7 +112,7 @@ public final class MicrosoftGraphAttachment extends MicrosoftGraphEntity {
      * Set the lastModifiedDateTime property: The Timestamp type represents date and time information using ISO 8601
      * format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 would look like this:
      * '2014-01-01T00:00:00Z'.
-     *
+     * 
      * @param lastModifiedDateTime the lastModifiedDateTime value to set.
      * @return the MicrosoftGraphAttachment object itself.
      */
@@ -122,7 +123,7 @@ public final class MicrosoftGraphAttachment extends MicrosoftGraphEntity {
 
     /**
      * Get the name property: The attachment's file name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -131,7 +132,7 @@ public final class MicrosoftGraphAttachment extends MicrosoftGraphEntity {
 
     /**
      * Set the name property: The attachment's file name.
-     *
+     * 
      * @param name the name value to set.
      * @return the MicrosoftGraphAttachment object itself.
      */
@@ -142,7 +143,7 @@ public final class MicrosoftGraphAttachment extends MicrosoftGraphEntity {
 
     /**
      * Get the size property: The length of the attachment in bytes.
-     *
+     * 
      * @return the size value.
      */
     public Integer size() {
@@ -151,7 +152,7 @@ public final class MicrosoftGraphAttachment extends MicrosoftGraphEntity {
 
     /**
      * Set the size property: The length of the attachment in bytes.
-     *
+     * 
      * @param size the size value to set.
      * @return the MicrosoftGraphAttachment object itself.
      */
@@ -162,17 +163,16 @@ public final class MicrosoftGraphAttachment extends MicrosoftGraphEntity {
 
     /**
      * Get the additionalProperties property: attachment.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: attachment.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphAttachment object itself.
      */
@@ -181,15 +181,9 @@ public final class MicrosoftGraphAttachment extends MicrosoftGraphEntity {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphAttachment withId(String id) {
         super.withId(id);
@@ -198,11 +192,77 @@ public final class MicrosoftGraphAttachment extends MicrosoftGraphEntity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeStringField("contentType", this.contentType);
+        jsonWriter.writeBooleanField("isInline", this.isInline);
+        jsonWriter.writeStringField("lastModifiedDateTime",
+            this.lastModifiedDateTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastModifiedDateTime));
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeNumberField("size", this.size);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphAttachment from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphAttachment if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphAttachment.
+     */
+    public static MicrosoftGraphAttachment fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphAttachment deserializedMicrosoftGraphAttachment = new MicrosoftGraphAttachment();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphAttachment.withId(reader.getString());
+                } else if ("contentType".equals(fieldName)) {
+                    deserializedMicrosoftGraphAttachment.contentType = reader.getString();
+                } else if ("isInline".equals(fieldName)) {
+                    deserializedMicrosoftGraphAttachment.isInline = reader.getNullable(JsonReader::getBoolean);
+                } else if ("lastModifiedDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphAttachment.lastModifiedDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("name".equals(fieldName)) {
+                    deserializedMicrosoftGraphAttachment.name = reader.getString();
+                } else if ("size".equals(fieldName)) {
+                    deserializedMicrosoftGraphAttachment.size = reader.getNullable(JsonReader::getInt);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphAttachment.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphAttachment;
+        });
     }
 }

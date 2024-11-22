@@ -10,11 +10,9 @@ import com.azure.resourcemanager.storagepool.models.ResourceSkuLocationInfo;
 public final class ResourceSkuLocationInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResourceSkuLocationInfo model =
-            BinaryData
-                .fromString(
-                    "{\"location\":\"rkcciwwzjuqk\",\"zones\":[\"ajiwkuo\"],\"zoneDetails\":[{\"name\":[\"hsauuimjmvxied\",\"ugidyjrr\",\"byao\",\"v\"],\"capabilities\":[]},{\"name\":[\"npc\"],\"capabilities\":[]},{\"name\":[\"hslkevleggzf\",\"u\",\"fmvfaxkffeiit\"],\"capabilities\":[]}]}")
-                .toObject(ResourceSkuLocationInfo.class);
+        ResourceSkuLocationInfo model = BinaryData.fromString(
+            "{\"location\":\"dbhrbnlankxm\",\"zones\":[\"pbh\"],\"zoneDetails\":[{\"name\":[\"cxy\",\"ny\"],\"capabilities\":[{\"name\":\"yn\",\"value\":\"idybyxczf\"}]},{\"name\":[\"aaxdbabphlwrq\",\"fkts\",\"hsucoc\"],\"capabilities\":[{\"name\":\"azt\",\"value\":\"twwrqp\"},{\"name\":\"dckzywbiexz\",\"value\":\"yueaxibxujwb\"}]},{\"name\":[\"almuzyoxaepdkzja\"],\"capabilities\":[{\"name\":\"rhdwbavxbniw\",\"value\":\"swzts\"}]},{\"name\":[\"gnxytxhpzxbz\"],\"capabilities\":[{\"name\":\"b\",\"value\":\"cuh\"},{\"name\":\"tcty\",\"value\":\"klbb\"},{\"name\":\"plwzbhvgyugu\",\"value\":\"vmkfssxqu\"}]}]}")
+            .toObject(ResourceSkuLocationInfo.class);
     }
 
     @org.junit.jupiter.api.Test

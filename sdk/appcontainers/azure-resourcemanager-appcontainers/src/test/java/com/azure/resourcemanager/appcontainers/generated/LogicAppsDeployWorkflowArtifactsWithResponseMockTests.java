@@ -30,10 +30,10 @@ public final class LogicAppsDeployWorkflowArtifactsWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.logicApps()
-            .deployWorkflowArtifactsWithResponse("swtvd", "xbqssgfenffdxbvw", "qjchivd",
-                new WorkflowArtifacts().withAppSettings("dataj")
-                    .withFiles("dataxndmuvar")
-                    .withFilesToDelete(Arrays.asList("zj", "tp", "rmuhcuhtuzlx")),
+            .deployWorkflowArtifactsWithResponse("bgacnr", "fdtncmspsanma", "eubkqiqmlf",
+                new WorkflowArtifacts().withAppSettings("datalqcskkqjmxptueip")
+                    .withFiles("datagkwdr")
+                    .withFilesToDelete(Arrays.asList("pahu", "onjkkxukguehvvp", "joegcjojlleuidp", "tonvhgnhtmeplhb")),
                 com.azure.core.util.Context.NONE);
 
     }

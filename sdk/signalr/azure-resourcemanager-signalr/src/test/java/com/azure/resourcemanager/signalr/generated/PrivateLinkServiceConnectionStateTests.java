@@ -12,10 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class PrivateLinkServiceConnectionStateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PrivateLinkServiceConnectionState model =
-            BinaryData
-                .fromString("{\"status\":\"Approved\",\"description\":\"tsgumhj\",\"actionsRequired\":\"ikkx\"}")
-                .toObject(PrivateLinkServiceConnectionState.class);
+        PrivateLinkServiceConnectionState model = BinaryData
+            .fromString("{\"status\":\"Approved\",\"description\":\"tsgumhj\",\"actionsRequired\":\"ikkx\"}")
+            .toObject(PrivateLinkServiceConnectionState.class);
         Assertions.assertEquals(PrivateLinkServiceConnectionStatus.APPROVED, model.status());
         Assertions.assertEquals("tsgumhj", model.description());
         Assertions.assertEquals("ikkx", model.actionsRequired());
@@ -23,9 +22,8 @@ public final class PrivateLinkServiceConnectionStateTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PrivateLinkServiceConnectionState model =
-            new PrivateLinkServiceConnectionState()
-                .withStatus(PrivateLinkServiceConnectionStatus.APPROVED)
+        PrivateLinkServiceConnectionState model
+            = new PrivateLinkServiceConnectionState().withStatus(PrivateLinkServiceConnectionStatus.APPROVED)
                 .withDescription("tsgumhj")
                 .withActionsRequired("ikkx");
         model = BinaryData.fromObject(model).toObject(PrivateLinkServiceConnectionState.class);

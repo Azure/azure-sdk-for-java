@@ -5,84 +5,79 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** workbookChartDataLabels. */
+/**
+ * workbookChartDataLabels.
+ */
 @Fluent
 public final class MicrosoftGraphWorkbookChartDataLabels extends MicrosoftGraphEntity {
     /*
      * DataLabelPosition value that represents the position of the data label. The possible values are: None, Center,
      * InsideEnd, InsideBase, OutsideEnd, Left, Right, Top, Bottom, BestFit, Callout.
      */
-    @JsonProperty(value = "position")
     private String position;
 
     /*
      * String representing the separator used for the data labels on a chart.
      */
-    @JsonProperty(value = "separator")
     private String separator;
 
     /*
      * Boolean value representing if the data label bubble size is visible or not.
      */
-    @JsonProperty(value = "showBubbleSize")
     private Boolean showBubbleSize;
 
     /*
      * Boolean value representing if the data label category name is visible or not.
      */
-    @JsonProperty(value = "showCategoryName")
     private Boolean showCategoryName;
 
     /*
      * Boolean value representing if the data label legend key is visible or not.
      */
-    @JsonProperty(value = "showLegendKey")
     private Boolean showLegendKey;
 
     /*
      * Boolean value representing if the data label percentage is visible or not.
      */
-    @JsonProperty(value = "showPercentage")
     private Boolean showPercentage;
 
     /*
      * Boolean value representing if the data label series name is visible or not.
      */
-    @JsonProperty(value = "showSeriesName")
     private Boolean showSeriesName;
 
     /*
      * Boolean value representing if the data label value is visible or not.
      */
-    @JsonProperty(value = "showValue")
     private Boolean showValue;
 
     /*
      * workbookChartDataLabelFormat
      */
-    @JsonProperty(value = "format")
     private MicrosoftGraphWorkbookChartDataLabelFormat format;
 
     /*
      * workbookChartDataLabels
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphWorkbookChartDataLabels class. */
+    /**
+     * Creates an instance of MicrosoftGraphWorkbookChartDataLabels class.
+     */
     public MicrosoftGraphWorkbookChartDataLabels() {
     }
 
     /**
      * Get the position property: DataLabelPosition value that represents the position of the data label. The possible
      * values are: None, Center, InsideEnd, InsideBase, OutsideEnd, Left, Right, Top, Bottom, BestFit, Callout.
-     *
+     * 
      * @return the position value.
      */
     public String position() {
@@ -92,7 +87,7 @@ public final class MicrosoftGraphWorkbookChartDataLabels extends MicrosoftGraphE
     /**
      * Set the position property: DataLabelPosition value that represents the position of the data label. The possible
      * values are: None, Center, InsideEnd, InsideBase, OutsideEnd, Left, Right, Top, Bottom, BestFit, Callout.
-     *
+     * 
      * @param position the position value to set.
      * @return the MicrosoftGraphWorkbookChartDataLabels object itself.
      */
@@ -103,7 +98,7 @@ public final class MicrosoftGraphWorkbookChartDataLabels extends MicrosoftGraphE
 
     /**
      * Get the separator property: String representing the separator used for the data labels on a chart.
-     *
+     * 
      * @return the separator value.
      */
     public String separator() {
@@ -112,7 +107,7 @@ public final class MicrosoftGraphWorkbookChartDataLabels extends MicrosoftGraphE
 
     /**
      * Set the separator property: String representing the separator used for the data labels on a chart.
-     *
+     * 
      * @param separator the separator value to set.
      * @return the MicrosoftGraphWorkbookChartDataLabels object itself.
      */
@@ -123,7 +118,7 @@ public final class MicrosoftGraphWorkbookChartDataLabels extends MicrosoftGraphE
 
     /**
      * Get the showBubbleSize property: Boolean value representing if the data label bubble size is visible or not.
-     *
+     * 
      * @return the showBubbleSize value.
      */
     public Boolean showBubbleSize() {
@@ -132,7 +127,7 @@ public final class MicrosoftGraphWorkbookChartDataLabels extends MicrosoftGraphE
 
     /**
      * Set the showBubbleSize property: Boolean value representing if the data label bubble size is visible or not.
-     *
+     * 
      * @param showBubbleSize the showBubbleSize value to set.
      * @return the MicrosoftGraphWorkbookChartDataLabels object itself.
      */
@@ -143,7 +138,7 @@ public final class MicrosoftGraphWorkbookChartDataLabels extends MicrosoftGraphE
 
     /**
      * Get the showCategoryName property: Boolean value representing if the data label category name is visible or not.
-     *
+     * 
      * @return the showCategoryName value.
      */
     public Boolean showCategoryName() {
@@ -152,7 +147,7 @@ public final class MicrosoftGraphWorkbookChartDataLabels extends MicrosoftGraphE
 
     /**
      * Set the showCategoryName property: Boolean value representing if the data label category name is visible or not.
-     *
+     * 
      * @param showCategoryName the showCategoryName value to set.
      * @return the MicrosoftGraphWorkbookChartDataLabels object itself.
      */
@@ -163,7 +158,7 @@ public final class MicrosoftGraphWorkbookChartDataLabels extends MicrosoftGraphE
 
     /**
      * Get the showLegendKey property: Boolean value representing if the data label legend key is visible or not.
-     *
+     * 
      * @return the showLegendKey value.
      */
     public Boolean showLegendKey() {
@@ -172,7 +167,7 @@ public final class MicrosoftGraphWorkbookChartDataLabels extends MicrosoftGraphE
 
     /**
      * Set the showLegendKey property: Boolean value representing if the data label legend key is visible or not.
-     *
+     * 
      * @param showLegendKey the showLegendKey value to set.
      * @return the MicrosoftGraphWorkbookChartDataLabels object itself.
      */
@@ -183,7 +178,7 @@ public final class MicrosoftGraphWorkbookChartDataLabels extends MicrosoftGraphE
 
     /**
      * Get the showPercentage property: Boolean value representing if the data label percentage is visible or not.
-     *
+     * 
      * @return the showPercentage value.
      */
     public Boolean showPercentage() {
@@ -192,7 +187,7 @@ public final class MicrosoftGraphWorkbookChartDataLabels extends MicrosoftGraphE
 
     /**
      * Set the showPercentage property: Boolean value representing if the data label percentage is visible or not.
-     *
+     * 
      * @param showPercentage the showPercentage value to set.
      * @return the MicrosoftGraphWorkbookChartDataLabels object itself.
      */
@@ -203,7 +198,7 @@ public final class MicrosoftGraphWorkbookChartDataLabels extends MicrosoftGraphE
 
     /**
      * Get the showSeriesName property: Boolean value representing if the data label series name is visible or not.
-     *
+     * 
      * @return the showSeriesName value.
      */
     public Boolean showSeriesName() {
@@ -212,7 +207,7 @@ public final class MicrosoftGraphWorkbookChartDataLabels extends MicrosoftGraphE
 
     /**
      * Set the showSeriesName property: Boolean value representing if the data label series name is visible or not.
-     *
+     * 
      * @param showSeriesName the showSeriesName value to set.
      * @return the MicrosoftGraphWorkbookChartDataLabels object itself.
      */
@@ -223,7 +218,7 @@ public final class MicrosoftGraphWorkbookChartDataLabels extends MicrosoftGraphE
 
     /**
      * Get the showValue property: Boolean value representing if the data label value is visible or not.
-     *
+     * 
      * @return the showValue value.
      */
     public Boolean showValue() {
@@ -232,7 +227,7 @@ public final class MicrosoftGraphWorkbookChartDataLabels extends MicrosoftGraphE
 
     /**
      * Set the showValue property: Boolean value representing if the data label value is visible or not.
-     *
+     * 
      * @param showValue the showValue value to set.
      * @return the MicrosoftGraphWorkbookChartDataLabels object itself.
      */
@@ -243,7 +238,7 @@ public final class MicrosoftGraphWorkbookChartDataLabels extends MicrosoftGraphE
 
     /**
      * Get the format property: workbookChartDataLabelFormat.
-     *
+     * 
      * @return the format value.
      */
     public MicrosoftGraphWorkbookChartDataLabelFormat format() {
@@ -252,7 +247,7 @@ public final class MicrosoftGraphWorkbookChartDataLabels extends MicrosoftGraphE
 
     /**
      * Set the format property: workbookChartDataLabelFormat.
-     *
+     * 
      * @param format the format value to set.
      * @return the MicrosoftGraphWorkbookChartDataLabels object itself.
      */
@@ -263,17 +258,16 @@ public final class MicrosoftGraphWorkbookChartDataLabels extends MicrosoftGraphE
 
     /**
      * Get the additionalProperties property: workbookChartDataLabels.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: workbookChartDataLabels.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphWorkbookChartDataLabels object itself.
      */
@@ -282,15 +276,9 @@ public final class MicrosoftGraphWorkbookChartDataLabels extends MicrosoftGraphE
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphWorkbookChartDataLabels withId(String id) {
         super.withId(id);
@@ -299,7 +287,7 @@ public final class MicrosoftGraphWorkbookChartDataLabels extends MicrosoftGraphE
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -308,5 +296,87 @@ public final class MicrosoftGraphWorkbookChartDataLabels extends MicrosoftGraphE
         if (format() != null) {
             format().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeStringField("position", this.position);
+        jsonWriter.writeStringField("separator", this.separator);
+        jsonWriter.writeBooleanField("showBubbleSize", this.showBubbleSize);
+        jsonWriter.writeBooleanField("showCategoryName", this.showCategoryName);
+        jsonWriter.writeBooleanField("showLegendKey", this.showLegendKey);
+        jsonWriter.writeBooleanField("showPercentage", this.showPercentage);
+        jsonWriter.writeBooleanField("showSeriesName", this.showSeriesName);
+        jsonWriter.writeBooleanField("showValue", this.showValue);
+        jsonWriter.writeJsonField("format", this.format);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphWorkbookChartDataLabels from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphWorkbookChartDataLabels if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphWorkbookChartDataLabels.
+     */
+    public static MicrosoftGraphWorkbookChartDataLabels fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphWorkbookChartDataLabels deserializedMicrosoftGraphWorkbookChartDataLabels
+                = new MicrosoftGraphWorkbookChartDataLabels();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookChartDataLabels.withId(reader.getString());
+                } else if ("position".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookChartDataLabels.position = reader.getString();
+                } else if ("separator".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookChartDataLabels.separator = reader.getString();
+                } else if ("showBubbleSize".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookChartDataLabels.showBubbleSize
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("showCategoryName".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookChartDataLabels.showCategoryName
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("showLegendKey".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookChartDataLabels.showLegendKey
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("showPercentage".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookChartDataLabels.showPercentage
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("showSeriesName".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookChartDataLabels.showSeriesName
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("showValue".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookChartDataLabels.showValue
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("format".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookChartDataLabels.format
+                        = MicrosoftGraphWorkbookChartDataLabelFormat.fromJson(reader);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphWorkbookChartDataLabels.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphWorkbookChartDataLabels;
+        });
     }
 }

@@ -9,11 +9,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import java.util.List;
 
-/** Resource collection API of Datastores. */
+/**
+ * Resource collection API of Datastores.
+ */
 public interface Datastores {
     /**
      * List datastores.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -25,7 +27,7 @@ public interface Datastores {
 
     /**
      * List datastores.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param skip Continuation token for pagination.
@@ -41,21 +43,12 @@ public interface Datastores {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paginated list of Datastore entities as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<Datastore> list(
-        String resourceGroupName,
-        String workspaceName,
-        String skip,
-        Integer count,
-        Boolean isDefault,
-        List<String> names,
-        String searchText,
-        String orderBy,
-        Boolean orderByAsc,
-        Context context);
+    PagedIterable<Datastore> list(String resourceGroupName, String workspaceName, String skip, Integer count,
+        Boolean isDefault, List<String> names, String searchText, String orderBy, Boolean orderByAsc, Context context);
 
     /**
      * Delete datastore.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param name Datastore name.
@@ -69,7 +62,7 @@ public interface Datastores {
 
     /**
      * Delete datastore.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param name Datastore name.
@@ -81,7 +74,7 @@ public interface Datastores {
 
     /**
      * Get datastore.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param name Datastore name.
@@ -95,7 +88,7 @@ public interface Datastores {
 
     /**
      * Get datastore.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param name Datastore name.
@@ -108,7 +101,7 @@ public interface Datastores {
 
     /**
      * Get datastore secrets.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param name Datastore name.
@@ -118,12 +111,12 @@ public interface Datastores {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return datastore secrets along with {@link Response}.
      */
-    Response<DatastoreSecrets> listSecretsWithResponse(
-        String resourceGroupName, String workspaceName, String name, Context context);
+    Response<DatastoreSecrets> listSecretsWithResponse(String resourceGroupName, String workspaceName, String name,
+        Context context);
 
     /**
      * Get datastore secrets.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param name Datastore name.
@@ -136,7 +129,7 @@ public interface Datastores {
 
     /**
      * Get datastore.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -147,7 +140,7 @@ public interface Datastores {
 
     /**
      * Get datastore.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -159,7 +152,7 @@ public interface Datastores {
 
     /**
      * Delete datastore.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -169,7 +162,7 @@ public interface Datastores {
 
     /**
      * Delete datastore.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -181,7 +174,7 @@ public interface Datastores {
 
     /**
      * Begins definition for a new Datastore resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new Datastore definition.
      */

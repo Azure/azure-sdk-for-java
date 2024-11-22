@@ -17,8 +17,8 @@ public final class ResourceSkuInfoImpl implements ResourceSkuInfo {
 
     private final com.azure.resourcemanager.storagepool.StoragePoolManager serviceManager;
 
-    ResourceSkuInfoImpl(
-        ResourceSkuInfoInner innerObject, com.azure.resourcemanager.storagepool.StoragePoolManager serviceManager) {
+    ResourceSkuInfoImpl(ResourceSkuInfoInner innerObject,
+        com.azure.resourcemanager.storagepool.StoragePoolManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

@@ -11,9 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class AuthorizationAccessPolicyContractPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AuthorizationAccessPolicyContractProperties model =
-            BinaryData
-                .fromString("{\"tenantId\":\"gucaif\",\"objectId\":\"urwwgilfjq\"}")
+        AuthorizationAccessPolicyContractProperties model
+            = BinaryData.fromString("{\"tenantId\":\"gucaif\",\"objectId\":\"urwwgilfjq\"}")
                 .toObject(AuthorizationAccessPolicyContractProperties.class);
         Assertions.assertEquals("gucaif", model.tenantId());
         Assertions.assertEquals("urwwgilfjq", model.objectId());
@@ -21,8 +20,8 @@ public final class AuthorizationAccessPolicyContractPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AuthorizationAccessPolicyContractProperties model =
-            new AuthorizationAccessPolicyContractProperties().withTenantId("gucaif").withObjectId("urwwgilfjq");
+        AuthorizationAccessPolicyContractProperties model
+            = new AuthorizationAccessPolicyContractProperties().withTenantId("gucaif").withObjectId("urwwgilfjq");
         model = BinaryData.fromObject(model).toObject(AuthorizationAccessPolicyContractProperties.class);
         Assertions.assertEquals("gucaif", model.tenantId());
         Assertions.assertEquals("urwwgilfjq", model.objectId());

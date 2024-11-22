@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class IntegrationRuntimeUpdateResult extends ExpandableStringEnum<I
      * @param name a name to look for.
      * @return the corresponding IntegrationRuntimeUpdateResult.
      */
-    @JsonCreator
     public static IntegrationRuntimeUpdateResult fromString(String name) {
         return fromString(name, IntegrationRuntimeUpdateResult.class);
     }

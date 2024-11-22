@@ -97,6 +97,9 @@ public final class ServicePrincipalParam implements JsonSerializable<ServicePrin
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.logz.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Valid actions for a filtering tag. Exclusion takes priority over inclusion. */
+/**
+ * Valid actions for a filtering tag. Exclusion takes priority over inclusion.
+ */
 public final class TagAction extends ExpandableStringEnum<TagAction> {
-    /** Static value Include for TagAction. */
+    /**
+     * Static value Include for TagAction.
+     */
     public static final TagAction INCLUDE = fromString("Include");
 
-    /** Static value Exclude for TagAction. */
+    /**
+     * Static value Exclude for TagAction.
+     */
     public static final TagAction EXCLUDE = fromString("Exclude");
 
     /**
      * Creates a new instance of TagAction value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class TagAction extends ExpandableStringEnum<TagAction> {
 
     /**
      * Creates or finds a TagAction from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding TagAction.
      */
-    @JsonCreator
     public static TagAction fromString(String name) {
         return fromString(name, TagAction.class);
     }
 
     /**
      * Gets known TagAction values.
-     *
+     * 
      * @return known TagAction values.
      */
     public static Collection<TagAction> values() {

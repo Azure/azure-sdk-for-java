@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -32,6 +33,11 @@ public final class BillingMeter implements JsonSerializable<BillingMeter> {
      * The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
      */
     private String type;
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
 
     /*
      * Region for the billing meter.
@@ -76,6 +82,15 @@ public final class BillingMeter implements JsonSerializable<BillingMeter> {
      */
     public String type() {
         return this.type;
+    }
+
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**
@@ -161,6 +176,8 @@ public final class BillingMeter implements JsonSerializable<BillingMeter> {
                     deserializedBillingMeter.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedBillingMeter.type = reader.getString();
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedBillingMeter.systemData = SystemData.fromJson(reader);
                 } else if ("location".equals(fieldName)) {
                     deserializedBillingMeter.location = reader.getString();
                 } else if ("properties".equals(fieldName)) {

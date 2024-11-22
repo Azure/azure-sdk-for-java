@@ -47,8 +47,8 @@ public interface SingleSignOnConfigurations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the datadog single sign-on resource for the given Monitor along with {@link Response}.
      */
-    Response<DatadogSingleSignOnResource> getWithResponse(
-        String resourceGroupName, String monitorName, String configurationName, Context context);
+    Response<DatadogSingleSignOnResource> getWithResponse(String resourceGroupName, String monitorName,
+        String configurationName, Context context);
 
     /**
      * Gets the datadog single sign-on resource for the given Monitor.

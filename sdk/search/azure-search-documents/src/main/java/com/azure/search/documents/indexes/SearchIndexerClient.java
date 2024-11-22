@@ -426,8 +426,8 @@ public class SearchIndexerClient {
      * @return the data source that was created or updated.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SearchIndexerDataSourceConnection createOrUpdateDataSourceConnection(
-        SearchIndexerDataSourceConnection dataSourceConnection) {
+    public SearchIndexerDataSourceConnection
+        createOrUpdateDataSourceConnection(SearchIndexerDataSourceConnection dataSourceConnection) {
         return createOrUpdateDataSourceConnectionWithResponse(dataSourceConnection, false, Context.NONE).getValue();
     }
 
@@ -460,8 +460,7 @@ public class SearchIndexerClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SearchIndexerDataSourceConnection> createOrUpdateDataSourceConnectionWithResponse(
         SearchIndexerDataSourceConnection dataSourceConnection, boolean onlyIfUnchanged, Context context) {
-        return createOrUpdateDataSourceConnectionWithResponse(dataSourceConnection, onlyIfUnchanged, null,
-            context);
+        return createOrUpdateDataSourceConnectionWithResponse(dataSourceConnection, onlyIfUnchanged, null, context);
     }
 
     Response<SearchIndexerDataSourceConnection> createOrUpdateDataSourceConnectionWithResponse(
@@ -475,8 +474,9 @@ public class SearchIndexerClient {
             dataSource.setConnectionString("<unchanged>");
         }
         return Utility.executeRestCallWithExceptionHandling(() -> restClient.getDataSources()
-            .createOrUpdateWithResponse(dataSource.getName(), dataSource, ifMatch, null,
-                null, context), LOGGER);
+            .createOrUpdateWithResponse(dataSource.getName(), dataSource, ifMatch, null, ignoreResetRequirements, null,
+                context),
+            LOGGER);
     }
 
     /**
@@ -502,8 +502,8 @@ public class SearchIndexerClient {
      * @return the data source that was created.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SearchIndexerDataSourceConnection createDataSourceConnection(
-        SearchIndexerDataSourceConnection dataSourceConnection) {
+    public SearchIndexerDataSourceConnection
+        createDataSourceConnection(SearchIndexerDataSourceConnection dataSourceConnection) {
         return createDataSourceConnectionWithResponse(dataSourceConnection, Context.NONE).getValue();
     }
 
@@ -534,8 +534,8 @@ public class SearchIndexerClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SearchIndexerDataSourceConnection> createDataSourceConnectionWithResponse(
         SearchIndexerDataSourceConnection dataSourceConnection, Context context) {
-        return Utility.executeRestCallWithExceptionHandling(() -> restClient.getDataSources()
-            .createWithResponse(dataSourceConnection, null, context), LOGGER);
+        return Utility.executeRestCallWithExceptionHandling(
+            () -> restClient.getDataSources().createWithResponse(dataSourceConnection, null, context), LOGGER);
     }
 
     /**
@@ -585,10 +585,10 @@ public class SearchIndexerClient {
      * @return a response containing the DataSource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SearchIndexerDataSourceConnection> getDataSourceConnectionWithResponse(
-        String dataSourceConnectionName, Context context) {
-        return Utility.executeRestCallWithExceptionHandling(() -> restClient.getDataSources()
-            .getWithResponse(dataSourceConnectionName, null, context), LOGGER);
+    public Response<SearchIndexerDataSourceConnection>
+        getDataSourceConnectionWithResponse(String dataSourceConnectionName, Context context) {
+        return Utility.executeRestCallWithExceptionHandling(
+            () -> restClient.getDataSources().getWithResponse(dataSourceConnectionName, null, context), LOGGER);
     }
 
     /**
@@ -642,17 +642,16 @@ public class SearchIndexerClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SearchIndexerDataSourceConnection> listDataSourceConnections(Context context) {
         try {
-            return new PagedIterable<>(() ->
-                MappingUtils.mappingPagingDataSource(listDataSourceConnectionsWithResponse(null, context)));
+            return new PagedIterable<>(
+                () -> MappingUtils.mappingPagingDataSource(listDataSourceConnectionsWithResponse(null, context)));
         } catch (RuntimeException ex) {
             throw LOGGER.logExceptionAsError(ex);
         }
     }
 
-    private Response<ListDataSourcesResult> listDataSourceConnectionsWithResponse(String select,
-                                                                                        Context context) {
-        return Utility.executeRestCallWithExceptionHandling(() -> restClient.getDataSources()
-            .listWithResponse(select, null, context), LOGGER);
+    private Response<ListDataSourcesResult> listDataSourceConnectionsWithResponse(String select, Context context) {
+        return Utility.executeRestCallWithExceptionHandling(
+            () -> restClient.getDataSources().listWithResponse(select, null, context), LOGGER);
     }
 
     /**
@@ -702,8 +701,8 @@ public class SearchIndexerClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<String> listDataSourceConnectionNames(Context context) {
         try {
-            return new PagedIterable<>(() ->
-                MappingUtils.mappingPagingDataSourceNames(this.listDataSourceConnectionsWithResponse("name", context)));
+            return new PagedIterable<>(() -> MappingUtils
+                .mappingPagingDataSourceNames(this.listDataSourceConnectionsWithResponse("name", context)));
         } catch (RuntimeException ex) {
             throw LOGGER.logExceptionAsError(ex);
         }
@@ -758,8 +757,7 @@ public class SearchIndexerClient {
         boolean onlyIfUnchanged, Context context) {
         String eTag = onlyIfUnchanged ? dataSourceConnection.getETag() : null;
         return Utility.executeRestCallWithExceptionHandling(() -> restClient.getDataSources()
-            .deleteWithResponse(dataSourceConnection.getName(), eTag, null, null, context),
-            LOGGER);
+            .deleteWithResponse(dataSourceConnection.getName(), eTag, null, null, context), LOGGER);
     }
 
     /**
@@ -812,8 +810,8 @@ public class SearchIndexerClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SearchIndexer> createIndexerWithResponse(SearchIndexer indexer, Context context) {
-        return Utility.executeRestCallWithExceptionHandling(() -> restClient.getIndexers()
-            .createWithResponse(indexer, null, context), LOGGER);
+        return Utility.executeRestCallWithExceptionHandling(
+            () -> restClient.getIndexers().createWithResponse(indexer, null, context), LOGGER);
     }
 
     /**
@@ -882,8 +880,9 @@ public class SearchIndexerClient {
         }
         String ifMatch = onlyIfUnchanged ? indexer.getETag() : null;
         return Utility.executeRestCallWithExceptionHandling(() -> restClient.getIndexers()
-            .createOrUpdateWithResponse(indexer.getName(), indexer, ifMatch, null, null,
-                context), LOGGER);
+            .createOrUpdateWithResponse(indexer.getName(), indexer, ifMatch, null, ignoreResetRequirements,
+                disableCacheReprocessingChangeDetection, null, context),
+            LOGGER);
 
     }
 
@@ -936,16 +935,16 @@ public class SearchIndexerClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SearchIndexer> listIndexers(Context context) {
         try {
-            return new PagedIterable<>(() -> MappingUtils.mappingPagingSearchIndexer(
-                listIndexersWithResponse(null, context)));
+            return new PagedIterable<>(
+                () -> MappingUtils.mappingPagingSearchIndexer(listIndexersWithResponse(null, context)));
         } catch (RuntimeException ex) {
             throw LOGGER.logExceptionAsError(ex);
         }
     }
 
     private Response<ListIndexersResult> listIndexersWithResponse(String select, Context context) {
-        return Utility.executeRestCallWithExceptionHandling(() -> restClient.getIndexers()
-            .listWithResponse(select, null, context), LOGGER);
+        return Utility.executeRestCallWithExceptionHandling(
+            () -> restClient.getIndexers().listWithResponse(select, null, context), LOGGER);
     }
 
     /**
@@ -995,8 +994,8 @@ public class SearchIndexerClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<String> listIndexerNames(Context context) {
         try {
-            return new PagedIterable<>(() -> MappingUtils.mappingPagingSearchIndexerNames(
-                this.listIndexersWithResponse("name", context)));
+            return new PagedIterable<>(
+                () -> MappingUtils.mappingPagingSearchIndexerNames(this.listIndexersWithResponse("name", context)));
         } catch (RuntimeException ex) {
             throw LOGGER.logExceptionAsError(ex);
         }
@@ -1049,8 +1048,8 @@ public class SearchIndexerClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SearchIndexer> getIndexerWithResponse(String indexerName, Context context) {
-        return Utility.executeRestCallWithExceptionHandling(() -> restClient.getIndexers()
-                .getWithResponse(indexerName, null, context), LOGGER);
+        return Utility.executeRestCallWithExceptionHandling(
+            () -> restClient.getIndexers().getWithResponse(indexerName, null, context), LOGGER);
     }
 
     /**
@@ -1098,8 +1097,8 @@ public class SearchIndexerClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteIndexerWithResponse(SearchIndexer indexer, boolean onlyIfUnchanged, Context context) {
         String eTag = onlyIfUnchanged ? indexer.getETag() : null;
-        return Utility.executeRestCallWithExceptionHandling(() -> restClient.getIndexers()
-            .deleteWithResponse(indexer.getName(), eTag, null, null, context), LOGGER);
+        return Utility.executeRestCallWithExceptionHandling(
+            () -> restClient.getIndexers().deleteWithResponse(indexer.getName(), eTag, null, null, context), LOGGER);
     }
 
     /**
@@ -1143,8 +1142,8 @@ public class SearchIndexerClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> resetIndexerWithResponse(String indexerName, Context context) {
-        return Utility.executeRestCallWithExceptionHandling(() -> restClient.getIndexers()
-            .resetWithResponse(indexerName, null, context), LOGGER);
+        return Utility.executeRestCallWithExceptionHandling(
+            () -> restClient.getIndexers().resetWithResponse(indexerName, null, context), LOGGER);
     }
 
     /**
@@ -1188,8 +1187,8 @@ public class SearchIndexerClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> runIndexerWithResponse(String indexerName, Context context) {
-        return Utility.executeRestCallWithExceptionHandling(() -> restClient.getIndexers()
-            .runWithResponse(indexerName, null, context), LOGGER);
+        return Utility.executeRestCallWithExceptionHandling(
+            () -> restClient.getIndexers().runWithResponse(indexerName, null, context), LOGGER);
     }
 
     /**
@@ -1236,8 +1235,8 @@ public class SearchIndexerClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SearchIndexerStatus> getIndexerStatusWithResponse(String indexerName, Context context) {
-        return Utility.executeRestCallWithExceptionHandling(() -> restClient.getIndexers()
-            .getStatusWithResponse(indexerName, null, context), LOGGER);
+        return Utility.executeRestCallWithExceptionHandling(
+            () -> restClient.getIndexers().getStatusWithResponse(indexerName, null, context), LOGGER);
     }
 
     /**
@@ -1324,8 +1323,8 @@ public class SearchIndexerClient {
         if (skillset == null) {
             throw LOGGER.logExceptionAsError(new NullPointerException("'skillset' cannot be null."));
         }
-        return Utility.executeRestCallWithExceptionHandling(() -> restClient.getSkillsets()
-            .createWithResponse(skillset, null, context), LOGGER);
+        return Utility.executeRestCallWithExceptionHandling(
+            () -> restClient.getSkillsets().createWithResponse(skillset, null, context), LOGGER);
     }
 
     /**
@@ -1375,8 +1374,8 @@ public class SearchIndexerClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SearchIndexerSkillset> getSkillsetWithResponse(String skillsetName, Context context) {
-        return Utility.executeRestCallWithExceptionHandling(() -> restClient.getSkillsets()
-            .getWithResponse(skillsetName, null, context), LOGGER);
+        return Utility.executeRestCallWithExceptionHandling(
+            () -> restClient.getSkillsets().getWithResponse(skillsetName, null, context), LOGGER);
     }
 
     /**
@@ -1429,16 +1428,16 @@ public class SearchIndexerClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SearchIndexerSkillset> listSkillsets(Context context) {
         try {
-            return new PagedIterable<>(() -> MappingUtils.mappingPagingSkillset(
-                listSkillsetsWithResponse(null, context)));
+            return new PagedIterable<>(
+                () -> MappingUtils.mappingPagingSkillset(listSkillsetsWithResponse(null, context)));
         } catch (RuntimeException ex) {
             throw LOGGER.logExceptionAsError(ex);
         }
     }
 
     private Response<ListSkillsetsResult> listSkillsetsWithResponse(String select, Context context) {
-        return Utility.executeRestCallWithExceptionHandling(() -> this.restClient.getSkillsets()
-            .listWithResponse(select, null, context), LOGGER);
+        return Utility.executeRestCallWithExceptionHandling(
+            () -> this.restClient.getSkillsets().listWithResponse(select, null, context), LOGGER);
     }
 
     /**
@@ -1488,8 +1487,8 @@ public class SearchIndexerClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<String> listSkillsetNames(Context context) {
         try {
-            return new PagedIterable<>(() -> MappingUtils.mappingPagingSkillsetNames(
-                listSkillsetsWithResponse("name", context)));
+            return new PagedIterable<>(
+                () -> MappingUtils.mappingPagingSkillsetNames(listSkillsetsWithResponse("name", context)));
         } catch (RuntimeException ex) {
             throw LOGGER.logExceptionAsError(ex);
         }
@@ -1560,8 +1559,9 @@ public class SearchIndexerClient {
         }
         String ifMatch = onlyIfUnchanged ? skillset.getETag() : null;
         return Utility.executeRestCallWithExceptionHandling(() -> restClient.getSkillsets()
-            .createOrUpdateWithResponse(skillset.getName(), skillset, ifMatch, null, null,
-                context), LOGGER);
+            .createOrUpdateWithResponse(skillset.getName(), skillset, ifMatch, null, ignoreResetRequirements,
+                disableCacheReprocessingChangeDetection, null, context),
+            LOGGER);
     }
 
     /**
@@ -1610,7 +1610,7 @@ public class SearchIndexerClient {
     public Response<Void> deleteSkillsetWithResponse(SearchIndexerSkillset skillset, boolean onlyIfUnchanged,
         Context context) {
         String eTag = onlyIfUnchanged ? skillset.getETag() : null;
-        return Utility.executeRestCallWithExceptionHandling(() -> restClient.getSkillsets()
-            .deleteWithResponse(skillset.getName(), eTag, null, null, context), LOGGER);
+        return Utility.executeRestCallWithExceptionHandling(
+            () -> restClient.getSkillsets().deleteWithResponse(skillset.getName(), eTag, null, null, context), LOGGER);
     }
 }

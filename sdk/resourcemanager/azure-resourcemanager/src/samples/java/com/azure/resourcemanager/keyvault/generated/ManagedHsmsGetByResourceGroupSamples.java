@@ -4,19 +4,21 @@
 
 package com.azure.resourcemanager.keyvault.generated;
 
-/** Samples for ManagedHsms GetByResourceGroup. */
+/**
+ * Samples for ManagedHsms GetByResourceGroup.
+ */
 public final class ManagedHsmsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2023-07-01/examples/ManagedHsm_Get.json
+     * x-ms-original-file:
+     * specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2023-07-01/examples/ManagedHsm_Get.json
      */
     /**
      * Sample code: Retrieve a managed HSM Pool.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void retrieveAManagedHSMPool(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .vaults()
+        azure.vaults()
             .manager()
             .serviceClient()
             .getManagedHsms()

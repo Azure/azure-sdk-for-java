@@ -1,6 +1,6 @@
 ## Release History
 
-### 4.34.0-beta.1 (Unreleased)
+### 4.35.0-beta.1 (Unreleased)
 
 #### Features Added
 
@@ -9,6 +9,20 @@
 #### Bugs Fixed
 
 #### Other Changes
+
+### 4.34.0 (2024-10-10)
+> [!IMPORTANT]
+> We strongly recommend our customers to use version 4.34.0 and above.
+#### Bugs Fixed
+* Fixed an issue to avoid transient `IllegalArgumentException` due to duplicate json properties for the `uniqueKeyPolicy` property in `DocumentCollection`. - See [PR 41608](https://github.com/Azure/azure-sdk-for-java/pull/41608) and [PR 42244](https://github.com/Azure/azure-sdk-for-java/pull/42244)
+
+### 4.33.1 (2024-08-23)
+
+#### Bugs Fixed
+* Fixed an issue to avoid transient `IllegalArgumentException` due to duplicate json properties for the `uniqueKeyPolicy` property. - See [PR 41608](https://github.com/Azure/azure-sdk-for-java/pull/41608)
+
+#### Other Changes
+* Added retries on a new `BulkWriter` instance when first attempt to commit times out for bulk write jobs. - See [PR 41553](https://github.com/Azure/azure-sdk-for-java/pull/41553)
 
 ### 4.33.0 (2024-06-22)
 
@@ -225,8 +239,6 @@
 * Reduced the logging noise level on CancellationExceptions from `RntbdReporter.reportIssue`. - See [PR 32175](https://github.com/Azure/azure-sdk-for-java/pull/32175)
 
 ### 4.14.1 (2022-10-07)
-> [!IMPORTANT]
-> We strongly recommend our customers to use version 4.14.1 and above.
 #### Bugs Fixed
 * Fixed incorrect RU metric reporting in micrometer metrics. - See [PR 31307](https://github.com/Azure/azure-sdk-for-java/pull/31307)
 

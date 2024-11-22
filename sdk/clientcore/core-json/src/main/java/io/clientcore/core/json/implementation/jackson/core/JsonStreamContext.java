@@ -1,5 +1,6 @@
 // Original file from https://github.com/FasterXML/jackson-core under Apache-2.0 license.
-/* Jackson JSON-processor.
+/*
+ * Jackson JSON-processor.
  *
  * Copyright (c) 2007- Tatu Saloranta, tatu.saloranta@iki.fi
  */
@@ -19,8 +20,7 @@ import io.clientcore.core.json.implementation.jackson.core.io.ContentReference;
  * example, output within Array context can differ from that of
  * Object context.
  */
-public abstract class JsonStreamContext
-{
+public abstract class JsonStreamContext {
     // // // Type constants used internally
     // // // (but exposed publicly as of 2.12 as possibly needed)
 
@@ -54,12 +54,13 @@ public abstract class JsonStreamContext
     protected int _index;
 
     /*
-    /**********************************************************
-    /* Life-cycle
-    /**********************************************************
+     * /**********************************************************
+     * /* Life-cycle
+     * /**********************************************************
      */
 
-    protected JsonStreamContext() { }
+    protected JsonStreamContext() {
+    }
 
     /**
      * Copy constructor used by sub-classes for creating copies for
@@ -81,9 +82,9 @@ public abstract class JsonStreamContext
     }
 
     /*
-    /**********************************************************
-    /* Public API, accessors
-    /**********************************************************
+     * /**********************************************************
+     * /* Public API, accessors
+     * /**********************************************************
      */
 
     /**
@@ -100,7 +101,9 @@ public abstract class JsonStreamContext
      *
      * @return {@code True} if this context represents an Array; {@code false} otherwise
      */
-    public final boolean inArray() { return _type == TYPE_ARRAY; }
+    public final boolean inArray() {
+        return _type == TYPE_ARRAY;
+    }
 
     /**
      * Method that returns true if this context is a Root context;
@@ -109,7 +112,9 @@ public abstract class JsonStreamContext
      *
      * @return {@code True} if this context represents a sequence of Root values; {@code false} otherwise
      */
-    public final boolean inRoot() { return _type == TYPE_ROOT; }
+    public final boolean inRoot() {
+        return _type == TYPE_ROOT;
+    }
 
     /**
      * Method that returns true if this context is an Object context;
@@ -117,7 +122,9 @@ public abstract class JsonStreamContext
      *
      * @return {@code True} if this context represents an Object; {@code false} otherwise
      */
-    public final boolean inObject() { return _type == TYPE_OBJECT; }
+    public final boolean inObject() {
+        return _type == TYPE_OBJECT;
+    }
 
     /**
      * @return Type description String
@@ -127,9 +134,14 @@ public abstract class JsonStreamContext
     @Deprecated // since 2.8
     public final String getTypeDesc() {
         switch (_type) {
-        case TYPE_ROOT: return "ROOT";
-        case TYPE_ARRAY: return "ARRAY";
-        case TYPE_OBJECT: return "OBJECT";
+            case TYPE_ROOT:
+                return "ROOT";
+
+            case TYPE_ARRAY:
+                return "ARRAY";
+
+            case TYPE_OBJECT:
+                return "OBJECT";
         }
         return "?";
     }
@@ -145,60 +157,23 @@ public abstract class JsonStreamContext
      */
     public String typeDesc() {
         switch (_type) {
-        case TYPE_ROOT: return "root";
-        case TYPE_ARRAY: return "Array";
-        case TYPE_OBJECT: return "Object";
+            case TYPE_ROOT:
+                return "root";
+
+            case TYPE_ARRAY:
+                return "Array";
+
+            case TYPE_OBJECT:
+                return "Object";
         }
         return "?";
     }
 
     /**
-     * @return Number of entries that are complete and started.
-     */
-    public final int getEntryCount() { return _index + 1; }
-
-    /**
      * @return Index of the currently processed entry, if any
      */
-    public final int getCurrentIndex() { return (_index < 0) ? 0 : _index; }
-
-    /**
-     * Method that may be called to verify whether this context has valid index:
-     * will return `false` before the first entry of Object context or before
-     * first element of Array context; otherwise returns `true`.
-     *
-     * @return {@code True} if this context has value index to access, {@code false} otherwise
-     *
-     * @since 2.9
-     */
-    public boolean hasCurrentIndex() { return _index >= 0; }
-
-    /**
-     * Method that may be called to check if this context is either:
-     *<ul>
-     * <li>Object, with at least one entry written (partially or completely)
-     *  </li>
-     * <li>Array, with at least one entry written (partially or completely)
-     *  </li>
-     *</ul>
-     * and if so, return `true`; otherwise return `false`. Latter case includes
-     * Root context (always), and Object/Array contexts before any entries/elements
-     * have been read or written.
-     *<p>
-     * Method is mostly used to determine whether this context should be used for
-     * constructing {@link JsonPointer}
-     *
-     * @return {@code True} if this context has value path segment to access, {@code false} otherwise
-     *
-     * @since 2.9
-     */
-    public boolean hasPathSegment() {
-        if (_type == TYPE_OBJECT) {
-            return hasCurrentName();
-        } else if (_type == TYPE_ARRAY) {
-            return hasCurrentIndex();
-        }
-        return false;
+    public final int getCurrentIndex() {
+        return Math.max(_index, 0);
     }
 
     /**
@@ -209,14 +184,6 @@ public abstract class JsonStreamContext
      * @return Current field name within context, if any; {@code null} if none
      */
     public abstract String getCurrentName();
-
-    /**
-     * @return {@code True} if a call to {@link #getCurrentName()} would return non-{@code null}
-     *    name; {@code false} otherwise
-     *
-     * @since 2.9
-     */
-    public boolean hasCurrentName() { return getCurrentName() != null; }
 
     /**
      * Method for accessing currently active value being used by data-binding
@@ -245,34 +212,7 @@ public abstract class JsonStreamContext
      *
      * @since 2.5
      */
-    public void setCurrentValue(Object v) { }
-
-    /**
-     * Factory method for constructing a {@link JsonPointer} that points to the current
-     * location within the stream that this context is for, excluding information about
-     * "root context" (only relevant for multi-root-value cases)
-     *
-     * @return Pointer instance constructed
-     *
-     * @since 2.9
-     */
-    public JsonPointer pathAsPointer() {
-        return JsonPointer.forPath(this, false);
-    }
-
-    /**
-     * Factory method for constructing a {@link JsonPointer} that points to the current
-     * location within the stream that this context is for, optionally including
-     * "root value index"
-     *
-     * @param includeRoot Whether root-value offset is included as the first segment or not;
-     *
-     * @return Pointer instance constructed
-     *
-     * @since 2.9
-     */
-    public JsonPointer pathAsPointer(boolean includeRoot) {
-        return JsonPointer.forPath(this, includeRoot);
+    public void setCurrentValue(Object v) {
     }
 
     /**
@@ -318,27 +258,29 @@ public abstract class JsonStreamContext
     public String toString() {
         StringBuilder sb = new StringBuilder(64);
         switch (_type) {
-        case TYPE_ROOT:
-            sb.append("/");
-            break;
-        case TYPE_ARRAY:
-            sb.append('[');
-            sb.append(getCurrentIndex());
-            sb.append(']');
-            break;
-        case TYPE_OBJECT:
-        default:
-            sb.append('{');
-            String currentName = getCurrentName();
-            if (currentName != null) {
-                sb.append('"');
-                CharTypes.appendQuoted(sb, currentName);
-                sb.append('"');
-            } else {
-                sb.append('?');
-            }
-            sb.append('}');
-            break;
+            case TYPE_ROOT:
+                sb.append("/");
+                break;
+
+            case TYPE_ARRAY:
+                sb.append('[');
+                sb.append(getCurrentIndex());
+                sb.append(']');
+                break;
+
+            case TYPE_OBJECT:
+            default:
+                sb.append('{');
+                String currentName = getCurrentName();
+                if (currentName != null) {
+                    sb.append('"');
+                    CharTypes.appendQuoted(sb, currentName);
+                    sb.append('"');
+                } else {
+                    sb.append('?');
+                }
+                sb.append('}');
+                break;
         }
         return sb.toString();
     }

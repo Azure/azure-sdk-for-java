@@ -41,7 +41,7 @@ final class ConnectionCacheWrapper {
     }
 
     String getFullyQualifiedNamespace() {
-        return isV2 ?  cache.getFullyQualifiedNamespace() : processor.getFullyQualifiedNamespace();
+        return isV2 ? cache.getFullyQualifiedNamespace() : processor.getFullyQualifiedNamespace();
     }
 
     AmqpRetryOptions getRetryOptions() {

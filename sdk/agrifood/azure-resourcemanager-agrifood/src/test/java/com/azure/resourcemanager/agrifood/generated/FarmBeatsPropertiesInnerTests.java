@@ -14,20 +14,17 @@ import org.junit.jupiter.api.Test;
 public final class FarmBeatsPropertiesInnerTests {
     @Test
     public void testDeserialize() {
-        FarmBeatsPropertiesInner model =
-            BinaryData
-                .fromString(
-                    "{\"instanceUri\":\"nguitnwuizgazxu\",\"provisioningState\":\"Creating\",\"sensorIntegration\":{\"enabled\":\"kyfi\",\"provisioningState\":\"Updating\"},\"publicNetworkAccess\":\"Hybrid\",\"privateEndpointConnections\":{\"properties\":{\"provisioningState\":\"Failed\"},\"id\":\"htymw\",\"name\":\"sdkf\",\"type\":\"hwxmnteiwa\"}}")
-                .toObject(FarmBeatsPropertiesInner.class);
+        FarmBeatsPropertiesInner model = BinaryData.fromString(
+            "{\"instanceUri\":\"nguitnwuizgazxu\",\"provisioningState\":\"Creating\",\"sensorIntegration\":{\"enabled\":\"kyfi\",\"provisioningState\":\"Updating\"},\"publicNetworkAccess\":\"Hybrid\",\"privateEndpointConnections\":{\"properties\":{\"provisioningState\":\"Failed\"},\"id\":\"htymw\",\"name\":\"sdkf\",\"type\":\"hwxmnteiwa\"}}")
+            .toObject(FarmBeatsPropertiesInner.class);
         Assertions.assertEquals("kyfi", model.sensorIntegration().enabled());
         Assertions.assertEquals(PublicNetworkAccess.HYBRID, model.publicNetworkAccess());
     }
 
     @Test
     public void testSerialize() {
-        FarmBeatsPropertiesInner model =
-            new FarmBeatsPropertiesInner()
-                .withSensorIntegration(new SensorIntegration().withEnabled("kyfi"))
+        FarmBeatsPropertiesInner model
+            = new FarmBeatsPropertiesInner().withSensorIntegration(new SensorIntegration().withEnabled("kyfi"))
                 .withPublicNetworkAccess(PublicNetworkAccess.HYBRID);
         model = BinaryData.fromObject(model).toObject(FarmBeatsPropertiesInner.class);
         Assertions.assertEquals("kyfi", model.sensorIntegration().enabled());

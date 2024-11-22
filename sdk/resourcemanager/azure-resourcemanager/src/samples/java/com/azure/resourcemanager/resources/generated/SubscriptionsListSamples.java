@@ -9,7 +9,8 @@ package com.azure.resourcemanager.resources.generated;
  */
 public final class SubscriptionsListSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2022-12-01/examples/GetSubscriptions.json
+     * x-ms-original-file:
+     * specification/resources/resource-manager/Microsoft.Resources/stable/2022-12-01/examples/GetSubscriptions.json
      */
     /**
      * Sample code: GetAllSubscriptions.

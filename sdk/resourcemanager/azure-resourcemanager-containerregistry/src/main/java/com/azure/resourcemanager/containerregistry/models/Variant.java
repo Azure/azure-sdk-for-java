@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class Variant extends ExpandableStringEnum<Variant> {
      * @param name a name to look for.
      * @return the corresponding Variant.
      */
-    @JsonCreator
     public static Variant fromString(String name) {
         return fromString(name, Variant.class);
     }

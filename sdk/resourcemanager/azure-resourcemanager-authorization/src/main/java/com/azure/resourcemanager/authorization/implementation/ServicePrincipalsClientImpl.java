@@ -28,22 +28,28 @@ import com.azure.resourcemanager.authorization.fluent.models.ServicePrincipalsAd
 import com.azure.resourcemanager.authorization.fluent.models.ServicePrincipalsAddPasswordRequestBodyInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ServicePrincipalsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ServicePrincipalsClient.
+ */
 public final class ServicePrincipalsClientImpl implements ServicePrincipalsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ServicePrincipalsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final MicrosoftGraphClientImpl client;
 
     /**
      * Initializes an instance of ServicePrincipalsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ServicePrincipalsClientImpl(MicrosoftGraphClientImpl client) {
-        this.service =
-            RestProxy.create(ServicePrincipalsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(ServicePrincipalsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -54,32 +60,28 @@ public final class ServicePrincipalsClientImpl implements ServicePrincipalsClien
     @Host("{$host}")
     @ServiceInterface(name = "MicrosoftGraphClient")
     public interface ServicePrincipalsService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Post("/servicePrincipals/{servicePrincipal-id}/microsoft.graph.addKey")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(OdataErrorMainException.class)
-        Mono<Response<MicrosoftGraphKeyCredentialInner>> addKey(
-            @HostParam("$host") String endpoint,
+        Mono<Response<MicrosoftGraphKeyCredentialInner>> addKey(@HostParam("$host") String endpoint,
             @PathParam("servicePrincipal-id") String servicePrincipalId,
             @BodyParam("application/json") ServicePrincipalsAddKeyRequestBodyInner body,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Post("/servicePrincipals/{servicePrincipal-id}/microsoft.graph.addPassword")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(OdataErrorMainException.class)
-        Mono<Response<MicrosoftGraphPasswordCredentialInner>> addPassword(
-            @HostParam("$host") String endpoint,
+        Mono<Response<MicrosoftGraphPasswordCredentialInner>> addPassword(@HostParam("$host") String endpoint,
             @PathParam("servicePrincipal-id") String servicePrincipalId,
             @BodyParam("application/json") ServicePrincipalsAddPasswordRequestBodyInner body,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Invoke action addKey.
-     *
+     * 
      * @param servicePrincipalId key: id of servicePrincipal.
      * @param body Action parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -88,13 +90,11 @@ public final class ServicePrincipalsClientImpl implements ServicePrincipalsClien
      * @return keyCredential along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<MicrosoftGraphKeyCredentialInner>> addKeyWithResponseAsync(
-        String servicePrincipalId, ServicePrincipalsAddKeyRequestBodyInner body) {
+    public Mono<Response<MicrosoftGraphKeyCredentialInner>> addKeyWithResponseAsync(String servicePrincipalId,
+        ServicePrincipalsAddKeyRequestBodyInner body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (servicePrincipalId == null) {
             return Mono
@@ -114,7 +114,7 @@ public final class ServicePrincipalsClientImpl implements ServicePrincipalsClien
 
     /**
      * Invoke action addKey.
-     *
+     * 
      * @param servicePrincipalId key: id of servicePrincipal.
      * @param body Action parameters.
      * @param context The context to associate with this operation.
@@ -124,13 +124,11 @@ public final class ServicePrincipalsClientImpl implements ServicePrincipalsClien
      * @return keyCredential along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<MicrosoftGraphKeyCredentialInner>> addKeyWithResponseAsync(
-        String servicePrincipalId, ServicePrincipalsAddKeyRequestBodyInner body, Context context) {
+    private Mono<Response<MicrosoftGraphKeyCredentialInner>> addKeyWithResponseAsync(String servicePrincipalId,
+        ServicePrincipalsAddKeyRequestBodyInner body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (servicePrincipalId == null) {
             return Mono
@@ -148,7 +146,7 @@ public final class ServicePrincipalsClientImpl implements ServicePrincipalsClien
 
     /**
      * Invoke action addKey.
-     *
+     * 
      * @param servicePrincipalId key: id of servicePrincipal.
      * @param body Action parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -157,14 +155,14 @@ public final class ServicePrincipalsClientImpl implements ServicePrincipalsClien
      * @return keyCredential on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<MicrosoftGraphKeyCredentialInner> addKeyAsync(
-        String servicePrincipalId, ServicePrincipalsAddKeyRequestBodyInner body) {
+    public Mono<MicrosoftGraphKeyCredentialInner> addKeyAsync(String servicePrincipalId,
+        ServicePrincipalsAddKeyRequestBodyInner body) {
         return addKeyWithResponseAsync(servicePrincipalId, body).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Invoke action addKey.
-     *
+     * 
      * @param servicePrincipalId key: id of servicePrincipal.
      * @param body Action parameters.
      * @param context The context to associate with this operation.
@@ -174,14 +172,14 @@ public final class ServicePrincipalsClientImpl implements ServicePrincipalsClien
      * @return keyCredential along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<MicrosoftGraphKeyCredentialInner> addKeyWithResponse(
-        String servicePrincipalId, ServicePrincipalsAddKeyRequestBodyInner body, Context context) {
+    public Response<MicrosoftGraphKeyCredentialInner> addKeyWithResponse(String servicePrincipalId,
+        ServicePrincipalsAddKeyRequestBodyInner body, Context context) {
         return addKeyWithResponseAsync(servicePrincipalId, body, context).block();
     }
 
     /**
      * Invoke action addKey.
-     *
+     * 
      * @param servicePrincipalId key: id of servicePrincipal.
      * @param body Action parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -190,14 +188,14 @@ public final class ServicePrincipalsClientImpl implements ServicePrincipalsClien
      * @return keyCredential.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public MicrosoftGraphKeyCredentialInner addKey(
-        String servicePrincipalId, ServicePrincipalsAddKeyRequestBodyInner body) {
+    public MicrosoftGraphKeyCredentialInner addKey(String servicePrincipalId,
+        ServicePrincipalsAddKeyRequestBodyInner body) {
         return addKeyWithResponse(servicePrincipalId, body, Context.NONE).getValue();
     }
 
     /**
      * Invoke action addPassword.
-     *
+     * 
      * @param servicePrincipalId key: id of servicePrincipal.
      * @param body Action parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -206,13 +204,11 @@ public final class ServicePrincipalsClientImpl implements ServicePrincipalsClien
      * @return passwordCredential along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<MicrosoftGraphPasswordCredentialInner>> addPasswordWithResponseAsync(
-        String servicePrincipalId, ServicePrincipalsAddPasswordRequestBodyInner body) {
+    public Mono<Response<MicrosoftGraphPasswordCredentialInner>> addPasswordWithResponseAsync(String servicePrincipalId,
+        ServicePrincipalsAddPasswordRequestBodyInner body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (servicePrincipalId == null) {
             return Mono
@@ -232,7 +228,7 @@ public final class ServicePrincipalsClientImpl implements ServicePrincipalsClien
 
     /**
      * Invoke action addPassword.
-     *
+     * 
      * @param servicePrincipalId key: id of servicePrincipal.
      * @param body Action parameters.
      * @param context The context to associate with this operation.
@@ -245,10 +241,8 @@ public final class ServicePrincipalsClientImpl implements ServicePrincipalsClien
     private Mono<Response<MicrosoftGraphPasswordCredentialInner>> addPasswordWithResponseAsync(
         String servicePrincipalId, ServicePrincipalsAddPasswordRequestBodyInner body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (servicePrincipalId == null) {
             return Mono
@@ -266,7 +260,7 @@ public final class ServicePrincipalsClientImpl implements ServicePrincipalsClien
 
     /**
      * Invoke action addPassword.
-     *
+     * 
      * @param servicePrincipalId key: id of servicePrincipal.
      * @param body Action parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -275,14 +269,14 @@ public final class ServicePrincipalsClientImpl implements ServicePrincipalsClien
      * @return passwordCredential on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<MicrosoftGraphPasswordCredentialInner> addPasswordAsync(
-        String servicePrincipalId, ServicePrincipalsAddPasswordRequestBodyInner body) {
+    public Mono<MicrosoftGraphPasswordCredentialInner> addPasswordAsync(String servicePrincipalId,
+        ServicePrincipalsAddPasswordRequestBodyInner body) {
         return addPasswordWithResponseAsync(servicePrincipalId, body).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Invoke action addPassword.
-     *
+     * 
      * @param servicePrincipalId key: id of servicePrincipal.
      * @param body Action parameters.
      * @param context The context to associate with this operation.
@@ -292,14 +286,14 @@ public final class ServicePrincipalsClientImpl implements ServicePrincipalsClien
      * @return passwordCredential along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<MicrosoftGraphPasswordCredentialInner> addPasswordWithResponse(
-        String servicePrincipalId, ServicePrincipalsAddPasswordRequestBodyInner body, Context context) {
+    public Response<MicrosoftGraphPasswordCredentialInner> addPasswordWithResponse(String servicePrincipalId,
+        ServicePrincipalsAddPasswordRequestBodyInner body, Context context) {
         return addPasswordWithResponseAsync(servicePrincipalId, body, context).block();
     }
 
     /**
      * Invoke action addPassword.
-     *
+     * 
      * @param servicePrincipalId key: id of servicePrincipal.
      * @param body Action parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -308,8 +302,8 @@ public final class ServicePrincipalsClientImpl implements ServicePrincipalsClien
      * @return passwordCredential.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public MicrosoftGraphPasswordCredentialInner addPassword(
-        String servicePrincipalId, ServicePrincipalsAddPasswordRequestBodyInner body) {
+    public MicrosoftGraphPasswordCredentialInner addPassword(String servicePrincipalId,
+        ServicePrincipalsAddPasswordRequestBodyInner body) {
         return addPasswordWithResponse(servicePrincipalId, body, Context.NONE).getValue();
     }
 }

@@ -16,12 +16,12 @@ import java.util.Collection;
  */
 public final class DiskDeleteOptionTypes extends ExpandableStringEnum<DiskDeleteOptionTypes> {
     /**
-     * Static value Delete for DiskDeleteOptionTypes.
+     * If this value is used, the managed disk is deleted when VM gets deleted.
      */
     public static final DiskDeleteOptionTypes DELETE = fromString("Delete");
 
     /**
-     * Static value Detach for DiskDeleteOptionTypes.
+     * If this value is used, the managed disk is retained after VM gets deleted.
      */
     public static final DiskDeleteOptionTypes DETACH = fromString("Detach");
 

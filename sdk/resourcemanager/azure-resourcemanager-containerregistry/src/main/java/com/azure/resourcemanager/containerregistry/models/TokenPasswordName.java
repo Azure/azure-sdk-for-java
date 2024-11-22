@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class TokenPasswordName extends ExpandableStringEnum<TokenPasswordN
      * @param name a name to look for.
      * @return the corresponding TokenPasswordName.
      */
-    @JsonCreator
     public static TokenPasswordName fromString(String name) {
         return fromString(name, TokenPasswordName.class);
     }

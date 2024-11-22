@@ -4,18 +4,23 @@
 
 package com.azure.resourcemanager.botservice.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Defines values for Key. */
+/**
+ * Determines which key is to be regenerated.
+ */
 public enum Key {
-    /** Enum value key1. */
+    /**
+     * Enum value key1.
+     */
     KEY1("key1"),
 
-    /** Enum value key2. */
+    /**
+     * Enum value key2.
+     */
     KEY2("key2");
 
-    /** The actual serialized value for a Key instance. */
+    /**
+     * The actual serialized value for a Key instance.
+     */
     private final String value;
 
     Key(String value) {
@@ -24,12 +29,14 @@ public enum Key {
 
     /**
      * Parses a serialized value to a Key instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed Key object, or null if unable to parse.
      */
-    @JsonCreator
     public static Key fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         Key[] items = Key.values();
         for (Key item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,7 +46,9 @@ public enum Key {
         return null;
     }
 
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

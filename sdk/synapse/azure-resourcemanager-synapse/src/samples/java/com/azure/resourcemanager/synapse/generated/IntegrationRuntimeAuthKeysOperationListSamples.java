@@ -4,23 +4,22 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-/** Samples for IntegrationRuntimeAuthKeysOperation List. */
+/**
+ * Samples for IntegrationRuntimeAuthKeysOperation List.
+ */
 public final class IntegrationRuntimeAuthKeysOperationListSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/IntegrationRuntimes_ListAuthKeys.json
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/
+     * IntegrationRuntimes_ListAuthKeys.json
      */
     /**
      * Sample code: List auth keys.
-     *
+     * 
      * @param manager Entry point to SynapseManager.
      */
     public static void listAuthKeys(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager
-            .integrationRuntimeAuthKeysOperations()
-            .listWithResponse(
-                "exampleResourceGroup",
-                "exampleWorkspace",
-                "exampleIntegrationRuntime",
+        manager.integrationRuntimeAuthKeysOperations()
+            .listWithResponse("exampleResourceGroup", "exampleWorkspace", "exampleIntegrationRuntime",
                 com.azure.core.util.Context.NONE);
     }
 }

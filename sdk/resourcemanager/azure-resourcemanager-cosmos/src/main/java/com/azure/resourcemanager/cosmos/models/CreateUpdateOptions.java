@@ -5,24 +5,26 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * CreateUpdateOptions are a list of key-value pairs that describe the resource. Supported keys are "If-Match",
  * "If-None-Match", "Session-Token" and "Throughput".
  */
 @Fluent
-public final class CreateUpdateOptions {
+public final class CreateUpdateOptions implements JsonSerializable<CreateUpdateOptions> {
     /*
      * Request Units per second. For example, "throughput": 10000.
      */
-    @JsonProperty(value = "throughput")
     private Integer throughput;
 
     /*
      * Specifies the Autoscale settings. Note: Either throughput or autoscaleSettings is required, but not both.
      */
-    @JsonProperty(value = "autoscaleSettings")
     private AutoscaleSettings autoscaleSettings;
 
     /**
@@ -82,5 +84,44 @@ public final class CreateUpdateOptions {
         if (autoscaleSettings() != null) {
             autoscaleSettings().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("throughput", this.throughput);
+        jsonWriter.writeJsonField("autoscaleSettings", this.autoscaleSettings);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CreateUpdateOptions from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CreateUpdateOptions if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CreateUpdateOptions.
+     */
+    public static CreateUpdateOptions fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CreateUpdateOptions deserializedCreateUpdateOptions = new CreateUpdateOptions();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("throughput".equals(fieldName)) {
+                    deserializedCreateUpdateOptions.throughput = reader.getNullable(JsonReader::getInt);
+                } else if ("autoscaleSettings".equals(fieldName)) {
+                    deserializedCreateUpdateOptions.autoscaleSettings = AutoscaleSettings.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCreateUpdateOptions;
+        });
     }
 }

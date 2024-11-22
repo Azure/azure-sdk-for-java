@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Parameters that define the retention policy for flow log.
  */
 @Fluent
-public final class RetentionPolicyParameters {
+public final class RetentionPolicyParameters implements JsonSerializable<RetentionPolicyParameters> {
     /*
      * Number of days to retain flow log records.
      */
-    @JsonProperty(value = "days")
     private Integer days;
 
     /*
      * Flag to enable/disable retention.
      */
-    @JsonProperty(value = "enabled")
     private Boolean enabled;
 
     /**
@@ -76,5 +78,44 @@ public final class RetentionPolicyParameters {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("days", this.days);
+        jsonWriter.writeBooleanField("enabled", this.enabled);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RetentionPolicyParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RetentionPolicyParameters if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RetentionPolicyParameters.
+     */
+    public static RetentionPolicyParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RetentionPolicyParameters deserializedRetentionPolicyParameters = new RetentionPolicyParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("days".equals(fieldName)) {
+                    deserializedRetentionPolicyParameters.days = reader.getNullable(JsonReader::getInt);
+                } else if ("enabled".equals(fieldName)) {
+                    deserializedRetentionPolicyParameters.enabled = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRetentionPolicyParameters;
+        });
     }
 }

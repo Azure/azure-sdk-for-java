@@ -77,7 +77,6 @@ public final class GatewayUpdate extends ResourceUpdate {
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }

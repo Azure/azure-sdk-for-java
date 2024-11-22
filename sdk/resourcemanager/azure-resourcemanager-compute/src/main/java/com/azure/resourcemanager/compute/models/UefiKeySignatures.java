@@ -5,36 +5,36 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Additional UEFI key signatures that will be added to the image in addition to the signature templates.
  */
 @Fluent
-public final class UefiKeySignatures {
+public final class UefiKeySignatures implements JsonSerializable<UefiKeySignatures> {
     /*
      * The Platform Key of this image version.
      */
-    @JsonProperty(value = "pk")
     private UefiKey pk;
 
     /*
      * The Key Encryption Keys of this image version.
      */
-    @JsonProperty(value = "kek")
     private List<UefiKey> kek;
 
     /*
      * The database of UEFI keys for this image version.
      */
-    @JsonProperty(value = "db")
     private List<UefiKey> db;
 
     /*
      * The database of revoked UEFI keys for this image version.
      */
-    @JsonProperty(value = "dbx")
     private List<UefiKey> dbx;
 
     /**
@@ -141,5 +141,53 @@ public final class UefiKeySignatures {
         if (dbx() != null) {
             dbx().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("pk", this.pk);
+        jsonWriter.writeArrayField("kek", this.kek, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("db", this.db, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("dbx", this.dbx, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UefiKeySignatures from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UefiKeySignatures if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the UefiKeySignatures.
+     */
+    public static UefiKeySignatures fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UefiKeySignatures deserializedUefiKeySignatures = new UefiKeySignatures();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("pk".equals(fieldName)) {
+                    deserializedUefiKeySignatures.pk = UefiKey.fromJson(reader);
+                } else if ("kek".equals(fieldName)) {
+                    List<UefiKey> kek = reader.readArray(reader1 -> UefiKey.fromJson(reader1));
+                    deserializedUefiKeySignatures.kek = kek;
+                } else if ("db".equals(fieldName)) {
+                    List<UefiKey> db = reader.readArray(reader1 -> UefiKey.fromJson(reader1));
+                    deserializedUefiKeySignatures.db = db;
+                } else if ("dbx".equals(fieldName)) {
+                    List<UefiKey> dbx = reader.readArray(reader1 -> UefiKey.fromJson(reader1));
+                    deserializedUefiKeySignatures.dbx = dbx;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUefiKeySignatures;
+        });
     }
 }

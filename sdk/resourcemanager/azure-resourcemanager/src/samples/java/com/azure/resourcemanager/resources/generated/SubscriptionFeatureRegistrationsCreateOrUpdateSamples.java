@@ -12,7 +12,9 @@ import com.azure.resourcemanager.resources.models.SubscriptionFeatureRegistratio
  */
 public final class SubscriptionFeatureRegistrationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Features/stable/2021-07-01/examples/FeatureRegistration/SubscriptionFeatureRegistrationPUT.json
+     * x-ms-original-file:
+     * specification/resources/resource-manager/Microsoft.Features/stable/2021-07-01/examples/FeatureRegistration/
+     * SubscriptionFeatureRegistrationPUT.json
      */
     /**
      * Sample code: Creates a feature registration.

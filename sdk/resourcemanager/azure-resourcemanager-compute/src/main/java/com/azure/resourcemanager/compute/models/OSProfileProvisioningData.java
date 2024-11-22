@@ -5,13 +5,17 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Additional parameters for Reimaging Non-Ephemeral Virtual Machine.
  */
 @Fluent
-public final class OSProfileProvisioningData {
+public final class OSProfileProvisioningData implements JsonSerializable<OSProfileProvisioningData> {
     /*
      * Specifies the password of the administrator account. <br><br> **Minimum-length (Windows):** 8 characters <br><br>
      * **Minimum-length (Linux):** 6 characters <br><br> **Max-length (Windows):** 123 characters <br><br> **Max-length
@@ -24,7 +28,6 @@ public final class OSProfileProvisioningData {
      * password, see [Manage users, SSH, and check or repair disks on Azure Linux VMs using the VMAccess
      * Extension](https://docs.microsoft.com/troubleshoot/azure/virtual-machines/troubleshoot-ssh-connection)
      */
-    @JsonProperty(value = "adminPassword")
     private String adminPassword;
 
     /*
@@ -36,7 +39,6 @@ public final class OSProfileProvisioningData {
      * Linux VM, see [Using cloud-init to customize a Linux VM during
      * creation](https://docs.microsoft.com/azure/virtual-machines/linux/using-cloud-init).
      */
-    @JsonProperty(value = "customData")
     private String customData;
 
     /**
@@ -127,5 +129,44 @@ public final class OSProfileProvisioningData {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("adminPassword", this.adminPassword);
+        jsonWriter.writeStringField("customData", this.customData);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OSProfileProvisioningData from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OSProfileProvisioningData if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OSProfileProvisioningData.
+     */
+    public static OSProfileProvisioningData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OSProfileProvisioningData deserializedOSProfileProvisioningData = new OSProfileProvisioningData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("adminPassword".equals(fieldName)) {
+                    deserializedOSProfileProvisioningData.adminPassword = reader.getString();
+                } else if ("customData".equals(fieldName)) {
+                    deserializedOSProfileProvisioningData.customData = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOSProfileProvisioningData;
+        });
     }
 }

@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** File Server mounting configuration. */
 @Fluent
 public final class FileServerReference {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FileServerReference.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(FileServerReference.class);
 
     /*
      * Resource ID of the existing File Server to be mounted.
@@ -135,17 +136,14 @@ public final class FileServerReference {
      */
     public void validate() {
         if (fileServer() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property fileServer in model FileServerReference"));
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("Missing required property fileServer in model FileServerReference"));
         } else {
             fileServer().validate();
         }
         if (relativeMountPath() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property relativeMountPath in model FileServerReference"));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property relativeMountPath in model FileServerReference"));
         }
     }
 }

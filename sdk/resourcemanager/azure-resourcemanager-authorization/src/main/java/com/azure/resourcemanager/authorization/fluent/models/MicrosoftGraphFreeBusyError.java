@@ -5,40 +5,43 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** freeBusyError. */
+/**
+ * freeBusyError.
+ */
 @Fluent
-public final class MicrosoftGraphFreeBusyError {
+public final class MicrosoftGraphFreeBusyError implements JsonSerializable<MicrosoftGraphFreeBusyError> {
     /*
      * Describes the error.
      */
-    @JsonProperty(value = "message")
     private String message;
 
     /*
      * The response code from querying for the availability of the user, distribution list, or resource.
      */
-    @JsonProperty(value = "responseCode")
     private String responseCode;
 
     /*
      * freeBusyError
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphFreeBusyError class. */
+    /**
+     * Creates an instance of MicrosoftGraphFreeBusyError class.
+     */
     public MicrosoftGraphFreeBusyError() {
     }
 
     /**
      * Get the message property: Describes the error.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -47,7 +50,7 @@ public final class MicrosoftGraphFreeBusyError {
 
     /**
      * Set the message property: Describes the error.
-     *
+     * 
      * @param message the message value to set.
      * @return the MicrosoftGraphFreeBusyError object itself.
      */
@@ -59,7 +62,7 @@ public final class MicrosoftGraphFreeBusyError {
     /**
      * Get the responseCode property: The response code from querying for the availability of the user, distribution
      * list, or resource.
-     *
+     * 
      * @return the responseCode value.
      */
     public String responseCode() {
@@ -69,7 +72,7 @@ public final class MicrosoftGraphFreeBusyError {
     /**
      * Set the responseCode property: The response code from querying for the availability of the user, distribution
      * list, or resource.
-     *
+     * 
      * @param responseCode the responseCode value to set.
      * @return the MicrosoftGraphFreeBusyError object itself.
      */
@@ -80,17 +83,16 @@ public final class MicrosoftGraphFreeBusyError {
 
     /**
      * Get the additionalProperties property: freeBusyError.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: freeBusyError.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphFreeBusyError object itself.
      */
@@ -99,19 +101,61 @@ public final class MicrosoftGraphFreeBusyError {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("message", this.message);
+        jsonWriter.writeStringField("responseCode", this.responseCode);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphFreeBusyError from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphFreeBusyError if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphFreeBusyError.
+     */
+    public static MicrosoftGraphFreeBusyError fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphFreeBusyError deserializedMicrosoftGraphFreeBusyError = new MicrosoftGraphFreeBusyError();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("message".equals(fieldName)) {
+                    deserializedMicrosoftGraphFreeBusyError.message = reader.getString();
+                } else if ("responseCode".equals(fieldName)) {
+                    deserializedMicrosoftGraphFreeBusyError.responseCode = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphFreeBusyError.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphFreeBusyError;
+        });
     }
 }

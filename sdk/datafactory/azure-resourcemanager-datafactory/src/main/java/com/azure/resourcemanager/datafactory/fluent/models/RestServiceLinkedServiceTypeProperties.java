@@ -6,72 +6,68 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.CredentialReference;
 import com.azure.resourcemanager.datafactory.models.RestServiceAuthenticationType;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Rest Service linked service properties.
  */
 @Fluent
-public final class RestServiceLinkedServiceTypeProperties {
+public final class RestServiceLinkedServiceTypeProperties
+    implements JsonSerializable<RestServiceLinkedServiceTypeProperties> {
     /*
      * The base URL of the REST service. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "url", required = true)
     private Object url;
 
     /*
      * Whether to validate server side SSL certificate when connecting to the endpoint.The default value is true. Type:
      * boolean (or Expression with resultType boolean).
      */
-    @JsonProperty(value = "enableServerCertificateValidation")
     private Object enableServerCertificateValidation;
 
     /*
      * Type of authentication used to connect to the REST service.
      */
-    @JsonProperty(value = "authenticationType", required = true)
     private RestServiceAuthenticationType authenticationType;
 
     /*
      * The user name used in Basic authentication type. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "userName")
     private Object username;
 
     /*
      * The password used in Basic authentication type.
      */
-    @JsonProperty(value = "password")
     private SecretBase password;
 
     /*
      * The additional HTTP headers in the request to RESTful API used for authorization. Type: object (or Expression
      * with resultType object).
      */
-    @JsonProperty(value = "authHeaders")
     private Object authHeaders;
 
     /*
      * The application's client ID used in AadServicePrincipal authentication type. Type: string (or Expression with
      * resultType string).
      */
-    @JsonProperty(value = "servicePrincipalId")
     private Object servicePrincipalId;
 
     /*
      * The application's key used in AadServicePrincipal authentication type.
      */
-    @JsonProperty(value = "servicePrincipalKey")
     private SecretBase servicePrincipalKey;
 
     /*
      * The tenant information (domain name or tenant ID) used in AadServicePrincipal authentication type under which
      * your application resides. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "tenant")
     private Object tenant;
 
     /*
@@ -79,60 +75,69 @@ public final class RestServiceLinkedServiceTypeProperties {
      * AzureUsGovernment, AzureGermany. Default value is the data factory regions’ cloud type. Type: string (or
      * Expression with resultType string).
      */
-    @JsonProperty(value = "azureCloudType")
     private Object azureCloudType;
 
     /*
      * The resource you are requesting authorization to use. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "aadResourceId")
     private Object aadResourceId;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string.
      */
-    @JsonProperty(value = "encryptedCredential")
     private String encryptedCredential;
 
     /*
      * The credential reference containing authentication information.
      */
-    @JsonProperty(value = "credential")
     private CredentialReference credential;
 
     /*
      * The client ID associated with your application. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "clientId")
     private Object clientId;
 
     /*
      * The client secret associated with your application.
      */
-    @JsonProperty(value = "clientSecret")
     private SecretBase clientSecret;
 
     /*
      * The token endpoint of the authorization server to acquire access token. Type: string (or Expression with
      * resultType string).
      */
-    @JsonProperty(value = "tokenEndpoint")
     private Object tokenEndpoint;
 
     /*
      * The target service or resource to which the access will be requested. Type: string (or Expression with resultType
      * string).
      */
-    @JsonProperty(value = "resource")
     private Object resource;
 
     /*
      * The scope of the access required. It describes what kind of access will be requested. Type: string (or Expression
      * with resultType string).
      */
-    @JsonProperty(value = "scope")
     private Object scope;
+
+    /*
+     * The service principal credential type to use in Server-To-Server authentication. 'ServicePrincipalKey' for
+     * key/secret, 'ServicePrincipalCert' for certificate. Type: string (or Expression with resultType string).
+     */
+    private Object servicePrincipalCredentialType;
+
+    /*
+     * Specify the base64 encoded certificate of your application registered in Azure Active Directory. Type: string (or
+     * Expression with resultType string).
+     */
+    private SecretBase servicePrincipalEmbeddedCert;
+
+    /*
+     * Specify the password of your certificate if your certificate has a password and you are using AadServicePrincipal
+     * authentication. Type: string (or Expression with resultType string).
+     */
+    private SecretBase servicePrincipalEmbeddedCertPassword;
 
     /**
      * Creates an instance of RestServiceLinkedServiceTypeProperties class.
@@ -529,6 +534,79 @@ public final class RestServiceLinkedServiceTypeProperties {
     }
 
     /**
+     * Get the servicePrincipalCredentialType property: The service principal credential type to use in Server-To-Server
+     * authentication. 'ServicePrincipalKey' for key/secret, 'ServicePrincipalCert' for certificate. Type: string (or
+     * Expression with resultType string).
+     * 
+     * @return the servicePrincipalCredentialType value.
+     */
+    public Object servicePrincipalCredentialType() {
+        return this.servicePrincipalCredentialType;
+    }
+
+    /**
+     * Set the servicePrincipalCredentialType property: The service principal credential type to use in Server-To-Server
+     * authentication. 'ServicePrincipalKey' for key/secret, 'ServicePrincipalCert' for certificate. Type: string (or
+     * Expression with resultType string).
+     * 
+     * @param servicePrincipalCredentialType the servicePrincipalCredentialType value to set.
+     * @return the RestServiceLinkedServiceTypeProperties object itself.
+     */
+    public RestServiceLinkedServiceTypeProperties
+        withServicePrincipalCredentialType(Object servicePrincipalCredentialType) {
+        this.servicePrincipalCredentialType = servicePrincipalCredentialType;
+        return this;
+    }
+
+    /**
+     * Get the servicePrincipalEmbeddedCert property: Specify the base64 encoded certificate of your application
+     * registered in Azure Active Directory. Type: string (or Expression with resultType string).
+     * 
+     * @return the servicePrincipalEmbeddedCert value.
+     */
+    public SecretBase servicePrincipalEmbeddedCert() {
+        return this.servicePrincipalEmbeddedCert;
+    }
+
+    /**
+     * Set the servicePrincipalEmbeddedCert property: Specify the base64 encoded certificate of your application
+     * registered in Azure Active Directory. Type: string (or Expression with resultType string).
+     * 
+     * @param servicePrincipalEmbeddedCert the servicePrincipalEmbeddedCert value to set.
+     * @return the RestServiceLinkedServiceTypeProperties object itself.
+     */
+    public RestServiceLinkedServiceTypeProperties
+        withServicePrincipalEmbeddedCert(SecretBase servicePrincipalEmbeddedCert) {
+        this.servicePrincipalEmbeddedCert = servicePrincipalEmbeddedCert;
+        return this;
+    }
+
+    /**
+     * Get the servicePrincipalEmbeddedCertPassword property: Specify the password of your certificate if your
+     * certificate has a password and you are using AadServicePrincipal authentication. Type: string (or Expression with
+     * resultType string).
+     * 
+     * @return the servicePrincipalEmbeddedCertPassword value.
+     */
+    public SecretBase servicePrincipalEmbeddedCertPassword() {
+        return this.servicePrincipalEmbeddedCertPassword;
+    }
+
+    /**
+     * Set the servicePrincipalEmbeddedCertPassword property: Specify the password of your certificate if your
+     * certificate has a password and you are using AadServicePrincipal authentication. Type: string (or Expression with
+     * resultType string).
+     * 
+     * @param servicePrincipalEmbeddedCertPassword the servicePrincipalEmbeddedCertPassword value to set.
+     * @return the RestServiceLinkedServiceTypeProperties object itself.
+     */
+    public RestServiceLinkedServiceTypeProperties
+        withServicePrincipalEmbeddedCertPassword(SecretBase servicePrincipalEmbeddedCertPassword) {
+        this.servicePrincipalEmbeddedCertPassword = servicePrincipalEmbeddedCertPassword;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -556,7 +634,119 @@ public final class RestServiceLinkedServiceTypeProperties {
         if (clientSecret() != null) {
             clientSecret().validate();
         }
+        if (servicePrincipalEmbeddedCert() != null) {
+            servicePrincipalEmbeddedCert().validate();
+        }
+        if (servicePrincipalEmbeddedCertPassword() != null) {
+            servicePrincipalEmbeddedCertPassword().validate();
+        }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(RestServiceLinkedServiceTypeProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("url", this.url);
+        jsonWriter.writeStringField("authenticationType",
+            this.authenticationType == null ? null : this.authenticationType.toString());
+        jsonWriter.writeUntypedField("enableServerCertificateValidation", this.enableServerCertificateValidation);
+        jsonWriter.writeUntypedField("userName", this.username);
+        jsonWriter.writeJsonField("password", this.password);
+        jsonWriter.writeUntypedField("authHeaders", this.authHeaders);
+        jsonWriter.writeUntypedField("servicePrincipalId", this.servicePrincipalId);
+        jsonWriter.writeJsonField("servicePrincipalKey", this.servicePrincipalKey);
+        jsonWriter.writeUntypedField("tenant", this.tenant);
+        jsonWriter.writeUntypedField("azureCloudType", this.azureCloudType);
+        jsonWriter.writeUntypedField("aadResourceId", this.aadResourceId);
+        jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
+        jsonWriter.writeJsonField("credential", this.credential);
+        jsonWriter.writeUntypedField("clientId", this.clientId);
+        jsonWriter.writeJsonField("clientSecret", this.clientSecret);
+        jsonWriter.writeUntypedField("tokenEndpoint", this.tokenEndpoint);
+        jsonWriter.writeUntypedField("resource", this.resource);
+        jsonWriter.writeUntypedField("scope", this.scope);
+        jsonWriter.writeUntypedField("servicePrincipalCredentialType", this.servicePrincipalCredentialType);
+        jsonWriter.writeJsonField("servicePrincipalEmbeddedCert", this.servicePrincipalEmbeddedCert);
+        jsonWriter.writeJsonField("servicePrincipalEmbeddedCertPassword", this.servicePrincipalEmbeddedCertPassword);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RestServiceLinkedServiceTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RestServiceLinkedServiceTypeProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RestServiceLinkedServiceTypeProperties.
+     */
+    public static RestServiceLinkedServiceTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RestServiceLinkedServiceTypeProperties deserializedRestServiceLinkedServiceTypeProperties
+                = new RestServiceLinkedServiceTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("url".equals(fieldName)) {
+                    deserializedRestServiceLinkedServiceTypeProperties.url = reader.readUntyped();
+                } else if ("authenticationType".equals(fieldName)) {
+                    deserializedRestServiceLinkedServiceTypeProperties.authenticationType
+                        = RestServiceAuthenticationType.fromString(reader.getString());
+                } else if ("enableServerCertificateValidation".equals(fieldName)) {
+                    deserializedRestServiceLinkedServiceTypeProperties.enableServerCertificateValidation
+                        = reader.readUntyped();
+                } else if ("userName".equals(fieldName)) {
+                    deserializedRestServiceLinkedServiceTypeProperties.username = reader.readUntyped();
+                } else if ("password".equals(fieldName)) {
+                    deserializedRestServiceLinkedServiceTypeProperties.password = SecretBase.fromJson(reader);
+                } else if ("authHeaders".equals(fieldName)) {
+                    deserializedRestServiceLinkedServiceTypeProperties.authHeaders = reader.readUntyped();
+                } else if ("servicePrincipalId".equals(fieldName)) {
+                    deserializedRestServiceLinkedServiceTypeProperties.servicePrincipalId = reader.readUntyped();
+                } else if ("servicePrincipalKey".equals(fieldName)) {
+                    deserializedRestServiceLinkedServiceTypeProperties.servicePrincipalKey
+                        = SecretBase.fromJson(reader);
+                } else if ("tenant".equals(fieldName)) {
+                    deserializedRestServiceLinkedServiceTypeProperties.tenant = reader.readUntyped();
+                } else if ("azureCloudType".equals(fieldName)) {
+                    deserializedRestServiceLinkedServiceTypeProperties.azureCloudType = reader.readUntyped();
+                } else if ("aadResourceId".equals(fieldName)) {
+                    deserializedRestServiceLinkedServiceTypeProperties.aadResourceId = reader.readUntyped();
+                } else if ("encryptedCredential".equals(fieldName)) {
+                    deserializedRestServiceLinkedServiceTypeProperties.encryptedCredential = reader.getString();
+                } else if ("credential".equals(fieldName)) {
+                    deserializedRestServiceLinkedServiceTypeProperties.credential
+                        = CredentialReference.fromJson(reader);
+                } else if ("clientId".equals(fieldName)) {
+                    deserializedRestServiceLinkedServiceTypeProperties.clientId = reader.readUntyped();
+                } else if ("clientSecret".equals(fieldName)) {
+                    deserializedRestServiceLinkedServiceTypeProperties.clientSecret = SecretBase.fromJson(reader);
+                } else if ("tokenEndpoint".equals(fieldName)) {
+                    deserializedRestServiceLinkedServiceTypeProperties.tokenEndpoint = reader.readUntyped();
+                } else if ("resource".equals(fieldName)) {
+                    deserializedRestServiceLinkedServiceTypeProperties.resource = reader.readUntyped();
+                } else if ("scope".equals(fieldName)) {
+                    deserializedRestServiceLinkedServiceTypeProperties.scope = reader.readUntyped();
+                } else if ("servicePrincipalCredentialType".equals(fieldName)) {
+                    deserializedRestServiceLinkedServiceTypeProperties.servicePrincipalCredentialType
+                        = reader.readUntyped();
+                } else if ("servicePrincipalEmbeddedCert".equals(fieldName)) {
+                    deserializedRestServiceLinkedServiceTypeProperties.servicePrincipalEmbeddedCert
+                        = SecretBase.fromJson(reader);
+                } else if ("servicePrincipalEmbeddedCertPassword".equals(fieldName)) {
+                    deserializedRestServiceLinkedServiceTypeProperties.servicePrincipalEmbeddedCertPassword
+                        = SecretBase.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRestServiceLinkedServiceTypeProperties;
+        });
+    }
 }

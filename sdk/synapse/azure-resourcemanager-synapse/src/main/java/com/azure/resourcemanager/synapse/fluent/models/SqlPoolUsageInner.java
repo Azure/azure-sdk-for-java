@@ -5,61 +5,63 @@
 package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** The Sql pool usages. */
+/**
+ * The Sql pool usages.
+ */
 @Immutable
-public final class SqlPoolUsageInner {
+public final class SqlPoolUsageInner implements JsonSerializable<SqlPoolUsageInner> {
     /*
      * The name of the usage metric.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * The name of the resource.
      */
-    @JsonProperty(value = "resourceName", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceName;
 
     /*
      * The usage metric display name.
      */
-    @JsonProperty(value = "displayName", access = JsonProperty.Access.WRITE_ONLY)
     private String displayName;
 
     /*
      * The current value of the usage metric.
      */
-    @JsonProperty(value = "currentValue", access = JsonProperty.Access.WRITE_ONLY)
     private Double currentValue;
 
     /*
      * The current limit of the usage metric.
      */
-    @JsonProperty(value = "limit", access = JsonProperty.Access.WRITE_ONLY)
     private Double limit;
 
     /*
      * The units of the usage metric.
      */
-    @JsonProperty(value = "unit", access = JsonProperty.Access.WRITE_ONLY)
     private String unit;
 
     /*
      * The next reset time for the usage metric (ISO8601 format).
      */
-    @JsonProperty(value = "nextResetTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime nextResetTime;
 
-    /** Creates an instance of SqlPoolUsageInner class. */
+    /**
+     * Creates an instance of SqlPoolUsageInner class.
+     */
     public SqlPoolUsageInner() {
     }
 
     /**
      * Get the name property: The name of the usage metric.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -68,7 +70,7 @@ public final class SqlPoolUsageInner {
 
     /**
      * Get the resourceName property: The name of the resource.
-     *
+     * 
      * @return the resourceName value.
      */
     public String resourceName() {
@@ -77,7 +79,7 @@ public final class SqlPoolUsageInner {
 
     /**
      * Get the displayName property: The usage metric display name.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -86,7 +88,7 @@ public final class SqlPoolUsageInner {
 
     /**
      * Get the currentValue property: The current value of the usage metric.
-     *
+     * 
      * @return the currentValue value.
      */
     public Double currentValue() {
@@ -95,7 +97,7 @@ public final class SqlPoolUsageInner {
 
     /**
      * Get the limit property: The current limit of the usage metric.
-     *
+     * 
      * @return the limit value.
      */
     public Double limit() {
@@ -104,7 +106,7 @@ public final class SqlPoolUsageInner {
 
     /**
      * Get the unit property: The units of the usage metric.
-     *
+     * 
      * @return the unit value.
      */
     public String unit() {
@@ -113,7 +115,7 @@ public final class SqlPoolUsageInner {
 
     /**
      * Get the nextResetTime property: The next reset time for the usage metric (ISO8601 format).
-     *
+     * 
      * @return the nextResetTime value.
      */
     public OffsetDateTime nextResetTime() {
@@ -122,9 +124,57 @@ public final class SqlPoolUsageInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SqlPoolUsageInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SqlPoolUsageInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SqlPoolUsageInner.
+     */
+    public static SqlPoolUsageInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SqlPoolUsageInner deserializedSqlPoolUsageInner = new SqlPoolUsageInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedSqlPoolUsageInner.name = reader.getString();
+                } else if ("resourceName".equals(fieldName)) {
+                    deserializedSqlPoolUsageInner.resourceName = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedSqlPoolUsageInner.displayName = reader.getString();
+                } else if ("currentValue".equals(fieldName)) {
+                    deserializedSqlPoolUsageInner.currentValue = reader.getNullable(JsonReader::getDouble);
+                } else if ("limit".equals(fieldName)) {
+                    deserializedSqlPoolUsageInner.limit = reader.getNullable(JsonReader::getDouble);
+                } else if ("unit".equals(fieldName)) {
+                    deserializedSqlPoolUsageInner.unit = reader.getString();
+                } else if ("nextResetTime".equals(fieldName)) {
+                    deserializedSqlPoolUsageInner.nextResetTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSqlPoolUsageInner;
+        });
     }
 }

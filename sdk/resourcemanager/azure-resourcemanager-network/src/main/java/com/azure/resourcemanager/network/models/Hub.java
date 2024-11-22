@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Hub Item.
  */
 @Fluent
-public final class Hub {
+public final class Hub implements JsonSerializable<Hub> {
     /*
      * Resource Id.
      */
-    @JsonProperty(value = "resourceId")
     private String resourceId;
 
     /*
      * Resource Type.
      */
-    @JsonProperty(value = "resourceType")
     private String resourceType;
 
     /**
@@ -76,5 +78,44 @@ public final class Hub {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("resourceId", this.resourceId);
+        jsonWriter.writeStringField("resourceType", this.resourceType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Hub from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Hub if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IOException If an error occurs while reading the Hub.
+     */
+    public static Hub fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Hub deserializedHub = new Hub();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceId".equals(fieldName)) {
+                    deserializedHub.resourceId = reader.getString();
+                } else if ("resourceType".equals(fieldName)) {
+                    deserializedHub.resourceType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHub;
+        });
     }
 }

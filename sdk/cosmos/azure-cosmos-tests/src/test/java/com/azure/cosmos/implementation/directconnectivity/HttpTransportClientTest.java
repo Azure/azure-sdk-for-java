@@ -113,7 +113,7 @@ public class HttpTransportClientTest {
             }
 
             @Override
-            HttpClient createHttpClient(ConnectionPolicy connectionPolicy) {
+            HttpClient createHttpClient(Configs configs, ConnectionPolicy connectionPolicy) {
                 return httpClient;
             }
         }
@@ -141,6 +141,7 @@ public class HttpTransportClientTest {
         RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
                 OperationType.Create, "dbs/db/colls/col", ResourceType.Document);
         request.setContentBytes(new byte[0]);
+        request.setResponseTimeout(connectionPolicy.getHttpNetworkRequestTimeout());
 
         transportClient.invokeResourceOperationAsync(Uri.create(physicalAddress), request).block();
 
@@ -460,6 +461,7 @@ public class HttpTransportClientTest {
                 httpClientMockWrapper.getClient());
         RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
                 OperationType.Create, "dbs/db/colls/col", ResourceType.Document);
+        request.setResponseTimeout(connectionPolicy.getHttpNetworkRequestTimeout());
         request.setContentBytes(new byte[0]);
         request.requestContext.resourcePhysicalAddress = "dbs/db/colls/col";
 
@@ -568,6 +570,7 @@ public class HttpTransportClientTest {
         UserAgentContainer userAgentContainer = new UserAgentContainer();
         ConnectionPolicy connectionPolicy = ConnectionPolicy.getDefaultPolicy();
         connectionPolicy.setHttpNetworkRequestTimeout(Duration.ofSeconds(100));
+        request.setResponseTimeout(connectionPolicy.getHttpNetworkRequestTimeout());
         HttpTransportClient transportClient = getHttpTransportClientUnderTest(
                 connectionPolicy,
                 userAgentContainer,

@@ -5,40 +5,43 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** teamGuestSettings. */
+/**
+ * teamGuestSettings.
+ */
 @Fluent
-public final class MicrosoftGraphTeamGuestSettings {
+public final class MicrosoftGraphTeamGuestSettings implements JsonSerializable<MicrosoftGraphTeamGuestSettings> {
     /*
      * If set to true, guests can add and update channels.
      */
-    @JsonProperty(value = "allowCreateUpdateChannels")
     private Boolean allowCreateUpdateChannels;
 
     /*
      * If set to true, guests can delete channels.
      */
-    @JsonProperty(value = "allowDeleteChannels")
     private Boolean allowDeleteChannels;
 
     /*
      * teamGuestSettings
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphTeamGuestSettings class. */
+    /**
+     * Creates an instance of MicrosoftGraphTeamGuestSettings class.
+     */
     public MicrosoftGraphTeamGuestSettings() {
     }
 
     /**
      * Get the allowCreateUpdateChannels property: If set to true, guests can add and update channels.
-     *
+     * 
      * @return the allowCreateUpdateChannels value.
      */
     public Boolean allowCreateUpdateChannels() {
@@ -47,7 +50,7 @@ public final class MicrosoftGraphTeamGuestSettings {
 
     /**
      * Set the allowCreateUpdateChannels property: If set to true, guests can add and update channels.
-     *
+     * 
      * @param allowCreateUpdateChannels the allowCreateUpdateChannels value to set.
      * @return the MicrosoftGraphTeamGuestSettings object itself.
      */
@@ -58,7 +61,7 @@ public final class MicrosoftGraphTeamGuestSettings {
 
     /**
      * Get the allowDeleteChannels property: If set to true, guests can delete channels.
-     *
+     * 
      * @return the allowDeleteChannels value.
      */
     public Boolean allowDeleteChannels() {
@@ -67,7 +70,7 @@ public final class MicrosoftGraphTeamGuestSettings {
 
     /**
      * Set the allowDeleteChannels property: If set to true, guests can delete channels.
-     *
+     * 
      * @param allowDeleteChannels the allowDeleteChannels value to set.
      * @return the MicrosoftGraphTeamGuestSettings object itself.
      */
@@ -78,17 +81,16 @@ public final class MicrosoftGraphTeamGuestSettings {
 
     /**
      * Get the additionalProperties property: teamGuestSettings.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: teamGuestSettings.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphTeamGuestSettings object itself.
      */
@@ -97,19 +99,64 @@ public final class MicrosoftGraphTeamGuestSettings {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("allowCreateUpdateChannels", this.allowCreateUpdateChannels);
+        jsonWriter.writeBooleanField("allowDeleteChannels", this.allowDeleteChannels);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphTeamGuestSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphTeamGuestSettings if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphTeamGuestSettings.
+     */
+    public static MicrosoftGraphTeamGuestSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphTeamGuestSettings deserializedMicrosoftGraphTeamGuestSettings
+                = new MicrosoftGraphTeamGuestSettings();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("allowCreateUpdateChannels".equals(fieldName)) {
+                    deserializedMicrosoftGraphTeamGuestSettings.allowCreateUpdateChannels
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("allowDeleteChannels".equals(fieldName)) {
+                    deserializedMicrosoftGraphTeamGuestSettings.allowDeleteChannels
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphTeamGuestSettings.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphTeamGuestSettings;
+        });
     }
 }

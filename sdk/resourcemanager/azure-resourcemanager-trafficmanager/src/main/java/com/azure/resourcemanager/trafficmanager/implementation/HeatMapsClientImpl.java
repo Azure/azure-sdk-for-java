@@ -28,17 +28,23 @@ import com.azure.resourcemanager.trafficmanager.fluent.models.HeatMapModelInner;
 import java.util.List;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in HeatMapsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in HeatMapsClient.
+ */
 public final class HeatMapsClientImpl implements HeatMapsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final HeatMapsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final TrafficManagerManagementClientImpl client;
 
     /**
      * Initializes an instance of HeatMapsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     HeatMapsClientImpl(TrafficManagerManagementClientImpl client) {
@@ -53,27 +59,21 @@ public final class HeatMapsClientImpl implements HeatMapsClient {
     @Host("{$host}")
     @ServiceInterface(name = "TrafficManagerManage")
     public interface HeatMapsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/trafficmanagerprofiles/{profileName}/heatMaps/{heatMapType}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/trafficmanagerprofiles/{profileName}/heatMaps/{heatMapType}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<HeatMapModelInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<HeatMapModelInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("profileName") String profileName,
-            @PathParam("heatMapType") String heatMapType,
-            @QueryParam("topLeft") String topLeft,
-            @QueryParam("botRight") String botRight,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("profileName") String profileName,
+            @PathParam("heatMapType") String heatMapType, @QueryParam("topLeft") String topLeft,
+            @QueryParam("botRight") String botRight, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Gets latest heatmap for Traffic Manager profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @param topLeft The top left latitude,longitude pair of the rectangular viewport to query for.
@@ -81,23 +81,19 @@ public final class HeatMapsClientImpl implements HeatMapsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return latest heatmap for Traffic Manager profile along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return latest heatmap for Traffic Manager profile along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<HeatMapModelInner>> getWithResponseAsync(
-        String resourceGroupName, String profileName, List<Double> topLeft, List<Double> botRight) {
+    public Mono<Response<HeatMapModelInner>> getWithResponseAsync(String resourceGroupName, String profileName,
+        List<Double> topLeft, List<Double> botRight) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -108,31 +104,20 @@ public final class HeatMapsClientImpl implements HeatMapsClient {
         }
         final String heatMapType = "default";
         final String accept = "application/json";
-        String topLeftConverted =
-            JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(topLeft, CollectionFormat.CSV);
-        String botRightConverted =
-            JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(botRight, CollectionFormat.CSV);
+        String topLeftConverted
+            = JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(topLeft, CollectionFormat.CSV);
+        String botRightConverted
+            = JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(botRight, CollectionFormat.CSV);
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            profileName,
-                            heatMapType,
-                            topLeftConverted,
-                            botRightConverted,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, profileName, heatMapType, topLeftConverted, botRightConverted,
+                this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets latest heatmap for Traffic Manager profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @param topLeft The top left latitude,longitude pair of the rectangular viewport to query for.
@@ -141,23 +126,19 @@ public final class HeatMapsClientImpl implements HeatMapsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return latest heatmap for Traffic Manager profile along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return latest heatmap for Traffic Manager profile along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<HeatMapModelInner>> getWithResponseAsync(
-        String resourceGroupName, String profileName, List<Double> topLeft, List<Double> botRight, Context context) {
+    private Mono<Response<HeatMapModelInner>> getWithResponseAsync(String resourceGroupName, String profileName,
+        List<Double> topLeft, List<Double> botRight, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -168,28 +149,18 @@ public final class HeatMapsClientImpl implements HeatMapsClient {
         }
         final String heatMapType = "default";
         final String accept = "application/json";
-        String topLeftConverted =
-            JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(topLeft, CollectionFormat.CSV);
-        String botRightConverted =
-            JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(botRight, CollectionFormat.CSV);
+        String topLeftConverted
+            = JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(topLeft, CollectionFormat.CSV);
+        String botRightConverted
+            = JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(botRight, CollectionFormat.CSV);
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                profileName,
-                heatMapType,
-                topLeftConverted,
-                botRightConverted,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, profileName,
+            heatMapType, topLeftConverted, botRightConverted, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Gets latest heatmap for Traffic Manager profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -207,7 +178,7 @@ public final class HeatMapsClientImpl implements HeatMapsClient {
 
     /**
      * Gets latest heatmap for Traffic Manager profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @param topLeft The top left latitude,longitude pair of the rectangular viewport to query for.
@@ -219,14 +190,14 @@ public final class HeatMapsClientImpl implements HeatMapsClient {
      * @return latest heatmap for Traffic Manager profile along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<HeatMapModelInner> getWithResponse(
-        String resourceGroupName, String profileName, List<Double> topLeft, List<Double> botRight, Context context) {
+    public Response<HeatMapModelInner> getWithResponse(String resourceGroupName, String profileName,
+        List<Double> topLeft, List<Double> botRight, Context context) {
         return getWithResponseAsync(resourceGroupName, profileName, topLeft, botRight, context).block();
     }
 
     /**
      * Gets latest heatmap for Traffic Manager profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

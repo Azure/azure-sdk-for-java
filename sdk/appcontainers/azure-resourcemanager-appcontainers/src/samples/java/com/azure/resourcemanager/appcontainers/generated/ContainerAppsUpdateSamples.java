@@ -23,8 +23,8 @@ import com.azure.resourcemanager.appcontainers.models.IngressStickySessions;
 import com.azure.resourcemanager.appcontainers.models.InitContainer;
 import com.azure.resourcemanager.appcontainers.models.IpSecurityRestrictionRule;
 import com.azure.resourcemanager.appcontainers.models.Level;
-import com.azure.resourcemanager.appcontainers.models.LoggerSetting;
 import com.azure.resourcemanager.appcontainers.models.LogLevel;
+import com.azure.resourcemanager.appcontainers.models.LoggerSetting;
 import com.azure.resourcemanager.appcontainers.models.Runtime;
 import com.azure.resourcemanager.appcontainers.models.RuntimeDotnet;
 import com.azure.resourcemanager.appcontainers.models.RuntimeJava;
@@ -47,7 +47,7 @@ import java.util.Map;
 public final class ContainerAppsUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/app/resource-manager/Microsoft.App/preview/2024-02-02-preview/examples/ContainerApps_Patch.json
+     * specification/app/resource-manager/Microsoft.App/preview/2024-08-02-preview/examples/ContainerApps_Patch.json
      */
     /**
      * Sample code: Patch Container App.
@@ -123,6 +123,8 @@ public final class ContainerAppsUpdateSamples {
                 .withScale(
                     new Scale().withMinReplicas(1)
                         .withMaxReplicas(5)
+                        .withCooldownPeriod(350)
+                        .withPollingInterval(35)
                         .withRules(
                             Arrays.asList(new ScaleRule().withName("httpscalingrule")
                                 .withCustom(new CustomScaleRule().withType("http")

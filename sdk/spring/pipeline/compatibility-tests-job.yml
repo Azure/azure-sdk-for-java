@@ -15,6 +15,9 @@ jobs:
       - template: ../../../eng/pipelines/templates/variables/globals.yml
       - name: SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION
         value: ${{ parameters.Matrix.SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION }}
+    pool:
+      name: azsdk-pool-mms-ubuntu-2204-general
+      vmImage: ubuntu-22.04
     steps:
       - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
         parameters:
@@ -24,6 +27,24 @@ jobs:
             - 'sdk/boms/spring-cloud-azure-dependencies'
             - 'sdk/parents/azure-client-sdk-parent'
             - 'sdk/jdbc'
+            - 'sdk/servicebus'
+            - 'sdk/eventhubs'
+            - 'common/perf-test-core'
+            - 'sdk/monitor/azure-monitor-opentelemetry-exporter'
+            - 'sdk/parents/azure-perf-test-parent'
+            - 'sdk/parents/azure-sdk-parent'
+            - 'eng/code-quality-reports'
+      - task: Maven@4
+        displayName: 'Install Unreleased Dependencies'
+        inputs:
+          mavenPomFile: sdk/spring/pipeline/ClientFromSourcePom.xml
+          goals: 'install'
+          options: $(DefaultOptions) -DskipTests $(DefaultSkipOptions) -Djacoco.skip=true ${{ parameters.BuildOptions }} -T ${{ parameters.BuildParallelization }}
+          mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
+          javaHomeOption: 'JDKVersion'
+          jdkVersionOption: $(JavaTestVersion)
+          jdkArchitectureOption: 'x64'
+          publishJUnitResults: false
       - script: |
           python -m pip install termcolor
         displayName: 'Install python module'
@@ -42,7 +63,7 @@ jobs:
       - script: |
             python ./sdk/spring/scripts/compatibility_delete_version.py -b $(SPRING_CLOUD_AZURE_TEST_SUPPORTED_SPRING_BOOT_VERSION)
         displayName: 'Remove unused dependency versions'
-      - task: Maven@3
+      - task: Maven@4
         displayName: 'Run tests'
         inputs:
           options: '$(DefaultOptions) -ntp -T ${{parameters.BuildParallelization}} ${{parameters.SkipOptions}} -Dcompiler.failondeprecatedstatus=-'

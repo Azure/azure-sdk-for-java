@@ -46,9 +46,8 @@ import static org.junit.jupiter.api.Assertions.fail;
 @Tag(TestUtils.INTEGRATION)
 @Execution(ExecutionMode.SAME_THREAD)
 public class EventHubBufferedProducerAsyncClientIntegrationTest extends IntegrationTestBase {
-    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss")
-        .withLocale(Locale.US)
-        .withZone(ZoneId.of("America/Los_Angeles"));
+    private final DateTimeFormatter formatter
+        = DateTimeFormatter.ofPattern("HH:mm:ss").withLocale(Locale.US).withZone(ZoneId.of("America/Los_Angeles"));
     private EventHubBufferedProducerAsyncClient producer;
     private EventHubClient hubClient;
     private String[] partitionIds;
@@ -60,8 +59,7 @@ public class EventHubBufferedProducerAsyncClientIntegrationTest extends Integrat
 
     @Override
     protected void beforeTest() {
-        this.hubClient = toClose(new EventHubClientBuilder().connectionString(TestUtils.getConnectionString())
-            .buildClient());
+        this.hubClient = toClose(createBuilder().buildClient());
 
         List<String> allIds = new ArrayList<>();
         final EventHubProperties properties = hubClient.getProperties();
@@ -91,10 +89,11 @@ public class EventHubBufferedProducerAsyncClientIntegrationTest extends Integrat
 
         final Duration maxWaitTime = Duration.ofSeconds(5);
         final int queueSize = 10;
+        final EventHubClientBuilder builder = createBuilder();
 
         producer = toClose(new EventHubBufferedProducerClientBuilder()
-            .connectionString(TestUtils.getConnectionString())
-            .retryOptions(RETRY_OPTIONS)
+            .credential(builder.getFullyQualifiedNamespace(), builder.getEventHubName(), builder.getCredentials())
+            .retryOptions(builder.getRetryOptions())
             .onSendBatchFailed(failed -> {
                 anyFailures.set(true);
                 fail("Exception occurred while sending messages." + failed.getThrowable());
@@ -113,24 +112,18 @@ public class EventHubBufferedProducerAsyncClientIntegrationTest extends Integrat
             .collect(Collectors.toList());
 
         // Waiting for at least maxWaitTime because events will get published by then.
-        StepVerifier.create(producer.enqueueEvents(eventsToPublish))
-            .assertNext(integer -> {
-                assertEquals(0, integer, "Do not expect anymore events in queue.");
-            })
-            .thenAwait(maxWaitTime)
-            .expectComplete()
-            .verify(TIMEOUT);
+        StepVerifier.create(producer.enqueueEvents(eventsToPublish)).assertNext(integer -> {
+            assertEquals(0, integer, "Do not expect anymore events in queue.");
+        }).thenAwait(maxWaitTime).expectComplete().verify(TIMEOUT);
 
         assertTrue(countDownLatch.await(TIMEOUT.toMillis(), TimeUnit.MILLISECONDS), "Did not get enough messages.");
 
         // Assert
-        final Map<String, PartitionProperties> propertiesAfterMap = producer.getEventHubProperties()
-            .flatMapMany(properties -> {
+        final Map<String, PartitionProperties> propertiesAfterMap
+            = producer.getEventHubProperties().flatMapMany(properties -> {
                 return Flux.fromIterable(properties.getPartitionIds())
                     .flatMap(id -> producer.getPartitionProperties(id));
-            })
-            .collectMap(properties -> properties.getId(), Function.identity())
-            .block(TIMEOUT);
+            }).collectMap(properties -> properties.getId(), Function.identity()).block(TIMEOUT);
 
         assertNotNull(propertiesAfterMap, "'partitionPropertiesMap' should not be null");
 
@@ -157,9 +150,10 @@ public class EventHubBufferedProducerAsyncClientIntegrationTest extends Integrat
         final Duration maxWaitTime = Duration.ofSeconds(15);
         final int queueSize = 10;
 
+        final EventHubClientBuilder builder = createBuilder();
         producer = new EventHubBufferedProducerClientBuilder()
-            .connectionString(TestUtils.getConnectionString())
-            .retryOptions(RETRY_OPTIONS)
+            .credential(builder.getFullyQualifiedNamespace(), builder.getEventHubName(), builder.getCredentials())
+            .retryOptions(builder.getRetryOptions())
             .onSendBatchFailed(failed -> {
                 anyFailures.set(true);
                 fail("Exception occurred while sending messages." + failed.getThrowable());
@@ -176,36 +170,34 @@ public class EventHubBufferedProducerAsyncClientIntegrationTest extends Integrat
         final Map<String, List<String>> expectedPartitionIdsMap = new HashMap<>();
         final PartitionResolver resolver = new PartitionResolver();
 
-        final List<Mono<Integer>> publishEventMono = IntStream.range(0, numberOfEvents)
-            .mapToObj(index -> {
-                final String partitionKey = "partition-" + index;
-                final EventData eventData = new EventData(partitionKey);
-                final SendOptions sendOptions = new SendOptions().setPartitionKey(partitionKey);
-                final int delay = randomInterval.nextInt(20);
+        final List<Mono<Integer>> publishEventMono = IntStream.range(0, numberOfEvents).mapToObj(index -> {
+            final String partitionKey = "partition-" + index;
+            final EventData eventData = new EventData(partitionKey);
+            final SendOptions sendOptions = new SendOptions().setPartitionKey(partitionKey);
+            final int delay = randomInterval.nextInt(20);
 
-                final String expectedPartitionId = resolver.assignForPartitionKey(partitionKey, partitionIds);
+            final String expectedPartitionId = resolver.assignForPartitionKey(partitionKey, partitionIds);
 
-                expectedPartitionIdsMap.compute(expectedPartitionId, (key, existing) -> {
-                    if (existing == null) {
-                        List<String> events = new ArrayList<>();
-                        events.add(partitionKey);
-                        return events;
-                    } else {
-                        existing.add(partitionKey);
-                        return existing;
-                    }
-                });
+            expectedPartitionIdsMap.compute(expectedPartitionId, (key, existing) -> {
+                if (existing == null) {
+                    List<String> events = new ArrayList<>();
+                    events.add(partitionKey);
+                    return events;
+                } else {
+                    existing.add(partitionKey);
+                    return existing;
+                }
+            });
 
-                return Mono.delay(Duration.ofSeconds(delay)).then(producer.enqueueEvent(eventData, sendOptions)
-                    .doFinally(signal  -> logger.log(LogLevel.VERBOSE,
-                        () -> String.format("\t[%s] %s Published event.%n", expectedPartitionId,
-                            formatter.format(Instant.now())))));
-            }).collect(Collectors.toList());
+            return Mono.delay(Duration.ofSeconds(delay))
+                .then(producer.enqueueEvent(eventData, sendOptions)
+                    .doFinally(
+                        signal -> logger.log(LogLevel.VERBOSE, () -> String.format("\t[%s] %s Published event.%n",
+                            expectedPartitionId, formatter.format(Instant.now())))));
+        }).collect(Collectors.toList());
 
         // Waiting for at least maxWaitTime because events will get published by then.
-        StepVerifier.create(Mono.when(publishEventMono))
-            .expectComplete()
-            .verify(TIMEOUT);
+        StepVerifier.create(Mono.when(publishEventMono)).expectComplete().verify(TIMEOUT);
 
         final boolean await = eventCountdown.await(TIMEOUT.toMillis(), TimeUnit.MILLISECONDS);
 
@@ -218,14 +210,13 @@ public class EventHubBufferedProducerAsyncClientIntegrationTest extends Integrat
 
             context.getEvents().forEach(eventData -> {
                 final boolean success = expected.removeIf(key -> key.equals(eventData.getBodyAsString()));
-                assertTrue(success, "Unable to find key " + eventData.getBodyAsString()
-                    + " in partition id: " + context.getEvents());
+                assertTrue(success,
+                    "Unable to find key " + eventData.getBodyAsString() + " in partition id: " + context.getEvents());
             });
         }
 
         expectedPartitionIdsMap.forEach((key, value) -> {
-            assertTrue(value.isEmpty(), key + ": There should be no more partition keys. "
-                + String.join(",", value));
+            assertTrue(value.isEmpty(), key + ": There should be no more partition keys. " + String.join(",", value));
         });
 
         final Map<String, PartitionProperties> finalProperties = getPartitionProperties();

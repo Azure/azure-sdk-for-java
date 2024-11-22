@@ -13,6 +13,7 @@ import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appcontainers.models.ExtendedLocation;
 import com.azure.resourcemanager.appcontainers.models.JobConfiguration;
 import com.azure.resourcemanager.appcontainers.models.JobProvisioningState;
+import com.azure.resourcemanager.appcontainers.models.JobRunningState;
 import com.azure.resourcemanager.appcontainers.models.JobTemplate;
 import com.azure.resourcemanager.appcontainers.models.ManagedServiceIdentity;
 import java.io.IOException;
@@ -46,9 +47,9 @@ public final class JobInner extends Resource {
     private SystemData systemData;
 
     /*
-     * Fully qualified resource Id for the resource.
+     * The type of the resource.
      */
-    private String id;
+    private String type;
 
     /*
      * The name of the resource.
@@ -56,9 +57,9 @@ public final class JobInner extends Resource {
     private String name;
 
     /*
-     * The type of the resource.
+     * Fully qualified resource Id for the resource.
      */
-    private String type;
+    private String id;
 
     /**
      * Creates an instance of JobInner class.
@@ -127,13 +128,13 @@ public final class JobInner extends Resource {
     }
 
     /**
-     * Get the id property: Fully qualified resource Id for the resource.
+     * Get the type property: The type of the resource.
      * 
-     * @return the id value.
+     * @return the type value.
      */
     @Override
-    public String id() {
-        return this.id;
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -147,13 +148,13 @@ public final class JobInner extends Resource {
     }
 
     /**
-     * Get the type property: The type of the resource.
+     * Get the id property: Fully qualified resource Id for the resource.
      * 
-     * @return the type value.
+     * @return the id value.
      */
     @Override
-    public String type() {
-        return this.type;
+    public String id() {
+        return this.id;
     }
 
     /**
@@ -181,6 +182,15 @@ public final class JobInner extends Resource {
      */
     public JobProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the runningState property: Current running state of the job.
+     * 
+     * @return the runningState value.
+     */
+    public JobRunningState runningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().runningState();
     }
 
     /**

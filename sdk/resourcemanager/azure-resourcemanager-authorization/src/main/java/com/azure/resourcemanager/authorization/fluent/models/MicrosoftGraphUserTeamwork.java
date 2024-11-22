@@ -5,35 +5,38 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/** userTeamwork. */
+/**
+ * userTeamwork.
+ */
 @Fluent
 public final class MicrosoftGraphUserTeamwork extends MicrosoftGraphEntity {
     /*
      * The apps installed in the personal scope of this user.
      */
-    @JsonProperty(value = "installedApps")
     private List<MicrosoftGraphUserScopeTeamsAppInstallation> installedApps;
 
     /*
      * userTeamwork
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphUserTeamwork class. */
+    /**
+     * Creates an instance of MicrosoftGraphUserTeamwork class.
+     */
     public MicrosoftGraphUserTeamwork() {
     }
 
     /**
      * Get the installedApps property: The apps installed in the personal scope of this user.
-     *
+     * 
      * @return the installedApps value.
      */
     public List<MicrosoftGraphUserScopeTeamsAppInstallation> installedApps() {
@@ -42,29 +45,28 @@ public final class MicrosoftGraphUserTeamwork extends MicrosoftGraphEntity {
 
     /**
      * Set the installedApps property: The apps installed in the personal scope of this user.
-     *
+     * 
      * @param installedApps the installedApps value to set.
      * @return the MicrosoftGraphUserTeamwork object itself.
      */
-    public MicrosoftGraphUserTeamwork withInstalledApps(
-        List<MicrosoftGraphUserScopeTeamsAppInstallation> installedApps) {
+    public MicrosoftGraphUserTeamwork
+        withInstalledApps(List<MicrosoftGraphUserScopeTeamsAppInstallation> installedApps) {
         this.installedApps = installedApps;
         return this;
     }
 
     /**
      * Get the additionalProperties property: userTeamwork.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: userTeamwork.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphUserTeamwork object itself.
      */
@@ -73,15 +75,9 @@ public final class MicrosoftGraphUserTeamwork extends MicrosoftGraphEntity {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphUserTeamwork withId(String id) {
         super.withId(id);
@@ -90,7 +86,7 @@ public final class MicrosoftGraphUserTeamwork extends MicrosoftGraphEntity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -99,5 +95,57 @@ public final class MicrosoftGraphUserTeamwork extends MicrosoftGraphEntity {
         if (installedApps() != null) {
             installedApps().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeArrayField("installedApps", this.installedApps, (writer, element) -> writer.writeJson(element));
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphUserTeamwork from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphUserTeamwork if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphUserTeamwork.
+     */
+    public static MicrosoftGraphUserTeamwork fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphUserTeamwork deserializedMicrosoftGraphUserTeamwork = new MicrosoftGraphUserTeamwork();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphUserTeamwork.withId(reader.getString());
+                } else if ("installedApps".equals(fieldName)) {
+                    List<MicrosoftGraphUserScopeTeamsAppInstallation> installedApps
+                        = reader.readArray(reader1 -> MicrosoftGraphUserScopeTeamsAppInstallation.fromJson(reader1));
+                    deserializedMicrosoftGraphUserTeamwork.installedApps = installedApps;
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphUserTeamwork.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphUserTeamwork;
+        });
     }
 }

@@ -5,8 +5,13 @@ package com.azure.analytics.defender.easm.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
@@ -19,427 +24,366 @@ public final class PageAsset extends InventoryAsset {
      * The url property.
      */
     @Generated
-    @JsonProperty(value = "url")
     private String url;
 
     /*
      * The httpMethod property.
      */
     @Generated
-    @JsonProperty(value = "httpMethod")
     private String httpMethod;
 
     /*
      * The service property.
      */
     @Generated
-    @JsonProperty(value = "service")
     private String service;
 
     /*
      * The ipAddresses property.
      */
     @Generated
-    @JsonProperty(value = "ipAddresses")
     private List<ObservedString> ipAddresses;
 
     /*
      * The successful property.
      */
     @Generated
-    @JsonProperty(value = "successful")
     private List<ObservedBoolean> successful;
 
     /*
      * The httpResponseCodes property.
      */
     @Generated
-    @JsonProperty(value = "httpResponseCodes")
     private List<ObservedInteger> httpResponseCodes;
 
     /*
      * The httpResponseMessages property.
      */
     @Generated
-    @JsonProperty(value = "httpResponseMessages")
     private List<ObservedString> httpResponseMessages;
 
     /*
      * The responseTimes property.
      */
     @Generated
-    @JsonProperty(value = "responseTimes")
     private List<ObservedLong> responseTimes;
 
     /*
      * The frames property.
      */
     @Generated
-    @JsonProperty(value = "frames")
     private List<ObservedBoolean> frames;
 
     /*
      * The windows property.
      */
     @Generated
-    @JsonProperty(value = "windows")
     private List<ObservedBoolean> windows;
 
     /*
      * The nonHtmlFrames property.
      */
     @Generated
-    @JsonProperty(value = "nonHtmlFrames")
     private List<ObservedBoolean> nonHtmlFrames;
 
     /*
      * The undirectedContent property.
      */
     @Generated
-    @JsonProperty(value = "undirectedContent")
     private List<ObservedBoolean> undirectedContent;
 
     /*
      * The contentTypes property.
      */
     @Generated
-    @JsonProperty(value = "contentTypes")
     private List<ObservedString> contentTypes;
 
     /*
      * The contentLengths property.
      */
     @Generated
-    @JsonProperty(value = "contentLengths")
     private List<ObservedLong> contentLengths;
 
     /*
      * The windowNames property.
      */
     @Generated
-    @JsonProperty(value = "windowNames")
     private List<ObservedString> windowNames;
 
     /*
      * The charsets property.
      */
     @Generated
-    @JsonProperty(value = "charsets")
     private List<ObservedString> charsets;
 
     /*
      * The titles property.
      */
     @Generated
-    @JsonProperty(value = "titles")
     private List<ObservedString> titles;
 
     /*
      * The languages property.
      */
     @Generated
-    @JsonProperty(value = "languages")
     private List<ObservedString> languages;
 
     /*
      * The responseHeaders property.
      */
     @Generated
-    @JsonProperty(value = "responseHeaders")
     private List<ObservedHeader> responseHeaders;
 
     /*
      * The cookies property.
      */
     @Generated
-    @JsonProperty(value = "cookies")
     private List<Cookie> cookies;
 
     /*
      * The webComponents property.
      */
     @Generated
-    @JsonProperty(value = "webComponents")
     private List<WebComponent> webComponents;
 
     /*
      * The attributes property.
      */
     @Generated
-    @JsonProperty(value = "attributes")
     private List<Attribute> attributes;
 
     /*
      * The assetSecurityPolicies property.
      */
     @Generated
-    @JsonProperty(value = "assetSecurityPolicies")
     private List<AssetSecurityPolicy> assetSecurityPolicies;
 
     /*
      * The responseBodyMinhashSignatures property.
      */
     @Generated
-    @JsonProperty(value = "responseBodyMinhashSignatures")
     private List<ObservedIntegers> responseBodyMinhashSignatures;
 
     /*
      * The fullDomMinhashSignatures property.
      */
     @Generated
-    @JsonProperty(value = "fullDomMinhashSignatures")
     private List<ObservedIntegers> fullDomMinhashSignatures;
 
     /*
      * The responseBodyHashSignatures property.
      */
     @Generated
-    @JsonProperty(value = "responseBodyHashSignatures")
     private List<ObservedString> responseBodyHashSignatures;
 
     /*
      * The errors property.
      */
     @Generated
-    @JsonProperty(value = "errors")
     private List<ObservedString> errors;
 
     /*
      * The sslCerts property.
      */
     @Generated
-    @JsonProperty(value = "sslCerts")
     private List<SslCertAsset> sslCerts;
 
     /*
      * The sources property.
      */
     @Generated
-    @JsonProperty(value = "sources")
     private List<Source> sources;
 
     /*
      * The firstSeen property.
      */
     @Generated
-    @JsonProperty(value = "firstSeen")
     private OffsetDateTime firstSeen;
 
     /*
      * The lastSeen property.
      */
     @Generated
-    @JsonProperty(value = "lastSeen")
     private OffsetDateTime lastSeen;
 
     /*
      * The count property.
      */
     @Generated
-    @JsonProperty(value = "count")
     private Long count;
 
     /*
      * The cause property.
      */
     @Generated
-    @JsonProperty(value = "cause")
     private PageCause cause;
 
     /*
      * The referrer property.
      */
     @Generated
-    @JsonProperty(value = "referrer")
     private String referrer;
 
     /*
      * The redirectUrls property.
      */
     @Generated
-    @JsonProperty(value = "redirectUrls")
     private List<ObservedString> redirectUrls;
 
     /*
      * The redirectType property.
      */
     @Generated
-    @JsonProperty(value = "redirectType")
     private PageAssetRedirectType redirectType;
 
     /*
      * The finalUrls property.
      */
     @Generated
-    @JsonProperty(value = "finalUrls")
     private List<ObservedString> finalUrls;
 
     /*
      * The finalResponseCodes property.
      */
     @Generated
-    @JsonProperty(value = "finalResponseCodes")
     private List<ObservedInteger> finalResponseCodes;
 
     /*
      * The parkedPage property.
      */
     @Generated
-    @JsonProperty(value = "parkedPage")
     private List<ObservedBoolean> parkedPage;
 
     /*
      * The resourceUrls property.
      */
     @Generated
-    @JsonProperty(value = "resourceUrls")
     private List<ResourceUrl> resourceUrls;
 
     /*
      * The guids property.
      */
     @Generated
-    @JsonProperty(value = "guids")
     private List<GuidPair> guids;
 
     /*
      * The finalIpAddresses property.
      */
     @Generated
-    @JsonProperty(value = "finalIpAddresses")
     private List<ObservedString> finalIpAddresses;
 
     /*
      * The asns property.
      */
     @Generated
-    @JsonProperty(value = "asns")
     private List<ObservedLong> asns;
 
     /*
      * The ipBlocks property.
      */
     @Generated
-    @JsonProperty(value = "ipBlocks")
     private List<IpBlock> ipBlocks;
 
     /*
      * The finalAsns property.
      */
     @Generated
-    @JsonProperty(value = "finalAsns")
     private List<ObservedLong> finalAsns;
 
     /*
      * The finalIpBlocks property.
      */
     @Generated
-    @JsonProperty(value = "finalIpBlocks")
     private List<IpBlock> finalIpBlocks;
 
     /*
      * The responseBodies property.
      */
     @Generated
-    @JsonProperty(value = "responseBodies")
     private List<ObservedString> responseBodies;
 
     /*
      * The domainAsset property.
      */
     @Generated
-    @JsonProperty(value = "domainAsset")
     private DomainAsset domainAsset;
 
     /*
      * The rootUrl property.
      */
     @Generated
-    @JsonProperty(value = "rootUrl")
     private ObservedBoolean rootUrl;
 
     /*
      * The isRootUrl property.
      */
     @Generated
-    @JsonProperty(value = "isRootUrl")
     private Boolean isRootUrl;
 
     /*
      * The location property.
      */
     @Generated
-    @JsonProperty(value = "location")
     private List<ObservedLocation> location;
 
     /*
      * The services property.
      */
     @Generated
-    @JsonProperty(value = "services")
     private List<Service> services;
 
     /*
      * The siteStatus property.
      */
     @Generated
-    @JsonProperty(value = "siteStatus")
     private String siteStatus;
 
     /*
      * The cnames property.
      */
     @Generated
-    @JsonProperty(value = "cnames")
     private List<ObservedString> cnames;
 
     /*
      * The cdns property.
      */
     @Generated
-    @JsonProperty(value = "cdns")
     private List<ObservedString> cdns;
 
     /*
      * The host property.
      */
     @Generated
-    @JsonProperty(value = "host")
     private String host;
 
     /*
      * The domain property.
      */
     @Generated
-    @JsonProperty(value = "domain")
     private String domain;
 
     /*
      * The sslServerConfig property.
      */
     @Generated
-    @JsonProperty(value = "sslServerConfig")
     private List<SslServerConfig> sslServerConfig;
 
     /*
      * The gdprAssetSecurityPolicies property.
      */
     @Generated
-    @JsonProperty(value = "gdprAssetSecurityPolicies")
     private List<AssetSecurityPolicy> gdprAssetSecurityPolicies;
 
     /*
      * The ipv4 property.
      */
     @Generated
-    @JsonProperty(value = "ipv4")
     private List<ObservedBoolean> ipv4;
 
     /*
      * The ipv6 property.
      */
     @Generated
-    @JsonProperty(value = "ipv6")
     private List<ObservedBoolean> ipv6;
 
     /**
@@ -1057,5 +1001,298 @@ public final class PageAsset extends InventoryAsset {
     @Generated
     public List<ObservedBoolean> getIpv6() {
         return this.ipv6;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("url", this.url);
+        jsonWriter.writeStringField("httpMethod", this.httpMethod);
+        jsonWriter.writeStringField("service", this.service);
+        jsonWriter.writeArrayField("ipAddresses", this.ipAddresses, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("successful", this.successful, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("httpResponseCodes", this.httpResponseCodes,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("httpResponseMessages", this.httpResponseMessages,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("responseTimes", this.responseTimes, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("frames", this.frames, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("windows", this.windows, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("nonHtmlFrames", this.nonHtmlFrames, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("undirectedContent", this.undirectedContent,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("contentTypes", this.contentTypes, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("contentLengths", this.contentLengths,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("windowNames", this.windowNames, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("charsets", this.charsets, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("titles", this.titles, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("languages", this.languages, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("responseHeaders", this.responseHeaders,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("cookies", this.cookies, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("webComponents", this.webComponents, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("attributes", this.attributes, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("assetSecurityPolicies", this.assetSecurityPolicies,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("responseBodyMinhashSignatures", this.responseBodyMinhashSignatures,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("fullDomMinhashSignatures", this.fullDomMinhashSignatures,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("responseBodyHashSignatures", this.responseBodyHashSignatures,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("errors", this.errors, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("sslCerts", this.sslCerts, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("sources", this.sources, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("firstSeen",
+            this.firstSeen == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.firstSeen));
+        jsonWriter.writeStringField("lastSeen",
+            this.lastSeen == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastSeen));
+        jsonWriter.writeNumberField("count", this.count);
+        jsonWriter.writeJsonField("cause", this.cause);
+        jsonWriter.writeStringField("referrer", this.referrer);
+        jsonWriter.writeArrayField("redirectUrls", this.redirectUrls, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("redirectType", this.redirectType == null ? null : this.redirectType.toString());
+        jsonWriter.writeArrayField("finalUrls", this.finalUrls, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("finalResponseCodes", this.finalResponseCodes,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("parkedPage", this.parkedPage, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("resourceUrls", this.resourceUrls, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("guids", this.guids, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("finalIpAddresses", this.finalIpAddresses,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("asns", this.asns, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("ipBlocks", this.ipBlocks, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("finalAsns", this.finalAsns, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("finalIpBlocks", this.finalIpBlocks, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("responseBodies", this.responseBodies,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("domainAsset", this.domainAsset);
+        jsonWriter.writeJsonField("rootUrl", this.rootUrl);
+        jsonWriter.writeBooleanField("isRootUrl", this.isRootUrl);
+        jsonWriter.writeArrayField("location", this.location, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("services", this.services, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("siteStatus", this.siteStatus);
+        jsonWriter.writeArrayField("cnames", this.cnames, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("cdns", this.cdns, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("host", this.host);
+        jsonWriter.writeStringField("domain", this.domain);
+        jsonWriter.writeArrayField("sslServerConfig", this.sslServerConfig,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("gdprAssetSecurityPolicies", this.gdprAssetSecurityPolicies,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("ipv4", this.ipv4, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("ipv6", this.ipv6, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PageAsset from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PageAsset if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the PageAsset.
+     */
+    @Generated
+    public static PageAsset fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PageAsset deserializedPageAsset = new PageAsset();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("url".equals(fieldName)) {
+                    deserializedPageAsset.url = reader.getString();
+                } else if ("httpMethod".equals(fieldName)) {
+                    deserializedPageAsset.httpMethod = reader.getString();
+                } else if ("service".equals(fieldName)) {
+                    deserializedPageAsset.service = reader.getString();
+                } else if ("ipAddresses".equals(fieldName)) {
+                    List<ObservedString> ipAddresses = reader.readArray(reader1 -> ObservedString.fromJson(reader1));
+                    deserializedPageAsset.ipAddresses = ipAddresses;
+                } else if ("successful".equals(fieldName)) {
+                    List<ObservedBoolean> successful = reader.readArray(reader1 -> ObservedBoolean.fromJson(reader1));
+                    deserializedPageAsset.successful = successful;
+                } else if ("httpResponseCodes".equals(fieldName)) {
+                    List<ObservedInteger> httpResponseCodes
+                        = reader.readArray(reader1 -> ObservedInteger.fromJson(reader1));
+                    deserializedPageAsset.httpResponseCodes = httpResponseCodes;
+                } else if ("httpResponseMessages".equals(fieldName)) {
+                    List<ObservedString> httpResponseMessages
+                        = reader.readArray(reader1 -> ObservedString.fromJson(reader1));
+                    deserializedPageAsset.httpResponseMessages = httpResponseMessages;
+                } else if ("responseTimes".equals(fieldName)) {
+                    List<ObservedLong> responseTimes = reader.readArray(reader1 -> ObservedLong.fromJson(reader1));
+                    deserializedPageAsset.responseTimes = responseTimes;
+                } else if ("frames".equals(fieldName)) {
+                    List<ObservedBoolean> frames = reader.readArray(reader1 -> ObservedBoolean.fromJson(reader1));
+                    deserializedPageAsset.frames = frames;
+                } else if ("windows".equals(fieldName)) {
+                    List<ObservedBoolean> windows = reader.readArray(reader1 -> ObservedBoolean.fromJson(reader1));
+                    deserializedPageAsset.windows = windows;
+                } else if ("nonHtmlFrames".equals(fieldName)) {
+                    List<ObservedBoolean> nonHtmlFrames
+                        = reader.readArray(reader1 -> ObservedBoolean.fromJson(reader1));
+                    deserializedPageAsset.nonHtmlFrames = nonHtmlFrames;
+                } else if ("undirectedContent".equals(fieldName)) {
+                    List<ObservedBoolean> undirectedContent
+                        = reader.readArray(reader1 -> ObservedBoolean.fromJson(reader1));
+                    deserializedPageAsset.undirectedContent = undirectedContent;
+                } else if ("contentTypes".equals(fieldName)) {
+                    List<ObservedString> contentTypes = reader.readArray(reader1 -> ObservedString.fromJson(reader1));
+                    deserializedPageAsset.contentTypes = contentTypes;
+                } else if ("contentLengths".equals(fieldName)) {
+                    List<ObservedLong> contentLengths = reader.readArray(reader1 -> ObservedLong.fromJson(reader1));
+                    deserializedPageAsset.contentLengths = contentLengths;
+                } else if ("windowNames".equals(fieldName)) {
+                    List<ObservedString> windowNames = reader.readArray(reader1 -> ObservedString.fromJson(reader1));
+                    deserializedPageAsset.windowNames = windowNames;
+                } else if ("charsets".equals(fieldName)) {
+                    List<ObservedString> charsets = reader.readArray(reader1 -> ObservedString.fromJson(reader1));
+                    deserializedPageAsset.charsets = charsets;
+                } else if ("titles".equals(fieldName)) {
+                    List<ObservedString> titles = reader.readArray(reader1 -> ObservedString.fromJson(reader1));
+                    deserializedPageAsset.titles = titles;
+                } else if ("languages".equals(fieldName)) {
+                    List<ObservedString> languages = reader.readArray(reader1 -> ObservedString.fromJson(reader1));
+                    deserializedPageAsset.languages = languages;
+                } else if ("responseHeaders".equals(fieldName)) {
+                    List<ObservedHeader> responseHeaders
+                        = reader.readArray(reader1 -> ObservedHeader.fromJson(reader1));
+                    deserializedPageAsset.responseHeaders = responseHeaders;
+                } else if ("cookies".equals(fieldName)) {
+                    List<Cookie> cookies = reader.readArray(reader1 -> Cookie.fromJson(reader1));
+                    deserializedPageAsset.cookies = cookies;
+                } else if ("webComponents".equals(fieldName)) {
+                    List<WebComponent> webComponents = reader.readArray(reader1 -> WebComponent.fromJson(reader1));
+                    deserializedPageAsset.webComponents = webComponents;
+                } else if ("attributes".equals(fieldName)) {
+                    List<Attribute> attributes = reader.readArray(reader1 -> Attribute.fromJson(reader1));
+                    deserializedPageAsset.attributes = attributes;
+                } else if ("assetSecurityPolicies".equals(fieldName)) {
+                    List<AssetSecurityPolicy> assetSecurityPolicies
+                        = reader.readArray(reader1 -> AssetSecurityPolicy.fromJson(reader1));
+                    deserializedPageAsset.assetSecurityPolicies = assetSecurityPolicies;
+                } else if ("responseBodyMinhashSignatures".equals(fieldName)) {
+                    List<ObservedIntegers> responseBodyMinhashSignatures
+                        = reader.readArray(reader1 -> ObservedIntegers.fromJson(reader1));
+                    deserializedPageAsset.responseBodyMinhashSignatures = responseBodyMinhashSignatures;
+                } else if ("fullDomMinhashSignatures".equals(fieldName)) {
+                    List<ObservedIntegers> fullDomMinhashSignatures
+                        = reader.readArray(reader1 -> ObservedIntegers.fromJson(reader1));
+                    deserializedPageAsset.fullDomMinhashSignatures = fullDomMinhashSignatures;
+                } else if ("responseBodyHashSignatures".equals(fieldName)) {
+                    List<ObservedString> responseBodyHashSignatures
+                        = reader.readArray(reader1 -> ObservedString.fromJson(reader1));
+                    deserializedPageAsset.responseBodyHashSignatures = responseBodyHashSignatures;
+                } else if ("errors".equals(fieldName)) {
+                    List<ObservedString> errors = reader.readArray(reader1 -> ObservedString.fromJson(reader1));
+                    deserializedPageAsset.errors = errors;
+                } else if ("sslCerts".equals(fieldName)) {
+                    List<SslCertAsset> sslCerts = reader.readArray(reader1 -> SslCertAsset.fromJson(reader1));
+                    deserializedPageAsset.sslCerts = sslCerts;
+                } else if ("sources".equals(fieldName)) {
+                    List<Source> sources = reader.readArray(reader1 -> Source.fromJson(reader1));
+                    deserializedPageAsset.sources = sources;
+                } else if ("firstSeen".equals(fieldName)) {
+                    deserializedPageAsset.firstSeen = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastSeen".equals(fieldName)) {
+                    deserializedPageAsset.lastSeen = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("count".equals(fieldName)) {
+                    deserializedPageAsset.count = reader.getNullable(JsonReader::getLong);
+                } else if ("cause".equals(fieldName)) {
+                    deserializedPageAsset.cause = PageCause.fromJson(reader);
+                } else if ("referrer".equals(fieldName)) {
+                    deserializedPageAsset.referrer = reader.getString();
+                } else if ("redirectUrls".equals(fieldName)) {
+                    List<ObservedString> redirectUrls = reader.readArray(reader1 -> ObservedString.fromJson(reader1));
+                    deserializedPageAsset.redirectUrls = redirectUrls;
+                } else if ("redirectType".equals(fieldName)) {
+                    deserializedPageAsset.redirectType = PageAssetRedirectType.fromString(reader.getString());
+                } else if ("finalUrls".equals(fieldName)) {
+                    List<ObservedString> finalUrls = reader.readArray(reader1 -> ObservedString.fromJson(reader1));
+                    deserializedPageAsset.finalUrls = finalUrls;
+                } else if ("finalResponseCodes".equals(fieldName)) {
+                    List<ObservedInteger> finalResponseCodes
+                        = reader.readArray(reader1 -> ObservedInteger.fromJson(reader1));
+                    deserializedPageAsset.finalResponseCodes = finalResponseCodes;
+                } else if ("parkedPage".equals(fieldName)) {
+                    List<ObservedBoolean> parkedPage = reader.readArray(reader1 -> ObservedBoolean.fromJson(reader1));
+                    deserializedPageAsset.parkedPage = parkedPage;
+                } else if ("resourceUrls".equals(fieldName)) {
+                    List<ResourceUrl> resourceUrls = reader.readArray(reader1 -> ResourceUrl.fromJson(reader1));
+                    deserializedPageAsset.resourceUrls = resourceUrls;
+                } else if ("guids".equals(fieldName)) {
+                    List<GuidPair> guids = reader.readArray(reader1 -> GuidPair.fromJson(reader1));
+                    deserializedPageAsset.guids = guids;
+                } else if ("finalIpAddresses".equals(fieldName)) {
+                    List<ObservedString> finalIpAddresses
+                        = reader.readArray(reader1 -> ObservedString.fromJson(reader1));
+                    deserializedPageAsset.finalIpAddresses = finalIpAddresses;
+                } else if ("asns".equals(fieldName)) {
+                    List<ObservedLong> asns = reader.readArray(reader1 -> ObservedLong.fromJson(reader1));
+                    deserializedPageAsset.asns = asns;
+                } else if ("ipBlocks".equals(fieldName)) {
+                    List<IpBlock> ipBlocks = reader.readArray(reader1 -> IpBlock.fromJson(reader1));
+                    deserializedPageAsset.ipBlocks = ipBlocks;
+                } else if ("finalAsns".equals(fieldName)) {
+                    List<ObservedLong> finalAsns = reader.readArray(reader1 -> ObservedLong.fromJson(reader1));
+                    deserializedPageAsset.finalAsns = finalAsns;
+                } else if ("finalIpBlocks".equals(fieldName)) {
+                    List<IpBlock> finalIpBlocks = reader.readArray(reader1 -> IpBlock.fromJson(reader1));
+                    deserializedPageAsset.finalIpBlocks = finalIpBlocks;
+                } else if ("responseBodies".equals(fieldName)) {
+                    List<ObservedString> responseBodies = reader.readArray(reader1 -> ObservedString.fromJson(reader1));
+                    deserializedPageAsset.responseBodies = responseBodies;
+                } else if ("domainAsset".equals(fieldName)) {
+                    deserializedPageAsset.domainAsset = DomainAsset.fromJson(reader);
+                } else if ("rootUrl".equals(fieldName)) {
+                    deserializedPageAsset.rootUrl = ObservedBoolean.fromJson(reader);
+                } else if ("isRootUrl".equals(fieldName)) {
+                    deserializedPageAsset.isRootUrl = reader.getNullable(JsonReader::getBoolean);
+                } else if ("location".equals(fieldName)) {
+                    List<ObservedLocation> location = reader.readArray(reader1 -> ObservedLocation.fromJson(reader1));
+                    deserializedPageAsset.location = location;
+                } else if ("services".equals(fieldName)) {
+                    List<Service> services = reader.readArray(reader1 -> Service.fromJson(reader1));
+                    deserializedPageAsset.services = services;
+                } else if ("siteStatus".equals(fieldName)) {
+                    deserializedPageAsset.siteStatus = reader.getString();
+                } else if ("cnames".equals(fieldName)) {
+                    List<ObservedString> cnames = reader.readArray(reader1 -> ObservedString.fromJson(reader1));
+                    deserializedPageAsset.cnames = cnames;
+                } else if ("cdns".equals(fieldName)) {
+                    List<ObservedString> cdns = reader.readArray(reader1 -> ObservedString.fromJson(reader1));
+                    deserializedPageAsset.cdns = cdns;
+                } else if ("host".equals(fieldName)) {
+                    deserializedPageAsset.host = reader.getString();
+                } else if ("domain".equals(fieldName)) {
+                    deserializedPageAsset.domain = reader.getString();
+                } else if ("sslServerConfig".equals(fieldName)) {
+                    List<SslServerConfig> sslServerConfig
+                        = reader.readArray(reader1 -> SslServerConfig.fromJson(reader1));
+                    deserializedPageAsset.sslServerConfig = sslServerConfig;
+                } else if ("gdprAssetSecurityPolicies".equals(fieldName)) {
+                    List<AssetSecurityPolicy> gdprAssetSecurityPolicies
+                        = reader.readArray(reader1 -> AssetSecurityPolicy.fromJson(reader1));
+                    deserializedPageAsset.gdprAssetSecurityPolicies = gdprAssetSecurityPolicies;
+                } else if ("ipv4".equals(fieldName)) {
+                    List<ObservedBoolean> ipv4 = reader.readArray(reader1 -> ObservedBoolean.fromJson(reader1));
+                    deserializedPageAsset.ipv4 = ipv4;
+                } else if ("ipv6".equals(fieldName)) {
+                    List<ObservedBoolean> ipv6 = reader.readArray(reader1 -> ObservedBoolean.fromJson(reader1));
+                    deserializedPageAsset.ipv6 = ipv6;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedPageAsset;
+        });
     }
 }

@@ -6,23 +6,26 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Execution context of the storage task assignment.
  */
 @Fluent
-public final class StorageTaskAssignmentExecutionContext {
+public final class StorageTaskAssignmentExecutionContext
+    implements JsonSerializable<StorageTaskAssignmentExecutionContext> {
     /*
      * Execution target of the storage task assignment
      */
-    @JsonProperty(value = "target")
     private ExecutionTarget target;
 
     /*
      * Execution trigger of the storage task assignment
      */
-    @JsonProperty(value = "trigger", required = true)
     private ExecutionTrigger trigger;
 
     /**
@@ -90,4 +93,45 @@ public final class StorageTaskAssignmentExecutionContext {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(StorageTaskAssignmentExecutionContext.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("trigger", this.trigger);
+        jsonWriter.writeJsonField("target", this.target);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StorageTaskAssignmentExecutionContext from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StorageTaskAssignmentExecutionContext if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the StorageTaskAssignmentExecutionContext.
+     */
+    public static StorageTaskAssignmentExecutionContext fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StorageTaskAssignmentExecutionContext deserializedStorageTaskAssignmentExecutionContext
+                = new StorageTaskAssignmentExecutionContext();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("trigger".equals(fieldName)) {
+                    deserializedStorageTaskAssignmentExecutionContext.trigger = ExecutionTrigger.fromJson(reader);
+                } else if ("target".equals(fieldName)) {
+                    deserializedStorageTaskAssignmentExecutionContext.target = ExecutionTarget.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStorageTaskAssignmentExecutionContext;
+        });
+    }
 }

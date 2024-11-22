@@ -3,13 +3,7 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.core.amqp.exception.AmqpErrorCondition;
-import com.azure.core.amqp.exception.AmqpException;
-import com.azure.core.amqp.implementation.ConnectionStringProperties;
-import com.azure.core.credential.TokenCredential;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventhubs.implementation.EventHubSharedKeyCredential;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -35,15 +29,14 @@ public class EventHubClientMetadataIntegrationTest extends IntegrationTestBase {
     public EventHubClientMetadataIntegrationTest() {
         super(new ClientLogger(EventHubClientMetadataIntegrationTest.class));
 
-        expectedPartitionIds = IntStream.range(0, NUMBER_OF_PARTITIONS)
-            .mapToObj(String::valueOf)
-            .collect(Collectors.toList());
+        expectedPartitionIds
+            = IntStream.range(0, NUMBER_OF_PARTITIONS).mapToObj(String::valueOf).collect(Collectors.toList());
     }
 
     @Override
     protected void beforeTest() {
         client = createBuilder().buildAsyncClient();
-        eventHubName = TestUtils.getConnectionStringProperties().getEntityPath();
+        eventHubName = TestUtils.getEventHubName();
     }
 
     @Override
@@ -57,14 +50,11 @@ public class EventHubClientMetadataIntegrationTest extends IntegrationTestBase {
     @Test
     public void getEventHubProperties() {
         // Act & Assert
-        StepVerifier.create(client.getProperties())
-            .assertNext(properties -> {
-                Assertions.assertNotNull(properties);
-                Assertions.assertEquals(eventHubName, properties.getName());
-                Assertions.assertEquals(expectedPartitionIds.size(), properties.getPartitionIds().stream().count());
-            })
-            .expectComplete()
-            .verify(TIMEOUT);
+        StepVerifier.create(client.getProperties()).assertNext(properties -> {
+            Assertions.assertNotNull(properties);
+            Assertions.assertEquals(eventHubName, properties.getName());
+            Assertions.assertEquals(expectedPartitionIds.size(), properties.getPartitionIds().stream().count());
+        }).expectComplete().verify(TIMEOUT);
     }
 
     /**
@@ -86,13 +76,10 @@ public class EventHubClientMetadataIntegrationTest extends IntegrationTestBase {
     public void getPartitionProperties() {
         // Act & Assert
         for (String partitionId : expectedPartitionIds) {
-            StepVerifier.create(client.getPartitionProperties(partitionId))
-                .assertNext(properties -> {
-                    Assertions.assertEquals(eventHubName, properties.getEventHubName());
-                    Assertions.assertEquals(partitionId, properties.getId());
-                })
-                .expectComplete()
-                .verify(TIMEOUT);
+            StepVerifier.create(client.getPartitionProperties(partitionId)).assertNext(properties -> {
+                Assertions.assertEquals(eventHubName, properties.getEventHubName());
+                Assertions.assertEquals(partitionId, properties.getId());
+            }).expectComplete().verify(TIMEOUT);
         }
     }
 
@@ -104,8 +91,8 @@ public class EventHubClientMetadataIntegrationTest extends IntegrationTestBase {
     @Test
     public void getPartitionPropertiesMultipleCalls() {
         // Act
-        final Flux<PartitionProperties> partitionProperties = client.getPartitionIds()
-            .flatMap(partitionId -> client.getPartitionProperties(partitionId));
+        final Flux<PartitionProperties> partitionProperties
+            = client.getPartitionIds().flatMap(partitionId -> client.getPartitionProperties(partitionId));
 
         // Assert
         StepVerifier.create(partitionProperties)
@@ -116,59 +103,5 @@ public class EventHubClientMetadataIntegrationTest extends IntegrationTestBase {
             .assertNext(properties -> Assertions.assertEquals(eventHubName, properties.getEventHubName()))
             .expectComplete()
             .verify(TIMEOUT);
-    }
-
-    /**
-     * Verifies that error conditions are handled for fetching Event Hub metadata.
-     */
-    @Test
-    public void getPartitionPropertiesInvalidToken() {
-        // Arrange
-        final ConnectionStringProperties original = TestUtils.getConnectionStringProperties();
-        final TokenCredential invalidTokenCredential = new EventHubSharedKeyCredential(
-            original.getSharedAccessKeyName(), "invalid-sas-key-value", TIMEOUT);
-
-        // Act & Assert
-        try (EventHubAsyncClient invalidClient = createBuilder()
-            .credential(original.getEndpoint().getHost(), original.getEntityPath(), invalidTokenCredential)
-            .buildAsyncClient()) {
-            StepVerifier.create(invalidClient.getProperties())
-                .expectErrorSatisfies(error -> {
-                    Assertions.assertTrue(error instanceof AmqpException);
-
-                    AmqpException exception = (AmqpException) error;
-                    Assertions.assertEquals(AmqpErrorCondition.UNAUTHORIZED_ACCESS, exception.getErrorCondition());
-                    Assertions.assertFalse(exception.isTransient());
-                    Assertions.assertFalse(CoreUtils.isNullOrEmpty(exception.getMessage()));
-                })
-                .verify(TIMEOUT);
-        }
-    }
-
-    /**
-     * Verifies that error conditions are handled for fetching partition metadata.
-     */
-    @Test
-    public void getPartitionPropertiesNonExistentHub() {
-        // Arrange
-        final ConnectionStringProperties original = TestUtils.getConnectionStringProperties();
-        final TokenCredential validCredentials = new EventHubSharedKeyCredential(
-            original.getSharedAccessKeyName(), original.getSharedAccessKey(), TIMEOUT);
-
-        // Act & Assert
-        try (EventHubAsyncClient invalidClient = createBuilder()
-            .credential(original.getEndpoint().getHost(), "does-not-exist", validCredentials)
-            .buildAsyncClient()) {
-            StepVerifier.create(invalidClient.getPartitionIds())
-                .expectErrorSatisfies(error -> {
-                    Assertions.assertTrue(error instanceof AmqpException);
-
-                    AmqpException exception = (AmqpException) error;
-                    Assertions.assertEquals(AmqpErrorCondition.NOT_FOUND, exception.getErrorCondition());
-                    Assertions.assertFalse(exception.isTransient());
-                    Assertions.assertFalse(CoreUtils.isNullOrEmpty(exception.getMessage()));
-                })
-                .verify(TIMEOUT);
-        }
     }
 }

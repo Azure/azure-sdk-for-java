@@ -578,8 +578,10 @@ public final class ApplicationLiveViewsClientImpl implements ApplicationLiveView
     public SyncPoller<PollResult<ApplicationLiveViewResourceInner>, ApplicationLiveViewResourceInner>
         beginCreateOrUpdate(String resourceGroupName, String serviceName, String applicationLiveViewName,
             ApplicationLiveViewResourceInner applicationLiveViewResource) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, serviceName, applicationLiveViewName,
-            applicationLiveViewResource).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, serviceName, applicationLiveViewName,
+                applicationLiveViewResource)
+            .getSyncPoller();
     }
 
     /**
@@ -600,8 +602,10 @@ public final class ApplicationLiveViewsClientImpl implements ApplicationLiveView
     public SyncPoller<PollResult<ApplicationLiveViewResourceInner>, ApplicationLiveViewResourceInner>
         beginCreateOrUpdate(String resourceGroupName, String serviceName, String applicationLiveViewName,
             ApplicationLiveViewResourceInner applicationLiveViewResource, Context context) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, serviceName, applicationLiveViewName,
-            applicationLiveViewResource, context).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, serviceName, applicationLiveViewName,
+                applicationLiveViewResource, context)
+            .getSyncPoller();
     }
 
     /**
@@ -922,9 +926,7 @@ public final class ApplicationLiveViewsClientImpl implements ApplicationLiveView
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -950,9 +952,7 @@ public final class ApplicationLiveViewsClientImpl implements ApplicationLiveView
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

@@ -6,9 +6,12 @@ package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.HostingEnvironmentProfile;
 import com.azure.resourcemanager.appservice.models.KeyVaultSecretStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
@@ -23,14 +26,29 @@ public final class CertificateInner extends Resource {
     /*
      * Certificate resource specific properties
      */
-    @JsonProperty(value = "properties")
     private CertificateProperties innerProperties;
 
     /*
-     * Kind of resource.
+     * Kind of resource. If the resource is an app, you can refer to
+     * https://github.com/Azure/app-service-linux-docs/blob/master/Things_You_Should_Know/kind_property.md#app-service-
+     * resource-kind-reference for details supported values for kind.
      */
-    @JsonProperty(value = "kind")
     private String kind;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
 
     /**
      * Creates an instance of CertificateInner class.
@@ -48,7 +66,9 @@ public final class CertificateInner extends Resource {
     }
 
     /**
-     * Get the kind property: Kind of resource.
+     * Get the kind property: Kind of resource. If the resource is an app, you can refer to
+     * https://github.com/Azure/app-service-linux-docs/blob/master/Things_You_Should_Know/kind_property.md#app-service-resource-kind-reference
+     * for details supported values for kind.
      * 
      * @return the kind value.
      */
@@ -57,7 +77,9 @@ public final class CertificateInner extends Resource {
     }
 
     /**
-     * Set the kind property: Kind of resource.
+     * Set the kind property: Kind of resource. If the resource is an app, you can refer to
+     * https://github.com/Azure/app-service-linux-docs/blob/master/Things_You_Should_Know/kind_property.md#app-service-resource-kind-reference
+     * for details supported values for kind.
      * 
      * @param kind the kind value to set.
      * @return the CertificateInner object itself.
@@ -65,6 +87,36 @@ public final class CertificateInner extends Resource {
     public CertificateInner withKind(String kind) {
         this.kind = kind;
         return this;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
     }
 
     /**
@@ -398,5 +450,58 @@ public final class CertificateInner extends Resource {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("kind", this.kind);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CertificateInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CertificateInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CertificateInner.
+     */
+    public static CertificateInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CertificateInner deserializedCertificateInner = new CertificateInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedCertificateInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedCertificateInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedCertificateInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedCertificateInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedCertificateInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedCertificateInner.innerProperties = CertificateProperties.fromJson(reader);
+                } else if ("kind".equals(fieldName)) {
+                    deserializedCertificateInner.kind = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCertificateInner;
+        });
     }
 }

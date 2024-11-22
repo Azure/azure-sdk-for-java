@@ -30,40 +30,28 @@ public final class WorkbookTemplatesGetByResourceGroupWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"priority\":341716623,\"author\":\"omfgbeglqgleohib\",\"templateData\":\"datatnluankrr\",\"galleries\":[{\"name\":\"eebtijvacvb\",\"category\":\"z\",\"type\":\"q\",\"order\":498607950,\"resourceType\":\"rnwxacevehjkuyxo\"},{\"name\":\"gaoql\",\"category\":\"aeylinm\",\"type\":\"vxirpghriypo\",\"order\":1656883941,\"resourceType\":\"lqhykprlpyz\"},{\"name\":\"ciqdsme\",\"category\":\"itdfuxtyasiib\",\"type\":\"ybnnustg\",\"order\":453653118,\"resourceType\":\"nmgixh\"},{\"name\":\"avmqfoudor\",\"category\":\"gyyprotwy\",\"type\":\"ndm\",\"order\":384308231,\"resourceType\":\"gcmjkavl\"}],\"localized\":{\"gqqihedsvqwt\":[{\"templateData\":\"dataftpmdtzfjltfv\",\"galleries\":[{},{},{}]},{\"templateData\":\"datajtotpvopvpbd\",\"galleries\":[{},{},{},{}]}]}},\"location\":\"mkyi\",\"tags\":{\"mcdzsufcohdxbz\":\"sihsgqcwdhohsd\"},\"id\":\"mcmuapc\",\"name\":\"hdbevwqqxeyskon\",\"type\":\"zinkfkbgbzbowxeq\"}";
+        String responseStr
+            = "{\"properties\":{\"priority\":341716623,\"author\":\"omfgbeglqgleohib\",\"templateData\":\"datatnluankrr\",\"galleries\":[{\"name\":\"eebtijvacvb\",\"category\":\"z\",\"type\":\"q\",\"order\":498607950,\"resourceType\":\"rnwxacevehjkuyxo\"},{\"name\":\"gaoql\",\"category\":\"aeylinm\",\"type\":\"vxirpghriypo\",\"order\":1656883941,\"resourceType\":\"lqhykprlpyz\"},{\"name\":\"ciqdsme\",\"category\":\"itdfuxtyasiib\",\"type\":\"ybnnustg\",\"order\":453653118,\"resourceType\":\"nmgixh\"},{\"name\":\"avmqfoudor\",\"category\":\"gyyprotwy\",\"type\":\"ndm\",\"order\":384308231,\"resourceType\":\"gcmjkavl\"}],\"localized\":{\"gqqihedsvqwt\":[{\"templateData\":\"dataftpmdtzfjltfv\",\"galleries\":[{},{},{}]},{\"templateData\":\"datajtotpvopvpbd\",\"galleries\":[{},{},{},{}]}]}},\"location\":\"mkyi\",\"tags\":{\"mcdzsufcohdxbz\":\"sihsgqcwdhohsd\"},\"id\":\"mcmuapc\",\"name\":\"hdbevwqqxeyskon\",\"type\":\"zinkfkbgbzbowxeq\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        ApplicationInsightsManager manager =
-            ApplicationInsightsManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        ApplicationInsightsManager manager = ApplicationInsightsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        WorkbookTemplate response =
-            manager
-                .workbookTemplates()
-                .getByResourceGroupWithResponse("hojeevy", "yhsgz", com.azure.core.util.Context.NONE)
-                .getValue();
+        WorkbookTemplate response = manager.workbookTemplates()
+            .getByResourceGroupWithResponse("hojeevy", "yhsgz", com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("mkyi", response.location());
         Assertions.assertEquals("sihsgqcwdhohsd", response.tags().get("mcdzsufcohdxbz"));

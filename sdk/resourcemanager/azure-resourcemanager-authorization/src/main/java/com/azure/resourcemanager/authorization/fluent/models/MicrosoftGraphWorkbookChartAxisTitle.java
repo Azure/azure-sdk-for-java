@@ -5,46 +5,47 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** workbookChartAxisTitle. */
+/**
+ * workbookChartAxisTitle.
+ */
 @Fluent
 public final class MicrosoftGraphWorkbookChartAxisTitle extends MicrosoftGraphEntity {
     /*
      * Represents the axis title.
      */
-    @JsonProperty(value = "text")
     private String text;
 
     /*
      * A boolean that specifies the visibility of an axis title.
      */
-    @JsonProperty(value = "visible")
     private Boolean visible;
 
     /*
      * workbookChartAxisTitleFormat
      */
-    @JsonProperty(value = "format")
     private MicrosoftGraphWorkbookChartAxisTitleFormat format;
 
     /*
      * workbookChartAxisTitle
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphWorkbookChartAxisTitle class. */
+    /**
+     * Creates an instance of MicrosoftGraphWorkbookChartAxisTitle class.
+     */
     public MicrosoftGraphWorkbookChartAxisTitle() {
     }
 
     /**
      * Get the text property: Represents the axis title.
-     *
+     * 
      * @return the text value.
      */
     public String text() {
@@ -53,7 +54,7 @@ public final class MicrosoftGraphWorkbookChartAxisTitle extends MicrosoftGraphEn
 
     /**
      * Set the text property: Represents the axis title.
-     *
+     * 
      * @param text the text value to set.
      * @return the MicrosoftGraphWorkbookChartAxisTitle object itself.
      */
@@ -64,7 +65,7 @@ public final class MicrosoftGraphWorkbookChartAxisTitle extends MicrosoftGraphEn
 
     /**
      * Get the visible property: A boolean that specifies the visibility of an axis title.
-     *
+     * 
      * @return the visible value.
      */
     public Boolean visible() {
@@ -73,7 +74,7 @@ public final class MicrosoftGraphWorkbookChartAxisTitle extends MicrosoftGraphEn
 
     /**
      * Set the visible property: A boolean that specifies the visibility of an axis title.
-     *
+     * 
      * @param visible the visible value to set.
      * @return the MicrosoftGraphWorkbookChartAxisTitle object itself.
      */
@@ -84,7 +85,7 @@ public final class MicrosoftGraphWorkbookChartAxisTitle extends MicrosoftGraphEn
 
     /**
      * Get the format property: workbookChartAxisTitleFormat.
-     *
+     * 
      * @return the format value.
      */
     public MicrosoftGraphWorkbookChartAxisTitleFormat format() {
@@ -93,7 +94,7 @@ public final class MicrosoftGraphWorkbookChartAxisTitle extends MicrosoftGraphEn
 
     /**
      * Set the format property: workbookChartAxisTitleFormat.
-     *
+     * 
      * @param format the format value to set.
      * @return the MicrosoftGraphWorkbookChartAxisTitle object itself.
      */
@@ -104,17 +105,16 @@ public final class MicrosoftGraphWorkbookChartAxisTitle extends MicrosoftGraphEn
 
     /**
      * Get the additionalProperties property: workbookChartAxisTitle.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: workbookChartAxisTitle.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphWorkbookChartAxisTitle object itself.
      */
@@ -123,15 +123,9 @@ public final class MicrosoftGraphWorkbookChartAxisTitle extends MicrosoftGraphEn
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphWorkbookChartAxisTitle withId(String id) {
         super.withId(id);
@@ -140,7 +134,7 @@ public final class MicrosoftGraphWorkbookChartAxisTitle extends MicrosoftGraphEn
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -149,5 +143,64 @@ public final class MicrosoftGraphWorkbookChartAxisTitle extends MicrosoftGraphEn
         if (format() != null) {
             format().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeStringField("text", this.text);
+        jsonWriter.writeBooleanField("visible", this.visible);
+        jsonWriter.writeJsonField("format", this.format);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphWorkbookChartAxisTitle from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphWorkbookChartAxisTitle if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphWorkbookChartAxisTitle.
+     */
+    public static MicrosoftGraphWorkbookChartAxisTitle fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphWorkbookChartAxisTitle deserializedMicrosoftGraphWorkbookChartAxisTitle
+                = new MicrosoftGraphWorkbookChartAxisTitle();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookChartAxisTitle.withId(reader.getString());
+                } else if ("text".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookChartAxisTitle.text = reader.getString();
+                } else if ("visible".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookChartAxisTitle.visible
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("format".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookChartAxisTitle.format
+                        = MicrosoftGraphWorkbookChartAxisTitleFormat.fromJson(reader);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphWorkbookChartAxisTitle.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphWorkbookChartAxisTitle;
+        });
     }
 }

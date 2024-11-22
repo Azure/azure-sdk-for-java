@@ -13,7 +13,8 @@ import java.util.Map;
 /** Workspace update parameters. */
 @Fluent
 public final class WorkspaceUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkspaceUpdateParameters.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(WorkspaceUpdateParameters.class);
 
     /*
      * The user specified tags associated with the Workspace.

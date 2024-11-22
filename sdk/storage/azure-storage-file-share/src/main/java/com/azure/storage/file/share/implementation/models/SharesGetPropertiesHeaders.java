@@ -23,14 +23,9 @@ import java.util.Map;
 @Fluent
 public final class SharesGetPropertiesHeaders {
     /*
-     * The x-ms-share-provisioned-iops property.
+     * The x-ms-share-included-burst-iops property.
      */
-    private Integer xMsShareProvisionedIops;
-
-    /*
-     * The x-ms-version property.
-     */
-    private String xMsVersion;
+    private Long xMsShareIncludedBurstIops;
 
     /*
      * The x-ms-lease-status property.
@@ -38,14 +33,14 @@ public final class SharesGetPropertiesHeaders {
     private LeaseStatusType xMsLeaseStatus;
 
     /*
+     * The x-ms-share-paid-bursting-enabled property.
+     */
+    private Boolean xMsSharePaidBurstingEnabled;
+
+    /*
      * The x-ms-lease-state property.
      */
     private LeaseStateType xMsLeaseState;
-
-    /*
-     * The x-ms-root-squash property.
-     */
-    private ShareRootSquash xMsRootSquash;
 
     /*
      * The Last-Modified property.
@@ -53,24 +48,14 @@ public final class SharesGetPropertiesHeaders {
     private DateTimeRfc1123 lastModified;
 
     /*
+     * The x-ms-share-max-burst-credits-for-iops property.
+     */
+    private Long xMsShareMaxBurstCreditsForIops;
+
+    /*
      * The x-ms-access-tier-change-time property.
      */
     private DateTimeRfc1123 xMsAccessTierChangeTime;
-
-    /*
-     * The x-ms-enable-snapshot-virtual-directory-access property.
-     */
-    private Boolean xMsEnableSnapshotVirtualDirectoryAccess;
-
-    /*
-     * The x-ms-meta- property.
-     */
-    private Map<String, String> xMsMeta;
-
-    /*
-     * The Date property.
-     */
-    private DateTimeRfc1123 date;
 
     /*
      * The x-ms-share-provisioned-ingress-mbps property.
@@ -88,14 +73,14 @@ public final class SharesGetPropertiesHeaders {
     private Integer xMsShareQuota;
 
     /*
+     * The x-ms-share-paid-bursting-max-bandwidth-mibps property.
+     */
+    private Long xMsSharePaidBurstingMaxBandwidthMibps;
+
+    /*
      * The x-ms-access-tier property.
      */
     private String xMsAccessTier;
-
-    /*
-     * The ETag property.
-     */
-    private String eTag;
 
     /*
      * The x-ms-enabled-protocols property.
@@ -118,31 +103,80 @@ public final class SharesGetPropertiesHeaders {
     private String xMsAccessTierTransitionState;
 
     /*
-     * The x-ms-share-provisioned-egress-mbps property.
-     */
-    private Integer xMsShareProvisionedEgressMbps;
-
-    /*
      * The x-ms-share-next-allowed-quota-downgrade-time property.
      */
     private DateTimeRfc1123 xMsShareNextAllowedQuotaDowngradeTime;
 
-    private static final HttpHeaderName X_MS_SHARE_PROVISIONED_IOPS
-        = HttpHeaderName.fromString("x-ms-share-provisioned-iops");
+    /*
+     * The x-ms-share-provisioned-iops property.
+     */
+    private Integer xMsShareProvisionedIops;
 
-    private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
+    /*
+     * The x-ms-version property.
+     */
+    private String xMsVersion;
+
+    /*
+     * The x-ms-share-next-allowed-provisioned-bandwidth-downgrade-time property.
+     */
+    private DateTimeRfc1123 xMsShareNextAllowedProvisionedBandwidthDowngradeTime;
+
+    /*
+     * The x-ms-root-squash property.
+     */
+    private ShareRootSquash xMsRootSquash;
+
+    /*
+     * The x-ms-enable-snapshot-virtual-directory-access property.
+     */
+    private Boolean xMsEnableSnapshotVirtualDirectoryAccess;
+
+    /*
+     * The x-ms-meta- property.
+     */
+    private Map<String, String> xMsMeta;
+
+    /*
+     * The x-ms-share-next-allowed-provisioned-iops-downgrade-time property.
+     */
+    private DateTimeRfc1123 xMsShareNextAllowedProvisionedIopsDowngradeTime;
+
+    /*
+     * The Date property.
+     */
+    private DateTimeRfc1123 date;
+
+    /*
+     * The x-ms-share-paid-bursting-max-iops property.
+     */
+    private Long xMsSharePaidBurstingMaxIops;
+
+    /*
+     * The ETag property.
+     */
+    private String eTag;
+
+    /*
+     * The x-ms-share-provisioned-egress-mbps property.
+     */
+    private Integer xMsShareProvisionedEgressMbps;
+
+    private static final HttpHeaderName X_MS_SHARE_INCLUDED_BURST_IOPS
+        = HttpHeaderName.fromString("x-ms-share-included-burst-iops");
 
     private static final HttpHeaderName X_MS_LEASE_STATUS = HttpHeaderName.fromString("x-ms-lease-status");
 
+    private static final HttpHeaderName X_MS_SHARE_PAID_BURSTING_ENABLED
+        = HttpHeaderName.fromString("x-ms-share-paid-bursting-enabled");
+
     private static final HttpHeaderName X_MS_LEASE_STATE = HttpHeaderName.fromString("x-ms-lease-state");
 
-    private static final HttpHeaderName X_MS_ROOT_SQUASH = HttpHeaderName.fromString("x-ms-root-squash");
+    private static final HttpHeaderName X_MS_SHARE_MAX_BURST_CREDITS_FOR_IOPS
+        = HttpHeaderName.fromString("x-ms-share-max-burst-credits-for-iops");
 
     private static final HttpHeaderName X_MS_ACCESS_TIER_CHANGE_TIME
         = HttpHeaderName.fromString("x-ms-access-tier-change-time");
-
-    private static final HttpHeaderName X_MS_ENABLE_SNAPSHOT_VIRTUAL_DIRECTORY_ACCESS
-        = HttpHeaderName.fromString("x-ms-enable-snapshot-virtual-directory-access");
 
     private static final HttpHeaderName X_MS_SHARE_PROVISIONED_INGRESS_MBPS
         = HttpHeaderName.fromString("x-ms-share-provisioned-ingress-mbps");
@@ -151,6 +185,9 @@ public final class SharesGetPropertiesHeaders {
         = HttpHeaderName.fromString("x-ms-share-provisioned-bandwidth-mibps");
 
     private static final HttpHeaderName X_MS_SHARE_QUOTA = HttpHeaderName.fromString("x-ms-share-quota");
+
+    private static final HttpHeaderName X_MS_SHARE_PAID_BURSTING_MAX_BANDWIDTH_MIBPS
+        = HttpHeaderName.fromString("x-ms-share-paid-bursting-max-bandwidth-mibps");
 
     private static final HttpHeaderName X_MS_ACCESS_TIER = HttpHeaderName.fromString("x-ms-access-tier");
 
@@ -161,11 +198,30 @@ public final class SharesGetPropertiesHeaders {
     private static final HttpHeaderName X_MS_ACCESS_TIER_TRANSITION_STATE
         = HttpHeaderName.fromString("x-ms-access-tier-transition-state");
 
-    private static final HttpHeaderName X_MS_SHARE_PROVISIONED_EGRESS_MBPS
-        = HttpHeaderName.fromString("x-ms-share-provisioned-egress-mbps");
-
     private static final HttpHeaderName X_MS_SHARE_NEXT_ALLOWED_QUOTA_DOWNGRADE_TIME
         = HttpHeaderName.fromString("x-ms-share-next-allowed-quota-downgrade-time");
+
+    private static final HttpHeaderName X_MS_SHARE_PROVISIONED_IOPS
+        = HttpHeaderName.fromString("x-ms-share-provisioned-iops");
+
+    private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
+
+    private static final HttpHeaderName X_MS_SHARE_NEXT_ALLOWED_PROVISIONED_BANDWIDTH_DOWNGRADE_TIME
+        = HttpHeaderName.fromString("x-ms-share-next-allowed-provisioned-bandwidth-downgrade-time");
+
+    private static final HttpHeaderName X_MS_ROOT_SQUASH = HttpHeaderName.fromString("x-ms-root-squash");
+
+    private static final HttpHeaderName X_MS_ENABLE_SNAPSHOT_VIRTUAL_DIRECTORY_ACCESS
+        = HttpHeaderName.fromString("x-ms-enable-snapshot-virtual-directory-access");
+
+    private static final HttpHeaderName X_MS_SHARE_NEXT_ALLOWED_PROVISIONED_IOPS_DOWNGRADE_TIME
+        = HttpHeaderName.fromString("x-ms-share-next-allowed-provisioned-iops-downgrade-time");
+
+    private static final HttpHeaderName X_MS_SHARE_PAID_BURSTING_MAX_IOPS
+        = HttpHeaderName.fromString("x-ms-share-paid-bursting-max-iops");
+
+    private static final HttpHeaderName X_MS_SHARE_PROVISIONED_EGRESS_MBPS
+        = HttpHeaderName.fromString("x-ms-share-provisioned-egress-mbps");
 
     // HttpHeaders containing the raw property values.
     /**
@@ -174,40 +230,33 @@ public final class SharesGetPropertiesHeaders {
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public SharesGetPropertiesHeaders(HttpHeaders rawHeaders) {
-        String xMsShareProvisionedIops = rawHeaders.getValue(X_MS_SHARE_PROVISIONED_IOPS);
-        if (xMsShareProvisionedIops != null) {
-            this.xMsShareProvisionedIops = Integer.parseInt(xMsShareProvisionedIops);
+        String xMsShareIncludedBurstIops = rawHeaders.getValue(X_MS_SHARE_INCLUDED_BURST_IOPS);
+        if (xMsShareIncludedBurstIops != null) {
+            this.xMsShareIncludedBurstIops = Long.parseLong(xMsShareIncludedBurstIops);
         }
-        this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
         String xMsLeaseStatus = rawHeaders.getValue(X_MS_LEASE_STATUS);
         if (xMsLeaseStatus != null) {
             this.xMsLeaseStatus = LeaseStatusType.fromString(xMsLeaseStatus);
+        }
+        String xMsSharePaidBurstingEnabled = rawHeaders.getValue(X_MS_SHARE_PAID_BURSTING_ENABLED);
+        if (xMsSharePaidBurstingEnabled != null) {
+            this.xMsSharePaidBurstingEnabled = Boolean.parseBoolean(xMsSharePaidBurstingEnabled);
         }
         String xMsLeaseState = rawHeaders.getValue(X_MS_LEASE_STATE);
         if (xMsLeaseState != null) {
             this.xMsLeaseState = LeaseStateType.fromString(xMsLeaseState);
         }
-        String xMsRootSquash = rawHeaders.getValue(X_MS_ROOT_SQUASH);
-        if (xMsRootSquash != null) {
-            this.xMsRootSquash = ShareRootSquash.fromString(xMsRootSquash);
-        }
         String lastModified = rawHeaders.getValue(HttpHeaderName.LAST_MODIFIED);
         if (lastModified != null) {
             this.lastModified = new DateTimeRfc1123(lastModified);
         }
+        String xMsShareMaxBurstCreditsForIops = rawHeaders.getValue(X_MS_SHARE_MAX_BURST_CREDITS_FOR_IOPS);
+        if (xMsShareMaxBurstCreditsForIops != null) {
+            this.xMsShareMaxBurstCreditsForIops = Long.parseLong(xMsShareMaxBurstCreditsForIops);
+        }
         String xMsAccessTierChangeTime = rawHeaders.getValue(X_MS_ACCESS_TIER_CHANGE_TIME);
         if (xMsAccessTierChangeTime != null) {
             this.xMsAccessTierChangeTime = new DateTimeRfc1123(xMsAccessTierChangeTime);
-        }
-        String xMsEnableSnapshotVirtualDirectoryAccess
-            = rawHeaders.getValue(X_MS_ENABLE_SNAPSHOT_VIRTUAL_DIRECTORY_ACCESS);
-        if (xMsEnableSnapshotVirtualDirectoryAccess != null) {
-            this.xMsEnableSnapshotVirtualDirectoryAccess
-                = Boolean.parseBoolean(xMsEnableSnapshotVirtualDirectoryAccess);
-        }
-        String date = rawHeaders.getValue(HttpHeaderName.DATE);
-        if (date != null) {
-            this.date = new DateTimeRfc1123(date);
         }
         String xMsShareProvisionedIngressMbps = rawHeaders.getValue(X_MS_SHARE_PROVISIONED_INGRESS_MBPS);
         if (xMsShareProvisionedIngressMbps != null) {
@@ -221,8 +270,12 @@ public final class SharesGetPropertiesHeaders {
         if (xMsShareQuota != null) {
             this.xMsShareQuota = Integer.parseInt(xMsShareQuota);
         }
+        String xMsSharePaidBurstingMaxBandwidthMibps
+            = rawHeaders.getValue(X_MS_SHARE_PAID_BURSTING_MAX_BANDWIDTH_MIBPS);
+        if (xMsSharePaidBurstingMaxBandwidthMibps != null) {
+            this.xMsSharePaidBurstingMaxBandwidthMibps = Long.parseLong(xMsSharePaidBurstingMaxBandwidthMibps);
+        }
         this.xMsAccessTier = rawHeaders.getValue(X_MS_ACCESS_TIER);
-        this.eTag = rawHeaders.getValue(HttpHeaderName.ETAG);
         this.xMsEnabledProtocols = rawHeaders.getValue(X_MS_ENABLED_PROTOCOLS);
         String xMsLeaseDuration = rawHeaders.getValue(X_MS_LEASE_DURATION);
         if (xMsLeaseDuration != null) {
@@ -230,14 +283,50 @@ public final class SharesGetPropertiesHeaders {
         }
         this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
         this.xMsAccessTierTransitionState = rawHeaders.getValue(X_MS_ACCESS_TIER_TRANSITION_STATE);
-        String xMsShareProvisionedEgressMbps = rawHeaders.getValue(X_MS_SHARE_PROVISIONED_EGRESS_MBPS);
-        if (xMsShareProvisionedEgressMbps != null) {
-            this.xMsShareProvisionedEgressMbps = Integer.parseInt(xMsShareProvisionedEgressMbps);
-        }
         String xMsShareNextAllowedQuotaDowngradeTime
             = rawHeaders.getValue(X_MS_SHARE_NEXT_ALLOWED_QUOTA_DOWNGRADE_TIME);
         if (xMsShareNextAllowedQuotaDowngradeTime != null) {
             this.xMsShareNextAllowedQuotaDowngradeTime = new DateTimeRfc1123(xMsShareNextAllowedQuotaDowngradeTime);
+        }
+        String xMsShareProvisionedIops = rawHeaders.getValue(X_MS_SHARE_PROVISIONED_IOPS);
+        if (xMsShareProvisionedIops != null) {
+            this.xMsShareProvisionedIops = Integer.parseInt(xMsShareProvisionedIops);
+        }
+        this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
+        String xMsShareNextAllowedProvisionedBandwidthDowngradeTime
+            = rawHeaders.getValue(X_MS_SHARE_NEXT_ALLOWED_PROVISIONED_BANDWIDTH_DOWNGRADE_TIME);
+        if (xMsShareNextAllowedProvisionedBandwidthDowngradeTime != null) {
+            this.xMsShareNextAllowedProvisionedBandwidthDowngradeTime
+                = new DateTimeRfc1123(xMsShareNextAllowedProvisionedBandwidthDowngradeTime);
+        }
+        String xMsRootSquash = rawHeaders.getValue(X_MS_ROOT_SQUASH);
+        if (xMsRootSquash != null) {
+            this.xMsRootSquash = ShareRootSquash.fromString(xMsRootSquash);
+        }
+        String xMsEnableSnapshotVirtualDirectoryAccess
+            = rawHeaders.getValue(X_MS_ENABLE_SNAPSHOT_VIRTUAL_DIRECTORY_ACCESS);
+        if (xMsEnableSnapshotVirtualDirectoryAccess != null) {
+            this.xMsEnableSnapshotVirtualDirectoryAccess
+                = Boolean.parseBoolean(xMsEnableSnapshotVirtualDirectoryAccess);
+        }
+        String xMsShareNextAllowedProvisionedIopsDowngradeTime
+            = rawHeaders.getValue(X_MS_SHARE_NEXT_ALLOWED_PROVISIONED_IOPS_DOWNGRADE_TIME);
+        if (xMsShareNextAllowedProvisionedIopsDowngradeTime != null) {
+            this.xMsShareNextAllowedProvisionedIopsDowngradeTime
+                = new DateTimeRfc1123(xMsShareNextAllowedProvisionedIopsDowngradeTime);
+        }
+        String date = rawHeaders.getValue(HttpHeaderName.DATE);
+        if (date != null) {
+            this.date = new DateTimeRfc1123(date);
+        }
+        String xMsSharePaidBurstingMaxIops = rawHeaders.getValue(X_MS_SHARE_PAID_BURSTING_MAX_IOPS);
+        if (xMsSharePaidBurstingMaxIops != null) {
+            this.xMsSharePaidBurstingMaxIops = Long.parseLong(xMsSharePaidBurstingMaxIops);
+        }
+        this.eTag = rawHeaders.getValue(HttpHeaderName.ETAG);
+        String xMsShareProvisionedEgressMbps = rawHeaders.getValue(X_MS_SHARE_PROVISIONED_EGRESS_MBPS);
+        if (xMsShareProvisionedEgressMbps != null) {
+            this.xMsShareProvisionedEgressMbps = Integer.parseInt(xMsShareProvisionedEgressMbps);
         }
         Map<String, String> xMsMetaHeaderCollection = new HashMap<>();
 
@@ -252,42 +341,22 @@ public final class SharesGetPropertiesHeaders {
     }
 
     /**
-     * Get the xMsShareProvisionedIops property: The x-ms-share-provisioned-iops property.
+     * Get the xMsShareIncludedBurstIops property: The x-ms-share-included-burst-iops property.
      * 
-     * @return the xMsShareProvisionedIops value.
+     * @return the xMsShareIncludedBurstIops value.
      */
-    public Integer getXMsShareProvisionedIops() {
-        return this.xMsShareProvisionedIops;
+    public Long getXMsShareIncludedBurstIops() {
+        return this.xMsShareIncludedBurstIops;
     }
 
     /**
-     * Set the xMsShareProvisionedIops property: The x-ms-share-provisioned-iops property.
+     * Set the xMsShareIncludedBurstIops property: The x-ms-share-included-burst-iops property.
      * 
-     * @param xMsShareProvisionedIops the xMsShareProvisionedIops value to set.
+     * @param xMsShareIncludedBurstIops the xMsShareIncludedBurstIops value to set.
      * @return the SharesGetPropertiesHeaders object itself.
      */
-    public SharesGetPropertiesHeaders setXMsShareProvisionedIops(Integer xMsShareProvisionedIops) {
-        this.xMsShareProvisionedIops = xMsShareProvisionedIops;
-        return this;
-    }
-
-    /**
-     * Get the xMsVersion property: The x-ms-version property.
-     * 
-     * @return the xMsVersion value.
-     */
-    public String getXMsVersion() {
-        return this.xMsVersion;
-    }
-
-    /**
-     * Set the xMsVersion property: The x-ms-version property.
-     * 
-     * @param xMsVersion the xMsVersion value to set.
-     * @return the SharesGetPropertiesHeaders object itself.
-     */
-    public SharesGetPropertiesHeaders setXMsVersion(String xMsVersion) {
-        this.xMsVersion = xMsVersion;
+    public SharesGetPropertiesHeaders setXMsShareIncludedBurstIops(Long xMsShareIncludedBurstIops) {
+        this.xMsShareIncludedBurstIops = xMsShareIncludedBurstIops;
         return this;
     }
 
@@ -312,6 +381,26 @@ public final class SharesGetPropertiesHeaders {
     }
 
     /**
+     * Get the xMsSharePaidBurstingEnabled property: The x-ms-share-paid-bursting-enabled property.
+     * 
+     * @return the xMsSharePaidBurstingEnabled value.
+     */
+    public Boolean isXMsSharePaidBurstingEnabled() {
+        return this.xMsSharePaidBurstingEnabled;
+    }
+
+    /**
+     * Set the xMsSharePaidBurstingEnabled property: The x-ms-share-paid-bursting-enabled property.
+     * 
+     * @param xMsSharePaidBurstingEnabled the xMsSharePaidBurstingEnabled value to set.
+     * @return the SharesGetPropertiesHeaders object itself.
+     */
+    public SharesGetPropertiesHeaders setXMsSharePaidBurstingEnabled(Boolean xMsSharePaidBurstingEnabled) {
+        this.xMsSharePaidBurstingEnabled = xMsSharePaidBurstingEnabled;
+        return this;
+    }
+
+    /**
      * Get the xMsLeaseState property: The x-ms-lease-state property.
      * 
      * @return the xMsLeaseState value.
@@ -328,26 +417,6 @@ public final class SharesGetPropertiesHeaders {
      */
     public SharesGetPropertiesHeaders setXMsLeaseState(LeaseStateType xMsLeaseState) {
         this.xMsLeaseState = xMsLeaseState;
-        return this;
-    }
-
-    /**
-     * Get the xMsRootSquash property: The x-ms-root-squash property.
-     * 
-     * @return the xMsRootSquash value.
-     */
-    public ShareRootSquash getXMsRootSquash() {
-        return this.xMsRootSquash;
-    }
-
-    /**
-     * Set the xMsRootSquash property: The x-ms-root-squash property.
-     * 
-     * @param xMsRootSquash the xMsRootSquash value to set.
-     * @return the SharesGetPropertiesHeaders object itself.
-     */
-    public SharesGetPropertiesHeaders setXMsRootSquash(ShareRootSquash xMsRootSquash) {
-        this.xMsRootSquash = xMsRootSquash;
         return this;
     }
 
@@ -379,6 +448,26 @@ public final class SharesGetPropertiesHeaders {
     }
 
     /**
+     * Get the xMsShareMaxBurstCreditsForIops property: The x-ms-share-max-burst-credits-for-iops property.
+     * 
+     * @return the xMsShareMaxBurstCreditsForIops value.
+     */
+    public Long getXMsShareMaxBurstCreditsForIops() {
+        return this.xMsShareMaxBurstCreditsForIops;
+    }
+
+    /**
+     * Set the xMsShareMaxBurstCreditsForIops property: The x-ms-share-max-burst-credits-for-iops property.
+     * 
+     * @param xMsShareMaxBurstCreditsForIops the xMsShareMaxBurstCreditsForIops value to set.
+     * @return the SharesGetPropertiesHeaders object itself.
+     */
+    public SharesGetPropertiesHeaders setXMsShareMaxBurstCreditsForIops(Long xMsShareMaxBurstCreditsForIops) {
+        this.xMsShareMaxBurstCreditsForIops = xMsShareMaxBurstCreditsForIops;
+        return this;
+    }
+
+    /**
      * Get the xMsAccessTierChangeTime property: The x-ms-access-tier-change-time property.
      * 
      * @return the xMsAccessTierChangeTime value.
@@ -401,76 +490,6 @@ public final class SharesGetPropertiesHeaders {
             this.xMsAccessTierChangeTime = null;
         } else {
             this.xMsAccessTierChangeTime = new DateTimeRfc1123(xMsAccessTierChangeTime);
-        }
-        return this;
-    }
-
-    /**
-     * Get the xMsEnableSnapshotVirtualDirectoryAccess property: The x-ms-enable-snapshot-virtual-directory-access
-     * property.
-     * 
-     * @return the xMsEnableSnapshotVirtualDirectoryAccess value.
-     */
-    public Boolean isXMsEnableSnapshotVirtualDirectoryAccess() {
-        return this.xMsEnableSnapshotVirtualDirectoryAccess;
-    }
-
-    /**
-     * Set the xMsEnableSnapshotVirtualDirectoryAccess property: The x-ms-enable-snapshot-virtual-directory-access
-     * property.
-     * 
-     * @param xMsEnableSnapshotVirtualDirectoryAccess the xMsEnableSnapshotVirtualDirectoryAccess value to set.
-     * @return the SharesGetPropertiesHeaders object itself.
-     */
-    public SharesGetPropertiesHeaders
-        setXMsEnableSnapshotVirtualDirectoryAccess(Boolean xMsEnableSnapshotVirtualDirectoryAccess) {
-        this.xMsEnableSnapshotVirtualDirectoryAccess = xMsEnableSnapshotVirtualDirectoryAccess;
-        return this;
-    }
-
-    /**
-     * Get the xMsMeta property: The x-ms-meta- property.
-     * 
-     * @return the xMsMeta value.
-     */
-    public Map<String, String> getXMsMeta() {
-        return this.xMsMeta;
-    }
-
-    /**
-     * Set the xMsMeta property: The x-ms-meta- property.
-     * 
-     * @param xMsMeta the xMsMeta value to set.
-     * @return the SharesGetPropertiesHeaders object itself.
-     */
-    public SharesGetPropertiesHeaders setXMsMeta(Map<String, String> xMsMeta) {
-        this.xMsMeta = xMsMeta;
-        return this;
-    }
-
-    /**
-     * Get the date property: The Date property.
-     * 
-     * @return the date value.
-     */
-    public OffsetDateTime getDate() {
-        if (this.date == null) {
-            return null;
-        }
-        return this.date.getDateTime();
-    }
-
-    /**
-     * Set the date property: The Date property.
-     * 
-     * @param date the date value to set.
-     * @return the SharesGetPropertiesHeaders object itself.
-     */
-    public SharesGetPropertiesHeaders setDate(OffsetDateTime date) {
-        if (date == null) {
-            this.date = null;
-        } else {
-            this.date = new DateTimeRfc1123(date);
         }
         return this;
     }
@@ -536,6 +555,29 @@ public final class SharesGetPropertiesHeaders {
     }
 
     /**
+     * Get the xMsSharePaidBurstingMaxBandwidthMibps property: The x-ms-share-paid-bursting-max-bandwidth-mibps
+     * property.
+     * 
+     * @return the xMsSharePaidBurstingMaxBandwidthMibps value.
+     */
+    public Long getXMsSharePaidBurstingMaxBandwidthMibps() {
+        return this.xMsSharePaidBurstingMaxBandwidthMibps;
+    }
+
+    /**
+     * Set the xMsSharePaidBurstingMaxBandwidthMibps property: The x-ms-share-paid-bursting-max-bandwidth-mibps
+     * property.
+     * 
+     * @param xMsSharePaidBurstingMaxBandwidthMibps the xMsSharePaidBurstingMaxBandwidthMibps value to set.
+     * @return the SharesGetPropertiesHeaders object itself.
+     */
+    public SharesGetPropertiesHeaders
+        setXMsSharePaidBurstingMaxBandwidthMibps(Long xMsSharePaidBurstingMaxBandwidthMibps) {
+        this.xMsSharePaidBurstingMaxBandwidthMibps = xMsSharePaidBurstingMaxBandwidthMibps;
+        return this;
+    }
+
+    /**
      * Get the xMsAccessTier property: The x-ms-access-tier property.
      * 
      * @return the xMsAccessTier value.
@@ -552,26 +594,6 @@ public final class SharesGetPropertiesHeaders {
      */
     public SharesGetPropertiesHeaders setXMsAccessTier(String xMsAccessTier) {
         this.xMsAccessTier = xMsAccessTier;
-        return this;
-    }
-
-    /**
-     * Get the eTag property: The ETag property.
-     * 
-     * @return the eTag value.
-     */
-    public String getETag() {
-        return this.eTag;
-    }
-
-    /**
-     * Set the eTag property: The ETag property.
-     * 
-     * @param eTag the eTag value to set.
-     * @return the SharesGetPropertiesHeaders object itself.
-     */
-    public SharesGetPropertiesHeaders setETag(String eTag) {
-        this.eTag = eTag;
         return this;
     }
 
@@ -656,26 +678,6 @@ public final class SharesGetPropertiesHeaders {
     }
 
     /**
-     * Get the xMsShareProvisionedEgressMbps property: The x-ms-share-provisioned-egress-mbps property.
-     * 
-     * @return the xMsShareProvisionedEgressMbps value.
-     */
-    public Integer getXMsShareProvisionedEgressMbps() {
-        return this.xMsShareProvisionedEgressMbps;
-    }
-
-    /**
-     * Set the xMsShareProvisionedEgressMbps property: The x-ms-share-provisioned-egress-mbps property.
-     * 
-     * @param xMsShareProvisionedEgressMbps the xMsShareProvisionedEgressMbps value to set.
-     * @return the SharesGetPropertiesHeaders object itself.
-     */
-    public SharesGetPropertiesHeaders setXMsShareProvisionedEgressMbps(Integer xMsShareProvisionedEgressMbps) {
-        this.xMsShareProvisionedEgressMbps = xMsShareProvisionedEgressMbps;
-        return this;
-    }
-
-    /**
      * Get the xMsShareNextAllowedQuotaDowngradeTime property: The x-ms-share-next-allowed-quota-downgrade-time
      * property.
      * 
@@ -702,6 +704,260 @@ public final class SharesGetPropertiesHeaders {
         } else {
             this.xMsShareNextAllowedQuotaDowngradeTime = new DateTimeRfc1123(xMsShareNextAllowedQuotaDowngradeTime);
         }
+        return this;
+    }
+
+    /**
+     * Get the xMsShareProvisionedIops property: The x-ms-share-provisioned-iops property.
+     * 
+     * @return the xMsShareProvisionedIops value.
+     */
+    public Integer getXMsShareProvisionedIops() {
+        return this.xMsShareProvisionedIops;
+    }
+
+    /**
+     * Set the xMsShareProvisionedIops property: The x-ms-share-provisioned-iops property.
+     * 
+     * @param xMsShareProvisionedIops the xMsShareProvisionedIops value to set.
+     * @return the SharesGetPropertiesHeaders object itself.
+     */
+    public SharesGetPropertiesHeaders setXMsShareProvisionedIops(Integer xMsShareProvisionedIops) {
+        this.xMsShareProvisionedIops = xMsShareProvisionedIops;
+        return this;
+    }
+
+    /**
+     * Get the xMsVersion property: The x-ms-version property.
+     * 
+     * @return the xMsVersion value.
+     */
+    public String getXMsVersion() {
+        return this.xMsVersion;
+    }
+
+    /**
+     * Set the xMsVersion property: The x-ms-version property.
+     * 
+     * @param xMsVersion the xMsVersion value to set.
+     * @return the SharesGetPropertiesHeaders object itself.
+     */
+    public SharesGetPropertiesHeaders setXMsVersion(String xMsVersion) {
+        this.xMsVersion = xMsVersion;
+        return this;
+    }
+
+    /**
+     * Get the xMsShareNextAllowedProvisionedBandwidthDowngradeTime property: The
+     * x-ms-share-next-allowed-provisioned-bandwidth-downgrade-time property.
+     * 
+     * @return the xMsShareNextAllowedProvisionedBandwidthDowngradeTime value.
+     */
+    public OffsetDateTime getXMsShareNextAllowedProvisionedBandwidthDowngradeTime() {
+        if (this.xMsShareNextAllowedProvisionedBandwidthDowngradeTime == null) {
+            return null;
+        }
+        return this.xMsShareNextAllowedProvisionedBandwidthDowngradeTime.getDateTime();
+    }
+
+    /**
+     * Set the xMsShareNextAllowedProvisionedBandwidthDowngradeTime property: The
+     * x-ms-share-next-allowed-provisioned-bandwidth-downgrade-time property.
+     * 
+     * @param xMsShareNextAllowedProvisionedBandwidthDowngradeTime the
+     * xMsShareNextAllowedProvisionedBandwidthDowngradeTime value to set.
+     * @return the SharesGetPropertiesHeaders object itself.
+     */
+    public SharesGetPropertiesHeaders setXMsShareNextAllowedProvisionedBandwidthDowngradeTime(
+        OffsetDateTime xMsShareNextAllowedProvisionedBandwidthDowngradeTime) {
+        if (xMsShareNextAllowedProvisionedBandwidthDowngradeTime == null) {
+            this.xMsShareNextAllowedProvisionedBandwidthDowngradeTime = null;
+        } else {
+            this.xMsShareNextAllowedProvisionedBandwidthDowngradeTime
+                = new DateTimeRfc1123(xMsShareNextAllowedProvisionedBandwidthDowngradeTime);
+        }
+        return this;
+    }
+
+    /**
+     * Get the xMsRootSquash property: The x-ms-root-squash property.
+     * 
+     * @return the xMsRootSquash value.
+     */
+    public ShareRootSquash getXMsRootSquash() {
+        return this.xMsRootSquash;
+    }
+
+    /**
+     * Set the xMsRootSquash property: The x-ms-root-squash property.
+     * 
+     * @param xMsRootSquash the xMsRootSquash value to set.
+     * @return the SharesGetPropertiesHeaders object itself.
+     */
+    public SharesGetPropertiesHeaders setXMsRootSquash(ShareRootSquash xMsRootSquash) {
+        this.xMsRootSquash = xMsRootSquash;
+        return this;
+    }
+
+    /**
+     * Get the xMsEnableSnapshotVirtualDirectoryAccess property: The x-ms-enable-snapshot-virtual-directory-access
+     * property.
+     * 
+     * @return the xMsEnableSnapshotVirtualDirectoryAccess value.
+     */
+    public Boolean isXMsEnableSnapshotVirtualDirectoryAccess() {
+        return this.xMsEnableSnapshotVirtualDirectoryAccess;
+    }
+
+    /**
+     * Set the xMsEnableSnapshotVirtualDirectoryAccess property: The x-ms-enable-snapshot-virtual-directory-access
+     * property.
+     * 
+     * @param xMsEnableSnapshotVirtualDirectoryAccess the xMsEnableSnapshotVirtualDirectoryAccess value to set.
+     * @return the SharesGetPropertiesHeaders object itself.
+     */
+    public SharesGetPropertiesHeaders
+        setXMsEnableSnapshotVirtualDirectoryAccess(Boolean xMsEnableSnapshotVirtualDirectoryAccess) {
+        this.xMsEnableSnapshotVirtualDirectoryAccess = xMsEnableSnapshotVirtualDirectoryAccess;
+        return this;
+    }
+
+    /**
+     * Get the xMsMeta property: The x-ms-meta- property.
+     * 
+     * @return the xMsMeta value.
+     */
+    public Map<String, String> getXMsMeta() {
+        return this.xMsMeta;
+    }
+
+    /**
+     * Set the xMsMeta property: The x-ms-meta- property.
+     * 
+     * @param xMsMeta the xMsMeta value to set.
+     * @return the SharesGetPropertiesHeaders object itself.
+     */
+    public SharesGetPropertiesHeaders setXMsMeta(Map<String, String> xMsMeta) {
+        this.xMsMeta = xMsMeta;
+        return this;
+    }
+
+    /**
+     * Get the xMsShareNextAllowedProvisionedIopsDowngradeTime property: The
+     * x-ms-share-next-allowed-provisioned-iops-downgrade-time property.
+     * 
+     * @return the xMsShareNextAllowedProvisionedIopsDowngradeTime value.
+     */
+    public OffsetDateTime getXMsShareNextAllowedProvisionedIopsDowngradeTime() {
+        if (this.xMsShareNextAllowedProvisionedIopsDowngradeTime == null) {
+            return null;
+        }
+        return this.xMsShareNextAllowedProvisionedIopsDowngradeTime.getDateTime();
+    }
+
+    /**
+     * Set the xMsShareNextAllowedProvisionedIopsDowngradeTime property: The
+     * x-ms-share-next-allowed-provisioned-iops-downgrade-time property.
+     * 
+     * @param xMsShareNextAllowedProvisionedIopsDowngradeTime the xMsShareNextAllowedProvisionedIopsDowngradeTime value
+     * to set.
+     * @return the SharesGetPropertiesHeaders object itself.
+     */
+    public SharesGetPropertiesHeaders setXMsShareNextAllowedProvisionedIopsDowngradeTime(
+        OffsetDateTime xMsShareNextAllowedProvisionedIopsDowngradeTime) {
+        if (xMsShareNextAllowedProvisionedIopsDowngradeTime == null) {
+            this.xMsShareNextAllowedProvisionedIopsDowngradeTime = null;
+        } else {
+            this.xMsShareNextAllowedProvisionedIopsDowngradeTime
+                = new DateTimeRfc1123(xMsShareNextAllowedProvisionedIopsDowngradeTime);
+        }
+        return this;
+    }
+
+    /**
+     * Get the date property: The Date property.
+     * 
+     * @return the date value.
+     */
+    public OffsetDateTime getDate() {
+        if (this.date == null) {
+            return null;
+        }
+        return this.date.getDateTime();
+    }
+
+    /**
+     * Set the date property: The Date property.
+     * 
+     * @param date the date value to set.
+     * @return the SharesGetPropertiesHeaders object itself.
+     */
+    public SharesGetPropertiesHeaders setDate(OffsetDateTime date) {
+        if (date == null) {
+            this.date = null;
+        } else {
+            this.date = new DateTimeRfc1123(date);
+        }
+        return this;
+    }
+
+    /**
+     * Get the xMsSharePaidBurstingMaxIops property: The x-ms-share-paid-bursting-max-iops property.
+     * 
+     * @return the xMsSharePaidBurstingMaxIops value.
+     */
+    public Long getXMsSharePaidBurstingMaxIops() {
+        return this.xMsSharePaidBurstingMaxIops;
+    }
+
+    /**
+     * Set the xMsSharePaidBurstingMaxIops property: The x-ms-share-paid-bursting-max-iops property.
+     * 
+     * @param xMsSharePaidBurstingMaxIops the xMsSharePaidBurstingMaxIops value to set.
+     * @return the SharesGetPropertiesHeaders object itself.
+     */
+    public SharesGetPropertiesHeaders setXMsSharePaidBurstingMaxIops(Long xMsSharePaidBurstingMaxIops) {
+        this.xMsSharePaidBurstingMaxIops = xMsSharePaidBurstingMaxIops;
+        return this;
+    }
+
+    /**
+     * Get the eTag property: The ETag property.
+     * 
+     * @return the eTag value.
+     */
+    public String getETag() {
+        return this.eTag;
+    }
+
+    /**
+     * Set the eTag property: The ETag property.
+     * 
+     * @param eTag the eTag value to set.
+     * @return the SharesGetPropertiesHeaders object itself.
+     */
+    public SharesGetPropertiesHeaders setETag(String eTag) {
+        this.eTag = eTag;
+        return this;
+    }
+
+    /**
+     * Get the xMsShareProvisionedEgressMbps property: The x-ms-share-provisioned-egress-mbps property.
+     * 
+     * @return the xMsShareProvisionedEgressMbps value.
+     */
+    public Integer getXMsShareProvisionedEgressMbps() {
+        return this.xMsShareProvisionedEgressMbps;
+    }
+
+    /**
+     * Set the xMsShareProvisionedEgressMbps property: The x-ms-share-provisioned-egress-mbps property.
+     * 
+     * @param xMsShareProvisionedEgressMbps the xMsShareProvisionedEgressMbps value to set.
+     * @return the SharesGetPropertiesHeaders object itself.
+     */
+    public SharesGetPropertiesHeaders setXMsShareProvisionedEgressMbps(Integer xMsShareProvisionedEgressMbps) {
+        this.xMsShareProvisionedEgressMbps = xMsShareProvisionedEgressMbps;
         return this;
     }
 }

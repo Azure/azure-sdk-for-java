@@ -5,29 +5,30 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Continuation settings for execute data flow activity.
  */
 @Fluent
-public final class ContinuationSettingsReference {
+public final class ContinuationSettingsReference implements JsonSerializable<ContinuationSettingsReference> {
     /*
      * Continuation TTL in minutes.
      */
-    @JsonProperty(value = "continuationTtlInMinutes")
     private Object continuationTtlInMinutes;
 
     /*
      * Idle condition.
      */
-    @JsonProperty(value = "idleCondition")
     private Object idleCondition;
 
     /*
      * Customized checkpoint key.
      */
-    @JsonProperty(value = "customizedCheckpointKey")
     private Object customizedCheckpointKey;
 
     /**
@@ -102,5 +103,48 @@ public final class ContinuationSettingsReference {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("continuationTtlInMinutes", this.continuationTtlInMinutes);
+        jsonWriter.writeUntypedField("idleCondition", this.idleCondition);
+        jsonWriter.writeUntypedField("customizedCheckpointKey", this.customizedCheckpointKey);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ContinuationSettingsReference from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ContinuationSettingsReference if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ContinuationSettingsReference.
+     */
+    public static ContinuationSettingsReference fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ContinuationSettingsReference deserializedContinuationSettingsReference
+                = new ContinuationSettingsReference();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("continuationTtlInMinutes".equals(fieldName)) {
+                    deserializedContinuationSettingsReference.continuationTtlInMinutes = reader.readUntyped();
+                } else if ("idleCondition".equals(fieldName)) {
+                    deserializedContinuationSettingsReference.idleCondition = reader.readUntyped();
+                } else if ("customizedCheckpointKey".equals(fieldName)) {
+                    deserializedContinuationSettingsReference.customizedCheckpointKey = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedContinuationSettingsReference;
+        });
     }
 }

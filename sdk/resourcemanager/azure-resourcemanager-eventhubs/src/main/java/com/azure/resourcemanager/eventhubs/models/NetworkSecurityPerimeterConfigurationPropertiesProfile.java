@@ -5,31 +5,32 @@
 package com.azure.resourcemanager.eventhubs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Information about current network profile.
  */
 @Fluent
-public final class NetworkSecurityPerimeterConfigurationPropertiesProfile {
+public final class NetworkSecurityPerimeterConfigurationPropertiesProfile
+    implements JsonSerializable<NetworkSecurityPerimeterConfigurationPropertiesProfile> {
     /*
      * Name of the resource
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Current access rules version
      */
-    @JsonProperty(value = "accessRulesVersion")
     private String accessRulesVersion;
 
     /*
      * List of Access Rules
      */
-    @JsonProperty(value = "accessRules")
     private List<NspAccessRule> accessRules;
 
     /**
@@ -40,7 +41,7 @@ public final class NetworkSecurityPerimeterConfigurationPropertiesProfile {
 
     /**
      * Get the name property: Name of the resource.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -49,7 +50,7 @@ public final class NetworkSecurityPerimeterConfigurationPropertiesProfile {
 
     /**
      * Set the name property: Name of the resource.
-     *
+     * 
      * @param name the name value to set.
      * @return the NetworkSecurityPerimeterConfigurationPropertiesProfile object itself.
      */
@@ -60,7 +61,7 @@ public final class NetworkSecurityPerimeterConfigurationPropertiesProfile {
 
     /**
      * Get the accessRulesVersion property: Current access rules version.
-     *
+     * 
      * @return the accessRulesVersion value.
      */
     public String accessRulesVersion() {
@@ -69,7 +70,7 @@ public final class NetworkSecurityPerimeterConfigurationPropertiesProfile {
 
     /**
      * Set the accessRulesVersion property: Current access rules version.
-     *
+     * 
      * @param accessRulesVersion the accessRulesVersion value to set.
      * @return the NetworkSecurityPerimeterConfigurationPropertiesProfile object itself.
      */
@@ -80,7 +81,7 @@ public final class NetworkSecurityPerimeterConfigurationPropertiesProfile {
 
     /**
      * Get the accessRules property: List of Access Rules.
-     *
+     * 
      * @return the accessRules value.
      */
     public List<NspAccessRule> accessRules() {
@@ -89,7 +90,7 @@ public final class NetworkSecurityPerimeterConfigurationPropertiesProfile {
 
     /**
      * Set the accessRules property: List of Access Rules.
-     *
+     * 
      * @param accessRules the accessRules value to set.
      * @return the NetworkSecurityPerimeterConfigurationPropertiesProfile object itself.
      */
@@ -100,12 +101,58 @@ public final class NetworkSecurityPerimeterConfigurationPropertiesProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (accessRules() != null) {
             accessRules().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("accessRulesVersion", this.accessRulesVersion);
+        jsonWriter.writeArrayField("accessRules", this.accessRules, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetworkSecurityPerimeterConfigurationPropertiesProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetworkSecurityPerimeterConfigurationPropertiesProfile if the JsonReader was pointing to
+     * an instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NetworkSecurityPerimeterConfigurationPropertiesProfile.
+     */
+    public static NetworkSecurityPerimeterConfigurationPropertiesProfile fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetworkSecurityPerimeterConfigurationPropertiesProfile deserializedNetworkSecurityPerimeterConfigurationPropertiesProfile
+                = new NetworkSecurityPerimeterConfigurationPropertiesProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedNetworkSecurityPerimeterConfigurationPropertiesProfile.name = reader.getString();
+                } else if ("accessRulesVersion".equals(fieldName)) {
+                    deserializedNetworkSecurityPerimeterConfigurationPropertiesProfile.accessRulesVersion
+                        = reader.getString();
+                } else if ("accessRules".equals(fieldName)) {
+                    List<NspAccessRule> accessRules = reader.readArray(reader1 -> NspAccessRule.fromJson(reader1));
+                    deserializedNetworkSecurityPerimeterConfigurationPropertiesProfile.accessRules = accessRules;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetworkSecurityPerimeterConfigurationPropertiesProfile;
+        });
     }
 }

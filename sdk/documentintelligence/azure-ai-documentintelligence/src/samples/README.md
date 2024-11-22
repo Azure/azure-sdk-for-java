@@ -56,7 +56,7 @@ All of these samples need the endpoint to your Document Intelligence resource ([
 Troubleshooting steps can be found [here][SDK_README_TROUBLESHOOTING].
 
 ## Next steps
-Check out the [API reference documentation][java_fr_ref_docs] to learn more about
+Check out the [API reference documentation][api_reference_doc] to learn more about
 what you can do with the Azure Document Intelligence client library.
 
 ## Contributing
@@ -70,7 +70,7 @@ Guidelines][SDK_README_CONTRIBUTING] for more information.
 [SDK_README_KEY_CONCEPTS]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/documentintelligence/azure-ai-documentintelligence/README.md#key-concepts
 [SDK_README_DEPENDENCY]: ../../README.md#adding-the-package-to-your-product
 [SDK_README_NEXT_STEPS]: ../../README.md#next-steps
-[java_fr_ref_docs]: https://aka.ms/azsdk-java-documentintelligence-ref-doc
+[api_reference_doc]: https://learn.microsoft.com/java/api/overview/azure/ai-documentintelligence-readme?view=azure-java-preview
 [get-endpoint-instructions]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/documentintelligence/azure-ai-documentintelligence#
 [get-key-instructions]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/documentintelligence/azure-ai-documentintelligence#create-a-form-recognizer-client-using-azurekeycredential
 

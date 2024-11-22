@@ -23,7 +23,7 @@ public final class BuildersListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"environmentId\":\"kfmkmfdjxyxgbk\",\"containerRegistries\":[{\"containerRegistryServer\":\"jcteoedlrsl\",\"identityResourceId\":\"kk\"},{\"containerRegistryServer\":\"pxvjnzd\",\"identityResourceId\":\"vocoj\"},{\"containerRegistryServer\":\"pcnab\",\"identityResourceId\":\"zf\"},{\"containerRegistryServer\":\"nggy\",\"identityResourceId\":\"e\"}]},\"identity\":{\"principalId\":\"971284fc-6ae1-4bcf-a1af-72a8a47af317\",\"tenantId\":\"c09db8af-3d50-4408-9261-44aeb42b75e0\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"zkwwwn\":{\"principalId\":\"85d66840-4211-43ef-8d72-599253891acb\",\"clientId\":\"a1867540-18ae-44f2-bbd0-f3cf5df94336\"},\"rzd\":{\"principalId\":\"9cf06dd5-f156-41cc-a38e-e17da3121f9d\",\"clientId\":\"3a860d37-807e-4a82-b1de-17750928526c\"}}},\"location\":\"lskzptjxul\",\"tags\":{\"gcj\":\"cyrthxqlehm\",\"oka\":\"inue\"},\"id\":\"vfejvqnttmbqda\",\"name\":\"zfivfokpysthhzag\",\"type\":\"fwy\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"environmentId\":\"umljcirvpef\",\"containerRegistries\":[{\"containerRegistryServer\":\"veitit\",\"identityResourceId\":\"nsxzajlns\"}]},\"identity\":{\"principalId\":\"82ee0be0-090e-4ccc-818f-81f37399dca8\",\"tenantId\":\"e06e5929-004b-4bc5-85f0-b7255f9c8376\",\"type\":\"None\",\"userAssignedIdentities\":{\"xqvmvuay\":{\"principalId\":\"ebdb161f-384c-40a8-8c97-1ade775ffd9c\",\"clientId\":\"28b5e898-e0fa-4cc9-9d87-8d3f196899ba\"},\"dxk\":{\"principalId\":\"829c9a90-8bc7-479a-899e-a6db4e80e245\",\"clientId\":\"f2bc9f76-b941-4611-9c17-3c102575ee8b\"}}},\"location\":\"qbwpntghyk\",\"tags\":{\"vlzladl\":\"cdrnxsl\",\"pbqhvfdqqjwkr\":\"x\",\"atuztjct\":\"wzdanojisgglmvo\",\"wakwseivmakxhys\":\"bpvbkaehxsmzygd\"},\"id\":\"wljuxlkbectvt\",\"name\":\"j\",\"type\":\"skdchmaiubavl\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,14 +33,15 @@ public final class BuildersListByResourceGroupMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<BuilderResource> response
-            = manager.builders().listByResourceGroup("thzodubtlmjtgbl", com.azure.core.util.Context.NONE);
+            = manager.builders().listByResourceGroup("ipowza", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("lskzptjxul", response.iterator().next().location());
-        Assertions.assertEquals("cyrthxqlehm", response.iterator().next().tags().get("gcj"));
-        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, response.iterator().next().identity().type());
-        Assertions.assertEquals("kfmkmfdjxyxgbk", response.iterator().next().environmentId());
-        Assertions.assertEquals("jcteoedlrsl",
+        Assertions.assertEquals("qbwpntghyk", response.iterator().next().location());
+        Assertions.assertEquals("cdrnxsl", response.iterator().next().tags().get("vlzladl"));
+        Assertions.assertEquals(ManagedServiceIdentityType.NONE, response.iterator().next().identity().type());
+        Assertions.assertEquals("umljcirvpef", response.iterator().next().environmentId());
+        Assertions.assertEquals("veitit",
             response.iterator().next().containerRegistries().get(0).containerRegistryServer());
-        Assertions.assertEquals("kk", response.iterator().next().containerRegistries().get(0).identityResourceId());
+        Assertions.assertEquals("nsxzajlns",
+            response.iterator().next().containerRegistries().get(0).identityResourceId());
     }
 }

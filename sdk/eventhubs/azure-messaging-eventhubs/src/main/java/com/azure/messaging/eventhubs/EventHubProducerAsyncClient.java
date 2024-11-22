@@ -15,7 +15,6 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventhubs.implementation.EventHubConnectionProcessor;
 import com.azure.messaging.eventhubs.implementation.EventHubManagementNode;
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import com.azure.messaging.eventhubs.models.SendOptions;
@@ -45,6 +44,8 @@ import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.messaging.eventhubs.implementation.ClientConstants.MAX_MESSAGE_LENGTH_BYTES;
 import static com.azure.messaging.eventhubs.implementation.ClientConstants.PARTITION_ID_KEY;
 import static com.azure.messaging.eventhubs.implementation.ClientConstants.PARTITION_KEY_KEY;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.OperationName.GET_EVENT_HUB_PROPERTIES;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.OperationName.GET_PARTITION_PROPERTIES;
 
 /**
  * <p>An <b>asynchronous</b> producer responsible for transmitting {@link EventData} to a specific Event Hub, grouped
@@ -239,7 +240,7 @@ public class EventHubProducerAsyncClient implements Closeable {
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final String fullyQualifiedNamespace;
     private final String eventHubName;
-    private final EventHubConnectionProcessor connectionProcessor;
+    private final ConnectionCacheWrapper connectionProcessor;
     private final AmqpRetryOptions retryOptions;
     private final EventHubsProducerInstrumentation instrumentation;
     private final MessageSerializer messageSerializer;
@@ -254,14 +255,13 @@ public class EventHubProducerAsyncClient implements Closeable {
      * load balance the messages amongst available partitions.
      */
     EventHubProducerAsyncClient(String fullyQualifiedNamespace, String eventHubName,
-        EventHubConnectionProcessor connectionProcessor, AmqpRetryOptions retryOptions, MessageSerializer messageSerializer,
-        Scheduler scheduler, boolean isSharedConnection, Runnable onClientClose,
-        String identifier, EventHubsProducerInstrumentation instrumentation) {
-        this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
-            "'fullyQualifiedNamespace' cannot be null.");
+        ConnectionCacheWrapper connectionProcessor, AmqpRetryOptions retryOptions, MessageSerializer messageSerializer,
+        Scheduler scheduler, boolean isSharedConnection, Runnable onClientClose, String identifier,
+        EventHubsProducerInstrumentation instrumentation) {
+        this.fullyQualifiedNamespace
+            = Objects.requireNonNull(fullyQualifiedNamespace, "'fullyQualifiedNamespace' cannot be null.");
         this.eventHubName = Objects.requireNonNull(eventHubName, "'eventHubName' cannot be null.");
-        this.connectionProcessor = Objects.requireNonNull(connectionProcessor,
-            "'connectionProcessor' cannot be null.");
+        this.connectionProcessor = Objects.requireNonNull(connectionProcessor, "'connectionProcessor' cannot be null.");
         this.retryOptions = Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
         this.messageSerializer = Objects.requireNonNull(messageSerializer, "'messageSerializer' cannot be null.");
         this.onClientClose = Objects.requireNonNull(onClientClose, "'onClientClose' cannot be null.");
@@ -298,9 +298,9 @@ public class EventHubProducerAsyncClient implements Closeable {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<EventHubProperties> getEventHubProperties() {
-        return instrumentation.getTracer().traceMono(
+        return instrumentation.instrumentMono(
             connectionProcessor.getManagementNodeWithRetries().flatMap(EventHubManagementNode::getEventHubProperties),
-            "EventHubs.getEventHubProperties");
+            GET_EVENT_HUB_PROPERTIES, null);
     }
 
     /**
@@ -323,9 +323,8 @@ public class EventHubProducerAsyncClient implements Closeable {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PartitionProperties> getPartitionProperties(String partitionId) {
-        return instrumentation.getTracer().traceMono(
-            connectionProcessor.getManagementNodeWithRetries().flatMap(node -> node.getPartitionProperties(partitionId)),
-            "EventHubs.getPartitionProperties");
+        return instrumentation.instrumentMono(connectionProcessor.getManagementNodeWithRetries()
+            .flatMap(node -> node.getPartitionProperties(partitionId)), GET_PARTITION_PROPERTIES, partitionId);
     }
 
     /**
@@ -355,45 +354,40 @@ public class EventHubProducerAsyncClient implements Closeable {
         final String partitionId = options.getPartitionId();
         final int batchMaxSize = options.getMaximumSizeInBytes();
 
-        if (!CoreUtils.isNullOrEmpty(partitionKey)
-            && !CoreUtils.isNullOrEmpty(partitionId)) {
-            return monoError(LOGGER, new IllegalArgumentException(String.format(Locale.US,
-                "CreateBatchOptions.getPartitionKey() and CreateBatchOptions.getPartitionId() are both set. "
-                    + "Only one or the other can be used. partitionKey: '%s'. partitionId: '%s'",
-                partitionKey, partitionId)));
-        } else if (!CoreUtils.isNullOrEmpty(partitionKey)
-            && partitionKey.length() > MAX_PARTITION_KEY_LENGTH) {
-            return monoError(LOGGER, new IllegalArgumentException(String.format(Locale.US,
-                "Partition key '%s' exceeds the maximum allowed length: '%s'.", partitionKey,
-                MAX_PARTITION_KEY_LENGTH)));
+        if (!CoreUtils.isNullOrEmpty(partitionKey) && !CoreUtils.isNullOrEmpty(partitionId)) {
+            return monoError(LOGGER,
+                new IllegalArgumentException(String.format(Locale.US,
+                    "CreateBatchOptions.getPartitionKey() and CreateBatchOptions.getPartitionId() are both set. "
+                        + "Only one or the other can be used. partitionKey: '%s'. partitionId: '%s'",
+                    partitionKey, partitionId)));
+        } else if (!CoreUtils.isNullOrEmpty(partitionKey) && partitionKey.length() > MAX_PARTITION_KEY_LENGTH) {
+            return monoError(LOGGER,
+                new IllegalArgumentException(
+                    String.format(Locale.US, "Partition key '%s' exceeds the maximum allowed length: '%s'.",
+                        partitionKey, MAX_PARTITION_KEY_LENGTH)));
         }
 
-        final Mono<EventDataBatch> createBatch = getSendLink(partitionId)
-            .flatMap(link -> link.getLinkSize()
-                .flatMap(size -> {
-                    final int maximumLinkSize = size > 0
-                        ? size
-                        : MAX_MESSAGE_LENGTH_BYTES;
+        final Mono<EventDataBatch> createBatch
+            = getSendLink(partitionId).flatMap(link -> link.getLinkSize().flatMap(size -> {
+                final int maximumLinkSize = size > 0 ? size : MAX_MESSAGE_LENGTH_BYTES;
 
-                    if (batchMaxSize > maximumLinkSize) {
-                        return monoError(LOGGER,
-                            new IllegalArgumentException(String.format(Locale.US,
-                                "BatchOptions.maximumSizeInBytes (%s bytes) is larger than the link size (%s bytes).",
-                                batchMaxSize, maximumLinkSize)));
-                    }
+                if (batchMaxSize > maximumLinkSize) {
+                    return monoError(LOGGER,
+                        new IllegalArgumentException(String.format(Locale.US,
+                            "BatchOptions.maximumSizeInBytes (%s bytes) is larger than the link size (%s bytes).",
+                            batchMaxSize, maximumLinkSize)));
+                }
 
-                    final int batchSize = batchMaxSize > 0
-                        ? batchMaxSize
-                        : maximumLinkSize;
+                final int batchSize = batchMaxSize > 0 ? batchMaxSize : maximumLinkSize;
 
-                    return Mono.just(new EventDataBatch(batchSize, partitionId, partitionKey, link::getErrorContext, instrumentation));
-                }));
+                return Mono.just(
+                    new EventDataBatch(batchSize, partitionId, partitionKey, link::getErrorContext, instrumentation));
+            }));
 
         // Similar to the companion API 'send', the 'create-batch' can also make network calls, so retry in case
         // of transient errors.
         return withRetry(createBatch, retryOptions,
-            String.format("partitionId[%s]: Creating batch timed out.", partitionId))
-            .publishOn(scheduler);
+            String.format("partitionId[%s]: Creating batch timed out.", partitionId)).publishOn(scheduler);
     }
 
     /**
@@ -606,51 +600,40 @@ public class EventHubProducerAsyncClient implements Closeable {
         }
 
         final Mono<Void> sendMessage = getSendLink(batch.getPartitionId())
-            .flatMap(link -> messages.size() == 1
-                ? link.send(messages.get(0))
-                : link.send(messages));
+            .flatMap(link -> messages.size() == 1 ? link.send(messages.get(0)) : link.send(messages));
 
         final Mono<Void> send = withRetry(sendMessage, retryOptions,
-            String.format("partitionId[%s]: Sending messages timed out.", batch.getPartitionId()))
-            .publishOn(scheduler);
+            String.format("partitionId[%s]: Sending messages timed out.", batch.getPartitionId())).publishOn(scheduler);
 
         // important to end spans after metrics are reported so metrics get relevant context for exemplars.
-        return instrumentation.onSendBatch(send, batch, "EventHubs.send");
+        return instrumentation.sendBatch(send, batch);
     }
 
     private Mono<Void> sendInternal(Flux<EventData> events, SendOptions options) {
         final String partitionKey = options.getPartitionKey();
         final String partitionId = options.getPartitionId();
 
-        if (!CoreUtils.isNullOrEmpty(partitionKey)
-            && !CoreUtils.isNullOrEmpty(partitionId)) {
-            return monoError(LOGGER, new IllegalArgumentException(String.format(Locale.US,
-                "SendOptions.getPartitionKey() and SendOptions.getPartitionId() are both set. Only one or the"
-                    + " other can be used. partitionKey: '%s'. partitionId: '%s'",
-                partitionKey, partitionId)));
+        if (!CoreUtils.isNullOrEmpty(partitionKey) && !CoreUtils.isNullOrEmpty(partitionId)) {
+            return monoError(LOGGER,
+                new IllegalArgumentException(String.format(Locale.US,
+                    "SendOptions.getPartitionKey() and SendOptions.getPartitionId() are both set. Only one or the"
+                        + " other can be used. partitionKey: '%s'. partitionId: '%s'",
+                    partitionKey, partitionId)));
         }
 
-        return getSendLink(options.getPartitionId())
-            .flatMap(link -> link.getLinkSize()
-                .flatMap(size -> {
-                    final int batchSize = size > 0 ? size : MAX_MESSAGE_LENGTH_BYTES;
-                    final CreateBatchOptions batchOptions = new CreateBatchOptions()
-                        .setPartitionKey(options.getPartitionKey())
-                        .setPartitionId(options.getPartitionId())
-                        .setMaximumSizeInBytes(batchSize);
-                    return events.collect(new EventDataCollector(batchOptions, 1, link::getErrorContext,
-                        instrumentation));
-                })
-                .flatMap(list -> sendInternal(Flux.fromIterable(list))));
+        return getSendLink(options.getPartitionId()).flatMap(link -> link.getLinkSize().flatMap(size -> {
+            final int batchSize = size > 0 ? size : MAX_MESSAGE_LENGTH_BYTES;
+            final CreateBatchOptions batchOptions = new CreateBatchOptions().setPartitionKey(options.getPartitionKey())
+                .setPartitionId(options.getPartitionId())
+                .setMaximumSizeInBytes(batchSize);
+            return events.collect(new EventDataCollector(batchOptions, 1, link::getErrorContext, instrumentation));
+        }).flatMap(list -> sendInternal(Flux.fromIterable(list))));
     }
 
     private Mono<Void> sendInternal(Flux<EventDataBatch> eventBatches) {
-        return eventBatches
-            .flatMap(this::send)
-            .then()
-            .doOnError(error -> {
-                LOGGER.error(Messages.ERROR_SENDING_BATCH, error);
-            });
+        return eventBatches.flatMap(this::send).then().doOnError(error -> {
+            LOGGER.error(Messages.ERROR_SENDING_BATCH, error);
+        });
     }
 
     private String getEntityPath(String partitionId) {
@@ -663,7 +646,7 @@ public class EventHubProducerAsyncClient implements Closeable {
         final String entityPath = getEntityPath(partitionId);
         final String linkName = entityPath;
 
-        return connectionProcessor
+        return connectionProcessor.getConnection()
             .flatMap(connection -> connection.createSendLink(linkName, entityPath, retryOptions, identifier));
     }
 
@@ -699,8 +682,8 @@ public class EventHubProducerAsyncClient implements Closeable {
      * maxNumberOfBatches}, then the collector throws a {@link AmqpException} with {@link
      * AmqpErrorCondition#LINK_PAYLOAD_SIZE_EXCEEDED}.
      */
-    private static class EventDataCollector implements Collector<EventData, List<EventDataBatch>,
-        List<EventDataBatch>> {
+    private static class EventDataCollector
+        implements Collector<EventData, List<EventDataBatch>, List<EventDataBatch>> {
         private final String partitionKey;
         private final String partitionId;
         private final int maxMessageSize;
@@ -712,16 +695,15 @@ public class EventHubProducerAsyncClient implements Closeable {
         EventDataCollector(CreateBatchOptions options, Integer maxNumberOfBatches, ErrorContextProvider contextProvider,
             EventHubsProducerInstrumentation instrumentation) {
             this.maxNumberOfBatches = maxNumberOfBatches;
-            this.maxMessageSize = options.getMaximumSizeInBytes() > 0
-                ? options.getMaximumSizeInBytes()
-                : MAX_MESSAGE_LENGTH_BYTES;
+            this.maxMessageSize
+                = options.getMaximumSizeInBytes() > 0 ? options.getMaximumSizeInBytes() : MAX_MESSAGE_LENGTH_BYTES;
             this.partitionKey = options.getPartitionKey();
             this.partitionId = options.getPartitionId();
             this.contextProvider = contextProvider;
             this.instrumentation = instrumentation;
 
-            currentBatch = new EventDataBatch(maxMessageSize, partitionId, partitionKey, contextProvider,
-                instrumentation);
+            currentBatch
+                = new EventDataBatch(maxMessageSize, partitionId, partitionKey, contextProvider, instrumentation);
         }
 
         @Override
@@ -738,14 +720,15 @@ public class EventHubProducerAsyncClient implements Closeable {
                 }
 
                 if (maxNumberOfBatches != null && list.size() == maxNumberOfBatches) {
-                    final String message = String.format(Locale.US,
-                        Messages.EVENT_DATA_DOES_NOT_FIT, maxNumberOfBatches);
+                    final String message
+                        = String.format(Locale.US, Messages.EVENT_DATA_DOES_NOT_FIT, maxNumberOfBatches);
 
                     throw new AmqpException(false, AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED, message,
                         contextProvider.getErrorContext());
                 }
 
-                currentBatch = new EventDataBatch(maxMessageSize, partitionId, partitionKey, contextProvider, instrumentation);
+                currentBatch
+                    = new EventDataBatch(maxMessageSize, partitionId, partitionKey, contextProvider, instrumentation);
                 currentBatch.tryAdd(event);
                 list.add(batch);
             };

@@ -36,20 +36,10 @@ public class StorageAccountCmkTests extends ResourceManagerTestProxyTestBase {
     private AzureResourceManager azureResourceManager;
 
     @Override
-    protected HttpPipeline buildHttpPipeline(TokenCredential credential,
-                                             AzureProfile profile,
-                                             HttpLogOptions httpLogOptions,
-                                             List<HttpPipelinePolicy> policies,
-                                             HttpClient httpClient) {
-        return HttpPipelineProvider.buildHttpPipeline(
-            credential,
-            profile,
-            null,
-            httpLogOptions,
-            null,
-            new RetryPolicy("Retry-After", ChronoUnit.SECONDS),
-            policies,
-            httpClient);
+    protected HttpPipeline buildHttpPipeline(TokenCredential credential, AzureProfile profile,
+        HttpLogOptions httpLogOptions, List<HttpPipelinePolicy> policies, HttpClient httpClient) {
+        return HttpPipelineProvider.buildHttpPipeline(credential, profile, null, httpLogOptions, null,
+            new RetryPolicy("Retry-After", ChronoUnit.SECONDS), policies, httpClient);
     }
 
     @Override
@@ -62,7 +52,8 @@ public class StorageAccountCmkTests extends ResourceManagerTestProxyTestBase {
     }
 
     @Override
-    protected void cleanUpResources() {}
+    protected void cleanUpResources() {
+    }
 
     @Test
     // involves key vault key
@@ -108,40 +99,38 @@ public class StorageAccountCmkTests extends ResourceManagerTestProxyTestBase {
             Assertions.assertNull(storageAccount.identityTypeForCustomerEncryptionKey());
             Assertions.assertNull(storageAccount.userAssignedIdentityIdForCustomerEncryptionKey());
 
-            Assertions.assertEquals(KeySource.MICROSOFT_STORAGE.toString(), storageAccount.encryptionKeySource().toString());
+            Assertions.assertEquals(KeySource.MICROSOFT_STORAGE.toString(),
+                storageAccount.encryptionKeySource().toString());
 
             // assign access policy to the three MSIs
             vault.update()
                 .defineAccessPolicy()   // access policy for this sample client to generate key
-                    .forServicePrincipal(clientIdFromFile())
-                    .allowKeyAllPermissions()
-                    .attach()
+                .forUser(azureCliSignedInUser().userPrincipalName())
+                .allowKeyAllPermissions()
+                .attach()
                 .defineAccessPolicy()
-                    .forObjectId(storageAccount.systemAssignedManagedServiceIdentityPrincipalId())
-                    .allowKeyPermissions(KeyPermissions.GET, KeyPermissions.WRAP_KEY, KeyPermissions.UNWRAP_KEY)
-                    .attach()
+                .forObjectId(storageAccount.systemAssignedManagedServiceIdentityPrincipalId())
+                .allowKeyPermissions(KeyPermissions.GET, KeyPermissions.WRAP_KEY, KeyPermissions.UNWRAP_KEY)
+                .attach()
                 .defineAccessPolicy()
-                    .forObjectId(identity1.principalId())
-                    .allowKeyPermissions(KeyPermissions.GET, KeyPermissions.WRAP_KEY, KeyPermissions.UNWRAP_KEY)
-                    .attach()
+                .forObjectId(identity1.principalId())
+                .allowKeyPermissions(KeyPermissions.GET, KeyPermissions.WRAP_KEY, KeyPermissions.UNWRAP_KEY)
+                .attach()
                 .defineAccessPolicy()
-                    .forObjectId(identity2.principalId())
-                    .allowKeyPermissions(KeyPermissions.GET, KeyPermissions.WRAP_KEY, KeyPermissions.UNWRAP_KEY)
-                    .attach()
+                .forObjectId(identity2.principalId())
+                .allowKeyPermissions(KeyPermissions.GET, KeyPermissions.WRAP_KEY, KeyPermissions.UNWRAP_KEY)
+                .attach()
                 .apply();
 
             // create key vault key
-            Key key = vault.keys().define("key1")
-                .withKeyTypeToCreate(KeyType.RSA)
-                .withKeySize(4096)
-                .create();
+            Key key = vault.keys().define("key1").withKeyTypeToCreate(KeyType.RSA).withKeySize(4096).create();
 
             // update Storage Account to CMK with system-assigned MSI
-            storageAccount.update()
-                .withEncryptionKeyFromKeyVault(vault.vaultUri(), key.name(), "")
-                .apply();
-            Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED, storageAccount.identityTypeForCustomerEncryptionKey());
-            Assertions.assertEquals(KeySource.MICROSOFT_KEYVAULT.toString(), storageAccount.encryptionKeySource().toString());
+            storageAccount.update().withEncryptionKeyFromKeyVault(vault.vaultUri(), key.name(), "").apply();
+            Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED,
+                storageAccount.identityTypeForCustomerEncryptionKey());
+            Assertions.assertEquals(KeySource.MICROSOFT_KEYVAULT.toString(),
+                storageAccount.encryptionKeySource().toString());
 
             // update Storage Account to CMK with user-assigned MSI
             storageAccount.update()
@@ -161,17 +150,15 @@ public class StorageAccountCmkTests extends ResourceManagerTestProxyTestBase {
             Assertions.assertEquals(identity2.id(), storageAccount.userAssignedIdentityIdForCustomerEncryptionKey());
 
             // update Storage Account to CMK with system-assigned MSI
-            storageAccount.update()
-                .withEncryptionKeyFromKeyVault(vault.vaultUri(), key.name(), "")
-                .apply();
-            Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED, storageAccount.identityTypeForCustomerEncryptionKey());
+            storageAccount.update().withEncryptionKeyFromKeyVault(vault.vaultUri(), key.name(), "").apply();
+            Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED,
+                storageAccount.identityTypeForCustomerEncryptionKey());
             Assertions.assertNull(storageAccount.userAssignedIdentityIdForCustomerEncryptionKey());
 
             // update Storage Account to MMK
-            storageAccount.update()
-                .withMicrosoftManagedEncryptionKey()
-                .apply();
-            Assertions.assertEquals(KeySource.MICROSOFT_STORAGE.toString(), storageAccount.encryptionKeySource().toString());
+            storageAccount.update().withMicrosoftManagedEncryptionKey().apply();
+            Assertions.assertEquals(KeySource.MICROSOFT_STORAGE.toString(),
+                storageAccount.encryptionKeySource().toString());
             Assertions.assertNull(storageAccount.identityTypeForCustomerEncryptionKey());
         } finally {
             azureResourceManager.resourceGroups().beginDeleteByName(rgName);

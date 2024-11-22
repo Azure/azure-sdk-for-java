@@ -43,10 +43,9 @@ import com.azure.resourcemanager.cosmos.models.GremlinDatabaseListResult;
 import com.azure.resourcemanager.cosmos.models.GremlinGraphCreateUpdateParameters;
 import com.azure.resourcemanager.cosmos.models.GremlinGraphListResult;
 import com.azure.resourcemanager.cosmos.models.ThroughputSettingsUpdateParameters;
+import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
-import java.nio.ByteBuffer;
 
 /**
  * An instance of this class provides access to all the operations defined in GremlinResourcesClient.
@@ -64,7 +63,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Initializes an instance of GremlinResourcesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     GremlinResourcesClientImpl(CosmosDBManagementClientImpl client) {
@@ -260,7 +259,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Lists the Gremlin databases under an existing Azure Cosmos DB database account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -299,7 +298,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Lists the Gremlin databases under an existing Azure Cosmos DB database account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param context The context to associate with this operation.
@@ -338,7 +337,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Lists the Gremlin databases under an existing Azure Cosmos DB database account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -355,7 +354,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Lists the Gremlin databases under an existing Azure Cosmos DB database account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param context The context to associate with this operation.
@@ -373,7 +372,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Lists the Gremlin databases under an existing Azure Cosmos DB database account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -390,7 +389,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Lists the Gremlin databases under an existing Azure Cosmos DB database account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param context The context to associate with this operation.
@@ -408,7 +407,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Gets the Gremlin databases under an existing Azure Cosmos DB database account with the provided name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -449,7 +448,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Gets the Gremlin databases under an existing Azure Cosmos DB database account with the provided name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -489,7 +488,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Gets the Gremlin databases under an existing Azure Cosmos DB database account with the provided name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -508,7 +507,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Gets the Gremlin databases under an existing Azure Cosmos DB database account with the provided name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -527,7 +526,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Gets the Gremlin databases under an existing Azure Cosmos DB database account with the provided name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -544,7 +543,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Create or update an Azure Cosmos DB Gremlin database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -592,7 +591,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Create or update an Azure Cosmos DB Gremlin database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -640,7 +639,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Create or update an Azure Cosmos DB Gremlin database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -663,7 +662,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Create or update an Azure Cosmos DB Gremlin database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -688,7 +687,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Create or update an Azure Cosmos DB Gremlin database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -710,7 +709,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Create or update an Azure Cosmos DB Gremlin database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -733,7 +732,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Create or update an Azure Cosmos DB Gremlin database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -753,7 +752,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Create or update an Azure Cosmos DB Gremlin database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -774,7 +773,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Create or update an Azure Cosmos DB Gremlin database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -793,7 +792,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Create or update an Azure Cosmos DB Gremlin database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -814,7 +813,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Deletes an existing Azure Cosmos DB Gremlin database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -853,7 +852,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Deletes an existing Azure Cosmos DB Gremlin database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -891,7 +890,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Deletes an existing Azure Cosmos DB Gremlin database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -911,7 +910,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Deletes an existing Azure Cosmos DB Gremlin database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -933,7 +932,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Deletes an existing Azure Cosmos DB Gremlin database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -950,7 +949,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Deletes an existing Azure Cosmos DB Gremlin database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -969,7 +968,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Deletes an existing Azure Cosmos DB Gremlin database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -986,7 +985,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Deletes an existing Azure Cosmos DB Gremlin database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1005,7 +1004,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Deletes an existing Azure Cosmos DB Gremlin database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1020,7 +1019,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Deletes an existing Azure Cosmos DB Gremlin database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1038,7 +1037,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
     /**
      * Gets the RUs per second of the Gremlin database under an existing Azure Cosmos DB database account with the
      * provided name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1080,7 +1079,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
     /**
      * Gets the RUs per second of the Gremlin database under an existing Azure Cosmos DB database account with the
      * provided name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1121,7 +1120,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
     /**
      * Gets the RUs per second of the Gremlin database under an existing Azure Cosmos DB database account with the
      * provided name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1141,7 +1140,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
     /**
      * Gets the RUs per second of the Gremlin database under an existing Azure Cosmos DB database account with the
      * provided name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1162,7 +1161,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
     /**
      * Gets the RUs per second of the Gremlin database under an existing Azure Cosmos DB database account with the
      * provided name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1181,7 +1180,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Update RUs per second of an Azure Cosmos DB Gremlin database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1230,7 +1229,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Update RUs per second of an Azure Cosmos DB Gremlin database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1280,7 +1279,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Update RUs per second of an Azure Cosmos DB Gremlin database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1304,7 +1303,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Update RUs per second of an Azure Cosmos DB Gremlin database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1330,7 +1329,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Update RUs per second of an Azure Cosmos DB Gremlin database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1353,7 +1352,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Update RUs per second of an Azure Cosmos DB Gremlin database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1377,7 +1376,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Update RUs per second of an Azure Cosmos DB Gremlin database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1397,7 +1396,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Update RUs per second of an Azure Cosmos DB Gremlin database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1419,7 +1418,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Update RUs per second of an Azure Cosmos DB Gremlin database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1439,7 +1438,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Update RUs per second of an Azure Cosmos DB Gremlin database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1461,7 +1460,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Migrate an Azure Cosmos DB Gremlin database from manual throughput to autoscale.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1502,7 +1501,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Migrate an Azure Cosmos DB Gremlin database from manual throughput to autoscale.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1542,7 +1541,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Migrate an Azure Cosmos DB Gremlin database from manual throughput to autoscale.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1563,7 +1562,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Migrate an Azure Cosmos DB Gremlin database from manual throughput to autoscale.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1587,7 +1586,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Migrate an Azure Cosmos DB Gremlin database from manual throughput to autoscale.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1605,7 +1604,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Migrate an Azure Cosmos DB Gremlin database from manual throughput to autoscale.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1625,7 +1624,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Migrate an Azure Cosmos DB Gremlin database from manual throughput to autoscale.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1643,7 +1642,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Migrate an Azure Cosmos DB Gremlin database from manual throughput to autoscale.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1662,7 +1661,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Migrate an Azure Cosmos DB Gremlin database from manual throughput to autoscale.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1679,7 +1678,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Migrate an Azure Cosmos DB Gremlin database from manual throughput to autoscale.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1697,7 +1696,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Migrate an Azure Cosmos DB Gremlin database from autoscale to manual throughput.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1738,7 +1737,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Migrate an Azure Cosmos DB Gremlin database from autoscale to manual throughput.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1779,7 +1778,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Migrate an Azure Cosmos DB Gremlin database from autoscale to manual throughput.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1801,7 +1800,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Migrate an Azure Cosmos DB Gremlin database from autoscale to manual throughput.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1825,7 +1824,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Migrate an Azure Cosmos DB Gremlin database from autoscale to manual throughput.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1844,7 +1843,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Migrate an Azure Cosmos DB Gremlin database from autoscale to manual throughput.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1865,7 +1864,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Migrate an Azure Cosmos DB Gremlin database from autoscale to manual throughput.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1883,7 +1882,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Migrate an Azure Cosmos DB Gremlin database from autoscale to manual throughput.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1903,7 +1902,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Migrate an Azure Cosmos DB Gremlin database from autoscale to manual throughput.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1920,7 +1919,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Migrate an Azure Cosmos DB Gremlin database from autoscale to manual throughput.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1939,7 +1938,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Lists the Gremlin graph under an existing Azure Cosmos DB database account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -1982,7 +1981,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Lists the Gremlin graph under an existing Azure Cosmos DB database account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2025,7 +2024,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Lists the Gremlin graph under an existing Azure Cosmos DB database account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2043,7 +2042,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Lists the Gremlin graph under an existing Azure Cosmos DB database account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2063,7 +2062,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Lists the Gremlin graph under an existing Azure Cosmos DB database account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2081,7 +2080,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Lists the Gremlin graph under an existing Azure Cosmos DB database account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2100,7 +2099,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Gets the Gremlin graph under an existing Azure Cosmos DB database account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2144,7 +2143,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Gets the Gremlin graph under an existing Azure Cosmos DB database account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2188,7 +2187,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Gets the Gremlin graph under an existing Azure Cosmos DB database account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2208,7 +2207,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Gets the Gremlin graph under an existing Azure Cosmos DB database account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2228,7 +2227,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Gets the Gremlin graph under an existing Azure Cosmos DB database account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2247,7 +2246,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Create or update an Azure Cosmos DB Gremlin graph.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2299,7 +2298,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Create or update an Azure Cosmos DB Gremlin graph.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2351,7 +2350,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Create or update an Azure Cosmos DB Gremlin graph.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2375,7 +2374,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Create or update an Azure Cosmos DB Gremlin graph.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2401,7 +2400,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Create or update an Azure Cosmos DB Gremlin graph.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2424,7 +2423,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Create or update an Azure Cosmos DB Gremlin graph.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2448,7 +2447,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Create or update an Azure Cosmos DB Gremlin graph.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2468,7 +2467,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Create or update an Azure Cosmos DB Gremlin graph.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2490,7 +2489,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Create or update an Azure Cosmos DB Gremlin graph.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2510,7 +2509,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Create or update an Azure Cosmos DB Gremlin graph.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2532,7 +2531,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Deletes an existing Azure Cosmos DB Gremlin graph.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2575,7 +2574,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Deletes an existing Azure Cosmos DB Gremlin graph.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2617,7 +2616,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Deletes an existing Azure Cosmos DB Gremlin graph.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2638,7 +2637,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Deletes an existing Azure Cosmos DB Gremlin graph.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2661,7 +2660,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Deletes an existing Azure Cosmos DB Gremlin graph.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2680,7 +2679,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Deletes an existing Azure Cosmos DB Gremlin graph.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2700,7 +2699,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Deletes an existing Azure Cosmos DB Gremlin graph.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2719,7 +2718,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Deletes an existing Azure Cosmos DB Gremlin graph.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2739,7 +2738,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Deletes an existing Azure Cosmos DB Gremlin graph.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2756,7 +2755,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Deletes an existing Azure Cosmos DB Gremlin graph.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2774,7 +2773,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Gets the Gremlin graph throughput under an existing Azure Cosmos DB database account with the provided name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2819,7 +2818,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Gets the Gremlin graph throughput under an existing Azure Cosmos DB database account with the provided name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2863,7 +2862,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Gets the Gremlin graph throughput under an existing Azure Cosmos DB database account with the provided name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2883,7 +2882,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Gets the Gremlin graph throughput under an existing Azure Cosmos DB database account with the provided name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2904,7 +2903,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Gets the Gremlin graph throughput under an existing Azure Cosmos DB database account with the provided name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2923,7 +2922,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Update RUs per second of an Azure Cosmos DB Gremlin graph.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -2976,7 +2975,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Update RUs per second of an Azure Cosmos DB Gremlin graph.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3029,7 +3028,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Update RUs per second of an Azure Cosmos DB Gremlin graph.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3053,7 +3052,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Update RUs per second of an Azure Cosmos DB Gremlin graph.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3079,7 +3078,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Update RUs per second of an Azure Cosmos DB Gremlin graph.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3102,7 +3101,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Update RUs per second of an Azure Cosmos DB Gremlin graph.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3126,7 +3125,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Update RUs per second of an Azure Cosmos DB Gremlin graph.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3147,7 +3146,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Update RUs per second of an Azure Cosmos DB Gremlin graph.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3169,7 +3168,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Update RUs per second of an Azure Cosmos DB Gremlin graph.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3189,7 +3188,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Update RUs per second of an Azure Cosmos DB Gremlin graph.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3211,7 +3210,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Migrate an Azure Cosmos DB Gremlin graph from manual throughput to autoscale.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3256,7 +3255,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Migrate an Azure Cosmos DB Gremlin graph from manual throughput to autoscale.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3300,7 +3299,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Migrate an Azure Cosmos DB Gremlin graph from manual throughput to autoscale.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3323,7 +3322,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Migrate an Azure Cosmos DB Gremlin graph from manual throughput to autoscale.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3348,7 +3347,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Migrate an Azure Cosmos DB Gremlin graph from manual throughput to autoscale.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3368,7 +3367,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Migrate an Azure Cosmos DB Gremlin graph from manual throughput to autoscale.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3390,7 +3389,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Migrate an Azure Cosmos DB Gremlin graph from manual throughput to autoscale.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3409,7 +3408,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Migrate an Azure Cosmos DB Gremlin graph from manual throughput to autoscale.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3429,7 +3428,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Migrate an Azure Cosmos DB Gremlin graph from manual throughput to autoscale.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3447,7 +3446,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Migrate an Azure Cosmos DB Gremlin graph from manual throughput to autoscale.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3467,7 +3466,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Migrate an Azure Cosmos DB Gremlin graph from autoscale to manual throughput.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3512,7 +3511,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Migrate an Azure Cosmos DB Gremlin graph from autoscale to manual throughput.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3556,7 +3555,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Migrate an Azure Cosmos DB Gremlin graph from autoscale to manual throughput.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3579,7 +3578,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Migrate an Azure Cosmos DB Gremlin graph from autoscale to manual throughput.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3604,7 +3603,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Migrate an Azure Cosmos DB Gremlin graph from autoscale to manual throughput.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3625,7 +3624,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Migrate an Azure Cosmos DB Gremlin graph from autoscale to manual throughput.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3648,7 +3647,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Migrate an Azure Cosmos DB Gremlin graph from autoscale to manual throughput.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3668,7 +3667,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Migrate an Azure Cosmos DB Gremlin graph from autoscale to manual throughput.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3688,7 +3687,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Migrate an Azure Cosmos DB Gremlin graph from autoscale to manual throughput.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3707,7 +3706,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Migrate an Azure Cosmos DB Gremlin graph from autoscale to manual throughput.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3727,7 +3726,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Retrieves continuous backup information for a gremlin graph.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3778,7 +3777,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Retrieves continuous backup information for a gremlin graph.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3829,7 +3828,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Retrieves continuous backup information for a gremlin graph.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3853,7 +3852,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Retrieves continuous backup information for a gremlin graph.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3878,7 +3877,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Retrieves continuous backup information for a gremlin graph.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3901,7 +3900,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Retrieves continuous backup information for a gremlin graph.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3925,7 +3924,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Retrieves continuous backup information for a gremlin graph.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3945,7 +3944,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Retrieves continuous backup information for a gremlin graph.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3967,7 +3966,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Retrieves continuous backup information for a gremlin graph.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.
@@ -3987,7 +3986,7 @@ public final class GremlinResourcesClientImpl implements GremlinResourcesClient 
 
     /**
      * Retrieves continuous backup information for a gremlin graph.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseName Cosmos DB database name.

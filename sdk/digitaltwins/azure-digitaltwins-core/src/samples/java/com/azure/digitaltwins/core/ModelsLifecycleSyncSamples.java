@@ -15,7 +15,7 @@ import com.azure.identity.ClientSecretCredentialBuilder;
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Function;
 
 /**
@@ -32,44 +32,35 @@ public class ModelsLifecycleSyncSamples {
 
         SamplesArguments parsedArguments = new SamplesArguments(args);
 
-        client = new DigitalTwinsClientBuilder()
-            .credential(
-                new ClientSecretCredentialBuilder()
-                    .tenantId(parsedArguments.getTenantId())
+        client = new DigitalTwinsClientBuilder().credential(
+                new ClientSecretCredentialBuilder().tenantId(parsedArguments.getTenantId())
                     .clientId(parsedArguments.getClientId())
                     .clientSecret(parsedArguments.getClientSecret())
-                    .build()
-            )
+                    .build())
             .endpoint(parsedArguments.getDigitalTwinEndpoint())
-            .httpLogOptions(
-                new HttpLogOptions()
-                    .setLogLevel(parsedArguments.getHttpLogDetailLevel()))
+            .httpLogOptions(new HttpLogOptions().setLogLevel(parsedArguments.getHttpLogDetailLevel()))
             .buildClient();
 
         runModelLifecycleSample();
     }
 
-    private static Function<Integer, String> randomIntegerStringGenerator;
-
-    static {
-        randomIntegerStringGenerator = (maxLength) -> {
-            int randInt = new Random().nextInt(maxLength);
-            return String.valueOf(randInt);
-        };
-    }
+    private static final Function<Integer, String> RANDOM_INTEGER_STRING_GENERATOR = (maxLength) -> String.valueOf(
+        ThreadLocalRandom.current().nextInt(maxLength));
 
     public static void runModelLifecycleSample() {
-        // For the purpose of this sample we will create temporary models using random model Ids and then decommission a model.
+        // For the purpose of this sample we will create temporary models using random model Ids and then decommission a
+        // model.
         // We have to make sure these model Ids are unique within the DigitalTwin instance.
-        String componentModelId = UniqueIdHelper.getUniqueModelId(SamplesConstants.TEMPORARY_COMPONENT_MODEL_PREFIX, client, randomIntegerStringGenerator);
-        String sampleModelId = UniqueIdHelper.getUniqueModelId(SamplesConstants.TEMPORARY_MODEL_PREFIX, client, randomIntegerStringGenerator);
+        String componentModelId = UniqueIdHelper.getUniqueModelId(SamplesConstants.TEMPORARY_COMPONENT_MODEL_PREFIX,
+            client, RANDOM_INTEGER_STRING_GENERATOR);
+        String sampleModelId = UniqueIdHelper.getUniqueModelId(SamplesConstants.TEMPORARY_MODEL_PREFIX, client,
+            RANDOM_INTEGER_STRING_GENERATOR);
 
-        String newComponentModelPayload = SamplesConstants.TEMPORARY_COMPONENT_MODEL_PAYLOAD
-            .replace(SamplesConstants.COMPONENT_ID, componentModelId);
+        String newComponentModelPayload = SamplesConstants.TEMPORARY_COMPONENT_MODEL_PAYLOAD.replace(
+            SamplesConstants.COMPONENT_ID, componentModelId);
 
-        String newModelPayload = SamplesConstants.TEMPORARY_MODEL_WITH_COMPONENT_PAYLOAD
-            .replace(SamplesConstants.MODEL_ID, sampleModelId)
-            .replace(SamplesConstants.COMPONENT_ID, componentModelId);
+        String newModelPayload = SamplesConstants.TEMPORARY_MODEL_WITH_COMPONENT_PAYLOAD.replace(
+            SamplesConstants.MODEL_ID, sampleModelId).replace(SamplesConstants.COMPONENT_ID, componentModelId);
 
         ConsoleLogger.printHeader("Create models");
 

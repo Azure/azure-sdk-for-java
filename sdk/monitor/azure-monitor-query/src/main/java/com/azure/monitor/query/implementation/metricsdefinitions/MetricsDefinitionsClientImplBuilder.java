@@ -11,7 +11,6 @@ import com.azure.core.client.traits.HttpTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
@@ -196,7 +195,7 @@ public final class MetricsDefinitionsClientImplBuilder implements HttpTrait<Metr
 
     /**
      * Sets The ID of the target subscription.
-     * 
+     *
      * @param subscriptionId the subscriptionId value.
      * @return the AzureMonitorMetricsDefinitionsAPIBuilder.
      */
@@ -214,7 +213,7 @@ public final class MetricsDefinitionsClientImplBuilder implements HttpTrait<Metr
 
     /**
      * Sets server parameter.
-     * 
+     *
      * @param host the host value.
      * @return the AzureMonitorMetricsDefinitionsAPIBuilder.
      */
@@ -232,7 +231,7 @@ public final class MetricsDefinitionsClientImplBuilder implements HttpTrait<Metr
 
     /**
      * Sets Api Version.
-     * 
+     *
      * @param apiVersion the apiVersion value.
      * @return the AzureMonitorMetricsDefinitionsAPIBuilder.
      */
@@ -250,7 +249,7 @@ public final class MetricsDefinitionsClientImplBuilder implements HttpTrait<Metr
 
     /**
      * Sets The serializer to serialize an object into a string.
-     * 
+     *
      * @param serializerAdapter the serializerAdapter value.
      * @return the AzureMonitorMetricsDefinitionsAPIBuilder.
      */
@@ -268,7 +267,7 @@ public final class MetricsDefinitionsClientImplBuilder implements HttpTrait<Metr
 
     /**
      * Sets The retry policy that will attempt to retry failed requests, if applicable.
-     * 
+     *
      * @param retryPolicy the retryPolicy value.
      * @return the AzureMonitorMetricsDefinitionsAPIBuilder.
      */
@@ -280,7 +279,7 @@ public final class MetricsDefinitionsClientImplBuilder implements HttpTrait<Metr
 
     /**
      * Builds an instance of AzureMonitorMetricsDefinitionsAPI with the provided parameters.
-     * 
+     *
      * @return an instance of AzureMonitorMetricsDefinitionsAPI.
      */
     @Generated
@@ -308,13 +307,12 @@ public final class MetricsDefinitionsClientImplBuilder implements HttpTrait<Metr
         policies.add(new UserAgentPolicy(applicationId, clientName, clientVersion, buildConfiguration));
         policies.add(new RequestIdPolicy());
         policies.add(new AddHeadersFromContextPolicy());
-        HttpHeaders headers = new HttpHeaders();
-        localClientOptions.getHeaders()
-            .forEach(header -> headers.set(HttpHeaderName.fromString(header.getName()), header.getValue()));
-        if (headers.getSize() > 0) {
+        HttpHeaders headers = CoreUtils.createHttpHeadersFromClientOptions(localClientOptions);
+        if (headers != null) {
             policies.add(new AddHeadersPolicy(headers));
         }
-        this.pipelinePolicies.stream().filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+        this.pipelinePolicies.stream()
+            .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
             .forEach(p -> policies.add(p));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions, new RetryPolicy()));
@@ -323,12 +321,15 @@ public final class MetricsDefinitionsClientImplBuilder implements HttpTrait<Metr
             String localHost = (host != null) ? host : "https://management.azure.com";
             policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, String.format("%s/.default", localHost)));
         }
-        this.pipelinePolicies.stream().filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+        this.pipelinePolicies.stream()
+            .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
             .forEach(p -> policies.add(p));
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(localHttpLogOptions));
         HttpPipeline httpPipeline = new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
-            .httpClient(httpClient).clientOptions(localClientOptions).build();
+            .httpClient(httpClient)
+            .clientOptions(localClientOptions)
+            .build();
         return httpPipeline;
     }
 }

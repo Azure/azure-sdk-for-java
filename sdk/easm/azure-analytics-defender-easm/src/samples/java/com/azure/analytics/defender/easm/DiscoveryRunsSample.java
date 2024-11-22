@@ -27,21 +27,12 @@ import java.util.List;
  */
 public class DiscoveryRunsSample {
     public static void main(String[] args) {
-
-        // To create an easmClient, you need your subscription ID, endpoint, and some sort of credential.
-        String subscriptionId = Configuration.getGlobalConfiguration().get("SUBSCRIPTION_ID");
-        String workspaceName = Configuration.getGlobalConfiguration().get("WORKSPACENAME");
-        String resourceGroupName = Configuration.getGlobalConfiguration().get("RESOURCEGROUPNAME");
-        String region = Configuration.getGlobalConfiguration().get("REGION");
-        String endpoint = "https://" + region + ".easm.defender.microsoft.com";
+        String endpoint = Configuration.getGlobalConfiguration().get("ENDPOINT");
         String discoveryGroupName = "Sample Disco";
         String discoveryGroupDescription = "This is a sample description for a discovery group";
 
         EasmClient easmClient = new EasmClientBuilder()
             .endpoint(endpoint)
-            .subscriptionId(subscriptionId)
-            .workspaceName(workspaceName)
-            .resourceGroupName(resourceGroupName)
             // For the purposes of this demo, I've chosen the InteractiveBrowserCredential but any credential will work.
             .credential(new InteractiveBrowserCredentialBuilder().build())
             .buildClient();

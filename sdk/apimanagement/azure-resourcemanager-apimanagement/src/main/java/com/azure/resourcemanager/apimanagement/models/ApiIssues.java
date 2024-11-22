@@ -42,15 +42,8 @@ public interface ApiIssues {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged Issue list representation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<IssueContract> listByService(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String filter,
-        Boolean expandCommentsAttachments,
-        Integer top,
-        Integer skip,
-        Context context);
+    PagedIterable<IssueContract> listByService(String resourceGroupName, String serviceName, String apiId,
+        String filter, Boolean expandCommentsAttachments, Integer top, Integer skip, Context context);
 
     /**
      * Gets the entity state (Etag) version of the Issue for an API specified by its identifier.
@@ -65,8 +58,8 @@ public interface ApiIssues {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity state (Etag) version of the Issue for an API specified by its identifier.
      */
-    ApiIssuesGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, String apiId, String issueId, Context context);
+    ApiIssuesGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName, String apiId,
+        String issueId, Context context);
 
     /**
      * Gets the entity state (Etag) version of the Issue for an API specified by its identifier.
@@ -95,13 +88,8 @@ public interface ApiIssues {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of the Issue for an API specified by its identifier.
      */
-    Response<IssueContract> getWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String issueId,
-        Boolean expandCommentsAttachments,
-        Context context);
+    Response<IssueContract> getWithResponse(String resourceGroupName, String serviceName, String apiId, String issueId,
+        Boolean expandCommentsAttachments, Context context);
 
     /**
      * Gets the details of the Issue for an API specified by its identifier.
@@ -132,8 +120,8 @@ public interface ApiIssues {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String serviceName, String apiId, String issueId, String ifMatch, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String apiId, String issueId,
+        String ifMatch, Context context);
 
     /**
      * Deletes the specified Issue from an API.

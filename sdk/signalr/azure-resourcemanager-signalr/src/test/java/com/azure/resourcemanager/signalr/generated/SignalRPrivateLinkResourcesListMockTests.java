@@ -6,78 +6,44 @@ package com.azure.resourcemanager.signalr.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.signalr.SignalRManager;
 import com.azure.resourcemanager.signalr.models.PrivateLinkResource;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class SignalRPrivateLinkResourcesListMockTests {
     @Test
     public void testList() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"groupId\":\"ceakxc\",\"requiredMembers\":[\"oqfyiaseqch\",\"rttzrazisgykiu\",\"mvanbwzo\",\"mnrxxbsojkl\"],\"requiredZoneNames\":[\"mdptys\"],\"shareablePrivateLinkResourceTypes\":[{\"name\":\"gnzxojpslsvj\",\"properties\":{\"description\":\"iufiqwo\",\"groupId\":\"qvapcohhoucq\",\"type\":\"oj\"}},{\"name\":\"x\",\"properties\":{\"description\":\"dcgdzbenribca\",\"groupId\":\"tzqdd\",\"type\":\"wflj\"}},{\"name\":\"namtuatmzw\",\"properties\":{\"description\":\"nc\",\"groupId\":\"jzmizv\",\"type\":\"gat\"}}]},\"id\":\"uvbxngr\",\"name\":\"bwggahtt\",\"type\":\"lswva\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"groupId\":\"ceakxc\",\"requiredMembers\":[\"oqfyiaseqch\",\"rttzrazisgykiu\",\"mvanbwzo\",\"mnrxxbsojkl\"],\"requiredZoneNames\":[\"mdptys\"],\"shareablePrivateLinkResourceTypes\":[{\"name\":\"gnzxojpslsvj\",\"properties\":{\"description\":\"iufiqwo\",\"groupId\":\"qvapcohhoucq\",\"type\":\"oj\"}},{\"name\":\"x\",\"properties\":{\"description\":\"dcgdzbenribca\",\"groupId\":\"tzqdd\",\"type\":\"wflj\"}},{\"name\":\"namtuatmzw\",\"properties\":{\"description\":\"nc\",\"groupId\":\"jzmizv\",\"type\":\"gat\"}}]},\"id\":\"uvbxngr\",\"name\":\"bwggahtt\",\"type\":\"lswva\"}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        SignalRManager manager = SignalRManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
-
-        SignalRManager manager =
-            SignalRManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<PrivateLinkResource> response =
-            manager.signalRPrivateLinkResources().list("hdbvqvwzkjop", "beonrlkwzdq", com.azure.core.util.Context.NONE);
+        PagedIterable<PrivateLinkResource> response = manager.signalRPrivateLinkResources()
+            .list("hdbvqvwzkjop", "beonrlkwzdq", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("ceakxc", response.iterator().next().groupId());
         Assertions.assertEquals("oqfyiaseqch", response.iterator().next().requiredMembers().get(0));
         Assertions.assertEquals("mdptys", response.iterator().next().requiredZoneNames().get(0));
-        Assertions
-            .assertEquals("gnzxojpslsvj", response.iterator().next().shareablePrivateLinkResourceTypes().get(0).name());
-        Assertions
-            .assertEquals(
-                "iufiqwo",
-                response.iterator().next().shareablePrivateLinkResourceTypes().get(0).properties().description());
-        Assertions
-            .assertEquals(
-                "qvapcohhoucq",
-                response.iterator().next().shareablePrivateLinkResourceTypes().get(0).properties().groupId());
-        Assertions
-            .assertEquals(
-                "oj", response.iterator().next().shareablePrivateLinkResourceTypes().get(0).properties().type());
+        Assertions.assertEquals("gnzxojpslsvj",
+            response.iterator().next().shareablePrivateLinkResourceTypes().get(0).name());
+        Assertions.assertEquals("iufiqwo",
+            response.iterator().next().shareablePrivateLinkResourceTypes().get(0).properties().description());
+        Assertions.assertEquals("qvapcohhoucq",
+            response.iterator().next().shareablePrivateLinkResourceTypes().get(0).properties().groupId());
+        Assertions.assertEquals("oj",
+            response.iterator().next().shareablePrivateLinkResourceTypes().get(0).properties().type());
     }
 }

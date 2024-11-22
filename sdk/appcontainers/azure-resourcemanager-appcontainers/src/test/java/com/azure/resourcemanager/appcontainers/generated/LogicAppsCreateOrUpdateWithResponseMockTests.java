@@ -20,7 +20,7 @@ public final class LogicAppsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":\"datawny\",\"id\":\"xuprrxyxwjezb\",\"name\":\"qployu\",\"type\":\"kdcpvu\"}";
+            = "{\"properties\":\"datawgqrntaum\",\"id\":\"cjlvkrkegtyc\",\"name\":\"uppiyxlzm\",\"type\":\"yddeeqz\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,9 +30,9 @@ public final class LogicAppsCreateOrUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         LogicApp response = manager.logicApps()
-            .define("cdiiisklbonx")
-            .withExistingContainerApp("rdytzfslxizhq", "kmgobliqe")
-            .withProperties("datapjxvtrkfkg")
+            .define("xlxicwgp")
+            .withExistingContainerApp("lkdlgwgna", "kuuyiuyuaf")
+            .withProperties("datadc")
             .create();
 
     }

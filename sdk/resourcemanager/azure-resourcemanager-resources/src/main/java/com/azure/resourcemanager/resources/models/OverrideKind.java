@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -32,7 +31,6 @@ public final class OverrideKind extends ExpandableStringEnum<OverrideKind> {
      * @param name a name to look for.
      * @return the corresponding OverrideKind.
      */
-    @JsonCreator
     public static OverrideKind fromString(String name) {
         return fromString(name, OverrideKind.class);
     }

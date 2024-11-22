@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class SupportedRuntimePlatform extends ExpandableStringEnum<Support
      * @param name a name to look for.
      * @return the corresponding SupportedRuntimePlatform.
      */
-    @JsonCreator
     public static SupportedRuntimePlatform fromString(String name) {
         return fromString(name, SupportedRuntimePlatform.class);
     }

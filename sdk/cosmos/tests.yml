@@ -7,11 +7,8 @@ extends:
       - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
         parameters:
           CloudConfig:
-            Cosmos_Public:
-              SubscriptionConfigurations:
-                - $(sub-config-azure-cloud-test-resources)
-                - $(sub-config-cosmos-azure-cloud-test-resources)
-          Clouds: 'Cosmos_Public_Integration'
+            Public:
+              ServiceConnection: azure-sdk-tests-cosmos
           MatrixConfigs:
             - Name: Cosmos_live_test
               Path: sdk/cosmos/live-platform-matrix.json
@@ -29,7 +26,7 @@ extends:
               groupId: com.azure
             - name: azure-cosmos-benchmark
               groupId: com.azure
-          TimeoutInMinutes: 180
+          TimeoutInMinutes: 210
           MaxParallel: 20
           PreSteps:
             - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
@@ -45,9 +42,7 @@ extends:
           TestName: 'Spring_Data_Cosmos_Integration'
           CloudConfig:
             Public:
-              SubscriptionConfigurations:
-                - $(sub-config-azure-cloud-test-resources)
-                - $(sub-config-cosmos-azure-cloud-test-resources)
+              ServiceConnection: azure-sdk-tests-cosmos
           MatrixConfigs:
             - Name: Cosmos_live_test_integration
               Path: sdk/spring/pipeline/cosmos-integration-matrix.json
@@ -74,9 +69,7 @@ extends:
           TestName: 'Kafka_Cosmos_Integration'
           CloudConfig:
             Public:
-              SubscriptionConfigurations:
-                - $(sub-config-azure-cloud-test-resources)
-                - $(sub-config-cosmos-azure-cloud-test-resources)
+              ServiceConnection: azure-sdk-tests-cosmos
           MatrixConfigs:
             - Name: Kafka_Cosmos_Integration_Test
               Path: sdk/cosmos/kafka-cosmos-matrix.json

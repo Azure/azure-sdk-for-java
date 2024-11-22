@@ -6,24 +6,26 @@ package com.azure.resourcemanager.hdinsight.containers.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.hdinsight.containers.models.ClusterInstanceViewResultProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Cluster Instance View.
  */
 @Fluent
-public final class ClusterInstanceViewResultInner {
+public final class ClusterInstanceViewResultInner implements JsonSerializable<ClusterInstanceViewResultInner> {
     /*
      * Name of the instance view.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * Properties of the instance view.
      */
-    @JsonProperty(value = "properties", required = true)
     private ClusterInstanceViewResultProperties properties;
 
     /**
@@ -79,16 +81,60 @@ public final class ClusterInstanceViewResultInner {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property name in model ClusterInstanceViewResultInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property name in model ClusterInstanceViewResultInner"));
         }
         if (properties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property properties in model ClusterInstanceViewResultInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property properties in model ClusterInstanceViewResultInner"));
         } else {
             properties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ClusterInstanceViewResultInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ClusterInstanceViewResultInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ClusterInstanceViewResultInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ClusterInstanceViewResultInner.
+     */
+    public static ClusterInstanceViewResultInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ClusterInstanceViewResultInner deserializedClusterInstanceViewResultInner
+                = new ClusterInstanceViewResultInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedClusterInstanceViewResultInner.name = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedClusterInstanceViewResultInner.properties
+                        = ClusterInstanceViewResultProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedClusterInstanceViewResultInner;
+        });
+    }
 }

@@ -5,35 +5,36 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The configuration settings of the legacy Microsoft Account provider.
  */
 @Fluent
-public final class LegacyMicrosoftAccount {
+public final class LegacyMicrosoftAccount implements JsonSerializable<LegacyMicrosoftAccount> {
     /*
-     * <code>false</code> if the legacy Microsoft Account provider should not be enabled despite the set registration; otherwise, <code>true</code>.
+     * <code>false</code> if the legacy Microsoft Account provider should not be enabled despite the set registration;
+     * otherwise, <code>true</code>.
      */
-    @JsonProperty(value = "enabled")
     private Boolean enabled;
 
     /*
      * The configuration settings of the app registration for the legacy Microsoft Account provider.
      */
-    @JsonProperty(value = "registration")
     private ClientRegistration registration;
 
     /*
      * The configuration settings of the login flow.
      */
-    @JsonProperty(value = "login")
     private LoginScopes login;
 
     /*
      * The configuration settings of the legacy Microsoft Account provider token validation flow.
      */
-    @JsonProperty(value = "validation")
     private AllowedAudiencesValidation validation;
 
     /**
@@ -143,5 +144,50 @@ public final class LegacyMicrosoftAccount {
         if (validation() != null) {
             validation().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("enabled", this.enabled);
+        jsonWriter.writeJsonField("registration", this.registration);
+        jsonWriter.writeJsonField("login", this.login);
+        jsonWriter.writeJsonField("validation", this.validation);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LegacyMicrosoftAccount from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LegacyMicrosoftAccount if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LegacyMicrosoftAccount.
+     */
+    public static LegacyMicrosoftAccount fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LegacyMicrosoftAccount deserializedLegacyMicrosoftAccount = new LegacyMicrosoftAccount();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("enabled".equals(fieldName)) {
+                    deserializedLegacyMicrosoftAccount.enabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("registration".equals(fieldName)) {
+                    deserializedLegacyMicrosoftAccount.registration = ClientRegistration.fromJson(reader);
+                } else if ("login".equals(fieldName)) {
+                    deserializedLegacyMicrosoftAccount.login = LoginScopes.fromJson(reader);
+                } else if ("validation".equals(fieldName)) {
+                    deserializedLegacyMicrosoftAccount.validation = AllowedAudiencesValidation.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLegacyMicrosoftAccount;
+        });
     }
 }

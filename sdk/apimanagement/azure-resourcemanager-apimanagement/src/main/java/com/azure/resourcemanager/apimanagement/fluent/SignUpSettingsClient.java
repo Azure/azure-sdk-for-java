@@ -26,8 +26,8 @@ public interface SignUpSettingsClient {
      * @return the entity state (Etag) version of the SignUpSettings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SignUpSettingsGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, Context context);
+    SignUpSettingsGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,
+        Context context);
 
     /**
      * Gets the entity state (Etag) version of the SignUpSettings.
@@ -83,12 +83,8 @@ public interface SignUpSettingsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> updateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String ifMatch,
-        PortalSignupSettingsInner parameters,
-        Context context);
+    Response<Void> updateWithResponse(String resourceGroupName, String serviceName, String ifMatch,
+        PortalSignupSettingsInner parameters, Context context);
 
     /**
      * Update Sign-Up settings.
@@ -119,12 +115,8 @@ public interface SignUpSettingsClient {
      * @return sign-Up settings for a developer portal along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PortalSignupSettingsInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        PortalSignupSettingsInner parameters,
-        String ifMatch,
-        Context context);
+    Response<PortalSignupSettingsInner> createOrUpdateWithResponse(String resourceGroupName, String serviceName,
+        PortalSignupSettingsInner parameters, String ifMatch, Context context);
 
     /**
      * Create or Update Sign-Up settings.
@@ -138,6 +130,6 @@ public interface SignUpSettingsClient {
      * @return sign-Up settings for a developer portal.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PortalSignupSettingsInner createOrUpdate(
-        String resourceGroupName, String serviceName, PortalSignupSettingsInner parameters);
+    PortalSignupSettingsInner createOrUpdate(String resourceGroupName, String serviceName,
+        PortalSignupSettingsInner parameters);
 }

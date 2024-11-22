@@ -51,6 +51,7 @@ public class AnalyzeAddOnBarcodesAsync {
                 Arrays.asList(DocumentAnalysisFeature.BARCODES),
                 null,
                 null,
+                null,
                 new AnalyzeDocumentRequest().setBase64Source(Files.readAllBytes(barcodesDocument.toPath())));
 
         Mono<AnalyzeResult> analyzeLayoutResultMono =

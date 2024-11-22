@@ -12,7 +12,7 @@ import com.azure.resourcemanager.appcontainers.models.LogicAppsProxyMethod;
 public final class LogicAppsInvokeSamples {
     /*
      * x-ms-original-file:
-     * specification/app/resource-manager/Microsoft.App/preview/2024-02-02-preview/examples/LogicApps_ListCallbackURL.
+     * specification/app/resource-manager/Microsoft.App/preview/2024-08-02-preview/examples/LogicApps_ListCallbackURL.
      * json
      */
     /**

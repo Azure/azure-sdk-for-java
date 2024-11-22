@@ -4,7 +4,6 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** Defines values for ServiceObjectiveName. */
@@ -210,7 +209,6 @@ public final class ServiceObjectiveName extends ExpandableStringEnum<ServiceObje
      * @param name a name to look for.
      * @return the corresponding ServiceObjectiveName.
      */
-    @JsonCreator
     public static ServiceObjectiveName fromString(String name) {
         return fromString(name, ServiceObjectiveName.class);
     }

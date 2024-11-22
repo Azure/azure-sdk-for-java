@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation;
 
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
@@ -33,6 +34,19 @@ public class PathsHelperTest {
     private static final String CONFLICT_FULL_NAME = "dbs/k6d9AA==/colls/k6d9ALgBmD8=/conflicts/k6d9ALgBmD8BAAAAAAAAQA==/";
 
     private static final String INCORRECT = "incorrect";
+
+    @DataProvider(name = "collectionPathsProvider")
+    public Object[] collectionPathsProvider() {
+        return new Object[][] {
+            {"/dbs/db1/colls/coll1/", "dbs/db1/colls/coll1"},
+            {"dbs/db1/colls/coll1/", "dbs/db1/colls/coll1"},
+            {"/dbs/db1/colls/coll1", "dbs/db1/colls/coll1"},
+            {"dbs/db1/colls/coll1", "dbs/db1/colls/coll1"},
+            {"dbs/db1/colls/coll1/docs/doc1/", "dbs/db1/colls/coll1"},
+            {"/dbs/db1/colls/coll1/docs/doc1", "dbs/db1/colls/coll1"},
+            {"dbs/db1/colls/coll1/docs/doc1/", "dbs/db1/colls/coll1"},
+        };
+    }
 
     @Test(groups = { "unit" })
     public void validateResourceID() {
@@ -130,5 +144,10 @@ public class PathsHelperTest {
         output = PathsHelper.unescapeJavaAndTrim(input);
         assertThat(input).isNotEqualTo(output);
         assertThat("dbs/db\t").isEqualTo(output);
+    }
+
+    @Test(groups = {"unit"}, dataProvider = "collectionPathsProvider")
+    public void testCollectionLinkTrimming(String input, String expectedOutput) {
+        assertThat(PathsHelper.getCollectionPath(input)).isEqualTo(expectedOutput);
     }
 }

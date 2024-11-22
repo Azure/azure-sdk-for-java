@@ -78,10 +78,9 @@ import java.util.Objects;
  * <!-- end com.azure.maps.render.sync.builder.ad.instantiation -->
  */
 @ServiceClientBuilder(serviceClients = { MapsRenderClient.class, MapsRenderAsyncClient.class })
-public final class MapsRenderClientBuilder
-    implements AzureKeyCredentialTrait<MapsRenderClientBuilder>, TokenCredentialTrait<MapsRenderClientBuilder>,
-    HttpTrait<MapsRenderClientBuilder>, ConfigurationTrait<MapsRenderClientBuilder>,
-    EndpointTrait<MapsRenderClientBuilder> {
+public final class MapsRenderClientBuilder implements AzureKeyCredentialTrait<MapsRenderClientBuilder>,
+    TokenCredentialTrait<MapsRenderClientBuilder>, HttpTrait<MapsRenderClientBuilder>,
+    ConfigurationTrait<MapsRenderClientBuilder>, EndpointTrait<MapsRenderClientBuilder> {
 
     // auth scope
     static final String[] DEFAULT_SCOPES = new String[] { "https://atlas.microsoft.com/.default" };
@@ -147,7 +146,7 @@ public final class MapsRenderClientBuilder
     /**
      * Sets the Azure Maps client id for use with Azure AD Authentication. This client id
      * is the account-based GUID that appears on the Azure Maps Authentication page.
-     *
+     * <p>
      * More details: <a href="https://docs.microsoft.com/azure/azure-maps/azure-maps-authentication">Azure Maps AD Authentication</a>
      *
      * @param mapsClientId the clientId value.
@@ -325,9 +324,8 @@ public final class MapsRenderClientBuilder
     }
 
     private HttpPipeline createHttpPipeline() {
-        Configuration buildConfiguration = (configuration == null)
-            ? Configuration.getGlobalConfiguration()
-            : configuration;
+        Configuration buildConfiguration
+            = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
         if (httpLogOptions == null) {
             httpLogOptions = new HttpLogOptions();
         }

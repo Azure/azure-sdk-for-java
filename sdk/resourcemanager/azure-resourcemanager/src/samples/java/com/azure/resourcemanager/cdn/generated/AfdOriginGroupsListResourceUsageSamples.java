@@ -19,7 +19,10 @@ public final class AfdOriginGroupsListResourceUsageSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void aFDOriginGroupsListResourceUsage(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.cdnProfiles().manager().serviceClient().getAfdOriginGroups().listResourceUsage("RG", "profile1",
-            "origingroup1", com.azure.core.util.Context.NONE);
+        azure.cdnProfiles()
+            .manager()
+            .serviceClient()
+            .getAfdOriginGroups()
+            .listResourceUsage("RG", "profile1", "origingroup1", com.azure.core.util.Context.NONE);
     }
 }

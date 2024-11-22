@@ -12,12 +12,12 @@ import java.util.Collection;
  */
 public final class CheckNameAvailabilityReason extends ExpandableStringEnum<CheckNameAvailabilityReason> {
     /**
-     * Static value Invalid for CheckNameAvailabilityReason.
+     * Name is invalid.
      */
     public static final CheckNameAvailabilityReason INVALID = fromString("Invalid");
 
     /**
-     * Static value AlreadyExists for CheckNameAvailabilityReason.
+     * Name already exists.
      */
     public static final CheckNameAvailabilityReason ALREADY_EXISTS = fromString("AlreadyExists");
 

@@ -28,10 +28,14 @@ public final class VirtualMachineTaskDetailsTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         VirtualMachineTaskDetails model = new VirtualMachineTaskDetails()
-            .withJobTask(new JobEntity().withJobId("vp").withJobFriendlyName("fddtbfmekjcng")
-                .withTargetObjectId("xdvmaoyqxf").withTargetObjectName("yxzmx").withTargetInstanceType("ofxlttxo")
+            .withJobTask(new JobEntity().withJobId("vp")
+                .withJobFriendlyName("fddtbfmekjcng")
+                .withTargetObjectId("xdvmaoyqxf")
+                .withTargetObjectName("yxzmx")
+                .withTargetInstanceType("ofxlttxo")
                 .withJobScenarioName("tdnzujsjirkrpskc"))
-            .withSkippedReason("doaqipmnxclfrsb").withSkippedReasonString("nm");
+            .withSkippedReason("doaqipmnxclfrsb")
+            .withSkippedReasonString("nm");
         model = BinaryData.fromObject(model).toObject(VirtualMachineTaskDetails.class);
         Assertions.assertEquals("vp", model.jobTask().jobId());
         Assertions.assertEquals("fddtbfmekjcng", model.jobTask().jobFriendlyName());

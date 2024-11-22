@@ -11,14 +11,14 @@ public final class CommonDataServiceForAppsEntityDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CommonDataServiceForAppsEntityDatasetTypeProperties model
-            = BinaryData.fromString("{\"entityName\":\"datakobqoclflioe\"}")
+            = BinaryData.fromString("{\"entityName\":\"datahdwyqqidqimlg\"}")
                 .toObject(CommonDataServiceForAppsEntityDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CommonDataServiceForAppsEntityDatasetTypeProperties model
-            = new CommonDataServiceForAppsEntityDatasetTypeProperties().withEntityName("datakobqoclflioe");
+            = new CommonDataServiceForAppsEntityDatasetTypeProperties().withEntityName("datahdwyqqidqimlg");
         model = BinaryData.fromObject(model).toObject(CommonDataServiceForAppsEntityDatasetTypeProperties.class);
     }
 }

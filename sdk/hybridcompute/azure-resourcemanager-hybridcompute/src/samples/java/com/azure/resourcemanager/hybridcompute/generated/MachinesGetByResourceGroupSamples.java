@@ -4,13 +4,15 @@
 
 package com.azure.resourcemanager.hybridcompute.generated;
 
+import com.azure.resourcemanager.hybridcompute.models.InstanceViewTypes;
+
 /**
  * Samples for Machines GetByResourceGroup.
  */
 public final class MachinesGetByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2024-05-20-preview/examples/machine/
+     * specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2024-07-31-preview/examples/machine/
      * Machines_Get_LicenseProfileInstanceView.json
      */
     /**
@@ -21,13 +23,13 @@ public final class MachinesGetByResourceGroupSamples {
     public static void
         getMachineWithLicenseProfileInstanceView(com.azure.resourcemanager.hybridcompute.HybridComputeManager manager) {
         manager.machines()
-            .getByResourceGroupWithResponse("myResourceGroup", "myMachine", "instanceView",
+            .getByResourceGroupWithResponse("myResourceGroup", "myMachine", InstanceViewTypes.INSTANCE_VIEW,
                 com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2024-05-20-preview/examples/machine/
+     * specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2024-07-31-preview/examples/machine/
      * Machines_Get.json
      */
     /**

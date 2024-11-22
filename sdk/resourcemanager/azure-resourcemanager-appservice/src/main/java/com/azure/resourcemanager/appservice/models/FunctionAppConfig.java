@@ -5,29 +5,30 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Function app configuration.
  */
 @Fluent
-public final class FunctionAppConfig {
+public final class FunctionAppConfig implements JsonSerializable<FunctionAppConfig> {
     /*
      * Function app deployment configuration.
      */
-    @JsonProperty(value = "deployment")
     private FunctionsDeployment deployment;
 
     /*
      * Function app runtime settings.
      */
-    @JsonProperty(value = "runtime")
     private FunctionsRuntime runtime;
 
     /*
      * Function app scale and concurrency settings.
      */
-    @JsonProperty(value = "scaleAndConcurrency")
     private FunctionsScaleAndConcurrency scaleAndConcurrency;
 
     /**
@@ -111,5 +112,47 @@ public final class FunctionAppConfig {
         if (scaleAndConcurrency() != null) {
             scaleAndConcurrency().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("deployment", this.deployment);
+        jsonWriter.writeJsonField("runtime", this.runtime);
+        jsonWriter.writeJsonField("scaleAndConcurrency", this.scaleAndConcurrency);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FunctionAppConfig from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FunctionAppConfig if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FunctionAppConfig.
+     */
+    public static FunctionAppConfig fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FunctionAppConfig deserializedFunctionAppConfig = new FunctionAppConfig();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("deployment".equals(fieldName)) {
+                    deserializedFunctionAppConfig.deployment = FunctionsDeployment.fromJson(reader);
+                } else if ("runtime".equals(fieldName)) {
+                    deserializedFunctionAppConfig.runtime = FunctionsRuntime.fromJson(reader);
+                } else if ("scaleAndConcurrency".equals(fieldName)) {
+                    deserializedFunctionAppConfig.scaleAndConcurrency = FunctionsScaleAndConcurrency.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFunctionAppConfig;
+        });
     }
 }

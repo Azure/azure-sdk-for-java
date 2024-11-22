@@ -5,23 +5,26 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Application Gateway global configuration.
  */
 @Fluent
-public final class ApplicationGatewayGlobalConfiguration {
+public final class ApplicationGatewayGlobalConfiguration
+    implements JsonSerializable<ApplicationGatewayGlobalConfiguration> {
     /*
      * Enable request buffering.
      */
-    @JsonProperty(value = "enableRequestBuffering")
     private Boolean enableRequestBuffering;
 
     /*
      * Enable response buffering.
      */
-    @JsonProperty(value = "enableResponseBuffering")
     private Boolean enableResponseBuffering;
 
     /**
@@ -76,5 +79,47 @@ public final class ApplicationGatewayGlobalConfiguration {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("enableRequestBuffering", this.enableRequestBuffering);
+        jsonWriter.writeBooleanField("enableResponseBuffering", this.enableResponseBuffering);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplicationGatewayGlobalConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplicationGatewayGlobalConfiguration if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApplicationGatewayGlobalConfiguration.
+     */
+    public static ApplicationGatewayGlobalConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplicationGatewayGlobalConfiguration deserializedApplicationGatewayGlobalConfiguration
+                = new ApplicationGatewayGlobalConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("enableRequestBuffering".equals(fieldName)) {
+                    deserializedApplicationGatewayGlobalConfiguration.enableRequestBuffering
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("enableResponseBuffering".equals(fieldName)) {
+                    deserializedApplicationGatewayGlobalConfiguration.enableResponseBuffering
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApplicationGatewayGlobalConfiguration;
+        });
     }
 }

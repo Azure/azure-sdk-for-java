@@ -17,6 +17,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_PROTOCOL_V1;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_PROTOCOL_V2;
+import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_PROTOCOL_V2_1;
 
 abstract class Decryptor {
     private static final ClientLogger LOGGER = new ClientLogger(Decryptor.class);
@@ -61,16 +62,15 @@ abstract class Decryptor {
                 if (encryptionData.getWrappedContentKey().getKeyId().equals(keyId)) {
                     return Mono.just(this.keyWrapper);
                 } else {
-                    throw LOGGER.logExceptionAsError(Exceptions.propagate(new IllegalArgumentException("Key mismatch. "
-                        + "The key id stored on the service does not match the specified key.")));
+                    throw LOGGER.logExceptionAsError(Exceptions.propagate(new IllegalArgumentException(
+                        "Key mismatch. " + "The key id stored on the service does not match the specified key.")));
                 }
             });
         }
 
-        return keyMono.flatMap(keyEncryptionKey -> keyEncryptionKey.unwrapKey(
-            encryptionData.getWrappedContentKey().getAlgorithm(),
-            encryptionData.getWrappedContentKey().getEncryptedKey()
-        ));
+        return keyMono.flatMap(
+            keyEncryptionKey -> keyEncryptionKey.unwrapKey(encryptionData.getWrappedContentKey().getAlgorithm(),
+                encryptionData.getWrappedContentKey().getEncryptedKey()));
     }
 
     /**
@@ -88,20 +88,22 @@ abstract class Decryptor {
     abstract Flux<ByteBuffer> decrypt(Flux<ByteBuffer> encryptedFlux, EncryptedBlobRange encryptedBlobRange,
         boolean padding, String requestUri, AtomicLong totalInputBytes, byte[] contentEncryptionKey);
 
-    static Decryptor getDecryptor(AsyncKeyEncryptionKeyResolver keyResolver,
-        AsyncKeyEncryptionKey keyWrapper, EncryptionData encryptionData) {
+    static Decryptor getDecryptor(AsyncKeyEncryptionKeyResolver keyResolver, AsyncKeyEncryptionKey keyWrapper,
+        EncryptionData encryptionData) {
         if (encryptionData == null) {
             return new NoOpDecryptor(keyResolver, keyWrapper, null);
         }
         switch (encryptionData.getEncryptionAgent().getProtocol()) {
             case ENCRYPTION_PROTOCOL_V1:
                 return new DecryptorV1(keyResolver, keyWrapper, encryptionData);
+
             case ENCRYPTION_PROTOCOL_V2:
+            case ENCRYPTION_PROTOCOL_V2_1:
                 return new DecryptorV2(keyResolver, keyWrapper, encryptionData);
+
             default:
-                throw LOGGER.logExceptionAsError(
-                    new IllegalStateException("Encryption protocol not recognized: "
-                        + encryptionData.getEncryptionAgent().getProtocol()));
+                throw LOGGER.logExceptionAsError(new IllegalStateException(
+                    "Encryption protocol not recognized: " + encryptionData.getEncryptionAgent().getProtocol()));
         }
     }
 }

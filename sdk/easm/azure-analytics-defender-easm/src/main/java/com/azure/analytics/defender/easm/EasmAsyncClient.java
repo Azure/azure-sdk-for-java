@@ -61,58 +61,25 @@ public final class EasmAsyncClient {
 
     /**
      * Retrieve a list of assets for the provided search parameters.
-     *
-     * <p>
-     * <strong>Query Parameters</strong>
-     *
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>filter</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Filter the result list using the given expression.</td>
-     * </tr>
-     * <tr>
-     * <td>orderby</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>A list of expressions that specify the order of the returned resources.</td>
-     * </tr>
-     * <tr>
-     * <td>skip</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The number of result items to skip.</td>
-     * </tr>
-     * <tr>
-     * <td>maxpagesize</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum number of result items per page.</td>
-     * </tr>
-     * <tr>
-     * <td>mark</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Specify this value instead of 'skip' to use cursor-based searching. Initial value is '*' and subsequent
-     * values are returned in the response.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>filter</td><td>String</td><td>No</td><td>Filter the result list using the given expression.</td></tr>
+     * <tr><td>orderby</td><td>String</td><td>No</td><td>A list of expressions that specify the order of the returned
+     * resources.</td></tr>
+     * <tr><td>skip</td><td>Integer</td><td>No</td><td>The number of result items to skip.</td></tr>
+     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>The maximum number of result items per page.</td></tr>
+     * <tr><td>mark</td><td>String</td><td>No</td><td>Specify this value instead of 'skip' to use cursor-based
+     * searching. Initial value is '*' and subsequent values are returned in the response.</td></tr>
      * </table>
-     *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p>
-     * <strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
+     *     kind: String (Required)
      *     id: String (Required)
      *     name: String (Optional)
      *     displayName: String (Optional)
@@ -137,7 +104,8 @@ public final class EasmAsyncClient {
      *     ]
      *     reason: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -146,25 +114,18 @@ public final class EasmAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return paged collection of AssetResource items as paginated response with {@link PagedFlux}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listAssetResource(RequestOptions requestOptions) {
-        PagedFlux<BinaryData> pagedFluxResponse = this.serviceClient.listAssetResourceAsync(requestOptions);
-        return PagedFlux.create(() -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null) ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationToken).take(1);
-            return flux.map(pagedResponse -> new PagedResponseBase<Void, BinaryData>(pagedResponse.getRequest(),
-                pagedResponse.getStatusCode(), pagedResponse.getHeaders(), pagedResponse.getValue().stream()
-                    .map(protocolMethodData -> cleanUp(protocolMethodData)).collect(Collectors.toList()),
-                pagedResponse.getContinuationToken(), null));
-        });
+        return this.serviceClient.listAssetResourceAsync(requestOptions);
     }
 
     /**
      * Update labels on assets matching the provided filter.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     state: String(candidate/confirmed/dismissed/candidateInvestigate/associatedPartner/associatedThirdparty) (Optional)
      *     externalId: String (Optional)
@@ -173,11 +134,13 @@ public final class EasmAsyncClient {
      *     }
      *     transfers: String(as/contact/domain/host/ipAddress/ipBlock/page/sslCert) (Optional)
      * }
-     * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     startedAt: OffsetDateTime (Optional)
@@ -187,13 +150,14 @@ public final class EasmAsyncClient {
      *     phase: String(running/polling/complete) (Optional)
      *     reason: String (Optional)
      *     metadata (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param filter An expression on the resource type that selects the resources to be returned.
-     * @param assetUpdateData A request body used to update an asset.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -203,18 +167,19 @@ public final class EasmAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> updateAssetsWithResponse(String filter, BinaryData assetUpdateData,
+    public Mono<Response<BinaryData>> updateAssetsWithResponse(String filter, BinaryData body,
         RequestOptions requestOptions) {
-        return this.serviceClient.updateAssetsWithResponseAsync(filter, assetUpdateData, requestOptions);
+        return this.serviceClient.updateAssetsWithResponseAsync(filter, body, requestOptions);
     }
 
     /**
      * Retrieve an asset by assetId.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
+     *     kind: String (Required)
      *     id: String (Required)
      *     name: String (Optional)
      *     displayName: String (Optional)
@@ -239,7 +204,8 @@ public final class EasmAsyncClient {
      *     ]
      *     reason: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param assetId The system generated unique id for the resource.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -258,39 +224,20 @@ public final class EasmAsyncClient {
 
     /**
      * Retrieve a list of data connections.
-     *
-     * <p>
-     * <strong>Query Parameters</strong>
-     *
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>skip</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The number of result items to skip.</td>
-     * </tr>
-     * <tr>
-     * <td>maxpagesize</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum number of result items per page.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>skip</td><td>Integer</td><td>No</td><td>The number of result items to skip.</td></tr>
+     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>The maximum number of result items per page.</td></tr>
      * </table>
-     *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p>
-     * <strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
+     *     kind: String (Required)
      *     id: String (Optional)
      *     name: String (Required)
      *     displayName: String (Optional)
@@ -303,7 +250,8 @@ public final class EasmAsyncClient {
      *     active: Boolean (Optional)
      *     inactiveMessage: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -312,36 +260,32 @@ public final class EasmAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return paged collection of DataConnection items as paginated response with {@link PagedFlux}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listDataConnection(RequestOptions requestOptions) {
-        PagedFlux<BinaryData> pagedFluxResponse = this.serviceClient.listDataConnectionAsync(requestOptions);
-        return PagedFlux.create(() -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null) ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationToken).take(1);
-            return flux.map(pagedResponse -> new PagedResponseBase<Void, BinaryData>(pagedResponse.getRequest(),
-                pagedResponse.getStatusCode(), pagedResponse.getHeaders(), pagedResponse.getValue().stream()
-                    .map(protocolMethodData -> cleanUp(protocolMethodData)).collect(Collectors.toList()),
-                pagedResponse.getContinuationToken(), null));
-        });
+        return this.serviceClient.listDataConnectionAsync(requestOptions);
     }
 
     /**
      * Validate a data connection with a given dataConnectionName.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
+     *     kind: String (Required)
      *     name: String (Optional)
      *     content: String(assets/attackSurfaceInsights) (Optional)
      *     frequency: String(daily/weekly/monthly) (Optional)
      *     frequencyOffset: Integer (Optional)
      * }
-     * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     error (Optional): {
      *         code: String (Required)
@@ -352,34 +296,37 @@ public final class EasmAsyncClient {
      *         ]
      *         innererror (Optional): {
      *             code: String (Optional)
-     *             value: Object (Optional)
+     *             value: BinaryData (Optional)
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
-     * @param dataConnectionData The dataConnectionData parameter.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return validate result for validate action endpoints along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> validateDataConnectionWithResponse(BinaryData dataConnectionData,
+    public Mono<Response<BinaryData>> validateDataConnectionWithResponse(BinaryData body,
         RequestOptions requestOptions) {
-        return this.serviceClient.validateDataConnectionWithResponseAsync(dataConnectionData, requestOptions);
+        return this.serviceClient.validateDataConnectionWithResponseAsync(body, requestOptions);
     }
 
     /**
      * Retrieve a data connection with a given dataConnectionName.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
+     *     kind: String (Required)
      *     id: String (Optional)
      *     name: String (Required)
      *     displayName: String (Optional)
@@ -392,7 +339,8 @@ public final class EasmAsyncClient {
      *     active: Boolean (Optional)
      *     inactiveMessage: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param dataConnectionName The caller provided unique name for the resource.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -411,22 +359,26 @@ public final class EasmAsyncClient {
 
     /**
      * Create or replace a data connection with a given dataConnectionName.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
+     *     kind: String (Required)
      *     name: String (Optional)
      *     content: String(assets/attackSurfaceInsights) (Optional)
      *     frequency: String(daily/weekly/monthly) (Optional)
      *     frequencyOffset: Integer (Optional)
      * }
-     * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
+     *     kind: String (Required)
      *     id: String (Optional)
      *     name: String (Required)
      *     displayName: String (Optional)
@@ -439,10 +391,11 @@ public final class EasmAsyncClient {
      *     active: Boolean (Optional)
      *     inactiveMessage: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param dataConnectionName The caller provided unique name for the resource.
-     * @param dataConnectionData The dataConnectionData parameter.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -453,8 +406,8 @@ public final class EasmAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createOrReplaceDataConnectionWithResponse(String dataConnectionName,
-        BinaryData dataConnectionData, RequestOptions requestOptions) {
-        return this.serviceClient.createOrReplaceDataConnectionWithResponseAsync(dataConnectionName, dataConnectionData,
+        BinaryData body, RequestOptions requestOptions) {
+        return this.serviceClient.createOrReplaceDataConnectionWithResponseAsync(dataConnectionName, body,
             requestOptions);
     }
 
@@ -478,44 +431,19 @@ public final class EasmAsyncClient {
 
     /**
      * Retrieve a list of discovery group for the provided search parameters.
-     *
-     * <p>
-     * <strong>Query Parameters</strong>
-     *
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>filter</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Filter the result list using the given expression.</td>
-     * </tr>
-     * <tr>
-     * <td>skip</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The number of result items to skip.</td>
-     * </tr>
-     * <tr>
-     * <td>maxpagesize</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum number of result items per page.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>filter</td><td>String</td><td>No</td><td>Filter the result list using the given expression.</td></tr>
+     * <tr><td>skip</td><td>Integer</td><td>No</td><td>The number of result items to skip.</td></tr>
+     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>The maximum number of result items per page.</td></tr>
      * </table>
-     *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p>
-     * <strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     name: String (Required)
@@ -555,7 +483,8 @@ public final class EasmAsyncClient {
      *     createdDate: OffsetDateTime (Optional)
      *     templateId: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -564,25 +493,18 @@ public final class EasmAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return paged collection of DiscoGroup items as paginated response with {@link PagedFlux}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listDiscoGroup(RequestOptions requestOptions) {
-        PagedFlux<BinaryData> pagedFluxResponse = this.serviceClient.listDiscoGroupAsync(requestOptions);
-        return PagedFlux.create(() -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null) ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationToken).take(1);
-            return flux.map(pagedResponse -> new PagedResponseBase<Void, BinaryData>(pagedResponse.getRequest(),
-                pagedResponse.getStatusCode(), pagedResponse.getHeaders(), pagedResponse.getValue().stream()
-                    .map(protocolMethodData -> cleanUp(protocolMethodData)).collect(Collectors.toList()),
-                pagedResponse.getContinuationToken(), null));
-        });
+        return this.serviceClient.listDiscoGroupAsync(requestOptions);
     }
 
     /**
      * Validate a discovery group with a given groupName.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     name: String (Optional)
      *     description: String (Optional)
@@ -602,11 +524,13 @@ public final class EasmAsyncClient {
      *     ]
      *     templateId: String (Optional)
      * }
-     * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     error (Optional): {
      *         code: String (Required)
@@ -617,33 +541,34 @@ public final class EasmAsyncClient {
      *         ]
      *         innererror (Optional): {
      *             code: String (Optional)
-     *             value: Object (Optional)
+     *             value: BinaryData (Optional)
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
-     * @param discoGroupData A request body used to create a discovery group.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return validate result for validate action endpoints along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> validateDiscoGroupWithResponse(BinaryData discoGroupData,
-        RequestOptions requestOptions) {
-        return this.serviceClient.validateDiscoGroupWithResponseAsync(discoGroupData, requestOptions);
+    public Mono<Response<BinaryData>> validateDiscoGroupWithResponse(BinaryData body, RequestOptions requestOptions) {
+        return this.serviceClient.validateDiscoGroupWithResponseAsync(body, requestOptions);
     }
 
     /**
      * Retrieve a discovery group with a given groupName.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     name: String (Required)
@@ -683,7 +608,8 @@ public final class EasmAsyncClient {
      *     createdDate: OffsetDateTime (Optional)
      *     templateId: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param groupName The caller provided unique name for the resource.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -701,10 +627,10 @@ public final class EasmAsyncClient {
 
     /**
      * Create a discovery group with a given groupName.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     name: String (Optional)
      *     description: String (Optional)
@@ -724,11 +650,13 @@ public final class EasmAsyncClient {
      *     ]
      *     templateId: String (Optional)
      * }
-     * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     name: String (Required)
@@ -768,10 +696,11 @@ public final class EasmAsyncClient {
      *     createdDate: OffsetDateTime (Optional)
      *     templateId: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param groupName The caller provided unique name for the resource.
-     * @param discoGroupData A request body used to create a discovery group.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -781,9 +710,9 @@ public final class EasmAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrReplaceDiscoGroupWithResponse(String groupName, BinaryData discoGroupData,
+    public Mono<Response<BinaryData>> createOrReplaceDiscoGroupWithResponse(String groupName, BinaryData body,
         RequestOptions requestOptions) {
-        return this.serviceClient.createOrReplaceDiscoGroupWithResponseAsync(groupName, discoGroupData, requestOptions);
+        return this.serviceClient.createOrReplaceDiscoGroupWithResponseAsync(groupName, body, requestOptions);
     }
 
     /**
@@ -804,45 +733,72 @@ public final class EasmAsyncClient {
     }
 
     /**
-     * Retrieve a list of disco templates for the provided search parameters.
-     *
-     * <p>
-     * <strong>Query Parameters</strong>
-     *
+     * Retrieve a collection of discovery run results for a discovery group with a given groupName.
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>filter</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Filter the result list using the given expression.</td>
-     * </tr>
-     * <tr>
-     * <td>skip</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The number of result items to skip.</td>
-     * </tr>
-     * <tr>
-     * <td>maxpagesize</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum number of result items per page.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>filter</td><td>String</td><td>No</td><td>Filter the result list using the given expression.</td></tr>
+     * <tr><td>skip</td><td>Integer</td><td>No</td><td>The number of result items to skip.</td></tr>
+     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>The maximum number of result items per page.</td></tr>
      * </table>
-     *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     submittedDate: OffsetDateTime (Optional)
+     *     startedDate: OffsetDateTime (Optional)
+     *     completedDate: OffsetDateTime (Optional)
+     *     tier: String (Optional)
+     *     state: String(pending/running/completed/failed) (Optional)
+     *     totalAssetsFoundCount: Long (Optional)
+     *     seeds (Optional): [
+     *          (Optional){
+     *             kind: String(as/attribute/contact/domain/host/ipBlock) (Optional)
+     *             name: String (Optional)
+     *         }
+     *     ]
+     *     excludes (Optional): [
+     *         (recursive schema, see above)
+     *     ]
+     *     names (Optional): [
+     *         String (Optional)
+     *     ]
+     * }
+     * }
+     * </pre>
      *
-     * <p>
-     * <strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * @param groupName The unique identifier for the discovery group.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BinaryData> listRuns(String groupName, RequestOptions requestOptions) {
+        return this.serviceClient.listRunsAsync(groupName, requestOptions);
+    }
+
+    /**
+     * Retrieve a list of disco templates for the provided search parameters.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>filter</td><td>String</td><td>No</td><td>Filter the result list using the given expression.</td></tr>
+     * <tr><td>skip</td><td>Integer</td><td>No</td><td>The number of result items to skip.</td></tr>
+     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>The maximum number of result items per page.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     name: String (Optional)
@@ -862,7 +818,8 @@ public final class EasmAsyncClient {
      *         String (Optional)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -871,25 +828,18 @@ public final class EasmAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return paged collection of DiscoTemplate items as paginated response with {@link PagedFlux}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listDiscoTemplate(RequestOptions requestOptions) {
-        PagedFlux<BinaryData> pagedFluxResponse = this.serviceClient.listDiscoTemplateAsync(requestOptions);
-        return PagedFlux.create(() -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null) ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationToken).take(1);
-            return flux.map(pagedResponse -> new PagedResponseBase<Void, BinaryData>(pagedResponse.getRequest(),
-                pagedResponse.getStatusCode(), pagedResponse.getHeaders(), pagedResponse.getValue().stream()
-                    .map(protocolMethodData -> cleanUp(protocolMethodData)).collect(Collectors.toList()),
-                pagedResponse.getContinuationToken(), null));
-        });
+        return this.serviceClient.listDiscoTemplateAsync(requestOptions);
     }
 
     /**
      * Retrieve a disco template with a given templateId.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     name: String (Optional)
@@ -909,7 +859,8 @@ public final class EasmAsyncClient {
      *         String (Optional)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param templateId The system generated unique id for the resource.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -928,10 +879,10 @@ public final class EasmAsyncClient {
 
     /**
      * Get billable assets summary for the workspace.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     assetSummaries (Optional): [
      *          (Optional){
@@ -946,7 +897,8 @@ public final class EasmAsyncClient {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -964,21 +916,23 @@ public final class EasmAsyncClient {
 
     /**
      * Get the most recent snapshot of asset summary values for the snapshot request.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     metric: String (Optional)
      *     labelName: String (Optional)
      *     size: Integer (Optional)
      *     page: Integer (Optional)
      * }
-     * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     displayName: String (Optional)
      *     metric: String (Optional)
@@ -991,6 +945,7 @@ public final class EasmAsyncClient {
      *         nextLink: String (Optional)
      *         value (Optional): [
      *              (Optional){
+     *                 kind: String (Required)
      *                 id: String (Required)
      *                 name: String (Optional)
      *                 displayName: String (Optional)
@@ -1018,9 +973,10 @@ public final class EasmAsyncClient {
      *         ]
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
-     * @param reportAssetSnapshotRequest A request body used to retrieve an asset report snapshot.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1031,17 +987,16 @@ public final class EasmAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getSnapshotWithResponse(BinaryData reportAssetSnapshotRequest,
-        RequestOptions requestOptions) {
-        return this.serviceClient.getSnapshotWithResponseAsync(reportAssetSnapshotRequest, requestOptions);
+    public Mono<Response<BinaryData>> getSnapshotWithResponse(BinaryData body, RequestOptions requestOptions) {
+        return this.serviceClient.getSnapshotWithResponseAsync(body, requestOptions);
     }
 
     /**
      * Get asset summary details for the summary request.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     metricCategories (Optional): [
      *         String (Optional)
@@ -1056,11 +1011,13 @@ public final class EasmAsyncClient {
      *     segmentBy: String (Optional)
      *     labelName: String (Optional)
      * }
-     * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     assetSummaries (Optional): [
      *          (Optional){
@@ -1079,10 +1036,10 @@ public final class EasmAsyncClient {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
-     * @param reportAssetSummaryRequest A request body used to retrieve summary asset information. One and only one
-     * collection of summary identifiers must be provided: filters, metrics, or metricCategories.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1093,51 +1050,25 @@ public final class EasmAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getSummaryWithResponse(BinaryData reportAssetSummaryRequest,
-        RequestOptions requestOptions) {
-        return this.serviceClient.getSummaryWithResponseAsync(reportAssetSummaryRequest, requestOptions);
+    public Mono<Response<BinaryData>> getSummaryWithResponse(BinaryData body, RequestOptions requestOptions) {
+        return this.serviceClient.getSummaryWithResponseAsync(body, requestOptions);
     }
 
     /**
      * Retrieve a list of saved filters for the provided search parameters.
-     *
-     * <p>
-     * <strong>Query Parameters</strong>
-     *
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>filter</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Filter the result list using the given expression.</td>
-     * </tr>
-     * <tr>
-     * <td>skip</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The number of result items to skip.</td>
-     * </tr>
-     * <tr>
-     * <td>maxpagesize</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum number of result items per page.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>filter</td><td>String</td><td>No</td><td>Filter the result list using the given expression.</td></tr>
+     * <tr><td>skip</td><td>Integer</td><td>No</td><td>The number of result items to skip.</td></tr>
+     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>The maximum number of result items per page.</td></tr>
      * </table>
-     *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p>
-     * <strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     name: String (Required)
@@ -1145,7 +1076,8 @@ public final class EasmAsyncClient {
      *     filter: String (Optional)
      *     description: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1154,25 +1086,18 @@ public final class EasmAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return paged collection of SavedFilter items as paginated response with {@link PagedFlux}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listSavedFilter(RequestOptions requestOptions) {
-        PagedFlux<BinaryData> pagedFluxResponse = this.serviceClient.listSavedFilterAsync(requestOptions);
-        return PagedFlux.create(() -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null) ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationToken).take(1);
-            return flux.map(pagedResponse -> new PagedResponseBase<Void, BinaryData>(pagedResponse.getRequest(),
-                pagedResponse.getStatusCode(), pagedResponse.getHeaders(), pagedResponse.getValue().stream()
-                    .map(protocolMethodData -> cleanUp(protocolMethodData)).collect(Collectors.toList()),
-                pagedResponse.getContinuationToken(), null));
-        });
+        return this.serviceClient.listSavedFilterAsync(requestOptions);
     }
 
     /**
      * Retrieve a saved filter by filterName.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     name: String (Required)
@@ -1180,7 +1105,8 @@ public final class EasmAsyncClient {
      *     filter: String (Optional)
      *     description: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param filterName The caller provided unique name for the resource.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1198,19 +1124,21 @@ public final class EasmAsyncClient {
 
     /**
      * Create or replace a saved filter with a given filterName.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     filter: String (Required)
      *     description: String (Required)
      * }
-     * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     name: String (Required)
@@ -1218,10 +1146,11 @@ public final class EasmAsyncClient {
      *     filter: String (Optional)
      *     description: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param filterName The caller provided unique name for the resource.
-     * @param savedFilterData A request body used to create a saved filter.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1231,10 +1160,9 @@ public final class EasmAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrReplaceSavedFilterWithResponse(String filterName,
-        BinaryData savedFilterData, RequestOptions requestOptions) {
-        return this.serviceClient.createOrReplaceSavedFilterWithResponseAsync(filterName, savedFilterData,
-            requestOptions);
+    public Mono<Response<BinaryData>> createOrReplaceSavedFilterWithResponse(String filterName, BinaryData body,
+        RequestOptions requestOptions) {
+        return this.serviceClient.createOrReplaceSavedFilterWithResponseAsync(filterName, body, requestOptions);
     }
 
     /**
@@ -1256,50 +1184,21 @@ public final class EasmAsyncClient {
 
     /**
      * Retrieve a list of tasks for the provided search parameters.
-     *
-     * <p>
-     * <strong>Query Parameters</strong>
-     *
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>filter</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Filter the result list using the given expression.</td>
-     * </tr>
-     * <tr>
-     * <td>orderby</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>A list of expressions that specify the order of the returned resources.</td>
-     * </tr>
-     * <tr>
-     * <td>skip</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The number of result items to skip.</td>
-     * </tr>
-     * <tr>
-     * <td>maxpagesize</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum number of result items per page.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>filter</td><td>String</td><td>No</td><td>Filter the result list using the given expression.</td></tr>
+     * <tr><td>orderby</td><td>String</td><td>No</td><td>A list of expressions that specify the order of the returned
+     * resources.</td></tr>
+     * <tr><td>skip</td><td>Integer</td><td>No</td><td>The number of result items to skip.</td></tr>
+     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>The maximum number of result items per page.</td></tr>
      * </table>
-     *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p>
-     * <strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     startedAt: OffsetDateTime (Optional)
@@ -1309,10 +1208,11 @@ public final class EasmAsyncClient {
      *     phase: String(running/polling/complete) (Optional)
      *     reason: String (Optional)
      *     metadata (Optional): {
-     *         String: Object (Optional)
+     *         String: BinaryData (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1321,25 +1221,18 @@ public final class EasmAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return paged collection of Task items as paginated response with {@link PagedFlux}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listTask(RequestOptions requestOptions) {
-        PagedFlux<BinaryData> pagedFluxResponse = this.serviceClient.listTaskAsync(requestOptions);
-        return PagedFlux.create(() -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null) ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationToken).take(1);
-            return flux.map(pagedResponse -> new PagedResponseBase<Void, BinaryData>(pagedResponse.getRequest(),
-                pagedResponse.getStatusCode(), pagedResponse.getHeaders(), pagedResponse.getValue().stream()
-                    .map(protocolMethodData -> cleanUp(protocolMethodData)).collect(Collectors.toList()),
-                pagedResponse.getContinuationToken(), null));
-        });
+        return this.serviceClient.listTaskAsync(requestOptions);
     }
 
     /**
      * Retrieve a task by taskId.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     startedAt: OffsetDateTime (Optional)
@@ -1349,10 +1242,11 @@ public final class EasmAsyncClient {
      *     phase: String(running/polling/complete) (Optional)
      *     reason: String (Optional)
      *     metadata (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param taskId The unique identifier of the task.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1370,10 +1264,10 @@ public final class EasmAsyncClient {
 
     /**
      * Cancel a task by taskId.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     startedAt: OffsetDateTime (Optional)
@@ -1383,10 +1277,11 @@ public final class EasmAsyncClient {
      *     phase: String(running/polling/complete) (Optional)
      *     reason: String (Optional)
      *     metadata (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param taskId The unique identifier of the task.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1436,12 +1331,14 @@ public final class EasmAsyncClient {
             requestOptions.addQueryParam("mark", mark, false);
         }
         PagedFlux<BinaryData> pagedFluxResponse = listAssetResource(requestOptions);
-        return PagedFlux.create(() -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null) ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationToken).take(1);
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
+                ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
             return flux.map(pagedResponse -> new PagedResponseBase<Void, AssetResource>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                pagedResponse.getValue().stream()
+                pagedResponse.getValue()
+                    .stream()
                     .map(protocolMethodData -> protocolMethodData.toObject(AssetResource.class))
                     .collect(Collectors.toList()),
                 pagedResponse.getContinuationToken(), null));
@@ -1464,12 +1361,14 @@ public final class EasmAsyncClient {
         // Generated convenience method for listAssetResource
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listAssetResource(requestOptions);
-        return PagedFlux.create(() -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null) ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationToken).take(1);
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
+                ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
             return flux.map(pagedResponse -> new PagedResponseBase<Void, AssetResource>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                pagedResponse.getValue().stream()
+                pagedResponse.getValue()
+                    .stream()
                     .map(protocolMethodData -> protocolMethodData.toObject(AssetResource.class))
                     .collect(Collectors.toList()),
                 pagedResponse.getContinuationToken(), null));
@@ -1480,7 +1379,7 @@ public final class EasmAsyncClient {
      * Update labels on assets matching the provided filter.
      *
      * @param filter An expression on the resource type that selects the resources to be returned.
-     * @param assetUpdateData A request body used to update an asset.
+     * @param body Body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1489,12 +1388,13 @@ public final class EasmAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Task> updateAssets(String filter, AssetUpdateData assetUpdateData) {
+    public Mono<Task> updateAssets(String filter, AssetUpdateData body) {
         // Generated convenience method for updateAssetsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return updateAssetsWithResponse(filter, BinaryData.fromObject(assetUpdateData), requestOptions)
-            .flatMap(FluxUtil::toMono).map(protocolMethodData -> cleanUp(protocolMethodData).toObject(Task.class));
+        return updateAssetsWithResponse(filter, BinaryData.fromObject(body), requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(Task.class));
     }
 
     /**
@@ -1509,12 +1409,13 @@ public final class EasmAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the items in the current page of results on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AssetResource> getAssetResource(String assetId) {
         // Generated convenience method for getAssetResourceWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getAssetResourceWithResponse(assetId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> cleanUp(protocolMethodData).toObject(AssetResource.class));
+            .map(protocolMethodData -> protocolMethodData.toObject(AssetResource.class));
     }
 
     /**
@@ -1529,6 +1430,7 @@ public final class EasmAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged collection of DataConnection items as paginated response with {@link PagedFlux}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DataConnection> listDataConnection(Integer skip) {
         // Generated convenience method for listDataConnection
@@ -1537,12 +1439,14 @@ public final class EasmAsyncClient {
             requestOptions.addQueryParam("skip", String.valueOf(skip), false);
         }
         PagedFlux<BinaryData> pagedFluxResponse = listDataConnection(requestOptions);
-        return PagedFlux.create(() -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null) ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationToken).take(1);
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
+                ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
             return flux.map(pagedResponse -> new PagedResponseBase<Void, DataConnection>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                pagedResponse.getValue().stream()
+                pagedResponse.getValue()
+                    .stream()
                     .map(protocolMethodData -> protocolMethodData.toObject(DataConnection.class))
                     .collect(Collectors.toList()),
                 pagedResponse.getContinuationToken(), null));
@@ -1559,17 +1463,20 @@ public final class EasmAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged collection of DataConnection items as paginated response with {@link PagedFlux}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DataConnection> listDataConnection() {
         // Generated convenience method for listDataConnection
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listDataConnection(requestOptions);
-        return PagedFlux.create(() -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null) ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationToken).take(1);
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
+                ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
             return flux.map(pagedResponse -> new PagedResponseBase<Void, DataConnection>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                pagedResponse.getValue().stream()
+                pagedResponse.getValue()
+                    .stream()
                     .map(protocolMethodData -> protocolMethodData.toObject(DataConnection.class))
                     .collect(Collectors.toList()),
                 pagedResponse.getContinuationToken(), null));
@@ -1579,22 +1486,22 @@ public final class EasmAsyncClient {
     /**
      * Validate a data connection with a given dataConnectionName.
      *
-     * @param dataConnectionData The dataConnectionData parameter.
+     * @param body Body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return validate result for validate action endpoints on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ValidateResult> validateDataConnection(DataConnectionData dataConnectionData) {
+    public Mono<ValidateResult> validateDataConnection(DataConnectionData body) {
         // Generated convenience method for validateDataConnectionWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return validateDataConnectionWithResponse(BinaryData.fromObject(dataConnectionData), requestOptions)
-            .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> cleanUp(protocolMethodData).toObject(ValidateResult.class));
+        return validateDataConnectionWithResponse(BinaryData.fromObject(body), requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(ValidateResult.class));
     }
 
     /**
@@ -1609,19 +1516,20 @@ public final class EasmAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DataConnection> getDataConnection(String dataConnectionName) {
         // Generated convenience method for getDataConnectionWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getDataConnectionWithResponse(dataConnectionName, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> cleanUp(protocolMethodData).toObject(DataConnection.class));
+            .map(protocolMethodData -> protocolMethodData.toObject(DataConnection.class));
     }
 
     /**
      * Create or replace a data connection with a given dataConnectionName.
      *
      * @param dataConnectionName The caller provided unique name for the resource.
-     * @param dataConnectionData The dataConnectionData parameter.
+     * @param body Body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1630,14 +1538,14 @@ public final class EasmAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DataConnection> createOrReplaceDataConnection(String dataConnectionName,
-        DataConnectionData dataConnectionData) {
+    public Mono<DataConnection> createOrReplaceDataConnection(String dataConnectionName, DataConnectionData body) {
         // Generated convenience method for createOrReplaceDataConnectionWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createOrReplaceDataConnectionWithResponse(dataConnectionName, BinaryData.fromObject(dataConnectionData),
+        return createOrReplaceDataConnectionWithResponse(dataConnectionName, BinaryData.fromObject(body),
             requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> cleanUp(protocolMethodData).toObject(DataConnection.class));
+                .map(protocolMethodData -> protocolMethodData.toObject(DataConnection.class));
     }
 
     /**
@@ -1685,12 +1593,14 @@ public final class EasmAsyncClient {
             requestOptions.addQueryParam("skip", String.valueOf(skip), false);
         }
         PagedFlux<BinaryData> pagedFluxResponse = listDiscoGroup(requestOptions);
-        return PagedFlux.create(() -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null) ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationToken).take(1);
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
+                ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
             return flux.map(pagedResponse -> new PagedResponseBase<Void, DiscoGroup>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                pagedResponse.getValue().stream()
+                pagedResponse.getValue()
+                    .stream()
                     .map(protocolMethodData -> protocolMethodData.toObject(DiscoGroup.class))
                     .collect(Collectors.toList()),
                 pagedResponse.getContinuationToken(), null));
@@ -1707,17 +1617,20 @@ public final class EasmAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged collection of DiscoGroup items as paginated response with {@link PagedFlux}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DiscoGroup> listDiscoGroup() {
         // Generated convenience method for listDiscoGroup
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listDiscoGroup(requestOptions);
-        return PagedFlux.create(() -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null) ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationToken).take(1);
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
+                ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
             return flux.map(pagedResponse -> new PagedResponseBase<Void, DiscoGroup>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                pagedResponse.getValue().stream()
+                pagedResponse.getValue()
+                    .stream()
                     .map(protocolMethodData -> protocolMethodData.toObject(DiscoGroup.class))
                     .collect(Collectors.toList()),
                 pagedResponse.getContinuationToken(), null));
@@ -1727,22 +1640,22 @@ public final class EasmAsyncClient {
     /**
      * Validate a discovery group with a given groupName.
      *
-     * @param discoGroupData A request body used to create a discovery group.
+     * @param body Body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return validate result for validate action endpoints on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ValidateResult> validateDiscoGroup(DiscoGroupData discoGroupData) {
+    public Mono<ValidateResult> validateDiscoGroup(DiscoGroupData body) {
         // Generated convenience method for validateDiscoGroupWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return validateDiscoGroupWithResponse(BinaryData.fromObject(discoGroupData), requestOptions)
-            .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> cleanUp(protocolMethodData).toObject(ValidateResult.class));
+        return validateDiscoGroupWithResponse(BinaryData.fromObject(body), requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(ValidateResult.class));
     }
 
     /**
@@ -1757,19 +1670,20 @@ public final class EasmAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DiscoGroup> getDiscoGroup(String groupName) {
         // Generated convenience method for getDiscoGroupWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getDiscoGroupWithResponse(groupName, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> cleanUp(protocolMethodData).toObject(DiscoGroup.class));
+            .map(protocolMethodData -> protocolMethodData.toObject(DiscoGroup.class));
     }
 
     /**
      * Create a discovery group with a given groupName.
      *
      * @param groupName The caller provided unique name for the resource.
-     * @param discoGroupData A request body used to create a discovery group.
+     * @param body Body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1778,13 +1692,14 @@ public final class EasmAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DiscoGroup> createOrReplaceDiscoGroup(String groupName, DiscoGroupData discoGroupData) {
+    public Mono<DiscoGroup> createOrReplaceDiscoGroup(String groupName, DiscoGroupData body) {
         // Generated convenience method for createOrReplaceDiscoGroupWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createOrReplaceDiscoGroupWithResponse(groupName, BinaryData.fromObject(discoGroupData), requestOptions)
+        return createOrReplaceDiscoGroupWithResponse(groupName, BinaryData.fromObject(body), requestOptions)
             .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> cleanUp(protocolMethodData).toObject(DiscoGroup.class));
+            .map(protocolMethodData -> protocolMethodData.toObject(DiscoGroup.class));
     }
 
     /**
@@ -1811,6 +1726,46 @@ public final class EasmAsyncClient {
      * Retrieve a collection of discovery run results for a discovery group with a given groupName.
      *
      * @param groupName The unique identifier for the discovery group.
+     * @param filter Filter the result list using the given expression.
+     * @param skip The number of result items to skip.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the paginated response with {@link PagedFlux}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<DiscoRunResult> listRuns(String groupName, String filter, Integer skip) {
+        // Generated convenience method for listRuns
+        RequestOptions requestOptions = new RequestOptions();
+        if (filter != null) {
+            requestOptions.addQueryParam("filter", filter, false);
+        }
+        if (skip != null) {
+            requestOptions.addQueryParam("skip", String.valueOf(skip), false);
+        }
+        PagedFlux<BinaryData> pagedFluxResponse = listRuns(groupName, requestOptions);
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
+                ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, DiscoRunResult>(pagedResponse.getRequest(),
+                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                pagedResponse.getValue()
+                    .stream()
+                    .map(protocolMethodData -> protocolMethodData.toObject(DiscoRunResult.class))
+                    .collect(Collectors.toList()),
+                pagedResponse.getContinuationToken(), null));
+        });
+    }
+
+    /**
+     * Retrieve a collection of discovery run results for a discovery group with a given groupName.
+     *
+     * @param groupName The unique identifier for the discovery group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1825,12 +1780,14 @@ public final class EasmAsyncClient {
         // Generated convenience method for listRuns
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listRuns(groupName, requestOptions);
-        return PagedFlux.create(() -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null) ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationToken).take(1);
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
+                ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
             return flux.map(pagedResponse -> new PagedResponseBase<Void, DiscoRunResult>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                pagedResponse.getValue().stream()
+                pagedResponse.getValue()
+                    .stream()
                     .map(protocolMethodData -> protocolMethodData.toObject(DiscoRunResult.class))
                     .collect(Collectors.toList()),
                 pagedResponse.getContinuationToken(), null));
@@ -1850,6 +1807,7 @@ public final class EasmAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged collection of DiscoTemplate items as paginated response with {@link PagedFlux}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DiscoTemplate> listDiscoTemplate(String filter, Integer skip) {
         // Generated convenience method for listDiscoTemplate
@@ -1861,12 +1819,14 @@ public final class EasmAsyncClient {
             requestOptions.addQueryParam("skip", String.valueOf(skip), false);
         }
         PagedFlux<BinaryData> pagedFluxResponse = listDiscoTemplate(requestOptions);
-        return PagedFlux.create(() -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null) ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationToken).take(1);
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
+                ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
             return flux.map(pagedResponse -> new PagedResponseBase<Void, DiscoTemplate>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                pagedResponse.getValue().stream()
+                pagedResponse.getValue()
+                    .stream()
                     .map(protocolMethodData -> protocolMethodData.toObject(DiscoTemplate.class))
                     .collect(Collectors.toList()),
                 pagedResponse.getContinuationToken(), null));
@@ -1883,17 +1843,20 @@ public final class EasmAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged collection of DiscoTemplate items as paginated response with {@link PagedFlux}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DiscoTemplate> listDiscoTemplate() {
         // Generated convenience method for listDiscoTemplate
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listDiscoTemplate(requestOptions);
-        return PagedFlux.create(() -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null) ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationToken).take(1);
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
+                ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
             return flux.map(pagedResponse -> new PagedResponseBase<Void, DiscoTemplate>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                pagedResponse.getValue().stream()
+                pagedResponse.getValue()
+                    .stream()
                     .map(protocolMethodData -> protocolMethodData.toObject(DiscoTemplate.class))
                     .collect(Collectors.toList()),
                 pagedResponse.getContinuationToken(), null));
@@ -1912,12 +1875,13 @@ public final class EasmAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the items in the current page of results on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DiscoTemplate> getDiscoTemplate(String templateId) {
         // Generated convenience method for getDiscoTemplateWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getDiscoTemplateWithResponse(templateId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> cleanUp(protocolMethodData).toObject(DiscoTemplate.class));
+            .map(protocolMethodData -> protocolMethodData.toObject(DiscoTemplate.class));
     }
 
     /**
@@ -1930,18 +1894,19 @@ public final class EasmAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return billable assets summary for the workspace on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ReportBillableAssetSummaryResult> getBillable() {
         // Generated convenience method for getBillableWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getBillableWithResponse(requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> cleanUp(protocolMethodData).toObject(ReportBillableAssetSummaryResult.class));
+            .map(protocolMethodData -> protocolMethodData.toObject(ReportBillableAssetSummaryResult.class));
     }
 
     /**
      * Get the most recent snapshot of asset summary values for the snapshot request.
      *
-     * @param reportAssetSnapshotRequest A request body used to retrieve an asset report snapshot.
+     * @param body Body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1951,20 +1916,19 @@ public final class EasmAsyncClient {
      * @return the most recent snapshot of asset summary values for the snapshot request on successful completion of
      * {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ReportAssetSnapshotResult> getSnapshot(ReportAssetSnapshotRequest reportAssetSnapshotRequest) {
+    public Mono<ReportAssetSnapshotResult> getSnapshot(ReportAssetSnapshotRequest body) {
         // Generated convenience method for getSnapshotWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getSnapshotWithResponse(BinaryData.fromObject(reportAssetSnapshotRequest), requestOptions)
-            .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> cleanUp(protocolMethodData).toObject(ReportAssetSnapshotResult.class));
+        return getSnapshotWithResponse(BinaryData.fromObject(body), requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(ReportAssetSnapshotResult.class));
     }
 
     /**
      * Get asset summary details for the summary request.
      *
-     * @param reportAssetSummaryRequest A request body used to retrieve summary asset information. One and only one
-     * collection of summary identifiers must be provided: filters, metrics, or metricCategories.
+     * @param body Body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1973,13 +1937,13 @@ public final class EasmAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return asset summary details for the summary request on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ReportAssetSummaryResult> getSummary(ReportAssetSummaryRequest reportAssetSummaryRequest) {
+    public Mono<ReportAssetSummaryResult> getSummary(ReportAssetSummaryRequest body) {
         // Generated convenience method for getSummaryWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getSummaryWithResponse(BinaryData.fromObject(reportAssetSummaryRequest), requestOptions)
-            .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> cleanUp(protocolMethodData).toObject(ReportAssetSummaryResult.class));
+        return getSummaryWithResponse(BinaryData.fromObject(body), requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(ReportAssetSummaryResult.class));
     }
 
     /**
@@ -2007,12 +1971,14 @@ public final class EasmAsyncClient {
             requestOptions.addQueryParam("skip", String.valueOf(skip), false);
         }
         PagedFlux<BinaryData> pagedFluxResponse = listSavedFilter(requestOptions);
-        return PagedFlux.create(() -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null) ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationToken).take(1);
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
+                ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
             return flux.map(pagedResponse -> new PagedResponseBase<Void, SavedFilter>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                pagedResponse.getValue().stream()
+                pagedResponse.getValue()
+                    .stream()
                     .map(protocolMethodData -> protocolMethodData.toObject(SavedFilter.class))
                     .collect(Collectors.toList()),
                 pagedResponse.getContinuationToken(), null));
@@ -2035,12 +2001,14 @@ public final class EasmAsyncClient {
         // Generated convenience method for listSavedFilter
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listSavedFilter(requestOptions);
-        return PagedFlux.create(() -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null) ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationToken).take(1);
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
+                ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
             return flux.map(pagedResponse -> new PagedResponseBase<Void, SavedFilter>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                pagedResponse.getValue().stream()
+                pagedResponse.getValue()
+                    .stream()
                     .map(protocolMethodData -> protocolMethodData.toObject(SavedFilter.class))
                     .collect(Collectors.toList()),
                 pagedResponse.getContinuationToken(), null));
@@ -2059,19 +2027,20 @@ public final class EasmAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SavedFilter> getSavedFilter(String filterName) {
         // Generated convenience method for getSavedFilterWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getSavedFilterWithResponse(filterName, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> cleanUp(protocolMethodData).toObject(SavedFilter.class));
+            .map(protocolMethodData -> protocolMethodData.toObject(SavedFilter.class));
     }
 
     /**
      * Create or replace a saved filter with a given filterName.
      *
      * @param filterName The caller provided unique name for the resource.
-     * @param savedFilterData A request body used to create a saved filter.
+     * @param body Body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2080,13 +2049,14 @@ public final class EasmAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SavedFilter> createOrReplaceSavedFilter(String filterName, SavedFilterData savedFilterData) {
+    public Mono<SavedFilter> createOrReplaceSavedFilter(String filterName, SavedFilterData body) {
         // Generated convenience method for createOrReplaceSavedFilterWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createOrReplaceSavedFilterWithResponse(filterName, BinaryData.fromObject(savedFilterData),
-            requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> cleanUp(protocolMethodData).toObject(SavedFilter.class));
+        return createOrReplaceSavedFilterWithResponse(filterName, BinaryData.fromObject(body), requestOptions)
+            .flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(SavedFilter.class));
     }
 
     /**
@@ -2138,12 +2108,16 @@ public final class EasmAsyncClient {
             requestOptions.addQueryParam("skip", String.valueOf(skip), false);
         }
         PagedFlux<BinaryData> pagedFluxResponse = listTask(requestOptions);
-        return PagedFlux.create(() -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null) ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationToken).take(1);
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
+                ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
             return flux.map(pagedResponse -> new PagedResponseBase<Void, Task>(pagedResponse.getRequest(),
-                pagedResponse.getStatusCode(), pagedResponse.getHeaders(), pagedResponse.getValue().stream()
-                    .map(protocolMethodData -> protocolMethodData.toObject(Task.class)).collect(Collectors.toList()),
+                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                pagedResponse.getValue()
+                    .stream()
+                    .map(protocolMethodData -> protocolMethodData.toObject(Task.class))
+                    .collect(Collectors.toList()),
                 pagedResponse.getContinuationToken(), null));
         });
     }
@@ -2164,12 +2138,16 @@ public final class EasmAsyncClient {
         // Generated convenience method for listTask
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listTask(requestOptions);
-        return PagedFlux.create(() -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null) ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationToken).take(1);
+        return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
+            Flux<PagedResponse<BinaryData>> flux = (continuationTokenParam == null)
+                ? pagedFluxResponse.byPage().take(1)
+                : pagedFluxResponse.byPage(continuationTokenParam).take(1);
             return flux.map(pagedResponse -> new PagedResponseBase<Void, Task>(pagedResponse.getRequest(),
-                pagedResponse.getStatusCode(), pagedResponse.getHeaders(), pagedResponse.getValue().stream()
-                    .map(protocolMethodData -> protocolMethodData.toObject(Task.class)).collect(Collectors.toList()),
+                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                pagedResponse.getValue()
+                    .stream()
+                    .map(protocolMethodData -> protocolMethodData.toObject(Task.class))
+                    .collect(Collectors.toList()),
                 pagedResponse.getContinuationToken(), null));
         });
     }
@@ -2186,12 +2164,13 @@ public final class EasmAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Task> getTask(String taskId) {
         // Generated convenience method for getTaskWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getTaskWithResponse(taskId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> cleanUp(protocolMethodData).toObject(Task.class));
+            .map(protocolMethodData -> protocolMethodData.toObject(Task.class));
     }
 
     /**
@@ -2206,136 +2185,12 @@ public final class EasmAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Task> cancelTask(String taskId) {
         // Generated convenience method for cancelTaskWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return cancelTaskWithResponse(taskId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> cleanUp(protocolMethodData).toObject(Task.class));
-    }
-
-    private BinaryData cleanUp(BinaryData input) {
-        return BinaryData.fromString(input.toString().replaceAll("\\+0000", "+00:00"));
-    }
-
-    /**
-     * Retrieve a collection of discovery run results for a discovery group with a given groupName.
-     *
-     * <p>
-     * <strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>filter</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Filter the result list using the given expression.</td>
-     * </tr>
-     * <tr>
-     * <td>skip</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The number of result items to skip.</td>
-     * </tr>
-     * <tr>
-     * <td>maxpagesize</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum number of result items per page.</td>
-     * </tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p>
-     * <strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     submittedDate: OffsetDateTime (Optional)
-     *     startedDate: OffsetDateTime (Optional)
-     *     completedDate: OffsetDateTime (Optional)
-     *     tier: String (Optional)
-     *     state: String(pending/running/completed/failed) (Optional)
-     *     totalAssetsFoundCount: Long (Optional)
-     *     seeds (Optional): [
-     *          (Optional){
-     *             kind: String(as/attribute/contact/domain/host/ipBlock) (Optional)
-     *             name: String (Optional)
-     *         }
-     *     ]
-     *     excludes (Optional): [
-     *         (recursive schema, see above)
-     *     ]
-     *     names (Optional): [
-     *         String (Optional)
-     *     ]
-     * }
-     * }</pre>
-     *
-     * @param groupName The unique identifier for the discovery group.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listRuns(String groupName, RequestOptions requestOptions) {
-        PagedFlux<BinaryData> pagedFluxResponse = this.serviceClient.listRunsAsync(groupName, requestOptions);
-        return PagedFlux.create(() -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null) ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationToken).take(1);
-            return flux.map(pagedResponse -> new PagedResponseBase<Void, BinaryData>(pagedResponse.getRequest(),
-                pagedResponse.getStatusCode(), pagedResponse.getHeaders(), pagedResponse.getValue().stream()
-                    .map(protocolMethodData -> cleanUp(protocolMethodData)).collect(Collectors.toList()),
-                pagedResponse.getContinuationToken(), null));
-        });
-    }
-
-    /**
-     * Retrieve a collection of discovery run results for a discovery group with a given groupName.
-     *
-     * @param groupName The unique identifier for the discovery group.
-     * @param filter Filter the result list using the given expression.
-     * @param skip The number of result items to skip.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedFlux}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DiscoRunResult> listRuns(String groupName, String filter, Integer skip) {
-        // Generated convenience method for listRuns
-        RequestOptions requestOptions = new RequestOptions();
-        if (filter != null) {
-            requestOptions.addQueryParam("filter", filter, false);
-        }
-        if (skip != null) {
-            requestOptions.addQueryParam("skip", String.valueOf(skip), false);
-        }
-        PagedFlux<BinaryData> pagedFluxResponse = listRuns(groupName, requestOptions);
-        return PagedFlux.create(() -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null) ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationToken).take(1);
-            return flux.map(pagedResponse -> new PagedResponseBase<Void, DiscoRunResult>(pagedResponse.getRequest(),
-                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                pagedResponse.getValue().stream()
-                    .map(protocolMethodData -> protocolMethodData.toObject(DiscoRunResult.class))
-                    .collect(Collectors.toList()),
-                pagedResponse.getContinuationToken(), null));
-        });
+            .map(protocolMethodData -> protocolMethodData.toObject(Task.class));
     }
 }

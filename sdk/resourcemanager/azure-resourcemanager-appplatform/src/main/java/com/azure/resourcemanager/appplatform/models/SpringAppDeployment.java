@@ -18,10 +18,8 @@ import java.util.List;
 
 /** An immutable client-side representation of an Azure Spring App Deployment. */
 @Fluent
-public interface SpringAppDeployment
-    extends ExternalChildResource<SpringAppDeployment, SpringApp>,
-        HasInnerModel<DeploymentResourceInner>,
-        Updatable<SpringAppDeployment.Update> {
+public interface SpringAppDeployment extends ExternalChildResource<SpringAppDeployment, SpringApp>,
+    HasInnerModel<DeploymentResourceInner>, Updatable<SpringAppDeployment.Update> {
     /** @return the app name of the deployment */
     String appName();
 
@@ -91,17 +89,15 @@ public interface SpringAppDeployment
      * @param <T> The return type of final stage,
      *            usually {@link DefinitionStages.WithCreate} or {@link DefinitionStages.WithAttach}
      */
-    interface Definition<ParentT, T>
-        extends DefinitionStages.Blank<T>,
-            DefinitionStages.WithSource<T>,
-            DefinitionStages.WithModule<T>,
-            DefinitionStages.WithCreate<T>,
-            DefinitionStages.WithAttach<ParentT, T> { }
+    interface Definition<ParentT, T> extends DefinitionStages.Blank<T>, DefinitionStages.WithSource<T>,
+        DefinitionStages.WithModule<T>, DefinitionStages.WithCreate<T>, DefinitionStages.WithAttach<ParentT, T> {
+    }
 
     /** Grouping of all the deployment definition stages. */
     interface DefinitionStages {
         /** The first stage of the deployment definition. */
-        interface Blank<T> extends WithSource<T> { }
+        interface Blank<T> extends WithSource<T> {
+        }
 
         /** The stage of a deployment definition allowing to specify the source code or package. */
         interface WithSource<T> {
@@ -261,24 +257,22 @@ public interface SpringAppDeployment
          * The stage of the definition which contains all the minimum required inputs for the resource to be created,
          * but also allows for any other optional settings to be specified.
          */
-        interface Final<T>
-            extends WithSettings<T> { }
+        interface Final<T> extends WithSettings<T> {
+        }
 
         /** The final stage of the definition allowing to create a deployment */
-        interface WithCreate<T>
-            extends Creatable<SpringAppDeployment>, Final<T> { }
+        interface WithCreate<T> extends Creatable<SpringAppDeployment>, Final<T> {
+        }
 
         /** The final stage of the definition allowing to attach a deployment to its parent */
-        interface WithAttach<ParentT, T>
-            extends Attachable<ParentT>, Final<T> { }
+        interface WithAttach<ParentT, T> extends Attachable<ParentT>, Final<T> {
+        }
     }
 
     /** The template for an update operation, containing all the settings that can be modified. */
-    interface Update
-        extends Appliable<SpringAppDeployment>,
-            UpdateStages.WithSource,
-            UpdateStages.WithModule,
-            UpdateStages.WithSettings { }
+    interface Update extends Appliable<SpringAppDeployment>, UpdateStages.WithSource, UpdateStages.WithModule,
+        UpdateStages.WithSettings {
+    }
 
     /** Grouping of deployment update stages. */
     interface UpdateStages {

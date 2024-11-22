@@ -22,13 +22,10 @@ public class AllocationPolicyTests extends DeviceProvisioningTestBase {
         ResourceGroup resourceGroup = createResourceGroup(resourceManager);
 
         try {
-            ProvisioningServiceDescriptionInner provisioningServiceDescription =
-                createProvisioningService(iotDpsManager, resourceGroup);
+            ProvisioningServiceDescriptionInner provisioningServiceDescription
+                = createProvisioningService(iotDpsManager, resourceGroup);
 
-            AllocationPolicy allocationPolicy =
-                provisioningServiceDescription
-                    .properties()
-                    .allocationPolicy();
+            AllocationPolicy allocationPolicy = provisioningServiceDescription.properties().allocationPolicy();
 
             assertTrue(Constants.ALLOCATION_POLICIES.contains(allocationPolicy));
         } finally {
@@ -45,8 +42,8 @@ public class AllocationPolicyTests extends DeviceProvisioningTestBase {
         ResourceGroup resourceGroup = createResourceGroup(resourceManager);
 
         try {
-            ProvisioningServiceDescriptionInner provisioningServiceDescription =
-                createProvisioningService(iotDpsManager, resourceGroup);
+            ProvisioningServiceDescriptionInner provisioningServiceDescription
+                = createProvisioningService(iotDpsManager, resourceGroup);
 
             // pick a new allocation policy that is different from the current allocation policy
             AllocationPolicy newAllocationPolicy = AllocationPolicy.GEO_LATENCY;
@@ -55,19 +52,14 @@ public class AllocationPolicyTests extends DeviceProvisioningTestBase {
             }
 
             // update the service's allocation policy to the new policy
-            IotDpsPropertiesDescription propertiesDescription =
-                provisioningServiceDescription
-                    .properties()
-                    .withAllocationPolicy(newAllocationPolicy);
+            IotDpsPropertiesDescription propertiesDescription
+                = provisioningServiceDescription.properties().withAllocationPolicy(newAllocationPolicy);
 
             provisioningServiceDescription.withProperties(propertiesDescription);
 
-            iotDpsManager
-                .serviceClient()
+            iotDpsManager.serviceClient()
                 .getIotDpsResources()
-                .createOrUpdate(
-                    resourceGroup.name(),
-                    provisioningServiceDescription.name(),
+                .createOrUpdate(resourceGroup.name(), provisioningServiceDescription.name(),
                     provisioningServiceDescription);
 
         } finally {

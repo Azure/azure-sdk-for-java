@@ -13,8 +13,7 @@ import io.clientcore.core.json.implementation.jackson.core.JsonToken;
  *
  * @since 2.8
  */
-public class JsonEOFException extends JsonParseException
-{
+public class JsonEOFException extends JsonParseException {
     private static final long serialVersionUID = 1L;
 
     /**
@@ -28,13 +27,4 @@ public class JsonEOFException extends JsonParseException
         _token = token;
     }
 
-    /**
-     * Accessor for possibly available information about token that was being
-     * decoded while encountering end of input.
-     *
-     * @return JsonToken that was being decoded while encountering end-of-input
-     */
-    public JsonToken getTokenBeingDecoded() {
-        return _token;
-    }
 }

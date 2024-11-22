@@ -18,6 +18,11 @@ import java.util.List;
 @Fluent
 public final class TracesConfiguration implements JsonSerializable<TracesConfiguration> {
     /*
+     * Boolean indicating if including dapr traces
+     */
+    private Boolean includeDapr;
+
+    /*
      * Open telemetry traces destinations
      */
     private List<String> destinations;
@@ -26,6 +31,26 @@ public final class TracesConfiguration implements JsonSerializable<TracesConfigu
      * Creates an instance of TracesConfiguration class.
      */
     public TracesConfiguration() {
+    }
+
+    /**
+     * Get the includeDapr property: Boolean indicating if including dapr traces.
+     * 
+     * @return the includeDapr value.
+     */
+    public Boolean includeDapr() {
+        return this.includeDapr;
+    }
+
+    /**
+     * Set the includeDapr property: Boolean indicating if including dapr traces.
+     * 
+     * @param includeDapr the includeDapr value to set.
+     * @return the TracesConfiguration object itself.
+     */
+    public TracesConfiguration withIncludeDapr(Boolean includeDapr) {
+        this.includeDapr = includeDapr;
+        return this;
     }
 
     /**
@@ -62,6 +87,7 @@ public final class TracesConfiguration implements JsonSerializable<TracesConfigu
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("includeDapr", this.includeDapr);
         jsonWriter.writeArrayField("destinations", this.destinations, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
@@ -81,7 +107,9 @@ public final class TracesConfiguration implements JsonSerializable<TracesConfigu
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("destinations".equals(fieldName)) {
+                if ("includeDapr".equals(fieldName)) {
+                    deserializedTracesConfiguration.includeDapr = reader.getNullable(JsonReader::getBoolean);
+                } else if ("destinations".equals(fieldName)) {
                     List<String> destinations = reader.readArray(reader1 -> reader1.getString());
                     deserializedTracesConfiguration.destinations = destinations;
                 } else {

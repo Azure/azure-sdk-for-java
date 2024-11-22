@@ -22,7 +22,7 @@ public final class BuildersGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Failed\",\"environmentId\":\"mmdqgmihzpimc\",\"containerRegistries\":[{\"containerRegistryServer\":\"nxtminklog\",\"identityResourceId\":\"svtzarhzv\"},{\"containerRegistryServer\":\"nsqktc\",\"identityResourceId\":\"bjwzzos\"}]},\"identity\":{\"principalId\":\"ecbafe51-5827-42fa-803e-a2a601daca48\",\"tenantId\":\"2385d766-3557-4f60-ab1d-2a310e25758f\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"kzpgaj\":{\"principalId\":\"7bf2593e-4857-4036-9980-3d3e1610b95b\",\"clientId\":\"898a5c3c-9b19-4c0f-b9c2-1ace3214e886\"},\"cemqbmfuvqarwz\":{\"principalId\":\"60849fea-dfe8-444c-9689-6c84785be827\",\"clientId\":\"6de53dcc-2ec1-4498-b925-1f410b0ac3e0\"},\"rebluimmbwxsf\":{\"principalId\":\"0efebb13-9413-433a-8f55-506bf6ec83ef\",\"clientId\":\"e8f467ae-401d-4f07-851b-fa138c836fcf\"}}},\"location\":\"dmbvxekraok\",\"tags\":{\"twaokb\":\"ud\",\"sm\":\"vlyttaaknwfrke\"},\"id\":\"p\",\"name\":\"ujd\",\"type\":\"gatolekscbctnan\"}";
+            = "{\"properties\":{\"provisioningState\":\"Updating\",\"environmentId\":\"fkmkrokz\",\"containerRegistries\":[{\"containerRegistryServer\":\"qetwpqrtvaozn\",\"identityResourceId\":\"ni\"}]},\"identity\":{\"principalId\":\"ba6e51e4-1ee4-4d69-a120-9a42ea39d20a\",\"tenantId\":\"8d6d8289-77c8-4de7-a16a-e474749730b2\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"eituugedhfpjs\":{\"principalId\":\"4d427c5b-8daa-4f9a-8d35-9f6281dd12b9\",\"clientId\":\"180ae505-e3b6-4262-a17f-ed8d26ef472e\"},\"mbl\":{\"principalId\":\"939cb210-b1d7-4bb0-a3d2-aeff21f61c14\",\"clientId\":\"7bc239a6-8301-4ce6-83fe-6c20a25c91e5\"},\"deolctaebfs\":{\"principalId\":\"6e994a96-436b-4e8f-9b1b-6e92e3358bce\",\"clientId\":\"a6fe1d89-d8e6-4bc8-9af1-a803ee589397\"},\"edjc\":{\"principalId\":\"6a9bb5ea-c9d8-4143-92dc-6c0177bb2466\",\"clientId\":\"80878c0f-d388-4d56-a8ff-f71cb5db3025\"}}},\"location\":\"tb\",\"tags\":{\"vsgeafgf\":\"igdx\",\"kkwa\":\"sehxlzsxezp\"},\"id\":\"es\",\"name\":\"yfjlpzeqto\",\"type\":\"rpl\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,14 +32,14 @@ public final class BuildersGetByResourceGroupWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         BuilderResource response = manager.builders()
-            .getByResourceGroupWithResponse("rlhgenuze", "gvkvebaqszll", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("wp", "gmfalkzazmgoked", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("dmbvxekraok", response.location());
-        Assertions.assertEquals("ud", response.tags().get("twaokb"));
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, response.identity().type());
-        Assertions.assertEquals("mmdqgmihzpimc", response.environmentId());
-        Assertions.assertEquals("nxtminklog", response.containerRegistries().get(0).containerRegistryServer());
-        Assertions.assertEquals("svtzarhzv", response.containerRegistries().get(0).identityResourceId());
+        Assertions.assertEquals("tb", response.location());
+        Assertions.assertEquals("igdx", response.tags().get("vsgeafgf"));
+        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, response.identity().type());
+        Assertions.assertEquals("fkmkrokz", response.environmentId());
+        Assertions.assertEquals("qetwpqrtvaozn", response.containerRegistries().get(0).containerRegistryServer());
+        Assertions.assertEquals("ni", response.containerRegistries().get(0).identityResourceId());
     }
 }

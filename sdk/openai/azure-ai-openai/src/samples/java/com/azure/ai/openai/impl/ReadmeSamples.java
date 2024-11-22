@@ -3,20 +3,27 @@
 
 package com.azure.ai.openai.impl;
 
+import com.azure.ai.openai.MyFunctionCallArguments;
 import com.azure.ai.openai.OpenAIAsyncClient;
 import com.azure.ai.openai.OpenAIClient;
 import com.azure.ai.openai.OpenAIClientBuilder;
-import com.azure.ai.openai.MyFunctionCallArguments;
+import com.azure.ai.openai.implementation.Parameters;
+import com.azure.ai.openai.models.AddUploadPartRequest;
 import com.azure.ai.openai.models.AudioTranscription;
 import com.azure.ai.openai.models.AudioTranscriptionFormat;
 import com.azure.ai.openai.models.AudioTranscriptionOptions;
 import com.azure.ai.openai.models.AudioTranslation;
 import com.azure.ai.openai.models.AudioTranslationFormat;
 import com.azure.ai.openai.models.AudioTranslationOptions;
+import com.azure.ai.openai.models.Batch;
+import com.azure.ai.openai.models.BatchCreateRequest;
 import com.azure.ai.openai.models.ChatChoice;
 import com.azure.ai.openai.models.ChatCompletions;
 import com.azure.ai.openai.models.ChatCompletionsFunctionToolCall;
 import com.azure.ai.openai.models.ChatCompletionsFunctionToolDefinition;
+import com.azure.ai.openai.models.ChatCompletionsFunctionToolDefinitionFunction;
+import com.azure.ai.openai.models.ChatCompletionsJsonSchemaResponseFormat;
+import com.azure.ai.openai.models.ChatCompletionsJsonSchemaResponseFormatJsonSchema;
 import com.azure.ai.openai.models.ChatCompletionsOptions;
 import com.azure.ai.openai.models.ChatCompletionsToolDefinition;
 import com.azure.ai.openai.models.ChatMessageImageContentItem;
@@ -29,18 +36,28 @@ import com.azure.ai.openai.models.ChatRequestToolMessage;
 import com.azure.ai.openai.models.ChatRequestUserMessage;
 import com.azure.ai.openai.models.ChatResponseMessage;
 import com.azure.ai.openai.models.Choice;
+import com.azure.ai.openai.models.CompleteUploadRequest;
 import com.azure.ai.openai.models.Completions;
 import com.azure.ai.openai.models.CompletionsFinishReason;
 import com.azure.ai.openai.models.CompletionsOptions;
+import com.azure.ai.openai.models.CreateUploadRequest;
+import com.azure.ai.openai.models.CreateUploadRequestPurpose;
+import com.azure.ai.openai.models.DataFileDetails;
 import com.azure.ai.openai.models.EmbeddingItem;
 import com.azure.ai.openai.models.Embeddings;
 import com.azure.ai.openai.models.EmbeddingsOptions;
-import com.azure.ai.openai.models.FunctionDefinition;
+import com.azure.ai.openai.models.FileDeletionStatus;
+import com.azure.ai.openai.models.FileDetails;
+import com.azure.ai.openai.models.FilePurpose;
 import com.azure.ai.openai.models.ImageGenerationData;
 import com.azure.ai.openai.models.ImageGenerationOptions;
 import com.azure.ai.openai.models.ImageGenerations;
+import com.azure.ai.openai.models.OpenAIFile;
+import com.azure.ai.openai.models.PageableList;
 import com.azure.ai.openai.models.SpeechGenerationOptions;
 import com.azure.ai.openai.models.SpeechVoice;
+import com.azure.ai.openai.models.Upload;
+import com.azure.ai.openai.models.UploadPart;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.KeyCredential;
 import com.azure.core.credential.TokenCredential;
@@ -108,14 +125,14 @@ public final class ReadmeSamples {
         // END: readme-sample-createNonAzureOpenAIAsyncClientApiKey
     }
 
-    public void createOpenAIClientWithAAD() {
-        // BEGIN: readme-sample-createOpenAIClientWithAAD
+    public void createOpenAIClientWithEntraID() {
+        // BEGIN: readme-sample-createOpenAIClientWithEntraID
         TokenCredential defaultCredential = new DefaultAzureCredentialBuilder().build();
         OpenAIClient client = new OpenAIClientBuilder()
             .credential(defaultCredential)
             .endpoint("{endpoint}")
             .buildClient();
-        // END: readme-sample-createOpenAIClientWithAAD
+        // END: readme-sample-createOpenAIClientWithEntraID
     }
 
     public void createOpenAIClientWithProxyOption() {
@@ -159,10 +176,6 @@ public final class ReadmeSamples {
 
         completionsStream
             .stream()
-            // Remove .skip(1) when using Non-Azure OpenAI API
-            // Note: the first chat completions can be ignored when using Azure OpenAI service which is a known service bug.
-            // TODO: remove .skip(1) when service fix the issue.
-            .skip(1)
             .forEach(completions -> System.out.print(completions.getChoices().get(0).getText()));
         // END: readme-sample-getCompletionsStream
     }
@@ -297,7 +310,7 @@ public final class ReadmeSamples {
                 new ChatRequestUserMessage("What sort of clothing should I wear today in Berlin?")
         );
         ChatCompletionsToolDefinition toolDefinition = new ChatCompletionsFunctionToolDefinition(
-                new FunctionDefinition("MyFunctionName"));
+                new ChatCompletionsFunctionToolDefinitionFunction("MyFunctionName"));
 
         ChatCompletionsOptions chatCompletionsOptions = new ChatCompletionsOptions(chatMessages);
         chatCompletionsOptions.setTools(Arrays.asList(toolDefinition));
@@ -355,6 +368,77 @@ public final class ReadmeSamples {
         // END: readme-sample-textToSpeech
     }
 
+    public void fileOperations() {
+        // BEGIN: readme-sample-fileOperations
+        // Upload a file
+        FileDetails fileDetails = new FileDetails(
+            BinaryData.fromFile(Paths.get("{your-local-file-path}/batch_tasks.jsonl")),
+            "batch_tasks.jsonl");
+        OpenAIFile file = client.uploadFile(fileDetails, FilePurpose.BATCH);
+        String fileId = file.getId();
+        // Get single file
+        OpenAIFile fileFromBackend = client.getFile(fileId);
+        // List files
+        List<OpenAIFile> files = client.listFiles(FilePurpose.ASSISTANTS);
+        // Delete file
+        FileDeletionStatus deletionStatus = client.deleteFile(fileId);
+        // END: readme-sample-fileOperations
+    }
+
+    public void batchOperations() {
+        // BEGIN: readme-sample-batchOperations
+        String fileId = "{fileId-from-service-side}";
+        // Create a batch
+        Batch batch = client.createBatch(new BatchCreateRequest("/chat/completions", fileId, "24h"));
+        // Get single file
+        byte[] fileContent = client.getFileContent(batch.getOutputFileId());
+        // List batches
+        PageableList<Batch> batchPageableList = client.listBatches();
+        // Cancel a batch
+        Batch cancelledBatch = client.cancelBatch(batch.getId());
+        // END: readme-sample-batchOperations
+    }
+
+    public void structuredOutputs() {
+        // BEGIN: readme-sample-structuredOutputsResponseFormat
+        ChatCompletionsOptions chatCompletionsOptions = new ChatCompletionsOptions(Arrays.asList(new ChatRequestUserMessage("What is the weather in Seattle?")))
+            // Previously, the response_format parameter was only available to specify that the model should return a valid JSON.
+            // In addition to this, we are introducing a new way of specifying which JSON schema to follow.
+            .setResponseFormat(new ChatCompletionsJsonSchemaResponseFormat(
+                new ChatCompletionsJsonSchemaResponseFormatJsonSchema("get_weather")
+                    .setStrict(true)
+                    .setDescription("Fetches the weather in the given location")
+                    .setSchema(BinaryData.fromObject(new Parameters()))));
+        // END: readme-sample-structuredOutputsResponseFormat
+    }
+
+    public void uploadLargeFilesMultipleParts() {
+        int totalFilesSize = 0;
+        Path path = null;
+        Path path2 = null;
+
+        // BEGIN: readme-sample-uploadsLargeFilesMultipleParts
+        CreateUploadRequest createUploadRequest = new CreateUploadRequest("{fileNameToCreate}", CreateUploadRequestPurpose.ASSISTANTS,
+            totalFilesSize, "text/plain");
+        Upload upload = client.createUpload(createUploadRequest);
+        String uploadId = upload.getId();
+
+        UploadPart uploadPartAdded = client.addUploadPart(uploadId,
+            new AddUploadPartRequest(new DataFileDetails(BinaryData.fromFile(path)).setFilename("{fileName}")));
+        String uploadPartAddedId = uploadPartAdded.getId();
+        System.out.println("Upload part added, upload part ID = " + uploadPartAddedId);
+
+        UploadPart uploadPartAdded2 = client.addUploadPart(uploadId,
+            new AddUploadPartRequest(new DataFileDetails(BinaryData.fromFile(path2)).setFilename("{fileName2}")));
+        String uploadPartAddedId2 = uploadPartAdded2.getId();
+        System.out.println("Upload part 2 added, upload part ID = " + uploadPartAddedId2);
+
+        CompleteUploadRequest completeUploadRequest = new CompleteUploadRequest(Arrays.asList(uploadPartAddedId, uploadPartAddedId2));
+        Upload completeUpload = client.completeUpload(uploadId, completeUploadRequest);
+        System.out.println("Upload completed, upload ID = " + completeUpload.getId());
+        // END: readme-sample-uploadsLargeFilesMultipleParts
+    }
+
     public void enableHttpLogging() {
         // BEGIN: readme-sample-enablehttplogging
         OpenAIClient openAIClient = new OpenAIClientBuilder()
@@ -364,7 +448,7 @@ public final class ReadmeSamples {
                 .buildClient();
         // or
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
-        OpenAIClient configurationClientAad = new OpenAIClientBuilder()
+        OpenAIClient configurationClientEntraID = new OpenAIClientBuilder()
                 .credential(credential)
                 .endpoint("{endpoint}")
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))

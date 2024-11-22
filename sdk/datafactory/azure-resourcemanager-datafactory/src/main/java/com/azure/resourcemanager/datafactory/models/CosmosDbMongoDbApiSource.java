@@ -5,40 +5,32 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * A copy activity source for a CosmosDB (MongoDB API) database.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "type",
-    defaultImpl = CosmosDbMongoDbApiSource.class,
-    visible = true)
-@JsonTypeName("CosmosDbMongoDbApiSource")
 @Fluent
 public final class CosmosDbMongoDbApiSource extends CopySource {
     /*
      * Copy source type.
      */
-    @JsonTypeId
-    @JsonProperty(value = "type", required = true)
     private String type = "CosmosDbMongoDbApiSource";
 
     /*
      * Specifies selection filter using query operators. To return all documents in a collection, omit this parameter or
      * pass an empty document ({}). Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "filter")
     private Object filter;
 
     /*
      * Cursor methods for Mongodb query.
      */
-    @JsonProperty(value = "cursorMethods")
     private MongoDbCursorMethodsProperties cursorMethods;
 
     /*
@@ -46,21 +38,18 @@ public final class CosmosDbMongoDbApiSource extends CopySource {
      * modifying the batch size will not affect the user or the application. This property's main purpose is to avoid
      * hit the limitation of response size. Type: integer (or Expression with resultType integer).
      */
-    @JsonProperty(value = "batchSize")
     private Object batchSize;
 
     /*
      * Query timeout. Type: string (or Expression with resultType string), pattern:
      * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      */
-    @JsonProperty(value = "queryTimeout")
     private Object queryTimeout;
 
     /*
      * Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or
      * Expression with resultType array of objects).
      */
-    @JsonProperty(value = "additionalColumns")
     private Object additionalColumns;
 
     /**
@@ -240,5 +229,80 @@ public final class CosmosDbMongoDbApiSource extends CopySource {
         if (cursorMethods() != null) {
             cursorMethods().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("sourceRetryCount", sourceRetryCount());
+        jsonWriter.writeUntypedField("sourceRetryWait", sourceRetryWait());
+        jsonWriter.writeUntypedField("maxConcurrentConnections", maxConcurrentConnections());
+        jsonWriter.writeUntypedField("disableMetricsCollection", disableMetricsCollection());
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeUntypedField("filter", this.filter);
+        jsonWriter.writeJsonField("cursorMethods", this.cursorMethods);
+        jsonWriter.writeUntypedField("batchSize", this.batchSize);
+        jsonWriter.writeUntypedField("queryTimeout", this.queryTimeout);
+        jsonWriter.writeUntypedField("additionalColumns", this.additionalColumns);
+        if (additionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CosmosDbMongoDbApiSource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CosmosDbMongoDbApiSource if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CosmosDbMongoDbApiSource.
+     */
+    public static CosmosDbMongoDbApiSource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CosmosDbMongoDbApiSource deserializedCosmosDbMongoDbApiSource = new CosmosDbMongoDbApiSource();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sourceRetryCount".equals(fieldName)) {
+                    deserializedCosmosDbMongoDbApiSource.withSourceRetryCount(reader.readUntyped());
+                } else if ("sourceRetryWait".equals(fieldName)) {
+                    deserializedCosmosDbMongoDbApiSource.withSourceRetryWait(reader.readUntyped());
+                } else if ("maxConcurrentConnections".equals(fieldName)) {
+                    deserializedCosmosDbMongoDbApiSource.withMaxConcurrentConnections(reader.readUntyped());
+                } else if ("disableMetricsCollection".equals(fieldName)) {
+                    deserializedCosmosDbMongoDbApiSource.withDisableMetricsCollection(reader.readUntyped());
+                } else if ("type".equals(fieldName)) {
+                    deserializedCosmosDbMongoDbApiSource.type = reader.getString();
+                } else if ("filter".equals(fieldName)) {
+                    deserializedCosmosDbMongoDbApiSource.filter = reader.readUntyped();
+                } else if ("cursorMethods".equals(fieldName)) {
+                    deserializedCosmosDbMongoDbApiSource.cursorMethods
+                        = MongoDbCursorMethodsProperties.fromJson(reader);
+                } else if ("batchSize".equals(fieldName)) {
+                    deserializedCosmosDbMongoDbApiSource.batchSize = reader.readUntyped();
+                } else if ("queryTimeout".equals(fieldName)) {
+                    deserializedCosmosDbMongoDbApiSource.queryTimeout = reader.readUntyped();
+                } else if ("additionalColumns".equals(fieldName)) {
+                    deserializedCosmosDbMongoDbApiSource.additionalColumns = reader.readUntyped();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedCosmosDbMongoDbApiSource.withAdditionalProperties(additionalProperties);
+
+            return deserializedCosmosDbMongoDbApiSource;
+        });
     }
 }

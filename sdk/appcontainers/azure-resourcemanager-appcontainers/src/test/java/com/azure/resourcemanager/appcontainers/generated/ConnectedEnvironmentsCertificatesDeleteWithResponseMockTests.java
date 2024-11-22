@@ -28,7 +28,7 @@ public final class ConnectedEnvironmentsCertificatesDeleteWithResponseMockTests 
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.connectedEnvironmentsCertificates()
-            .deleteWithResponse("ue", "ijyzcqypzqzufgsy", "ej", com.azure.core.util.Context.NONE);
+            .deleteWithResponse("ftksd", "gdnk", "fgmwd", com.azure.core.util.Context.NONE);
 
     }
 }

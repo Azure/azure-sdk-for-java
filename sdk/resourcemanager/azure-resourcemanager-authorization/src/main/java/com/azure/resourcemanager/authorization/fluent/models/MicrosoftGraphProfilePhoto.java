@@ -5,40 +5,42 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** profilePhoto. */
+/**
+ * profilePhoto.
+ */
 @Fluent
 public final class MicrosoftGraphProfilePhoto extends MicrosoftGraphEntity {
     /*
      * The height of the photo. Read-only.
      */
-    @JsonProperty(value = "height")
     private Integer height;
 
     /*
      * The width of the photo. Read-only.
      */
-    @JsonProperty(value = "width")
     private Integer width;
 
     /*
      * profilePhoto
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphProfilePhoto class. */
+    /**
+     * Creates an instance of MicrosoftGraphProfilePhoto class.
+     */
     public MicrosoftGraphProfilePhoto() {
     }
 
     /**
      * Get the height property: The height of the photo. Read-only.
-     *
+     * 
      * @return the height value.
      */
     public Integer height() {
@@ -47,7 +49,7 @@ public final class MicrosoftGraphProfilePhoto extends MicrosoftGraphEntity {
 
     /**
      * Set the height property: The height of the photo. Read-only.
-     *
+     * 
      * @param height the height value to set.
      * @return the MicrosoftGraphProfilePhoto object itself.
      */
@@ -58,7 +60,7 @@ public final class MicrosoftGraphProfilePhoto extends MicrosoftGraphEntity {
 
     /**
      * Get the width property: The width of the photo. Read-only.
-     *
+     * 
      * @return the width value.
      */
     public Integer width() {
@@ -67,7 +69,7 @@ public final class MicrosoftGraphProfilePhoto extends MicrosoftGraphEntity {
 
     /**
      * Set the width property: The width of the photo. Read-only.
-     *
+     * 
      * @param width the width value to set.
      * @return the MicrosoftGraphProfilePhoto object itself.
      */
@@ -78,17 +80,16 @@ public final class MicrosoftGraphProfilePhoto extends MicrosoftGraphEntity {
 
     /**
      * Get the additionalProperties property: profilePhoto.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: profilePhoto.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphProfilePhoto object itself.
      */
@@ -97,15 +98,9 @@ public final class MicrosoftGraphProfilePhoto extends MicrosoftGraphEntity {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphProfilePhoto withId(String id) {
         super.withId(id);
@@ -114,11 +109,64 @@ public final class MicrosoftGraphProfilePhoto extends MicrosoftGraphEntity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeNumberField("height", this.height);
+        jsonWriter.writeNumberField("width", this.width);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphProfilePhoto from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphProfilePhoto if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphProfilePhoto.
+     */
+    public static MicrosoftGraphProfilePhoto fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphProfilePhoto deserializedMicrosoftGraphProfilePhoto = new MicrosoftGraphProfilePhoto();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphProfilePhoto.withId(reader.getString());
+                } else if ("height".equals(fieldName)) {
+                    deserializedMicrosoftGraphProfilePhoto.height = reader.getNullable(JsonReader::getInt);
+                } else if ("width".equals(fieldName)) {
+                    deserializedMicrosoftGraphProfilePhoto.width = reader.getNullable(JsonReader::getInt);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphProfilePhoto.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphProfilePhoto;
+        });
     }
 }

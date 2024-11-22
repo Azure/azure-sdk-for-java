@@ -5,25 +5,28 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appplatform.fluent.models.ContainerRegistryResourceInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Collection compose of container registry resources list and a possible link for next page.
  */
 @Fluent
-public final class ContainerRegistryResourceCollection {
+public final class ContainerRegistryResourceCollection
+    implements JsonSerializable<ContainerRegistryResourceCollection> {
     /*
      * The container registry resources list.
      */
-    @JsonProperty(value = "value")
     private List<ContainerRegistryResourceInner> value;
 
     /*
      * The link to next page of storage list.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
@@ -81,5 +84,47 @@ public final class ContainerRegistryResourceCollection {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ContainerRegistryResourceCollection from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ContainerRegistryResourceCollection if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ContainerRegistryResourceCollection.
+     */
+    public static ContainerRegistryResourceCollection fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ContainerRegistryResourceCollection deserializedContainerRegistryResourceCollection
+                = new ContainerRegistryResourceCollection();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<ContainerRegistryResourceInner> value
+                        = reader.readArray(reader1 -> ContainerRegistryResourceInner.fromJson(reader1));
+                    deserializedContainerRegistryResourceCollection.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedContainerRegistryResourceCollection.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedContainerRegistryResourceCollection;
+        });
     }
 }

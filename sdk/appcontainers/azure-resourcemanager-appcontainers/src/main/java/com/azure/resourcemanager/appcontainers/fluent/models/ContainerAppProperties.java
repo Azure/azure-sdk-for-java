@@ -27,6 +27,11 @@ public final class ContainerAppProperties implements JsonSerializable<ContainerA
     private ContainerAppProvisioningState provisioningState;
 
     /*
+     * Any errors that occurred during deployment
+     */
+    private String deploymentErrors;
+
+    /*
      * Deprecated. Resource ID of the Container App's environment.
      */
     private String managedEnvironmentId;
@@ -99,6 +104,15 @@ public final class ContainerAppProperties implements JsonSerializable<ContainerA
      */
     public ContainerAppProvisioningState provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Get the deploymentErrors property: Any errors that occurred during deployment.
+     * 
+     * @return the deploymentErrors value.
+     */
+    public String deploymentErrors() {
+        return this.deploymentErrors;
     }
 
     /**
@@ -326,6 +340,8 @@ public final class ContainerAppProperties implements JsonSerializable<ContainerA
                 if ("provisioningState".equals(fieldName)) {
                     deserializedContainerAppProperties.provisioningState
                         = ContainerAppProvisioningState.fromString(reader.getString());
+                } else if ("deploymentErrors".equals(fieldName)) {
+                    deserializedContainerAppProperties.deploymentErrors = reader.getString();
                 } else if ("managedEnvironmentId".equals(fieldName)) {
                     deserializedContainerAppProperties.managedEnvironmentId = reader.getString();
                 } else if ("environmentId".equals(fieldName)) {

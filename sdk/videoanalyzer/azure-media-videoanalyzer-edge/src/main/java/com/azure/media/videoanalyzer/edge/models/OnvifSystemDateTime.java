@@ -5,33 +5,41 @@
 package com.azure.media.videoanalyzer.edge.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The ONVIF device DNS properties. */
+/**
+ * The ONVIF device DNS properties.
+ */
 @Fluent
-public final class OnvifSystemDateTime {
+public final class OnvifSystemDateTime implements JsonSerializable<OnvifSystemDateTime> {
     /*
-     * An enum value determining whether the date time was configured using NTP
-     * or manual.
+     * An enum value determining whether the date time was configured using NTP or manual.
      */
-    @JsonProperty(value = "type")
     private OnvifSystemDateTimeType type;
 
     /*
      * The device datetime returned when calling the request.
      */
-    @JsonProperty(value = "time")
     private String time;
 
     /*
      * The timezone of the ONVIF device datetime.
      */
-    @JsonProperty(value = "timeZone")
     private String timeZone;
 
     /**
+     * Creates an instance of OnvifSystemDateTime class.
+     */
+    public OnvifSystemDateTime() {
+    }
+
+    /**
      * Get the type property: An enum value determining whether the date time was configured using NTP or manual.
-     *
+     * 
      * @return the type value.
      */
     public OnvifSystemDateTimeType getType() {
@@ -40,7 +48,7 @@ public final class OnvifSystemDateTime {
 
     /**
      * Set the type property: An enum value determining whether the date time was configured using NTP or manual.
-     *
+     * 
      * @param type the type value to set.
      * @return the OnvifSystemDateTime object itself.
      */
@@ -51,7 +59,7 @@ public final class OnvifSystemDateTime {
 
     /**
      * Get the time property: The device datetime returned when calling the request.
-     *
+     * 
      * @return the time value.
      */
     public String getTime() {
@@ -60,7 +68,7 @@ public final class OnvifSystemDateTime {
 
     /**
      * Set the time property: The device datetime returned when calling the request.
-     *
+     * 
      * @param time the time value to set.
      * @return the OnvifSystemDateTime object itself.
      */
@@ -71,7 +79,7 @@ public final class OnvifSystemDateTime {
 
     /**
      * Get the timeZone property: The timezone of the ONVIF device datetime.
-     *
+     * 
      * @return the timeZone value.
      */
     public String getTimeZone() {
@@ -80,12 +88,54 @@ public final class OnvifSystemDateTime {
 
     /**
      * Set the timeZone property: The timezone of the ONVIF device datetime.
-     *
+     * 
      * @param timeZone the timeZone value to set.
      * @return the OnvifSystemDateTime object itself.
      */
     public OnvifSystemDateTime setTimeZone(String timeZone) {
         this.timeZone = timeZone;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("time", this.time);
+        jsonWriter.writeStringField("timeZone", this.timeZone);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OnvifSystemDateTime from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OnvifSystemDateTime if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OnvifSystemDateTime.
+     */
+    public static OnvifSystemDateTime fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OnvifSystemDateTime deserializedOnvifSystemDateTime = new OnvifSystemDateTime();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedOnvifSystemDateTime.type = OnvifSystemDateTimeType.fromString(reader.getString());
+                } else if ("time".equals(fieldName)) {
+                    deserializedOnvifSystemDateTime.time = reader.getString();
+                } else if ("timeZone".equals(fieldName)) {
+                    deserializedOnvifSystemDateTime.timeZone = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOnvifSystemDateTime;
+        });
     }
 }

@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The definition of a computed property.
  */
 @Fluent
-public final class ComputedProperty {
+public final class ComputedProperty implements JsonSerializable<ComputedProperty> {
     /*
      * The name of a computed property, for example - "cp_lowerName"
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The query that evaluates the value for computed property, for example - "SELECT VALUE LOWER(c.name) FROM c"
      */
-    @JsonProperty(value = "query")
     private String query;
 
     /**
@@ -78,5 +80,44 @@ public final class ComputedProperty {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("query", this.query);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ComputedProperty from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ComputedProperty if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ComputedProperty.
+     */
+    public static ComputedProperty fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ComputedProperty deserializedComputedProperty = new ComputedProperty();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedComputedProperty.name = reader.getString();
+                } else if ("query".equals(fieldName)) {
+                    deserializedComputedProperty.query = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedComputedProperty;
+        });
     }
 }

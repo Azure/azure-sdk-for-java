@@ -5,7 +5,13 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
@@ -13,10 +19,25 @@ import java.util.List;
  */
 @Fluent
 public final class GalleryImageVersionPublishingProfile extends GalleryArtifactPublishingProfileBase {
+    /*
+     * The timestamp for when the gallery image version is published.
+     */
+    private OffsetDateTime publishedDate;
+
     /**
      * Creates an instance of GalleryImageVersionPublishingProfile class.
      */
     public GalleryImageVersionPublishingProfile() {
+    }
+
+    /**
+     * Get the publishedDate property: The timestamp for when the gallery image version is published.
+     * 
+     * @return the publishedDate value.
+     */
+    @Override
+    public OffsetDateTime publishedDate() {
+        return this.publishedDate;
     }
 
     /**
@@ -91,5 +112,75 @@ public final class GalleryImageVersionPublishingProfile extends GalleryArtifactP
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("targetRegions", targetRegions(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeNumberField("replicaCount", replicaCount());
+        jsonWriter.writeBooleanField("excludeFromLatest", excludeFromLatest());
+        jsonWriter.writeStringField("endOfLifeDate",
+            endOfLifeDate() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(endOfLifeDate()));
+        jsonWriter.writeStringField("storageAccountType",
+            storageAccountType() == null ? null : storageAccountType().toString());
+        jsonWriter.writeStringField("replicationMode", replicationMode() == null ? null : replicationMode().toString());
+        jsonWriter.writeArrayField("targetExtendedLocations", targetExtendedLocations(),
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GalleryImageVersionPublishingProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GalleryImageVersionPublishingProfile if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the GalleryImageVersionPublishingProfile.
+     */
+    public static GalleryImageVersionPublishingProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GalleryImageVersionPublishingProfile deserializedGalleryImageVersionPublishingProfile
+                = new GalleryImageVersionPublishingProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("targetRegions".equals(fieldName)) {
+                    List<TargetRegion> targetRegions = reader.readArray(reader1 -> TargetRegion.fromJson(reader1));
+                    deserializedGalleryImageVersionPublishingProfile.withTargetRegions(targetRegions);
+                } else if ("replicaCount".equals(fieldName)) {
+                    deserializedGalleryImageVersionPublishingProfile
+                        .withReplicaCount(reader.getNullable(JsonReader::getInt));
+                } else if ("excludeFromLatest".equals(fieldName)) {
+                    deserializedGalleryImageVersionPublishingProfile
+                        .withExcludeFromLatest(reader.getNullable(JsonReader::getBoolean));
+                } else if ("publishedDate".equals(fieldName)) {
+                    deserializedGalleryImageVersionPublishingProfile.publishedDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("endOfLifeDate".equals(fieldName)) {
+                    deserializedGalleryImageVersionPublishingProfile.withEndOfLifeDate(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("storageAccountType".equals(fieldName)) {
+                    deserializedGalleryImageVersionPublishingProfile
+                        .withStorageAccountType(StorageAccountType.fromString(reader.getString()));
+                } else if ("replicationMode".equals(fieldName)) {
+                    deserializedGalleryImageVersionPublishingProfile
+                        .withReplicationMode(ReplicationMode.fromString(reader.getString()));
+                } else if ("targetExtendedLocations".equals(fieldName)) {
+                    List<GalleryTargetExtendedLocation> targetExtendedLocations
+                        = reader.readArray(reader1 -> GalleryTargetExtendedLocation.fromJson(reader1));
+                    deserializedGalleryImageVersionPublishingProfile
+                        .withTargetExtendedLocations(targetExtendedLocations);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGalleryImageVersionPublishingProfile;
+        });
     }
 }

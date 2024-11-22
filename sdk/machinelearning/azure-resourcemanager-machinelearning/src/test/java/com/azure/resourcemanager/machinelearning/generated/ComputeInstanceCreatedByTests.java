@@ -10,11 +10,9 @@ import com.azure.resourcemanager.machinelearning.models.ComputeInstanceCreatedBy
 public final class ComputeInstanceCreatedByTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ComputeInstanceCreatedBy model =
-            BinaryData
-                .fromString(
-                    "{\"userName\":\"vtrrmhwrbfdpyflu\",\"userOrgId\":\"vjglrocuyzlwhhme\",\"userId\":\"ooclutnp\"}")
-                .toObject(ComputeInstanceCreatedBy.class);
+        ComputeInstanceCreatedBy model = BinaryData
+            .fromString("{\"userName\":\"jjmztnlmsoodtmv\",\"userOrgId\":\"dhdyswcrptveaj\",\"userId\":\"xvl\"}")
+            .toObject(ComputeInstanceCreatedBy.class);
     }
 
     @org.junit.jupiter.api.Test

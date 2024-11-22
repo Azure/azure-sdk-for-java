@@ -126,8 +126,8 @@ public final class BlobDownloadHeaders {
      * @param objectReplicationSourcePolicies the objectReplicationSourcePolicies value to set.
      * @return the BlobDownloadHeaders object itself.
      */
-    public BlobDownloadHeaders setObjectReplicationSourcePolicies(
-        List<ObjectReplicationPolicy> objectReplicationSourcePolicies) {
+    public BlobDownloadHeaders
+        setObjectReplicationSourcePolicies(List<ObjectReplicationPolicy> objectReplicationSourcePolicies) {
         Map<String, String> xMsOr = new HashMap<>();
 
         if (!CoreUtils.isNullOrEmpty(objectReplicationSourcePolicies)) {

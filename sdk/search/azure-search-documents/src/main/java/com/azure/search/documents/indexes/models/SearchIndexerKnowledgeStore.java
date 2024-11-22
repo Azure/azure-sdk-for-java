@@ -6,7 +6,7 @@
 
 package com.azure.search.documents.indexes.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -18,7 +18,7 @@ import java.util.List;
 /**
  * Definition of additional projections to azure blob, table, or files, of enriched data.
  */
-@Immutable
+@Fluent
 public final class SearchIndexerKnowledgeStore implements JsonSerializable<SearchIndexerKnowledgeStore> {
     /*
      * The connection string to the storage account projections will be stored in.
@@ -29,6 +29,20 @@ public final class SearchIndexerKnowledgeStore implements JsonSerializable<Searc
      * A list of additional projections to perform during indexing.
      */
     private final List<SearchIndexerKnowledgeStoreProjection> projections;
+
+    /*
+     * The user-assigned managed identity used for connections to Azure Storage when writing knowledge store
+     * projections. If the connection string indicates an identity (ResourceId) and it's not specified, the
+     * system-assigned managed identity is used. On updates to the indexer, if the identity is unspecified, the value
+     * remains unchanged. If set to "none", the value of this property is cleared.
+     */
+    private SearchIndexerDataIdentity identity;
+
+    /*
+     * A dictionary of knowledge store-specific configuration properties. Each name is the name of a specific property.
+     * Each value must be of a primitive type.
+     */
+    private SearchIndexerKnowledgeStoreParameters parameters;
 
     /**
      * Creates an instance of SearchIndexerKnowledgeStore class.
@@ -62,6 +76,54 @@ public final class SearchIndexerKnowledgeStore implements JsonSerializable<Searc
     }
 
     /**
+     * Get the identity property: The user-assigned managed identity used for connections to Azure Storage when writing
+     * knowledge store projections. If the connection string indicates an identity (ResourceId) and it's not specified,
+     * the system-assigned managed identity is used. On updates to the indexer, if the identity is unspecified, the
+     * value remains unchanged. If set to "none", the value of this property is cleared.
+     * 
+     * @return the identity value.
+     */
+    public SearchIndexerDataIdentity getIdentity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: The user-assigned managed identity used for connections to Azure Storage when writing
+     * knowledge store projections. If the connection string indicates an identity (ResourceId) and it's not specified,
+     * the system-assigned managed identity is used. On updates to the indexer, if the identity is unspecified, the
+     * value remains unchanged. If set to "none", the value of this property is cleared.
+     * 
+     * @param identity the identity value to set.
+     * @return the SearchIndexerKnowledgeStore object itself.
+     */
+    public SearchIndexerKnowledgeStore setIdentity(SearchIndexerDataIdentity identity) {
+        this.identity = identity;
+        return this;
+    }
+
+    /**
+     * Get the parameters property: A dictionary of knowledge store-specific configuration properties. Each name is the
+     * name of a specific property. Each value must be of a primitive type.
+     * 
+     * @return the parameters value.
+     */
+    public SearchIndexerKnowledgeStoreParameters getParameters() {
+        return this.parameters;
+    }
+
+    /**
+     * Set the parameters property: A dictionary of knowledge store-specific configuration properties. Each name is the
+     * name of a specific property. Each value must be of a primitive type.
+     * 
+     * @param parameters the parameters value to set.
+     * @return the SearchIndexerKnowledgeStore object itself.
+     */
+    public SearchIndexerKnowledgeStore setParameters(SearchIndexerKnowledgeStoreParameters parameters) {
+        this.parameters = parameters;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -69,6 +131,8 @@ public final class SearchIndexerKnowledgeStore implements JsonSerializable<Searc
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("storageConnectionString", this.storageConnectionString);
         jsonWriter.writeArrayField("projections", this.projections, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("identity", this.identity);
+        jsonWriter.writeJsonField("parameters", this.parameters);
         return jsonWriter.writeEndObject();
     }
 
@@ -87,6 +151,8 @@ public final class SearchIndexerKnowledgeStore implements JsonSerializable<Searc
             String storageConnectionString = null;
             boolean projectionsFound = false;
             List<SearchIndexerKnowledgeStoreProjection> projections = null;
+            SearchIndexerDataIdentity identity = null;
+            SearchIndexerKnowledgeStoreParameters parameters = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -97,12 +163,21 @@ public final class SearchIndexerKnowledgeStore implements JsonSerializable<Searc
                 } else if ("projections".equals(fieldName)) {
                     projections = reader.readArray(reader1 -> SearchIndexerKnowledgeStoreProjection.fromJson(reader1));
                     projectionsFound = true;
+                } else if ("identity".equals(fieldName)) {
+                    identity = SearchIndexerDataIdentity.fromJson(reader);
+                } else if ("parameters".equals(fieldName)) {
+                    parameters = SearchIndexerKnowledgeStoreParameters.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
             if (storageConnectionStringFound && projectionsFound) {
-                return new SearchIndexerKnowledgeStore(storageConnectionString, projections);
+                SearchIndexerKnowledgeStore deserializedSearchIndexerKnowledgeStore
+                    = new SearchIndexerKnowledgeStore(storageConnectionString, projections);
+                deserializedSearchIndexerKnowledgeStore.identity = identity;
+                deserializedSearchIndexerKnowledgeStore.parameters = parameters;
+
+                return deserializedSearchIndexerKnowledgeStore;
             }
             List<String> missingProperties = new ArrayList<>();
             if (!storageConnectionStringFound) {

@@ -19,7 +19,7 @@ import reactor.core.publisher.Mono;
 public final class FunctionsExtensionsInvokeFunctionsHostWithResponseMockTests {
     @Test
     public void testInvokeFunctionsHostWithResponse() throws Exception {
-        String responseStr = "\"rehkunsbfjhh\"";
+        String responseStr = "\"rptvcshtkutzcttb\"";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -29,10 +29,10 @@ public final class FunctionsExtensionsInvokeFunctionsHostWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         String response = manager.functionsExtensions()
-            .invokeFunctionsHostWithResponse("ywzcqyggmnw", "vhbn", "qiwy", "jtobdrrp",
+            .invokeFunctionsHostWithResponse("uqbhpowcnxtpzdly", "eidtoakatp", "ytgrhzbqfd", "fa",
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("rehkunsbfjhh", response);
+        Assertions.assertEquals("rptvcshtkutzcttb", response);
     }
 }

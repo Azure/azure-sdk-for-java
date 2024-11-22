@@ -14,17 +14,17 @@ public final class ManagedCertificatePatchTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ManagedCertificatePatch model
-            = BinaryData.fromString("{\"tags\":{\"tgroesh\":\"ugtywatmqaqkue\",\"yf\":\"ygzc\",\"faoytehqpuv\":\"x\"}}")
+            = BinaryData.fromString("{\"tags\":{\"cclfgxannn\":\"spxklu\",\"ewxigpxvk\":\"ytzpo\"}}")
                 .toObject(ManagedCertificatePatch.class);
-        Assertions.assertEquals("ugtywatmqaqkue", model.tags().get("tgroesh"));
+        Assertions.assertEquals("spxklu", model.tags().get("cclfgxannn"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ManagedCertificatePatch model = new ManagedCertificatePatch()
-            .withTags(mapOf("tgroesh", "ugtywatmqaqkue", "yf", "ygzc", "faoytehqpuv", "x"));
+        ManagedCertificatePatch model
+            = new ManagedCertificatePatch().withTags(mapOf("cclfgxannn", "spxklu", "ewxigpxvk", "ytzpo"));
         model = BinaryData.fromObject(model).toObject(ManagedCertificatePatch.class);
-        Assertions.assertEquals("ugtywatmqaqkue", model.tags().get("tgroesh"));
+        Assertions.assertEquals("spxklu", model.tags().get("cclfgxannn"));
     }
 
     // Use "Map.of" if available

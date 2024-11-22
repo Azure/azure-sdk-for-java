@@ -1,8 +1,0 @@
-extends:
-  template: /sdk/cosmos/ci.yml
-  parameters:
-    AdditionalModules:
-      - name: azure-spring-data-cosmos
-        groupId: com.azure
-    MatrixFilters:
-      - JavaTestVersion=^(?!1.8|1.11).*

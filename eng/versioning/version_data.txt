@@ -3,8 +3,7 @@
 # Note: com.azure:azure-sdk-parent is in version_client.txt
 
 com.azure:azure-data-sdk-parent;1.3.0;1.3.0
-com.microsoft.azure:azure-batch;11.1.1;11.2.0-beta.1
-com.microsoft.azure:azure-applicationinsights-query-sample;1.0.0-Preview-1;1.0.0-Preview-1
+com.microsoft.azure:azure-batch;11.2.0;11.3.0-beta.1
 com.microsoft.azure.cognitiveservices:azure-cognitiveservices-spellcheck;1.1.0-beta.1;1.1.0-beta.1
 com.microsoft.azure.cognitiveservices:azure-cognitiveservices-luis-runtime;1.1.0-beta.1;1.1.0-beta.1
 com.microsoft.azure.cognitiveservices:azure-cognitiveservices-luis-authoring;1.0.5-beta;1.0.5-beta
@@ -31,7 +30,4 @@ com.microsoft.azure:azure-keyvault-core;1.2.6;1.3.0-beta.1
 com.microsoft.azure:azure-keyvault-extensions;1.2.6;1.3.0-beta.1
 com.microsoft.azure:azure-keyvault-test;1.2.3;1.2.6
 com.microsoft.azure:azure-servicebus;3.6.7;3.7.0-beta.1
-com.microsoft.azure:azure-eventgrid;1.4.0;1.5.0-beta.1
 com.microsoft.azure:azure-media;1.0.0-beta.1;1.0.0-beta.1
-com.microsoft.azure:azure-loganalytics-sample;1.0.0-Preview-1;1.0.0-Preview-1
-com.microsoft.azure:microsoft-azure-storage-perf;1.0.0-beta.1;1.0.0-beta.1

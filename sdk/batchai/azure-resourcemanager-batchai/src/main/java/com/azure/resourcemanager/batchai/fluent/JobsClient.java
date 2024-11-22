@@ -50,8 +50,8 @@ public interface JobsClient {
      * @return a list of Jobs within the specified Experiment.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<JobInner> listByExperiment(
-        String resourceGroupName, String workspaceName, String experimentName, Integer maxResults, Context context);
+    PagedIterable<JobInner> listByExperiment(String resourceGroupName, String workspaceName, String experimentName,
+        Integer maxResults, Context context);
 
     /**
      * Creates a Job in the given Experiment.
@@ -71,11 +71,50 @@ public interface JobsClient {
      * @return information about a Job.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<JobInner>, JobInner> beginCreate(
-        String resourceGroupName,
-        String workspaceName,
-        String experimentName,
-        String jobName,
+    SyncPoller<PollResult<JobInner>, JobInner> beginCreate(String resourceGroupName, String workspaceName,
+        String experimentName, String jobName, JobCreateParameters parameters);
+
+    /**
+     * Creates a Job in the given Experiment.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param workspaceName The name of the workspace. Workspace names can only contain a combination of alphanumeric
+     *     characters along with dash (-) and underscore (_). The name must be from 1 through 64 characters long.
+     * @param experimentName The name of the experiment. Experiment names can only contain a combination of alphanumeric
+     *     characters along with dash (-) and underscore (_). The name must be from 1 through 64 characters long.
+     * @param jobName The name of the job within the specified resource group. Job names can only contain a combination
+     *     of alphanumeric characters along with dash (-) and underscore (_). The name must be from 1 through 64
+     *     characters long.
+     * @param parameters The parameters to provide for job creation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about a Job.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<JobInner>, JobInner> beginCreate(String resourceGroupName, String workspaceName,
+        String experimentName, String jobName, JobCreateParameters parameters, Context context);
+
+    /**
+     * Creates a Job in the given Experiment.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param workspaceName The name of the workspace. Workspace names can only contain a combination of alphanumeric
+     *     characters along with dash (-) and underscore (_). The name must be from 1 through 64 characters long.
+     * @param experimentName The name of the experiment. Experiment names can only contain a combination of alphanumeric
+     *     characters along with dash (-) and underscore (_). The name must be from 1 through 64 characters long.
+     * @param jobName The name of the job within the specified resource group. Job names can only contain a combination
+     *     of alphanumeric characters along with dash (-) and underscore (_). The name must be from 1 through 64
+     *     characters long.
+     * @param parameters The parameters to provide for job creation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about a Job.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    JobInner create(String resourceGroupName, String workspaceName, String experimentName, String jobName,
         JobCreateParameters parameters);
 
     /**
@@ -97,65 +136,8 @@ public interface JobsClient {
      * @return information about a Job.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<JobInner>, JobInner> beginCreate(
-        String resourceGroupName,
-        String workspaceName,
-        String experimentName,
-        String jobName,
-        JobCreateParameters parameters,
-        Context context);
-
-    /**
-     * Creates a Job in the given Experiment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param workspaceName The name of the workspace. Workspace names can only contain a combination of alphanumeric
-     *     characters along with dash (-) and underscore (_). The name must be from 1 through 64 characters long.
-     * @param experimentName The name of the experiment. Experiment names can only contain a combination of alphanumeric
-     *     characters along with dash (-) and underscore (_). The name must be from 1 through 64 characters long.
-     * @param jobName The name of the job within the specified resource group. Job names can only contain a combination
-     *     of alphanumeric characters along with dash (-) and underscore (_). The name must be from 1 through 64
-     *     characters long.
-     * @param parameters The parameters to provide for job creation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a Job.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    JobInner create(
-        String resourceGroupName,
-        String workspaceName,
-        String experimentName,
-        String jobName,
-        JobCreateParameters parameters);
-
-    /**
-     * Creates a Job in the given Experiment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param workspaceName The name of the workspace. Workspace names can only contain a combination of alphanumeric
-     *     characters along with dash (-) and underscore (_). The name must be from 1 through 64 characters long.
-     * @param experimentName The name of the experiment. Experiment names can only contain a combination of alphanumeric
-     *     characters along with dash (-) and underscore (_). The name must be from 1 through 64 characters long.
-     * @param jobName The name of the job within the specified resource group. Job names can only contain a combination
-     *     of alphanumeric characters along with dash (-) and underscore (_). The name must be from 1 through 64
-     *     characters long.
-     * @param parameters The parameters to provide for job creation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a Job.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    JobInner create(
-        String resourceGroupName,
-        String workspaceName,
-        String experimentName,
-        String jobName,
-        JobCreateParameters parameters,
-        Context context);
+    JobInner create(String resourceGroupName, String workspaceName, String experimentName, String jobName,
+        JobCreateParameters parameters, Context context);
 
     /**
      * Deletes a Job.
@@ -174,8 +156,8 @@ public interface JobsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String workspaceName, String experimentName, String jobName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName,
+        String experimentName, String jobName);
 
     /**
      * Deletes a Job.
@@ -195,8 +177,8 @@ public interface JobsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String workspaceName, String experimentName, String jobName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName,
+        String experimentName, String jobName, Context context);
 
     /**
      * Deletes a Job.
@@ -272,8 +254,8 @@ public interface JobsClient {
      * @return information about a Job.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<JobInner> getWithResponse(
-        String resourceGroupName, String workspaceName, String experimentName, String jobName, Context context);
+    Response<JobInner> getWithResponse(String resourceGroupName, String workspaceName, String experimentName,
+        String jobName, Context context);
 
     /**
      * List all directories and files inside the given directory of the Job's output directory (if the output directory
@@ -295,12 +277,8 @@ public interface JobsClient {
      * @return values returned by the List operation.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<FileInner> listOutputFiles(
-        String resourceGroupName,
-        String workspaceName,
-        String experimentName,
-        String jobName,
-        String outputdirectoryid);
+    PagedIterable<FileInner> listOutputFiles(String resourceGroupName, String workspaceName, String experimentName,
+        String jobName, String outputdirectoryid);
 
     /**
      * List all directories and files inside the given directory of the Job's output directory (if the output directory
@@ -326,15 +304,8 @@ public interface JobsClient {
      * @return values returned by the List operation.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<FileInner> listOutputFiles(
-        String resourceGroupName,
-        String workspaceName,
-        String experimentName,
-        String jobName,
-        String outputdirectoryid,
-        String directory,
-        Integer linkexpiryinminutes,
-        Integer maxResults,
+    PagedIterable<FileInner> listOutputFiles(String resourceGroupName, String workspaceName, String experimentName,
+        String jobName, String outputdirectoryid, String directory, Integer linkexpiryinminutes, Integer maxResults,
         Context context);
 
     /**
@@ -355,8 +326,8 @@ public interface JobsClient {
      * @return a list of currently existing nodes which were used for the Job execution.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<RemoteLoginInformationInner> listRemoteLoginInformation(
-        String resourceGroupName, String workspaceName, String experimentName, String jobName);
+    PagedIterable<RemoteLoginInformationInner> listRemoteLoginInformation(String resourceGroupName,
+        String workspaceName, String experimentName, String jobName);
 
     /**
      * Gets a list of currently existing nodes which were used for the Job execution. The returned information contains
@@ -377,8 +348,8 @@ public interface JobsClient {
      * @return a list of currently existing nodes which were used for the Job execution.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<RemoteLoginInformationInner> listRemoteLoginInformation(
-        String resourceGroupName, String workspaceName, String experimentName, String jobName, Context context);
+    PagedIterable<RemoteLoginInformationInner> listRemoteLoginInformation(String resourceGroupName,
+        String workspaceName, String experimentName, String jobName, Context context);
 
     /**
      * Terminates a job.
@@ -397,8 +368,8 @@ public interface JobsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginTerminate(
-        String resourceGroupName, String workspaceName, String experimentName, String jobName);
+    SyncPoller<PollResult<Void>, Void> beginTerminate(String resourceGroupName, String workspaceName,
+        String experimentName, String jobName);
 
     /**
      * Terminates a job.
@@ -418,8 +389,8 @@ public interface JobsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginTerminate(
-        String resourceGroupName, String workspaceName, String experimentName, String jobName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginTerminate(String resourceGroupName, String workspaceName,
+        String experimentName, String jobName, Context context);
 
     /**
      * Terminates a job.
@@ -456,6 +427,6 @@ public interface JobsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void terminate(
-        String resourceGroupName, String workspaceName, String experimentName, String jobName, Context context);
+    void terminate(String resourceGroupName, String workspaceName, String experimentName, String jobName,
+        Context context);
 }

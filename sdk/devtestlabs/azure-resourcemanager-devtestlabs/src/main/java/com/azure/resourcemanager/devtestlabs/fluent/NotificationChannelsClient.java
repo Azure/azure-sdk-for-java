@@ -44,14 +44,8 @@ public interface NotificationChannelsClient {
      * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<NotificationChannelInner> list(
-        String resourceGroupName,
-        String labName,
-        String expand,
-        String filter,
-        Integer top,
-        String orderby,
-        Context context);
+    PagedIterable<NotificationChannelInner> list(String resourceGroupName, String labName, String expand, String filter,
+        Integer top, String orderby, Context context);
 
     /**
      * Get notification channel.
@@ -67,8 +61,8 @@ public interface NotificationChannelsClient {
      * @return notification channel along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<NotificationChannelInner> getWithResponse(
-        String resourceGroupName, String labName, String name, String expand, Context context);
+    Response<NotificationChannelInner> getWithResponse(String resourceGroupName, String labName, String name,
+        String expand, Context context);
 
     /**
      * Get notification channel.
@@ -98,12 +92,8 @@ public interface NotificationChannelsClient {
      * @return a notification along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<NotificationChannelInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String labName,
-        String name,
-        NotificationChannelInner notificationChannel,
-        Context context);
+    Response<NotificationChannelInner> createOrUpdateWithResponse(String resourceGroupName, String labName, String name,
+        NotificationChannelInner notificationChannel, Context context);
 
     /**
      * Create or replace an existing notification channel.
@@ -118,8 +108,8 @@ public interface NotificationChannelsClient {
      * @return a notification.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NotificationChannelInner createOrUpdate(
-        String resourceGroupName, String labName, String name, NotificationChannelInner notificationChannel);
+    NotificationChannelInner createOrUpdate(String resourceGroupName, String labName, String name,
+        NotificationChannelInner notificationChannel);
 
     /**
      * Delete notification channel.
@@ -163,12 +153,8 @@ public interface NotificationChannelsClient {
      * @return a notification along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<NotificationChannelInner> updateWithResponse(
-        String resourceGroupName,
-        String labName,
-        String name,
-        NotificationChannelFragment notificationChannel,
-        Context context);
+    Response<NotificationChannelInner> updateWithResponse(String resourceGroupName, String labName, String name,
+        NotificationChannelFragment notificationChannel, Context context);
 
     /**
      * Allows modifying tags of notification channels. All other properties will be ignored.
@@ -183,8 +169,8 @@ public interface NotificationChannelsClient {
      * @return a notification.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NotificationChannelInner update(
-        String resourceGroupName, String labName, String name, NotificationChannelFragment notificationChannel);
+    NotificationChannelInner update(String resourceGroupName, String labName, String name,
+        NotificationChannelFragment notificationChannel);
 
     /**
      * Send notification to provided channel.
@@ -200,8 +186,8 @@ public interface NotificationChannelsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> notifyWithResponse(
-        String resourceGroupName, String labName, String name, NotifyParameters notifyParameters, Context context);
+    Response<Void> notifyWithResponse(String resourceGroupName, String labName, String name,
+        NotifyParameters notifyParameters, Context context);
 
     /**
      * Send notification to provided channel.

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.appcontainers.generated;
  */
 public final class DaprSubscriptionsGetSamples {
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2024-02-02-preview/examples/
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2024-08-02-preview/examples/
      * DaprSubscriptions_Get_DefaultRoute.json
      */
     /**
@@ -24,7 +24,7 @@ public final class DaprSubscriptionsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2024-02-02-preview/examples/
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2024-08-02-preview/examples/
      * DaprSubscriptions_Get_BulkSubscribeAndScopes.json
      */
     /**
@@ -39,7 +39,7 @@ public final class DaprSubscriptionsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2024-02-02-preview/examples/
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2024-08-02-preview/examples/
      * DaprSubscriptions_Get_RouteRulesAndMetadata.json
      */
     /**

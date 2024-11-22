@@ -21,10 +21,13 @@ public final class BuildServiceCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void buildServiceCreateOrUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.springServices().manager().serviceClient().getBuildServices().createOrUpdate("myResourceGroup",
-            "myservice", "default",
-            new BuildServiceInner().withProperties(new BuildServiceProperties().withContainerRegistry(
-                "subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.AppPlatform/Spring/myservice/containerRegistrys/default")),
-            com.azure.core.util.Context.NONE);
+        azure.springServices()
+            .manager()
+            .serviceClient()
+            .getBuildServices()
+            .createOrUpdate("myResourceGroup", "myservice", "default",
+                new BuildServiceInner().withProperties(new BuildServiceProperties().withContainerRegistry(
+                    "subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.AppPlatform/Spring/myservice/containerRegistrys/default")),
+                com.azure.core.util.Context.NONE);
     }
 }

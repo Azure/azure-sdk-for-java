@@ -5,36 +5,40 @@
 package com.azure.resourcemanager.desktopvirtualization.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.desktopvirtualization.fluent.models.DesktopInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * DesktopList
- *
- * <p>List of Desktop definitions.
+ * 
+ * List of Desktop definitions.
  */
 @Fluent
-public final class DesktopList {
+public final class DesktopList implements JsonSerializable<DesktopList> {
     /*
      * List of Desktop definitions.
      */
-    @JsonProperty(value = "value")
     private List<DesktopInner> value;
 
     /*
      * Link to the next page of results.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of DesktopList class. */
+    /**
+     * Creates an instance of DesktopList class.
+     */
     public DesktopList() {
     }
 
     /**
      * Get the value property: List of Desktop definitions.
-     *
+     * 
      * @return the value value.
      */
     public List<DesktopInner> value() {
@@ -43,7 +47,7 @@ public final class DesktopList {
 
     /**
      * Set the value property: List of Desktop definitions.
-     *
+     * 
      * @param value the value value to set.
      * @return the DesktopList object itself.
      */
@@ -54,7 +58,7 @@ public final class DesktopList {
 
     /**
      * Get the nextLink property: Link to the next page of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -63,12 +67,51 @@ public final class DesktopList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DesktopList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DesktopList if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DesktopList.
+     */
+    public static DesktopList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DesktopList deserializedDesktopList = new DesktopList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<DesktopInner> value = reader.readArray(reader1 -> DesktopInner.fromJson(reader1));
+                    deserializedDesktopList.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedDesktopList.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDesktopList;
+        });
     }
 }

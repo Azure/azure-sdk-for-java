@@ -131,25 +131,21 @@ public final class LinkResourceFormatImpl
     }
 
     public LinkResourceFormat create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getLinks()
-                .createOrUpdate(resourceGroupName, hubName, linkName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getLinks()
+            .createOrUpdate(resourceGroupName, hubName, linkName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public LinkResourceFormat create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getLinks()
-                .createOrUpdate(resourceGroupName, hubName, linkName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getLinks()
+            .createOrUpdate(resourceGroupName, hubName, linkName, this.innerModel(), context);
         return this;
     }
 
-    LinkResourceFormatImpl(
-        String name, com.azure.resourcemanager.customerinsights.CustomerInsightsManager serviceManager) {
+    LinkResourceFormatImpl(String name,
+        com.azure.resourcemanager.customerinsights.CustomerInsightsManager serviceManager) {
         this.innerObject = new LinkResourceFormatInner();
         this.serviceManager = serviceManager;
         this.linkName = name;
@@ -160,50 +156,41 @@ public final class LinkResourceFormatImpl
     }
 
     public LinkResourceFormat apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getLinks()
-                .createOrUpdate(resourceGroupName, hubName, linkName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getLinks()
+            .createOrUpdate(resourceGroupName, hubName, linkName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public LinkResourceFormat apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getLinks()
-                .createOrUpdate(resourceGroupName, hubName, linkName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getLinks()
+            .createOrUpdate(resourceGroupName, hubName, linkName, this.innerModel(), context);
         return this;
     }
 
-    LinkResourceFormatImpl(
-        LinkResourceFormatInner innerObject,
+    LinkResourceFormatImpl(LinkResourceFormatInner innerObject,
         com.azure.resourcemanager.customerinsights.CustomerInsightsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.hubName = Utils.getValueFromIdByName(innerObject.id(), "hubs");
-        this.linkName = Utils.getValueFromIdByName(innerObject.id(), "links");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.hubName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "hubs");
+        this.linkName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "links");
     }
 
     public LinkResourceFormat refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getLinks()
-                .getWithResponse(resourceGroupName, hubName, linkName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getLinks()
+            .getWithResponse(resourceGroupName, hubName, linkName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public LinkResourceFormat refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getLinks()
-                .getWithResponse(resourceGroupName, hubName, linkName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getLinks()
+            .getWithResponse(resourceGroupName, hubName, linkName, context)
+            .getValue();
         return this;
     }
 
@@ -242,8 +229,8 @@ public final class LinkResourceFormatImpl
         return this;
     }
 
-    public LinkResourceFormatImpl withParticipantPropertyReferences(
-        List<ParticipantPropertyReference> participantPropertyReferences) {
+    public LinkResourceFormatImpl
+        withParticipantPropertyReferences(List<ParticipantPropertyReference> participantPropertyReferences) {
         this.innerModel().withParticipantPropertyReferences(participantPropertyReferences);
         return this;
     }

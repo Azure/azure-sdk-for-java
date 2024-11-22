@@ -15,6 +15,7 @@ import com.azure.core.annotation.Put;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RestProxy;
@@ -23,6 +24,12 @@ import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.AppServiceManager;
 import com.azure.resourcemanager.appservice.fluent.models.ConnectionStringDictionaryInner;
 import com.azure.resourcemanager.appservice.fluent.models.HostKeysInner;
@@ -34,11 +41,15 @@ import com.azure.resourcemanager.appservice.fluent.models.SitePatchResourceInner
 import com.azure.resourcemanager.appservice.fluent.models.StringDictionaryInner;
 import com.azure.resourcemanager.appservice.models.AppServicePlan;
 import com.azure.resourcemanager.appservice.models.AppSetting;
+import com.azure.resourcemanager.appservice.models.CsmDeploymentStatus;
+import com.azure.resourcemanager.appservice.models.DeployOptions;
+import com.azure.resourcemanager.appservice.models.DeployType;
 import com.azure.resourcemanager.appservice.models.FunctionApp;
 import com.azure.resourcemanager.appservice.models.FunctionAuthenticationPolicy;
 import com.azure.resourcemanager.appservice.models.FunctionDeploymentSlots;
 import com.azure.resourcemanager.appservice.models.FunctionEnvelope;
 import com.azure.resourcemanager.appservice.models.FunctionRuntimeStack;
+import com.azure.resourcemanager.appservice.models.KuduDeploymentResult;
 import com.azure.resourcemanager.appservice.models.NameValuePair;
 import com.azure.resourcemanager.appservice.models.OperatingSystem;
 import com.azure.resourcemanager.appservice.models.PricingTier;
@@ -53,7 +64,6 @@ import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.resourcemanager.storage.models.StorageAccountKey;
 import com.azure.resourcemanager.storage.models.StorageAccountSkuType;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -70,19 +80,15 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 /** The implementation for FunctionApp. */
-class FunctionAppImpl
-    extends AppServiceBaseImpl<
-        FunctionApp, FunctionAppImpl, FunctionApp.DefinitionStages.WithCreate, FunctionApp.Update>
-    implements FunctionApp,
-        FunctionApp.Definition,
-        FunctionApp.DefinitionStages.NewAppServicePlanWithGroup,
-        FunctionApp.DefinitionStages.ExistingLinuxPlanWithGroup,
-        FunctionApp.Update {
+class FunctionAppImpl extends
+    AppServiceBaseImpl<FunctionApp, FunctionAppImpl, FunctionApp.DefinitionStages.WithCreate, FunctionApp.Update>
+    implements FunctionApp, FunctionApp.Definition, FunctionApp.DefinitionStages.NewAppServicePlanWithGroup,
+    FunctionApp.DefinitionStages.ExistingLinuxPlanWithGroup, FunctionApp.Update {
 
-    private final ClientLogger logger = new ClientLogger(getClass());
+    private static final ClientLogger LOGGER = new ClientLogger(FunctionAppImpl.class);
 
-    private static final String SETTING_WEBSITE_CONTENTAZUREFILECONNECTIONSTRING =
-        "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING";
+    private static final String SETTING_WEBSITE_CONTENTAZUREFILECONNECTIONSTRING
+        = "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING";
     private static final String SETTING_WEBSITE_CONTENTSHARE = "WEBSITE_CONTENTSHARE";
     private static final String SETTING_WEB_JOBS_STORAGE = "AzureWebJobsStorage";
     private static final String SETTING_WEB_JOBS_DASHBOARD = "AzureWebJobsDashboard";
@@ -95,12 +101,10 @@ class FunctionAppImpl
 
     private String functionServiceHost;
 
-    FunctionAppImpl(
-        final String name,
-        SiteInner innerObject,
-        SiteConfigResourceInner siteConfig,
-        SiteLogsConfigInner logConfig,
-        AppServiceManager manager) {
+    private Boolean appServicePlanIsFlexConsumption;
+
+    FunctionAppImpl(final String name, SiteInner innerObject, SiteConfigResourceInner siteConfig,
+        SiteLogsConfigInner logConfig, AppServiceManager manager) {
         super(name, innerObject, siteConfig, logConfig, manager);
         if (!isInCreateMode()) {
             initializeFunctionService();
@@ -117,7 +121,7 @@ class FunctionAppImpl
             try {
                 baseUrl = urlBuilder.toUrl().toString();
             } catch (MalformedURLException e) {
-                throw logger.logExceptionAsError(new IllegalStateException(e));
+                throw LOGGER.logExceptionAsError(new IllegalStateException(e));
             }
 
             List<HttpPipelinePolicy> policies = new ArrayList<>();
@@ -130,14 +134,12 @@ class FunctionAppImpl
                 }
             }
             policies.add(new FunctionAuthenticationPolicy(this));
-            HttpPipeline httpPipeline = new HttpPipelineBuilder()
-                .policies(policies.toArray(new HttpPipelinePolicy[0]))
+            HttpPipeline httpPipeline = new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
                 .httpClient(manager().httpPipeline().getHttpClient())
                 .build();
             functionServiceHost = baseUrl;
-            functionService =
-                RestProxy.create(FunctionService.class, httpPipeline,
-                    SerializerFactory.createDefaultManagementSerializerAdapter());
+            functionService = RestProxy.create(FunctionService.class, httpPipeline,
+                SerializerFactory.createDefaultManagementSerializerAdapter());
         }
     }
 
@@ -161,8 +163,8 @@ class FunctionAppImpl
 
     @Override
     public FunctionAppImpl withNewConsumptionPlan(String appServicePlanName) {
-        return withNewAppServicePlan(
-            appServicePlanName, OperatingSystem.WINDOWS, new PricingTier(SkuName.DYNAMIC.toString(), "Y1"));
+        return withNewAppServicePlan(appServicePlanName, OperatingSystem.WINDOWS,
+            new PricingTier(SkuName.DYNAMIC.toString(), "Y1"));
     }
 
     @Override
@@ -206,44 +208,38 @@ class FunctionAppImpl
         if (storageAccountToSet == null) {
             return super.submitAppSettings();
         } else {
-            return storageAccountToSet
-                .getKeysAsync()
-                .flatMap(storageAccountKeys -> {
-                    StorageAccountKey key = storageAccountKeys.get(0);
-                    String connectionString = ResourceManagerUtils
-                        .getStorageConnectionString(storageAccountToSet.name(), key.value(),
-                            manager().environment());
-                    addAppSettingIfNotModified(SETTING_WEB_JOBS_STORAGE, connectionString);
-                    if (!isFunctionAppOnACA()) {
-                        // Function App on ACA only supports Application Insights as log option.
-                        // https://learn.microsoft.com/en-us/azure/azure-functions/functions-app-settings#azurewebjobsdashboard
-                        addAppSettingIfNotModified(SETTING_WEB_JOBS_DASHBOARD, connectionString);
-                        return this.manager().appServicePlans().getByIdAsync(this.appServicePlanId())
-                            .flatMap(appServicePlan -> {
-                                if (appServicePlan == null
-                                    || isConsumptionOrPremiumAppServicePlan(appServicePlan.pricingTier())) {
+            return storageAccountToSet.getKeysAsync().flatMap(storageAccountKeys -> {
+                StorageAccountKey key = storageAccountKeys.get(0);
+                String connectionString = ResourceManagerUtils.getStorageConnectionString(storageAccountToSet.name(),
+                    key.value(), manager().environment());
+                addAppSettingIfNotModified(SETTING_WEB_JOBS_STORAGE, connectionString);
+                if (!isFunctionAppOnACA()) {
+                    // Function App on ACA only supports Application Insights as log option.
+                    // https://learn.microsoft.com/en-us/azure/azure-functions/functions-app-settings#azurewebjobsdashboard
+                    addAppSettingIfNotModified(SETTING_WEB_JOBS_DASHBOARD, connectionString);
+                    return this.manager()
+                        .appServicePlans()
+                        .getByIdAsync(this.appServicePlanId())
+                        .flatMap(appServicePlan -> {
+                            if (appServicePlan == null
+                                || isConsumptionOrPremiumAppServicePlan(appServicePlan.pricingTier())) {
 
-                                    addAppSettingIfNotModified(
-                                        SETTING_WEBSITE_CONTENTAZUREFILECONNECTIONSTRING, connectionString);
-                                    addAppSettingIfNotModified(
-                                        SETTING_WEBSITE_CONTENTSHARE,
-                                        this.manager().resourceManager().internalContext()
-                                            .randomResourceName(name(), 32));
-                                }
-                                return FunctionAppImpl.super.submitAppSettings();
-                            });
-                    } else {
-                        return FunctionAppImpl.super.submitAppSettings();
-                    }
-                }).then(
-                    Mono
-                        .fromCallable(
-                            () -> {
-                                currentStorageAccount = storageAccountToSet;
-                                storageAccountToSet = null;
-                                storageAccountCreatable = null;
-                                return this;
-                            }));
+                                addAppSettingIfNotModified(SETTING_WEBSITE_CONTENTAZUREFILECONNECTIONSTRING,
+                                    connectionString);
+                                addAppSettingIfNotModified(SETTING_WEBSITE_CONTENTSHARE,
+                                    this.manager().resourceManager().internalContext().randomResourceName(name(), 32));
+                            }
+                            return FunctionAppImpl.super.submitAppSettings();
+                        });
+                } else {
+                    return FunctionAppImpl.super.submitAppSettings();
+                }
+            }).then(Mono.fromCallable(() -> {
+                currentStorageAccount = storageAccountToSet;
+                storageAccountToSet = null;
+                storageAccountCreatable = null;
+                return this;
+            }));
         }
     }
 
@@ -255,7 +251,8 @@ class FunctionAppImpl
             return OperatingSystem.LINUX;
         }
         return (innerModel().reserved() == null || !innerModel().reserved())
-            ? OperatingSystem.WINDOWS : OperatingSystem.LINUX;
+            ? OperatingSystem.WINDOWS
+            : OperatingSystem.LINUX;
     }
 
     private void addAppSettingIfNotModified(String key, String value) {
@@ -284,8 +281,8 @@ class FunctionAppImpl
     }
 
     @Override
-    FunctionAppImpl withNewAppServicePlan(
-        String appServicePlan, OperatingSystem operatingSystem, PricingTier pricingTier) {
+    FunctionAppImpl withNewAppServicePlan(String appServicePlan, OperatingSystem operatingSystem,
+        PricingTier pricingTier) {
         return super.withNewAppServicePlan(appServicePlan, operatingSystem, pricingTier).autoSetAlwaysOn(pricingTier);
     }
 
@@ -312,20 +309,16 @@ class FunctionAppImpl
 
     @Override
     public FunctionAppImpl withNewStorageAccount(String name, StorageAccountSkuType sku) {
-        StorageAccount.DefinitionStages.WithGroup storageDefine =
-            manager().storageManager().storageAccounts().define(name).withRegion(regionName());
+        StorageAccount.DefinitionStages.WithGroup storageDefine
+            = manager().storageManager().storageAccounts().define(name).withRegion(regionName());
         if (super.creatableGroup != null && isInCreateMode()) {
-            storageAccountCreatable =
-                storageDefine
-                    .withNewResourceGroup(super.creatableGroup)
-                    .withGeneralPurposeAccountKindV2()
-                    .withSku(sku);
+            storageAccountCreatable = storageDefine.withNewResourceGroup(super.creatableGroup)
+                .withGeneralPurposeAccountKindV2()
+                .withSku(sku);
         } else {
-            storageAccountCreatable =
-                storageDefine
-                    .withExistingResourceGroup(resourceGroupName())
-                    .withGeneralPurposeAccountKindV2()
-                    .withSku(sku);
+            storageAccountCreatable = storageDefine.withExistingResourceGroup(resourceGroupName())
+                .withGeneralPurposeAccountKindV2()
+                .withSku(sku);
         }
         this.addDependency(storageAccountCreatable);
         return this;
@@ -362,8 +355,8 @@ class FunctionAppImpl
 
     @Override
     public FunctionAppImpl withNewLinuxConsumptionPlan(String appServicePlanName) {
-        return withNewAppServicePlan(
-            appServicePlanName, OperatingSystem.LINUX, new PricingTier(SkuName.DYNAMIC.toString(), "Y1"));
+        return withNewAppServicePlan(appServicePlanName, OperatingSystem.LINUX,
+            new PricingTier(SkuName.DYNAMIC.toString(), "Y1"));
     }
 
     @Override
@@ -467,7 +460,10 @@ class FunctionAppImpl
 
     @Override
     public Mono<String> getMasterKeyAsync() {
-        return this.manager().serviceClient().getWebApps().listHostKeysAsync(resourceGroupName(), name())
+        return this.manager()
+            .serviceClient()
+            .getWebApps()
+            .listHostKeysAsync(resourceGroupName(), name())
             .map(HostKeysInner::masterKey);
     }
 
@@ -483,18 +479,15 @@ class FunctionAppImpl
 
     @Override
     public Mono<Map<String, String>> listFunctionKeysAsync(final String functionName) {
-        return functionService
-            .listFunctionKeys(functionServiceHost, functionName)
-            .map(
-                result -> {
-                    Map<String, String> keys = new HashMap<>();
-                    if (result.keys != null) {
-                        for (NameValuePair pair : result.keys) {
-                            keys.put(pair.name(), pair.value());
-                        }
-                    }
-                    return keys;
-                });
+        return functionService.listFunctionKeys(functionServiceHost, functionName).map(result -> {
+            Map<String, String> keys = new HashMap<>();
+            if (result.keys != null) {
+                for (NameValuePair pair : result.keys) {
+                    keys.put(pair.name(), pair.value());
+                }
+            }
+            return keys;
+        });
     }
 
     @Override
@@ -505,12 +498,8 @@ class FunctionAppImpl
     @Override
     public Mono<NameValuePair> addFunctionKeyAsync(String functionName, String keyName, String keyValue) {
         if (keyValue != null) {
-            return functionService
-                .addFunctionKey(
-                    functionServiceHost,
-                    functionName,
-                    keyName,
-                    new NameValuePair().withName(keyName).withValue(keyValue));
+            return functionService.addFunctionKey(functionServiceHost, functionName, keyName,
+                new NameValuePair().withName(keyName).withValue(keyValue));
         } else {
             return functionService.generateFunctionKey(functionServiceHost, functionName, keyName);
         }
@@ -543,19 +532,17 @@ class FunctionAppImpl
 
     @Override
     public Mono<Void> syncTriggersAsync() {
-        return manager()
-            .serviceClient()
+        return manager().serviceClient()
             .getWebApps()
             .syncFunctionTriggersAsync(resourceGroupName(), name())
-            .onErrorResume(
-                throwable -> {
-                    if (throwable instanceof ManagementException
-                        && ((ManagementException) throwable).getResponse().getStatusCode() == 200) {
-                        return Mono.empty();
-                    } else {
-                        return Mono.error(throwable);
-                    }
-                });
+            .onErrorResume(throwable -> {
+                if (throwable instanceof ManagementException
+                    && ((ManagementException) throwable).getResponse().getStatusCode() == 200) {
+                    return Mono.empty();
+                } else {
+                    return Mono.error(throwable);
+                }
+            });
     }
 
     @Override
@@ -581,40 +568,35 @@ class FunctionAppImpl
 
     @Override
     public Flux<String> streamApplicationLogsAsync() {
-        return functionService
-            .ping(functionServiceHost)
+        return functionService.ping(functionServiceHost)
             .then(functionService.getHostStatus(functionServiceHost))
             .thenMany(FunctionAppImpl.super.streamApplicationLogsAsync());
     }
 
     @Override
     public Flux<String> streamHttpLogsAsync() {
-        return functionService
-            .ping(functionServiceHost)
+        return functionService.ping(functionServiceHost)
             .then(functionService.getHostStatus(functionServiceHost))
             .thenMany(FunctionAppImpl.super.streamHttpLogsAsync());
     }
 
     @Override
     public Flux<String> streamTraceLogsAsync() {
-        return functionService
-            .ping(functionServiceHost)
+        return functionService.ping(functionServiceHost)
             .then(functionService.getHostStatus(functionServiceHost))
             .thenMany(FunctionAppImpl.super.streamTraceLogsAsync());
     }
 
     @Override
     public Flux<String> streamDeploymentLogsAsync() {
-        return functionService
-            .ping(functionServiceHost)
+        return functionService.ping(functionServiceHost)
             .then(functionService.getHostStatus(functionServiceHost))
             .thenMany(FunctionAppImpl.super.streamDeploymentLogsAsync());
     }
 
     @Override
     public Flux<String> streamAllLogsAsync() {
-        return functionService
-            .ping(functionServiceHost)
+        return functionService.ping(functionServiceHost)
             .then(functionService.getHostStatus(functionServiceHost))
             .thenMany(FunctionAppImpl.super.streamAllLogsAsync());
     }
@@ -659,13 +641,15 @@ class FunctionAppImpl
             siteConfigInner.withLinuxFxVersion(this.siteConfig.linuxFxVersion());
             siteConfigInner.withMinimumElasticInstanceCount(this.siteConfig.minimumElasticInstanceCount());
             siteConfigInner.withFunctionAppScaleLimit(this.siteConfig.functionAppScaleLimit());
-            siteConfigInner.withAppSettings(this.siteConfig.appSettings() == null ? new ArrayList<>() : this.siteConfig.appSettings());
+            siteConfigInner.withAppSettings(
+                this.siteConfig.appSettings() == null ? new ArrayList<>() : this.siteConfig.appSettings());
             if (!appSettingsToAdd.isEmpty() || !appSettingsToRemove.isEmpty()) {
                 for (String settingToRemove : appSettingsToRemove) {
                     siteConfigInner.appSettings().removeIf(kvPair -> Objects.equals(settingToRemove, kvPair.name()));
                 }
                 for (Map.Entry<String, String> entry : appSettingsToAdd.entrySet()) {
-                    siteConfigInner.appSettings().add(new NameValuePair().withName(entry.getKey()).withValue(entry.getValue()));
+                    siteConfigInner.appSettings()
+                        .add(new NameValuePair().withName(entry.getKey()).withValue(entry.getValue()));
                 }
             }
             this.innerModel().withSiteConfig(siteConfigInner);
@@ -680,8 +664,7 @@ class FunctionAppImpl
             }
             if (currentStorageAccount == null && storageAccountToSet == null && storageAccountCreatable == null) {
                 withNewStorageAccount(
-                    this.manager().resourceManager().internalContext()
-                        .randomResourceName(getStorageAccountName(), 20),
+                    this.manager().resourceManager().internalContext().randomResourceName(getStorageAccountName(), 20),
                     StorageAccountSkuType.STANDARD_LRS);
             }
         }
@@ -730,22 +713,11 @@ class FunctionAppImpl
     public Mono<Map<String, AppSetting>> getAppSettingsAsync() {
         if (isFunctionAppOnACA()) {
             // current function app on ACA doesn't support deployment slot, so appSettings sticky is false
-            return listAppSettings()
-                .map(
-                    appSettingsInner ->
-                        appSettingsInner
-                            .properties()
-                            .entrySet()
-                            .stream()
-                            .collect(
-                                Collectors
-                                    .toMap(
-                                        Map.Entry::getKey,
-                                        entry ->
-                                            new AppSettingImpl(
-                                                entry.getKey(),
-                                                entry.getValue(),
-                                                false))));
+            return listAppSettings().map(appSettingsInner -> appSettingsInner.properties()
+                .entrySet()
+                .stream()
+                .collect(Collectors.toMap(Map.Entry::getKey,
+                    entry -> new AppSettingImpl(entry.getKey(), entry.getValue(), false))));
         } else {
             return super.getAppSettingsAsync();
         }
@@ -804,100 +776,206 @@ class FunctionAppImpl
         }
     }
 
+    @Override
+    public void deploy(DeployType type, File file) {
+        deployAsync(type, file).block();
+    }
+
+    @Override
+    public Mono<Void> deployAsync(DeployType type, File file) {
+        return deployAsync(type, file, null);
+    }
+
+    @Override
+    public void deploy(DeployType type, File file, DeployOptions deployOptions) {
+        deployAsync(type, file, null).block();
+    }
+
+    @Override
+    public Mono<Void> deployAsync(DeployType type, File file, DeployOptions deployOptions) {
+        return this.pushDeployAsync(type, file, null)
+            .flatMap(
+                result -> kuduClient.pollDeploymentStatus(result, manager().serviceClient().getDefaultPollInterval()));
+    }
+
+    @Override
+    public void deploy(DeployType type, InputStream file, long length) {
+        deployAsync(type, file, length).block();
+    }
+
+    @Override
+    public Mono<Void> deployAsync(DeployType type, InputStream file, long length) {
+        return deployAsync(type, file, length, null);
+    }
+
+    @Override
+    public void deploy(DeployType type, InputStream file, long length, DeployOptions deployOptions) {
+        deployAsync(type, file, length, null).block();
+    }
+
+    @Override
+    public Mono<Void> deployAsync(DeployType type, InputStream file, long length, DeployOptions deployOptions) {
+        return this.pushDeployAsync(type, file, length, null)
+            .flatMap(
+                result -> kuduClient.pollDeploymentStatus(result, manager().serviceClient().getDefaultPollInterval()));
+    }
+
+    @Override
+    public KuduDeploymentResult pushDeploy(DeployType type, File file, DeployOptions deployOptions) {
+        return pushDeployAsync(type, file, deployOptions).block();
+    }
+
+    @Override
+    public Mono<KuduDeploymentResult> pushDeployAsync(DeployType type, File file, DeployOptions deployOptions) {
+        // If tier of the AppServicePlan is "FlexConsumption", use /api/publish; else, use /api/zipdeploy
+
+        // deployOptions is ignored
+        if (type != DeployType.ZIP) {
+            return Mono.error(new IllegalArgumentException("Deployment to Function App supports ZIP package."));
+        }
+        return getAppServicePlanIsFlexConsumptionMono().flatMap(appServiceIsFlexConsumptionPlan -> {
+            try {
+                if (appServiceIsFlexConsumptionPlan) {
+                    return kuduClient.pushDeployFlexConsumptionAsync(file);
+                } else {
+                    return kuduClient.pushZipDeployAsync(file)
+                        // it appears that "getDeploymentStatus" must first be called with deploymentId="latest"
+                        // this "latest" also works, if polling is done via kudu "api/deployments/{deploymentId}" API
+                        .then(Mono.just(new KuduDeploymentResult("latest")));
+                }
+            } catch (IOException e) {
+                return Mono.error(e);
+            }
+        });
+    }
+
+    private Mono<KuduDeploymentResult> pushDeployAsync(DeployType type, InputStream file, long length,
+        DeployOptions deployOptions) {
+        // deployOptions is ignored
+        if (type != DeployType.ZIP) {
+            return Mono.error(new IllegalArgumentException("Deployment to Function App supports ZIP package."));
+        }
+        return getAppServicePlanIsFlexConsumptionMono().flatMap(appServiceIsFlexConsumptionPlan -> {
+            try {
+                if (appServiceIsFlexConsumptionPlan) {
+                    return kuduClient.pushDeployFlexConsumptionAsync(file, length);
+                } else {
+                    return kuduClient.pushZipDeployAsync(file, length)
+                        .then(Mono.just(new KuduDeploymentResult("latest")));
+                }
+            } catch (IOException e) {
+                return Mono.error(e);
+            }
+        });
+    }
+
+    private Mono<Boolean> getAppServicePlanIsFlexConsumptionMono() {
+        Mono<Boolean> updateAppServicePlan = Mono.justOrEmpty(appServicePlanIsFlexConsumption);
+        if (appServicePlanIsFlexConsumption == null) {
+            updateAppServicePlan = Mono
+                .defer(() -> manager().appServicePlans().getByIdAsync(this.appServicePlanId()).map(appServicePlan -> {
+                    appServicePlanIsFlexConsumption
+                        = "FlexConsumption".equals(appServicePlan.pricingTier().toSkuDescription().tier());
+                    return appServicePlanIsFlexConsumption;
+                }));
+        }
+        return updateAppServicePlan;
+    }
+
+    @Override
+    public CsmDeploymentStatus getDeploymentStatus(String deploymentId) {
+        return getDeploymentStatusAsync(deploymentId).block();
+    }
+
+    @Override
+    public Mono<CsmDeploymentStatus> getDeploymentStatusAsync(String deploymentId) {
+        // "GET" LRO is not supported in azure-core
+        SerializerAdapter serializerAdapter = SerializerFactory.createDefaultManagementSerializerAdapter();
+        return this.manager()
+            .serviceClient()
+            .getWebApps()
+            .getProductionSiteDeploymentStatusWithResponseAsync(this.resourceGroupName(), this.name(), deploymentId)
+            .flatMap(fluxResponse -> {
+                HttpResponse response = new HttpFluxBBResponse(fluxResponse);
+                return response.getBodyAsString().flatMap(bodyString -> {
+                    CsmDeploymentStatus status;
+                    try {
+                        status = serializerAdapter.deserialize(bodyString, CsmDeploymentStatus.class,
+                            SerializerEncoding.JSON);
+                    } catch (IOException e) {
+                        return Mono.error(new ManagementException("Deserialize failed for response body.", response));
+                    }
+                    return Mono.justOrEmpty(status);
+                }).doFinally(ignored -> response.close());
+            });
+    }
+
     @Host("{$host}")
     @ServiceInterface(name = "FunctionService")
     private interface FunctionService {
-        @Headers({
-            "Accept: application/json",
-            "Content-Type: application/json; charset=utf-8"
-        })
+        @Headers({ "Accept: application/json", "Content-Type: application/json; charset=utf-8" })
         @Get("admin/functions/{name}/keys")
-        Mono<FunctionKeyListResult> listFunctionKeys(
-            @HostParam("$host") String host, @PathParam("name") String functionName);
+        Mono<FunctionKeyListResult> listFunctionKeys(@HostParam("$host") String host,
+            @PathParam("name") String functionName);
 
-        @Headers({
-            "Accept: application/json",
-            "Content-Type: application/json; charset=utf-8"
-        })
+        @Headers({ "Accept: application/json", "Content-Type: application/json; charset=utf-8" })
         @Put("admin/functions/{name}/keys/{keyName}")
-        Mono<NameValuePair> addFunctionKey(
-            @HostParam("$host") String host,
-            @PathParam("name") String functionName,
-            @PathParam("keyName") String keyName,
-            @BodyParam("application/json") NameValuePair key);
+        Mono<NameValuePair> addFunctionKey(@HostParam("$host") String host, @PathParam("name") String functionName,
+            @PathParam("keyName") String keyName, @BodyParam("application/json") NameValuePair key);
 
-        @Headers({
-            "Accept: application/json",
-            "Content-Type: application/json; charset=utf-8"
-        })
+        @Headers({ "Accept: application/json", "Content-Type: application/json; charset=utf-8" })
         @Post("admin/functions/{name}/keys/{keyName}")
-        Mono<NameValuePair> generateFunctionKey(
-            @HostParam("$host") String host,
-            @PathParam("name") String functionName,
+        Mono<NameValuePair> generateFunctionKey(@HostParam("$host") String host, @PathParam("name") String functionName,
             @PathParam("keyName") String keyName);
 
-        @Headers({
-            "Content-Type: application/json; charset=utf-8"
-        })
+        @Headers({ "Content-Type: application/json; charset=utf-8" })
         @Delete("admin/functions/{name}/keys/{keyName}")
-        Mono<Void> deleteFunctionKey(
-            @HostParam("$host") String host,
-            @PathParam("name") String functionName,
+        Mono<Void> deleteFunctionKey(@HostParam("$host") String host, @PathParam("name") String functionName,
             @PathParam("keyName") String keyName);
 
-        @Headers({
-            "Content-Type: application/json; charset=utf-8"
-        })
+        @Headers({ "Content-Type: application/json; charset=utf-8" })
         @Post("admin/host/ping")
         Mono<Void> ping(@HostParam("$host") String host);
 
-        @Headers({
-            "Content-Type: application/json; charset=utf-8"
-        })
+        @Headers({ "Content-Type: application/json; charset=utf-8" })
         @Get("admin/host/status")
         Mono<Void> getHostStatus(@HostParam("$host") String host);
 
-        @Headers({
-            "Content-Type: application/json; charset=utf-8"
-        })
+        @Headers({ "Content-Type: application/json; charset=utf-8" })
         @Post("admin/functions/{name}")
-        Mono<Void> triggerFunction(
-            @HostParam("$host") String host,
-            @PathParam("name") String functionName,
+        Mono<Void> triggerFunction(@HostParam("$host") String host, @PathParam("name") String functionName,
             @BodyParam("application/json") Object payload);
     }
 
-    private static class FunctionKeyListResult {
-        @JsonProperty("keys")
+    private static class FunctionKeyListResult implements JsonSerializable<FunctionKeyListResult> {
         private List<NameValuePair> keys;
+
+        @Override
+        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+            return jsonWriter.writeStartObject().writeArrayField("keys", keys, JsonWriter::writeJson).writeEndObject();
+        }
+
+        public static FunctionKeyListResult fromJson(JsonReader jsonReader) throws IOException {
+            return jsonReader.readObject(reader -> {
+                FunctionKeyListResult result = new FunctionKeyListResult();
+                while (reader.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = reader.getFieldName();
+                    reader.nextToken();
+
+                    if ("keys".equals(fieldName)) {
+                        List<NameValuePair> keys
+                            = reader.readArray(reader1 -> reader1.readObject(NameValuePair::fromJson));
+                        result.keys = keys;
+                    } else {
+                        reader.skipChildren();
+                    }
+                }
+                return result;
+            });
+        }
     }
 
     private String getStorageAccountName() {
         return name().replaceAll("[^a-zA-Z0-9]", "");
     }
-
-    /*
-    private static final class FunctionCredential implements TokenCredential {
-        private final FunctionAppImpl functionApp;
-
-        private FunctionCredential(FunctionAppImpl functionApp) {
-            this.functionApp = functionApp;
-        }
-
-        @Override
-        public Mono<AccessToken> getToken(TokenRequestContext request) {
-            return functionApp.manager().inner().getWebApps()
-                    .getFunctionsAdminTokenAsync(functionApp.resourceGroupName(), functionApp.name())
-                    .map(token -> {
-                        String jwt = new String(Base64.getUrlDecoder().decode(token.split("\\.")[1]));
-                        Pattern pattern = Pattern.compile("\"exp\": *([0-9]+),");
-                        Matcher matcher = pattern.matcher(jwt);
-                        matcher.find();
-                        long expire = Long.parseLong(matcher.group(1));
-                        return new AccessToken(token, OffsetDateTime.ofInstant(
-                            Instant.ofEpochMilli(expire), ZoneOffset.UTC));
-                    });
-        }
-    }
-    */
 }

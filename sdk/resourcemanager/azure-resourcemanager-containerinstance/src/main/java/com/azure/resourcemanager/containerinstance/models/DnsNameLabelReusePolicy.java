@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.containerinstance.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -17,24 +16,34 @@ import java.util.Collection;
  * domain name label cannot be reused within the same resource group, subscription, or tenant.
  */
 public final class DnsNameLabelReusePolicy extends ExpandableStringEnum<DnsNameLabelReusePolicy> {
-    /** Static value Unsecure for DnsNameLabelReusePolicy. */
+    /**
+     * Static value Unsecure for DnsNameLabelReusePolicy.
+     */
     public static final DnsNameLabelReusePolicy UNSECURE = fromString("Unsecure");
 
-    /** Static value TenantReuse for DnsNameLabelReusePolicy. */
+    /**
+     * Static value TenantReuse for DnsNameLabelReusePolicy.
+     */
     public static final DnsNameLabelReusePolicy TENANT_REUSE = fromString("TenantReuse");
 
-    /** Static value SubscriptionReuse for DnsNameLabelReusePolicy. */
+    /**
+     * Static value SubscriptionReuse for DnsNameLabelReusePolicy.
+     */
     public static final DnsNameLabelReusePolicy SUBSCRIPTION_REUSE = fromString("SubscriptionReuse");
 
-    /** Static value ResourceGroupReuse for DnsNameLabelReusePolicy. */
+    /**
+     * Static value ResourceGroupReuse for DnsNameLabelReusePolicy.
+     */
     public static final DnsNameLabelReusePolicy RESOURCE_GROUP_REUSE = fromString("ResourceGroupReuse");
 
-    /** Static value Noreuse for DnsNameLabelReusePolicy. */
+    /**
+     * Static value Noreuse for DnsNameLabelReusePolicy.
+     */
     public static final DnsNameLabelReusePolicy NOREUSE = fromString("Noreuse");
 
     /**
      * Creates a new instance of DnsNameLabelReusePolicy value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -43,18 +52,17 @@ public final class DnsNameLabelReusePolicy extends ExpandableStringEnum<DnsNameL
 
     /**
      * Creates or finds a DnsNameLabelReusePolicy from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DnsNameLabelReusePolicy.
      */
-    @JsonCreator
     public static DnsNameLabelReusePolicy fromString(String name) {
         return fromString(name, DnsNameLabelReusePolicy.class);
     }
 
     /**
      * Gets known DnsNameLabelReusePolicy values.
-     *
+     * 
      * @return known DnsNameLabelReusePolicy values.
      */
     public static Collection<DnsNameLabelReusePolicy> values() {

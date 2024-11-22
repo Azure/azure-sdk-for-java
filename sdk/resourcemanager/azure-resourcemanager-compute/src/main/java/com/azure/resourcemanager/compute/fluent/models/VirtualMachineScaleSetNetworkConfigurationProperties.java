@@ -7,83 +7,77 @@ package com.azure.resourcemanager.compute.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.models.DeleteOptions;
 import com.azure.resourcemanager.compute.models.NetworkInterfaceAuxiliaryMode;
 import com.azure.resourcemanager.compute.models.NetworkInterfaceAuxiliarySku;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetIpConfiguration;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetNetworkConfigurationDnsSettings;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Describes a virtual machine scale set network profile's IP configuration.
  */
 @Fluent
-public final class VirtualMachineScaleSetNetworkConfigurationProperties {
+public final class VirtualMachineScaleSetNetworkConfigurationProperties
+    implements JsonSerializable<VirtualMachineScaleSetNetworkConfigurationProperties> {
     /*
      * Specifies the primary network interface in case the virtual machine has more than 1 network interface.
      */
-    @JsonProperty(value = "primary")
     private Boolean primary;
 
     /*
      * Specifies whether the network interface is accelerated networking-enabled.
      */
-    @JsonProperty(value = "enableAcceleratedNetworking")
     private Boolean enableAcceleratedNetworking;
 
     /*
      * Specifies whether the network interface is disabled for tcp state tracking.
      */
-    @JsonProperty(value = "disableTcpStateTracking")
     private Boolean disableTcpStateTracking;
 
     /*
      * Specifies whether the network interface is FPGA networking-enabled.
      */
-    @JsonProperty(value = "enableFpga")
     private Boolean enableFpga;
 
     /*
      * The network security group.
      */
-    @JsonProperty(value = "networkSecurityGroup")
     private SubResource networkSecurityGroup;
 
     /*
      * The dns settings to be applied on the network interfaces.
      */
-    @JsonProperty(value = "dnsSettings")
     private VirtualMachineScaleSetNetworkConfigurationDnsSettings dnsSettings;
 
     /*
      * Specifies the IP configurations of the network interface.
      */
-    @JsonProperty(value = "ipConfigurations", required = true)
     private List<VirtualMachineScaleSetIpConfiguration> ipConfigurations;
 
     /*
      * Whether IP forwarding enabled on this NIC.
      */
-    @JsonProperty(value = "enableIPForwarding")
     private Boolean enableIpForwarding;
 
     /*
      * Specify what happens to the network interface when the VM is deleted
      */
-    @JsonProperty(value = "deleteOption")
     private DeleteOptions deleteOption;
 
     /*
      * Specifies whether the Auxiliary mode is enabled for the Network Interface resource.
      */
-    @JsonProperty(value = "auxiliaryMode")
     private NetworkInterfaceAuxiliaryMode auxiliaryMode;
 
     /*
      * Specifies whether the Auxiliary sku is enabled for the Network Interface resource.
      */
-    @JsonProperty(value = "auxiliarySku")
     private NetworkInterfaceAuxiliarySku auxiliarySku;
 
     /**
@@ -347,4 +341,87 @@ public final class VirtualMachineScaleSetNetworkConfigurationProperties {
 
     private static final ClientLogger LOGGER
         = new ClientLogger(VirtualMachineScaleSetNetworkConfigurationProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("ipConfigurations", this.ipConfigurations,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeBooleanField("primary", this.primary);
+        jsonWriter.writeBooleanField("enableAcceleratedNetworking", this.enableAcceleratedNetworking);
+        jsonWriter.writeBooleanField("disableTcpStateTracking", this.disableTcpStateTracking);
+        jsonWriter.writeBooleanField("enableFpga", this.enableFpga);
+        jsonWriter.writeJsonField("networkSecurityGroup", this.networkSecurityGroup);
+        jsonWriter.writeJsonField("dnsSettings", this.dnsSettings);
+        jsonWriter.writeBooleanField("enableIPForwarding", this.enableIpForwarding);
+        jsonWriter.writeStringField("deleteOption", this.deleteOption == null ? null : this.deleteOption.toString());
+        jsonWriter.writeStringField("auxiliaryMode", this.auxiliaryMode == null ? null : this.auxiliaryMode.toString());
+        jsonWriter.writeStringField("auxiliarySku", this.auxiliarySku == null ? null : this.auxiliarySku.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualMachineScaleSetNetworkConfigurationProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualMachineScaleSetNetworkConfigurationProperties if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the VirtualMachineScaleSetNetworkConfigurationProperties.
+     */
+    public static VirtualMachineScaleSetNetworkConfigurationProperties fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualMachineScaleSetNetworkConfigurationProperties deserializedVirtualMachineScaleSetNetworkConfigurationProperties
+                = new VirtualMachineScaleSetNetworkConfigurationProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("ipConfigurations".equals(fieldName)) {
+                    List<VirtualMachineScaleSetIpConfiguration> ipConfigurations
+                        = reader.readArray(reader1 -> VirtualMachineScaleSetIpConfiguration.fromJson(reader1));
+                    deserializedVirtualMachineScaleSetNetworkConfigurationProperties.ipConfigurations
+                        = ipConfigurations;
+                } else if ("primary".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetNetworkConfigurationProperties.primary
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("enableAcceleratedNetworking".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetNetworkConfigurationProperties.enableAcceleratedNetworking
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("disableTcpStateTracking".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetNetworkConfigurationProperties.disableTcpStateTracking
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("enableFpga".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetNetworkConfigurationProperties.enableFpga
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("networkSecurityGroup".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetNetworkConfigurationProperties.networkSecurityGroup
+                        = SubResource.fromJson(reader);
+                } else if ("dnsSettings".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetNetworkConfigurationProperties.dnsSettings
+                        = VirtualMachineScaleSetNetworkConfigurationDnsSettings.fromJson(reader);
+                } else if ("enableIPForwarding".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetNetworkConfigurationProperties.enableIpForwarding
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("deleteOption".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetNetworkConfigurationProperties.deleteOption
+                        = DeleteOptions.fromString(reader.getString());
+                } else if ("auxiliaryMode".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetNetworkConfigurationProperties.auxiliaryMode
+                        = NetworkInterfaceAuxiliaryMode.fromString(reader.getString());
+                } else if ("auxiliarySku".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetNetworkConfigurationProperties.auxiliarySku
+                        = NetworkInterfaceAuxiliarySku.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualMachineScaleSetNetworkConfigurationProperties;
+        });
+    }
 }

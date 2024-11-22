@@ -6,35 +6,35 @@ package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Cosmos DB Cassandra table resource object.
  */
 @Fluent
-public class CassandraTableResource {
+public class CassandraTableResource implements JsonSerializable<CassandraTableResource> {
     /*
      * Name of the Cosmos DB Cassandra table
      */
-    @JsonProperty(value = "id", required = true)
     private String id;
 
     /*
      * Time to live of the Cosmos DB Cassandra table
      */
-    @JsonProperty(value = "defaultTtl")
     private Integer defaultTtl;
 
     /*
      * Schema of the Cosmos DB Cassandra table
      */
-    @JsonProperty(value = "schema")
     private CassandraSchema schema;
 
     /*
      * Analytical TTL.
      */
-    @JsonProperty(value = "analyticalStorageTtl")
     private Integer analyticalStorageTtl;
 
     /**
@@ -139,4 +139,50 @@ public class CassandraTableResource {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(CassandraTableResource.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeNumberField("defaultTtl", this.defaultTtl);
+        jsonWriter.writeJsonField("schema", this.schema);
+        jsonWriter.writeNumberField("analyticalStorageTtl", this.analyticalStorageTtl);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CassandraTableResource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CassandraTableResource if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CassandraTableResource.
+     */
+    public static CassandraTableResource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CassandraTableResource deserializedCassandraTableResource = new CassandraTableResource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedCassandraTableResource.id = reader.getString();
+                } else if ("defaultTtl".equals(fieldName)) {
+                    deserializedCassandraTableResource.defaultTtl = reader.getNullable(JsonReader::getInt);
+                } else if ("schema".equals(fieldName)) {
+                    deserializedCassandraTableResource.schema = CassandraSchema.fromJson(reader);
+                } else if ("analyticalStorageTtl".equals(fieldName)) {
+                    deserializedCassandraTableResource.analyticalStorageTtl = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCassandraTableResource;
+        });
+    }
 }

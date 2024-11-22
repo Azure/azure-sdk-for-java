@@ -223,8 +223,8 @@ public final class NetworkTapRuleInner extends Resource {
      * @param dynamicMatchConfigurations the dynamicMatchConfigurations value to set.
      * @return the NetworkTapRuleInner object itself.
      */
-    public NetworkTapRuleInner withDynamicMatchConfigurations(
-        List<CommonDynamicMatchConfiguration> dynamicMatchConfigurations) {
+    public NetworkTapRuleInner
+        withDynamicMatchConfigurations(List<CommonDynamicMatchConfiguration> dynamicMatchConfigurations) {
         if (this.innerProperties() == null) {
             this.innerProperties = new NetworkTapRuleProperties();
         }
@@ -262,10 +262,8 @@ public final class NetworkTapRuleInner extends Resource {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model NetworkTapRuleInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property innerProperties in model NetworkTapRuleInner"));
         } else {
             innerProperties().validate();
         }

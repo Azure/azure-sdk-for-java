@@ -13,23 +13,23 @@ public final class UsageInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UsageInner model = BinaryData.fromString(
-            "{\"currentValue\":32.97602,\"limit\":74.61837,\"name\":{\"value\":\"mbjrou\",\"localizedValue\":\"znv\"}}")
+            "{\"currentValue\":89.70679,\"limit\":84.81147,\"name\":{\"value\":\"ycs\",\"localizedValue\":\"zyvoaqa\"}}")
             .toObject(UsageInner.class);
-        Assertions.assertEquals(32.97602f, model.currentValue());
-        Assertions.assertEquals(74.61837f, model.limit());
-        Assertions.assertEquals("mbjrou", model.name().value());
-        Assertions.assertEquals("znv", model.name().localizedValue());
+        Assertions.assertEquals(89.70679f, model.currentValue());
+        Assertions.assertEquals(84.81147f, model.limit());
+        Assertions.assertEquals("ycs", model.name().value());
+        Assertions.assertEquals("zyvoaqa", model.name().localizedValue());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UsageInner model = new UsageInner().withCurrentValue(32.97602f)
-            .withLimit(74.61837f)
-            .withName(new UsageName().withValue("mbjrou").withLocalizedValue("znv"));
+        UsageInner model = new UsageInner().withCurrentValue(89.70679f)
+            .withLimit(84.81147f)
+            .withName(new UsageName().withValue("ycs").withLocalizedValue("zyvoaqa"));
         model = BinaryData.fromObject(model).toObject(UsageInner.class);
-        Assertions.assertEquals(32.97602f, model.currentValue());
-        Assertions.assertEquals(74.61837f, model.limit());
-        Assertions.assertEquals("mbjrou", model.name().value());
-        Assertions.assertEquals("znv", model.name().localizedValue());
+        Assertions.assertEquals(89.70679f, model.currentValue());
+        Assertions.assertEquals(84.81147f, model.limit());
+        Assertions.assertEquals("ycs", model.name().value());
+        Assertions.assertEquals("zyvoaqa", model.name().localizedValue());
     }
 }

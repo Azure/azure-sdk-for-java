@@ -4,22 +4,25 @@
 
 package com.azure.resourcemanager.sql.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * The rule state. Used to delete a rule. To delete an existing rule, specify the schemaName, tableName, columnName,
  * maskingFunction, and specify ruleState as disabled. However, if the rule doesn't already exist, the rule will be
  * created with ruleState set to enabled, regardless of the provided value of ruleState.
  */
 public enum DataMaskingRuleState {
-    /** Enum value Enabled. */
+    /**
+     * Enum value Enabled.
+     */
     ENABLED("Enabled"),
 
-    /** Enum value Disabled. */
+    /**
+     * Enum value Disabled.
+     */
     DISABLED("Disabled");
 
-    /** The actual serialized value for a DataMaskingRuleState instance. */
+    /**
+     * The actual serialized value for a DataMaskingRuleState instance.
+     */
     private final String value;
 
     DataMaskingRuleState(String value) {
@@ -28,11 +31,10 @@ public enum DataMaskingRuleState {
 
     /**
      * Parses a serialized value to a DataMaskingRuleState instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed DataMaskingRuleState object, or null if unable to parse.
      */
-    @JsonCreator
     public static DataMaskingRuleState fromString(String value) {
         if (value == null) {
             return null;
@@ -46,8 +48,9 @@ public enum DataMaskingRuleState {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

@@ -5,7 +5,10 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -16,7 +19,6 @@ public final class DeploymentWhatIfProperties extends DeploymentProperties {
     /*
      * Optional What-If operation settings.
      */
-    @JsonProperty(value = "whatIfSettings")
     private DeploymentWhatIfSettings whatIfSettings;
 
     /**
@@ -129,5 +131,69 @@ public final class DeploymentWhatIfProperties extends DeploymentProperties {
         if (whatIfSettings() != null) {
             whatIfSettings().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("mode", mode() == null ? null : mode().toString());
+        jsonWriter.writeUntypedField("template", template());
+        jsonWriter.writeJsonField("templateLink", templateLink());
+        jsonWriter.writeMapField("parameters", parameters(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("parametersLink", parametersLink());
+        jsonWriter.writeJsonField("debugSetting", debugSetting());
+        jsonWriter.writeJsonField("onErrorDeployment", onErrorDeployment());
+        jsonWriter.writeJsonField("expressionEvaluationOptions", expressionEvaluationOptions());
+        jsonWriter.writeJsonField("whatIfSettings", this.whatIfSettings);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DeploymentWhatIfProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DeploymentWhatIfProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DeploymentWhatIfProperties.
+     */
+    public static DeploymentWhatIfProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DeploymentWhatIfProperties deserializedDeploymentWhatIfProperties = new DeploymentWhatIfProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("mode".equals(fieldName)) {
+                    deserializedDeploymentWhatIfProperties.withMode(DeploymentMode.fromString(reader.getString()));
+                } else if ("template".equals(fieldName)) {
+                    deserializedDeploymentWhatIfProperties.withTemplate(reader.readUntyped());
+                } else if ("templateLink".equals(fieldName)) {
+                    deserializedDeploymentWhatIfProperties.withTemplateLink(TemplateLink.fromJson(reader));
+                } else if ("parameters".equals(fieldName)) {
+                    Map<String, DeploymentParameter> parameters
+                        = reader.readMap(reader1 -> DeploymentParameter.fromJson(reader1));
+                    deserializedDeploymentWhatIfProperties.withParameters(parameters);
+                } else if ("parametersLink".equals(fieldName)) {
+                    deserializedDeploymentWhatIfProperties.withParametersLink(ParametersLink.fromJson(reader));
+                } else if ("debugSetting".equals(fieldName)) {
+                    deserializedDeploymentWhatIfProperties.withDebugSetting(DebugSetting.fromJson(reader));
+                } else if ("onErrorDeployment".equals(fieldName)) {
+                    deserializedDeploymentWhatIfProperties.withOnErrorDeployment(OnErrorDeployment.fromJson(reader));
+                } else if ("expressionEvaluationOptions".equals(fieldName)) {
+                    deserializedDeploymentWhatIfProperties
+                        .withExpressionEvaluationOptions(ExpressionEvaluationOptions.fromJson(reader));
+                } else if ("whatIfSettings".equals(fieldName)) {
+                    deserializedDeploymentWhatIfProperties.whatIfSettings = DeploymentWhatIfSettings.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDeploymentWhatIfProperties;
+        });
     }
 }

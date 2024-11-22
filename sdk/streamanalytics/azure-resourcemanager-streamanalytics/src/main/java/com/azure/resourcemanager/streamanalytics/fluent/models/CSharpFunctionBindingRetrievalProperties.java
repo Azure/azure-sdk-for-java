@@ -5,24 +5,27 @@
 package com.azure.resourcemanager.streamanalytics.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.streamanalytics.models.UdfType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * The binding retrieval properties associated with a CSharp function.
  */
 @Fluent
-public final class CSharpFunctionBindingRetrievalProperties {
+public final class CSharpFunctionBindingRetrievalProperties
+    implements JsonSerializable<CSharpFunctionBindingRetrievalProperties> {
     /*
      * The CSharp code containing a single function definition.
      */
-    @JsonProperty(value = "script")
     private String script;
 
     /*
      * The function type.
      */
-    @JsonProperty(value = "udfType")
     private UdfType udfType;
 
     /**
@@ -77,5 +80,46 @@ public final class CSharpFunctionBindingRetrievalProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("script", this.script);
+        jsonWriter.writeStringField("udfType", this.udfType == null ? null : this.udfType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CSharpFunctionBindingRetrievalProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CSharpFunctionBindingRetrievalProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CSharpFunctionBindingRetrievalProperties.
+     */
+    public static CSharpFunctionBindingRetrievalProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CSharpFunctionBindingRetrievalProperties deserializedCSharpFunctionBindingRetrievalProperties
+                = new CSharpFunctionBindingRetrievalProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("script".equals(fieldName)) {
+                    deserializedCSharpFunctionBindingRetrievalProperties.script = reader.getString();
+                } else if ("udfType".equals(fieldName)) {
+                    deserializedCSharpFunctionBindingRetrievalProperties.udfType
+                        = UdfType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCSharpFunctionBindingRetrievalProperties;
+        });
     }
 }

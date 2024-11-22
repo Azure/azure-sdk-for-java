@@ -12,22 +12,20 @@ import org.junit.jupiter.api.Assertions;
 public final class ContactsPropertiesAntennaConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ContactsPropertiesAntennaConfiguration model =
-            BinaryData
-                .fromString("{\"destinationIp\":\"jdkirsoodqx\",\"sourceIps\":[\"mnoh\",\"t\"]}")
+        ContactsPropertiesAntennaConfiguration model
+            = BinaryData.fromString("{\"destinationIp\":\"cpr\",\"sourceIps\":[\"b\",\"gjvtbv\"]}")
                 .toObject(ContactsPropertiesAntennaConfiguration.class);
-        Assertions.assertEquals("jdkirsoodqx", model.destinationIp());
-        Assertions.assertEquals("mnoh", model.sourceIps().get(0));
+        Assertions.assertEquals("cpr", model.destinationIp());
+        Assertions.assertEquals("b", model.sourceIps().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ContactsPropertiesAntennaConfiguration model =
-            new ContactsPropertiesAntennaConfiguration()
-                .withDestinationIp("jdkirsoodqx")
-                .withSourceIps(Arrays.asList("mnoh", "t"));
+        ContactsPropertiesAntennaConfiguration model
+            = new ContactsPropertiesAntennaConfiguration().withDestinationIp("cpr")
+                .withSourceIps(Arrays.asList("b", "gjvtbv"));
         model = BinaryData.fromObject(model).toObject(ContactsPropertiesAntennaConfiguration.class);
-        Assertions.assertEquals("jdkirsoodqx", model.destinationIp());
-        Assertions.assertEquals("mnoh", model.sourceIps().get(0));
+        Assertions.assertEquals("cpr", model.destinationIp());
+        Assertions.assertEquals("b", model.sourceIps().get(0));
     }
 }

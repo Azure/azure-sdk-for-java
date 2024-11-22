@@ -25,6 +25,7 @@ public final class ClientConstants {
     public static final String IS_PARTIAL_DELIVERY_KEY = "delivery.isPartial";
     public static final String IS_SETTLED_DELIVERY_KEY = "delivery.isSettled";
     public static final String SESSION_NAME_KEY = "sessionName";
+    public static final String SESSION_ID_KEY = "sessionId";
     public static final String FULLY_QUALIFIED_NAMESPACE_KEY = "namespace";
     public static final String OPERATION_NAME_KEY = "amqpOperation";
     public static final String DELIVERY_KEY = "delivery";

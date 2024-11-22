@@ -5,14 +5,24 @@
 package com.azure.communication.callingserver.implementation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.util.Collection;
 
 /** Defines values for MediaStreamingTransportTypeInternal. */
 public final class MediaStreamingTransportTypeInternal
-        extends ExpandableStringEnum<MediaStreamingTransportTypeInternal> {
+    extends ExpandableStringEnum<MediaStreamingTransportTypeInternal> {
     /** Static value websocket for MediaStreamingTransportTypeInternal. */
     public static final MediaStreamingTransportTypeInternal WEBSOCKET = fromString("websocket");
+
+    /**
+     * Creates an instance of {@link MediaStreamingTransportTypeInternal} with no string value.
+     *
+     * @deprecated Use {@link #fromString(String)} to create or get an instance of
+     * {@link MediaStreamingTransportTypeInternal} instead.
+     */
+    @Deprecated
+    public MediaStreamingTransportTypeInternal() {
+    }
 
     /**
      * Creates or finds a MediaStreamingTransportTypeInternal from its string representation.
@@ -20,7 +30,6 @@ public final class MediaStreamingTransportTypeInternal
      * @param name a name to look for.
      * @return the corresponding MediaStreamingTransportTypeInternal.
      */
-    @JsonCreator
     public static MediaStreamingTransportTypeInternal fromString(String name) {
         return fromString(name, MediaStreamingTransportTypeInternal.class);
     }

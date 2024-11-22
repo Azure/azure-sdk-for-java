@@ -12,16 +12,16 @@ public final class DaprComponentResiliencyPolicyTimeoutPolicyConfigurationTests 
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DaprComponentResiliencyPolicyTimeoutPolicyConfiguration model
-            = BinaryData.fromString("{\"responseTimeoutInSeconds\":262483181}")
+            = BinaryData.fromString("{\"responseTimeoutInSeconds\":1552463925}")
                 .toObject(DaprComponentResiliencyPolicyTimeoutPolicyConfiguration.class);
-        Assertions.assertEquals(262483181, model.responseTimeoutInSeconds());
+        Assertions.assertEquals(1552463925, model.responseTimeoutInSeconds());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DaprComponentResiliencyPolicyTimeoutPolicyConfiguration model
-            = new DaprComponentResiliencyPolicyTimeoutPolicyConfiguration().withResponseTimeoutInSeconds(262483181);
+            = new DaprComponentResiliencyPolicyTimeoutPolicyConfiguration().withResponseTimeoutInSeconds(1552463925);
         model = BinaryData.fromObject(model).toObject(DaprComponentResiliencyPolicyTimeoutPolicyConfiguration.class);
-        Assertions.assertEquals(262483181, model.responseTimeoutInSeconds());
+        Assertions.assertEquals(1552463925, model.responseTimeoutInSeconds());
     }
 }

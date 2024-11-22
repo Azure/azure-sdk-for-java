@@ -38,7 +38,7 @@ import java.util.Map;
  */
 public final class JobsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2024-02-02-preview/examples/
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2024-08-02-preview/examples/
      * Job_CreateorUpdate_ConnectedEnvironment.json
      */
     /**
@@ -84,7 +84,7 @@ public final class JobsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2024-02-02-preview/examples/
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2024-08-02-preview/examples/
      * Job_CreateorUpdate_EventTrigger.json
      */
     /**
@@ -131,7 +131,7 @@ public final class JobsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/app/resource-manager/Microsoft.App/preview/2024-02-02-preview/examples/Job_CreateorUpdate.json
+     * specification/app/resource-manager/Microsoft.App/preview/2024-08-02-preview/examples/Job_CreateorUpdate.json
      */
     /**
      * Sample code: Create or Update Container Apps Job.

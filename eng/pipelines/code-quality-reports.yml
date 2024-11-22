@@ -87,34 +87,18 @@ extends:
 
               - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
 
-              - task: Maven@3
-                displayName: 'Build Projects'
+              - task: Maven@4
+                displayName: 'Build and Run Linting'
                 inputs:
                   mavenPomFile: ClientFromSourcePom.xml
                   goals: 'install'
-                  options: '$(DefaultOptions) -T 2C -DskipTests -Dgpg.skip -DtrimStackTrace=false -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dcheckstyle.skip -Dspotbugs.skip -Drevapi.skip=true -Djacoco.skip=true'
+                  options: '$(DefaultOptions) -T 2C -DskipTests -Dgpg.skip -DtrimStackTrace=false -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true $(LintingGoals) -Djacoco.skip=true -Dspotless.skip=true -pl "!com.azure:azure-sdk-from-source,$(SkipLintingProjects)"'
                   mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
                   javaHomeOption: 'JDKVersion'
                   jdkVersionOption: $(JavaBuildVersion)
                   jdkArchitectureOption: 'x64'
                   publishJUnitResults: false
-                condition: and(succeeded(), ne(variables['LintingGoals'], ''))
-
-              - task: Maven@3
-                displayName: 'Run Linting'
-                inputs:
-                  mavenPomFile: ClientFromSourcePom.xml
-                  goals: $(LintingGoals)
-                  # Skip failing on Checkstyle, RevApi, and Spotbugs errors.
-                  # This is being done as the error reporting will be captured, so if any error reports exist the build can be
-                  # failed later allowing all libraries to be validated.
-                  options: '$(DefaultOptions) -T 2C -Dcheckstyle.failOnViolation=false -Dcheckstyle.failsOnError=false -Dspotbugs.failOnError=false -Drevapi.failBuildOnProblemsFound=false -pl "!com.azure:azure-sdk-from-source,$(SkipLintingProjects)"'
-                  mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
-                  javaHomeOption: 'JDKVersion'
-                  jdkVersionOption: $(JavaBuildVersion)
-                  jdkArchitectureOption: 'x64'
-                  publishJUnitResults: false
-                condition: and(succeeded(), ne(variables['LintingGoals'], ''))
+                condition: and(succeeded(), eq(variables['RunLinting'], 'true'))
 
               - task: PowerShell@2
                 inputs:

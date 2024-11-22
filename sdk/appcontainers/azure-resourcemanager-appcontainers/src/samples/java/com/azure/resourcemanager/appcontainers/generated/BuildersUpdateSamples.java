@@ -14,7 +14,7 @@ import java.util.Map;
 public final class BuildersUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/app/resource-manager/Microsoft.App/preview/2024-02-02-preview/examples/Builders_Update.json
+     * specification/app/resource-manager/Microsoft.App/preview/2024-08-02-preview/examples/Builders_Update.json
      */
     /**
      * Sample code: Builders_Update_0.

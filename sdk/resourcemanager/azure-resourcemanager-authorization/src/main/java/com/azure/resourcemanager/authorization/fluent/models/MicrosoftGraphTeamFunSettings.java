@@ -5,52 +5,53 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** teamFunSettings. */
+/**
+ * teamFunSettings.
+ */
 @Fluent
-public final class MicrosoftGraphTeamFunSettings {
+public final class MicrosoftGraphTeamFunSettings implements JsonSerializable<MicrosoftGraphTeamFunSettings> {
     /*
      * If set to true, enables users to include custom memes.
      */
-    @JsonProperty(value = "allowCustomMemes")
     private Boolean allowCustomMemes;
 
     /*
      * If set to true, enables Giphy use.
      */
-    @JsonProperty(value = "allowGiphy")
     private Boolean allowGiphy;
 
     /*
      * If set to true, enables users to include stickers and memes.
      */
-    @JsonProperty(value = "allowStickersAndMemes")
     private Boolean allowStickersAndMemes;
 
     /*
      * giphyRatingType
      */
-    @JsonProperty(value = "giphyContentRating")
     private MicrosoftGraphGiphyRatingType giphyContentRating;
 
     /*
      * teamFunSettings
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphTeamFunSettings class. */
+    /**
+     * Creates an instance of MicrosoftGraphTeamFunSettings class.
+     */
     public MicrosoftGraphTeamFunSettings() {
     }
 
     /**
      * Get the allowCustomMemes property: If set to true, enables users to include custom memes.
-     *
+     * 
      * @return the allowCustomMemes value.
      */
     public Boolean allowCustomMemes() {
@@ -59,7 +60,7 @@ public final class MicrosoftGraphTeamFunSettings {
 
     /**
      * Set the allowCustomMemes property: If set to true, enables users to include custom memes.
-     *
+     * 
      * @param allowCustomMemes the allowCustomMemes value to set.
      * @return the MicrosoftGraphTeamFunSettings object itself.
      */
@@ -70,7 +71,7 @@ public final class MicrosoftGraphTeamFunSettings {
 
     /**
      * Get the allowGiphy property: If set to true, enables Giphy use.
-     *
+     * 
      * @return the allowGiphy value.
      */
     public Boolean allowGiphy() {
@@ -79,7 +80,7 @@ public final class MicrosoftGraphTeamFunSettings {
 
     /**
      * Set the allowGiphy property: If set to true, enables Giphy use.
-     *
+     * 
      * @param allowGiphy the allowGiphy value to set.
      * @return the MicrosoftGraphTeamFunSettings object itself.
      */
@@ -90,7 +91,7 @@ public final class MicrosoftGraphTeamFunSettings {
 
     /**
      * Get the allowStickersAndMemes property: If set to true, enables users to include stickers and memes.
-     *
+     * 
      * @return the allowStickersAndMemes value.
      */
     public Boolean allowStickersAndMemes() {
@@ -99,7 +100,7 @@ public final class MicrosoftGraphTeamFunSettings {
 
     /**
      * Set the allowStickersAndMemes property: If set to true, enables users to include stickers and memes.
-     *
+     * 
      * @param allowStickersAndMemes the allowStickersAndMemes value to set.
      * @return the MicrosoftGraphTeamFunSettings object itself.
      */
@@ -110,7 +111,7 @@ public final class MicrosoftGraphTeamFunSettings {
 
     /**
      * Get the giphyContentRating property: giphyRatingType.
-     *
+     * 
      * @return the giphyContentRating value.
      */
     public MicrosoftGraphGiphyRatingType giphyContentRating() {
@@ -119,7 +120,7 @@ public final class MicrosoftGraphTeamFunSettings {
 
     /**
      * Set the giphyContentRating property: giphyRatingType.
-     *
+     * 
      * @param giphyContentRating the giphyContentRating value to set.
      * @return the MicrosoftGraphTeamFunSettings object itself.
      */
@@ -130,17 +131,16 @@ public final class MicrosoftGraphTeamFunSettings {
 
     /**
      * Get the additionalProperties property: teamFunSettings.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: teamFunSettings.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphTeamFunSettings object itself.
      */
@@ -149,19 +149,72 @@ public final class MicrosoftGraphTeamFunSettings {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("allowCustomMemes", this.allowCustomMemes);
+        jsonWriter.writeBooleanField("allowGiphy", this.allowGiphy);
+        jsonWriter.writeBooleanField("allowStickersAndMemes", this.allowStickersAndMemes);
+        jsonWriter.writeStringField("giphyContentRating",
+            this.giphyContentRating == null ? null : this.giphyContentRating.toString());
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphTeamFunSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphTeamFunSettings if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphTeamFunSettings.
+     */
+    public static MicrosoftGraphTeamFunSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphTeamFunSettings deserializedMicrosoftGraphTeamFunSettings
+                = new MicrosoftGraphTeamFunSettings();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("allowCustomMemes".equals(fieldName)) {
+                    deserializedMicrosoftGraphTeamFunSettings.allowCustomMemes
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("allowGiphy".equals(fieldName)) {
+                    deserializedMicrosoftGraphTeamFunSettings.allowGiphy = reader.getNullable(JsonReader::getBoolean);
+                } else if ("allowStickersAndMemes".equals(fieldName)) {
+                    deserializedMicrosoftGraphTeamFunSettings.allowStickersAndMemes
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("giphyContentRating".equals(fieldName)) {
+                    deserializedMicrosoftGraphTeamFunSettings.giphyContentRating
+                        = MicrosoftGraphGiphyRatingType.fromString(reader.getString());
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphTeamFunSettings.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphTeamFunSettings;
+        });
     }
 }

@@ -8,13 +8,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of AvailabilityGroupListeners. */
+/**
+ * Resource collection API of AvailabilityGroupListeners.
+ */
 public interface AvailabilityGroupListeners {
     /**
      * Gets an availability group listener.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
-     *     the Azure Resource Manager API or the portal.
+     * the Azure Resource Manager API or the portal.
      * @param sqlVirtualMachineGroupName Name of the SQL virtual machine group.
      * @param availabilityGroupListenerName Name of the availability group listener.
      * @param expand The child resources to include in the response.
@@ -24,18 +26,14 @@ public interface AvailabilityGroupListeners {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an availability group listener along with {@link Response}.
      */
-    Response<AvailabilityGroupListener> getWithResponse(
-        String resourceGroupName,
-        String sqlVirtualMachineGroupName,
-        String availabilityGroupListenerName,
-        String expand,
-        Context context);
+    Response<AvailabilityGroupListener> getWithResponse(String resourceGroupName, String sqlVirtualMachineGroupName,
+        String availabilityGroupListenerName, String expand, Context context);
 
     /**
      * Gets an availability group listener.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
-     *     the Azure Resource Manager API or the portal.
+     * the Azure Resource Manager API or the portal.
      * @param sqlVirtualMachineGroupName Name of the SQL virtual machine group.
      * @param availabilityGroupListenerName Name of the availability group listener.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -43,14 +41,14 @@ public interface AvailabilityGroupListeners {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an availability group listener.
      */
-    AvailabilityGroupListener get(
-        String resourceGroupName, String sqlVirtualMachineGroupName, String availabilityGroupListenerName);
+    AvailabilityGroupListener get(String resourceGroupName, String sqlVirtualMachineGroupName,
+        String availabilityGroupListenerName);
 
     /**
      * Deletes an availability group listener.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
-     *     the Azure Resource Manager API or the portal.
+     * the Azure Resource Manager API or the portal.
      * @param sqlVirtualMachineGroupName Name of the SQL virtual machine group.
      * @param availabilityGroupListenerName Name of the availability group listener.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -61,9 +59,9 @@ public interface AvailabilityGroupListeners {
 
     /**
      * Deletes an availability group listener.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
-     *     the Azure Resource Manager API or the portal.
+     * the Azure Resource Manager API or the portal.
      * @param sqlVirtualMachineGroupName Name of the SQL virtual machine group.
      * @param availabilityGroupListenerName Name of the availability group listener.
      * @param context The context to associate with this operation.
@@ -71,17 +69,14 @@ public interface AvailabilityGroupListeners {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void delete(
-        String resourceGroupName,
-        String sqlVirtualMachineGroupName,
-        String availabilityGroupListenerName,
+    void delete(String resourceGroupName, String sqlVirtualMachineGroupName, String availabilityGroupListenerName,
         Context context);
 
     /**
      * Lists all availability group listeners in a SQL virtual machine group.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
-     *     the Azure Resource Manager API or the portal.
+     * the Azure Resource Manager API or the portal.
      * @param sqlVirtualMachineGroupName Name of the SQL virtual machine group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -92,9 +87,9 @@ public interface AvailabilityGroupListeners {
 
     /**
      * Lists all availability group listeners in a SQL virtual machine group.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
-     *     the Azure Resource Manager API or the portal.
+     * the Azure Resource Manager API or the portal.
      * @param sqlVirtualMachineGroupName Name of the SQL virtual machine group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -102,12 +97,12 @@ public interface AvailabilityGroupListeners {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of availability group listeners as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<AvailabilityGroupListener> listByGroup(
-        String resourceGroupName, String sqlVirtualMachineGroupName, Context context);
+    PagedIterable<AvailabilityGroupListener> listByGroup(String resourceGroupName, String sqlVirtualMachineGroupName,
+        Context context);
 
     /**
      * Gets an availability group listener.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -118,7 +113,7 @@ public interface AvailabilityGroupListeners {
 
     /**
      * Gets an availability group listener.
-     *
+     * 
      * @param id the resource ID.
      * @param expand The child resources to include in the response.
      * @param context The context to associate with this operation.
@@ -131,7 +126,7 @@ public interface AvailabilityGroupListeners {
 
     /**
      * Deletes an availability group listener.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -141,7 +136,7 @@ public interface AvailabilityGroupListeners {
 
     /**
      * Deletes an availability group listener.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -152,7 +147,7 @@ public interface AvailabilityGroupListeners {
 
     /**
      * Begins definition for a new AvailabilityGroupListener resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new AvailabilityGroupListener definition.
      */

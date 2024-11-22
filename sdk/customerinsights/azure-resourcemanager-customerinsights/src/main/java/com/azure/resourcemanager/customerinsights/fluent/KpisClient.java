@@ -13,11 +13,13 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.customerinsights.fluent.models.KpiResourceFormatInner;
 
-/** An instance of this class provides access to all the operations defined in KpisClient. */
+/**
+ * An instance of this class provides access to all the operations defined in KpisClient.
+ */
 public interface KpisClient {
     /**
      * Creates a KPI or updates an existing KPI in the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param kpiName The name of the KPI.
@@ -28,12 +30,12 @@ public interface KpisClient {
      * @return the {@link SyncPoller} for polling of the KPI resource format.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<KpiResourceFormatInner>, KpiResourceFormatInner> beginCreateOrUpdate(
-        String resourceGroupName, String hubName, String kpiName, KpiResourceFormatInner parameters);
+    SyncPoller<PollResult<KpiResourceFormatInner>, KpiResourceFormatInner> beginCreateOrUpdate(String resourceGroupName,
+        String hubName, String kpiName, KpiResourceFormatInner parameters);
 
     /**
      * Creates a KPI or updates an existing KPI in the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param kpiName The name of the KPI.
@@ -45,12 +47,12 @@ public interface KpisClient {
      * @return the {@link SyncPoller} for polling of the KPI resource format.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<KpiResourceFormatInner>, KpiResourceFormatInner> beginCreateOrUpdate(
-        String resourceGroupName, String hubName, String kpiName, KpiResourceFormatInner parameters, Context context);
+    SyncPoller<PollResult<KpiResourceFormatInner>, KpiResourceFormatInner> beginCreateOrUpdate(String resourceGroupName,
+        String hubName, String kpiName, KpiResourceFormatInner parameters, Context context);
 
     /**
      * Creates a KPI or updates an existing KPI in the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param kpiName The name of the KPI.
@@ -61,12 +63,12 @@ public interface KpisClient {
      * @return the KPI resource format.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    KpiResourceFormatInner createOrUpdate(
-        String resourceGroupName, String hubName, String kpiName, KpiResourceFormatInner parameters);
+    KpiResourceFormatInner createOrUpdate(String resourceGroupName, String hubName, String kpiName,
+        KpiResourceFormatInner parameters);
 
     /**
      * Creates a KPI or updates an existing KPI in the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param kpiName The name of the KPI.
@@ -78,12 +80,12 @@ public interface KpisClient {
      * @return the KPI resource format.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    KpiResourceFormatInner createOrUpdate(
-        String resourceGroupName, String hubName, String kpiName, KpiResourceFormatInner parameters, Context context);
+    KpiResourceFormatInner createOrUpdate(String resourceGroupName, String hubName, String kpiName,
+        KpiResourceFormatInner parameters, Context context);
 
     /**
      * Gets a KPI in the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param kpiName The name of the KPI.
@@ -94,12 +96,12 @@ public interface KpisClient {
      * @return a KPI in the hub along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<KpiResourceFormatInner> getWithResponse(
-        String resourceGroupName, String hubName, String kpiName, Context context);
+    Response<KpiResourceFormatInner> getWithResponse(String resourceGroupName, String hubName, String kpiName,
+        Context context);
 
     /**
      * Gets a KPI in the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param kpiName The name of the KPI.
@@ -113,7 +115,7 @@ public interface KpisClient {
 
     /**
      * Deletes a KPI in the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param kpiName The name of the KPI.
@@ -127,7 +129,7 @@ public interface KpisClient {
 
     /**
      * Deletes a KPI in the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param kpiName The name of the KPI.
@@ -138,12 +140,12 @@ public interface KpisClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String hubName, String kpiName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String hubName, String kpiName,
+        Context context);
 
     /**
      * Deletes a KPI in the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param kpiName The name of the KPI.
@@ -156,7 +158,7 @@ public interface KpisClient {
 
     /**
      * Deletes a KPI in the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param kpiName The name of the KPI.
@@ -170,7 +172,7 @@ public interface KpisClient {
 
     /**
      * Reprocesses the Kpi values of the specified KPI.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param kpiName The name of the KPI.
@@ -185,7 +187,7 @@ public interface KpisClient {
 
     /**
      * Reprocesses the Kpi values of the specified KPI.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param kpiName The name of the KPI.
@@ -198,7 +200,7 @@ public interface KpisClient {
 
     /**
      * Gets all the KPIs in the specified hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -211,7 +213,7 @@ public interface KpisClient {
 
     /**
      * Gets all the KPIs in the specified hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param context The context to associate with this operation.

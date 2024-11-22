@@ -27,8 +27,7 @@ public class TimeUtils {
         }
         String[] splitPath = path.split("/");
 
-        return OffsetDateTime.of(
-            Integer.parseInt(splitPath[2]), /* year */
+        return OffsetDateTime.of(Integer.parseInt(splitPath[2]), /* year */
             splitPath.length < 4 ? 1 : Integer.parseInt(splitPath[3]), /* month */
             splitPath.length < 5 ? 1 : Integer.parseInt(splitPath[4]), /* day */
             splitPath.length < 6 ? 0 : Integer.parseInt(splitPath[5]) / 100, /* hour */
@@ -71,8 +70,7 @@ public class TimeUtils {
         OffsetDateTime hour = convertPathToTime(segment);
         OffsetDateTime startHour = roundDownToNearestHour(start);
         OffsetDateTime endHour = roundUpToNearestHour(end);
-        return ((hour.isEqual(startHour) || hour.isAfter(startHour))
-            && hour.isBefore(endHour));
+        return ((hour.isEqual(startHour) || hour.isAfter(startHour)) && hour.isBefore(endHour));
     }
 
     /**

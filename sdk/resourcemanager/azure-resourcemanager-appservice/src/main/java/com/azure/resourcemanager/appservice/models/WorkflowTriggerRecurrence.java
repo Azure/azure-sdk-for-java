@@ -5,47 +5,45 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The workflow trigger recurrence.
  */
 @Fluent
-public final class WorkflowTriggerRecurrence {
+public final class WorkflowTriggerRecurrence implements JsonSerializable<WorkflowTriggerRecurrence> {
     /*
      * The frequency.
      */
-    @JsonProperty(value = "frequency")
     private RecurrenceFrequency frequency;
 
     /*
      * The interval.
      */
-    @JsonProperty(value = "interval")
     private Integer interval;
 
     /*
      * The start time.
      */
-    @JsonProperty(value = "startTime")
     private String startTime;
 
     /*
      * The end time.
      */
-    @JsonProperty(value = "endTime")
     private String endTime;
 
     /*
      * The time zone.
      */
-    @JsonProperty(value = "timeZone")
     private String timeZone;
 
     /*
      * The recurrence schedule.
      */
-    @JsonProperty(value = "schedule")
     private RecurrenceSchedule schedule;
 
     /**
@@ -183,5 +181,57 @@ public final class WorkflowTriggerRecurrence {
         if (schedule() != null) {
             schedule().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("frequency", this.frequency == null ? null : this.frequency.toString());
+        jsonWriter.writeNumberField("interval", this.interval);
+        jsonWriter.writeStringField("startTime", this.startTime);
+        jsonWriter.writeStringField("endTime", this.endTime);
+        jsonWriter.writeStringField("timeZone", this.timeZone);
+        jsonWriter.writeJsonField("schedule", this.schedule);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WorkflowTriggerRecurrence from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WorkflowTriggerRecurrence if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WorkflowTriggerRecurrence.
+     */
+    public static WorkflowTriggerRecurrence fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WorkflowTriggerRecurrence deserializedWorkflowTriggerRecurrence = new WorkflowTriggerRecurrence();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("frequency".equals(fieldName)) {
+                    deserializedWorkflowTriggerRecurrence.frequency
+                        = RecurrenceFrequency.fromString(reader.getString());
+                } else if ("interval".equals(fieldName)) {
+                    deserializedWorkflowTriggerRecurrence.interval = reader.getNullable(JsonReader::getInt);
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedWorkflowTriggerRecurrence.startTime = reader.getString();
+                } else if ("endTime".equals(fieldName)) {
+                    deserializedWorkflowTriggerRecurrence.endTime = reader.getString();
+                } else if ("timeZone".equals(fieldName)) {
+                    deserializedWorkflowTriggerRecurrence.timeZone = reader.getString();
+                } else if ("schedule".equals(fieldName)) {
+                    deserializedWorkflowTriggerRecurrence.schedule = RecurrenceSchedule.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWorkflowTriggerRecurrence;
+        });
     }
 }

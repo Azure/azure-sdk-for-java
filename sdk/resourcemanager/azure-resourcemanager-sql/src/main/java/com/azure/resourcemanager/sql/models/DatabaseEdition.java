@@ -4,7 +4,6 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** Defines values for DatabaseEdition. */
@@ -57,7 +56,6 @@ public final class DatabaseEdition extends ExpandableStringEnum<DatabaseEdition>
      * @param name a name to look for.
      * @return the corresponding DatabaseEdition.
      */
-    @JsonCreator
     public static DatabaseEdition fromString(String name) {
         return fromString(name, DatabaseEdition.class);
     }

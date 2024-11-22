@@ -7,37 +7,52 @@ package com.azure.security.keyvault.keys.models;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
-/** JsonWebKey Key Type (kty), as defined in https://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-40. */
+/**
+ * JsonWebKey Key Type (kty), as defined in https://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-40.
+ */
 public final class KeyType extends ExpandableStringEnum<KeyType> {
-    /** Elliptic Curve. */
+    /**
+     * Elliptic Curve.
+     */
     public static final KeyType EC = fromString("EC");
 
-    /** Elliptic Curve with a private key which is stored in the HSM. */
+    /**
+     * Elliptic Curve with a private key which is stored in the HSM.
+     */
     public static final KeyType EC_HSM = fromString("EC-HSM");
 
-    /** RSA (https://tools.ietf.org/html/rfc3447). */
+    /**
+     * RSA (https://tools.ietf.org/html/rfc3447).
+     */
     public static final KeyType RSA = fromString("RSA");
 
-    /** RSA with a private key which is stored in the HSM. */
+    /**
+     * RSA with a private key which is stored in the HSM.
+     */
     public static final KeyType RSA_HSM = fromString("RSA-HSM");
 
-    /** Octet sequence (used to represent symmetric keys). */
+    /**
+     * Octet sequence (used to represent symmetric keys).
+     */
     public static final KeyType OCT = fromString("oct");
 
-    /** Octet sequence (used to represent symmetric keys) which is stored the HSM. */
+    /**
+     * Octet sequence (used to represent symmetric keys) which is stored the HSM.
+     */
     public static final KeyType OCT_HSM = fromString("oct-HSM");
 
     /**
      * Creates a new instance of KeyType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public KeyType() {}
+    public KeyType() {
+    }
 
     /**
      * Creates or finds a KeyType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding KeyType.
      */
@@ -47,7 +62,7 @@ public final class KeyType extends ExpandableStringEnum<KeyType> {
 
     /**
      * Gets known KeyType values.
-     *
+     * 
      * @return known KeyType values.
      */
     public static Collection<KeyType> values() {

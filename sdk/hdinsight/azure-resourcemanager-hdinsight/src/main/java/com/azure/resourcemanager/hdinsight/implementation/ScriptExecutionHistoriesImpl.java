@@ -20,28 +20,27 @@ public final class ScriptExecutionHistoriesImpl implements ScriptExecutionHistor
 
     private final com.azure.resourcemanager.hdinsight.HDInsightManager serviceManager;
 
-    public ScriptExecutionHistoriesImpl(
-        ScriptExecutionHistoriesClient innerClient,
+    public ScriptExecutionHistoriesImpl(ScriptExecutionHistoriesClient innerClient,
         com.azure.resourcemanager.hdinsight.HDInsightManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<RuntimeScriptActionDetail> listByCluster(String resourceGroupName, String clusterName) {
-        PagedIterable<RuntimeScriptActionDetailInner> inner =
-            this.serviceClient().listByCluster(resourceGroupName, clusterName);
-        return Utils.mapPage(inner, inner1 -> new RuntimeScriptActionDetailImpl(inner1, this.manager()));
+        PagedIterable<RuntimeScriptActionDetailInner> inner
+            = this.serviceClient().listByCluster(resourceGroupName, clusterName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new RuntimeScriptActionDetailImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<RuntimeScriptActionDetail> listByCluster(
-        String resourceGroupName, String clusterName, Context context) {
-        PagedIterable<RuntimeScriptActionDetailInner> inner =
-            this.serviceClient().listByCluster(resourceGroupName, clusterName, context);
-        return Utils.mapPage(inner, inner1 -> new RuntimeScriptActionDetailImpl(inner1, this.manager()));
+    public PagedIterable<RuntimeScriptActionDetail> listByCluster(String resourceGroupName, String clusterName,
+        Context context) {
+        PagedIterable<RuntimeScriptActionDetailInner> inner
+            = this.serviceClient().listByCluster(resourceGroupName, clusterName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new RuntimeScriptActionDetailImpl(inner1, this.manager()));
     }
 
-    public Response<Void> promoteWithResponse(
-        String resourceGroupName, String clusterName, String scriptExecutionId, Context context) {
+    public Response<Void> promoteWithResponse(String resourceGroupName, String clusterName, String scriptExecutionId,
+        Context context) {
         return this.serviceClient().promoteWithResponse(resourceGroupName, clusterName, scriptExecutionId, context);
     }
 

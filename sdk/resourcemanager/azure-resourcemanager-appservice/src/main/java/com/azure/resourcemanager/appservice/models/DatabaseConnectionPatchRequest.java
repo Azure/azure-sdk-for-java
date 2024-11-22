@@ -5,18 +5,21 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.fluent.models.DatabaseConnectionPatchRequestProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Static Site Database Connection Request Properties resource when patching.
  */
 @Fluent
-public final class DatabaseConnectionPatchRequest {
+public final class DatabaseConnectionPatchRequest implements JsonSerializable<DatabaseConnectionPatchRequest> {
     /*
      * DatabaseConnectionPatchRequest resource specific properties
      */
-    @JsonProperty(value = "properties")
     private DatabaseConnectionPatchRequestProperties innerProperties;
 
     /**
@@ -141,5 +144,43 @@ public final class DatabaseConnectionPatchRequest {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DatabaseConnectionPatchRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DatabaseConnectionPatchRequest if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DatabaseConnectionPatchRequest.
+     */
+    public static DatabaseConnectionPatchRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DatabaseConnectionPatchRequest deserializedDatabaseConnectionPatchRequest
+                = new DatabaseConnectionPatchRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedDatabaseConnectionPatchRequest.innerProperties
+                        = DatabaseConnectionPatchRequestProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDatabaseConnectionPatchRequest;
+        });
     }
 }

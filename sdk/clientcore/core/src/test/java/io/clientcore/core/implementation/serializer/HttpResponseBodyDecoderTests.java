@@ -14,7 +14,7 @@ import io.clientcore.core.implementation.http.UnexpectedExceptionInformation;
 import io.clientcore.core.implementation.http.serializer.DefaultJsonSerializer;
 import io.clientcore.core.implementation.http.serializer.HttpResponseBodyDecoder;
 import io.clientcore.core.implementation.http.serializer.HttpResponseDecodeData;
-import io.clientcore.core.implementation.util.Base64Url;
+import io.clientcore.core.implementation.util.Base64Uri;
 import io.clientcore.core.implementation.util.DateTimeRfc1123;
 import io.clientcore.core.util.binarydata.BinaryData;
 import io.clientcore.core.util.serializer.ObjectSerializer;
@@ -64,14 +64,13 @@ public class HttpResponseBodyDecoderTests {
             Arguments.of((Response<?>) null),
 
             // Response without a request.
-            Arguments.of(new MockHttpResponse(null, 200))
-        );
+            Arguments.of(new MockHttpResponse(null, 200)));
     }
 
     @ParameterizedTest
     @MethodSource("errorResponseSupplier")
-    public void errorResponse(Response<?> response, HttpResponseDecodeData decodeData,
-                              boolean isEmpty, Object expected) {
+    public void errorResponse(Response<?> response, HttpResponseDecodeData decodeData, boolean isEmpty,
+        Object expected) {
         BinaryData body = response.getBody();
         HttpResponseBodyDecoder.decodeByteArray(body, response, SERIALIZER, decodeData);
 
@@ -81,8 +80,8 @@ public class HttpResponseBodyDecoderTests {
     }
 
     private static Stream<Arguments> errorResponseSupplier() {
-        UnexpectedExceptionInformation exceptionInformation =
-            new MockUnexpectedExceptionInformation(null, String.class);
+        UnexpectedExceptionInformation exceptionInformation
+            = new MockUnexpectedExceptionInformation(null, String.class);
 
         HttpResponseDecodeData noExpectedStatusCodes = new MockHttpResponseDecodeData(exceptionInformation);
         HttpResponseDecodeData expectedStatusCodes = new MockHttpResponseDecodeData(202, exceptionInformation);
@@ -91,13 +90,11 @@ public class HttpResponseBodyDecoderTests {
         Response<?> response = new MockHttpResponse(GET_REQUEST, 300, "expected");
         Response<?> wrongGoodResponse = new MockHttpResponse(GET_REQUEST, 200, "good response");
 
-        return Stream.of(
-            Arguments.of(emptyResponse, noExpectedStatusCodes, true, null),
+        return Stream.of(Arguments.of(emptyResponse, noExpectedStatusCodes, true, null),
             Arguments.of(emptyResponse, expectedStatusCodes, true, null),
             Arguments.of(response, noExpectedStatusCodes, false, "\"expected\""),
             Arguments.of(response, expectedStatusCodes, false, "\"expected\""),
-            Arguments.of(wrongGoodResponse, expectedStatusCodes, false, "\"good response\"")
-        );
+            Arguments.of(wrongGoodResponse, expectedStatusCodes, false, "\"good response\""));
     }
 
     @Test
@@ -109,8 +106,8 @@ public class HttpResponseBodyDecoderTests {
             }
         };
 
-        HttpResponseDecodeData noExpectedStatusCodes = new MockHttpResponseDecodeData(
-            new UnexpectedExceptionInformation(null, null));
+        HttpResponseDecodeData noExpectedStatusCodes
+            = new MockHttpResponseDecodeData(new UnexpectedExceptionInformation(null, null));
 
         Response<?> response = new MockHttpResponse(GET_REQUEST, 300);
 
@@ -139,18 +136,15 @@ public class HttpResponseBodyDecoderTests {
         HttpResponseDecodeData nullReturnType = new MockHttpResponseDecodeData(200, null, false);
 
         ParameterizedType voidTypeResponse = mockParameterizedType(Response.class, int.class, Void.TYPE);
-        HttpResponseDecodeData voidTypeResponseReturnType = new MockHttpResponseDecodeData(200, voidTypeResponse,
-            false);
+        HttpResponseDecodeData voidTypeResponseReturnType
+            = new MockHttpResponseDecodeData(200, voidTypeResponse, false);
 
         ParameterizedType voidClassResponse = mockParameterizedType(Response.class, int.class, void.class);
-        HttpResponseDecodeData voidClassResponseReturnType = new MockHttpResponseDecodeData(200, voidClassResponse,
-            false);
+        HttpResponseDecodeData voidClassResponseReturnType
+            = new MockHttpResponseDecodeData(200, voidClassResponse, false);
 
-        return Stream.of(
-            Arguments.of(nullReturnType),
-            Arguments.of(voidTypeResponseReturnType),
-            Arguments.of(voidClassResponseReturnType)
-        );
+        return Stream.of(Arguments.of(nullReturnType), Arguments.of(voidTypeResponseReturnType),
+            Arguments.of(voidClassResponseReturnType));
     }
 
     @Test
@@ -175,51 +169,49 @@ public class HttpResponseBodyDecoderTests {
         HttpResponseDecodeData stringDecodeData = new MockHttpResponseDecodeData(200, String.class, String.class, true);
         Response<?> stringResponse = new MockHttpResponse(GET_REQUEST, 200, "hello");
 
-        HttpResponseDecodeData offsetDateTimeDecodeData = new MockHttpResponseDecodeData(200, OffsetDateTime.class,
-            OffsetDateTime.class, true);
+        HttpResponseDecodeData offsetDateTimeDecodeData
+            = new MockHttpResponseDecodeData(200, OffsetDateTime.class, OffsetDateTime.class, true);
         OffsetDateTime offsetDateTimeNow = OffsetDateTime.now(ZoneOffset.UTC);
         Response<?> offsetDateTimeResponse = new MockHttpResponse(GET_REQUEST, 200, offsetDateTimeNow);
 
-        HttpResponseDecodeData dateTimeRfc1123DecodeData = new MockHttpResponseDecodeData(200, OffsetDateTime.class,
-            DateTimeRfc1123.class, true);
+        HttpResponseDecodeData dateTimeRfc1123DecodeData
+            = new MockHttpResponseDecodeData(200, OffsetDateTime.class, DateTimeRfc1123.class, true);
         DateTimeRfc1123 dateTimeRfc1123Now = new DateTimeRfc1123(offsetDateTimeNow);
         Response<?> dateTimeRfc1123Response = new MockHttpResponse(GET_REQUEST, 200, dateTimeRfc1123Now);
 
-        HttpResponseDecodeData unixTimeDecodeData = new MockHttpResponseDecodeData(200, OffsetDateTime.class,
-            OffsetDateTime.class, true);
+        HttpResponseDecodeData unixTimeDecodeData
+            = new MockHttpResponseDecodeData(200, OffsetDateTime.class, OffsetDateTime.class, true);
         Response<?> unixTimeResponse = new MockHttpResponse(GET_REQUEST, 200, offsetDateTimeNow);
 
         ParameterizedType stringList = mockParameterizedType(List.class, String.class);
-        HttpResponseDecodeData stringListDecodeData = new MockHttpResponseDecodeData(200, stringList, String.class,
-            true);
+        HttpResponseDecodeData stringListDecodeData
+            = new MockHttpResponseDecodeData(200, stringList, String.class, true);
         List<String> list = Arrays.asList("hello", "azure");
         Response<?> stringListResponse = new MockHttpResponse(GET_REQUEST, 200, list);
 
         ParameterizedType mapStringString = mockParameterizedType(Map.class, String.class, String.class);
-        HttpResponseDecodeData mapStringStringDecodeData = new MockHttpResponseDecodeData(200, mapStringString,
-            String.class, true);
+        HttpResponseDecodeData mapStringStringDecodeData
+            = new MockHttpResponseDecodeData(200, mapStringString, String.class, true);
         Map<String, String> map = Collections.singletonMap("hello", "azure");
         Response<?> mapStringStringResponse = new MockHttpResponse(GET_REQUEST, 200, map);
 
-        return Stream.of(
-            Arguments.of(stringResponse, stringDecodeData, "hello"),
+        return Stream.of(Arguments.of(stringResponse, stringDecodeData, "hello"),
             Arguments.of(offsetDateTimeResponse, offsetDateTimeDecodeData, offsetDateTimeNow),
             Arguments.of(dateTimeRfc1123Response, dateTimeRfc1123DecodeData,
                 new DateTimeRfc1123(dateTimeRfc1123Now.toString()).getDateTime()),
             Arguments.of(unixTimeResponse, unixTimeDecodeData, offsetDateTimeNow),
             Arguments.of(stringListResponse, stringListDecodeData, list),
-            Arguments.of(mapStringStringResponse, mapStringStringDecodeData, map)
-        );
+            Arguments.of(mapStringStringResponse, mapStringStringDecodeData, map));
     }
 
     @Test
-    public void decodeListBase64UrlResponse() {
+    public void decodeListBase64UriResponse() {
         ParameterizedType parameterizedType = mockParameterizedType(List.class, byte[].class);
-        HttpResponseDecodeData decodeData = new MockHttpResponseDecodeData(200, parameterizedType, Base64Url.class,
-            true);
+        HttpResponseDecodeData decodeData
+            = new MockHttpResponseDecodeData(200, parameterizedType, Base64Uri.class, true);
 
-        List<Base64Url> base64Urls = Arrays.asList(new Base64Url("base"), new Base64Url("64"));
-        Response<?> response = new MockHttpResponse(GET_REQUEST, 200, base64Urls);
+        List<Base64Uri> base64Uris = Arrays.asList(new Base64Uri("base"), new Base64Uri("64"));
+        Response<?> response = new MockHttpResponse(GET_REQUEST, 200, base64Uris);
 
         BinaryData body = response.getBody();
         Object actual = HttpResponseBodyDecoder.decodeByteArray(body, response, SERIALIZER, decodeData);
@@ -230,8 +222,8 @@ public class HttpResponseBodyDecoderTests {
         List<byte[]> decoded = (List<byte[]>) actual;
 
         assertEquals(2, decoded.size());
-        assertArraysEqual(base64Urls.get(0).decodedBytes(), decoded.get(0));
-        assertArraysEqual(base64Urls.get(1).decodedBytes(), decoded.get(1));
+        assertArraysEqual(base64Uris.get(0).decodedBytes(), decoded.get(0));
+        assertArraysEqual(base64Uris.get(1).decodedBytes(), decoded.get(1));
     }
 
     @Test
@@ -239,9 +231,8 @@ public class HttpResponseBodyDecoderTests {
         try (Response<?> response = new MockHttpResponse(GET_REQUEST, 200, (Object) null)) {
             HttpResponseDecodeData decodeData = new MockHttpResponseDecodeData(200, String.class, String.class, true);
 
-            assertThrows(HttpResponseException.class, () ->
-                HttpResponseBodyDecoder.decodeByteArray(BinaryData.fromString("malformed JSON string"), response,
-                    SERIALIZER, decodeData));
+            assertThrows(HttpResponseException.class, () -> HttpResponseBodyDecoder
+                .decodeByteArray(BinaryData.fromString("malformed JSON string"), response, SERIALIZER, decodeData));
         }
     }
 
@@ -256,8 +247,8 @@ public class HttpResponseBodyDecoderTests {
         Response<?> headResponse = new MockHttpResponse(HEAD_REQUEST, 200);
         Response<?> getResponse = new MockHttpResponse(GET_REQUEST, 200);
 
-        HttpResponseDecodeData badResponseData = new MockHttpResponseDecodeData(-1,
-            new UnexpectedExceptionInformation(null, null));
+        HttpResponseDecodeData badResponseData
+            = new MockHttpResponseDecodeData(-1, new UnexpectedExceptionInformation(null, null));
 
         HttpResponseDecodeData nonDecodable = new MockHttpResponseDecodeData(200, void.class, false);
 
@@ -267,13 +258,10 @@ public class HttpResponseBodyDecoderTests {
         HttpResponseDecodeData responseStringReturn = new MockHttpResponseDecodeData(200, responseString, true);
 
         HttpResponseDecodeData headDecodeData = new MockHttpResponseDecodeData(200, null, false);
-        return Stream.of(
-            Arguments.of(badResponse, badResponseData, Object.class),
-            Arguments.of(headResponse, headDecodeData, null),
-            Arguments.of(getResponse, nonDecodable, null),
+        return Stream.of(Arguments.of(badResponse, badResponseData, Object.class),
+            Arguments.of(headResponse, headDecodeData, null), Arguments.of(getResponse, nonDecodable, null),
             Arguments.of(getResponse, stringReturn, String.class),
-            Arguments.of(getResponse, responseStringReturn, String.class)
-        );
+            Arguments.of(getResponse, responseStringReturn, String.class));
     }
 
     private static ParameterizedType mockParameterizedType(Type rawType, Type... actualTypeArguments) {

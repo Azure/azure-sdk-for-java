@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.hdinsight.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The direction for the resource provider connection. */
+/**
+ * The direction for the resource provider connection.
+ */
 public final class ResourceProviderConnection extends ExpandableStringEnum<ResourceProviderConnection> {
-    /** Static value Inbound for ResourceProviderConnection. */
+    /**
+     * Static value Inbound for ResourceProviderConnection.
+     */
     public static final ResourceProviderConnection INBOUND = fromString("Inbound");
 
-    /** Static value Outbound for ResourceProviderConnection. */
+    /**
+     * Static value Outbound for ResourceProviderConnection.
+     */
     public static final ResourceProviderConnection OUTBOUND = fromString("Outbound");
 
     /**
      * Creates a new instance of ResourceProviderConnection value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class ResourceProviderConnection extends ExpandableStringEnum<Resou
 
     /**
      * Creates or finds a ResourceProviderConnection from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ResourceProviderConnection.
      */
-    @JsonCreator
     public static ResourceProviderConnection fromString(String name) {
         return fromString(name, ResourceProviderConnection.class);
     }
 
     /**
      * Gets known ResourceProviderConnection values.
-     *
+     * 
      * @return known ResourceProviderConnection values.
      */
     public static Collection<ResourceProviderConnection> values() {

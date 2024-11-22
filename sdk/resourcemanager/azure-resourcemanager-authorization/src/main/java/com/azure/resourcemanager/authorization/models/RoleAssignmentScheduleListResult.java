@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.authorization.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.authorization.fluent.models.RoleAssignmentScheduleInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Role assignment schedule list operation result. */
+/**
+ * Role assignment schedule list operation result.
+ */
 @Fluent
-public final class RoleAssignmentScheduleListResult {
+public final class RoleAssignmentScheduleListResult implements JsonSerializable<RoleAssignmentScheduleListResult> {
     /*
      * Role assignment schedule list.
      */
-    @JsonProperty(value = "value")
     private List<RoleAssignmentScheduleInner> value;
 
     /*
      * The URL to use for getting the next set of results.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of RoleAssignmentScheduleListResult class. */
+    /**
+     * Creates an instance of RoleAssignmentScheduleListResult class.
+     */
     public RoleAssignmentScheduleListResult() {
     }
 
     /**
      * Get the value property: Role assignment schedule list.
-     *
+     * 
      * @return the value value.
      */
     public List<RoleAssignmentScheduleInner> value() {
@@ -39,7 +45,7 @@ public final class RoleAssignmentScheduleListResult {
 
     /**
      * Set the value property: Role assignment schedule list.
-     *
+     * 
      * @param value the value value to set.
      * @return the RoleAssignmentScheduleListResult object itself.
      */
@@ -50,7 +56,7 @@ public final class RoleAssignmentScheduleListResult {
 
     /**
      * Get the nextLink property: The URL to use for getting the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +65,7 @@ public final class RoleAssignmentScheduleListResult {
 
     /**
      * Set the nextLink property: The URL to use for getting the next set of results.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the RoleAssignmentScheduleListResult object itself.
      */
@@ -70,12 +76,54 @@ public final class RoleAssignmentScheduleListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RoleAssignmentScheduleListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RoleAssignmentScheduleListResult if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RoleAssignmentScheduleListResult.
+     */
+    public static RoleAssignmentScheduleListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RoleAssignmentScheduleListResult deserializedRoleAssignmentScheduleListResult
+                = new RoleAssignmentScheduleListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<RoleAssignmentScheduleInner> value
+                        = reader.readArray(reader1 -> RoleAssignmentScheduleInner.fromJson(reader1));
+                    deserializedRoleAssignmentScheduleListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedRoleAssignmentScheduleListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRoleAssignmentScheduleListResult;
+        });
     }
 }

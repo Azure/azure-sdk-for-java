@@ -50,9 +50,10 @@ public final class GsonJsonReader extends JsonReader {
             options), jsonBytes, jsonString, resetSupported, options, false);
     }
 
+    @SuppressWarnings("deprecation")
     private static com.google.gson.stream.JsonReader createGsonReader(Reader reader, JsonOptions options) {
         com.google.gson.stream.JsonReader gsonReader = new com.google.gson.stream.JsonReader(reader);
-        gsonReader.setLenient(options == null || options.isNonNumericNumbersSupported());
+        gsonReader.setLenient(options == null || options.isNonNumericNumbersSupported() || options.isJsoncSupported());
 
         return gsonReader;
     }

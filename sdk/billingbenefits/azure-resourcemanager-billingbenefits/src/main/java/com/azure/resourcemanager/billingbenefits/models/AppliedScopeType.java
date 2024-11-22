@@ -5,23 +5,30 @@
 package com.azure.resourcemanager.billingbenefits.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Type of the Applied Scope. */
+/**
+ * Type of the Applied Scope.
+ */
 public final class AppliedScopeType extends ExpandableStringEnum<AppliedScopeType> {
-    /** Static value Single for AppliedScopeType. */
+    /**
+     * Static value Single for AppliedScopeType.
+     */
     public static final AppliedScopeType SINGLE = fromString("Single");
 
-    /** Static value Shared for AppliedScopeType. */
+    /**
+     * Static value Shared for AppliedScopeType.
+     */
     public static final AppliedScopeType SHARED = fromString("Shared");
 
-    /** Static value ManagementGroup for AppliedScopeType. */
+    /**
+     * Static value ManagementGroup for AppliedScopeType.
+     */
     public static final AppliedScopeType MANAGEMENT_GROUP = fromString("ManagementGroup");
 
     /**
      * Creates a new instance of AppliedScopeType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +37,17 @@ public final class AppliedScopeType extends ExpandableStringEnum<AppliedScopeTyp
 
     /**
      * Creates or finds a AppliedScopeType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AppliedScopeType.
      */
-    @JsonCreator
     public static AppliedScopeType fromString(String name) {
         return fromString(name, AppliedScopeType.class);
     }
 
     /**
      * Gets known AppliedScopeType values.
-     *
+     * 
      * @return known AppliedScopeType values.
      */
     public static Collection<AppliedScopeType> values() {

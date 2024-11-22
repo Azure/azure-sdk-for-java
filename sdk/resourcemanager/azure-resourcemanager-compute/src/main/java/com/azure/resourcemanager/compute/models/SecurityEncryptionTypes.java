@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -44,7 +43,6 @@ public final class SecurityEncryptionTypes extends ExpandableStringEnum<Security
      * @param name a name to look for.
      * @return the corresponding SecurityEncryptionTypes.
      */
-    @JsonCreator
     public static SecurityEncryptionTypes fromString(String name) {
         return fromString(name, SecurityEncryptionTypes.class);
     }

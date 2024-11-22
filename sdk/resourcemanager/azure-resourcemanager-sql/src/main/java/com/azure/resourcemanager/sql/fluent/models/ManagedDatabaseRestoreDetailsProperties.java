@@ -5,80 +5,80 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** The managed database's restore details properties. */
+/**
+ * The managed database's restore details properties.
+ */
 @Immutable
-public final class ManagedDatabaseRestoreDetailsProperties {
+public final class ManagedDatabaseRestoreDetailsProperties
+    implements JsonSerializable<ManagedDatabaseRestoreDetailsProperties> {
     /*
      * Restore status.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private String status;
 
     /*
      * Current restoring file name.
      */
-    @JsonProperty(value = "currentRestoringFileName", access = JsonProperty.Access.WRITE_ONLY)
     private String currentRestoringFileName;
 
     /*
      * Last restored file name.
      */
-    @JsonProperty(value = "lastRestoredFileName", access = JsonProperty.Access.WRITE_ONLY)
     private String lastRestoredFileName;
 
     /*
      * Last restored file time.
      */
-    @JsonProperty(value = "lastRestoredFileTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastRestoredFileTime;
 
     /*
      * Percent completed.
      */
-    @JsonProperty(value = "percentCompleted", access = JsonProperty.Access.WRITE_ONLY)
     private Double percentCompleted;
 
     /*
      * List of unrestorable files.
      */
-    @JsonProperty(value = "unrestorableFiles", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> unrestorableFiles;
 
     /*
      * Number of files detected.
      */
-    @JsonProperty(value = "numberOfFilesDetected", access = JsonProperty.Access.WRITE_ONLY)
     private Long numberOfFilesDetected;
 
     /*
      * Last uploaded file name.
      */
-    @JsonProperty(value = "lastUploadedFileName", access = JsonProperty.Access.WRITE_ONLY)
     private String lastUploadedFileName;
 
     /*
      * Last uploaded file time.
      */
-    @JsonProperty(value = "lastUploadedFileTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastUploadedFileTime;
 
     /*
      * The reason why restore is in Blocked state.
      */
-    @JsonProperty(value = "blockReason", access = JsonProperty.Access.WRITE_ONLY)
     private String blockReason;
 
-    /** Creates an instance of ManagedDatabaseRestoreDetailsProperties class. */
+    /**
+     * Creates an instance of ManagedDatabaseRestoreDetailsProperties class.
+     */
     public ManagedDatabaseRestoreDetailsProperties() {
     }
 
     /**
      * Get the status property: Restore status.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -87,7 +87,7 @@ public final class ManagedDatabaseRestoreDetailsProperties {
 
     /**
      * Get the currentRestoringFileName property: Current restoring file name.
-     *
+     * 
      * @return the currentRestoringFileName value.
      */
     public String currentRestoringFileName() {
@@ -96,7 +96,7 @@ public final class ManagedDatabaseRestoreDetailsProperties {
 
     /**
      * Get the lastRestoredFileName property: Last restored file name.
-     *
+     * 
      * @return the lastRestoredFileName value.
      */
     public String lastRestoredFileName() {
@@ -105,7 +105,7 @@ public final class ManagedDatabaseRestoreDetailsProperties {
 
     /**
      * Get the lastRestoredFileTime property: Last restored file time.
-     *
+     * 
      * @return the lastRestoredFileTime value.
      */
     public OffsetDateTime lastRestoredFileTime() {
@@ -114,7 +114,7 @@ public final class ManagedDatabaseRestoreDetailsProperties {
 
     /**
      * Get the percentCompleted property: Percent completed.
-     *
+     * 
      * @return the percentCompleted value.
      */
     public Double percentCompleted() {
@@ -123,7 +123,7 @@ public final class ManagedDatabaseRestoreDetailsProperties {
 
     /**
      * Get the unrestorableFiles property: List of unrestorable files.
-     *
+     * 
      * @return the unrestorableFiles value.
      */
     public List<String> unrestorableFiles() {
@@ -132,7 +132,7 @@ public final class ManagedDatabaseRestoreDetailsProperties {
 
     /**
      * Get the numberOfFilesDetected property: Number of files detected.
-     *
+     * 
      * @return the numberOfFilesDetected value.
      */
     public Long numberOfFilesDetected() {
@@ -141,7 +141,7 @@ public final class ManagedDatabaseRestoreDetailsProperties {
 
     /**
      * Get the lastUploadedFileName property: Last uploaded file name.
-     *
+     * 
      * @return the lastUploadedFileName value.
      */
     public String lastUploadedFileName() {
@@ -150,7 +150,7 @@ public final class ManagedDatabaseRestoreDetailsProperties {
 
     /**
      * Get the lastUploadedFileTime property: Last uploaded file time.
-     *
+     * 
      * @return the lastUploadedFileTime value.
      */
     public OffsetDateTime lastUploadedFileTime() {
@@ -159,7 +159,7 @@ public final class ManagedDatabaseRestoreDetailsProperties {
 
     /**
      * Get the blockReason property: The reason why restore is in Blocked state.
-     *
+     * 
      * @return the blockReason value.
      */
     public String blockReason() {
@@ -168,9 +168,68 @@ public final class ManagedDatabaseRestoreDetailsProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedDatabaseRestoreDetailsProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedDatabaseRestoreDetailsProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ManagedDatabaseRestoreDetailsProperties.
+     */
+    public static ManagedDatabaseRestoreDetailsProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedDatabaseRestoreDetailsProperties deserializedManagedDatabaseRestoreDetailsProperties
+                = new ManagedDatabaseRestoreDetailsProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("status".equals(fieldName)) {
+                    deserializedManagedDatabaseRestoreDetailsProperties.status = reader.getString();
+                } else if ("currentRestoringFileName".equals(fieldName)) {
+                    deserializedManagedDatabaseRestoreDetailsProperties.currentRestoringFileName = reader.getString();
+                } else if ("lastRestoredFileName".equals(fieldName)) {
+                    deserializedManagedDatabaseRestoreDetailsProperties.lastRestoredFileName = reader.getString();
+                } else if ("lastRestoredFileTime".equals(fieldName)) {
+                    deserializedManagedDatabaseRestoreDetailsProperties.lastRestoredFileTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("percentCompleted".equals(fieldName)) {
+                    deserializedManagedDatabaseRestoreDetailsProperties.percentCompleted
+                        = reader.getNullable(JsonReader::getDouble);
+                } else if ("unrestorableFiles".equals(fieldName)) {
+                    List<String> unrestorableFiles = reader.readArray(reader1 -> reader1.getString());
+                    deserializedManagedDatabaseRestoreDetailsProperties.unrestorableFiles = unrestorableFiles;
+                } else if ("numberOfFilesDetected".equals(fieldName)) {
+                    deserializedManagedDatabaseRestoreDetailsProperties.numberOfFilesDetected
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("lastUploadedFileName".equals(fieldName)) {
+                    deserializedManagedDatabaseRestoreDetailsProperties.lastUploadedFileName = reader.getString();
+                } else if ("lastUploadedFileTime".equals(fieldName)) {
+                    deserializedManagedDatabaseRestoreDetailsProperties.lastUploadedFileTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("blockReason".equals(fieldName)) {
+                    deserializedManagedDatabaseRestoreDetailsProperties.blockReason = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagedDatabaseRestoreDetailsProperties;
+        });
     }
 }

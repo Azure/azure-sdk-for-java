@@ -12,18 +12,16 @@ import org.junit.jupiter.api.Assertions;
 public final class WarmStoreConfigurationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WarmStoreConfigurationProperties model =
-            BinaryData
-                .fromString("{\"dataRetention\":\"PT233H27M22S\"}")
-                .toObject(WarmStoreConfigurationProperties.class);
-        Assertions.assertEquals(Duration.parse("PT233H27M22S"), model.dataRetention());
+        WarmStoreConfigurationProperties model = BinaryData.fromString("{\"dataRetention\":\"PT121H44M34S\"}")
+            .toObject(WarmStoreConfigurationProperties.class);
+        Assertions.assertEquals(Duration.parse("PT121H44M34S"), model.dataRetention());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WarmStoreConfigurationProperties model =
-            new WarmStoreConfigurationProperties().withDataRetention(Duration.parse("PT233H27M22S"));
+        WarmStoreConfigurationProperties model
+            = new WarmStoreConfigurationProperties().withDataRetention(Duration.parse("PT121H44M34S"));
         model = BinaryData.fromObject(model).toObject(WarmStoreConfigurationProperties.class);
-        Assertions.assertEquals(Duration.parse("PT233H27M22S"), model.dataRetention());
+        Assertions.assertEquals(Duration.parse("PT121H44M34S"), model.dataRetention());
     }
 }

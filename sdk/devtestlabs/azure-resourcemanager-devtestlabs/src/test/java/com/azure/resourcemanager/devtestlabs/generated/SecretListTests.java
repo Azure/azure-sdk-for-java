@@ -15,11 +15,9 @@ import org.junit.jupiter.api.Assertions;
 public final class SecretListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SecretList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"value\":\"tfnmdx\",\"provisioningState\":\"ngfdgugeyzihgrky\",\"uniqueIdentifier\":\"zabs\"},\"location\":\"mfp\",\"tags\":{\"yhyhsgzfczb\":\"jee\",\"tnluankrr\":\"omfgbeglqgleohib\"},\"id\":\"xeeebtijvacvbmqz\",\"name\":\"qqxlajr\",\"type\":\"wxacevehj\"}],\"nextLink\":\"yxoaf\"}")
-                .toObject(SecretList.class);
+        SecretList model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"value\":\"tfnmdx\",\"provisioningState\":\"ngfdgugeyzihgrky\",\"uniqueIdentifier\":\"zabs\"},\"location\":\"mfp\",\"tags\":{\"yhyhsgzfczb\":\"jee\",\"tnluankrr\":\"omfgbeglqgleohib\"},\"id\":\"xeeebtijvacvbmqz\",\"name\":\"qqxlajr\",\"type\":\"wxacevehj\"}],\"nextLink\":\"yxoaf\"}")
+            .toObject(SecretList.class);
         Assertions.assertEquals("mfp", model.value().get(0).location());
         Assertions.assertEquals("jee", model.value().get(0).tags().get("yhyhsgzfczb"));
         Assertions.assertEquals("tfnmdx", model.value().get(0).value());
@@ -28,16 +26,9 @@ public final class SecretListTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SecretList model =
-            new SecretList()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new SecretInner()
-                                .withLocation("mfp")
-                                .withTags(mapOf("yhyhsgzfczb", "jee", "tnluankrr", "omfgbeglqgleohib"))
-                                .withValue("tfnmdx")))
-                .withNextLink("yxoaf");
+        SecretList model = new SecretList().withValue(Arrays.asList(new SecretInner().withLocation("mfp")
+            .withTags(mapOf("yhyhsgzfczb", "jee", "tnluankrr", "omfgbeglqgleohib"))
+            .withValue("tfnmdx"))).withNextLink("yxoaf");
         model = BinaryData.fromObject(model).toObject(SecretList.class);
         Assertions.assertEquals("mfp", model.value().get(0).location());
         Assertions.assertEquals("jee", model.value().get(0).tags().get("yhyhsgzfczb"));

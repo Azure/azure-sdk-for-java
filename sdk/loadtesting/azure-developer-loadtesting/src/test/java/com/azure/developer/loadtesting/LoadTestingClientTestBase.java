@@ -25,7 +25,6 @@ import com.azure.identity.AzurePowerShellCredentialBuilder;
 import com.azure.identity.ChainedTokenCredentialBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.identity.EnvironmentCredentialBuilder;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
@@ -38,26 +37,25 @@ class LoadTestingClientTestBase extends TestProxyTestBase {
     private static final String URL_REGEX = "(?<=http:\\/\\/|https:\\/\\/)([^\\/?]+)";
     private final String defaultEndpoint = "REDACTED.eastus.cnt-prod.loadtesting.azure.com";
 
-    protected static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
-
-    protected final String existingTestId = Configuration.getGlobalConfiguration().get("EXISTING_TEST_ID",
-            "11111111-1234-1234-1234-123456789012");
-    protected final String newTestId = Configuration.getGlobalConfiguration().get("NEW_TEST_ID",
-            "22222222-1234-1234-1234-123456789012");
-    protected final String newTestIdAsync = Configuration.getGlobalConfiguration().get("NEW_TEST_ID",
-            "22223333-1234-1234-1234-123456789012");
-    protected final String newTestRunId = Configuration.getGlobalConfiguration().get("NEW_TEST_RUN_ID",
-            "33333333-1234-1234-1234-123456789012");
-    protected final String newTestRunIdAsync = Configuration.getGlobalConfiguration().get("NEW_TEST_RUN_ID_2",
-            "44444444-1234-1234-1234-123456789012");
-    protected final String uploadJmxFileName = Configuration.getGlobalConfiguration().get("UPLOAD_JMX_FILE_NAME",
-            "sample-JMX-file.jmx");
-    protected final String uploadCsvFileName = Configuration.getGlobalConfiguration().get("UPLOAD_CSV_FILE_NAME",
-            "additional-data.csv");
-    protected final String defaultAppComponentResourceId = Configuration.getGlobalConfiguration().get(
-            "APP_COMPONENT_RESOURCE_ID",
+    protected final String existingTestId
+        = Configuration.getGlobalConfiguration().get("EXISTING_TEST_ID", "11111111-1234-1234-1234-123456789012");
+    protected final String newTestId
+        = Configuration.getGlobalConfiguration().get("NEW_TEST_ID", "22222222-1234-1234-1234-123456789012");
+    protected final String newTestIdAsync
+        = Configuration.getGlobalConfiguration().get("NEW_TEST_ID", "22223333-1234-1234-1234-123456789012");
+    protected final String newTestRunId
+        = Configuration.getGlobalConfiguration().get("NEW_TEST_RUN_ID", "33333333-1234-1234-1234-123456789012");
+    protected final String newTestRunIdAsync
+        = Configuration.getGlobalConfiguration().get("NEW_TEST_RUN_ID_2", "44444444-1234-1234-1234-123456789012");
+    protected final String uploadJmxFileName
+        = Configuration.getGlobalConfiguration().get("UPLOAD_JMX_FILE_NAME", "sample-JMX-file.jmx");
+    protected final String uploadCsvFileName
+        = Configuration.getGlobalConfiguration().get("UPLOAD_CSV_FILE_NAME", "additional-data.csv");
+    protected final String defaultAppComponentResourceId = Configuration.getGlobalConfiguration()
+        .get("APP_COMPONENT_RESOURCE_ID",
             "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/samplerg/providers/microsoft.insights/components/appcomponentresource");
-    protected final String defaultServerMetricId = Configuration.getGlobalConfiguration().get("SERVER_METRIC_ID",
+    protected final String defaultServerMetricId = Configuration.getGlobalConfiguration()
+        .get("SERVER_METRIC_ID",
             "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/samplerg/providers/microsoft.insights/components/appcomponentresource/providers/microsoft.insights/metricdefinitions/requests/duration");
 
     @Override
@@ -65,8 +63,8 @@ class LoadTestingClientTestBase extends TestProxyTestBase {
         if (getTestMode() != TestMode.LIVE) {
             List<TestProxySanitizer> sanitizers = new ArrayList<>();
             sanitizers.add(new TestProxySanitizer("Location",
-                    "https://[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}",
-                    "https://REDACTED", TestProxySanitizerType.HEADER));
+                "https://[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}",
+                "https://REDACTED", TestProxySanitizerType.HEADER));
             sanitizers.add(new TestProxySanitizer(URL_REGEX, "REDACTED", TestProxySanitizerType.BODY_REGEX));
             interceptorManager.addSanitizers(sanitizers);
             // Remove `operation-location`, `id` and `name` sanitizers from the list of common sanitizers.
@@ -142,6 +140,7 @@ class LoadTestingClientTestBase extends TestProxyTestBase {
                 }
 
                 return defaultAzureCredentialBuilder.build();
+
             case LIVE:
                 Configuration config = Configuration.getGlobalConfiguration();
                 EnvironmentCredentialBuilder environmentCredentialBuilder = new EnvironmentCredentialBuilder();
@@ -150,11 +149,11 @@ class LoadTestingClientTestBase extends TestProxyTestBase {
                     environmentCredentialBuilder.authorityHost(authorityHost);
                 }
 
-                ChainedTokenCredentialBuilder chainedTokenCredentialBuilder = new ChainedTokenCredentialBuilder()
-                    .addLast(environmentCredentialBuilder.build())
-                    .addLast(new AzureCliCredentialBuilder().build())
-                    .addLast(new AzureDeveloperCliCredentialBuilder().build())
-                    .addLast(new AzurePowerShellCredentialBuilder().build());
+                ChainedTokenCredentialBuilder chainedTokenCredentialBuilder
+                    = new ChainedTokenCredentialBuilder().addLast(environmentCredentialBuilder.build())
+                        .addLast(new AzureCliCredentialBuilder().build())
+                        .addLast(new AzureDeveloperCliCredentialBuilder().build())
+                        .addLast(new AzurePowerShellCredentialBuilder().build());
 
                 String serviceConnectionId = config.get("AZURESUBSCRIPTION_SERVICE_CONNECTION_ID");
                 String clientId = config.get("AZURESUBSCRIPTION_CLIENT_ID");
@@ -166,15 +165,16 @@ class LoadTestingClientTestBase extends TestProxyTestBase {
                     && !CoreUtils.isNullOrEmpty(tenantId)
                     && !CoreUtils.isNullOrEmpty(systemAccessToken)) {
 
-                    chainedTokenCredentialBuilder.addLast(new AzurePipelinesCredentialBuilder()
-                        .systemAccessToken(systemAccessToken)
-                        .clientId(clientId)
-                        .tenantId(tenantId)
-                        .serviceConnectionId(serviceConnectionId)
-                        .build());
+                    chainedTokenCredentialBuilder
+                        .addLast(new AzurePipelinesCredentialBuilder().systemAccessToken(systemAccessToken)
+                            .clientId(clientId)
+                            .tenantId(tenantId)
+                            .serviceConnectionId(serviceConnectionId)
+                            .build());
                 }
 
                 return chainedTokenCredentialBuilder.build();
+
             default:
                 // On PLAYBACK mode
                 return new MockTokenCredential();
@@ -182,15 +182,11 @@ class LoadTestingClientTestBase extends TestProxyTestBase {
     }
 
     private HttpClient buildAsyncAssertingClient(HttpClient httpClient) {
-        return new AssertingHttpClientBuilder(httpClient)
-                .assertAsync()
-                .build();
+        return new AssertingHttpClientBuilder(httpClient).assertAsync().build();
     }
 
     private HttpClient buildSyncAssertingClient(HttpClient httpClient) {
-        return new AssertingHttpClientBuilder(httpClient)
-                .assertSync()
-                .build();
+        return new AssertingHttpClientBuilder(httpClient).assertSync().build();
     }
 
     private HttpClient getTestModeHttpClient() {
@@ -212,18 +208,17 @@ class LoadTestingClientTestBase extends TestProxyTestBase {
             httpClient = buildSyncAssertingClient(httpClient);
         }
 
-        LoadTestAdministrationClientBuilder loadTestAdministrationClientBuilder = new LoadTestAdministrationClientBuilder()
+        LoadTestAdministrationClientBuilder loadTestAdministrationClientBuilder
+            = new LoadTestAdministrationClientBuilder()
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", defaultEndpoint))
                 .httpClient(httpClient)
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
 
         if (getTestMode() == TestMode.PLAYBACK) {
-            loadTestAdministrationClientBuilder
-                    .credential(new MockTokenCredential());
+            loadTestAdministrationClientBuilder.credential(new MockTokenCredential());
         } else if (getTestMode() == TestMode.RECORD) {
-            loadTestAdministrationClientBuilder
-                    .addPolicy(interceptorManager.getRecordPolicy())
-                    .credential(getTokenCredential());
+            loadTestAdministrationClientBuilder.addPolicy(interceptorManager.getRecordPolicy())
+                .credential(getTokenCredential());
         } else if (getTestMode() == TestMode.LIVE) {
             loadTestAdministrationClientBuilder.credential(getTokenCredential());
         }
@@ -241,17 +236,15 @@ class LoadTestingClientTestBase extends TestProxyTestBase {
         }
 
         LoadTestRunClientBuilder loadTestRunClientBuilder = new LoadTestRunClientBuilder()
-                .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", defaultEndpoint))
-                .httpClient(httpClient)
-                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
+            .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", defaultEndpoint))
+            .httpClient(httpClient)
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
 
         if (getTestMode() == TestMode.PLAYBACK) {
             loadTestRunClientBuilder
-                    .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
+                .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
         } else if (getTestMode() == TestMode.RECORD) {
-            loadTestRunClientBuilder
-                    .addPolicy(interceptorManager.getRecordPolicy())
-                    .credential(getTokenCredential());
+            loadTestRunClientBuilder.addPolicy(interceptorManager.getRecordPolicy()).credential(getTokenCredential());
         } else if (getTestMode() == TestMode.LIVE) {
             loadTestRunClientBuilder.credential(getTokenCredential());
         }

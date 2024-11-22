@@ -6,50 +6,52 @@ package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.models.AdditionalCapabilities;
 import com.azure.resourcemanager.compute.models.AutomaticRepairsPolicy;
 import com.azure.resourcemanager.compute.models.PriorityMixPolicy;
 import com.azure.resourcemanager.compute.models.ResiliencyPolicy;
 import com.azure.resourcemanager.compute.models.ScaleInPolicy;
+import com.azure.resourcemanager.compute.models.SkuProfile;
 import com.azure.resourcemanager.compute.models.SpotRestorePolicy;
 import com.azure.resourcemanager.compute.models.UpgradePolicy;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetUpdateVMProfile;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.resourcemanager.compute.models.ZonalPlatformFaultDomainAlignMode;
+import java.io.IOException;
 
 /**
  * Describes the properties of a Virtual Machine Scale Set.
  */
 @Fluent
-public final class VirtualMachineScaleSetUpdateProperties {
+public final class VirtualMachineScaleSetUpdateProperties
+    implements JsonSerializable<VirtualMachineScaleSetUpdateProperties> {
     /*
      * The upgrade policy.
      */
-    @JsonProperty(value = "upgradePolicy")
     private UpgradePolicy upgradePolicy;
 
     /*
      * Policy for automatic repairs.
      */
-    @JsonProperty(value = "automaticRepairsPolicy")
     private AutomaticRepairsPolicy automaticRepairsPolicy;
 
     /*
      * The virtual machine profile.
      */
-    @JsonProperty(value = "virtualMachineProfile")
     private VirtualMachineScaleSetUpdateVMProfile virtualMachineProfile;
 
     /*
      * Specifies whether the Virtual Machine Scale Set should be overprovisioned.
      */
-    @JsonProperty(value = "overprovision")
     private Boolean overprovision;
 
     /*
      * When Overprovision is enabled, extensions are launched only on the requested number of VMs which are finally
      * kept. This property will hence ensure that the extensions do not run on the extra overprovisioned VMs.
      */
-    @JsonProperty(value = "doNotRunExtensionsOnOverprovisionedVMs")
     private Boolean doNotRunExtensionsOnOverprovisionedVMs;
 
     /*
@@ -57,7 +59,6 @@ public final class VirtualMachineScaleSetUpdateProperties {
      * singlePlacementGroup is true, it may be modified to false. However, if singlePlacementGroup is false, it may not
      * be modified to true.
      */
-    @JsonProperty(value = "singlePlacementGroup")
     private Boolean singlePlacementGroup;
 
     /*
@@ -65,39 +66,43 @@ public final class VirtualMachineScaleSetUpdateProperties {
      * For instance: whether the Virtual Machines have the capability to support attaching managed data disks with
      * UltraSSD_LRS storage account type.
      */
-    @JsonProperty(value = "additionalCapabilities")
     private AdditionalCapabilities additionalCapabilities;
 
     /*
      * Specifies the policies applied when scaling in Virtual Machines in the Virtual Machine Scale Set.
      */
-    @JsonProperty(value = "scaleInPolicy")
     private ScaleInPolicy scaleInPolicy;
 
     /*
      * Specifies information about the proximity placement group that the virtual machine scale set should be assigned
      * to. <br><br>Minimum api-version: 2018-04-01.
      */
-    @JsonProperty(value = "proximityPlacementGroup")
     private SubResource proximityPlacementGroup;
 
     /*
      * Specifies the desired targets for mixing Spot and Regular priority VMs within the same VMSS Flex instance.
      */
-    @JsonProperty(value = "priorityMixPolicy")
     private PriorityMixPolicy priorityMixPolicy;
 
     /*
      * Specifies the Spot Restore properties for the virtual machine scale set.
      */
-    @JsonProperty(value = "spotRestorePolicy")
     private SpotRestorePolicy spotRestorePolicy;
 
     /*
      * Policy for Resiliency
      */
-    @JsonProperty(value = "resiliencyPolicy")
     private ResiliencyPolicy resiliencyPolicy;
+
+    /*
+     * Specifies the align mode between Virtual Machine Scale Set compute and storage Fault Domain count.
+     */
+    private ZonalPlatformFaultDomainAlignMode zonalPlatformFaultDomainAlignMode;
+
+    /*
+     * Specifies the sku profile for the virtual machine scale set.
+     */
+    private SkuProfile skuProfile;
 
     /**
      * Creates an instance of VirtualMachineScaleSetUpdateProperties class.
@@ -368,6 +373,49 @@ public final class VirtualMachineScaleSetUpdateProperties {
     }
 
     /**
+     * Get the zonalPlatformFaultDomainAlignMode property: Specifies the align mode between Virtual Machine Scale Set
+     * compute and storage Fault Domain count.
+     * 
+     * @return the zonalPlatformFaultDomainAlignMode value.
+     */
+    public ZonalPlatformFaultDomainAlignMode zonalPlatformFaultDomainAlignMode() {
+        return this.zonalPlatformFaultDomainAlignMode;
+    }
+
+    /**
+     * Set the zonalPlatformFaultDomainAlignMode property: Specifies the align mode between Virtual Machine Scale Set
+     * compute and storage Fault Domain count.
+     * 
+     * @param zonalPlatformFaultDomainAlignMode the zonalPlatformFaultDomainAlignMode value to set.
+     * @return the VirtualMachineScaleSetUpdateProperties object itself.
+     */
+    public VirtualMachineScaleSetUpdateProperties
+        withZonalPlatformFaultDomainAlignMode(ZonalPlatformFaultDomainAlignMode zonalPlatformFaultDomainAlignMode) {
+        this.zonalPlatformFaultDomainAlignMode = zonalPlatformFaultDomainAlignMode;
+        return this;
+    }
+
+    /**
+     * Get the skuProfile property: Specifies the sku profile for the virtual machine scale set.
+     * 
+     * @return the skuProfile value.
+     */
+    public SkuProfile skuProfile() {
+        return this.skuProfile;
+    }
+
+    /**
+     * Set the skuProfile property: Specifies the sku profile for the virtual machine scale set.
+     * 
+     * @param skuProfile the skuProfile value to set.
+     * @return the VirtualMachineScaleSetUpdateProperties object itself.
+     */
+    public VirtualMachineScaleSetUpdateProperties withSkuProfile(SkuProfile skuProfile) {
+        this.skuProfile = skuProfile;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -397,5 +445,97 @@ public final class VirtualMachineScaleSetUpdateProperties {
         if (resiliencyPolicy() != null) {
             resiliencyPolicy().validate();
         }
+        if (skuProfile() != null) {
+            skuProfile().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("upgradePolicy", this.upgradePolicy);
+        jsonWriter.writeJsonField("automaticRepairsPolicy", this.automaticRepairsPolicy);
+        jsonWriter.writeJsonField("virtualMachineProfile", this.virtualMachineProfile);
+        jsonWriter.writeBooleanField("overprovision", this.overprovision);
+        jsonWriter.writeBooleanField("doNotRunExtensionsOnOverprovisionedVMs",
+            this.doNotRunExtensionsOnOverprovisionedVMs);
+        jsonWriter.writeBooleanField("singlePlacementGroup", this.singlePlacementGroup);
+        jsonWriter.writeJsonField("additionalCapabilities", this.additionalCapabilities);
+        jsonWriter.writeJsonField("scaleInPolicy", this.scaleInPolicy);
+        jsonWriter.writeJsonField("proximityPlacementGroup", this.proximityPlacementGroup);
+        jsonWriter.writeJsonField("priorityMixPolicy", this.priorityMixPolicy);
+        jsonWriter.writeJsonField("spotRestorePolicy", this.spotRestorePolicy);
+        jsonWriter.writeJsonField("resiliencyPolicy", this.resiliencyPolicy);
+        jsonWriter.writeStringField("zonalPlatformFaultDomainAlignMode",
+            this.zonalPlatformFaultDomainAlignMode == null ? null : this.zonalPlatformFaultDomainAlignMode.toString());
+        jsonWriter.writeJsonField("skuProfile", this.skuProfile);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualMachineScaleSetUpdateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualMachineScaleSetUpdateProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualMachineScaleSetUpdateProperties.
+     */
+    public static VirtualMachineScaleSetUpdateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualMachineScaleSetUpdateProperties deserializedVirtualMachineScaleSetUpdateProperties
+                = new VirtualMachineScaleSetUpdateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("upgradePolicy".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetUpdateProperties.upgradePolicy = UpgradePolicy.fromJson(reader);
+                } else if ("automaticRepairsPolicy".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetUpdateProperties.automaticRepairsPolicy
+                        = AutomaticRepairsPolicy.fromJson(reader);
+                } else if ("virtualMachineProfile".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetUpdateProperties.virtualMachineProfile
+                        = VirtualMachineScaleSetUpdateVMProfile.fromJson(reader);
+                } else if ("overprovision".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetUpdateProperties.overprovision
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("doNotRunExtensionsOnOverprovisionedVMs".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetUpdateProperties.doNotRunExtensionsOnOverprovisionedVMs
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("singlePlacementGroup".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetUpdateProperties.singlePlacementGroup
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("additionalCapabilities".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetUpdateProperties.additionalCapabilities
+                        = AdditionalCapabilities.fromJson(reader);
+                } else if ("scaleInPolicy".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetUpdateProperties.scaleInPolicy = ScaleInPolicy.fromJson(reader);
+                } else if ("proximityPlacementGroup".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetUpdateProperties.proximityPlacementGroup
+                        = SubResource.fromJson(reader);
+                } else if ("priorityMixPolicy".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetUpdateProperties.priorityMixPolicy
+                        = PriorityMixPolicy.fromJson(reader);
+                } else if ("spotRestorePolicy".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetUpdateProperties.spotRestorePolicy
+                        = SpotRestorePolicy.fromJson(reader);
+                } else if ("resiliencyPolicy".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetUpdateProperties.resiliencyPolicy
+                        = ResiliencyPolicy.fromJson(reader);
+                } else if ("zonalPlatformFaultDomainAlignMode".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetUpdateProperties.zonalPlatformFaultDomainAlignMode
+                        = ZonalPlatformFaultDomainAlignMode.fromString(reader.getString());
+                } else if ("skuProfile".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetUpdateProperties.skuProfile = SkuProfile.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualMachineScaleSetUpdateProperties;
+        });
     }
 }

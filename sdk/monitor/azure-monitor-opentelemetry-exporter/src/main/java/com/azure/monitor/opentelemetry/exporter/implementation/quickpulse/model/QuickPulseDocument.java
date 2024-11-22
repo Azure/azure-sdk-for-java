@@ -3,25 +3,19 @@
 
 package com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 
+import java.io.IOException;
 import java.util.Map;
 
-public class QuickPulseDocument {
-
-    @JsonProperty(value = "__type")
+public class QuickPulseDocument implements JsonSerializable<QuickPulseDocument> {
     private String type;
-
-    @JsonProperty(value = "DocumentType")
     private String documentType;
-
-    @JsonProperty(value = "Version")
     private String version;
-
-    @JsonProperty(value = "OperationId")
     private String operationId;
-
-    @JsonProperty(value = "Properties")
     private Map<String, String> properties;
 
     public String getType() {
@@ -62,5 +56,57 @@ public class QuickPulseDocument {
 
     public void setProperties(Map<String, String> properties) {
         this.properties = properties;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return toJsonShared(jsonWriter.writeStartObject()).writeEndObject();
+    }
+
+    JsonWriter toJsonShared(JsonWriter jsonWriter) throws IOException {
+        return jsonWriter.writeStringField("__type", type)
+            .writeStringField("DocumentType", documentType)
+            .writeStringField("Version", version)
+            .writeStringField("OperationId", operationId)
+            .writeMapField("Properties", properties, JsonWriter::writeString);
+    }
+
+    public static QuickPulseDocument fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            QuickPulseDocument document = new QuickPulseDocument();
+
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if (!fromJsonShared(document, fieldName, reader)) {
+                    reader.skipChildren();
+                }
+            }
+
+            return document;
+        });
+    }
+
+    static boolean fromJsonShared(QuickPulseDocument document, String fieldName, JsonReader jsonReader)
+        throws IOException {
+        if ("__type".equals(fieldName)) {
+            document.type = jsonReader.getString();
+            return true;
+        } else if ("DocumentType".equals(fieldName)) {
+            document.documentType = jsonReader.getFieldName();
+            return true;
+        } else if ("Version".equals(fieldName)) {
+            document.version = jsonReader.getString();
+            return true;
+        } else if ("OperationId".equals(fieldName)) {
+            document.operationId = jsonReader.getFieldName();
+            return true;
+        } else if ("Properties".equals(fieldName)) {
+            document.properties = jsonReader.readMap(JsonReader::getString);
+            return true;
+        }
+
+        return false;
     }
 }

@@ -107,12 +107,8 @@ public interface SchemaContract {
          * The stage of the SchemaContract definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithContentType,
-                DefinitionStages.WithValue,
-                DefinitionStages.WithDefinitions,
-                DefinitionStages.WithComponents,
-                DefinitionStages.WithIfMatch {
+        interface WithCreate extends DefinitionStages.WithContentType, DefinitionStages.WithValue,
+            DefinitionStages.WithDefinitions, DefinitionStages.WithComponents, DefinitionStages.WithIfMatch {
             /**
              * Executes the create request.
              *
@@ -209,12 +205,8 @@ public interface SchemaContract {
     SchemaContract.Update update();
 
     /** The template for SchemaContract update. */
-    interface Update
-        extends UpdateStages.WithContentType,
-            UpdateStages.WithValue,
-            UpdateStages.WithDefinitions,
-            UpdateStages.WithComponents,
-            UpdateStages.WithIfMatch {
+    interface Update extends UpdateStages.WithContentType, UpdateStages.WithValue, UpdateStages.WithDefinitions,
+        UpdateStages.WithComponents, UpdateStages.WithIfMatch {
         /**
          * Executes the update request.
          *

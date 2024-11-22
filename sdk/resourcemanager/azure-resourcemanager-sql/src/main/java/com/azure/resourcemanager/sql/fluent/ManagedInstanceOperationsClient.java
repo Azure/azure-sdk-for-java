@@ -14,13 +14,15 @@ import com.azure.resourcemanager.sql.fluent.models.ManagedInstanceOperationInner
 import java.util.UUID;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ManagedInstanceOperationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ManagedInstanceOperationsClient.
+ */
 public interface ManagedInstanceOperationsClient {
     /**
      * Gets a list of operations performed on the managed instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -28,14 +30,14 @@ public interface ManagedInstanceOperationsClient {
      * @return a list of operations performed on the managed instance as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<ManagedInstanceOperationInner> listByManagedInstanceAsync(
-        String resourceGroupName, String managedInstanceName);
+    PagedFlux<ManagedInstanceOperationInner> listByManagedInstanceAsync(String resourceGroupName,
+        String managedInstanceName);
 
     /**
      * Gets a list of operations performed on the managed instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -43,14 +45,14 @@ public interface ManagedInstanceOperationsClient {
      * @return a list of operations performed on the managed instance as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ManagedInstanceOperationInner> listByManagedInstance(
-        String resourceGroupName, String managedInstanceName);
+    PagedIterable<ManagedInstanceOperationInner> listByManagedInstance(String resourceGroupName,
+        String managedInstanceName);
 
     /**
      * Gets a list of operations performed on the managed instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -59,31 +61,31 @@ public interface ManagedInstanceOperationsClient {
      * @return a list of operations performed on the managed instance as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ManagedInstanceOperationInner> listByManagedInstance(
-        String resourceGroupName, String managedInstanceName, Context context);
+    PagedIterable<ManagedInstanceOperationInner> listByManagedInstance(String resourceGroupName,
+        String managedInstanceName, Context context);
 
     /**
      * Gets a management operation on a managed instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param operationId The operationId parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a management operation on a managed instance along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ManagedInstanceOperationInner>> getWithResponseAsync(
-        String resourceGroupName, String managedInstanceName, UUID operationId);
+    Mono<Response<ManagedInstanceOperationInner>> getWithResponseAsync(String resourceGroupName,
+        String managedInstanceName, UUID operationId);
 
     /**
      * Gets a management operation on a managed instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param operationId The operationId parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -92,14 +94,14 @@ public interface ManagedInstanceOperationsClient {
      * @return a management operation on a managed instance on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ManagedInstanceOperationInner> getAsync(
-        String resourceGroupName, String managedInstanceName, UUID operationId);
+    Mono<ManagedInstanceOperationInner> getAsync(String resourceGroupName, String managedInstanceName,
+        UUID operationId);
 
     /**
      * Gets a management operation on a managed instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param operationId The operationId parameter.
      * @param context The context to associate with this operation.
@@ -109,14 +111,14 @@ public interface ManagedInstanceOperationsClient {
      * @return a management operation on a managed instance along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ManagedInstanceOperationInner> getWithResponse(
-        String resourceGroupName, String managedInstanceName, UUID operationId, Context context);
+    Response<ManagedInstanceOperationInner> getWithResponse(String resourceGroupName, String managedInstanceName,
+        UUID operationId, Context context);
 
     /**
      * Gets a management operation on a managed instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param operationId The operationId parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -129,9 +131,9 @@ public interface ManagedInstanceOperationsClient {
 
     /**
      * Cancels the asynchronous operation on the managed instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param operationId The operationId parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -140,14 +142,14 @@ public interface ManagedInstanceOperationsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> cancelWithResponseAsync(
-        String resourceGroupName, String managedInstanceName, UUID operationId);
+    Mono<Response<Void>> cancelWithResponseAsync(String resourceGroupName, String managedInstanceName,
+        UUID operationId);
 
     /**
      * Cancels the asynchronous operation on the managed instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param operationId The operationId parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -160,9 +162,9 @@ public interface ManagedInstanceOperationsClient {
 
     /**
      * Cancels the asynchronous operation on the managed instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param operationId The operationId parameter.
      * @param context The context to associate with this operation.
@@ -172,14 +174,14 @@ public interface ManagedInstanceOperationsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> cancelWithResponse(
-        String resourceGroupName, String managedInstanceName, UUID operationId, Context context);
+    Response<Void> cancelWithResponse(String resourceGroupName, String managedInstanceName, UUID operationId,
+        Context context);
 
     /**
      * Cancels the asynchronous operation on the managed instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param operationId The operationId parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

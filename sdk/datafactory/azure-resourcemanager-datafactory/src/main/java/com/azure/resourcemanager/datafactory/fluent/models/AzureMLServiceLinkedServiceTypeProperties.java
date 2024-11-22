@@ -6,65 +6,62 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Azure ML Service linked service properties.
  */
 @Fluent
-public final class AzureMLServiceLinkedServiceTypeProperties {
+public final class AzureMLServiceLinkedServiceTypeProperties
+    implements JsonSerializable<AzureMLServiceLinkedServiceTypeProperties> {
     /*
      * Azure ML Service workspace subscription ID. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "subscriptionId", required = true)
     private Object subscriptionId;
 
     /*
      * Azure ML Service workspace resource group name. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "resourceGroupName", required = true)
     private Object resourceGroupName;
 
     /*
      * Azure ML Service workspace name. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "mlWorkspaceName", required = true)
     private Object mlWorkspaceName;
 
     /*
      * Type of authentication (Required to specify MSI) used to connect to AzureML. Type: string (or Expression with
      * resultType string).
      */
-    @JsonProperty(value = "authentication")
     private Object authentication;
 
     /*
      * The ID of the service principal used to authenticate against the endpoint of a published Azure ML Service
      * pipeline. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "servicePrincipalId")
     private Object servicePrincipalId;
 
     /*
      * The key of the service principal used to authenticate against the endpoint of a published Azure ML Service
      * pipeline.
      */
-    @JsonProperty(value = "servicePrincipalKey")
     private SecretBase servicePrincipalKey;
 
     /*
      * The name or ID of the tenant to which the service principal belongs. Type: string (or Expression with resultType
      * string).
      */
-    @JsonProperty(value = "tenant")
     private Object tenant;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string.
      */
-    @JsonProperty(value = "encryptedCredential")
     private String encryptedCredential;
 
     /**
@@ -276,4 +273,64 @@ public final class AzureMLServiceLinkedServiceTypeProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AzureMLServiceLinkedServiceTypeProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("subscriptionId", this.subscriptionId);
+        jsonWriter.writeUntypedField("resourceGroupName", this.resourceGroupName);
+        jsonWriter.writeUntypedField("mlWorkspaceName", this.mlWorkspaceName);
+        jsonWriter.writeUntypedField("authentication", this.authentication);
+        jsonWriter.writeUntypedField("servicePrincipalId", this.servicePrincipalId);
+        jsonWriter.writeJsonField("servicePrincipalKey", this.servicePrincipalKey);
+        jsonWriter.writeUntypedField("tenant", this.tenant);
+        jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureMLServiceLinkedServiceTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureMLServiceLinkedServiceTypeProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AzureMLServiceLinkedServiceTypeProperties.
+     */
+    public static AzureMLServiceLinkedServiceTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureMLServiceLinkedServiceTypeProperties deserializedAzureMLServiceLinkedServiceTypeProperties
+                = new AzureMLServiceLinkedServiceTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("subscriptionId".equals(fieldName)) {
+                    deserializedAzureMLServiceLinkedServiceTypeProperties.subscriptionId = reader.readUntyped();
+                } else if ("resourceGroupName".equals(fieldName)) {
+                    deserializedAzureMLServiceLinkedServiceTypeProperties.resourceGroupName = reader.readUntyped();
+                } else if ("mlWorkspaceName".equals(fieldName)) {
+                    deserializedAzureMLServiceLinkedServiceTypeProperties.mlWorkspaceName = reader.readUntyped();
+                } else if ("authentication".equals(fieldName)) {
+                    deserializedAzureMLServiceLinkedServiceTypeProperties.authentication = reader.readUntyped();
+                } else if ("servicePrincipalId".equals(fieldName)) {
+                    deserializedAzureMLServiceLinkedServiceTypeProperties.servicePrincipalId = reader.readUntyped();
+                } else if ("servicePrincipalKey".equals(fieldName)) {
+                    deserializedAzureMLServiceLinkedServiceTypeProperties.servicePrincipalKey
+                        = SecretBase.fromJson(reader);
+                } else if ("tenant".equals(fieldName)) {
+                    deserializedAzureMLServiceLinkedServiceTypeProperties.tenant = reader.readUntyped();
+                } else if ("encryptedCredential".equals(fieldName)) {
+                    deserializedAzureMLServiceLinkedServiceTypeProperties.encryptedCredential = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureMLServiceLinkedServiceTypeProperties;
+        });
+    }
 }

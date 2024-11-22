@@ -1,5 +1,63 @@
 # Release History
 
+## 12.29.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 12.28.0 (2024-11-13)
+
+### Features Added
+- Added support for service version 2025-01-05.
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.52.0` to version `1.54.0`.
+- Upgraded `azure-core-http-netty` from `1.15.4` to version `1.15.6`.
+- Upgraded `azure-storage-blob` from `12.28.1` to version `12.29.0`.
+
+## 12.28.0-beta.1 (2024-10-17)
+
+### Features Added
+- Added support for service version 2025-01-05.
+
+## 12.27.1 (2024-10-08)
+
+### Bugs Fixed
+- Fixed a bug where downloadToFile and openInputStream was throwing an InvalidRange exception if the target file size was a multiple of the
+  authenticated region length.
+
+#### Dependency Updates
+- Upgraded `azure-storage-blob` from `12.28.0` to version `12.28.1`.
+
+## 12.27.0 (2024-09-17)
+
+### Features Added
+- Added a new `EncryptionVersion.V2_1` that allows encrypted blobs to be uploaded using a configurable authenticated region length.
+- Added configuration to allow encrypted blobs to be uploaded using a configurable authenticated region length via 
+  `BlobClientSideEncryptionOptions`. The region length can be configured to range between 16 bytes to 1GB. The region 
+  length can be set via `BlobClientSideEncryptionOptions.setAuthenticatedRegionDataLengthInBytes(long authenticatedRegionDataLength)`. 
+  Note: This change only applies to `EncryptionVersion.V2_1`. Also, only applies to upload operations, this does not directly 
+  change the authenticated region length used to download and decrypt blobs.
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.50.0` to version `1.52.0`.
+- Upgraded `azure-core-http-netty` from `1.15.2` to version `1.15.4`.
+- Upgraded `azure-storage-blob` from `12.27.0` to version `12.28.0`.
+
+## 12.27.0-beta.1 (2024-08-06)
+
+### Features Added
+- Added support for service version 2024-11-04.
+
 ## 12.26.0 (2024-07-18)
 
 ### Features Added

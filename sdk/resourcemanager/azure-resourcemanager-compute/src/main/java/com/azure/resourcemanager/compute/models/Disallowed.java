@@ -5,18 +5,21 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Describes the disallowed disk types.
  */
 @Fluent
-public final class Disallowed {
+public final class Disallowed implements JsonSerializable<Disallowed> {
     /*
      * A list of disk types.
      */
-    @JsonProperty(value = "diskTypes")
     private List<String> diskTypes;
 
     /**
@@ -51,5 +54,42 @@ public final class Disallowed {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("diskTypes", this.diskTypes, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Disallowed from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Disallowed if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the Disallowed.
+     */
+    public static Disallowed fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Disallowed deserializedDisallowed = new Disallowed();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("diskTypes".equals(fieldName)) {
+                    List<String> diskTypes = reader.readArray(reader1 -> reader1.getString());
+                    deserializedDisallowed.diskTypes = diskTypes;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDisallowed;
+        });
     }
 }

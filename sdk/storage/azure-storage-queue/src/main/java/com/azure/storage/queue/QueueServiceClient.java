@@ -24,9 +24,10 @@ import com.azure.storage.queue.models.QueueItem;
 import com.azure.storage.queue.models.QueueMessageDecodingError;
 import com.azure.storage.queue.models.QueueServiceProperties;
 import com.azure.storage.queue.models.QueueServiceStatistics;
-import com.azure.storage.queue.models.QueuesSegmentOptions;
 import com.azure.storage.queue.models.QueueStorageException;
+import com.azure.storage.queue.models.QueuesSegmentOptions;
 import reactor.core.publisher.Mono;
+
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
@@ -83,8 +84,8 @@ public final class QueueServiceClient {
      * message is received or peaked from the queue but cannot be decoded.
      */
     QueueServiceClient(AzureQueueStorageImpl azureQueueStorage, String accountName, QueueServiceVersion serviceVersion,
-        QueueMessageEncoding messageEncoding, Function<QueueMessageDecodingError,
-        Mono<Void>> processMessageDecodingErrorAsyncHandler,
+        QueueMessageEncoding messageEncoding,
+        Function<QueueMessageDecodingError, Mono<Void>> processMessageDecodingErrorAsyncHandler,
         Consumer<QueueMessageDecodingError> processMessageDecodingErrorHandler) {
         this.azureQueueStorage = azureQueueStorage;
         this.accountName = accountName;
@@ -130,9 +131,9 @@ public final class QueueServiceClient {
      * @return QueueClient that interacts with the specified queue
      */
     public QueueClient getQueueClient(String queueName) {
-        QueueAsyncClient queueAsyncClient = new QueueAsyncClient(this.azureQueueStorage, queueName, accountName,
-            serviceVersion, messageEncoding, processMessageDecodingErrorAsyncHandler,
-            processMessageDecodingErrorHandler, null);
+        QueueAsyncClient queueAsyncClient
+            = new QueueAsyncClient(this.azureQueueStorage, queueName, accountName, serviceVersion, messageEncoding,
+                processMessageDecodingErrorAsyncHandler, processMessageDecodingErrorHandler, null);
         return new QueueClient(this.azureQueueStorage, queueName, accountName, serviceVersion, messageEncoding,
             processMessageDecodingErrorAsyncHandler, processMessageDecodingErrorHandler, queueAsyncClient);
     }
@@ -324,9 +325,9 @@ public final class QueueServiceClient {
             }
         }
         BiFunction<String, Integer, PagedResponse<QueueItem>> retriever = (nextMarker, pageSize) -> {
-            Supplier<PagedResponse<QueueItem>> operation = () ->
-                this.azureQueueStorage.getServices().listQueuesSegmentSinglePage(prefix, nextMarker,
-                    pageSize == null ? maxResultsPerPage : pageSize, include, null, null, finalContext);
+            Supplier<PagedResponse<QueueItem>> operation = () -> this.azureQueueStorage.getServices()
+                .listQueuesSegmentSinglePage(prefix, nextMarker, pageSize == null ? maxResultsPerPage : pageSize,
+                    include, null, null, finalContext);
 
             return submitThreadPool(operation, LOGGER, timeout);
 
@@ -392,8 +393,8 @@ public final class QueueServiceClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<QueueServiceProperties> getPropertiesWithResponse(Duration timeout, Context context) {
         Context finalContext = context == null ? Context.NONE : context;
-        Supplier<Response<QueueServiceProperties>> operation =
-            () -> this.azureQueueStorage.getServices().getPropertiesWithResponse(null, null, finalContext);
+        Supplier<Response<QueueServiceProperties>> operation
+            = () -> this.azureQueueStorage.getServices().getPropertiesWithResponse(null, null, finalContext);
 
         return submitThreadPool(operation, LOGGER, timeout);
     }
@@ -585,11 +586,10 @@ public final class QueueServiceClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<QueueServiceStatistics> getStatisticsWithResponse(Duration timeout, Context context) {
         Context finalContext = context == null ? Context.NONE : context;
-        Supplier<ResponseBase<ServicesGetStatisticsHeaders, QueueServiceStatistics>> operation = () ->
-            this.azureQueueStorage.getServices().getStatisticsWithResponse(null, null, finalContext);
+        Supplier<ResponseBase<ServicesGetStatisticsHeaders, QueueServiceStatistics>> operation
+            = () -> this.azureQueueStorage.getServices().getStatisticsWithResponse(null, null, finalContext);
         return submitThreadPool(operation, LOGGER, timeout);
     }
-
 
     /**
      * Get associated account name.
@@ -599,7 +599,6 @@ public final class QueueServiceClient {
     public String getAccountName() {
         return accountName;
     }
-
 
     /**
      * Gets the {@link HttpPipeline} powering this client.
@@ -674,7 +673,24 @@ public final class QueueServiceClient {
      * @return A {@code String} representing the SAS query parameters.
      */
     public String generateAccountSas(AccountSasSignatureValues accountSasSignatureValues, Context context) {
+        return generateAccountSas(accountSasSignatureValues, null, context);
+    }
+
+    /**
+     * Generates an account SAS for the Azure Storage account using the specified {@link AccountSasSignatureValues}.
+     * <p>Note : The client must be authenticated via {@link StorageSharedKeyCredential}
+     * <p>See {@link AccountSasSignatureValues} for more information on how to construct an account SAS.</p>
+     *
+     * @param accountSasSignatureValues {@link AccountSasSignatureValues}
+     * @param stringToSignHandler For debugging purposes only. Returns the string to sign that was used to generate the
+     * signature.
+     * @param context Additional context that is passed through the code when generating a SAS.
+     *
+     * @return A {@code String} representing the SAS query parameters.
+     */
+    public String generateAccountSas(AccountSasSignatureValues accountSasSignatureValues,
+        Consumer<String> stringToSignHandler, Context context) {
         return new AccountSasImplUtil(accountSasSignatureValues, null)
-            .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), context);
+            .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), stringToSignHandler, context);
     }
 }

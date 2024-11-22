@@ -5,32 +5,39 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.fluent.models.LogicalDatabaseTransparentDataEncryptionInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** A list of transparent data encryptions. */
+/**
+ * A list of transparent data encryptions.
+ */
 @Immutable
-public final class LogicalDatabaseTransparentDataEncryptionListResult {
+public final class LogicalDatabaseTransparentDataEncryptionListResult
+    implements JsonSerializable<LogicalDatabaseTransparentDataEncryptionListResult> {
     /*
      * Array of results.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<LogicalDatabaseTransparentDataEncryptionInner> value;
 
     /*
      * Link to retrieve next page of results.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of LogicalDatabaseTransparentDataEncryptionListResult class. */
+    /**
+     * Creates an instance of LogicalDatabaseTransparentDataEncryptionListResult class.
+     */
     public LogicalDatabaseTransparentDataEncryptionListResult() {
     }
 
     /**
      * Get the value property: Array of results.
-     *
+     * 
      * @return the value value.
      */
     public List<LogicalDatabaseTransparentDataEncryptionInner> value() {
@@ -39,7 +46,7 @@ public final class LogicalDatabaseTransparentDataEncryptionListResult {
 
     /**
      * Get the nextLink property: Link to retrieve next page of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,12 +55,53 @@ public final class LogicalDatabaseTransparentDataEncryptionListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LogicalDatabaseTransparentDataEncryptionListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LogicalDatabaseTransparentDataEncryptionListResult if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LogicalDatabaseTransparentDataEncryptionListResult.
+     */
+    public static LogicalDatabaseTransparentDataEncryptionListResult fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            LogicalDatabaseTransparentDataEncryptionListResult deserializedLogicalDatabaseTransparentDataEncryptionListResult
+                = new LogicalDatabaseTransparentDataEncryptionListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<LogicalDatabaseTransparentDataEncryptionInner> value
+                        = reader.readArray(reader1 -> LogicalDatabaseTransparentDataEncryptionInner.fromJson(reader1));
+                    deserializedLogicalDatabaseTransparentDataEncryptionListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedLogicalDatabaseTransparentDataEncryptionListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLogicalDatabaseTransparentDataEncryptionListResult;
+        });
     }
 }

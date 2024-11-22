@@ -16,7 +16,9 @@ import java.util.Arrays;
  */
 public final class PolicyExemptionsUpdateSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/preview/2022-07-01-preview/examples/updatePolicyExemptionWithResourceSelectors.json
+     * x-ms-original-file:
+     * specification/resources/resource-manager/Microsoft.Authorization/preview/2022-07-01-preview/examples/
+     * updatePolicyExemptionWithResourceSelectors.json
      */
     /**
      * Sample code: Update a policy exemption with resource selectors.

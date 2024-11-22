@@ -15,35 +15,28 @@ import org.junit.jupiter.api.Assertions;
 public final class ConnectionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ConnectionProperties model =
-            BinaryData
-                .fromString(
-                    "{\"provisioningState\":\"Rejected\",\"privateEndpoint\":{\"id\":\"ipjoxzjnchgejs\"},\"groupIds\":[\"mailzydehojw\",\"ahuxinpm\",\"njaqwixjspro\",\"vcputegj\"],\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"fdatsc\",\"actionsRequired\":\"vpjhulsuuv\"}}")
-                .toObject(ConnectionProperties.class);
+        ConnectionProperties model = BinaryData.fromString(
+            "{\"provisioningState\":\"Rejected\",\"privateEndpoint\":{\"id\":\"ipjoxzjnchgejs\"},\"groupIds\":[\"mailzydehojw\",\"ahuxinpm\",\"njaqwixjspro\",\"vcputegj\"],\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"fdatsc\",\"actionsRequired\":\"vpjhulsuuv\"}}")
+            .toObject(ConnectionProperties.class);
         Assertions.assertEquals("mailzydehojw", model.groupIds().get(0));
-        Assertions
-            .assertEquals(
-                PrivateLinkServiceConnectionStatus.REJECTED, model.privateLinkServiceConnectionState().status());
+        Assertions.assertEquals(PrivateLinkServiceConnectionStatus.REJECTED,
+            model.privateLinkServiceConnectionState().status());
         Assertions.assertEquals("fdatsc", model.privateLinkServiceConnectionState().description());
         Assertions.assertEquals("vpjhulsuuv", model.privateLinkServiceConnectionState().actionsRequired());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ConnectionProperties model =
-            new ConnectionProperties()
-                .withPrivateEndpoint(new PrivateEndpoint())
-                .withGroupIds(Arrays.asList("mailzydehojw", "ahuxinpm", "njaqwixjspro", "vcputegj"))
-                .withPrivateLinkServiceConnectionState(
-                    new ConnectionPropertiesPrivateLinkServiceConnectionState()
-                        .withStatus(PrivateLinkServiceConnectionStatus.REJECTED)
-                        .withDescription("fdatsc")
-                        .withActionsRequired("vpjhulsuuv"));
+        ConnectionProperties model = new ConnectionProperties().withPrivateEndpoint(new PrivateEndpoint())
+            .withGroupIds(Arrays.asList("mailzydehojw", "ahuxinpm", "njaqwixjspro", "vcputegj"))
+            .withPrivateLinkServiceConnectionState(new ConnectionPropertiesPrivateLinkServiceConnectionState()
+                .withStatus(PrivateLinkServiceConnectionStatus.REJECTED)
+                .withDescription("fdatsc")
+                .withActionsRequired("vpjhulsuuv"));
         model = BinaryData.fromObject(model).toObject(ConnectionProperties.class);
         Assertions.assertEquals("mailzydehojw", model.groupIds().get(0));
-        Assertions
-            .assertEquals(
-                PrivateLinkServiceConnectionStatus.REJECTED, model.privateLinkServiceConnectionState().status());
+        Assertions.assertEquals(PrivateLinkServiceConnectionStatus.REJECTED,
+            model.privateLinkServiceConnectionState().status());
         Assertions.assertEquals("fdatsc", model.privateLinkServiceConnectionState().description());
         Assertions.assertEquals("vpjhulsuuv", model.privateLinkServiceConnectionState().actionsRequired());
     }

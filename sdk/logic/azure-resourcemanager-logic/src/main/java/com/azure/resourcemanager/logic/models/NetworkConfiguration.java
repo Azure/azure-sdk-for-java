@@ -5,37 +5,42 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The network configuration. */
+/**
+ * The network configuration.
+ */
 @Fluent
-public final class NetworkConfiguration {
+public final class NetworkConfiguration implements JsonSerializable<NetworkConfiguration> {
     /*
      * Gets the virtual network address space.
      */
-    @JsonProperty(value = "virtualNetworkAddressSpace")
     private String virtualNetworkAddressSpace;
 
     /*
      * The access endpoint.
      */
-    @JsonProperty(value = "accessEndpoint")
     private IntegrationServiceEnvironmentAccessEndpoint accessEndpoint;
 
     /*
      * The subnets.
      */
-    @JsonProperty(value = "subnets")
     private List<ResourceReference> subnets;
 
-    /** Creates an instance of NetworkConfiguration class. */
+    /**
+     * Creates an instance of NetworkConfiguration class.
+     */
     public NetworkConfiguration() {
     }
 
     /**
      * Get the virtualNetworkAddressSpace property: Gets the virtual network address space.
-     *
+     * 
      * @return the virtualNetworkAddressSpace value.
      */
     public String virtualNetworkAddressSpace() {
@@ -44,7 +49,7 @@ public final class NetworkConfiguration {
 
     /**
      * Set the virtualNetworkAddressSpace property: Gets the virtual network address space.
-     *
+     * 
      * @param virtualNetworkAddressSpace the virtualNetworkAddressSpace value to set.
      * @return the NetworkConfiguration object itself.
      */
@@ -55,7 +60,7 @@ public final class NetworkConfiguration {
 
     /**
      * Get the accessEndpoint property: The access endpoint.
-     *
+     * 
      * @return the accessEndpoint value.
      */
     public IntegrationServiceEnvironmentAccessEndpoint accessEndpoint() {
@@ -64,7 +69,7 @@ public final class NetworkConfiguration {
 
     /**
      * Set the accessEndpoint property: The access endpoint.
-     *
+     * 
      * @param accessEndpoint the accessEndpoint value to set.
      * @return the NetworkConfiguration object itself.
      */
@@ -75,7 +80,7 @@ public final class NetworkConfiguration {
 
     /**
      * Get the subnets property: The subnets.
-     *
+     * 
      * @return the subnets value.
      */
     public List<ResourceReference> subnets() {
@@ -84,7 +89,7 @@ public final class NetworkConfiguration {
 
     /**
      * Set the subnets property: The subnets.
-     *
+     * 
      * @param subnets the subnets value to set.
      * @return the NetworkConfiguration object itself.
      */
@@ -95,7 +100,7 @@ public final class NetworkConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -105,5 +110,49 @@ public final class NetworkConfiguration {
         if (subnets() != null) {
             subnets().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("virtualNetworkAddressSpace", this.virtualNetworkAddressSpace);
+        jsonWriter.writeJsonField("accessEndpoint", this.accessEndpoint);
+        jsonWriter.writeArrayField("subnets", this.subnets, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetworkConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetworkConfiguration if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NetworkConfiguration.
+     */
+    public static NetworkConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetworkConfiguration deserializedNetworkConfiguration = new NetworkConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("virtualNetworkAddressSpace".equals(fieldName)) {
+                    deserializedNetworkConfiguration.virtualNetworkAddressSpace = reader.getString();
+                } else if ("accessEndpoint".equals(fieldName)) {
+                    deserializedNetworkConfiguration.accessEndpoint
+                        = IntegrationServiceEnvironmentAccessEndpoint.fromJson(reader);
+                } else if ("subnets".equals(fieldName)) {
+                    List<ResourceReference> subnets = reader.readArray(reader1 -> ResourceReference.fromJson(reader1));
+                    deserializedNetworkConfiguration.subnets = subnets;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetworkConfiguration;
+        });
     }
 }

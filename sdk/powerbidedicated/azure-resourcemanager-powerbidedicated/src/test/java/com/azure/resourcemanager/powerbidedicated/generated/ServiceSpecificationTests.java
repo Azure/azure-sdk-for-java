@@ -7,6 +7,7 @@ package com.azure.resourcemanager.powerbidedicated.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.powerbidedicated.models.LogSpecification;
 import com.azure.resourcemanager.powerbidedicated.models.MetricSpecification;
+import com.azure.resourcemanager.powerbidedicated.models.MetricSpecificationDimensionsItem;
 import com.azure.resourcemanager.powerbidedicated.models.ServiceSpecification;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
@@ -14,47 +15,35 @@ import org.junit.jupiter.api.Assertions;
 public final class ServiceSpecificationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ServiceSpecification model =
-            BinaryData
-                .fromString(
-                    "{\"metricSpecifications\":[{\"name\":\"ddntwndei\",\"displayName\":\"twnpzaoqvuhrhcf\",\"displayDescription\":\"yd\",\"unit\":\"lmjthjq\",\"aggregationType\":\"pyeicxm\",\"metricFilterPattern\":\"iwqvhkh\",\"dimensions\":[]},{\"name\":\"gdtopbobjogh\",\"displayName\":\"w\",\"displayDescription\":\"m\",\"unit\":\"hrzayvvtpgvdf\",\"aggregationType\":\"otkftutqxlngx\",\"metricFilterPattern\":\"fgugnxkrxdqmid\",\"dimensions\":[]},{\"name\":\"rvqdra\",\"displayName\":\"jybige\",\"displayDescription\":\"qfbow\",\"unit\":\"anyktzlcuiywg\",\"aggregationType\":\"wgndrvynhzgpp\",\"metricFilterPattern\":\"cgyncocpecf\",\"dimensions\":[]},{\"name\":\"oo\",\"displayName\":\"xlzevgbmqjqabcy\",\"displayDescription\":\"ivkwlzuvccfwnfnb\",\"unit\":\"fionl\",\"aggregationType\":\"x\",\"metricFilterPattern\":\"qgtz\",\"dimensions\":[]}],\"logSpecifications\":[{\"name\":\"qqwx\",\"displayName\":\"feallnwsu\",\"blobDuration\":\"snjampmng\"},{\"name\":\"scxaq\",\"displayName\":\"ochcbonqvpkvl\",\"blobDuration\":\"njeaseipheofloke\"}]}")
-                .toObject(ServiceSpecification.class);
-        Assertions.assertEquals("twnpzaoqvuhrhcf", model.metricSpecifications().get(0).displayName());
-        Assertions.assertEquals("yd", model.metricSpecifications().get(0).displayDescription());
-        Assertions.assertEquals("feallnwsu", model.logSpecifications().get(0).displayName());
+        ServiceSpecification model = BinaryData.fromString(
+            "{\"metricSpecifications\":[{\"name\":\"jbavorxzdm\",\"displayName\":\"ctbqvudwx\",\"displayDescription\":\"dnvowg\",\"unit\":\"jugwdkcglhsl\",\"aggregationType\":\"jdyggdtji\",\"metricFilterPattern\":\"b\",\"dimensions\":[{\"name\":\"qweykhmenev\",\"displayName\":\"exfwhy\"},{\"name\":\"i\",\"displayName\":\"yvdcsitynnaa\"},{\"name\":\"ectehf\",\"displayName\":\"scjeypv\"},{\"name\":\"zrkgqhcjrefovg\",\"displayName\":\"qsl\"}]},{\"name\":\"yvxyqjp\",\"displayName\":\"attpngjcrcczsq\",\"displayDescription\":\"hvmdajvnysounq\",\"unit\":\"a\",\"aggregationType\":\"ae\",\"metricFilterPattern\":\"fhyhltrpmopjmcma\",\"dimensions\":[{\"name\":\"thfuiuaodsfcpkvx\",\"displayName\":\"puozmyzydag\"}]}],\"logSpecifications\":[{\"name\":\"bezy\",\"displayName\":\"okktwhrdxw\",\"blobDuration\":\"wqsmbsur\"},{\"name\":\"imoryocfsfksym\",\"displayName\":\"ys\",\"blobDuration\":\"i\"},{\"name\":\"xhqyudxorrqnb\",\"displayName\":\"czvyifq\",\"blobDuration\":\"kdvjsll\"}]}")
+            .toObject(ServiceSpecification.class);
+        Assertions.assertEquals("ctbqvudwx", model.metricSpecifications().get(0).displayName());
+        Assertions.assertEquals("dnvowg", model.metricSpecifications().get(0).displayDescription());
+        Assertions.assertEquals("exfwhy", model.metricSpecifications().get(0).dimensions().get(0).displayName());
+        Assertions.assertEquals("okktwhrdxw", model.logSpecifications().get(0).displayName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServiceSpecification model =
-            new ServiceSpecification()
-                .withMetricSpecifications(
-                    Arrays
-                        .asList(
-                            new MetricSpecification()
-                                .withDisplayName("twnpzaoqvuhrhcf")
-                                .withDisplayDescription("yd")
-                                .withDimensions(Arrays.asList()),
-                            new MetricSpecification()
-                                .withDisplayName("w")
-                                .withDisplayDescription("m")
-                                .withDimensions(Arrays.asList()),
-                            new MetricSpecification()
-                                .withDisplayName("jybige")
-                                .withDisplayDescription("qfbow")
-                                .withDimensions(Arrays.asList()),
-                            new MetricSpecification()
-                                .withDisplayName("xlzevgbmqjqabcy")
-                                .withDisplayDescription("ivkwlzuvccfwnfnb")
-                                .withDimensions(Arrays.asList())))
-                .withLogSpecifications(
-                    Arrays
-                        .asList(
-                            new LogSpecification().withDisplayName("feallnwsu"),
-                            new LogSpecification().withDisplayName("ochcbonqvpkvl")));
+        ServiceSpecification model = new ServiceSpecification()
+            .withMetricSpecifications(Arrays.asList(
+                new MetricSpecification().withDisplayName("ctbqvudwx")
+                    .withDisplayDescription("dnvowg")
+                    .withDimensions(Arrays.asList(new MetricSpecificationDimensionsItem().withDisplayName("exfwhy"),
+                        new MetricSpecificationDimensionsItem().withDisplayName("yvdcsitynnaa"),
+                        new MetricSpecificationDimensionsItem().withDisplayName("scjeypv"),
+                        new MetricSpecificationDimensionsItem().withDisplayName("qsl"))),
+                new MetricSpecification().withDisplayName("attpngjcrcczsq")
+                    .withDisplayDescription("hvmdajvnysounq")
+                    .withDimensions(
+                        Arrays.asList(new MetricSpecificationDimensionsItem().withDisplayName("puozmyzydag")))))
+            .withLogSpecifications(Arrays.asList(new LogSpecification().withDisplayName("okktwhrdxw"),
+                new LogSpecification().withDisplayName("ys"), new LogSpecification().withDisplayName("czvyifq")));
         model = BinaryData.fromObject(model).toObject(ServiceSpecification.class);
-        Assertions.assertEquals("twnpzaoqvuhrhcf", model.metricSpecifications().get(0).displayName());
-        Assertions.assertEquals("yd", model.metricSpecifications().get(0).displayDescription());
-        Assertions.assertEquals("feallnwsu", model.logSpecifications().get(0).displayName());
+        Assertions.assertEquals("ctbqvudwx", model.metricSpecifications().get(0).displayName());
+        Assertions.assertEquals("dnvowg", model.metricSpecifications().get(0).displayDescription());
+        Assertions.assertEquals("exfwhy", model.metricSpecifications().get(0).dimensions().get(0).displayName());
+        Assertions.assertEquals("okktwhrdxw", model.logSpecifications().get(0).displayName());
     }
 }

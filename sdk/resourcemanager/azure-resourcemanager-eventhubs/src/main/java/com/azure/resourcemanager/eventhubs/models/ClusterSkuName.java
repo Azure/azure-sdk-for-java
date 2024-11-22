@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.eventhubs.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
-
 import java.util.Collection;
 
 /**
@@ -20,7 +18,7 @@ public final class ClusterSkuName extends ExpandableStringEnum<ClusterSkuName> {
 
     /**
      * Creates a new instance of ClusterSkuName value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -29,18 +27,17 @@ public final class ClusterSkuName extends ExpandableStringEnum<ClusterSkuName> {
 
     /**
      * Creates or finds a ClusterSkuName from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ClusterSkuName.
      */
-    @JsonCreator
     public static ClusterSkuName fromString(String name) {
         return fromString(name, ClusterSkuName.class);
     }
 
     /**
      * Gets known ClusterSkuName values.
-     *
+     * 
      * @return known ClusterSkuName values.
      */
     public static Collection<ClusterSkuName> values() {

@@ -5,35 +5,35 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Authentication credential stored for an upstream.
  */
 @Fluent
-public final class AuthCredential {
+public final class AuthCredential implements JsonSerializable<AuthCredential> {
     /*
      * The name of the credential.
      */
-    @JsonProperty(value = "name")
     private CredentialName name;
 
     /*
      * KeyVault Secret URI for accessing the username.
      */
-    @JsonProperty(value = "usernameSecretIdentifier")
     private String usernameSecretIdentifier;
 
     /*
      * KeyVault Secret URI for accessing the password.
      */
-    @JsonProperty(value = "passwordSecretIdentifier")
     private String passwordSecretIdentifier;
 
     /*
      * This provides data pertaining to the health of the auth credential.
      */
-    @JsonProperty(value = "credentialHealth", access = JsonProperty.Access.WRITE_ONLY)
     private CredentialHealth credentialHealth;
 
     /**
@@ -120,5 +120,49 @@ public final class AuthCredential {
         if (credentialHealth() != null) {
             credentialHealth().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name == null ? null : this.name.toString());
+        jsonWriter.writeStringField("usernameSecretIdentifier", this.usernameSecretIdentifier);
+        jsonWriter.writeStringField("passwordSecretIdentifier", this.passwordSecretIdentifier);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AuthCredential from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AuthCredential if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AuthCredential.
+     */
+    public static AuthCredential fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AuthCredential deserializedAuthCredential = new AuthCredential();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedAuthCredential.name = CredentialName.fromString(reader.getString());
+                } else if ("usernameSecretIdentifier".equals(fieldName)) {
+                    deserializedAuthCredential.usernameSecretIdentifier = reader.getString();
+                } else if ("passwordSecretIdentifier".equals(fieldName)) {
+                    deserializedAuthCredential.passwordSecretIdentifier = reader.getString();
+                } else if ("credentialHealth".equals(fieldName)) {
+                    deserializedAuthCredential.credentialHealth = CredentialHealth.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAuthCredential;
+        });
     }
 }

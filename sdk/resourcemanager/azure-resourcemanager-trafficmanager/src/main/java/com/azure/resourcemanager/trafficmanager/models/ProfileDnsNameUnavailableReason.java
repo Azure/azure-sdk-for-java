@@ -9,8 +9,8 @@ public class ProfileDnsNameUnavailableReason {
     public static final ProfileDnsNameUnavailableReason INVALID = new ProfileDnsNameUnavailableReason("Invalid");
 
     /** Static value AlreadyExists for ProfileDnsNameUnavailableReason. */
-    public static final ProfileDnsNameUnavailableReason ALREADYEXISTS =
-        new ProfileDnsNameUnavailableReason("AlreadyExists");
+    public static final ProfileDnsNameUnavailableReason ALREADYEXISTS
+        = new ProfileDnsNameUnavailableReason("AlreadyExists");
 
     private final String value;
 

@@ -27,23 +27,28 @@ import com.azure.resourcemanager.sql.fluent.ServerAutomaticTuningsClient;
 import com.azure.resourcemanager.sql.fluent.models.ServerAutomaticTuningInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ServerAutomaticTuningsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ServerAutomaticTuningsClient.
+ */
 public final class ServerAutomaticTuningsClientImpl implements ServerAutomaticTuningsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ServerAutomaticTuningsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SqlManagementClientImpl client;
 
     /**
      * Initializes an instance of ServerAutomaticTuningsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ServerAutomaticTuningsClientImpl(SqlManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(ServerAutomaticTuningsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(ServerAutomaticTuningsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -54,43 +59,31 @@ public final class ServerAutomaticTuningsClientImpl implements ServerAutomaticTu
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientS")
     public interface ServerAutomaticTuningsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/automaticTuning/current")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/automaticTuning/current")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ServerAutomaticTuningInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ServerAutomaticTuningInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/automaticTuning/current")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/automaticTuning/current")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ServerAutomaticTuningInner>> update(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") ServerAutomaticTuningInner parameters,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<ServerAutomaticTuningInner>> update(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") ServerAutomaticTuningInner parameters, @HeaderParam("Accept") String accept,
             Context context);
     }
 
     /**
      * Retrieves server automatic tuning options.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -98,13 +91,11 @@ public final class ServerAutomaticTuningsClientImpl implements ServerAutomaticTu
      * @return server-level Automatic Tuning along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ServerAutomaticTuningInner>> getWithResponseAsync(
-        String resourceGroupName, String serverName) {
+    public Mono<Response<ServerAutomaticTuningInner>> getWithResponseAsync(String resourceGroupName,
+        String serverName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -114,32 +105,21 @@ public final class ServerAutomaticTuningsClientImpl implements ServerAutomaticTu
             return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serverName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, serverName,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Retrieves server automatic tuning options.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -148,13 +128,11 @@ public final class ServerAutomaticTuningsClientImpl implements ServerAutomaticTu
      * @return server-level Automatic Tuning along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ServerAutomaticTuningInner>> getWithResponseAsync(
-        String resourceGroupName, String serverName, Context context) {
+    private Mono<Response<ServerAutomaticTuningInner>> getWithResponseAsync(String resourceGroupName, String serverName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -164,29 +142,20 @@ public final class ServerAutomaticTuningsClientImpl implements ServerAutomaticTu
             return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serverName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), resourceGroupName, serverName, this.client.getSubscriptionId(),
+            this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Retrieves server automatic tuning options.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -200,9 +169,9 @@ public final class ServerAutomaticTuningsClientImpl implements ServerAutomaticTu
 
     /**
      * Retrieves server automatic tuning options.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -211,16 +180,16 @@ public final class ServerAutomaticTuningsClientImpl implements ServerAutomaticTu
      * @return server-level Automatic Tuning along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ServerAutomaticTuningInner> getWithResponse(
-        String resourceGroupName, String serverName, Context context) {
+    public Response<ServerAutomaticTuningInner> getWithResponse(String resourceGroupName, String serverName,
+        Context context) {
         return getWithResponseAsync(resourceGroupName, serverName, context).block();
     }
 
     /**
      * Retrieves server automatic tuning options.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -234,9 +203,9 @@ public final class ServerAutomaticTuningsClientImpl implements ServerAutomaticTu
 
     /**
      * Update automatic tuning options on server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param parameters The requested automatic tuning resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -245,13 +214,11 @@ public final class ServerAutomaticTuningsClientImpl implements ServerAutomaticTu
      * @return server-level Automatic Tuning along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ServerAutomaticTuningInner>> updateWithResponseAsync(
-        String resourceGroupName, String serverName, ServerAutomaticTuningInner parameters) {
+    public Mono<Response<ServerAutomaticTuningInner>> updateWithResponseAsync(String resourceGroupName,
+        String serverName, ServerAutomaticTuningInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -261,10 +228,8 @@ public final class ServerAutomaticTuningsClientImpl implements ServerAutomaticTu
             return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -273,26 +238,16 @@ public final class ServerAutomaticTuningsClientImpl implements ServerAutomaticTu
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serverName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), resourceGroupName, serverName,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Update automatic tuning options on server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param parameters The requested automatic tuning resource state.
      * @param context The context to associate with this operation.
@@ -302,13 +257,11 @@ public final class ServerAutomaticTuningsClientImpl implements ServerAutomaticTu
      * @return server-level Automatic Tuning along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ServerAutomaticTuningInner>> updateWithResponseAsync(
-        String resourceGroupName, String serverName, ServerAutomaticTuningInner parameters, Context context) {
+    private Mono<Response<ServerAutomaticTuningInner>> updateWithResponseAsync(String resourceGroupName,
+        String serverName, ServerAutomaticTuningInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -318,10 +271,8 @@ public final class ServerAutomaticTuningsClientImpl implements ServerAutomaticTu
             return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -330,23 +281,15 @@ public final class ServerAutomaticTuningsClientImpl implements ServerAutomaticTu
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serverName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                parameters,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), resourceGroupName, serverName, this.client.getSubscriptionId(),
+            this.client.getApiVersion(), parameters, accept, context);
     }
 
     /**
      * Update automatic tuning options on server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param parameters The requested automatic tuning resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -355,17 +298,17 @@ public final class ServerAutomaticTuningsClientImpl implements ServerAutomaticTu
      * @return server-level Automatic Tuning on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ServerAutomaticTuningInner> updateAsync(
-        String resourceGroupName, String serverName, ServerAutomaticTuningInner parameters) {
+    public Mono<ServerAutomaticTuningInner> updateAsync(String resourceGroupName, String serverName,
+        ServerAutomaticTuningInner parameters) {
         return updateWithResponseAsync(resourceGroupName, serverName, parameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Update automatic tuning options on server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param parameters The requested automatic tuning resource state.
      * @param context The context to associate with this operation.
@@ -375,16 +318,16 @@ public final class ServerAutomaticTuningsClientImpl implements ServerAutomaticTu
      * @return server-level Automatic Tuning along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ServerAutomaticTuningInner> updateWithResponse(
-        String resourceGroupName, String serverName, ServerAutomaticTuningInner parameters, Context context) {
+    public Response<ServerAutomaticTuningInner> updateWithResponse(String resourceGroupName, String serverName,
+        ServerAutomaticTuningInner parameters, Context context) {
         return updateWithResponseAsync(resourceGroupName, serverName, parameters, context).block();
     }
 
     /**
      * Update automatic tuning options on server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param parameters The requested automatic tuning resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -393,8 +336,8 @@ public final class ServerAutomaticTuningsClientImpl implements ServerAutomaticTu
      * @return server-level Automatic Tuning.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ServerAutomaticTuningInner update(
-        String resourceGroupName, String serverName, ServerAutomaticTuningInner parameters) {
+    public ServerAutomaticTuningInner update(String resourceGroupName, String serverName,
+        ServerAutomaticTuningInner parameters) {
         return updateWithResponse(resourceGroupName, serverName, parameters, Context.NONE).getValue();
     }
 }

@@ -10,9 +10,8 @@ import com.azure.resourcemanager.networkcloud.models.HardwareValidationStatus;
 public final class HardwareValidationStatusTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        HardwareValidationStatus model =
-            BinaryData
-                .fromString("{\"lastValidationTime\":\"2021-10-07T14:36:38Z\",\"result\":\"Pass\"}")
+        HardwareValidationStatus model
+            = BinaryData.fromString("{\"lastValidationTime\":\"2021-10-07T14:36:38Z\",\"result\":\"Pass\"}")
                 .toObject(HardwareValidationStatus.class);
     }
 

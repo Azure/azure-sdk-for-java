@@ -19,7 +19,6 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.developer.loadtesting.implementation.LoadTestRunsImpl;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.time.Duration;
 import reactor.core.publisher.Mono;
 
@@ -28,8 +27,6 @@ import reactor.core.publisher.Mono;
  */
 @ServiceClient(builder = LoadTestRunClientBuilder.class, isAsync = true)
 public final class LoadTestRunAsyncClient {
-
-    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     @Generated
     private final LoadTestRunsImpl serviceClient;
@@ -46,10 +43,10 @@ public final class LoadTestRunAsyncClient {
 
     /**
      * Configure server metrics for a test run.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     testRunId: String (Optional)
      *     metrics (Optional): {
@@ -69,11 +66,13 @@ public final class LoadTestRunAsyncClient {
      *     lastModifiedDateTime: OffsetDateTime (Optional)
      *     lastModifiedBy: String (Optional)
      * }
-     * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     testRunId: String (Optional)
      *     metrics (Optional): {
@@ -93,7 +92,8 @@ public final class LoadTestRunAsyncClient {
      *     lastModifiedDateTime: OffsetDateTime (Optional)
      *     lastModifiedBy: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
      * or hyphen characters.
@@ -134,12 +134,9 @@ public final class LoadTestRunAsyncClient {
         return new PollerFlux<>(Duration.ofSeconds(5),
             (context) -> createOrUpdateTestRunWithResponse(testRunId, body, testRunRequestOptions)
                 .flatMap(FluxUtil::toMono),
-            (context) -> {
-                Mono<BinaryData> testRunMono
-                    = getTestRunWithResponse(testRunId, defaultRequestOptions).flatMap(FluxUtil::toMono);
-                return testRunMono.flatMap(testRunBinary -> PollingUtils
-                    .getPollResponseMono(() -> PollingUtils.getTestRunStatus(testRunBinary, OBJECT_MAPPER)));
-            },
+            (context) -> getTestRunWithResponse(testRunId, defaultRequestOptions).flatMap(FluxUtil::toMono)
+                .flatMap(testRunBinary -> PollingUtils
+                    .getPollResponseMono(() -> PollingUtils.getTestRunStatus(testRunBinary))),
             (activationResponse, context) -> stopTestRunWithResponse(testRunId, defaultRequestOptions)
                 .flatMap(FluxUtil::toMono),
             (context) -> getTestRunWithResponse(testRunId, defaultRequestOptions).flatMap(FluxUtil::toMono));
@@ -147,10 +144,10 @@ public final class LoadTestRunAsyncClient {
 
     /**
      * Associate an app component (collection of azure resources) to a test run.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     components (Required): {
      *         String (Required): {
@@ -169,11 +166,13 @@ public final class LoadTestRunAsyncClient {
      *     lastModifiedDateTime: OffsetDateTime (Optional)
      *     lastModifiedBy: String (Optional)
      * }
-     * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     components (Required): {
      *         String (Required): {
@@ -192,7 +191,8 @@ public final class LoadTestRunAsyncClient {
      *     lastModifiedDateTime: OffsetDateTime (Optional)
      *     lastModifiedBy: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
      * or hyphen characters.
@@ -244,7 +244,8 @@ public final class LoadTestRunAsyncClient {
      * <p>
      * <strong>Request Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     filters (Optional): [
      *          (Optional){
@@ -255,12 +256,14 @@ public final class LoadTestRunAsyncClient {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * <p>
      * <strong>Response Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     value (Optional): [
      *          (Optional){
@@ -280,7 +283,8 @@ public final class LoadTestRunAsyncClient {
      *     ]
      *     nextLink: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
      * or hyphen characters.
@@ -308,31 +312,21 @@ public final class LoadTestRunAsyncClient {
 
     /**
      * List the dimension values for the given metric dimension name.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>interval</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>The interval (i.e. timegrain) of the query. Allowed values: "PT5S", "PT10S", "PT1M", "PT5M", "PT1H".</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>interval</td><td>String</td><td>No</td><td>The interval (i.e. timegrain) of the query. Allowed values:
+     * "PT5S", "PT10S", "PT1M", "PT5M", "PT1H".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * String
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
      * or hyphen characters.
@@ -358,10 +352,10 @@ public final class LoadTestRunAsyncClient {
 
     /**
      * Get associated app component (collection of azure resources) for the given test run.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     components (Required): {
      *         String (Required): {
@@ -380,7 +374,8 @@ public final class LoadTestRunAsyncClient {
      *     lastModifiedDateTime: OffsetDateTime (Optional)
      *     lastModifiedBy: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
      * or hyphen characters.
@@ -400,10 +395,10 @@ public final class LoadTestRunAsyncClient {
 
     /**
      * List server metrics configuration for the given test run.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     testRunId: String (Optional)
      *     metrics (Optional): {
@@ -423,7 +418,8 @@ public final class LoadTestRunAsyncClient {
      *     lastModifiedDateTime: OffsetDateTime (Optional)
      *     lastModifiedBy: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
      * or hyphen characters.
@@ -471,7 +467,8 @@ public final class LoadTestRunAsyncClient {
      * <p>
      * <strong>Request Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     passFailCriteria (Optional): {
      *         passFailMetrics (Optional): {
@@ -575,12 +572,14 @@ public final class LoadTestRunAsyncClient {
      *     lastModifiedDateTime: OffsetDateTime (Optional)
      *     lastModifiedBy: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * <p>
      * <strong>Response Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     passFailCriteria (Optional): {
      *         passFailMetrics (Optional): {
@@ -684,7 +683,8 @@ public final class LoadTestRunAsyncClient {
      *     lastModifiedDateTime: OffsetDateTime (Optional)
      *     lastModifiedBy: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
      * or hyphen characters.
@@ -704,10 +704,10 @@ public final class LoadTestRunAsyncClient {
 
     /**
      * Get test run details by name.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     passFailCriteria (Optional): {
      *         passFailMetrics (Optional): {
@@ -811,7 +811,8 @@ public final class LoadTestRunAsyncClient {
      *     lastModifiedDateTime: OffsetDateTime (Optional)
      *     lastModifiedBy: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
      * or hyphen characters.
@@ -848,10 +849,10 @@ public final class LoadTestRunAsyncClient {
 
     /**
      * Get test run file by file name.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     url: String (Optional)
      *     fileName: String (Optional)
@@ -860,7 +861,8 @@ public final class LoadTestRunAsyncClient {
      *     validationStatus: String(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED) (Optional)
      *     validationFailureDetails: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
      * or hyphen characters.
@@ -881,67 +883,28 @@ public final class LoadTestRunAsyncClient {
 
     /**
      * Get all test runs with given filters.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>orderby</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Sort on the supported fields in (field asc/desc) format. eg: executedDateTime asc. Supported fields -
-     * executedDateTime</td>
-     * </tr>
-     * <tr>
-     * <td>search</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Prefix based, case sensitive search on searchable fields - description, executedUser. For example, to search
-     * for a test run, with description 500 VUs, the search parameter can be 500.</td>
-     * </tr>
-     * <tr>
-     * <td>testId</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Unique name of an existing load test.</td>
-     * </tr>
-     * <tr>
-     * <td>executionFrom</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>Start DateTime(ISO 8601 literal format) of test-run execution time filter range.</td>
-     * </tr>
-     * <tr>
-     * <td>executionTo</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>End DateTime(ISO 8601 literal format) of test-run execution time filter range.</td>
-     * </tr>
-     * <tr>
-     * <td>status</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Comma separated list of test run status.</td>
-     * </tr>
-     * <tr>
-     * <td>maxpagesize</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>Number of results in response.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>orderby</td><td>String</td><td>No</td><td>Sort on the supported fields in (field asc/desc) format. eg:
+     * executedDateTime asc. Supported fields - executedDateTime</td></tr>
+     * <tr><td>search</td><td>String</td><td>No</td><td>Prefix based, case sensitive search on searchable fields -
+     * description, executedUser. For example, to search for a test run, with description 500 VUs, the search parameter
+     * can be 500.</td></tr>
+     * <tr><td>testId</td><td>String</td><td>No</td><td>Unique name of an existing load test.</td></tr>
+     * <tr><td>executionFrom</td><td>OffsetDateTime</td><td>No</td><td>Start DateTime(ISO 8601 literal format) of
+     * test-run execution time filter range.</td></tr>
+     * <tr><td>executionTo</td><td>OffsetDateTime</td><td>No</td><td>End DateTime(ISO 8601 literal format) of test-run
+     * execution time filter range.</td></tr>
+     * <tr><td>status</td><td>String</td><td>No</td><td>Comma separated list of test run status.</td></tr>
+     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of results in response.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     passFailCriteria (Optional): {
      *         passFailMetrics (Optional): {
@@ -1045,7 +1008,8 @@ public final class LoadTestRunAsyncClient {
      *     lastModifiedDateTime: OffsetDateTime (Optional)
      *     lastModifiedBy: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1062,10 +1026,10 @@ public final class LoadTestRunAsyncClient {
 
     /**
      * Stop test run by name.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     passFailCriteria (Optional): {
      *         passFailMetrics (Optional): {
@@ -1169,7 +1133,8 @@ public final class LoadTestRunAsyncClient {
      *     lastModifiedDateTime: OffsetDateTime (Optional)
      *     lastModifiedBy: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
      * or hyphen characters.
@@ -1188,10 +1153,10 @@ public final class LoadTestRunAsyncClient {
 
     /**
      * List the metric namespaces for a load test run.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     value (Required): [
      *          (Required){
@@ -1200,7 +1165,8 @@ public final class LoadTestRunAsyncClient {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
      * or hyphen characters.
@@ -1220,10 +1186,10 @@ public final class LoadTestRunAsyncClient {
 
     /**
      * List the metric definitions for a load test run.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     value (Required): [
      *          (Required){
@@ -1249,7 +1215,8 @@ public final class LoadTestRunAsyncClient {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
      * or hyphen characters.

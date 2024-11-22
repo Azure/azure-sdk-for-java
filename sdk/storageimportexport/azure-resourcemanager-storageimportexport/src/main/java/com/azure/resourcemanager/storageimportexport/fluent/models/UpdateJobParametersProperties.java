@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.storageimportexport.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.storageimportexport.models.DeliveryPackageInformation;
 import com.azure.resourcemanager.storageimportexport.models.DriveStatus;
 import com.azure.resourcemanager.storageimportexport.models.ReturnAddress;
 import com.azure.resourcemanager.storageimportexport.models.ReturnShipping;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Specifies the properties of a UpdateJob. */
+/**
+ * Specifies the properties of a UpdateJob.
+ */
 @Fluent
-public final class UpdateJobParametersProperties {
+public final class UpdateJobParametersProperties implements JsonSerializable<UpdateJobParametersProperties> {
     /*
      * If specified, the value must be true. The service will attempt to cancel the job.
      */
-    @JsonProperty(value = "cancelRequested")
     private Boolean cancelRequested;
 
     /*
@@ -26,53 +31,48 @@ public final class UpdateJobParametersProperties {
      * been shipped. The ReturnAddress and DeliveryPackage properties must have been set either in this request or in a
      * previous request, otherwise the request will fail.
      */
-    @JsonProperty(value = "state")
     private String state;
 
     /*
      * Specifies the return address information for the job.
      */
-    @JsonProperty(value = "returnAddress")
     private ReturnAddress returnAddress;
 
     /*
      * Specifies the return carrier and customer's account with the carrier.
      */
-    @JsonProperty(value = "returnShipping")
     private ReturnShipping returnShipping;
 
     /*
      * Contains information about the package being shipped by the customer to the Microsoft data center.
      */
-    @JsonProperty(value = "deliveryPackage")
     private DeliveryPackageInformation deliveryPackage;
 
     /*
      * Indicates whether error logging or verbose logging is enabled.
      */
-    @JsonProperty(value = "logLevel")
     private String logLevel;
 
     /*
      * Indicates whether the manifest files on the drives should be copied to block blobs.
      */
-    @JsonProperty(value = "backupDriveManifest")
     private Boolean backupDriveManifest;
 
     /*
      * List of drives that comprise the job.
      */
-    @JsonProperty(value = "driveList")
     private List<DriveStatus> driveList;
 
-    /** Creates an instance of UpdateJobParametersProperties class. */
+    /**
+     * Creates an instance of UpdateJobParametersProperties class.
+     */
     public UpdateJobParametersProperties() {
     }
 
     /**
      * Get the cancelRequested property: If specified, the value must be true. The service will attempt to cancel the
      * job.
-     *
+     * 
      * @return the cancelRequested value.
      */
     public Boolean cancelRequested() {
@@ -82,7 +82,7 @@ public final class UpdateJobParametersProperties {
     /**
      * Set the cancelRequested property: If specified, the value must be true. The service will attempt to cancel the
      * job.
-     *
+     * 
      * @param cancelRequested the cancelRequested value to set.
      * @return the UpdateJobParametersProperties object itself.
      */
@@ -95,7 +95,7 @@ public final class UpdateJobParametersProperties {
      * Get the state property: If specified, the value must be Shipping, which tells the Import/Export service that the
      * package for the job has been shipped. The ReturnAddress and DeliveryPackage properties must have been set either
      * in this request or in a previous request, otherwise the request will fail.
-     *
+     * 
      * @return the state value.
      */
     public String state() {
@@ -106,7 +106,7 @@ public final class UpdateJobParametersProperties {
      * Set the state property: If specified, the value must be Shipping, which tells the Import/Export service that the
      * package for the job has been shipped. The ReturnAddress and DeliveryPackage properties must have been set either
      * in this request or in a previous request, otherwise the request will fail.
-     *
+     * 
      * @param state the state value to set.
      * @return the UpdateJobParametersProperties object itself.
      */
@@ -117,7 +117,7 @@ public final class UpdateJobParametersProperties {
 
     /**
      * Get the returnAddress property: Specifies the return address information for the job.
-     *
+     * 
      * @return the returnAddress value.
      */
     public ReturnAddress returnAddress() {
@@ -126,7 +126,7 @@ public final class UpdateJobParametersProperties {
 
     /**
      * Set the returnAddress property: Specifies the return address information for the job.
-     *
+     * 
      * @param returnAddress the returnAddress value to set.
      * @return the UpdateJobParametersProperties object itself.
      */
@@ -137,7 +137,7 @@ public final class UpdateJobParametersProperties {
 
     /**
      * Get the returnShipping property: Specifies the return carrier and customer's account with the carrier.
-     *
+     * 
      * @return the returnShipping value.
      */
     public ReturnShipping returnShipping() {
@@ -146,7 +146,7 @@ public final class UpdateJobParametersProperties {
 
     /**
      * Set the returnShipping property: Specifies the return carrier and customer's account with the carrier.
-     *
+     * 
      * @param returnShipping the returnShipping value to set.
      * @return the UpdateJobParametersProperties object itself.
      */
@@ -158,7 +158,7 @@ public final class UpdateJobParametersProperties {
     /**
      * Get the deliveryPackage property: Contains information about the package being shipped by the customer to the
      * Microsoft data center.
-     *
+     * 
      * @return the deliveryPackage value.
      */
     public DeliveryPackageInformation deliveryPackage() {
@@ -168,7 +168,7 @@ public final class UpdateJobParametersProperties {
     /**
      * Set the deliveryPackage property: Contains information about the package being shipped by the customer to the
      * Microsoft data center.
-     *
+     * 
      * @param deliveryPackage the deliveryPackage value to set.
      * @return the UpdateJobParametersProperties object itself.
      */
@@ -179,7 +179,7 @@ public final class UpdateJobParametersProperties {
 
     /**
      * Get the logLevel property: Indicates whether error logging or verbose logging is enabled.
-     *
+     * 
      * @return the logLevel value.
      */
     public String logLevel() {
@@ -188,7 +188,7 @@ public final class UpdateJobParametersProperties {
 
     /**
      * Set the logLevel property: Indicates whether error logging or verbose logging is enabled.
-     *
+     * 
      * @param logLevel the logLevel value to set.
      * @return the UpdateJobParametersProperties object itself.
      */
@@ -200,7 +200,7 @@ public final class UpdateJobParametersProperties {
     /**
      * Get the backupDriveManifest property: Indicates whether the manifest files on the drives should be copied to
      * block blobs.
-     *
+     * 
      * @return the backupDriveManifest value.
      */
     public Boolean backupDriveManifest() {
@@ -210,7 +210,7 @@ public final class UpdateJobParametersProperties {
     /**
      * Set the backupDriveManifest property: Indicates whether the manifest files on the drives should be copied to
      * block blobs.
-     *
+     * 
      * @param backupDriveManifest the backupDriveManifest value to set.
      * @return the UpdateJobParametersProperties object itself.
      */
@@ -221,7 +221,7 @@ public final class UpdateJobParametersProperties {
 
     /**
      * Get the driveList property: List of drives that comprise the job.
-     *
+     * 
      * @return the driveList value.
      */
     public List<DriveStatus> driveList() {
@@ -230,7 +230,7 @@ public final class UpdateJobParametersProperties {
 
     /**
      * Set the driveList property: List of drives that comprise the job.
-     *
+     * 
      * @param driveList the driveList value to set.
      * @return the UpdateJobParametersProperties object itself.
      */
@@ -241,7 +241,7 @@ public final class UpdateJobParametersProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -257,5 +257,67 @@ public final class UpdateJobParametersProperties {
         if (driveList() != null) {
             driveList().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("cancelRequested", this.cancelRequested);
+        jsonWriter.writeStringField("state", this.state);
+        jsonWriter.writeJsonField("returnAddress", this.returnAddress);
+        jsonWriter.writeJsonField("returnShipping", this.returnShipping);
+        jsonWriter.writeJsonField("deliveryPackage", this.deliveryPackage);
+        jsonWriter.writeStringField("logLevel", this.logLevel);
+        jsonWriter.writeBooleanField("backupDriveManifest", this.backupDriveManifest);
+        jsonWriter.writeArrayField("driveList", this.driveList, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UpdateJobParametersProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UpdateJobParametersProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the UpdateJobParametersProperties.
+     */
+    public static UpdateJobParametersProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UpdateJobParametersProperties deserializedUpdateJobParametersProperties
+                = new UpdateJobParametersProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("cancelRequested".equals(fieldName)) {
+                    deserializedUpdateJobParametersProperties.cancelRequested
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("state".equals(fieldName)) {
+                    deserializedUpdateJobParametersProperties.state = reader.getString();
+                } else if ("returnAddress".equals(fieldName)) {
+                    deserializedUpdateJobParametersProperties.returnAddress = ReturnAddress.fromJson(reader);
+                } else if ("returnShipping".equals(fieldName)) {
+                    deserializedUpdateJobParametersProperties.returnShipping = ReturnShipping.fromJson(reader);
+                } else if ("deliveryPackage".equals(fieldName)) {
+                    deserializedUpdateJobParametersProperties.deliveryPackage
+                        = DeliveryPackageInformation.fromJson(reader);
+                } else if ("logLevel".equals(fieldName)) {
+                    deserializedUpdateJobParametersProperties.logLevel = reader.getString();
+                } else if ("backupDriveManifest".equals(fieldName)) {
+                    deserializedUpdateJobParametersProperties.backupDriveManifest
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("driveList".equals(fieldName)) {
+                    List<DriveStatus> driveList = reader.readArray(reader1 -> DriveStatus.fromJson(reader1));
+                    deserializedUpdateJobParametersProperties.driveList = driveList;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUpdateJobParametersProperties;
+        });
     }
 }

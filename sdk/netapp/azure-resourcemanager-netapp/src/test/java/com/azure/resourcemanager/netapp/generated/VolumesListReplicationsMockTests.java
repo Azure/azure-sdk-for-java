@@ -24,7 +24,7 @@ public final class VolumesListReplicationsMockTests {
     @Test
     public void testListReplications() throws Exception {
         String responseStr
-            = "{\"value\":[{\"endpointType\":\"dst\",\"replicationSchedule\":\"daily\",\"remoteVolumeResourceId\":\"eamurvzmlo\",\"remoteVolumeRegion\":\"anashc\"}]}";
+            = "{\"value\":[{\"replicationId\":\"ypundmbxhugc\",\"endpointType\":\"src\",\"replicationSchedule\":\"hourly\",\"remoteVolumeResourceId\":\"lgorb\",\"remoteVolumeRegion\":\"tp\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,11 +34,11 @@ public final class VolumesListReplicationsMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<Replication> response = manager.volumes()
-            .listReplications("lrpiqywnc", "jtszcof", "zehtdhgb", "k", com.azure.core.util.Context.NONE);
+            .listReplications("jh", "mgixhcmavmqfou", "or", "cgyypro", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(EndpointType.DST, response.iterator().next().endpointType());
-        Assertions.assertEquals(ReplicationSchedule.DAILY, response.iterator().next().replicationSchedule());
-        Assertions.assertEquals("eamurvzmlo", response.iterator().next().remoteVolumeResourceId());
-        Assertions.assertEquals("anashc", response.iterator().next().remoteVolumeRegion());
+        Assertions.assertEquals(EndpointType.SRC, response.iterator().next().endpointType());
+        Assertions.assertEquals(ReplicationSchedule.HOURLY, response.iterator().next().replicationSchedule());
+        Assertions.assertEquals("lgorb", response.iterator().next().remoteVolumeResourceId());
+        Assertions.assertEquals("tp", response.iterator().next().remoteVolumeRegion());
     }
 }

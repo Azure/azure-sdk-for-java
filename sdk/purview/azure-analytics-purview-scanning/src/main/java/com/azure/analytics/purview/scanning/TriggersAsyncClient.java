@@ -21,7 +21,8 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the asynchronous PurviewScanningClient type. */
 @ServiceClient(builder = PurviewScanningClientBuilder.class, isAsync = true)
 public final class TriggersAsyncClient {
-    @Generated private final TriggersImpl serviceClient;
+    @Generated
+    private final TriggersImpl serviceClient;
 
     /**
      * Initializes an instance of TriggersAsyncClient class.
@@ -97,8 +98,8 @@ public final class TriggersAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getTriggerWithResponse(
-            String dataSourceName, String scanName, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getTriggerWithResponse(String dataSourceName, String scanName,
+        RequestOptions requestOptions) {
         return this.serviceClient.getTriggerWithResponseAsync(dataSourceName, scanName, requestOptions);
     }
 
@@ -217,8 +218,8 @@ public final class TriggersAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createTriggerWithResponse(
-            String dataSourceName, String scanName, BinaryData body, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> createTriggerWithResponse(String dataSourceName, String scanName, BinaryData body,
+        RequestOptions requestOptions) {
         return this.serviceClient.createTriggerWithResponseAsync(dataSourceName, scanName, body, requestOptions);
     }
 
@@ -286,8 +287,8 @@ public final class TriggersAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> deleteTriggerWithResponse(
-            String dataSourceName, String scanName, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> deleteTriggerWithResponse(String dataSourceName, String scanName,
+        RequestOptions requestOptions) {
         return this.serviceClient.deleteTriggerWithResponseAsync(dataSourceName, scanName, requestOptions);
     }
 }

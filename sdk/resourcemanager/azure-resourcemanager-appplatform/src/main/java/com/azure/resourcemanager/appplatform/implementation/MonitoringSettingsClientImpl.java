@@ -59,8 +59,8 @@ public final class MonitoringSettingsClientImpl implements MonitoringSettingsCli
     }
 
     /**
-     * The interface defining all the services for AppPlatformManagementClientMonitoringSettings to be used by the
-     * proxy service to perform REST calls.
+     * The interface defining all the services for AppPlatformManagementClientMonitoringSettings to be used by the proxy
+     * service to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "AppPlatformManagemen")

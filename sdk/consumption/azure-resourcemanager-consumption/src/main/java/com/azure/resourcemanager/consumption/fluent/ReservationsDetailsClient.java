@@ -10,114 +10,122 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.consumption.fluent.models.ReservationDetailInner;
 
-/** An instance of this class provides access to all the operations defined in ReservationsDetailsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ReservationsDetailsClient.
+ */
 public interface ReservationsDetailsClient {
     /**
-     * Lists the reservations details for provided date range.
-     *
+     * Lists the reservations details for provided date range. Note: ARM has a payload size limit of 12MB, so currently
+     * callers get 400 when the response size exceeds the ARM limit. In such cases, API call should be made with smaller
+     * date ranges.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param filter Filter reservation details by date range. The properties/UsageDate for start date and end date. The
-     *     filter supports 'le' and 'ge'.
+     * filter supports 'le' and 'ge'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing reservation details.
+     * @return result of listing reservation details as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ReservationDetailInner> listByReservationOrder(String reservationOrderId, String filter);
 
     /**
-     * Lists the reservations details for provided date range.
-     *
+     * Lists the reservations details for provided date range. Note: ARM has a payload size limit of 12MB, so currently
+     * callers get 400 when the response size exceeds the ARM limit. In such cases, API call should be made with smaller
+     * date ranges.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param filter Filter reservation details by date range. The properties/UsageDate for start date and end date. The
-     *     filter supports 'le' and 'ge'.
+     * filter supports 'le' and 'ge'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing reservation details.
+     * @return result of listing reservation details as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ReservationDetailInner> listByReservationOrder(
-        String reservationOrderId, String filter, Context context);
+    PagedIterable<ReservationDetailInner> listByReservationOrder(String reservationOrderId, String filter,
+        Context context);
 
     /**
-     * Lists the reservations details for provided date range.
-     *
+     * Lists the reservations details for provided date range. Note: ARM has a payload size limit of 12MB, so currently
+     * callers get 400 when the response size exceeds the ARM limit. In such cases, API call should be made with smaller
+     * date ranges.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param reservationId Id of the reservation.
      * @param filter Filter reservation details by date range. The properties/UsageDate for start date and end date. The
-     *     filter supports 'le' and 'ge'.
+     * filter supports 'le' and 'ge'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing reservation details.
+     * @return result of listing reservation details as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ReservationDetailInner> listByReservationOrderAndReservation(
-        String reservationOrderId, String reservationId, String filter);
+    PagedIterable<ReservationDetailInner> listByReservationOrderAndReservation(String reservationOrderId,
+        String reservationId, String filter);
 
     /**
-     * Lists the reservations details for provided date range.
-     *
+     * Lists the reservations details for provided date range. Note: ARM has a payload size limit of 12MB, so currently
+     * callers get 400 when the response size exceeds the ARM limit. In such cases, API call should be made with smaller
+     * date ranges.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param reservationId Id of the reservation.
      * @param filter Filter reservation details by date range. The properties/UsageDate for start date and end date. The
-     *     filter supports 'le' and 'ge'.
+     * filter supports 'le' and 'ge'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing reservation details.
+     * @return result of listing reservation details as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ReservationDetailInner> listByReservationOrderAndReservation(
-        String reservationOrderId, String reservationId, String filter, Context context);
+    PagedIterable<ReservationDetailInner> listByReservationOrderAndReservation(String reservationOrderId,
+        String reservationId, String filter, Context context);
 
     /**
-     * Lists the reservations details for the defined scope and provided date range.
-     *
-     * @param scope The scope associated with reservations details operations. This includes
-     *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for BillingAccount scope (legacy), and
-     *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for
-     *     BillingProfile scope (modern).
+     * Lists the reservations details for the defined scope and provided date range. Note: ARM has a payload size limit
+     * of 12MB, so currently callers get 400 when the response size exceeds the ARM limit. In such cases, API call
+     * should be made with smaller date ranges.
+     * 
+     * @param resourceScope The scope associated with reservations details operations. This includes
+     * '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for BillingAccount scope (legacy), and
+     * '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for
+     * BillingProfile scope (modern).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing reservation details.
+     * @return result of listing reservation details as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ReservationDetailInner> list(String scope);
+    PagedIterable<ReservationDetailInner> list(String resourceScope);
 
     /**
-     * Lists the reservations details for the defined scope and provided date range.
-     *
-     * @param scope The scope associated with reservations details operations. This includes
-     *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for BillingAccount scope (legacy), and
-     *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for
-     *     BillingProfile scope (modern).
+     * Lists the reservations details for the defined scope and provided date range. Note: ARM has a payload size limit
+     * of 12MB, so currently callers get 400 when the response size exceeds the ARM limit. In such cases, API call
+     * should be made with smaller date ranges.
+     * 
+     * @param resourceScope The scope associated with reservations details operations. This includes
+     * '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for BillingAccount scope (legacy), and
+     * '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for
+     * BillingProfile scope (modern).
      * @param startDate Start date. Only applicable when querying with billing profile.
      * @param endDate End date. Only applicable when querying with billing profile.
      * @param filter Filter reservation details by date range. The properties/UsageDate for start date and end date. The
-     *     filter supports 'le' and 'ge'. Not applicable when querying with billing profile.
+     * filter supports 'le' and 'ge'. Not applicable when querying with billing profile.
      * @param reservationId Reservation Id GUID. Only valid if reservationOrderId is also provided. Filter to a specific
-     *     reservation.
+     * reservation.
      * @param reservationOrderId Reservation Order Id GUID. Required if reservationId is provided. Filter to a specific
-     *     reservation order.
+     * reservation order.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing reservation details.
+     * @return result of listing reservation details as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ReservationDetailInner> list(
-        String scope,
-        String startDate,
-        String endDate,
-        String filter,
-        String reservationId,
-        String reservationOrderId,
-        Context context);
+    PagedIterable<ReservationDetailInner> list(String resourceScope, String startDate, String endDate, String filter,
+        String reservationId, String reservationOrderId, Context context);
 }

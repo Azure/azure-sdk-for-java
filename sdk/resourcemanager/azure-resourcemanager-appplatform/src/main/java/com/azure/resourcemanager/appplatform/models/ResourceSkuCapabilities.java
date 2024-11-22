@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The ResourceSkuCapabilities model.
  */
 @Fluent
-public final class ResourceSkuCapabilities {
+public final class ResourceSkuCapabilities implements JsonSerializable<ResourceSkuCapabilities> {
     /*
      * Gets an invariant to describe the feature.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Gets an invariant if the feature is measured by quantity.
      */
-    @JsonProperty(value = "value")
     private String value;
 
     /**
@@ -76,5 +78,44 @@ public final class ResourceSkuCapabilities {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("value", this.value);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourceSkuCapabilities from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourceSkuCapabilities if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ResourceSkuCapabilities.
+     */
+    public static ResourceSkuCapabilities fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourceSkuCapabilities deserializedResourceSkuCapabilities = new ResourceSkuCapabilities();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedResourceSkuCapabilities.name = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    deserializedResourceSkuCapabilities.value = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResourceSkuCapabilities;
+        });
     }
 }

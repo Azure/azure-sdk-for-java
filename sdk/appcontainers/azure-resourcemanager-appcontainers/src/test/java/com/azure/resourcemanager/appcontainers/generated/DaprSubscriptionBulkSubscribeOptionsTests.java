@@ -12,21 +12,21 @@ public final class DaprSubscriptionBulkSubscribeOptionsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DaprSubscriptionBulkSubscribeOptions model = BinaryData
-            .fromString("{\"enabled\":true,\"maxMessagesCount\":979453859,\"maxAwaitDurationMs\":632161025}")
+            .fromString("{\"enabled\":true,\"maxMessagesCount\":1598918980,\"maxAwaitDurationMs\":655056908}")
             .toObject(DaprSubscriptionBulkSubscribeOptions.class);
         Assertions.assertEquals(true, model.enabled());
-        Assertions.assertEquals(979453859, model.maxMessagesCount());
-        Assertions.assertEquals(632161025, model.maxAwaitDurationMs());
+        Assertions.assertEquals(1598918980, model.maxMessagesCount());
+        Assertions.assertEquals(655056908, model.maxAwaitDurationMs());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DaprSubscriptionBulkSubscribeOptions model = new DaprSubscriptionBulkSubscribeOptions().withEnabled(true)
-            .withMaxMessagesCount(979453859)
-            .withMaxAwaitDurationMs(632161025);
+            .withMaxMessagesCount(1598918980)
+            .withMaxAwaitDurationMs(655056908);
         model = BinaryData.fromObject(model).toObject(DaprSubscriptionBulkSubscribeOptions.class);
         Assertions.assertEquals(true, model.enabled());
-        Assertions.assertEquals(979453859, model.maxMessagesCount());
-        Assertions.assertEquals(632161025, model.maxAwaitDurationMs());
+        Assertions.assertEquals(1598918980, model.maxMessagesCount());
+        Assertions.assertEquals(655056908, model.maxAwaitDurationMs());
     }
 }

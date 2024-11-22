@@ -33,6 +33,11 @@ public final class GithubActionConfiguration implements JsonSerializable<GithubA
     private String contextPath;
 
     /*
+     * Dockerfile path
+     */
+    private String dockerfilePath;
+
+    /*
      * One time Github PAT to configure github environment
      */
     private String githubPersonalAccessToken;
@@ -130,6 +135,26 @@ public final class GithubActionConfiguration implements JsonSerializable<GithubA
      */
     public GithubActionConfiguration withContextPath(String contextPath) {
         this.contextPath = contextPath;
+        return this;
+    }
+
+    /**
+     * Get the dockerfilePath property: Dockerfile path.
+     * 
+     * @return the dockerfilePath value.
+     */
+    public String dockerfilePath() {
+        return this.dockerfilePath;
+    }
+
+    /**
+     * Set the dockerfilePath property: Dockerfile path.
+     * 
+     * @param dockerfilePath the dockerfilePath value to set.
+     * @return the GithubActionConfiguration object itself.
+     */
+    public GithubActionConfiguration withDockerfilePath(String dockerfilePath) {
+        this.dockerfilePath = dockerfilePath;
         return this;
     }
 
@@ -300,6 +325,7 @@ public final class GithubActionConfiguration implements JsonSerializable<GithubA
         jsonWriter.writeJsonField("registryInfo", this.registryInfo);
         jsonWriter.writeJsonField("azureCredentials", this.azureCredentials);
         jsonWriter.writeStringField("contextPath", this.contextPath);
+        jsonWriter.writeStringField("dockerfilePath", this.dockerfilePath);
         jsonWriter.writeStringField("githubPersonalAccessToken", this.githubPersonalAccessToken);
         jsonWriter.writeStringField("image", this.image);
         jsonWriter.writeStringField("publishType", this.publishType);
@@ -332,6 +358,8 @@ public final class GithubActionConfiguration implements JsonSerializable<GithubA
                     deserializedGithubActionConfiguration.azureCredentials = AzureCredentials.fromJson(reader);
                 } else if ("contextPath".equals(fieldName)) {
                     deserializedGithubActionConfiguration.contextPath = reader.getString();
+                } else if ("dockerfilePath".equals(fieldName)) {
+                    deserializedGithubActionConfiguration.dockerfilePath = reader.getString();
                 } else if ("githubPersonalAccessToken".equals(fieldName)) {
                     deserializedGithubActionConfiguration.githubPersonalAccessToken = reader.getString();
                 } else if ("image".equals(fieldName)) {

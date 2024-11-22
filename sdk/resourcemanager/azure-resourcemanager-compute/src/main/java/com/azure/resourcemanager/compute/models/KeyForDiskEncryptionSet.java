@@ -6,25 +6,27 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Key Vault Key Url to be used for server side encryption of Managed Disks and Snapshots.
  */
 @Fluent
-public final class KeyForDiskEncryptionSet {
+public final class KeyForDiskEncryptionSet implements JsonSerializable<KeyForDiskEncryptionSet> {
     /*
      * Resource id of the KeyVault containing the key or secret. This property is optional and cannot be used if the
      * KeyVault subscription is not the same as the Disk Encryption Set subscription.
      */
-    @JsonProperty(value = "sourceVault")
     private SourceVault sourceVault;
 
     /*
      * Fully versioned Key Url pointing to a key in KeyVault. Version segment of the Url is required regardless of
      * rotationToLatestKeyVersionEnabled value.
      */
-    @JsonProperty(value = "keyUrl", required = true)
     private String keyUrl;
 
     /**
@@ -93,4 +95,44 @@ public final class KeyForDiskEncryptionSet {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(KeyForDiskEncryptionSet.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("keyUrl", this.keyUrl);
+        jsonWriter.writeJsonField("sourceVault", this.sourceVault);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of KeyForDiskEncryptionSet from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of KeyForDiskEncryptionSet if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the KeyForDiskEncryptionSet.
+     */
+    public static KeyForDiskEncryptionSet fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            KeyForDiskEncryptionSet deserializedKeyForDiskEncryptionSet = new KeyForDiskEncryptionSet();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("keyUrl".equals(fieldName)) {
+                    deserializedKeyForDiskEncryptionSet.keyUrl = reader.getString();
+                } else if ("sourceVault".equals(fieldName)) {
+                    deserializedKeyForDiskEncryptionSet.sourceVault = SourceVault.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedKeyForDiskEncryptionSet;
+        });
+    }
 }

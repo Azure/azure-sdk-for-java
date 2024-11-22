@@ -35,11 +35,10 @@ public final class TranscriptionDataConverter {
      */
     private long offset;
 
-     /*
-     * Duration in ticks. 1 tick = 100 nanoseconds.
-     */
+    /*
+    * Duration in ticks. 1 tick = 100 nanoseconds.
+    */
     private long duration;
-
 
     /*
      * TThe result for each word of the phrase
@@ -91,7 +90,8 @@ public final class TranscriptionDataConverter {
     public long getDuration() {
         return duration;
     }
-  /**
+
+    /**
      * Get the offset property.
      *
      * @return the offset value.
@@ -117,7 +117,6 @@ public final class TranscriptionDataConverter {
     public String getParticipantRawID() {
         return participantRawID;
     }
-
 
     /**
      * Get the resultStatus property.

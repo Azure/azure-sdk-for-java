@@ -6,159 +6,103 @@ package com.azure.resourcemanager.machinelearning.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.ComputePowerAction;
+import com.azure.resourcemanager.machinelearning.models.ComputeRecurrenceFrequency;
+import com.azure.resourcemanager.machinelearning.models.ComputeRecurrenceSchedule;
 import com.azure.resourcemanager.machinelearning.models.ComputeSchedules;
 import com.azure.resourcemanager.machinelearning.models.ComputeStartStopSchedule;
-import com.azure.resourcemanager.machinelearning.models.CronTrigger;
-import com.azure.resourcemanager.machinelearning.models.RecurrenceFrequency;
-import com.azure.resourcemanager.machinelearning.models.RecurrenceTrigger;
+import com.azure.resourcemanager.machinelearning.models.ComputeTriggerType;
+import com.azure.resourcemanager.machinelearning.models.ComputeWeekDay;
+import com.azure.resourcemanager.machinelearning.models.Cron;
+import com.azure.resourcemanager.machinelearning.models.Recurrence;
 import com.azure.resourcemanager.machinelearning.models.ScheduleBase;
 import com.azure.resourcemanager.machinelearning.models.ScheduleProvisioningState;
 import com.azure.resourcemanager.machinelearning.models.ScheduleStatus;
-import com.azure.resourcemanager.machinelearning.models.TriggerType;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
 public final class ComputeSchedulesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ComputeSchedules model =
-            BinaryData
-                .fromString(
-                    "{\"computeStartStop\":[{\"id\":\"lxrzvhqjwtr\",\"provisioningStatus\":\"Completed\",\"status\":\"Disabled\",\"action\":\"Start\",\"triggerType\":\"Cron\",\"recurrence\":{\"triggerType\":\"Recurrence\",\"frequency\":\"Hour\",\"interval\":1941330764,\"endTime\":\"w\",\"startTime\":\"jsmwrokc\",\"timeZone\":\"fzzzwyjafitlhg\"},\"cron\":{\"triggerType\":\"Cron\",\"expression\":\"nuchlgmltxdwhmo\",\"endTime\":\"sgzv\",\"startTime\":\"snnjzfpafolpym\",\"timeZone\":\"mxq\"},\"schedule\":{\"id\":\"gpgdphtvdulaj\",\"provisioningStatus\":\"Provisioning\",\"status\":\"Enabled\"}},{\"id\":\"csrlzknmzl\",\"provisioningStatus\":\"Failed\",\"status\":\"Disabled\",\"action\":\"Start\",\"triggerType\":\"Cron\",\"recurrence\":{\"triggerType\":\"Recurrence\",\"frequency\":\"Hour\",\"interval\":794571898,\"endTime\":\"q\",\"startTime\":\"jhmqrhvthla\",\"timeZone\":\"dcxsmlz\"},\"cron\":{\"triggerType\":\"Cron\",\"expression\":\"zdtxetlgyd\",\"endTime\":\"qvlnnpxybafiqgea\",\"startTime\":\"bgj\",\"timeZone\":\"glklb\"},\"schedule\":{\"id\":\"idwcwvmzegjon\",\"provisioningStatus\":\"Provisioning\",\"status\":\"Disabled\"}},{\"id\":\"gdn\",\"provisioningStatus\":\"Failed\",\"status\":\"Disabled\",\"action\":\"Stop\",\"triggerType\":\"Cron\",\"recurrence\":{\"triggerType\":\"Recurrence\",\"frequency\":\"Month\",\"interval\":1147399422,\"endTime\":\"sjcitdigsxc\",\"startTime\":\"l\",\"timeZone\":\"lkeuac\"},\"cron\":{\"triggerType\":\"Cron\",\"expression\":\"omflrytswfp\",\"endTime\":\"dgycxnmskwhqjjy\",\"startTime\":\"urlpshh\",\"timeZone\":\"pedwqsl\"},\"schedule\":{\"id\":\"mpqvwwsk\",\"provisioningStatus\":\"Completed\",\"status\":\"Disabled\"}},{\"id\":\"wimuvqej\",\"provisioningStatus\":\"Failed\",\"status\":\"Disabled\",\"action\":\"Start\",\"triggerType\":\"Recurrence\",\"recurrence\":{\"triggerType\":\"Recurrence\",\"frequency\":\"Week\",\"interval\":1658057009,\"endTime\":\"uqtljqobbpih\",\"startTime\":\"cecybmrqbrjbbmpx\",\"timeZone\":\"vykfrexcrse\"},\"cron\":{\"triggerType\":\"Cron\",\"expression\":\"jksghudg\",\"endTime\":\"xog\",\"startTime\":\"gsv\",\"timeZone\":\"jkxibda\"},\"schedule\":{\"id\":\"kmdyomkxfbvfbh\",\"provisioningStatus\":\"Completed\",\"status\":\"Disabled\"}}]}")
-                .toObject(ComputeSchedules.class);
-        Assertions.assertEquals(ScheduleStatus.DISABLED, model.computeStartStop().get(0).status());
-        Assertions.assertEquals(ComputePowerAction.START, model.computeStartStop().get(0).action());
-        Assertions.assertEquals(TriggerType.CRON, model.computeStartStop().get(0).triggerType());
-        Assertions.assertEquals("w", model.computeStartStop().get(0).recurrence().endTime());
-        Assertions.assertEquals("jsmwrokc", model.computeStartStop().get(0).recurrence().startTime());
-        Assertions.assertEquals("fzzzwyjafitlhg", model.computeStartStop().get(0).recurrence().timeZone());
-        Assertions.assertEquals(RecurrenceFrequency.HOUR, model.computeStartStop().get(0).recurrence().frequency());
-        Assertions.assertEquals(1941330764, model.computeStartStop().get(0).recurrence().interval());
-        Assertions.assertEquals("sgzv", model.computeStartStop().get(0).cron().endTime());
-        Assertions.assertEquals("snnjzfpafolpym", model.computeStartStop().get(0).cron().startTime());
-        Assertions.assertEquals("mxq", model.computeStartStop().get(0).cron().timeZone());
-        Assertions.assertEquals("nuchlgmltxdwhmo", model.computeStartStop().get(0).cron().expression());
-        Assertions.assertEquals("gpgdphtvdulaj", model.computeStartStop().get(0).schedule().id());
-        Assertions
-            .assertEquals(
-                ScheduleProvisioningState.PROVISIONING,
-                model.computeStartStop().get(0).schedule().provisioningStatus());
-        Assertions.assertEquals(ScheduleStatus.ENABLED, model.computeStartStop().get(0).schedule().status());
+        ComputeSchedules model = BinaryData.fromString(
+            "{\"computeStartStop\":[{\"id\":\"g\",\"provisioningStatus\":\"Failed\",\"status\":\"Enabled\",\"action\":\"Stop\",\"triggerType\":\"Cron\",\"recurrence\":{\"frequency\":\"Month\",\"interval\":49803923,\"startTime\":\"bjmlreesrfwssz\",\"timeZone\":\"cwlisolntfxxcrqm\",\"schedule\":{\"hours\":[351599598,690611810,1156649488,1996694399],\"minutes\":[1847045848,246360701,778853988],\"monthDays\":[1390318472],\"weekDays\":[\"Tuesday\",\"Saturday\"]}},\"cron\":{\"startTime\":\"abuln\",\"timeZone\":\"skjto\",\"expression\":\"dzjs\"},\"schedule\":{\"id\":\"vhxqqmqipaydhfnz\",\"provisioningStatus\":\"Failed\",\"status\":\"Disabled\"}},{\"id\":\"shksny\",\"provisioningStatus\":\"Provisioning\",\"status\":\"Disabled\",\"action\":\"Stop\",\"triggerType\":\"Recurrence\",\"recurrence\":{\"frequency\":\"Minute\",\"interval\":976329767,\"startTime\":\"cefiqdkt\",\"timeZone\":\"kvi\",\"schedule\":{\"hours\":[1629072439,2029515706],\"minutes\":[1835241061,776692976],\"monthDays\":[1239574934,1328728868,2058931853],\"weekDays\":[\"Friday\",\"Tuesday\"]}},\"cron\":{\"startTime\":\"dpcmhjh\",\"timeZone\":\"sybkekymffzt\",\"expression\":\"lscvqsyeiihf\"},\"schedule\":{\"id\":\"ouihy\",\"provisioningStatus\":\"Completed\",\"status\":\"Enabled\"}}]}")
+            .toObject(ComputeSchedules.class);
+        Assertions.assertEquals(ScheduleStatus.ENABLED, model.computeStartStop().get(0).status());
+        Assertions.assertEquals(ComputePowerAction.STOP, model.computeStartStop().get(0).action());
+        Assertions.assertEquals(ComputeTriggerType.CRON, model.computeStartStop().get(0).triggerType());
+        Assertions.assertEquals(ComputeRecurrenceFrequency.MONTH,
+            model.computeStartStop().get(0).recurrence().frequency());
+        Assertions.assertEquals(49803923, model.computeStartStop().get(0).recurrence().interval());
+        Assertions.assertEquals("bjmlreesrfwssz", model.computeStartStop().get(0).recurrence().startTime());
+        Assertions.assertEquals("cwlisolntfxxcrqm", model.computeStartStop().get(0).recurrence().timeZone());
+        Assertions.assertEquals(351599598, model.computeStartStop().get(0).recurrence().schedule().hours().get(0));
+        Assertions.assertEquals(1847045848, model.computeStartStop().get(0).recurrence().schedule().minutes().get(0));
+        Assertions.assertEquals(1390318472, model.computeStartStop().get(0).recurrence().schedule().monthDays().get(0));
+        Assertions.assertEquals(ComputeWeekDay.TUESDAY,
+            model.computeStartStop().get(0).recurrence().schedule().weekDays().get(0));
+        Assertions.assertEquals("abuln", model.computeStartStop().get(0).cron().startTime());
+        Assertions.assertEquals("skjto", model.computeStartStop().get(0).cron().timeZone());
+        Assertions.assertEquals("dzjs", model.computeStartStop().get(0).cron().expression());
+        Assertions.assertEquals("vhxqqmqipaydhfnz", model.computeStartStop().get(0).schedule().id());
+        Assertions.assertEquals(ScheduleProvisioningState.FAILED,
+            model.computeStartStop().get(0).schedule().provisioningStatus());
+        Assertions.assertEquals(ScheduleStatus.DISABLED, model.computeStartStop().get(0).schedule().status());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ComputeSchedules model =
-            new ComputeSchedules()
-                .withComputeStartStop(
-                    Arrays
-                        .asList(
-                            new ComputeStartStopSchedule()
-                                .withStatus(ScheduleStatus.DISABLED)
-                                .withAction(ComputePowerAction.START)
-                                .withTriggerType(TriggerType.CRON)
-                                .withRecurrence(
-                                    new RecurrenceTrigger()
-                                        .withEndTime("w")
-                                        .withStartTime("jsmwrokc")
-                                        .withTimeZone("fzzzwyjafitlhg")
-                                        .withFrequency(RecurrenceFrequency.HOUR)
-                                        .withInterval(1941330764))
-                                .withCron(
-                                    new CronTrigger()
-                                        .withEndTime("sgzv")
-                                        .withStartTime("snnjzfpafolpym")
-                                        .withTimeZone("mxq")
-                                        .withExpression("nuchlgmltxdwhmo"))
-                                .withSchedule(
-                                    new ScheduleBase()
-                                        .withId("gpgdphtvdulaj")
-                                        .withProvisioningStatus(ScheduleProvisioningState.PROVISIONING)
-                                        .withStatus(ScheduleStatus.ENABLED)),
-                            new ComputeStartStopSchedule()
-                                .withStatus(ScheduleStatus.DISABLED)
-                                .withAction(ComputePowerAction.START)
-                                .withTriggerType(TriggerType.CRON)
-                                .withRecurrence(
-                                    new RecurrenceTrigger()
-                                        .withEndTime("q")
-                                        .withStartTime("jhmqrhvthla")
-                                        .withTimeZone("dcxsmlz")
-                                        .withFrequency(RecurrenceFrequency.HOUR)
-                                        .withInterval(794571898))
-                                .withCron(
-                                    new CronTrigger()
-                                        .withEndTime("qvlnnpxybafiqgea")
-                                        .withStartTime("bgj")
-                                        .withTimeZone("glklb")
-                                        .withExpression("zdtxetlgyd"))
-                                .withSchedule(
-                                    new ScheduleBase()
-                                        .withId("idwcwvmzegjon")
-                                        .withProvisioningStatus(ScheduleProvisioningState.PROVISIONING)
-                                        .withStatus(ScheduleStatus.DISABLED)),
-                            new ComputeStartStopSchedule()
-                                .withStatus(ScheduleStatus.DISABLED)
-                                .withAction(ComputePowerAction.STOP)
-                                .withTriggerType(TriggerType.CRON)
-                                .withRecurrence(
-                                    new RecurrenceTrigger()
-                                        .withEndTime("sjcitdigsxc")
-                                        .withStartTime("l")
-                                        .withTimeZone("lkeuac")
-                                        .withFrequency(RecurrenceFrequency.MONTH)
-                                        .withInterval(1147399422))
-                                .withCron(
-                                    new CronTrigger()
-                                        .withEndTime("dgycxnmskwhqjjy")
-                                        .withStartTime("urlpshh")
-                                        .withTimeZone("pedwqsl")
-                                        .withExpression("omflrytswfp"))
-                                .withSchedule(
-                                    new ScheduleBase()
-                                        .withId("mpqvwwsk")
-                                        .withProvisioningStatus(ScheduleProvisioningState.COMPLETED)
-                                        .withStatus(ScheduleStatus.DISABLED)),
-                            new ComputeStartStopSchedule()
-                                .withStatus(ScheduleStatus.DISABLED)
-                                .withAction(ComputePowerAction.START)
-                                .withTriggerType(TriggerType.RECURRENCE)
-                                .withRecurrence(
-                                    new RecurrenceTrigger()
-                                        .withEndTime("uqtljqobbpih")
-                                        .withStartTime("cecybmrqbrjbbmpx")
-                                        .withTimeZone("vykfrexcrse")
-                                        .withFrequency(RecurrenceFrequency.WEEK)
-                                        .withInterval(1658057009))
-                                .withCron(
-                                    new CronTrigger()
-                                        .withEndTime("xog")
-                                        .withStartTime("gsv")
-                                        .withTimeZone("jkxibda")
-                                        .withExpression("jksghudg"))
-                                .withSchedule(
-                                    new ScheduleBase()
-                                        .withId("kmdyomkxfbvfbh")
-                                        .withProvisioningStatus(ScheduleProvisioningState.COMPLETED)
-                                        .withStatus(ScheduleStatus.DISABLED))));
+        ComputeSchedules model = new ComputeSchedules().withComputeStartStop(Arrays.asList(
+            new ComputeStartStopSchedule().withStatus(ScheduleStatus.ENABLED)
+                .withAction(ComputePowerAction.STOP)
+                .withTriggerType(ComputeTriggerType.CRON)
+                .withRecurrence(new Recurrence().withFrequency(ComputeRecurrenceFrequency.MONTH)
+                    .withInterval(49803923)
+                    .withStartTime("bjmlreesrfwssz")
+                    .withTimeZone("cwlisolntfxxcrqm")
+                    .withSchedule(new ComputeRecurrenceSchedule()
+                        .withHours(Arrays.asList(351599598, 690611810, 1156649488, 1996694399))
+                        .withMinutes(Arrays.asList(1847045848, 246360701, 778853988))
+                        .withMonthDays(Arrays.asList(1390318472))
+                        .withWeekDays(Arrays.asList(ComputeWeekDay.TUESDAY, ComputeWeekDay.SATURDAY))))
+                .withCron(new Cron().withStartTime("abuln").withTimeZone("skjto").withExpression("dzjs"))
+                .withSchedule(new ScheduleBase().withId("vhxqqmqipaydhfnz")
+                    .withProvisioningStatus(ScheduleProvisioningState.FAILED)
+                    .withStatus(ScheduleStatus.DISABLED)),
+            new ComputeStartStopSchedule().withStatus(ScheduleStatus.DISABLED)
+                .withAction(ComputePowerAction.STOP)
+                .withTriggerType(ComputeTriggerType.RECURRENCE)
+                .withRecurrence(new Recurrence().withFrequency(ComputeRecurrenceFrequency.MINUTE)
+                    .withInterval(976329767)
+                    .withStartTime("cefiqdkt")
+                    .withTimeZone("kvi")
+                    .withSchedule(new ComputeRecurrenceSchedule().withHours(Arrays.asList(1629072439, 2029515706))
+                        .withMinutes(Arrays.asList(1835241061, 776692976))
+                        .withMonthDays(Arrays.asList(1239574934, 1328728868, 2058931853))
+                        .withWeekDays(Arrays.asList(ComputeWeekDay.FRIDAY, ComputeWeekDay.TUESDAY))))
+                .withCron(
+                    new Cron().withStartTime("dpcmhjh").withTimeZone("sybkekymffzt").withExpression("lscvqsyeiihf"))
+                .withSchedule(new ScheduleBase().withId("ouihy")
+                    .withProvisioningStatus(ScheduleProvisioningState.COMPLETED)
+                    .withStatus(ScheduleStatus.ENABLED))));
         model = BinaryData.fromObject(model).toObject(ComputeSchedules.class);
-        Assertions.assertEquals(ScheduleStatus.DISABLED, model.computeStartStop().get(0).status());
-        Assertions.assertEquals(ComputePowerAction.START, model.computeStartStop().get(0).action());
-        Assertions.assertEquals(TriggerType.CRON, model.computeStartStop().get(0).triggerType());
-        Assertions.assertEquals("w", model.computeStartStop().get(0).recurrence().endTime());
-        Assertions.assertEquals("jsmwrokc", model.computeStartStop().get(0).recurrence().startTime());
-        Assertions.assertEquals("fzzzwyjafitlhg", model.computeStartStop().get(0).recurrence().timeZone());
-        Assertions.assertEquals(RecurrenceFrequency.HOUR, model.computeStartStop().get(0).recurrence().frequency());
-        Assertions.assertEquals(1941330764, model.computeStartStop().get(0).recurrence().interval());
-        Assertions.assertEquals("sgzv", model.computeStartStop().get(0).cron().endTime());
-        Assertions.assertEquals("snnjzfpafolpym", model.computeStartStop().get(0).cron().startTime());
-        Assertions.assertEquals("mxq", model.computeStartStop().get(0).cron().timeZone());
-        Assertions.assertEquals("nuchlgmltxdwhmo", model.computeStartStop().get(0).cron().expression());
-        Assertions.assertEquals("gpgdphtvdulaj", model.computeStartStop().get(0).schedule().id());
-        Assertions
-            .assertEquals(
-                ScheduleProvisioningState.PROVISIONING,
-                model.computeStartStop().get(0).schedule().provisioningStatus());
-        Assertions.assertEquals(ScheduleStatus.ENABLED, model.computeStartStop().get(0).schedule().status());
+        Assertions.assertEquals(ScheduleStatus.ENABLED, model.computeStartStop().get(0).status());
+        Assertions.assertEquals(ComputePowerAction.STOP, model.computeStartStop().get(0).action());
+        Assertions.assertEquals(ComputeTriggerType.CRON, model.computeStartStop().get(0).triggerType());
+        Assertions.assertEquals(ComputeRecurrenceFrequency.MONTH,
+            model.computeStartStop().get(0).recurrence().frequency());
+        Assertions.assertEquals(49803923, model.computeStartStop().get(0).recurrence().interval());
+        Assertions.assertEquals("bjmlreesrfwssz", model.computeStartStop().get(0).recurrence().startTime());
+        Assertions.assertEquals("cwlisolntfxxcrqm", model.computeStartStop().get(0).recurrence().timeZone());
+        Assertions.assertEquals(351599598, model.computeStartStop().get(0).recurrence().schedule().hours().get(0));
+        Assertions.assertEquals(1847045848, model.computeStartStop().get(0).recurrence().schedule().minutes().get(0));
+        Assertions.assertEquals(1390318472, model.computeStartStop().get(0).recurrence().schedule().monthDays().get(0));
+        Assertions.assertEquals(ComputeWeekDay.TUESDAY,
+            model.computeStartStop().get(0).recurrence().schedule().weekDays().get(0));
+        Assertions.assertEquals("abuln", model.computeStartStop().get(0).cron().startTime());
+        Assertions.assertEquals("skjto", model.computeStartStop().get(0).cron().timeZone());
+        Assertions.assertEquals("dzjs", model.computeStartStop().get(0).cron().expression());
+        Assertions.assertEquals("vhxqqmqipaydhfnz", model.computeStartStop().get(0).schedule().id());
+        Assertions.assertEquals(ScheduleProvisioningState.FAILED,
+            model.computeStartStop().get(0).schedule().provisioningStatus());
+        Assertions.assertEquals(ScheduleStatus.DISABLED, model.computeStartStop().get(0).schedule().status());
     }
 }

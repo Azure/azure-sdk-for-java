@@ -6,6 +6,7 @@ package com.azure.messaging.eventhubs.implementation;
 import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.exception.AmqpResponseCode;
 import com.azure.core.amqp.implementation.AmqpConstants;
+import com.azure.core.amqp.implementation.ChannelCacheWrapper;
 import com.azure.core.amqp.implementation.ExceptionUtil;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.RequestResponseChannel;
@@ -60,14 +61,14 @@ public class ManagementChannel implements EventHubManagementNode {
 
     private static final ClientLogger LOGGER = new ClientLogger(ManagementChannel.class);
     private final TokenCredential tokenProvider;
-    private final Mono<RequestResponseChannel> channelMono;
+    private final ChannelCacheWrapper channelCache;
     private final Scheduler scheduler;
     private final String eventHubName;
     private final MessageSerializer messageSerializer;
     private final TokenManagerProvider tokenManagerProvider;
     private final ReplayProcessor<AmqpEndpointState> endpointStateProcessor = ReplayProcessor.cacheLast();
-    private final FluxSink<AmqpEndpointState> endpointStateSink =
-        endpointStateProcessor.sink(FluxSink.OverflowStrategy.BUFFER);
+    private final FluxSink<AmqpEndpointState> endpointStateSink
+        = endpointStateProcessor.sink(FluxSink.OverflowStrategy.BUFFER);
     private final Disposable subscription;
 
     private volatile boolean isDisposed;
@@ -75,26 +76,25 @@ public class ManagementChannel implements EventHubManagementNode {
     /**
      * Creates an instance that is connected to the {@code eventHubName}'s management node.
      *
-     * @param responseChannelMono Mono that completes with a new {@link RequestResponseChannel}.
+     * @param channelCache a cache that if needed obtain and cache the {@link RequestResponseChannel}.
      * @param eventHubName The name of the Event Hub.
      * @param credential Credential to authorize user for access to the Event Hub.
      * @param tokenManagerProvider Provides a token manager that will keep track and maintain tokens.
      * @param messageSerializer Maps responses from the management channel.
      */
-    ManagementChannel(Mono<RequestResponseChannel> responseChannelMono, String eventHubName, TokenCredential credential,
-        TokenManagerProvider tokenManagerProvider, MessageSerializer messageSerializer,
-        Scheduler scheduler) {
+    ManagementChannel(ChannelCacheWrapper channelCache, String eventHubName, TokenCredential credential,
+        TokenManagerProvider tokenManagerProvider, MessageSerializer messageSerializer, Scheduler scheduler) {
 
-        this.tokenManagerProvider = Objects.requireNonNull(tokenManagerProvider,
-            "'tokenManagerProvider' cannot be null.");
+        this.tokenManagerProvider
+            = Objects.requireNonNull(tokenManagerProvider, "'tokenManagerProvider' cannot be null.");
         this.tokenProvider = Objects.requireNonNull(credential, "'credential' cannot be null.");
         this.eventHubName = Objects.requireNonNull(eventHubName, "'eventHubName' cannot be null.");
         this.messageSerializer = Objects.requireNonNull(messageSerializer, "'messageSerializer' cannot be null.");
-        this.channelMono = Objects.requireNonNull(responseChannelMono, "'responseChannelMono' cannot be null.");
+        this.channelCache = Objects.requireNonNull(channelCache, "'channelCache' cannot be null.");
         this.scheduler = Objects.requireNonNull(scheduler, "'scheduler' cannot be null.");
 
         //@formatter:off
-        this.subscription = responseChannelMono
+        this.subscription = channelCache.get()
             .flatMapMany(e -> e.getEndpointStates().distinctUntilChanged())
             .subscribe(e -> {
                 LOGGER.info("Management endpoint state: {}", e);
@@ -158,19 +158,18 @@ public class ManagementChannel implements EventHubManagementNode {
             final ApplicationProperties applicationProperties = new ApplicationProperties(properties);
             request.setApplicationProperties(applicationProperties);
 
-            return channelMono.flatMap(channel -> channel.sendWithAck(request)
-                .handle((message, sink) -> {
-                    if (RequestResponseUtils.isSuccessful(message)) {
-                        sink.next(messageSerializer.deserialize(message, responseType));
-                    } else {
-                        final AmqpResponseCode statusCode = RequestResponseUtils.getStatusCode(message);
-                        final String statusDescription = RequestResponseUtils.getStatusDescription(message);
-                        final Throwable error = ExceptionUtil.amqpResponseCodeToException(statusCode.getValue(),
-                            statusDescription, channel.getErrorContext());
+            return channelCache.get().flatMap(channel -> channel.sendWithAck(request).handle((message, sink) -> {
+                if (RequestResponseUtils.isSuccessful(message)) {
+                    sink.next(messageSerializer.deserialize(message, responseType));
+                } else {
+                    final AmqpResponseCode statusCode = RequestResponseUtils.getStatusCode(message);
+                    final String statusDescription = RequestResponseUtils.getStatusDescription(message);
+                    final Throwable error = ExceptionUtil.amqpResponseCodeToException(statusCode.getValue(),
+                        statusDescription, channel.getErrorContext());
 
-                        sink.error(LOGGER.logExceptionAsWarning(Exceptions.propagate(error)));
-                    }
-                }));
+                    sink.error(LOGGER.logExceptionAsWarning(Exceptions.propagate(error)));
+                }
+            }));
         });
     }
 
@@ -186,8 +185,6 @@ public class ManagementChannel implements EventHubManagementNode {
         isDisposed = true;
         subscription.dispose();
 
-        if (channelMono instanceof Disposable) {
-            ((Disposable) channelMono).dispose();
-        }
+        channelCache.dispose();
     }
 }

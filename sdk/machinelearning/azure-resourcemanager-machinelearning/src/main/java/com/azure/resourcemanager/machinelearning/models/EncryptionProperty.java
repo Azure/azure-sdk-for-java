@@ -6,36 +6,41 @@ package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The EncryptionProperty model. */
+/**
+ * The EncryptionProperty model.
+ */
 @Fluent
-public final class EncryptionProperty {
+public final class EncryptionProperty implements JsonSerializable<EncryptionProperty> {
     /*
      * Indicates whether or not the encryption is enabled for the workspace.
      */
-    @JsonProperty(value = "status", required = true)
     private EncryptionStatus status;
 
     /*
      * The identity that will be used to access the key vault for encryption at rest.
      */
-    @JsonProperty(value = "identity")
     private IdentityForCmk identity;
 
     /*
      * Customer Key vault properties.
      */
-    @JsonProperty(value = "keyVaultProperties", required = true)
     private EncryptionKeyVaultProperties keyVaultProperties;
 
-    /** Creates an instance of EncryptionProperty class. */
+    /**
+     * Creates an instance of EncryptionProperty class.
+     */
     public EncryptionProperty() {
     }
 
     /**
      * Get the status property: Indicates whether or not the encryption is enabled for the workspace.
-     *
+     * 
      * @return the status value.
      */
     public EncryptionStatus status() {
@@ -44,7 +49,7 @@ public final class EncryptionProperty {
 
     /**
      * Set the status property: Indicates whether or not the encryption is enabled for the workspace.
-     *
+     * 
      * @param status the status value to set.
      * @return the EncryptionProperty object itself.
      */
@@ -55,7 +60,7 @@ public final class EncryptionProperty {
 
     /**
      * Get the identity property: The identity that will be used to access the key vault for encryption at rest.
-     *
+     * 
      * @return the identity value.
      */
     public IdentityForCmk identity() {
@@ -64,7 +69,7 @@ public final class EncryptionProperty {
 
     /**
      * Set the identity property: The identity that will be used to access the key vault for encryption at rest.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the EncryptionProperty object itself.
      */
@@ -75,7 +80,7 @@ public final class EncryptionProperty {
 
     /**
      * Get the keyVaultProperties property: Customer Key vault properties.
-     *
+     * 
      * @return the keyVaultProperties value.
      */
     public EncryptionKeyVaultProperties keyVaultProperties() {
@@ -84,7 +89,7 @@ public final class EncryptionProperty {
 
     /**
      * Set the keyVaultProperties property: Customer Key vault properties.
-     *
+     * 
      * @param keyVaultProperties the keyVaultProperties value to set.
      * @return the EncryptionProperty object itself.
      */
@@ -95,27 +100,68 @@ public final class EncryptionProperty {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (status() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property status in model EncryptionProperty"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property status in model EncryptionProperty"));
         }
         if (identity() != null) {
             identity().validate();
         }
         if (keyVaultProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property keyVaultProperties in model EncryptionProperty"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property keyVaultProperties in model EncryptionProperty"));
         } else {
             keyVaultProperties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(EncryptionProperty.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        jsonWriter.writeJsonField("keyVaultProperties", this.keyVaultProperties);
+        jsonWriter.writeJsonField("identity", this.identity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EncryptionProperty from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EncryptionProperty if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the EncryptionProperty.
+     */
+    public static EncryptionProperty fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EncryptionProperty deserializedEncryptionProperty = new EncryptionProperty();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("status".equals(fieldName)) {
+                    deserializedEncryptionProperty.status = EncryptionStatus.fromString(reader.getString());
+                } else if ("keyVaultProperties".equals(fieldName)) {
+                    deserializedEncryptionProperty.keyVaultProperties = EncryptionKeyVaultProperties.fromJson(reader);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedEncryptionProperty.identity = IdentityForCmk.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEncryptionProperty;
+        });
+    }
 }

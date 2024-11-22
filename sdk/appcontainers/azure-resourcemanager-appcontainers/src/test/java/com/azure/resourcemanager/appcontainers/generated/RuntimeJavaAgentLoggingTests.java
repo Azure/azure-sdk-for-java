@@ -15,20 +15,19 @@ public final class RuntimeJavaAgentLoggingTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RuntimeJavaAgentLogging model = BinaryData.fromString(
-            "{\"loggerSettings\":[{\"logger\":\"vrwxkv\",\"level\":\"error\"},{\"logger\":\"k\",\"level\":\"off\"},{\"logger\":\"lqwjygvjayvblm\",\"level\":\"error\"}]}")
+            "{\"loggerSettings\":[{\"logger\":\"kzbzkdvncjabudu\",\"level\":\"debug\"},{\"logger\":\"kakmokzh\",\"level\":\"debug\"}]}")
             .toObject(RuntimeJavaAgentLogging.class);
-        Assertions.assertEquals("vrwxkv", model.loggerSettings().get(0).logger());
-        Assertions.assertEquals(Level.ERROR, model.loggerSettings().get(0).level());
+        Assertions.assertEquals("kzbzkdvncjabudu", model.loggerSettings().get(0).logger());
+        Assertions.assertEquals(Level.DEBUG, model.loggerSettings().get(0).level());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RuntimeJavaAgentLogging model = new RuntimeJavaAgentLogging()
-            .withLoggerSettings(Arrays.asList(new LoggerSetting().withLogger("vrwxkv").withLevel(Level.ERROR),
-                new LoggerSetting().withLogger("k").withLevel(Level.OFF),
-                new LoggerSetting().withLogger("lqwjygvjayvblm").withLevel(Level.ERROR)));
+            .withLoggerSettings(Arrays.asList(new LoggerSetting().withLogger("kzbzkdvncjabudu").withLevel(Level.DEBUG),
+                new LoggerSetting().withLogger("kakmokzh").withLevel(Level.DEBUG)));
         model = BinaryData.fromObject(model).toObject(RuntimeJavaAgentLogging.class);
-        Assertions.assertEquals("vrwxkv", model.loggerSettings().get(0).logger());
-        Assertions.assertEquals(Level.ERROR, model.loggerSettings().get(0).level());
+        Assertions.assertEquals("kzbzkdvncjabudu", model.loggerSettings().get(0).logger());
+        Assertions.assertEquals(Level.DEBUG, model.loggerSettings().get(0).level());
     }
 }

@@ -14,26 +14,21 @@ public final class BuilderPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BuilderProperties model = BinaryData.fromString(
-            "{\"provisioningState\":\"Deleting\",\"environmentId\":\"b\",\"containerRegistries\":[{\"containerRegistryServer\":\"dawkzbali\",\"identityResourceId\":\"urqhaka\"},{\"containerRegistryServer\":\"hashsfwxosow\",\"identityResourceId\":\"xcug\"},{\"containerRegistryServer\":\"cjooxdjebwpucwwf\",\"identityResourceId\":\"ovbvmeueciv\"},{\"containerRegistryServer\":\"hzceuojgjrwjue\",\"identityResourceId\":\"otwmcdyt\"}]}")
+            "{\"provisioningState\":\"Updating\",\"environmentId\":\"lxotogtwrupq\",\"containerRegistries\":[{\"containerRegistryServer\":\"nmic\",\"identityResourceId\":\"kvceoveilovnotyf\"}]}")
             .toObject(BuilderProperties.class);
-        Assertions.assertEquals("b", model.environmentId());
-        Assertions.assertEquals("dawkzbali", model.containerRegistries().get(0).containerRegistryServer());
-        Assertions.assertEquals("urqhaka", model.containerRegistries().get(0).identityResourceId());
+        Assertions.assertEquals("lxotogtwrupq", model.environmentId());
+        Assertions.assertEquals("nmic", model.containerRegistries().get(0).containerRegistryServer());
+        Assertions.assertEquals("kvceoveilovnotyf", model.containerRegistries().get(0).identityResourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BuilderProperties model = new BuilderProperties().withEnvironmentId("b")
-            .withContainerRegistries(Arrays.asList(
-                new ContainerRegistry().withContainerRegistryServer("dawkzbali").withIdentityResourceId("urqhaka"),
-                new ContainerRegistry().withContainerRegistryServer("hashsfwxosow").withIdentityResourceId("xcug"),
-                new ContainerRegistry().withContainerRegistryServer("cjooxdjebwpucwwf")
-                    .withIdentityResourceId("ovbvmeueciv"),
-                new ContainerRegistry().withContainerRegistryServer("hzceuojgjrwjue")
-                    .withIdentityResourceId("otwmcdyt")));
+        BuilderProperties model = new BuilderProperties().withEnvironmentId("lxotogtwrupq")
+            .withContainerRegistries(Arrays.asList(new ContainerRegistry().withContainerRegistryServer("nmic")
+                .withIdentityResourceId("kvceoveilovnotyf")));
         model = BinaryData.fromObject(model).toObject(BuilderProperties.class);
-        Assertions.assertEquals("b", model.environmentId());
-        Assertions.assertEquals("dawkzbali", model.containerRegistries().get(0).containerRegistryServer());
-        Assertions.assertEquals("urqhaka", model.containerRegistries().get(0).identityResourceId());
+        Assertions.assertEquals("lxotogtwrupq", model.environmentId());
+        Assertions.assertEquals("nmic", model.containerRegistries().get(0).containerRegistryServer());
+        Assertions.assertEquals("kvceoveilovnotyf", model.containerRegistries().get(0).identityResourceId());
     }
 }

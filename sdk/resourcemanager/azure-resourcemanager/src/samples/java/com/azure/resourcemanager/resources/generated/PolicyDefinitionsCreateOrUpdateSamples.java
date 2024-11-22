@@ -20,7 +20,8 @@ import java.util.Map;
  */
 public final class PolicyDefinitionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/createOrUpdatePolicyDefinitionAdvancedParams.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/
+     * createOrUpdatePolicyDefinitionAdvancedParams.json
      */
     /**
      * Sample code: Create or update a policy definition with advanced parameters.
@@ -54,7 +55,8 @@ public final class PolicyDefinitionsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/createOrUpdatePolicyDefinition.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/
+     * createOrUpdatePolicyDefinition.json
      */
     /**
      * Sample code: Create or update a policy definition.

@@ -11,26 +11,30 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
-import com.azure.core.http.policy.HttpLoggingPolicy;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
-import com.azure.core.management.http.policy.ArmChallengeAuthenticationPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.standbypool.fluent.StandbyPoolClient;
 import com.azure.resourcemanager.standbypool.implementation.OperationsImpl;
+import com.azure.resourcemanager.standbypool.implementation.StandbyContainerGroupPoolRuntimeViewsImpl;
 import com.azure.resourcemanager.standbypool.implementation.StandbyContainerGroupPoolsImpl;
 import com.azure.resourcemanager.standbypool.implementation.StandbyPoolClientBuilder;
+import com.azure.resourcemanager.standbypool.implementation.StandbyVirtualMachinePoolRuntimeViewsImpl;
 import com.azure.resourcemanager.standbypool.implementation.StandbyVirtualMachinePoolsImpl;
 import com.azure.resourcemanager.standbypool.implementation.StandbyVirtualMachinesImpl;
 import com.azure.resourcemanager.standbypool.models.Operations;
+import com.azure.resourcemanager.standbypool.models.StandbyContainerGroupPoolRuntimeViews;
 import com.azure.resourcemanager.standbypool.models.StandbyContainerGroupPools;
+import com.azure.resourcemanager.standbypool.models.StandbyVirtualMachinePoolRuntimeViews;
 import com.azure.resourcemanager.standbypool.models.StandbyVirtualMachinePools;
 import com.azure.resourcemanager.standbypool.models.StandbyVirtualMachines;
 import java.time.Duration;
@@ -50,7 +54,11 @@ public final class StandbyPoolManager {
 
     private StandbyVirtualMachines standbyVirtualMachines;
 
+    private StandbyVirtualMachinePoolRuntimeViews standbyVirtualMachinePoolRuntimeViews;
+
     private StandbyContainerGroupPools standbyContainerGroupPools;
+
+    private StandbyContainerGroupPoolRuntimeViews standbyContainerGroupPoolRuntimeViews;
 
     private final StandbyPoolClient clientObject;
 
@@ -249,7 +257,7 @@ public final class StandbyPoolManager {
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
-            policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
+            policies.add(new BearerTokenAuthenticationPolicy(credential, scopes.toArray(new String[0])));
             policies.addAll(this.policies.stream()
                 .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
                 .collect(Collectors.toList()));
@@ -301,6 +309,19 @@ public final class StandbyPoolManager {
     }
 
     /**
+     * Gets the resource collection API of StandbyVirtualMachinePoolRuntimeViews.
+     * 
+     * @return Resource collection API of StandbyVirtualMachinePoolRuntimeViews.
+     */
+    public StandbyVirtualMachinePoolRuntimeViews standbyVirtualMachinePoolRuntimeViews() {
+        if (this.standbyVirtualMachinePoolRuntimeViews == null) {
+            this.standbyVirtualMachinePoolRuntimeViews = new StandbyVirtualMachinePoolRuntimeViewsImpl(
+                clientObject.getStandbyVirtualMachinePoolRuntimeViews(), this);
+        }
+        return standbyVirtualMachinePoolRuntimeViews;
+    }
+
+    /**
      * Gets the resource collection API of StandbyContainerGroupPools. It manages StandbyContainerGroupPoolResource.
      * 
      * @return Resource collection API of StandbyContainerGroupPools.
@@ -311,6 +332,19 @@ public final class StandbyPoolManager {
                 = new StandbyContainerGroupPoolsImpl(clientObject.getStandbyContainerGroupPools(), this);
         }
         return standbyContainerGroupPools;
+    }
+
+    /**
+     * Gets the resource collection API of StandbyContainerGroupPoolRuntimeViews.
+     * 
+     * @return Resource collection API of StandbyContainerGroupPoolRuntimeViews.
+     */
+    public StandbyContainerGroupPoolRuntimeViews standbyContainerGroupPoolRuntimeViews() {
+        if (this.standbyContainerGroupPoolRuntimeViews == null) {
+            this.standbyContainerGroupPoolRuntimeViews = new StandbyContainerGroupPoolRuntimeViewsImpl(
+                clientObject.getStandbyContainerGroupPoolRuntimeViews(), this);
+        }
+        return standbyContainerGroupPoolRuntimeViews;
     }
 
     /**

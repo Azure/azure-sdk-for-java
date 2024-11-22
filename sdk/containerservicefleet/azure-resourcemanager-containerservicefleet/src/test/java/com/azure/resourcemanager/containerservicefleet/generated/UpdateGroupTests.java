@@ -11,14 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class UpdateGroupTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UpdateGroup model = BinaryData.fromString("{\"name\":\"cj\"}").toObject(UpdateGroup.class);
-        Assertions.assertEquals("cj", model.name());
+        UpdateGroup model = BinaryData.fromString("{\"name\":\"wey\"}").toObject(UpdateGroup.class);
+        Assertions.assertEquals("wey", model.name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UpdateGroup model = new UpdateGroup().withName("cj");
+        UpdateGroup model = new UpdateGroup().withName("wey");
         model = BinaryData.fromObject(model).toObject(UpdateGroup.class);
-        Assertions.assertEquals("cj", model.name());
+        Assertions.assertEquals("wey", model.name());
     }
 }

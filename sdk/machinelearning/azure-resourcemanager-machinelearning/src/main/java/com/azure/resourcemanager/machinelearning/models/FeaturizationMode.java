@@ -5,23 +5,30 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Featurization mode - determines data featurization mode. */
+/**
+ * Featurization mode - determines data featurization mode.
+ */
 public final class FeaturizationMode extends ExpandableStringEnum<FeaturizationMode> {
-    /** Static value Auto for FeaturizationMode. */
+    /**
+     * Static value Auto for FeaturizationMode.
+     */
     public static final FeaturizationMode AUTO = fromString("Auto");
 
-    /** Static value Custom for FeaturizationMode. */
+    /**
+     * Static value Custom for FeaturizationMode.
+     */
     public static final FeaturizationMode CUSTOM = fromString("Custom");
 
-    /** Static value Off for FeaturizationMode. */
+    /**
+     * Static value Off for FeaturizationMode.
+     */
     public static final FeaturizationMode OFF = fromString("Off");
 
     /**
      * Creates a new instance of FeaturizationMode value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +37,17 @@ public final class FeaturizationMode extends ExpandableStringEnum<FeaturizationM
 
     /**
      * Creates or finds a FeaturizationMode from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding FeaturizationMode.
      */
-    @JsonCreator
     public static FeaturizationMode fromString(String name) {
         return fromString(name, FeaturizationMode.class);
     }
 
     /**
      * Gets known FeaturizationMode values.
-     *
+     * 
      * @return known FeaturizationMode values.
      */
     public static Collection<FeaturizationMode> values() {

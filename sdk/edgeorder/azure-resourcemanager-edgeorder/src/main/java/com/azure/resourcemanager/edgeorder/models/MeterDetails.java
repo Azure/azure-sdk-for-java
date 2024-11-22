@@ -5,43 +5,50 @@
 package com.azure.resourcemanager.edgeorder.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Holds details about billing type and its meter guids. */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "billingType",
-    defaultImpl = MeterDetails.class)
-@JsonTypeName("MeterDetails")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "Pav2", value = Pav2MeterDetails.class),
-    @JsonSubTypes.Type(name = "Purchase", value = PurchaseMeterDetails.class)
-})
+/**
+ * Holds details about billing type and its meter guids.
+ */
 @Immutable
-public class MeterDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MeterDetails.class);
+public class MeterDetails implements JsonSerializable<MeterDetails> {
+    /*
+     * Represents billing type.
+     */
+    private BillingType billingType = BillingType.fromString("MeterDetails");
 
     /*
      * Billing unit applicable for Pav2 billing
      */
-    @JsonProperty(value = "multiplier", access = JsonProperty.Access.WRITE_ONLY)
     private Double multiplier;
 
     /*
      * Charging type.
      */
-    @JsonProperty(value = "chargingType", access = JsonProperty.Access.WRITE_ONLY)
     private ChargingType chargingType;
 
     /**
+     * Creates an instance of MeterDetails class.
+     */
+    public MeterDetails() {
+    }
+
+    /**
+     * Get the billingType property: Represents billing type.
+     * 
+     * @return the billingType value.
+     */
+    public BillingType billingType() {
+        return this.billingType;
+    }
+
+    /**
      * Get the multiplier property: Billing unit applicable for Pav2 billing.
-     *
+     * 
      * @return the multiplier value.
      */
     public Double multiplier() {
@@ -49,8 +56,19 @@ public class MeterDetails {
     }
 
     /**
+     * Set the multiplier property: Billing unit applicable for Pav2 billing.
+     * 
+     * @param multiplier the multiplier value to set.
+     * @return the MeterDetails object itself.
+     */
+    MeterDetails withMultiplier(Double multiplier) {
+        this.multiplier = multiplier;
+        return this;
+    }
+
+    /**
      * Get the chargingType property: Charging type.
-     *
+     * 
      * @return the chargingType value.
      */
     public ChargingType chargingType() {
@@ -58,10 +76,88 @@ public class MeterDetails {
     }
 
     /**
+     * Set the chargingType property: Charging type.
+     * 
+     * @param chargingType the chargingType value to set.
+     * @return the MeterDetails object itself.
+     */
+    MeterDetails withChargingType(ChargingType chargingType) {
+        this.chargingType = chargingType;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("billingType", this.billingType == null ? null : this.billingType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MeterDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MeterDetails if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MeterDetails.
+     */
+    public static MeterDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("billingType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("Pav2".equals(discriminatorValue)) {
+                    return Pav2MeterDetails.fromJson(readerToUse.reset());
+                } else if ("Purchase".equals(discriminatorValue)) {
+                    return PurchaseMeterDetails.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static MeterDetails fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MeterDetails deserializedMeterDetails = new MeterDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("billingType".equals(fieldName)) {
+                    deserializedMeterDetails.billingType = BillingType.fromString(reader.getString());
+                } else if ("multiplier".equals(fieldName)) {
+                    deserializedMeterDetails.multiplier = reader.getNullable(JsonReader::getDouble);
+                } else if ("chargingType".equals(fieldName)) {
+                    deserializedMeterDetails.chargingType = ChargingType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMeterDetails;
+        });
     }
 }

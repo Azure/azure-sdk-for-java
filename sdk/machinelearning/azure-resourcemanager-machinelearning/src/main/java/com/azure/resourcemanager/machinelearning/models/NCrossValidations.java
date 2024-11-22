@@ -5,32 +5,105 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** N-Cross validations value. */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "mode",
-    defaultImpl = NCrossValidations.class)
-@JsonTypeName("NCrossValidations")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "Auto", value = AutoNCrossValidations.class),
-    @JsonSubTypes.Type(name = "Custom", value = CustomNCrossValidations.class)
-})
+/**
+ * N-Cross validations value.
+ */
 @Immutable
-public class NCrossValidations {
-    /** Creates an instance of NCrossValidations class. */
+public class NCrossValidations implements JsonSerializable<NCrossValidations> {
+    /*
+     * [Required] Mode for determining N-Cross validations.
+     */
+    private NCrossValidationsMode mode = NCrossValidationsMode.fromString("NCrossValidations");
+
+    /**
+     * Creates an instance of NCrossValidations class.
+     */
     public NCrossValidations() {
     }
 
     /**
+     * Get the mode property: [Required] Mode for determining N-Cross validations.
+     * 
+     * @return the mode value.
+     */
+    public NCrossValidationsMode mode() {
+        return this.mode;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("mode", this.mode == null ? null : this.mode.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NCrossValidations from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NCrossValidations if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NCrossValidations.
+     */
+    public static NCrossValidations fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("mode".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("Auto".equals(discriminatorValue)) {
+                    return AutoNCrossValidations.fromJson(readerToUse.reset());
+                } else if ("Custom".equals(discriminatorValue)) {
+                    return CustomNCrossValidations.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static NCrossValidations fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NCrossValidations deserializedNCrossValidations = new NCrossValidations();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("mode".equals(fieldName)) {
+                    deserializedNCrossValidations.mode = NCrossValidationsMode.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNCrossValidations;
+        });
     }
 }

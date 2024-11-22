@@ -16,7 +16,7 @@ import java.util.Arrays;
  */
 public final class DaprComponentsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2024-02-02-preview/examples/
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2024-08-02-preview/examples/
      * DaprComponents_CreateOrUpdate_Secrets.json
      */
     /**
@@ -47,7 +47,7 @@ public final class DaprComponentsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2024-02-02-preview/examples/
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2024-08-02-preview/examples/
      * DaprComponents_CreateOrUpdate_SecretStoreComponent.json
      */
     /**

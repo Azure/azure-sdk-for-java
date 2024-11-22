@@ -12,18 +12,18 @@ public final class DotNetComponentConfigurationPropertyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DotNetComponentConfigurationProperty model
-            = BinaryData.fromString("{\"propertyName\":\"c\",\"value\":\"zujksrlsmdes\"}")
+            = BinaryData.fromString("{\"propertyName\":\"vcrrpcj\",\"value\":\"bstvje\"}")
                 .toObject(DotNetComponentConfigurationProperty.class);
-        Assertions.assertEquals("c", model.propertyName());
-        Assertions.assertEquals("zujksrlsmdes", model.value());
+        Assertions.assertEquals("vcrrpcj", model.propertyName());
+        Assertions.assertEquals("bstvje", model.value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DotNetComponentConfigurationProperty model
-            = new DotNetComponentConfigurationProperty().withPropertyName("c").withValue("zujksrlsmdes");
+            = new DotNetComponentConfigurationProperty().withPropertyName("vcrrpcj").withValue("bstvje");
         model = BinaryData.fromObject(model).toObject(DotNetComponentConfigurationProperty.class);
-        Assertions.assertEquals("c", model.propertyName());
-        Assertions.assertEquals("zujksrlsmdes", model.value());
+        Assertions.assertEquals("vcrrpcj", model.propertyName());
+        Assertions.assertEquals("bstvje", model.value());
     }
 }

@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Export disk details. */
+/**
+ * Export disk details.
+ */
 @Immutable
-public final class ExportDiskDetails {
+public final class ExportDiskDetails implements JsonSerializable<ExportDiskDetails> {
     /*
      * The relative path of the manifest file on the disk.
      */
-    @JsonProperty(value = "manifestFile", access = JsonProperty.Access.WRITE_ONLY)
     private String manifestFile;
 
     /*
      * The Base16-encoded MD5 hash of the manifest file on the disk.
      */
-    @JsonProperty(value = "manifestHash", access = JsonProperty.Access.WRITE_ONLY)
     private String manifestHash;
 
     /*
      * Path to backed up manifest, only returned if enableManifestBackup is true.
      */
-    @JsonProperty(value = "backupManifestCloudPath", access = JsonProperty.Access.WRITE_ONLY)
     private String backupManifestCloudPath;
 
-    /** Creates an instance of ExportDiskDetails class. */
+    /**
+     * Creates an instance of ExportDiskDetails class.
+     */
     public ExportDiskDetails() {
     }
 
     /**
      * Get the manifestFile property: The relative path of the manifest file on the disk.
-     *
+     * 
      * @return the manifestFile value.
      */
     public String manifestFile() {
@@ -43,7 +48,7 @@ public final class ExportDiskDetails {
 
     /**
      * Get the manifestHash property: The Base16-encoded MD5 hash of the manifest file on the disk.
-     *
+     * 
      * @return the manifestHash value.
      */
     public String manifestHash() {
@@ -53,7 +58,7 @@ public final class ExportDiskDetails {
     /**
      * Get the backupManifestCloudPath property: Path to backed up manifest, only returned if enableManifestBackup is
      * true.
-     *
+     * 
      * @return the backupManifestCloudPath value.
      */
     public String backupManifestCloudPath() {
@@ -62,9 +67,48 @@ public final class ExportDiskDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExportDiskDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExportDiskDetails if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ExportDiskDetails.
+     */
+    public static ExportDiskDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExportDiskDetails deserializedExportDiskDetails = new ExportDiskDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("manifestFile".equals(fieldName)) {
+                    deserializedExportDiskDetails.manifestFile = reader.getString();
+                } else if ("manifestHash".equals(fieldName)) {
+                    deserializedExportDiskDetails.manifestHash = reader.getString();
+                } else if ("backupManifestCloudPath".equals(fieldName)) {
+                    deserializedExportDiskDetails.backupManifestCloudPath = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExportDiskDetails;
+        });
     }
 }

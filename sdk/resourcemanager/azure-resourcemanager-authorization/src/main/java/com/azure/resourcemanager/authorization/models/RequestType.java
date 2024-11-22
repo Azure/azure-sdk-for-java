@@ -5,41 +5,60 @@
 package com.azure.resourcemanager.authorization.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The type of the role assignment schedule request. Eg: SelfActivate, AdminAssign etc. */
+/**
+ * The type of the role assignment schedule request. Eg: SelfActivate, AdminAssign etc.
+ */
 public final class RequestType extends ExpandableStringEnum<RequestType> {
-    /** Static value AdminAssign for RequestType. */
+    /**
+     * Static value AdminAssign for RequestType.
+     */
     public static final RequestType ADMIN_ASSIGN = fromString("AdminAssign");
 
-    /** Static value AdminRemove for RequestType. */
+    /**
+     * Static value AdminRemove for RequestType.
+     */
     public static final RequestType ADMIN_REMOVE = fromString("AdminRemove");
 
-    /** Static value AdminUpdate for RequestType. */
+    /**
+     * Static value AdminUpdate for RequestType.
+     */
     public static final RequestType ADMIN_UPDATE = fromString("AdminUpdate");
 
-    /** Static value AdminExtend for RequestType. */
+    /**
+     * Static value AdminExtend for RequestType.
+     */
     public static final RequestType ADMIN_EXTEND = fromString("AdminExtend");
 
-    /** Static value AdminRenew for RequestType. */
+    /**
+     * Static value AdminRenew for RequestType.
+     */
     public static final RequestType ADMIN_RENEW = fromString("AdminRenew");
 
-    /** Static value SelfActivate for RequestType. */
+    /**
+     * Static value SelfActivate for RequestType.
+     */
     public static final RequestType SELF_ACTIVATE = fromString("SelfActivate");
 
-    /** Static value SelfDeactivate for RequestType. */
+    /**
+     * Static value SelfDeactivate for RequestType.
+     */
     public static final RequestType SELF_DEACTIVATE = fromString("SelfDeactivate");
 
-    /** Static value SelfExtend for RequestType. */
+    /**
+     * Static value SelfExtend for RequestType.
+     */
     public static final RequestType SELF_EXTEND = fromString("SelfExtend");
 
-    /** Static value SelfRenew for RequestType. */
+    /**
+     * Static value SelfRenew for RequestType.
+     */
     public static final RequestType SELF_RENEW = fromString("SelfRenew");
 
     /**
      * Creates a new instance of RequestType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -48,18 +67,17 @@ public final class RequestType extends ExpandableStringEnum<RequestType> {
 
     /**
      * Creates or finds a RequestType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding RequestType.
      */
-    @JsonCreator
     public static RequestType fromString(String name) {
         return fromString(name, RequestType.class);
     }
 
     /**
      * Gets known RequestType values.
-     *
+     * 
      * @return known RequestType values.
      */
     public static Collection<RequestType> values() {

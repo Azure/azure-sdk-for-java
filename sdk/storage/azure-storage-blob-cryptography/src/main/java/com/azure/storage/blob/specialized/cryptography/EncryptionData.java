@@ -17,6 +17,7 @@ import java.util.Objects;
 
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_PROTOCOL_V1;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_PROTOCOL_V2;
+import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_PROTOCOL_V2_1;
 import static com.azure.storage.blob.specialized.cryptography.EncryptionAlgorithm.AES_CBC_256;
 import static com.azure.storage.blob.specialized.cryptography.EncryptionAlgorithm.AES_GCM_256;
 
@@ -74,8 +75,7 @@ final class EncryptionData implements JsonSerializable<EncryptionData> {
      * @param keyWrappingMetadata Metadata for encryption.
      */
     EncryptionData(String encryptionMode, WrappedKey wrappedContentKey, EncryptionAgent encryptionAgent,
-        byte[] contentEncryptionIV, EncryptedRegionInfo encryptedRegionInfo,
-        Map<String, String> keyWrappingMetadata) {
+        byte[] contentEncryptionIV, EncryptedRegionInfo encryptedRegionInfo, Map<String, String> keyWrappingMetadata) {
         this.encryptionMode = encryptionMode;
         this.wrappedContentKey = wrappedContentKey;
         this.encryptionAgent = encryptionAgent;
@@ -218,30 +218,32 @@ final class EncryptionData implements JsonSerializable<EncryptionData> {
     static EncryptionData getAndValidateEncryptionData(String encryptionDataString, boolean requiresEncryption) {
         if (encryptionDataString == null) {
             if (requiresEncryption) {
-                throw LOGGER.logExceptionAsError(new IllegalStateException("'requiresEncryption' set to true but "
-                    + "downloaded data is not encrypted."));
+                throw LOGGER.logExceptionAsError(new IllegalStateException(
+                    "'requiresEncryption' set to true but " + "downloaded data is not encrypted."));
             }
             return null;
         }
 
         try (JsonReader jsonReader = JsonProviders.createReader(encryptionDataString)) {
             EncryptionData encryptionData = EncryptionData.fromJson(jsonReader);
-            if (encryptionData.getEncryptionAgent().getProtocol().equals(ENCRYPTION_PROTOCOL_V1)) {
+            String encryptionProtocol = encryptionData.getEncryptionAgent().getProtocol();
+            if (encryptionProtocol.equals(ENCRYPTION_PROTOCOL_V1)) {
                 Objects.requireNonNull(encryptionData.getContentEncryptionIV(),
                     "contentEncryptionIV in encryptionData cannot be null");
-                Objects.requireNonNull(encryptionData.getWrappedContentKey().getEncryptedKey(), "encryptedKey in "
-                    + "encryptionData.wrappedContentKey cannot be null");
+                Objects.requireNonNull(encryptionData.getWrappedContentKey().getEncryptedKey(),
+                    "encryptedKey in " + "encryptionData.wrappedContentKey cannot be null");
                 if (!encryptionData.getEncryptionAgent().getAlgorithm().equals(AES_CBC_256)) {
-                    throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                        "Encryption algorithm does not match v1 protocol: "
+                    throw LOGGER.logExceptionAsError(
+                        new IllegalArgumentException("Encryption algorithm does not match v1 protocol: "
                             + encryptionData.getEncryptionAgent().getAlgorithm()));
                 }
-            } else if (encryptionData.getEncryptionAgent().getProtocol().equals(ENCRYPTION_PROTOCOL_V2)) {
-                Objects.requireNonNull(encryptionData.getWrappedContentKey().getEncryptedKey(), "encryptedKey in "
-                    + "encryptionData.wrappedContentKey cannot be null");
+            } else if (encryptionProtocol.equals(ENCRYPTION_PROTOCOL_V2)
+                || encryptionProtocol.equals(ENCRYPTION_PROTOCOL_V2_1)) {
+                Objects.requireNonNull(encryptionData.getWrappedContentKey().getEncryptedKey(),
+                    "encryptedKey in " + "encryptionData.wrappedContentKey cannot be null");
                 if (!encryptionData.getEncryptionAgent().getAlgorithm().equals(AES_GCM_256)) {
-                    throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                        "Encryption algorithm does not match v2 protocol: "
+                    throw LOGGER.logExceptionAsError(
+                        new IllegalArgumentException("Encryption algorithm does not match v2 protocol: "
                             + encryptionData.getEncryptionAgent().getAlgorithm()));
                 }
             } else {

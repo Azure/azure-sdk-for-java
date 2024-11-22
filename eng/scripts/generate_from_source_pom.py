@@ -59,6 +59,11 @@ def create_from_source_pom(artifacts_list: str, additional_modules_list: str, se
     additional_modules_identifiers = []
     if additional_modules_list is not None:
         additional_modules_identifiers = additional_modules_list.split(',')
+        # Combine the lists so dependencies are calculated correctly. While there
+        # should be no duplicates between the artifacts list and additional modules,
+        # it's better to be safe. This will remove the duplicates
+        combined_list = artifacts_list_identifiers + additional_modules_identifiers
+        artifacts_list_identifiers = list(set(combined_list))
 
     # Get the artifact identifiers from client_versions.txt to act as our source of truth.
     artifact_identifier_to_version = load_client_artifact_identifiers()
@@ -83,7 +88,6 @@ def create_from_source_pom(artifacts_list: str, additional_modules_list: str, se
 
     # Finally map the project identifiers to projects.
     add_source_projects(source_projects, artifacts_list_identifiers, projects)
-    add_source_projects(source_projects, additional_modules_identifiers, projects)
     add_source_projects(source_projects, dependent_modules, projects)
     add_source_projects(source_projects, dependency_modules, projects)
 

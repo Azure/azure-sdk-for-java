@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.search.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * The state of the last provisioning operation performed on the search service. Provisioning is an intermediate state
  * that occurs while service capacity is being established. After capacity is set up, provisioningState changes to
@@ -16,16 +13,24 @@ import com.fasterxml.jackson.annotation.JsonValue;
  * service. This is because the free service uses capacity that is already set up.
  */
 public enum ProvisioningState {
-    /** Enum value succeeded. */
+    /**
+     * Enum value succeeded.
+     */
     SUCCEEDED("succeeded"),
 
-    /** Enum value provisioning. */
+    /**
+     * Enum value provisioning.
+     */
     PROVISIONING("provisioning"),
 
-    /** Enum value failed. */
+    /**
+     * Enum value failed.
+     */
     FAILED("failed");
 
-    /** The actual serialized value for a ProvisioningState instance. */
+    /**
+     * The actual serialized value for a ProvisioningState instance.
+     */
     private final String value;
 
     ProvisioningState(String value) {
@@ -34,11 +39,10 @@ public enum ProvisioningState {
 
     /**
      * Parses a serialized value to a ProvisioningState instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed ProvisioningState object, or null if unable to parse.
      */
-    @JsonCreator
     public static ProvisioningState fromString(String value) {
         if (value == null) {
             return null;
@@ -52,8 +56,9 @@ public enum ProvisioningState {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

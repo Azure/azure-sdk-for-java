@@ -19,7 +19,10 @@ public final class ScopeMapsDeleteSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void scopeMapDelete(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.containerRegistries().manager().serviceClient().getScopeMaps().delete("myResourceGroup", "myRegistry",
-            "myScopeMap", com.azure.core.util.Context.NONE);
+        azure.containerRegistries()
+            .manager()
+            .serviceClient()
+            .getScopeMaps()
+            .delete("myResourceGroup", "myRegistry", "myScopeMap", com.azure.core.util.Context.NONE);
     }
 }

@@ -32,8 +32,7 @@ class LocalFileSenderTelemetryPipelineListener implements TelemetryPipelineListe
     }
 
     @Override
-    public void onException(
-        TelemetryPipelineRequest request, String errorMessage, Throwable throwable) {
+    public void onException(TelemetryPipelineRequest request, String errorMessage, Throwable throwable) {
         localFileLoader.updateProcessedFileStatus(false, file);
     }
 

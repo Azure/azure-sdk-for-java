@@ -5,24 +5,26 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Auto upgrade profile for a managed cluster.
  */
 @Fluent
-public final class ManagedClusterAutoUpgradeProfile {
+public final class ManagedClusterAutoUpgradeProfile implements JsonSerializable<ManagedClusterAutoUpgradeProfile> {
     /*
      * For more information see [setting the AKS cluster auto-upgrade
      * channel](https://docs.microsoft.com/azure/aks/upgrade-cluster#set-auto-upgrade-channel).
      */
-    @JsonProperty(value = "upgradeChannel")
     private UpgradeChannel upgradeChannel;
 
     /*
      * Manner in which the OS on your nodes is updated. The default is NodeImage.
      */
-    @JsonProperty(value = "nodeOSUpgradeChannel")
     private NodeOSUpgradeChannel nodeOSUpgradeChannel;
 
     /**
@@ -79,5 +81,49 @@ public final class ManagedClusterAutoUpgradeProfile {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("upgradeChannel",
+            this.upgradeChannel == null ? null : this.upgradeChannel.toString());
+        jsonWriter.writeStringField("nodeOSUpgradeChannel",
+            this.nodeOSUpgradeChannel == null ? null : this.nodeOSUpgradeChannel.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedClusterAutoUpgradeProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedClusterAutoUpgradeProfile if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ManagedClusterAutoUpgradeProfile.
+     */
+    public static ManagedClusterAutoUpgradeProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedClusterAutoUpgradeProfile deserializedManagedClusterAutoUpgradeProfile
+                = new ManagedClusterAutoUpgradeProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("upgradeChannel".equals(fieldName)) {
+                    deserializedManagedClusterAutoUpgradeProfile.upgradeChannel
+                        = UpgradeChannel.fromString(reader.getString());
+                } else if ("nodeOSUpgradeChannel".equals(fieldName)) {
+                    deserializedManagedClusterAutoUpgradeProfile.nodeOSUpgradeChannel
+                        = NodeOSUpgradeChannel.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagedClusterAutoUpgradeProfile;
+        });
     }
 }

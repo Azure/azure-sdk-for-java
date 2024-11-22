@@ -5,54 +5,55 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** onenotePatchContentCommand. */
+/**
+ * onenotePatchContentCommand.
+ */
 @Fluent
-public final class MicrosoftGraphOnenotePatchContentCommand {
+public final class MicrosoftGraphOnenotePatchContentCommand
+    implements JsonSerializable<MicrosoftGraphOnenotePatchContentCommand> {
     /*
      * onenotePatchActionType
      */
-    @JsonProperty(value = "action")
     private MicrosoftGraphOnenotePatchActionType action;
 
     /*
      * A string of well-formed HTML to add to the page, and any image or file binary data. If the content contains
      * binary data, the request must be sent using the multipart/form-data content type with a 'Commands' part.
      */
-    @JsonProperty(value = "content")
     private String content;
 
     /*
      * onenotePatchInsertPosition
      */
-    @JsonProperty(value = "position")
     private MicrosoftGraphOnenotePatchInsertPosition position;
 
     /*
-     * The element to update. Must be the #<data-id> or the generated <id> of the element, or the body or title
-     * keyword.
+     * The element to update. Must be the #<data-id> or the generated <id> of the element, or the body or title keyword.
      */
-    @JsonProperty(value = "target")
     private String target;
 
     /*
      * onenotePatchContentCommand
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphOnenotePatchContentCommand class. */
+    /**
+     * Creates an instance of MicrosoftGraphOnenotePatchContentCommand class.
+     */
     public MicrosoftGraphOnenotePatchContentCommand() {
     }
 
     /**
      * Get the action property: onenotePatchActionType.
-     *
+     * 
      * @return the action value.
      */
     public MicrosoftGraphOnenotePatchActionType action() {
@@ -61,7 +62,7 @@ public final class MicrosoftGraphOnenotePatchContentCommand {
 
     /**
      * Set the action property: onenotePatchActionType.
-     *
+     * 
      * @param action the action value to set.
      * @return the MicrosoftGraphOnenotePatchContentCommand object itself.
      */
@@ -74,7 +75,7 @@ public final class MicrosoftGraphOnenotePatchContentCommand {
      * Get the content property: A string of well-formed HTML to add to the page, and any image or file binary data. If
      * the content contains binary data, the request must be sent using the multipart/form-data content type with a
      * 'Commands' part.
-     *
+     * 
      * @return the content value.
      */
     public String content() {
@@ -85,7 +86,7 @@ public final class MicrosoftGraphOnenotePatchContentCommand {
      * Set the content property: A string of well-formed HTML to add to the page, and any image or file binary data. If
      * the content contains binary data, the request must be sent using the multipart/form-data content type with a
      * 'Commands' part.
-     *
+     * 
      * @param content the content value to set.
      * @return the MicrosoftGraphOnenotePatchContentCommand object itself.
      */
@@ -96,7 +97,7 @@ public final class MicrosoftGraphOnenotePatchContentCommand {
 
     /**
      * Get the position property: onenotePatchInsertPosition.
-     *
+     * 
      * @return the position value.
      */
     public MicrosoftGraphOnenotePatchInsertPosition position() {
@@ -105,7 +106,7 @@ public final class MicrosoftGraphOnenotePatchContentCommand {
 
     /**
      * Set the position property: onenotePatchInsertPosition.
-     *
+     * 
      * @param position the position value to set.
      * @return the MicrosoftGraphOnenotePatchContentCommand object itself.
      */
@@ -117,7 +118,7 @@ public final class MicrosoftGraphOnenotePatchContentCommand {
     /**
      * Get the target property: The element to update. Must be the #&lt;data-id&gt; or the generated &lt;id&gt; of the
      * element, or the body or title keyword.
-     *
+     * 
      * @return the target value.
      */
     public String target() {
@@ -127,7 +128,7 @@ public final class MicrosoftGraphOnenotePatchContentCommand {
     /**
      * Set the target property: The element to update. Must be the #&lt;data-id&gt; or the generated &lt;id&gt; of the
      * element, or the body or title keyword.
-     *
+     * 
      * @param target the target value to set.
      * @return the MicrosoftGraphOnenotePatchContentCommand object itself.
      */
@@ -138,17 +139,16 @@ public final class MicrosoftGraphOnenotePatchContentCommand {
 
     /**
      * Get the additionalProperties property: onenotePatchContentCommand.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: onenotePatchContentCommand.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphOnenotePatchContentCommand object itself.
      */
@@ -157,19 +157,70 @@ public final class MicrosoftGraphOnenotePatchContentCommand {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("action", this.action == null ? null : this.action.toString());
+        jsonWriter.writeStringField("content", this.content);
+        jsonWriter.writeStringField("position", this.position == null ? null : this.position.toString());
+        jsonWriter.writeStringField("target", this.target);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphOnenotePatchContentCommand from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphOnenotePatchContentCommand if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphOnenotePatchContentCommand.
+     */
+    public static MicrosoftGraphOnenotePatchContentCommand fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphOnenotePatchContentCommand deserializedMicrosoftGraphOnenotePatchContentCommand
+                = new MicrosoftGraphOnenotePatchContentCommand();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("action".equals(fieldName)) {
+                    deserializedMicrosoftGraphOnenotePatchContentCommand.action
+                        = MicrosoftGraphOnenotePatchActionType.fromString(reader.getString());
+                } else if ("content".equals(fieldName)) {
+                    deserializedMicrosoftGraphOnenotePatchContentCommand.content = reader.getString();
+                } else if ("position".equals(fieldName)) {
+                    deserializedMicrosoftGraphOnenotePatchContentCommand.position
+                        = MicrosoftGraphOnenotePatchInsertPosition.fromString(reader.getString());
+                } else if ("target".equals(fieldName)) {
+                    deserializedMicrosoftGraphOnenotePatchContentCommand.target = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphOnenotePatchContentCommand.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphOnenotePatchContentCommand;
+        });
     }
 }

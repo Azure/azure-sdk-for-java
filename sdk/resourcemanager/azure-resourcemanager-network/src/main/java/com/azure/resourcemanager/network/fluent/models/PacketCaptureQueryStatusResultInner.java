@@ -5,51 +5,52 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.PcError;
 import com.azure.resourcemanager.network.models.PcStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
  * Status of packet capture session.
  */
 @Fluent
-public final class PacketCaptureQueryStatusResultInner {
+public final class PacketCaptureQueryStatusResultInner
+    implements JsonSerializable<PacketCaptureQueryStatusResultInner> {
     /*
      * The name of the packet capture resource.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The ID of the packet capture resource.
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * The start time of the packet capture session.
      */
-    @JsonProperty(value = "captureStartTime")
     private OffsetDateTime captureStartTime;
 
     /*
      * The status of the packet capture session.
      */
-    @JsonProperty(value = "packetCaptureStatus")
     private PcStatus packetCaptureStatus;
 
     /*
      * The reason the current packet capture session was stopped.
      */
-    @JsonProperty(value = "stopReason")
     private String stopReason;
 
     /*
      * List of errors of packet capture session.
      */
-    @JsonProperty(value = "packetCaptureError")
     private List<PcError> packetCaptureError;
 
     /**
@@ -184,5 +185,66 @@ public final class PacketCaptureQueryStatusResultInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("captureStartTime",
+            this.captureStartTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.captureStartTime));
+        jsonWriter.writeStringField("packetCaptureStatus",
+            this.packetCaptureStatus == null ? null : this.packetCaptureStatus.toString());
+        jsonWriter.writeStringField("stopReason", this.stopReason);
+        jsonWriter.writeArrayField("packetCaptureError", this.packetCaptureError,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PacketCaptureQueryStatusResultInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PacketCaptureQueryStatusResultInner if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PacketCaptureQueryStatusResultInner.
+     */
+    public static PacketCaptureQueryStatusResultInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PacketCaptureQueryStatusResultInner deserializedPacketCaptureQueryStatusResultInner
+                = new PacketCaptureQueryStatusResultInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedPacketCaptureQueryStatusResultInner.name = reader.getString();
+                } else if ("id".equals(fieldName)) {
+                    deserializedPacketCaptureQueryStatusResultInner.id = reader.getString();
+                } else if ("captureStartTime".equals(fieldName)) {
+                    deserializedPacketCaptureQueryStatusResultInner.captureStartTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("packetCaptureStatus".equals(fieldName)) {
+                    deserializedPacketCaptureQueryStatusResultInner.packetCaptureStatus
+                        = PcStatus.fromString(reader.getString());
+                } else if ("stopReason".equals(fieldName)) {
+                    deserializedPacketCaptureQueryStatusResultInner.stopReason = reader.getString();
+                } else if ("packetCaptureError".equals(fieldName)) {
+                    List<PcError> packetCaptureError
+                        = reader.readArray(reader1 -> PcError.fromString(reader1.getString()));
+                    deserializedPacketCaptureQueryStatusResultInner.packetCaptureError = packetCaptureError;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPacketCaptureQueryStatusResultInner;
+        });
     }
 }

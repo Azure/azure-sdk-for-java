@@ -25,14 +25,14 @@ public final class ApiWikisImpl implements ApiWikis {
 
     private final com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager;
 
-    public ApiWikisImpl(
-        ApiWikisClient innerClient, com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
+    public ApiWikisImpl(ApiWikisClient innerClient,
+        com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public ApiWikisGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, String apiId, Context context) {
+    public ApiWikisGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,
+        String apiId, Context context) {
         return this.serviceClient().getEntityTagWithResponse(resourceGroupName, serviceName, apiId, context);
     }
 
@@ -40,15 +40,12 @@ public final class ApiWikisImpl implements ApiWikis {
         this.serviceClient().getEntityTag(resourceGroupName, serviceName, apiId);
     }
 
-    public Response<WikiContract> getWithResponse(
-        String resourceGroupName, String serviceName, String apiId, Context context) {
-        ApiWikisGetResponse inner =
-            this.serviceClient().getWithResponse(resourceGroupName, serviceName, apiId, context);
+    public Response<WikiContract> getWithResponse(String resourceGroupName, String serviceName, String apiId,
+        Context context) {
+        ApiWikisGetResponse inner
+            = this.serviceClient().getWithResponse(resourceGroupName, serviceName, apiId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new WikiContractImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -64,32 +61,22 @@ public final class ApiWikisImpl implements ApiWikis {
         }
     }
 
-    public Response<WikiContract> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        WikiContractInner parameters,
-        String ifMatch,
-        Context context) {
-        ApiWikisCreateOrUpdateResponse inner =
-            this
-                .serviceClient()
-                .createOrUpdateWithResponse(resourceGroupName, serviceName, apiId, parameters, ifMatch, context);
+    public Response<WikiContract> createOrUpdateWithResponse(String resourceGroupName, String serviceName, String apiId,
+        WikiContractInner parameters, String ifMatch, Context context) {
+        ApiWikisCreateOrUpdateResponse inner = this.serviceClient()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, apiId, parameters, ifMatch, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new WikiContractImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public WikiContract createOrUpdate(
-        String resourceGroupName, String serviceName, String apiId, WikiContractInner parameters) {
-        WikiContractInner inner =
-            this.serviceClient().createOrUpdate(resourceGroupName, serviceName, apiId, parameters);
+    public WikiContract createOrUpdate(String resourceGroupName, String serviceName, String apiId,
+        WikiContractInner parameters) {
+        WikiContractInner inner
+            = this.serviceClient().createOrUpdate(resourceGroupName, serviceName, apiId, parameters);
         if (inner != null) {
             return new WikiContractImpl(inner, this.manager());
         } else {
@@ -97,32 +84,22 @@ public final class ApiWikisImpl implements ApiWikis {
         }
     }
 
-    public Response<WikiContract> updateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String ifMatch,
-        WikiUpdateContract parameters,
-        Context context) {
-        ApiWikisUpdateResponse inner =
-            this
-                .serviceClient()
-                .updateWithResponse(resourceGroupName, serviceName, apiId, ifMatch, parameters, context);
+    public Response<WikiContract> updateWithResponse(String resourceGroupName, String serviceName, String apiId,
+        String ifMatch, WikiUpdateContract parameters, Context context) {
+        ApiWikisUpdateResponse inner = this.serviceClient()
+            .updateWithResponse(resourceGroupName, serviceName, apiId, ifMatch, parameters, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new WikiContractImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public WikiContract update(
-        String resourceGroupName, String serviceName, String apiId, String ifMatch, WikiUpdateContract parameters) {
-        WikiContractInner inner =
-            this.serviceClient().update(resourceGroupName, serviceName, apiId, ifMatch, parameters);
+    public WikiContract update(String resourceGroupName, String serviceName, String apiId, String ifMatch,
+        WikiUpdateContract parameters) {
+        WikiContractInner inner
+            = this.serviceClient().update(resourceGroupName, serviceName, apiId, ifMatch, parameters);
         if (inner != null) {
             return new WikiContractImpl(inner, this.manager());
         } else {
@@ -130,8 +107,8 @@ public final class ApiWikisImpl implements ApiWikis {
         }
     }
 
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String serviceName, String apiId, String ifMatch, Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String apiId, String ifMatch,
+        Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, serviceName, apiId, ifMatch, context);
     }
 

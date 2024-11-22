@@ -5,29 +5,46 @@
 package com.azure.resourcemanager.edgeorder.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SupportedFilterTypes. */
+/**
+ * Type of product filter.
+ */
 public final class SupportedFilterTypes extends ExpandableStringEnum<SupportedFilterTypes> {
-    /** Static value ShipToCountries for SupportedFilterTypes. */
+    /**
+     * Static value ShipToCountries for SupportedFilterTypes.
+     */
     public static final SupportedFilterTypes SHIP_TO_COUNTRIES = fromString("ShipToCountries");
 
-    /** Static value DoubleEncryptionStatus for SupportedFilterTypes. */
+    /**
+     * Static value DoubleEncryptionStatus for SupportedFilterTypes.
+     */
     public static final SupportedFilterTypes DOUBLE_ENCRYPTION_STATUS = fromString("DoubleEncryptionStatus");
 
     /**
+     * Creates a new instance of SupportedFilterTypes value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SupportedFilterTypes() {
+    }
+
+    /**
      * Creates or finds a SupportedFilterTypes from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SupportedFilterTypes.
      */
-    @JsonCreator
     public static SupportedFilterTypes fromString(String name) {
         return fromString(name, SupportedFilterTypes.class);
     }
 
-    /** @return known SupportedFilterTypes values. */
+    /**
+     * Gets known SupportedFilterTypes values.
+     * 
+     * @return known SupportedFilterTypes values.
+     */
     public static Collection<SupportedFilterTypes> values() {
         return values(SupportedFilterTypes.class);
     }

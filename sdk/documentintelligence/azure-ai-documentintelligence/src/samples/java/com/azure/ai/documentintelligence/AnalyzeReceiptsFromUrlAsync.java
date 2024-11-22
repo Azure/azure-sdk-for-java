@@ -20,7 +20,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * Async sample for analyzing commonly found receipt fields from a file source URL.
- * See fields found on a receipt <a href=https://aka.ms/documentintelligence/receiptfields>here</a>
+ * See fields found on a receipt <a href=https://aka.ms/formrecognizer/receiptfields>here</a>
  */
 public class AnalyzeReceiptsFromUrlAsync {
 
@@ -42,6 +42,7 @@ public class AnalyzeReceiptsFromUrlAsync {
 
         PollerFlux<AnalyzeResultOperation, AnalyzeResult> analyzeReceiptPoller =
             client.beginAnalyzeDocument("prebuilt-receipt", null,
+                null,
                 null,
                 null,
                 null,

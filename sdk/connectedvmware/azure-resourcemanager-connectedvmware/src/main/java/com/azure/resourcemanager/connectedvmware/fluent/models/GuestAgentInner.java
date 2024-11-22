@@ -199,9 +199,8 @@ public final class GuestAgentInner extends ProxyResource {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property innerProperties in model GuestAgentInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property innerProperties in model GuestAgentInner"));
         } else {
             innerProperties().validate();
         }

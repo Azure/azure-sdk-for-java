@@ -40,22 +40,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in CollectorPoliciesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in CollectorPoliciesClient.
+ */
 public final class CollectorPoliciesClientImpl implements CollectorPoliciesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final CollectorPoliciesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AzureTrafficCollectorManagementClientImpl client;
 
     /**
      * Initializes an instance of CollectorPoliciesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     CollectorPoliciesClientImpl(AzureTrafficCollectorManagementClientImpl client) {
-        this.service =
-            RestProxy.create(CollectorPoliciesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(CollectorPoliciesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -66,162 +72,114 @@ public final class CollectorPoliciesClientImpl implements CollectorPoliciesClien
     @Host("{$host}")
     @ServiceInterface(name = "AzureTrafficCollecto")
     public interface CollectorPoliciesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkFunction"
-                + "/azureTrafficCollectors/{azureTrafficCollectorName}/collectorPolicies")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkFunction/azureTrafficCollectors/{azureTrafficCollectorName}/collectorPolicies")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CollectorPolicyListResult>> list(
-            @HostParam("$host") String endpoint,
+        Mono<Response<CollectorPolicyListResult>> list(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @PathParam("azureTrafficCollectorName") String azureTrafficCollectorName,
-            @HeaderParam("Accept") String accept,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkFunction/azureTrafficCollectors/{azureTrafficCollectorName}/collectorPolicies/{collectorPolicyName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<CollectorPolicyInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @PathParam("azureTrafficCollectorName") String azureTrafficCollectorName,
+            @PathParam("collectorPolicyName") String collectorPolicyName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkFunction"
-                + "/azureTrafficCollectors/{azureTrafficCollectorName}/collectorPolicies/{collectorPolicyName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkFunction/azureTrafficCollectors/{azureTrafficCollectorName}/collectorPolicies/{collectorPolicyName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CollectorPolicyInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("azureTrafficCollectorName") String azureTrafficCollectorName,
-            @PathParam("collectorPolicyName") String collectorPolicyName,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkFunction"
-                + "/azureTrafficCollectors/{azureTrafficCollectorName}/collectorPolicies/{collectorPolicyName}")
-        @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @PathParam("azureTrafficCollectorName") String azureTrafficCollectorName,
             @PathParam("collectorPolicyName") String collectorPolicyName,
-            @BodyParam("application/json") CollectorPolicyInner parameters,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") CollectorPolicyInner parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkFunction"
-                + "/azureTrafficCollectors/{azureTrafficCollectorName}/collectorPolicies/{collectorPolicyName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkFunction/azureTrafficCollectors/{azureTrafficCollectorName}/collectorPolicies/{collectorPolicyName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @PathParam("azureTrafficCollectorName") String azureTrafficCollectorName,
+            @PathParam("collectorPolicyName") String collectorPolicyName, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkFunction/azureTrafficCollectors/{azureTrafficCollectorName}/collectorPolicies/{collectorPolicyName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<CollectorPolicyInner>> updateTags(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @PathParam("azureTrafficCollectorName") String azureTrafficCollectorName,
             @PathParam("collectorPolicyName") String collectorPolicyName,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") TagsObject parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkFunction"
-                + "/azureTrafficCollectors/{azureTrafficCollectorName}/collectorPolicies/{collectorPolicyName}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CollectorPolicyInner>> updateTags(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("azureTrafficCollectorName") String azureTrafficCollectorName,
-            @PathParam("collectorPolicyName") String collectorPolicyName,
-            @BodyParam("application/json") TagsObject parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<CollectorPolicyListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Return list of Collector policies in a Azure Traffic Collector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for the ListCollectorPolicies API service call along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CollectorPolicyInner>> listSinglePageAsync(
-        String resourceGroupName, String azureTrafficCollectorName) {
+    private Mono<PagedResponse<CollectorPolicyInner>> listSinglePageAsync(String resourceGroupName,
+        String azureTrafficCollectorName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (azureTrafficCollectorName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter azureTrafficCollectorName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter azureTrafficCollectorName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            azureTrafficCollectorName,
-                            accept,
-                            context))
-            .<PagedResponse<CollectorPolicyInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+                context -> service.list(this.client.getEndpoint(), resourceGroupName, this.client.getSubscriptionId(),
+                    this.client.getApiVersion(), azureTrafficCollectorName, accept, context))
+            .<PagedResponse<CollectorPolicyInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Return list of Collector policies in a Azure Traffic Collector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @param context The context to associate with this operation.
@@ -229,58 +187,39 @@ public final class CollectorPoliciesClientImpl implements CollectorPoliciesClien
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for the ListCollectorPolicies API service call along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CollectorPolicyInner>> listSinglePageAsync(
-        String resourceGroupName, String azureTrafficCollectorName, Context context) {
+    private Mono<PagedResponse<CollectorPolicyInner>> listSinglePageAsync(String resourceGroupName,
+        String azureTrafficCollectorName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (azureTrafficCollectorName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter azureTrafficCollectorName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter azureTrafficCollectorName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                azureTrafficCollectorName,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), resourceGroupName, this.client.getSubscriptionId(),
+                this.client.getApiVersion(), azureTrafficCollectorName, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Return list of Collector policies in a Azure Traffic Collector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -290,14 +229,13 @@ public final class CollectorPoliciesClientImpl implements CollectorPoliciesClien
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<CollectorPolicyInner> listAsync(String resourceGroupName, String azureTrafficCollectorName) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, azureTrafficCollectorName),
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, azureTrafficCollectorName),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * Return list of Collector policies in a Azure Traffic Collector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @param context The context to associate with this operation.
@@ -307,16 +245,15 @@ public final class CollectorPoliciesClientImpl implements CollectorPoliciesClien
      * @return response for the ListCollectorPolicies API service call as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<CollectorPolicyInner> listAsync(
-        String resourceGroupName, String azureTrafficCollectorName, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, azureTrafficCollectorName, context),
+    private PagedFlux<CollectorPolicyInner> listAsync(String resourceGroupName, String azureTrafficCollectorName,
+        Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, azureTrafficCollectorName, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Return list of Collector policies in a Azure Traffic Collector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -331,7 +268,7 @@ public final class CollectorPoliciesClientImpl implements CollectorPoliciesClien
 
     /**
      * Return list of Collector policies in a Azure Traffic Collector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @param context The context to associate with this operation.
@@ -341,14 +278,14 @@ public final class CollectorPoliciesClientImpl implements CollectorPoliciesClien
      * @return response for the ListCollectorPolicies API service call as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<CollectorPolicyInner> list(
-        String resourceGroupName, String azureTrafficCollectorName, Context context) {
+    public PagedIterable<CollectorPolicyInner> list(String resourceGroupName, String azureTrafficCollectorName,
+        Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, azureTrafficCollectorName, context));
     }
 
     /**
      * Gets the collector policy in a specified Traffic Collector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @param collectorPolicyName Collector Policy Name.
@@ -356,32 +293,26 @@ public final class CollectorPoliciesClientImpl implements CollectorPoliciesClien
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the collector policy in a specified Traffic Collector along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CollectorPolicyInner>> getWithResponseAsync(
-        String resourceGroupName, String azureTrafficCollectorName, String collectorPolicyName) {
+    private Mono<Response<CollectorPolicyInner>> getWithResponseAsync(String resourceGroupName,
+        String azureTrafficCollectorName, String collectorPolicyName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (azureTrafficCollectorName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter azureTrafficCollectorName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter azureTrafficCollectorName is required and cannot be null."));
         }
         if (collectorPolicyName == null) {
             return Mono
@@ -390,23 +321,14 @@ public final class CollectorPoliciesClientImpl implements CollectorPoliciesClien
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            azureTrafficCollectorName,
-                            collectorPolicyName,
-                            accept,
-                            context))
+                context -> service.get(this.client.getEndpoint(), resourceGroupName, this.client.getSubscriptionId(),
+                    this.client.getApiVersion(), azureTrafficCollectorName, collectorPolicyName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the collector policy in a specified Traffic Collector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @param collectorPolicyName Collector Policy Name.
@@ -415,32 +337,26 @@ public final class CollectorPoliciesClientImpl implements CollectorPoliciesClien
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the collector policy in a specified Traffic Collector along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CollectorPolicyInner>> getWithResponseAsync(
-        String resourceGroupName, String azureTrafficCollectorName, String collectorPolicyName, Context context) {
+    private Mono<Response<CollectorPolicyInner>> getWithResponseAsync(String resourceGroupName,
+        String azureTrafficCollectorName, String collectorPolicyName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (azureTrafficCollectorName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter azureTrafficCollectorName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter azureTrafficCollectorName is required and cannot be null."));
         }
         if (collectorPolicyName == null) {
             return Mono
@@ -448,21 +364,13 @@ public final class CollectorPoliciesClientImpl implements CollectorPoliciesClien
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                azureTrafficCollectorName,
-                collectorPolicyName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), resourceGroupName, this.client.getSubscriptionId(),
+            this.client.getApiVersion(), azureTrafficCollectorName, collectorPolicyName, accept, context);
     }
 
     /**
      * Gets the collector policy in a specified Traffic Collector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @param collectorPolicyName Collector Policy Name.
@@ -472,15 +380,15 @@ public final class CollectorPoliciesClientImpl implements CollectorPoliciesClien
      * @return the collector policy in a specified Traffic Collector on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CollectorPolicyInner> getAsync(
-        String resourceGroupName, String azureTrafficCollectorName, String collectorPolicyName) {
+    private Mono<CollectorPolicyInner> getAsync(String resourceGroupName, String azureTrafficCollectorName,
+        String collectorPolicyName) {
         return getWithResponseAsync(resourceGroupName, azureTrafficCollectorName, collectorPolicyName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets the collector policy in a specified Traffic Collector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @param collectorPolicyName Collector Policy Name.
@@ -491,14 +399,14 @@ public final class CollectorPoliciesClientImpl implements CollectorPoliciesClien
      * @return the collector policy in a specified Traffic Collector along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CollectorPolicyInner> getWithResponse(
-        String resourceGroupName, String azureTrafficCollectorName, String collectorPolicyName, Context context) {
+    public Response<CollectorPolicyInner> getWithResponse(String resourceGroupName, String azureTrafficCollectorName,
+        String collectorPolicyName, Context context) {
         return getWithResponseAsync(resourceGroupName, azureTrafficCollectorName, collectorPolicyName, context).block();
     }
 
     /**
      * Gets the collector policy in a specified Traffic Collector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @param collectorPolicyName Collector Policy Name.
@@ -508,15 +416,15 @@ public final class CollectorPoliciesClientImpl implements CollectorPoliciesClien
      * @return the collector policy in a specified Traffic Collector.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CollectorPolicyInner get(
-        String resourceGroupName, String azureTrafficCollectorName, String collectorPolicyName) {
+    public CollectorPolicyInner get(String resourceGroupName, String azureTrafficCollectorName,
+        String collectorPolicyName) {
         return getWithResponse(resourceGroupName, azureTrafficCollectorName, collectorPolicyName, Context.NONE)
             .getValue();
     }
 
     /**
      * Creates or updates a Collector Policy resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @param collectorPolicyName Collector Policy Name.
@@ -527,32 +435,23 @@ public final class CollectorPoliciesClientImpl implements CollectorPoliciesClien
      * @return collector policy resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String azureTrafficCollectorName,
-        String collectorPolicyName,
-        CollectorPolicyInner parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String azureTrafficCollectorName, String collectorPolicyName, CollectorPolicyInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (azureTrafficCollectorName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter azureTrafficCollectorName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter azureTrafficCollectorName is required and cannot be null."));
         }
         if (collectorPolicyName == null) {
             return Mono
@@ -565,25 +464,15 @@ public final class CollectorPoliciesClientImpl implements CollectorPoliciesClien
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            azureTrafficCollectorName,
-                            collectorPolicyName,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), azureTrafficCollectorName,
+                collectorPolicyName, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates or updates a Collector Policy resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @param collectorPolicyName Collector Policy Name.
@@ -595,33 +484,24 @@ public final class CollectorPoliciesClientImpl implements CollectorPoliciesClien
      * @return collector policy resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String azureTrafficCollectorName,
-        String collectorPolicyName,
-        CollectorPolicyInner parameters,
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String azureTrafficCollectorName, String collectorPolicyName, CollectorPolicyInner parameters,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (azureTrafficCollectorName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter azureTrafficCollectorName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter azureTrafficCollectorName is required and cannot be null."));
         }
         if (collectorPolicyName == null) {
             return Mono
@@ -634,22 +514,13 @@ public final class CollectorPoliciesClientImpl implements CollectorPoliciesClien
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                azureTrafficCollectorName,
-                collectorPolicyName,
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, this.client.getSubscriptionId(),
+            this.client.getApiVersion(), azureTrafficCollectorName, collectorPolicyName, parameters, accept, context);
     }
 
     /**
      * Creates or updates a Collector Policy resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @param collectorPolicyName Collector Policy Name.
@@ -661,26 +532,17 @@ public final class CollectorPoliciesClientImpl implements CollectorPoliciesClien
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<CollectorPolicyInner>, CollectorPolicyInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String azureTrafficCollectorName,
-        String collectorPolicyName,
+        String resourceGroupName, String azureTrafficCollectorName, String collectorPolicyName,
         CollectorPolicyInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, azureTrafficCollectorName, collectorPolicyName, parameters);
-        return this
-            .client
-            .<CollectorPolicyInner, CollectorPolicyInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                CollectorPolicyInner.class,
-                CollectorPolicyInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName,
+            azureTrafficCollectorName, collectorPolicyName, parameters);
+        return this.client.<CollectorPolicyInner, CollectorPolicyInner>getLroResult(mono, this.client.getHttpPipeline(),
+            CollectorPolicyInner.class, CollectorPolicyInner.class, this.client.getContext());
     }
 
     /**
      * Creates or updates a Collector Policy resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @param collectorPolicyName Collector Policy Name.
@@ -693,46 +555,39 @@ public final class CollectorPoliciesClientImpl implements CollectorPoliciesClien
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<CollectorPolicyInner>, CollectorPolicyInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String azureTrafficCollectorName,
-        String collectorPolicyName,
-        CollectorPolicyInner parameters,
-        Context context) {
+        String resourceGroupName, String azureTrafficCollectorName, String collectorPolicyName,
+        CollectorPolicyInner parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, azureTrafficCollectorName, collectorPolicyName, parameters, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName,
+            azureTrafficCollectorName, collectorPolicyName, parameters, context);
+        return this.client.<CollectorPolicyInner, CollectorPolicyInner>getLroResult(mono, this.client.getHttpPipeline(),
+            CollectorPolicyInner.class, CollectorPolicyInner.class, context);
+    }
+
+    /**
+     * Creates or updates a Collector Policy resource.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param azureTrafficCollectorName Azure Traffic Collector name.
+     * @param collectorPolicyName Collector Policy Name.
+     * @param parameters The parameters to provide for the created Collector Policy.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of collector policy resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<CollectorPolicyInner>, CollectorPolicyInner> beginCreateOrUpdate(
+        String resourceGroupName, String azureTrafficCollectorName, String collectorPolicyName,
+        CollectorPolicyInner parameters) {
         return this
-            .client
-            .<CollectorPolicyInner, CollectorPolicyInner>getLroResult(
-                mono, this.client.getHttpPipeline(), CollectorPolicyInner.class, CollectorPolicyInner.class, context);
-    }
-
-    /**
-     * Creates or updates a Collector Policy resource.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param azureTrafficCollectorName Azure Traffic Collector name.
-     * @param collectorPolicyName Collector Policy Name.
-     * @param parameters The parameters to provide for the created Collector Policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of collector policy resource.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<CollectorPolicyInner>, CollectorPolicyInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String azureTrafficCollectorName,
-        String collectorPolicyName,
-        CollectorPolicyInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, azureTrafficCollectorName, collectorPolicyName, parameters)
+            .beginCreateOrUpdateAsync(resourceGroupName, azureTrafficCollectorName, collectorPolicyName, parameters)
             .getSyncPoller();
     }
 
     /**
      * Creates or updates a Collector Policy resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @param collectorPolicyName Collector Policy Name.
@@ -745,19 +600,17 @@ public final class CollectorPoliciesClientImpl implements CollectorPoliciesClien
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CollectorPolicyInner>, CollectorPolicyInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String azureTrafficCollectorName,
-        String collectorPolicyName,
-        CollectorPolicyInner parameters,
-        Context context) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName, azureTrafficCollectorName, collectorPolicyName, parameters, context)
+        String resourceGroupName, String azureTrafficCollectorName, String collectorPolicyName,
+        CollectorPolicyInner parameters, Context context) {
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, azureTrafficCollectorName, collectorPolicyName, parameters,
+                context)
             .getSyncPoller();
     }
 
     /**
      * Creates or updates a Collector Policy resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @param collectorPolicyName Collector Policy Name.
@@ -768,11 +621,8 @@ public final class CollectorPoliciesClientImpl implements CollectorPoliciesClien
      * @return collector policy resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CollectorPolicyInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String azureTrafficCollectorName,
-        String collectorPolicyName,
-        CollectorPolicyInner parameters) {
+    private Mono<CollectorPolicyInner> createOrUpdateAsync(String resourceGroupName, String azureTrafficCollectorName,
+        String collectorPolicyName, CollectorPolicyInner parameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, azureTrafficCollectorName, collectorPolicyName, parameters)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -780,7 +630,7 @@ public final class CollectorPoliciesClientImpl implements CollectorPoliciesClien
 
     /**
      * Creates or updates a Collector Policy resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @param collectorPolicyName Collector Policy Name.
@@ -792,21 +642,15 @@ public final class CollectorPoliciesClientImpl implements CollectorPoliciesClien
      * @return collector policy resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CollectorPolicyInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String azureTrafficCollectorName,
-        String collectorPolicyName,
-        CollectorPolicyInner parameters,
-        Context context) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName, azureTrafficCollectorName, collectorPolicyName, parameters, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+    private Mono<CollectorPolicyInner> createOrUpdateAsync(String resourceGroupName, String azureTrafficCollectorName,
+        String collectorPolicyName, CollectorPolicyInner parameters, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, azureTrafficCollectorName, collectorPolicyName, parameters,
+            context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates or updates a Collector Policy resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @param collectorPolicyName Collector Policy Name.
@@ -817,18 +661,15 @@ public final class CollectorPoliciesClientImpl implements CollectorPoliciesClien
      * @return collector policy resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CollectorPolicyInner createOrUpdate(
-        String resourceGroupName,
-        String azureTrafficCollectorName,
-        String collectorPolicyName,
-        CollectorPolicyInner parameters) {
+    public CollectorPolicyInner createOrUpdate(String resourceGroupName, String azureTrafficCollectorName,
+        String collectorPolicyName, CollectorPolicyInner parameters) {
         return createOrUpdateAsync(resourceGroupName, azureTrafficCollectorName, collectorPolicyName, parameters)
             .block();
     }
 
     /**
      * Creates or updates a Collector Policy resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @param collectorPolicyName Collector Policy Name.
@@ -840,20 +681,15 @@ public final class CollectorPoliciesClientImpl implements CollectorPoliciesClien
      * @return collector policy resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CollectorPolicyInner createOrUpdate(
-        String resourceGroupName,
-        String azureTrafficCollectorName,
-        String collectorPolicyName,
-        CollectorPolicyInner parameters,
-        Context context) {
-        return createOrUpdateAsync(
-                resourceGroupName, azureTrafficCollectorName, collectorPolicyName, parameters, context)
-            .block();
+    public CollectorPolicyInner createOrUpdate(String resourceGroupName, String azureTrafficCollectorName,
+        String collectorPolicyName, CollectorPolicyInner parameters, Context context) {
+        return createOrUpdateAsync(resourceGroupName, azureTrafficCollectorName, collectorPolicyName, parameters,
+            context).block();
     }
 
     /**
      * Deletes a specified Collector Policy resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @param collectorPolicyName Collector Policy Name.
@@ -863,29 +699,23 @@ public final class CollectorPoliciesClientImpl implements CollectorPoliciesClien
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String azureTrafficCollectorName, String collectorPolicyName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
+        String azureTrafficCollectorName, String collectorPolicyName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (azureTrafficCollectorName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter azureTrafficCollectorName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter azureTrafficCollectorName is required and cannot be null."));
         }
         if (collectorPolicyName == null) {
             return Mono
@@ -894,23 +724,14 @@ public final class CollectorPoliciesClientImpl implements CollectorPoliciesClien
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            azureTrafficCollectorName,
-                            collectorPolicyName,
-                            accept,
-                            context))
+                context -> service.delete(this.client.getEndpoint(), resourceGroupName, this.client.getSubscriptionId(),
+                    this.client.getApiVersion(), azureTrafficCollectorName, collectorPolicyName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes a specified Collector Policy resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @param collectorPolicyName Collector Policy Name.
@@ -921,29 +742,23 @@ public final class CollectorPoliciesClientImpl implements CollectorPoliciesClien
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String azureTrafficCollectorName, String collectorPolicyName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
+        String azureTrafficCollectorName, String collectorPolicyName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (azureTrafficCollectorName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter azureTrafficCollectorName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter azureTrafficCollectorName is required and cannot be null."));
         }
         if (collectorPolicyName == null) {
             return Mono
@@ -951,21 +766,13 @@ public final class CollectorPoliciesClientImpl implements CollectorPoliciesClien
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                azureTrafficCollectorName,
-                collectorPolicyName,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), resourceGroupName, this.client.getSubscriptionId(),
+            this.client.getApiVersion(), azureTrafficCollectorName, collectorPolicyName, accept, context);
     }
 
     /**
      * Deletes a specified Collector Policy resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @param collectorPolicyName Collector Policy Name.
@@ -975,19 +782,17 @@ public final class CollectorPoliciesClientImpl implements CollectorPoliciesClien
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String azureTrafficCollectorName, String collectorPolicyName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, azureTrafficCollectorName, collectorPolicyName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName,
+        String azureTrafficCollectorName, String collectorPolicyName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, azureTrafficCollectorName, collectorPolicyName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Deletes a specified Collector Policy resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @param collectorPolicyName Collector Policy Name.
@@ -998,19 +803,18 @@ public final class CollectorPoliciesClientImpl implements CollectorPoliciesClien
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String azureTrafficCollectorName, String collectorPolicyName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName,
+        String azureTrafficCollectorName, String collectorPolicyName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, azureTrafficCollectorName, collectorPolicyName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, azureTrafficCollectorName, collectorPolicyName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Deletes a specified Collector Policy resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @param collectorPolicyName Collector Policy Name.
@@ -1020,14 +824,14 @@ public final class CollectorPoliciesClientImpl implements CollectorPoliciesClien
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String azureTrafficCollectorName, String collectorPolicyName) {
-        return beginDeleteAsync(resourceGroupName, azureTrafficCollectorName, collectorPolicyName).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String azureTrafficCollectorName,
+        String collectorPolicyName) {
+        return this.beginDeleteAsync(resourceGroupName, azureTrafficCollectorName, collectorPolicyName).getSyncPoller();
     }
 
     /**
      * Deletes a specified Collector Policy resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @param collectorPolicyName Collector Policy Name.
@@ -1038,15 +842,15 @@ public final class CollectorPoliciesClientImpl implements CollectorPoliciesClien
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String azureTrafficCollectorName, String collectorPolicyName, Context context) {
-        return beginDeleteAsync(resourceGroupName, azureTrafficCollectorName, collectorPolicyName, context)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String azureTrafficCollectorName,
+        String collectorPolicyName, Context context) {
+        return this.beginDeleteAsync(resourceGroupName, azureTrafficCollectorName, collectorPolicyName, context)
             .getSyncPoller();
     }
 
     /**
      * Deletes a specified Collector Policy resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @param collectorPolicyName Collector Policy Name.
@@ -1056,16 +860,15 @@ public final class CollectorPoliciesClientImpl implements CollectorPoliciesClien
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String azureTrafficCollectorName, String collectorPolicyName) {
-        return beginDeleteAsync(resourceGroupName, azureTrafficCollectorName, collectorPolicyName)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String azureTrafficCollectorName,
+        String collectorPolicyName) {
+        return beginDeleteAsync(resourceGroupName, azureTrafficCollectorName, collectorPolicyName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes a specified Collector Policy resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @param collectorPolicyName Collector Policy Name.
@@ -1076,16 +879,15 @@ public final class CollectorPoliciesClientImpl implements CollectorPoliciesClien
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String azureTrafficCollectorName, String collectorPolicyName, Context context) {
-        return beginDeleteAsync(resourceGroupName, azureTrafficCollectorName, collectorPolicyName, context)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String azureTrafficCollectorName,
+        String collectorPolicyName, Context context) {
+        return beginDeleteAsync(resourceGroupName, azureTrafficCollectorName, collectorPolicyName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes a specified Collector Policy resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @param collectorPolicyName Collector Policy Name.
@@ -1100,7 +902,7 @@ public final class CollectorPoliciesClientImpl implements CollectorPoliciesClien
 
     /**
      * Deletes a specified Collector Policy resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @param collectorPolicyName Collector Policy Name.
@@ -1110,14 +912,14 @@ public final class CollectorPoliciesClientImpl implements CollectorPoliciesClien
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String resourceGroupName, String azureTrafficCollectorName, String collectorPolicyName, Context context) {
+    public void delete(String resourceGroupName, String azureTrafficCollectorName, String collectorPolicyName,
+        Context context) {
         deleteAsync(resourceGroupName, azureTrafficCollectorName, collectorPolicyName, context).block();
     }
 
     /**
      * Updates the specified Collector Policy tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @param collectorPolicyName Collector Policy Name.
@@ -1128,29 +930,23 @@ public final class CollectorPoliciesClientImpl implements CollectorPoliciesClien
      * @return collector policy resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CollectorPolicyInner>> updateTagsWithResponseAsync(
-        String resourceGroupName, String azureTrafficCollectorName, String collectorPolicyName, TagsObject parameters) {
+    private Mono<Response<CollectorPolicyInner>> updateTagsWithResponseAsync(String resourceGroupName,
+        String azureTrafficCollectorName, String collectorPolicyName, TagsObject parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (azureTrafficCollectorName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter azureTrafficCollectorName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter azureTrafficCollectorName is required and cannot be null."));
         }
         if (collectorPolicyName == null) {
             return Mono
@@ -1163,25 +959,15 @@ public final class CollectorPoliciesClientImpl implements CollectorPoliciesClien
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .updateTags(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            azureTrafficCollectorName,
-                            collectorPolicyName,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.updateTags(this.client.getEndpoint(), resourceGroupName,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), azureTrafficCollectorName,
+                collectorPolicyName, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Updates the specified Collector Policy tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @param collectorPolicyName Collector Policy Name.
@@ -1193,33 +979,23 @@ public final class CollectorPoliciesClientImpl implements CollectorPoliciesClien
      * @return collector policy resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CollectorPolicyInner>> updateTagsWithResponseAsync(
-        String resourceGroupName,
-        String azureTrafficCollectorName,
-        String collectorPolicyName,
-        TagsObject parameters,
-        Context context) {
+    private Mono<Response<CollectorPolicyInner>> updateTagsWithResponseAsync(String resourceGroupName,
+        String azureTrafficCollectorName, String collectorPolicyName, TagsObject parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (azureTrafficCollectorName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter azureTrafficCollectorName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter azureTrafficCollectorName is required and cannot be null."));
         }
         if (collectorPolicyName == null) {
             return Mono
@@ -1232,22 +1008,13 @@ public final class CollectorPoliciesClientImpl implements CollectorPoliciesClien
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .updateTags(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                azureTrafficCollectorName,
-                collectorPolicyName,
-                parameters,
-                accept,
-                context);
+        return service.updateTags(this.client.getEndpoint(), resourceGroupName, this.client.getSubscriptionId(),
+            this.client.getApiVersion(), azureTrafficCollectorName, collectorPolicyName, parameters, accept, context);
     }
 
     /**
      * Updates the specified Collector Policy tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @param collectorPolicyName Collector Policy Name.
@@ -1258,16 +1025,15 @@ public final class CollectorPoliciesClientImpl implements CollectorPoliciesClien
      * @return collector policy resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CollectorPolicyInner> updateTagsAsync(
-        String resourceGroupName, String azureTrafficCollectorName, String collectorPolicyName, TagsObject parameters) {
-        return updateTagsWithResponseAsync(
-                resourceGroupName, azureTrafficCollectorName, collectorPolicyName, parameters)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    private Mono<CollectorPolicyInner> updateTagsAsync(String resourceGroupName, String azureTrafficCollectorName,
+        String collectorPolicyName, TagsObject parameters) {
+        return updateTagsWithResponseAsync(resourceGroupName, azureTrafficCollectorName, collectorPolicyName,
+            parameters).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Updates the specified Collector Policy tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @param collectorPolicyName Collector Policy Name.
@@ -1279,20 +1045,15 @@ public final class CollectorPoliciesClientImpl implements CollectorPoliciesClien
      * @return collector policy resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CollectorPolicyInner> updateTagsWithResponse(
-        String resourceGroupName,
-        String azureTrafficCollectorName,
-        String collectorPolicyName,
-        TagsObject parameters,
-        Context context) {
-        return updateTagsWithResponseAsync(
-                resourceGroupName, azureTrafficCollectorName, collectorPolicyName, parameters, context)
-            .block();
+    public Response<CollectorPolicyInner> updateTagsWithResponse(String resourceGroupName,
+        String azureTrafficCollectorName, String collectorPolicyName, TagsObject parameters, Context context) {
+        return updateTagsWithResponseAsync(resourceGroupName, azureTrafficCollectorName, collectorPolicyName,
+            parameters, context).block();
     }
 
     /**
      * Updates the specified Collector Policy tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @param collectorPolicyName Collector Policy Name.
@@ -1303,23 +1064,21 @@ public final class CollectorPoliciesClientImpl implements CollectorPoliciesClien
      * @return collector policy resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CollectorPolicyInner updateTags(
-        String resourceGroupName, String azureTrafficCollectorName, String collectorPolicyName, TagsObject parameters) {
-        return updateTagsWithResponse(
-                resourceGroupName, azureTrafficCollectorName, collectorPolicyName, parameters, Context.NONE)
-            .getValue();
+    public CollectorPolicyInner updateTags(String resourceGroupName, String azureTrafficCollectorName,
+        String collectorPolicyName, TagsObject parameters) {
+        return updateTagsWithResponse(resourceGroupName, azureTrafficCollectorName, collectorPolicyName, parameters,
+            Context.NONE).getValue();
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for the ListCollectorPolicies API service call along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CollectorPolicyInner>> listNextSinglePageAsync(String nextLink) {
@@ -1327,37 +1086,26 @@ public final class CollectorPoliciesClientImpl implements CollectorPoliciesClien
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<CollectorPolicyInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<CollectorPolicyInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for the ListCollectorPolicies API service call along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CollectorPolicyInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -1365,23 +1113,13 @@ public final class CollectorPoliciesClientImpl implements CollectorPoliciesClien
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

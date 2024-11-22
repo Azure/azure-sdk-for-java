@@ -17,7 +17,7 @@ Azure Core Vert.x HTTP client is a plugin for the `azure-core` HTTP client API.
   <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-core-http-vertx</artifactId>
-    <version>1.0.0-beta.19</version>
+    <version>1.0.0-beta.24</version>
   </dependency>
 </dependencies>
 ```
@@ -37,13 +37,13 @@ The following sections provide several code snippets covering some of the most c
 Create a Vert.x HttpClient.
 
 ```java readme-sample-createBasicClient
-HttpClient client = new VertxAsyncHttpClientBuilder().build();
+HttpClient client = new VertxHttpClientBuilder().build();
 ```
 
 Create a Vert.x HttpClient using a connection timeout of 60 seconds.
 
 ```java readme-sample-createClientWithConnectionTimeout
-HttpClient client = new VertxAsyncHttpClientBuilder().connectTimeout(Duration.ofSeconds(60)).build();
+HttpClient client = new VertxHttpClientBuilder().connectTimeout(Duration.ofSeconds(60)).build();
 ```
 
 ### Create a Client with Proxy
@@ -51,7 +51,7 @@ HttpClient client = new VertxAsyncHttpClientBuilder().connectTimeout(Duration.of
 Create a Vert.x client that is using a proxy.
 
 ```java readme-sample-createProxyClient
-HttpClient client = new VertxAsyncHttpClientBuilder()
+HttpClient client = new VertxHttpClientBuilder()
     .proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("<proxy-host>", 8888)))
     .build();
 ```
@@ -82,7 +82,7 @@ For details on contributing to this repository, see the [contributing guide](htt
 1. Create new Pull Request
 
 <!-- Links -->
-[logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK
+[logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-in-Azure-SDK
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [java8_client_compatibility]: https://learn.microsoft.com/azure/security/fundamentals/azure-ca-details?tabs=root-and-subordinate-cas-list#client-compatibility-for-public-pkis
 

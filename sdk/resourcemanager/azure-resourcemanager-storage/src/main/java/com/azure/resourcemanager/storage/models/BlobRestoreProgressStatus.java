@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -44,7 +43,6 @@ public final class BlobRestoreProgressStatus extends ExpandableStringEnum<BlobRe
      * @param name a name to look for.
      * @return the corresponding BlobRestoreProgressStatus.
      */
-    @JsonCreator
     public static BlobRestoreProgressStatus fromString(String name) {
         return fromString(name, BlobRestoreProgressStatus.class);
     }

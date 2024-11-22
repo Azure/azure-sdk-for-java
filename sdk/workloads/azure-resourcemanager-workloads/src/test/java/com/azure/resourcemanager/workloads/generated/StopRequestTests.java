@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class StopRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        StopRequest model =
-            BinaryData.fromString("{\"softStopTimeoutSeconds\":203566108787836432}").toObject(StopRequest.class);
+        StopRequest model
+            = BinaryData.fromString("{\"softStopTimeoutSeconds\":203566108787836432}").toObject(StopRequest.class);
         Assertions.assertEquals(203566108787836432L, model.softStopTimeoutSeconds());
     }
 

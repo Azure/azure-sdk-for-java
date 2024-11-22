@@ -21,41 +21,30 @@ public final class DataConnectorsCheckRequirementsOperationsImpl implements Data
 
     private final com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager;
 
-    public DataConnectorsCheckRequirementsOperationsImpl(
-        DataConnectorsCheckRequirementsOperationsClient innerClient,
+    public DataConnectorsCheckRequirementsOperationsImpl(DataConnectorsCheckRequirementsOperationsClient innerClient,
         com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public DataConnectorRequirementsState post(
-        String resourceGroupName,
-        String workspaceName,
-        DataConnectorsCheckRequirements dataConnectorsCheckRequirements) {
-        DataConnectorRequirementsStateInner inner =
-            this.serviceClient().post(resourceGroupName, workspaceName, dataConnectorsCheckRequirements);
+    public Response<DataConnectorRequirementsState> postWithResponse(String resourceGroupName, String workspaceName,
+        DataConnectorsCheckRequirements dataConnectorsCheckRequirements, Context context) {
+        Response<DataConnectorRequirementsStateInner> inner = this.serviceClient()
+            .postWithResponse(resourceGroupName, workspaceName, dataConnectorsCheckRequirements, context);
         if (inner != null) {
-            return new DataConnectorRequirementsStateImpl(inner, this.manager());
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new DataConnectorRequirementsStateImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public Response<DataConnectorRequirementsState> postWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        DataConnectorsCheckRequirements dataConnectorsCheckRequirements,
-        Context context) {
-        Response<DataConnectorRequirementsStateInner> inner =
-            this
-                .serviceClient()
-                .postWithResponse(resourceGroupName, workspaceName, dataConnectorsCheckRequirements, context);
+    public DataConnectorRequirementsState post(String resourceGroupName, String workspaceName,
+        DataConnectorsCheckRequirements dataConnectorsCheckRequirements) {
+        DataConnectorRequirementsStateInner inner
+            = this.serviceClient().post(resourceGroupName, workspaceName, dataConnectorsCheckRequirements);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new DataConnectorRequirementsStateImpl(inner.getValue(), this.manager()));
+            return new DataConnectorRequirementsStateImpl(inner, this.manager());
         } else {
             return null;
         }

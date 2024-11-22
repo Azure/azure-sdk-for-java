@@ -39,8 +39,8 @@ public final class SharedAccessSignatureAuthorizationRuleListResult {
      * @param value the value value to set.
      * @return the SharedAccessSignatureAuthorizationRuleListResult object itself.
      */
-    public SharedAccessSignatureAuthorizationRuleListResult withValue(
-        List<SharedAccessSignatureAuthorizationRuleInner> value) {
+    public SharedAccessSignatureAuthorizationRuleListResult
+        withValue(List<SharedAccessSignatureAuthorizationRuleInner> value) {
         this.value = value;
         return this;
     }

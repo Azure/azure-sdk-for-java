@@ -4,6 +4,7 @@
 package com.azure.messaging.servicebus;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.servicebus.implementation.MessageUtils;
 import reactor.core.Disposable;
 import reactor.core.Disposables;
 import reactor.core.publisher.Mono;
@@ -90,11 +91,10 @@ final class ServiceBusProcessor {
             }
             isRunning = true;
             if (kind == Kind.NON_SESSION) {
-                rollingMessagePump = new RollingMessagePump(nonSessionBuilder,
-                    processMessage, processError, concurrency, enableAutoDisposition);
+                rollingMessagePump = new RollingMessagePump(nonSessionBuilder, processMessage, processError,
+                    concurrency, enableAutoDisposition);
             } else {
-                rollingMessagePump = new RollingMessagePump(sessionBuilder,
-                    processMessage, processError, concurrency);
+                rollingMessagePump = new RollingMessagePump(sessionBuilder, processMessage, processError, concurrency);
             }
             p = rollingMessagePump;
         }
@@ -138,7 +138,8 @@ final class ServiceBusProcessor {
      * terminates.
      */
     static final class RollingMessagePump extends AtomicBoolean {
-        private static final RuntimeException DISPOSED_ERROR = new RuntimeException("The Processor closure disposed the RollingMessagePump.");
+        private static final RuntimeException DISPOSED_ERROR
+            = new RuntimeException("The Processor closure disposed the RollingMessagePump.");
         private static final Duration NEXT_PUMP_BACKOFF = Duration.ofSeconds(5);
         private final ClientLogger logger;
         private final Kind kind;
@@ -185,7 +186,7 @@ final class ServiceBusProcessor {
          *      in parallel for each session.
          * @param processMessage The consumer to invoke for each message.
          * @param processError The consumer to report the errors.
-
+        
          */
         RollingMessagePump(ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder builder,
             Consumer<ServiceBusReceivedMessageContext> processMessage, Consumer<ServiceBusErrorContext> processError,
@@ -210,7 +211,7 @@ final class ServiceBusProcessor {
             if (getAndSet(true)) {
                 throw logger.atInfo().log(new IllegalStateException("The streaming cannot begin more than once."));
             }
-            final Disposable d = beginIntern().subscribe();
+            final Disposable d = MessageUtils.subscribe(beginIntern(), "begin", logger.atWarning());
             if (!disposable.add(d)) {
                 throw logger.atInfo().log(new IllegalStateException("Cannot begin streaming after the disposal."));
             }
@@ -221,42 +222,32 @@ final class ServiceBusProcessor {
         Mono<Void> beginIntern() {
             final Mono<Void> pumping;
             if (kind == Kind.NON_SESSION) {
-                pumping = Mono.using(
-                    () -> {
-                        // TODO: anu, there seems an opportunity to simplify, if builder directly returns MessagePump,
-                        //  similar to SessionsMessagePump.
-                        return nonSessionBuilder.buildAsyncClientForProcessor();
-                    },
-                    client -> {
-                        clientIdentifier.set(client.getIdentifier());
-                        final MessagePump pump = new MessagePump(client,
-                            processMessage, processError, concurrency, enableAutoDisposition);
-                        return pump.begin();
-                    },
-                    client -> {
-                        client.close();
-                    },
-                    true);
+                pumping = Mono.using(() -> {
+                    return nonSessionBuilder.buildAsyncClientForProcessor();
+                }, client -> {
+                    clientIdentifier.set(client.getIdentifier());
+                    final MessagePump pump
+                        = new MessagePump(client, processMessage, processError, concurrency, enableAutoDisposition);
+                    return pump.begin();
+                }, client -> {
+                    client.close();
+                }, true);
             } else {
-                pumping = Mono.using(
-                    () -> {
-                        final SessionsMessagePump pump = sessionBuilder.buildPumpForProcessor(logger,
-                            processMessage, processError, concurrency);
-                        return pump;
-                    },
-                    pump -> {
-                        clientIdentifier.set(pump.getIdentifier());
-                        return pump.begin();
-                    },
-                    pump -> {
-                        // NOP: The pump (SessionsMessagePump) does self clean up and there isn't anything that is owned
-                        // by RollingSessionsMessagePump to clean up.
-                    },
-                    true);
+                pumping = Mono.using(() -> {
+                    final SessionsMessagePump pump
+                        = sessionBuilder.buildPumpForProcessor(logger, processMessage, processError, concurrency);
+                    return pump;
+                }, pump -> {
+                    clientIdentifier.set(pump.getIdentifier());
+                    return pump.begin();
+                }, pump -> {
+                    // NOP: The pump (SessionsMessagePump) does self clean up and there isn't anything that is owned
+                    // by RollingSessionsMessagePump to clean up.
+                }, true);
             }
-            final Mono<Void> rollingPump = pumping
-                .onErrorResume(MessagePumpTerminatedException.class, t -> notifyError(t).then(Mono.error(t)))
-                .retryWhen(retrySpecForNextPump());
+            final Mono<Void> rollingPump
+                = pumping.onErrorResume(MessagePumpTerminatedException.class, t -> notifyError(t).then(Mono.error(t)))
+                    .retryWhen(retrySpecForNextPump());
             return rollingPump;
         }
 
@@ -299,38 +290,41 @@ final class ServiceBusProcessor {
          * @return the retry spec.
          */
         private Retry retrySpecForNextPump() {
-            return Retry.from(retrySignals -> retrySignals
-                .concatMap(retrySignal -> {
-                    final Retry.RetrySignal signal = retrySignal.copy();
-                    final Throwable error = signal.failure();
-                    if (error == null) {
-                        return monoError(logger, new IllegalStateException("RetrySignal::failure() not expected to be null."));
-                    }
-                    if (!(error instanceof MessagePumpTerminatedException)) {
-                        return monoError(logger, new IllegalStateException("RetrySignal::failure() expected to be MessagePumpTerminatedException.", error));
-                    }
+            return Retry.from(retrySignals -> retrySignals.concatMap(retrySignal -> {
+                final Retry.RetrySignal signal = retrySignal.copy();
+                final Throwable error = signal.failure();
+                if (error == null) {
+                    return monoError(logger,
+                        new IllegalStateException("RetrySignal::failure() not expected to be null."));
+                }
+                if (!(error instanceof MessagePumpTerminatedException)) {
+                    return monoError(logger, new IllegalStateException(
+                        "RetrySignal::failure() expected to be MessagePumpTerminatedException.", error));
+                }
 
-                    final MessagePumpTerminatedException e = (MessagePumpTerminatedException) error;
+                final MessagePumpTerminatedException e = (MessagePumpTerminatedException) error;
 
+                if (disposable.isDisposed()) {
+                    e.log(logger,
+                        "The Processor closure disposed the streaming, canceling retry for the next MessagePump.",
+                        true);
+                    return Mono.error(DISPOSED_ERROR);
+                }
+
+                e.log(logger, "The current MessagePump is terminated, scheduling retry for the next pump.", true);
+
+                return Mono.delay(NEXT_PUMP_BACKOFF, Schedulers.boundedElastic()).handle((v, sink) -> {
                     if (disposable.isDisposed()) {
-                        e.log(logger, "The Processor closure disposed the streaming, canceling retry for the next MessagePump.", true);
-                        return Mono.error(DISPOSED_ERROR);
+                        e.log(logger,
+                            "During backoff, The Processor closure disposed the streaming, canceling retry for the next MessagePump.",
+                            false);
+                        sink.error(DISPOSED_ERROR);
+                    } else {
+                        e.log(logger, "Retrying for the next MessagePump.", false);
+                        sink.next(v);
                     }
-
-                    e.log(logger, "The current MessagePump is terminated, scheduling retry for the next pump.", true);
-
-                    return Mono.delay(NEXT_PUMP_BACKOFF, Schedulers.boundedElastic())
-                        .handle((v, sink) -> {
-                            if (disposable.isDisposed()) {
-                                e.log(logger,
-                                    "During backoff, The Processor closure disposed the streaming, canceling retry for the next MessagePump.", false);
-                                sink.error(DISPOSED_ERROR);
-                            } else {
-                                e.log(logger, "Retrying for the next MessagePump.", false);
-                                sink.next(v);
-                            }
-                        });
-                }));
+                });
+            }));
         }
     }
 
@@ -338,7 +332,6 @@ final class ServiceBusProcessor {
      * The {@link ServiceBusProcessor} kind.
      */
     enum Kind {
-        NON_SESSION,
-        SESSION
+        NON_SESSION, SESSION
     }
 }

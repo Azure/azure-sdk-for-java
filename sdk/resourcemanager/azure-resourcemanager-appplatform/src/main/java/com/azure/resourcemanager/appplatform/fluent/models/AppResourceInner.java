@@ -7,9 +7,12 @@ package com.azure.resourcemanager.appplatform.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appplatform.models.AppResourceProperties;
 import com.azure.resourcemanager.appplatform.models.ManagedIdentityProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * App resource payload.
@@ -19,26 +22,37 @@ public final class AppResourceInner extends ProxyResource {
     /*
      * Properties of the App resource
      */
-    @JsonProperty(value = "properties")
     private AppResourceProperties properties;
 
     /*
      * The Managed Identity type of the app resource
      */
-    @JsonProperty(value = "identity")
     private ManagedIdentityProperties identity;
 
     /*
      * The GEO location of the application, always the same with its parent resource
      */
-    @JsonProperty(value = "location")
     private String location;
 
     /*
      * Metadata pertaining to creation and last modification of the resource.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
 
     /**
      * Creates an instance of AppResourceInner class.
@@ -116,6 +130,36 @@ public final class AppResourceInner extends ProxyResource {
     }
 
     /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -127,5 +171,56 @@ public final class AppResourceInner extends ProxyResource {
         if (identity() != null) {
             identity().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.properties);
+        jsonWriter.writeJsonField("identity", this.identity);
+        jsonWriter.writeStringField("location", this.location);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AppResourceInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AppResourceInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AppResourceInner.
+     */
+    public static AppResourceInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AppResourceInner deserializedAppResourceInner = new AppResourceInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedAppResourceInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedAppResourceInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedAppResourceInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedAppResourceInner.properties = AppResourceProperties.fromJson(reader);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedAppResourceInner.identity = ManagedIdentityProperties.fromJson(reader);
+                } else if ("location".equals(fieldName)) {
+                    deserializedAppResourceInner.location = reader.getString();
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedAppResourceInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAppResourceInner;
+        });
     }
 }

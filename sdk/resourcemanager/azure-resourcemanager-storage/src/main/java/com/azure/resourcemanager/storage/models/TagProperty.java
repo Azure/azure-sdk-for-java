@@ -5,42 +5,42 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
 /**
  * A tag of the LegalHold of a blob container.
  */
 @Immutable
-public final class TagProperty {
+public final class TagProperty implements JsonSerializable<TagProperty> {
     /*
      * The tag value.
      */
-    @JsonProperty(value = "tag", access = JsonProperty.Access.WRITE_ONLY)
     private String tag;
 
     /*
      * Returns the date and time the tag was added.
      */
-    @JsonProperty(value = "timestamp", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime timestamp;
 
     /*
      * Returns the Object ID of the user who added the tag.
      */
-    @JsonProperty(value = "objectIdentifier", access = JsonProperty.Access.WRITE_ONLY)
     private String objectIdentifier;
 
     /*
      * Returns the Tenant ID that issued the token for the user who added the tag.
      */
-    @JsonProperty(value = "tenantId", access = JsonProperty.Access.WRITE_ONLY)
     private String tenantId;
 
     /*
      * Returns the User Principal Name of the user who added the tag.
      */
-    @JsonProperty(value = "upn", access = JsonProperty.Access.WRITE_ONLY)
     private String upn;
 
     /**
@@ -100,5 +100,49 @@ public final class TagProperty {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TagProperty from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TagProperty if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TagProperty.
+     */
+    public static TagProperty fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TagProperty deserializedTagProperty = new TagProperty();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tag".equals(fieldName)) {
+                    deserializedTagProperty.tag = reader.getString();
+                } else if ("timestamp".equals(fieldName)) {
+                    deserializedTagProperty.timestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("objectIdentifier".equals(fieldName)) {
+                    deserializedTagProperty.objectIdentifier = reader.getString();
+                } else if ("tenantId".equals(fieldName)) {
+                    deserializedTagProperty.tenantId = reader.getString();
+                } else if ("upn".equals(fieldName)) {
+                    deserializedTagProperty.upn = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTagProperty;
+        });
     }
 }

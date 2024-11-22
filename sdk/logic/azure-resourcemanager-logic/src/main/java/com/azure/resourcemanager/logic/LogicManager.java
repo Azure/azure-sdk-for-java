@@ -86,7 +86,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-/** Entry point to LogicManager. REST API for Azure Logic Apps. */
+/**
+ * Entry point to LogicManager.
+ * REST API for Azure Logic Apps.
+ */
 public final class LogicManager {
     private Workflows workflows;
 
@@ -147,18 +150,16 @@ public final class LogicManager {
     private LogicManager(HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
-        this.clientObject =
-            new LogicManagementClientBuilder()
-                .pipeline(httpPipeline)
-                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
-                .subscriptionId(profile.getSubscriptionId())
-                .defaultPollInterval(defaultPollInterval)
-                .buildClient();
+        this.clientObject = new LogicManagementClientBuilder().pipeline(httpPipeline)
+            .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+            .subscriptionId(profile.getSubscriptionId())
+            .defaultPollInterval(defaultPollInterval)
+            .buildClient();
     }
 
     /**
      * Creates an instance of Logic service API entry point.
-     *
+     * 
      * @param credential the credential to use.
      * @param profile the Azure profile for client.
      * @return the Logic service API instance.
@@ -171,7 +172,7 @@ public final class LogicManager {
 
     /**
      * Creates an instance of Logic service API entry point.
-     *
+     * 
      * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
      * @param profile the Azure profile for client.
      * @return the Logic service API instance.
@@ -184,14 +185,16 @@ public final class LogicManager {
 
     /**
      * Gets a Configurable instance that can be used to create LogicManager with optional configuration.
-     *
+     * 
      * @return the Configurable instance allowing configurations.
      */
     public static Configurable configure() {
         return new LogicManager.Configurable();
     }
 
-    /** The Configurable allowing configurations to be set. */
+    /**
+     * The Configurable allowing configurations to be set.
+     */
     public static final class Configurable {
         private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
 
@@ -263,8 +266,8 @@ public final class LogicManager {
 
         /**
          * Sets the retry options for the HTTP pipeline retry policy.
-         *
-         * <p>This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
+         * <p>
+         * This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
          *
          * @param retryOptions the retry options for the HTTP pipeline retry policy.
          * @return the configurable object itself.
@@ -281,8 +284,8 @@ public final class LogicManager {
          * @return the configurable object itself.
          */
         public Configurable withDefaultPollInterval(Duration defaultPollInterval) {
-            this.defaultPollInterval =
-                Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
+            this.defaultPollInterval
+                = Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
             if (this.defaultPollInterval.isNegative()) {
                 throw LOGGER
                     .logExceptionAsError(new IllegalArgumentException("'defaultPollInterval' cannot be negative"));
@@ -302,15 +305,13 @@ public final class LogicManager {
             Objects.requireNonNull(profile, "'profile' cannot be null.");
 
             StringBuilder userAgentBuilder = new StringBuilder();
-            userAgentBuilder
-                .append("azsdk-java")
+            userAgentBuilder.append("azsdk-java")
                 .append("-")
                 .append("com.azure.resourcemanager.logic")
                 .append("/")
-                .append("1.0.0-beta.2");
+                .append("1.0.0-beta.3");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
-                userAgentBuilder
-                    .append(" (")
+                userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
                     .append("; ")
                     .append(Configuration.getGlobalConfiguration().get("os.name"))
@@ -335,38 +336,28 @@ public final class LogicManager {
             policies.add(new UserAgentPolicy(userAgentBuilder.toString()));
             policies.add(new AddHeadersFromContextPolicy());
             policies.add(new RequestIdPolicy());
-            policies
-                .addAll(
-                    this
-                        .policies
-                        .stream()
-                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
-                        .collect(Collectors.toList()));
+            policies.addAll(this.policies.stream()
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+                .collect(Collectors.toList()));
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
             policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
-            policies
-                .addAll(
-                    this
-                        .policies
-                        .stream()
-                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
-                        .collect(Collectors.toList()));
+            policies.addAll(this.policies.stream()
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+                .collect(Collectors.toList()));
             HttpPolicyProviders.addAfterRetryPolicies(policies);
             policies.add(new HttpLoggingPolicy(httpLogOptions));
-            HttpPipeline httpPipeline =
-                new HttpPipelineBuilder()
-                    .httpClient(httpClient)
-                    .policies(policies.toArray(new HttpPipelinePolicy[0]))
-                    .build();
+            HttpPipeline httpPipeline = new HttpPipelineBuilder().httpClient(httpClient)
+                .policies(policies.toArray(new HttpPipelinePolicy[0]))
+                .build();
             return new LogicManager(httpPipeline, profile, defaultPollInterval);
         }
     }
 
     /**
      * Gets the resource collection API of Workflows. It manages Workflow.
-     *
+     * 
      * @return Resource collection API of Workflows.
      */
     public Workflows workflows() {
@@ -378,7 +369,7 @@ public final class LogicManager {
 
     /**
      * Gets the resource collection API of WorkflowVersions.
-     *
+     * 
      * @return Resource collection API of WorkflowVersions.
      */
     public WorkflowVersions workflowVersions() {
@@ -390,7 +381,7 @@ public final class LogicManager {
 
     /**
      * Gets the resource collection API of WorkflowTriggers.
-     *
+     * 
      * @return Resource collection API of WorkflowTriggers.
      */
     public WorkflowTriggers workflowTriggers() {
@@ -402,33 +393,33 @@ public final class LogicManager {
 
     /**
      * Gets the resource collection API of WorkflowVersionTriggers.
-     *
+     * 
      * @return Resource collection API of WorkflowVersionTriggers.
      */
     public WorkflowVersionTriggers workflowVersionTriggers() {
         if (this.workflowVersionTriggers == null) {
-            this.workflowVersionTriggers =
-                new WorkflowVersionTriggersImpl(clientObject.getWorkflowVersionTriggers(), this);
+            this.workflowVersionTriggers
+                = new WorkflowVersionTriggersImpl(clientObject.getWorkflowVersionTriggers(), this);
         }
         return workflowVersionTriggers;
     }
 
     /**
      * Gets the resource collection API of WorkflowTriggerHistories.
-     *
+     * 
      * @return Resource collection API of WorkflowTriggerHistories.
      */
     public WorkflowTriggerHistories workflowTriggerHistories() {
         if (this.workflowTriggerHistories == null) {
-            this.workflowTriggerHistories =
-                new WorkflowTriggerHistoriesImpl(clientObject.getWorkflowTriggerHistories(), this);
+            this.workflowTriggerHistories
+                = new WorkflowTriggerHistoriesImpl(clientObject.getWorkflowTriggerHistories(), this);
         }
         return workflowTriggerHistories;
     }
 
     /**
      * Gets the resource collection API of WorkflowRuns.
-     *
+     * 
      * @return Resource collection API of WorkflowRuns.
      */
     public WorkflowRuns workflowRuns() {
@@ -440,7 +431,7 @@ public final class LogicManager {
 
     /**
      * Gets the resource collection API of WorkflowRunActions.
-     *
+     * 
      * @return Resource collection API of WorkflowRunActions.
      */
     public WorkflowRunActions workflowRunActions() {
@@ -452,60 +443,59 @@ public final class LogicManager {
 
     /**
      * Gets the resource collection API of WorkflowRunActionRepetitions.
-     *
+     * 
      * @return Resource collection API of WorkflowRunActionRepetitions.
      */
     public WorkflowRunActionRepetitions workflowRunActionRepetitions() {
         if (this.workflowRunActionRepetitions == null) {
-            this.workflowRunActionRepetitions =
-                new WorkflowRunActionRepetitionsImpl(clientObject.getWorkflowRunActionRepetitions(), this);
+            this.workflowRunActionRepetitions
+                = new WorkflowRunActionRepetitionsImpl(clientObject.getWorkflowRunActionRepetitions(), this);
         }
         return workflowRunActionRepetitions;
     }
 
     /**
      * Gets the resource collection API of WorkflowRunActionRepetitionsRequestHistories.
-     *
+     * 
      * @return Resource collection API of WorkflowRunActionRepetitionsRequestHistories.
      */
     public WorkflowRunActionRepetitionsRequestHistories workflowRunActionRepetitionsRequestHistories() {
         if (this.workflowRunActionRepetitionsRequestHistories == null) {
-            this.workflowRunActionRepetitionsRequestHistories =
-                new WorkflowRunActionRepetitionsRequestHistoriesImpl(
-                    clientObject.getWorkflowRunActionRepetitionsRequestHistories(), this);
+            this.workflowRunActionRepetitionsRequestHistories = new WorkflowRunActionRepetitionsRequestHistoriesImpl(
+                clientObject.getWorkflowRunActionRepetitionsRequestHistories(), this);
         }
         return workflowRunActionRepetitionsRequestHistories;
     }
 
     /**
      * Gets the resource collection API of WorkflowRunActionRequestHistories.
-     *
+     * 
      * @return Resource collection API of WorkflowRunActionRequestHistories.
      */
     public WorkflowRunActionRequestHistories workflowRunActionRequestHistories() {
         if (this.workflowRunActionRequestHistories == null) {
-            this.workflowRunActionRequestHistories =
-                new WorkflowRunActionRequestHistoriesImpl(clientObject.getWorkflowRunActionRequestHistories(), this);
+            this.workflowRunActionRequestHistories
+                = new WorkflowRunActionRequestHistoriesImpl(clientObject.getWorkflowRunActionRequestHistories(), this);
         }
         return workflowRunActionRequestHistories;
     }
 
     /**
      * Gets the resource collection API of WorkflowRunActionScopeRepetitions.
-     *
+     * 
      * @return Resource collection API of WorkflowRunActionScopeRepetitions.
      */
     public WorkflowRunActionScopeRepetitions workflowRunActionScopeRepetitions() {
         if (this.workflowRunActionScopeRepetitions == null) {
-            this.workflowRunActionScopeRepetitions =
-                new WorkflowRunActionScopeRepetitionsImpl(clientObject.getWorkflowRunActionScopeRepetitions(), this);
+            this.workflowRunActionScopeRepetitions
+                = new WorkflowRunActionScopeRepetitionsImpl(clientObject.getWorkflowRunActionScopeRepetitions(), this);
         }
         return workflowRunActionScopeRepetitions;
     }
 
     /**
      * Gets the resource collection API of WorkflowRunOperations.
-     *
+     * 
      * @return Resource collection API of WorkflowRunOperations.
      */
     public WorkflowRunOperations workflowRunOperations() {
@@ -517,7 +507,7 @@ public final class LogicManager {
 
     /**
      * Gets the resource collection API of IntegrationAccounts. It manages IntegrationAccount.
-     *
+     * 
      * @return Resource collection API of IntegrationAccounts.
      */
     public IntegrationAccounts integrationAccounts() {
@@ -529,145 +519,143 @@ public final class LogicManager {
 
     /**
      * Gets the resource collection API of IntegrationAccountAssemblies. It manages AssemblyDefinition.
-     *
+     * 
      * @return Resource collection API of IntegrationAccountAssemblies.
      */
     public IntegrationAccountAssemblies integrationAccountAssemblies() {
         if (this.integrationAccountAssemblies == null) {
-            this.integrationAccountAssemblies =
-                new IntegrationAccountAssembliesImpl(clientObject.getIntegrationAccountAssemblies(), this);
+            this.integrationAccountAssemblies
+                = new IntegrationAccountAssembliesImpl(clientObject.getIntegrationAccountAssemblies(), this);
         }
         return integrationAccountAssemblies;
     }
 
     /**
      * Gets the resource collection API of IntegrationAccountBatchConfigurations. It manages BatchConfiguration.
-     *
+     * 
      * @return Resource collection API of IntegrationAccountBatchConfigurations.
      */
     public IntegrationAccountBatchConfigurations integrationAccountBatchConfigurations() {
         if (this.integrationAccountBatchConfigurations == null) {
-            this.integrationAccountBatchConfigurations =
-                new IntegrationAccountBatchConfigurationsImpl(
-                    clientObject.getIntegrationAccountBatchConfigurations(), this);
+            this.integrationAccountBatchConfigurations = new IntegrationAccountBatchConfigurationsImpl(
+                clientObject.getIntegrationAccountBatchConfigurations(), this);
         }
         return integrationAccountBatchConfigurations;
     }
 
     /**
      * Gets the resource collection API of IntegrationAccountSchemas. It manages IntegrationAccountSchema.
-     *
+     * 
      * @return Resource collection API of IntegrationAccountSchemas.
      */
     public IntegrationAccountSchemas integrationAccountSchemas() {
         if (this.integrationAccountSchemas == null) {
-            this.integrationAccountSchemas =
-                new IntegrationAccountSchemasImpl(clientObject.getIntegrationAccountSchemas(), this);
+            this.integrationAccountSchemas
+                = new IntegrationAccountSchemasImpl(clientObject.getIntegrationAccountSchemas(), this);
         }
         return integrationAccountSchemas;
     }
 
     /**
      * Gets the resource collection API of IntegrationAccountMaps. It manages IntegrationAccountMap.
-     *
+     * 
      * @return Resource collection API of IntegrationAccountMaps.
      */
     public IntegrationAccountMaps integrationAccountMaps() {
         if (this.integrationAccountMaps == null) {
-            this.integrationAccountMaps =
-                new IntegrationAccountMapsImpl(clientObject.getIntegrationAccountMaps(), this);
+            this.integrationAccountMaps
+                = new IntegrationAccountMapsImpl(clientObject.getIntegrationAccountMaps(), this);
         }
         return integrationAccountMaps;
     }
 
     /**
      * Gets the resource collection API of IntegrationAccountPartners. It manages IntegrationAccountPartner.
-     *
+     * 
      * @return Resource collection API of IntegrationAccountPartners.
      */
     public IntegrationAccountPartners integrationAccountPartners() {
         if (this.integrationAccountPartners == null) {
-            this.integrationAccountPartners =
-                new IntegrationAccountPartnersImpl(clientObject.getIntegrationAccountPartners(), this);
+            this.integrationAccountPartners
+                = new IntegrationAccountPartnersImpl(clientObject.getIntegrationAccountPartners(), this);
         }
         return integrationAccountPartners;
     }
 
     /**
      * Gets the resource collection API of IntegrationAccountAgreements. It manages IntegrationAccountAgreement.
-     *
+     * 
      * @return Resource collection API of IntegrationAccountAgreements.
      */
     public IntegrationAccountAgreements integrationAccountAgreements() {
         if (this.integrationAccountAgreements == null) {
-            this.integrationAccountAgreements =
-                new IntegrationAccountAgreementsImpl(clientObject.getIntegrationAccountAgreements(), this);
+            this.integrationAccountAgreements
+                = new IntegrationAccountAgreementsImpl(clientObject.getIntegrationAccountAgreements(), this);
         }
         return integrationAccountAgreements;
     }
 
     /**
      * Gets the resource collection API of IntegrationAccountCertificates. It manages IntegrationAccountCertificate.
-     *
+     * 
      * @return Resource collection API of IntegrationAccountCertificates.
      */
     public IntegrationAccountCertificates integrationAccountCertificates() {
         if (this.integrationAccountCertificates == null) {
-            this.integrationAccountCertificates =
-                new IntegrationAccountCertificatesImpl(clientObject.getIntegrationAccountCertificates(), this);
+            this.integrationAccountCertificates
+                = new IntegrationAccountCertificatesImpl(clientObject.getIntegrationAccountCertificates(), this);
         }
         return integrationAccountCertificates;
     }
 
     /**
      * Gets the resource collection API of IntegrationAccountSessions. It manages IntegrationAccountSession.
-     *
+     * 
      * @return Resource collection API of IntegrationAccountSessions.
      */
     public IntegrationAccountSessions integrationAccountSessions() {
         if (this.integrationAccountSessions == null) {
-            this.integrationAccountSessions =
-                new IntegrationAccountSessionsImpl(clientObject.getIntegrationAccountSessions(), this);
+            this.integrationAccountSessions
+                = new IntegrationAccountSessionsImpl(clientObject.getIntegrationAccountSessions(), this);
         }
         return integrationAccountSessions;
     }
 
     /**
      * Gets the resource collection API of IntegrationServiceEnvironments. It manages IntegrationServiceEnvironment.
-     *
+     * 
      * @return Resource collection API of IntegrationServiceEnvironments.
      */
     public IntegrationServiceEnvironments integrationServiceEnvironments() {
         if (this.integrationServiceEnvironments == null) {
-            this.integrationServiceEnvironments =
-                new IntegrationServiceEnvironmentsImpl(clientObject.getIntegrationServiceEnvironments(), this);
+            this.integrationServiceEnvironments
+                = new IntegrationServiceEnvironmentsImpl(clientObject.getIntegrationServiceEnvironments(), this);
         }
         return integrationServiceEnvironments;
     }
 
     /**
      * Gets the resource collection API of IntegrationServiceEnvironmentSkus.
-     *
+     * 
      * @return Resource collection API of IntegrationServiceEnvironmentSkus.
      */
     public IntegrationServiceEnvironmentSkus integrationServiceEnvironmentSkus() {
         if (this.integrationServiceEnvironmentSkus == null) {
-            this.integrationServiceEnvironmentSkus =
-                new IntegrationServiceEnvironmentSkusImpl(clientObject.getIntegrationServiceEnvironmentSkus(), this);
+            this.integrationServiceEnvironmentSkus
+                = new IntegrationServiceEnvironmentSkusImpl(clientObject.getIntegrationServiceEnvironmentSkus(), this);
         }
         return integrationServiceEnvironmentSkus;
     }
 
     /**
      * Gets the resource collection API of IntegrationServiceEnvironmentNetworkHealths.
-     *
+     * 
      * @return Resource collection API of IntegrationServiceEnvironmentNetworkHealths.
      */
     public IntegrationServiceEnvironmentNetworkHealths integrationServiceEnvironmentNetworkHealths() {
         if (this.integrationServiceEnvironmentNetworkHealths == null) {
-            this.integrationServiceEnvironmentNetworkHealths =
-                new IntegrationServiceEnvironmentNetworkHealthsImpl(
-                    clientObject.getIntegrationServiceEnvironmentNetworkHealths(), this);
+            this.integrationServiceEnvironmentNetworkHealths = new IntegrationServiceEnvironmentNetworkHealthsImpl(
+                clientObject.getIntegrationServiceEnvironmentNetworkHealths(), this);
         }
         return integrationServiceEnvironmentNetworkHealths;
     }
@@ -675,27 +663,26 @@ public final class LogicManager {
     /**
      * Gets the resource collection API of IntegrationServiceEnvironmentManagedApis. It manages
      * IntegrationServiceEnvironmentManagedApi.
-     *
+     * 
      * @return Resource collection API of IntegrationServiceEnvironmentManagedApis.
      */
     public IntegrationServiceEnvironmentManagedApis integrationServiceEnvironmentManagedApis() {
         if (this.integrationServiceEnvironmentManagedApis == null) {
-            this.integrationServiceEnvironmentManagedApis =
-                new IntegrationServiceEnvironmentManagedApisImpl(
-                    clientObject.getIntegrationServiceEnvironmentManagedApis(), this);
+            this.integrationServiceEnvironmentManagedApis = new IntegrationServiceEnvironmentManagedApisImpl(
+                clientObject.getIntegrationServiceEnvironmentManagedApis(), this);
         }
         return integrationServiceEnvironmentManagedApis;
     }
 
     /**
      * Gets the resource collection API of IntegrationServiceEnvironmentManagedApiOperations.
-     *
+     * 
      * @return Resource collection API of IntegrationServiceEnvironmentManagedApiOperations.
      */
     public IntegrationServiceEnvironmentManagedApiOperations integrationServiceEnvironmentManagedApiOperations() {
         if (this.integrationServiceEnvironmentManagedApiOperations == null) {
-            this.integrationServiceEnvironmentManagedApiOperations =
-                new IntegrationServiceEnvironmentManagedApiOperationsImpl(
+            this.integrationServiceEnvironmentManagedApiOperations
+                = new IntegrationServiceEnvironmentManagedApiOperationsImpl(
                     clientObject.getIntegrationServiceEnvironmentManagedApiOperations(), this);
         }
         return integrationServiceEnvironmentManagedApiOperations;
@@ -703,7 +690,7 @@ public final class LogicManager {
 
     /**
      * Gets the resource collection API of Operations.
-     *
+     * 
      * @return Resource collection API of Operations.
      */
     public Operations operations() {
@@ -714,8 +701,10 @@ public final class LogicManager {
     }
 
     /**
-     * @return Wrapped service client LogicManagementClient providing direct access to the underlying auto-generated API
-     *     implementation, based on Azure REST API.
+     * Gets wrapped service client LogicManagementClient providing direct access to the underlying auto-generated API
+     * implementation, based on Azure REST API.
+     * 
+     * @return Wrapped service client LogicManagementClient.
      */
     public LogicManagementClient serviceClient() {
         return this.clientObject;

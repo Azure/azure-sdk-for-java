@@ -6,53 +6,50 @@ package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The AcceleratorGitRepository model.
  */
 @Fluent
-public final class AcceleratorGitRepository {
+public final class AcceleratorGitRepository implements JsonSerializable<AcceleratorGitRepository> {
     /*
      * Git repository URL for the accelerator.
      */
-    @JsonProperty(value = "url", required = true)
     private String url;
 
     /*
      * Interval for checking for updates to Git or image repository.
      */
-    @JsonProperty(value = "intervalInSeconds")
     private Integer intervalInSeconds;
 
     /*
      * Git repository branch to be used.
      */
-    @JsonProperty(value = "branch")
     private String branch;
 
     /*
      * Git repository commit to be used.
      */
-    @JsonProperty(value = "commit")
     private String commit;
 
     /*
      * Git repository tag to be used.
      */
-    @JsonProperty(value = "gitTag")
     private String gitTag;
 
     /*
      * Properties of the auth setting payload.
      */
-    @JsonProperty(value = "authSetting", required = true)
     private AcceleratorAuthSetting authSetting;
 
     /*
      * Folder path inside the git repository to consider as the root of the accelerator or fragment.
      */
-    @JsonProperty(value = "subPath")
     private String subPath;
 
     /**
@@ -210,16 +207,72 @@ public final class AcceleratorGitRepository {
      */
     public void validate() {
         if (url() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property url in model AcceleratorGitRepository"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property url in model AcceleratorGitRepository"));
         }
         if (authSetting() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property authSetting in model AcceleratorGitRepository"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property authSetting in model AcceleratorGitRepository"));
         } else {
             authSetting().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AcceleratorGitRepository.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("url", this.url);
+        jsonWriter.writeJsonField("authSetting", this.authSetting);
+        jsonWriter.writeNumberField("intervalInSeconds", this.intervalInSeconds);
+        jsonWriter.writeStringField("branch", this.branch);
+        jsonWriter.writeStringField("commit", this.commit);
+        jsonWriter.writeStringField("gitTag", this.gitTag);
+        jsonWriter.writeStringField("subPath", this.subPath);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AcceleratorGitRepository from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AcceleratorGitRepository if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AcceleratorGitRepository.
+     */
+    public static AcceleratorGitRepository fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AcceleratorGitRepository deserializedAcceleratorGitRepository = new AcceleratorGitRepository();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("url".equals(fieldName)) {
+                    deserializedAcceleratorGitRepository.url = reader.getString();
+                } else if ("authSetting".equals(fieldName)) {
+                    deserializedAcceleratorGitRepository.authSetting = AcceleratorAuthSetting.fromJson(reader);
+                } else if ("intervalInSeconds".equals(fieldName)) {
+                    deserializedAcceleratorGitRepository.intervalInSeconds = reader.getNullable(JsonReader::getInt);
+                } else if ("branch".equals(fieldName)) {
+                    deserializedAcceleratorGitRepository.branch = reader.getString();
+                } else if ("commit".equals(fieldName)) {
+                    deserializedAcceleratorGitRepository.commit = reader.getString();
+                } else if ("gitTag".equals(fieldName)) {
+                    deserializedAcceleratorGitRepository.gitTag = reader.getString();
+                } else if ("subPath".equals(fieldName)) {
+                    deserializedAcceleratorGitRepository.subPath = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAcceleratorGitRepository;
+        });
+    }
 }

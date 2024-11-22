@@ -11,7 +11,6 @@ import com.azure.resourcemanager.network.models.DefaultAdminRule;
 import com.azure.resourcemanager.network.models.SecurityConfigurationRuleAccess;
 import com.azure.resourcemanager.network.models.SecurityConfigurationRuleDirection;
 import com.azure.resourcemanager.network.models.SecurityConfigurationRuleProtocol;
-
 import java.util.Arrays;
 
 /**
@@ -20,12 +19,12 @@ import java.util.Arrays;
 public final class AdminRulesCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/NetworkManagerAdminRulePut.
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/NetworkManagerAdminRulePut.
      * json
      */
     /**
      * Sample code: Create an admin rule.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createAnAdminRule(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -50,12 +49,12 @@ public final class AdminRulesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/
      * NetworkManagerDefaultAdminRulePut.json
      */
     /**
      * Sample code: Create a default admin rule.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createADefaultAdminRule(com.azure.resourcemanager.AzureResourceManager azure) {

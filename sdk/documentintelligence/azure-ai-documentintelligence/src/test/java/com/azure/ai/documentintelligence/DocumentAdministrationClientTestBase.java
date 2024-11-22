@@ -8,6 +8,7 @@ package com.azure.ai.documentintelligence;
 // If you wish to modify these files, please copy them out of the 'generated' package, and modify there.
 // See https://aka.ms/azsdk/dpg/java/tests for guide on adding a test.
 
+import com.azure.ai.documentintelligence.models.ClassifierCopyAuthorization;
 import com.azure.ai.documentintelligence.models.CopyAuthorization;
 import com.azure.ai.documentintelligence.models.DocumentClassifierDetails;
 import com.azure.ai.documentintelligence.models.DocumentModelDetails;
@@ -38,19 +39,18 @@ class DocumentAdministrationClientTestBase extends TestProxyTestBase {
      */
     @Override
     protected void beforeTest() {
-        durationTestMode = interceptorManager.isPlaybackMode()
-            ? TestUtils.ONE_NANO_DURATION : TestUtils.DEFAULT_POLL_INTERVAL;
+        durationTestMode
+            = interceptorManager.isPlaybackMode() ? TestUtils.ONE_NANO_DURATION : TestUtils.DEFAULT_POLL_INTERVAL;
     }
 
     DocumentIntelligenceAdministrationClientBuilder getModelAdminClientBuilder(HttpClient httpClient,
-                                                                               DocumentIntelligenceServiceVersion serviceVersion) {
+        DocumentIntelligenceServiceVersion serviceVersion) {
         String endpoint = getEndpoint();
-        DocumentIntelligenceAdministrationClientBuilder builder = new DocumentIntelligenceAdministrationClientBuilder()
-            .endpoint(endpoint)
-            .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-            .serviceVersion(serviceVersion);
-
+        DocumentIntelligenceAdministrationClientBuilder builder
+            = new DocumentIntelligenceAdministrationClientBuilder().endpoint(endpoint)
+                .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+                .serviceVersion(serviceVersion);
 
         if (interceptorManager.isPlaybackMode()) {
             builder.credential(new MockTokenCredential());
@@ -69,6 +69,7 @@ class DocumentAdministrationClientTestBase extends TestProxyTestBase {
         }
         return builder;
     }
+
     private void setMatchers() {
         interceptorManager.addMatchers(Collections.singletonList(new BodilessMatcher()));
     }
@@ -81,9 +82,17 @@ class DocumentAdministrationClientTestBase extends TestProxyTestBase {
         assertNotNull(actualResult.getTargetResourceId());
     }
 
+    static void validateClassifierCopyAuthorizationResult(ClassifierCopyAuthorization actualResult) {
+        assertNotNull(actualResult.getTargetClassifierId());
+        assertNotNull(actualResult.getExpirationDateTime());
+        assertNotNull(actualResult.getTargetResourceRegion());
+        assertNotNull(actualResult.getTargetResourceId());
+        assertNotNull(actualResult.getTargetResourceId());
+    }
+
     static void validateResourceInfo(ResourceDetails actualResourceDetails) {
         assertNotNull(actualResourceDetails.getCustomDocumentModels().getLimit());
-        assertNotNull(actualResourceDetails.getCustomNeuralDocumentModelBuilds().getQuota());
+        assertNotNull(actualResourceDetails.getCustomDocumentModels().getCount());
     }
 
     void validateDocumentModelData(DocumentModelDetails actualCustomModel) {

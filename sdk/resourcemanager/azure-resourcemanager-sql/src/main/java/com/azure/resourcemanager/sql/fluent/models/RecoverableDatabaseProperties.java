@@ -5,43 +5,48 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** The recoverable database's properties. */
+/**
+ * The recoverable database's properties.
+ */
 @Immutable
-public final class RecoverableDatabaseProperties {
+public final class RecoverableDatabaseProperties implements JsonSerializable<RecoverableDatabaseProperties> {
     /*
      * The edition of the database.
      */
-    @JsonProperty(value = "edition", access = JsonProperty.Access.WRITE_ONLY)
     private String edition;
 
     /*
      * The service level objective name of the database.
      */
-    @JsonProperty(value = "serviceLevelObjective", access = JsonProperty.Access.WRITE_ONLY)
     private String serviceLevelObjective;
 
     /*
      * The elastic pool name of the database
      */
-    @JsonProperty(value = "elasticPoolName", access = JsonProperty.Access.WRITE_ONLY)
     private String elasticPoolName;
 
     /*
      * The last available backup date.
      */
-    @JsonProperty(value = "lastAvailableBackupDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastAvailableBackupDate;
 
-    /** Creates an instance of RecoverableDatabaseProperties class. */
+    /**
+     * Creates an instance of RecoverableDatabaseProperties class.
+     */
     public RecoverableDatabaseProperties() {
     }
 
     /**
      * Get the edition property: The edition of the database.
-     *
+     * 
      * @return the edition value.
      */
     public String edition() {
@@ -50,7 +55,7 @@ public final class RecoverableDatabaseProperties {
 
     /**
      * Get the serviceLevelObjective property: The service level objective name of the database.
-     *
+     * 
      * @return the serviceLevelObjective value.
      */
     public String serviceLevelObjective() {
@@ -59,7 +64,7 @@ public final class RecoverableDatabaseProperties {
 
     /**
      * Get the elasticPoolName property: The elastic pool name of the database.
-     *
+     * 
      * @return the elasticPoolName value.
      */
     public String elasticPoolName() {
@@ -68,7 +73,7 @@ public final class RecoverableDatabaseProperties {
 
     /**
      * Get the lastAvailableBackupDate property: The last available backup date.
-     *
+     * 
      * @return the lastAvailableBackupDate value.
      */
     public OffsetDateTime lastAvailableBackupDate() {
@@ -77,9 +82,52 @@ public final class RecoverableDatabaseProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RecoverableDatabaseProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RecoverableDatabaseProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RecoverableDatabaseProperties.
+     */
+    public static RecoverableDatabaseProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RecoverableDatabaseProperties deserializedRecoverableDatabaseProperties
+                = new RecoverableDatabaseProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("edition".equals(fieldName)) {
+                    deserializedRecoverableDatabaseProperties.edition = reader.getString();
+                } else if ("serviceLevelObjective".equals(fieldName)) {
+                    deserializedRecoverableDatabaseProperties.serviceLevelObjective = reader.getString();
+                } else if ("elasticPoolName".equals(fieldName)) {
+                    deserializedRecoverableDatabaseProperties.elasticPoolName = reader.getString();
+                } else if ("lastAvailableBackupDate".equals(fieldName)) {
+                    deserializedRecoverableDatabaseProperties.lastAvailableBackupDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRecoverableDatabaseProperties;
+        });
     }
 }

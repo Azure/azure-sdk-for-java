@@ -5,19 +5,22 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cosmos.fluent.models.MetricDefinitionInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The response to a list metric definitions request.
  */
 @Immutable
-public final class MetricDefinitionsListResult {
+public final class MetricDefinitionsListResult implements JsonSerializable<MetricDefinitionsListResult> {
     /*
      * The list of metric definitions for the account.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<MetricDefinitionInner> value;
 
     /**
@@ -44,5 +47,42 @@ public final class MetricDefinitionsListResult {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MetricDefinitionsListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MetricDefinitionsListResult if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MetricDefinitionsListResult.
+     */
+    public static MetricDefinitionsListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MetricDefinitionsListResult deserializedMetricDefinitionsListResult = new MetricDefinitionsListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<MetricDefinitionInner> value
+                        = reader.readArray(reader1 -> MetricDefinitionInner.fromJson(reader1));
+                    deserializedMetricDefinitionsListResult.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMetricDefinitionsListResult;
+        });
     }
 }

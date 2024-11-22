@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -13,26 +12,38 @@ import java.util.Collection;
  * SQL license price).
  */
 public final class InstancePoolLicenseType extends ExpandableStringEnum<InstancePoolLicenseType> {
-    /** Static value LicenseIncluded for InstancePoolLicenseType. */
+    /**
+     * Static value LicenseIncluded for InstancePoolLicenseType.
+     */
     public static final InstancePoolLicenseType LICENSE_INCLUDED = fromString("LicenseIncluded");
 
-    /** Static value BasePrice for InstancePoolLicenseType. */
+    /**
+     * Static value BasePrice for InstancePoolLicenseType.
+     */
     public static final InstancePoolLicenseType BASE_PRICE = fromString("BasePrice");
 
     /**
+     * Creates a new instance of InstancePoolLicenseType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public InstancePoolLicenseType() {
+    }
+
+    /**
      * Creates or finds a InstancePoolLicenseType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding InstancePoolLicenseType.
      */
-    @JsonCreator
     public static InstancePoolLicenseType fromString(String name) {
         return fromString(name, InstancePoolLicenseType.class);
     }
 
     /**
      * Gets known InstancePoolLicenseType values.
-     *
+     * 
      * @return known InstancePoolLicenseType values.
      */
     public static Collection<InstancePoolLicenseType> values() {

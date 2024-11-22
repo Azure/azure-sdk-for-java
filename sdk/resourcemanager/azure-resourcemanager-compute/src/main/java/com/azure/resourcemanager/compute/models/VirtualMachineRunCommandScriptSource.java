@@ -5,30 +5,32 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Describes the script sources for run command. Use only one of script, scriptUri, commandId.
  */
 @Fluent
-public final class VirtualMachineRunCommandScriptSource {
+public final class VirtualMachineRunCommandScriptSource
+    implements JsonSerializable<VirtualMachineRunCommandScriptSource> {
     /*
      * Specifies the script content to be executed on the VM.
      */
-    @JsonProperty(value = "script")
     private String script;
 
     /*
      * Specifies the script download location. It can be either SAS URI of an Azure storage blob with read access or
      * public URI.
      */
-    @JsonProperty(value = "scriptUri")
     private String scriptUri;
 
     /*
      * Specifies a commandId of predefined built-in script.
      */
-    @JsonProperty(value = "commandId")
     private String commandId;
 
     /*
@@ -38,7 +40,6 @@ public final class VirtualMachineRunCommandScriptSource {
      * make sure you add it under VM's identity. For more info on managed identity and Run Command, refer
      * https://aka.ms/ManagedIdentity and https://aka.ms/RunCommandManaged.
      */
-    @JsonProperty(value = "scriptUriManagedIdentity")
     private RunCommandManagedIdentity scriptUriManagedIdentity;
 
     /**
@@ -147,5 +148,52 @@ public final class VirtualMachineRunCommandScriptSource {
         if (scriptUriManagedIdentity() != null) {
             scriptUriManagedIdentity().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("script", this.script);
+        jsonWriter.writeStringField("scriptUri", this.scriptUri);
+        jsonWriter.writeStringField("commandId", this.commandId);
+        jsonWriter.writeJsonField("scriptUriManagedIdentity", this.scriptUriManagedIdentity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualMachineRunCommandScriptSource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualMachineRunCommandScriptSource if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualMachineRunCommandScriptSource.
+     */
+    public static VirtualMachineRunCommandScriptSource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualMachineRunCommandScriptSource deserializedVirtualMachineRunCommandScriptSource
+                = new VirtualMachineRunCommandScriptSource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("script".equals(fieldName)) {
+                    deserializedVirtualMachineRunCommandScriptSource.script = reader.getString();
+                } else if ("scriptUri".equals(fieldName)) {
+                    deserializedVirtualMachineRunCommandScriptSource.scriptUri = reader.getString();
+                } else if ("commandId".equals(fieldName)) {
+                    deserializedVirtualMachineRunCommandScriptSource.commandId = reader.getString();
+                } else if ("scriptUriManagedIdentity".equals(fieldName)) {
+                    deserializedVirtualMachineRunCommandScriptSource.scriptUriManagedIdentity
+                        = RunCommandManagedIdentity.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualMachineRunCommandScriptSource;
+        });
     }
 }
