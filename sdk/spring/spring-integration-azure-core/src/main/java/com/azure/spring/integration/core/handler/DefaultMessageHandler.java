@@ -88,6 +88,18 @@ public class DefaultMessageHandler extends AbstractMessageProducingHandler {
 
         final Mono<Void> mono = this.sendOperation.sendAsync(dest, messageToSend);
 
+        // When using StreamBridge.send under the non-blocking reactive chain and the producer's sync is enabled,
+        // it results a IllegalStateException (block()/blockFirst()/blockLast() are blocking, which is not supported).
+        // Below steps are a reproducer for the IllegalStateException scenario:
+        // 1. Update configuration file: spring.cloud.azure.stream.eventhubs.bindings.supply-out-0.producer.sync=true
+        // 2. Use the following code to send a message:
+        //    @PostMapping("/reproducer")
+        //    public Mono<ResponseEntity<String>> reproducer() {
+        //        return Mono.defer(() -> Mono.just("reproducer"))
+        //                   .publishOn(Schedulers.parallel())
+        //                   .doOnSuccess(message -> streamBridge.send("supply-out-0", message))
+        //                   .map(ResponseEntity::ok);
+        //    }
         if (this.sync && !Schedulers.isInNonBlockingThread()) {
             waitingSendResponse(mono, message);
         } else {
