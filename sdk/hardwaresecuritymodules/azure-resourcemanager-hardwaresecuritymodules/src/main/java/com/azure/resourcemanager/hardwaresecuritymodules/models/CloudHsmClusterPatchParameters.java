@@ -5,39 +5,27 @@
 package com.azure.resourcemanager.hardwaresecuritymodules.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
 /**
  * Patchable properties of the Cloud HSM Cluster.
  */
 @Fluent
-public final class CloudHsmClusterPatchParameters {
+public final class CloudHsmClusterPatchParameters implements JsonSerializable<CloudHsmClusterPatchParameters> {
     /*
      * The Cloud HSM Cluster's tags
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
-
-    /*
-     * SKU details
-     */
-    @JsonProperty(value = "sku")
-    private CloudHsmClusterSku sku;
 
     /*
      * Managed service identity (system assigned and/or user assigned identities)
      */
-    @JsonProperty(value = "identity")
     private ManagedServiceIdentity identity;
-
-    /*
-     * Properties of the Cloud HSM Cluster
-     */
-    @JsonProperty(value = "properties")
-    private CloudHsmClusterPatchParametersProperties properties;
 
     /**
      * Creates an instance of CloudHsmClusterPatchParameters class.
@@ -66,26 +54,6 @@ public final class CloudHsmClusterPatchParameters {
     }
 
     /**
-     * Get the sku property: SKU details.
-     * 
-     * @return the sku value.
-     */
-    public CloudHsmClusterSku sku() {
-        return this.sku;
-    }
-
-    /**
-     * Set the sku property: SKU details.
-     * 
-     * @param sku the sku value to set.
-     * @return the CloudHsmClusterPatchParameters object itself.
-     */
-    public CloudHsmClusterPatchParameters withSku(CloudHsmClusterSku sku) {
-        this.sku = sku;
-        return this;
-    }
-
-    /**
      * Get the identity property: Managed service identity (system assigned and/or user assigned identities).
      * 
      * @return the identity value.
@@ -106,39 +74,54 @@ public final class CloudHsmClusterPatchParameters {
     }
 
     /**
-     * Get the properties property: Properties of the Cloud HSM Cluster.
-     * 
-     * @return the properties value.
-     */
-    public CloudHsmClusterPatchParametersProperties properties() {
-        return this.properties;
-    }
-
-    /**
-     * Set the properties property: Properties of the Cloud HSM Cluster.
-     * 
-     * @param properties the properties value to set.
-     * @return the CloudHsmClusterPatchParameters object itself.
-     */
-    public CloudHsmClusterPatchParameters withProperties(CloudHsmClusterPatchParametersProperties properties) {
-        this.properties = properties;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (sku() != null) {
-            sku().validate();
-        }
         if (identity() != null) {
             identity().validate();
         }
-        if (properties() != null) {
-            properties().validate();
-        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("identity", this.identity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CloudHsmClusterPatchParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CloudHsmClusterPatchParameters if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CloudHsmClusterPatchParameters.
+     */
+    public static CloudHsmClusterPatchParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CloudHsmClusterPatchParameters deserializedCloudHsmClusterPatchParameters
+                = new CloudHsmClusterPatchParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedCloudHsmClusterPatchParameters.tags = tags;
+                } else if ("identity".equals(fieldName)) {
+                    deserializedCloudHsmClusterPatchParameters.identity = ManagedServiceIdentity.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCloudHsmClusterPatchParameters;
+        });
     }
 }
