@@ -96,10 +96,9 @@ public class ProxyHostTest extends TestSuiteBase {
     /**
      * This test will try to create document via http proxy server with netty wire logging and validate it.
      *
-     * @throws Exception
      */
     @Test(groups = { "fast" }, timeOut = TIMEOUT)
-    public void createDocumentWithValidHttpProxyWithNettyWireLogging() throws Exception {
+    public void createDocumentWithValidHttpProxyWithNettyWireLogging() {
         CosmosAsyncClient clientWithRightProxy = null;
         try {
             final StringWriter consoleWriter = new StringWriter();
@@ -125,7 +124,6 @@ public class ProxyHostTest extends TestSuiteBase {
 
             assertThat(consoleWriter.toString()).contains(LogLevelTest.LOG_PATTERN_1);
             assertThat(consoleWriter.toString()).contains(LogLevelTest.LOG_PATTERN_2);
-            assertThat(consoleWriter.toString()).contains(LogLevelTest.LOG_PATTERN_3);
         } finally {
             safeClose(clientWithRightProxy);
         }

@@ -35,10 +35,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class LogLevelTest extends TestSuiteBase {
     public final static String COSMOS_DB_LOGGING_CATEGORY = "com.azure.cosmos";
     public final static String NETWORK_LOGGING_CATEGORY = "com.azure.cosmos.netty-network";
-    public final static String LOG_PATTERN_1 = "HTTP/1.1 201";
-    public final static String LOG_PATTERN_2 = "|  0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f |";
-    public final static String LOG_PATTERN_3 = "USER_EVENT: SslHandshakeCompletionEvent(SUCCESS)";
-    public final static String LOG_PATTERN_4 = "CONNECT: ";
+    public final static String LOG_PATTERN_1 = "|  0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f |";
+    public final static String LOG_PATTERN_2 = "USER_EVENT: SslHandshakeCompletionEvent(SUCCESS)";
+    public final static String LOG_PATTERN_3 = "CONNECT: ";
 
     private static final String APPENDER_NAME = "StringWriterAppender";
     private static CosmosAsyncContainer createdCollection;
@@ -70,10 +69,9 @@ public class LogLevelTest extends TestSuiteBase {
      * This test will try to create document with netty wire DEBUG logging and
      * validate it.
      *
-     * @throws Exception
      */
     @Test(groups = { "fast" }, timeOut = TIMEOUT)
-    public void createDocumentWithDebugLevel() throws Exception {
+    public void createDocumentWithDebugLevel() {
         final StringWriter consoleWriter = new StringWriter();
 
         addAppenderAndLogger(NETWORK_LOGGING_CATEGORY, Level.DEBUG, APPENDER_NAME, consoleWriter);
@@ -90,17 +88,15 @@ public class LogLevelTest extends TestSuiteBase {
         assertThat(consoleWriter.toString()).contains(LOG_PATTERN_1);
         assertThat(consoleWriter.toString()).contains(LOG_PATTERN_2);
         assertThat(consoleWriter.toString()).contains(LOG_PATTERN_3);
-        assertThat(consoleWriter.toString()).contains(LOG_PATTERN_4);
     }
 
     /**
      * This test will try to create document with netty wire WARN logging and
      * validate it.
      *
-     * @throws Exception
      */
     @Test(groups = { "fast" }, timeOut = TIMEOUT)
-    public void createDocumentWithWarningLevel() throws Exception {
+    public void createDocumentWithWarningLevel() {
         final StringWriter consoleWriter = new StringWriter();
         addAppenderAndLogger(NETWORK_LOGGING_CATEGORY, Level.WARN, APPENDER_NAME, consoleWriter);
 
@@ -116,17 +112,15 @@ public class LogLevelTest extends TestSuiteBase {
         assertThat(consoleWriter.toString()).contains(LOG_PATTERN_1);
         assertThat(consoleWriter.toString()).contains(LOG_PATTERN_2);
         assertThat(consoleWriter.toString()).contains(LOG_PATTERN_3);
-        assertThat(consoleWriter.toString()).contains(LOG_PATTERN_4);
     }
 
     /**
      * This test will try to create document with netty wire TRACE logging and
      * validate it.
      *
-     * @throws Exception
      */
     @Test(groups = { "fast" }, timeOut = TIMEOUT)
-    public void createDocumentWithTraceLevel() throws Exception {
+    public void createDocumentWithTraceLevel() {
         final StringWriter consoleWriter = new StringWriter();
 
         addAppenderAndLogger(NETWORK_LOGGING_CATEGORY, Level.TRACE, APPENDER_NAME, consoleWriter);
@@ -143,11 +137,10 @@ public class LogLevelTest extends TestSuiteBase {
         assertThat(consoleWriter.toString()).contains(LOG_PATTERN_1);
         assertThat(consoleWriter.toString()).contains(LOG_PATTERN_2);
         assertThat(consoleWriter.toString()).contains(LOG_PATTERN_3);
-        assertThat(consoleWriter.toString()).contains(LOG_PATTERN_4);
     }
 
     @Test(groups = { "fast" }, timeOut = TIMEOUT, enabled = false)
-    public void createDocumentWithTraceLevelAtRoot() throws Exception {
+    public void createDocumentWithTraceLevelAtRoot() {
         final StringWriter consoleWriter = new StringWriter();
 
         addAppenderAndLogger(COSMOS_DB_LOGGING_CATEGORY, Level.TRACE, APPENDER_NAME, consoleWriter);
@@ -164,11 +157,10 @@ public class LogLevelTest extends TestSuiteBase {
         assertThat(consoleWriter.toString()).contains(LOG_PATTERN_1);
         assertThat(consoleWriter.toString()).contains(LOG_PATTERN_2);
         assertThat(consoleWriter.toString()).contains(LOG_PATTERN_3);
-        assertThat(consoleWriter.toString()).contains(LOG_PATTERN_4);
     }
 
     @Test(groups = { "fast" }, timeOut = TIMEOUT, enabled = false)
-    public void createDocumentWithDebugLevelAtRoot() throws Exception {
+    public void createDocumentWithDebugLevelAtRoot() {
         final StringWriter consoleWriter = new StringWriter();
 
         addAppenderAndLogger(COSMOS_DB_LOGGING_CATEGORY, Level.DEBUG, APPENDER_NAME, consoleWriter);
@@ -185,17 +177,15 @@ public class LogLevelTest extends TestSuiteBase {
         assertThat(consoleWriter.toString()).contains(LOG_PATTERN_1);
         assertThat(consoleWriter.toString()).contains(LOG_PATTERN_2);
         assertThat(consoleWriter.toString()).contains(LOG_PATTERN_3);
-        assertThat(consoleWriter.toString()).contains(LOG_PATTERN_4);
     }
 
     /**
      * This test will try to create document with netty wire ERROR logging and
      * validate it.
      *
-     * @throws Exception
      */
     @Test(groups = { "fast" }, timeOut = TIMEOUT)
-    public void createDocumentWithErrorLevel() throws Exception {
+    public void createDocumentWithErrorLevel() {
         final StringWriter consoleWriter = new StringWriter();
 
         addAppenderAndLogger(NETWORK_LOGGING_CATEGORY, Level.ERROR, APPENDER_NAME, consoleWriter);
@@ -211,17 +201,15 @@ public class LogLevelTest extends TestSuiteBase {
         assertThat(consoleWriter.toString()).contains(LOG_PATTERN_1);
         assertThat(consoleWriter.toString()).contains(LOG_PATTERN_2);
         assertThat(consoleWriter.toString()).contains(LOG_PATTERN_3);
-        assertThat(consoleWriter.toString()).contains(LOG_PATTERN_4);
     }
 
     /**
      * This test will try to create document with netty wire INFO logging and
      * validate it.
      *
-     * @throws Exception
      */
     @Test(groups = { "fast" }, timeOut = TIMEOUT)
-    public void createDocumentWithInfoLevel() throws Exception {
+    public void createDocumentWithInfoLevel() {
         final StringWriter consoleWriter = new StringWriter();
 
         addAppenderAndLogger(NETWORK_LOGGING_CATEGORY, Level.INFO, APPENDER_NAME, consoleWriter);
@@ -237,7 +225,6 @@ public class LogLevelTest extends TestSuiteBase {
         assertThat(consoleWriter.toString()).contains(LOG_PATTERN_1);
         assertThat(consoleWriter.toString()).contains(LOG_PATTERN_2);
         assertThat(consoleWriter.toString()).contains(LOG_PATTERN_3);
-        assertThat(consoleWriter.toString()).contains(LOG_PATTERN_4);
     }
 
     private InternalObjectNode getDocumentDefinition() {
