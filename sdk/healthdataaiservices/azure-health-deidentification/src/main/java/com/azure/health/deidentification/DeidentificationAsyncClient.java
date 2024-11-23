@@ -315,7 +315,7 @@ public final class DeidentificationAsyncClient {
     /**
      * List processed documents within a job.
      *
-     * The most basic operation.
+     * Resource list operation template.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -352,7 +352,7 @@ public final class DeidentificationAsyncClient {
      * }
      * </pre>
      *
-     * @param jobName The name of a job.
+     * @param name The name of a job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -642,9 +642,9 @@ public final class DeidentificationAsyncClient {
     /**
      * List processed documents within a job.
      *
-     * The most basic operation.
+     * Resource list operation template.
      *
-     * @param jobName The name of a job.
+     * @param name The name of a job.
      * @param continuationToken Token to continue a previous query.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -680,9 +680,9 @@ public final class DeidentificationAsyncClient {
     /**
      * List processed documents within a job.
      *
-     * The most basic operation.
+     * Resource list operation template.
      *
-     * @param jobName The name of a job.
+     * @param name The name of a job.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
