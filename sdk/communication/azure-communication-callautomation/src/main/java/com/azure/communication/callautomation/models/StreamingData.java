@@ -41,23 +41,25 @@ public abstract class StreamingData {
     }
 
     /**
-     * Convert the base64 string into streaming data subtypes. 
-     * ex. AudioData, AudioMetadata, TranscriptionData, TranscriptionMetadata
-     * @param data the base64 string 
+     * Parses a base64 encoded string into a StreamingData object,
+     * which can be one of the following subtypes: AudioData, AudioMetadata, TranscriptionData, or TranscriptionMetadata.
+     * @param data The base64 string represents streaming data that will be converted into the appropriate subtype of StreamingData.
      * @return StreamingData 
-     * @throws RuntimeException throw when parsing fails
+     * @throws RuntimeException Throws a RuntimeException if the provided base64 string does not correspond to a supported data type for the specified Kind.
      */
     public static StreamingData parse(String data) {
         return parseStreamingData(data);
     }
 
     /**
-     * 
+     *  Parses a base64 encoded string into a StreamingData object,
+     * which can be one of the following subtypes: AudioData, AudioMetadata, TranscriptionData, or TranscriptionMetadata.
      * @param <T> Subtypes of StreamingData ex. AudioData, AudioMetadata, TranscriptionData, TranscriptionMetadata
-     * @param data the base64 string 
+     * @param data The base64 string represents streaming data that will be converted into the appropriate subtype of StreamingData. 
      * @param type type of the streamindata ex. AudioData, AudioMetadata, TranscriptionData, TranscriptionMetadata
      * @return Subtypes of StreamingData
-     * @throws RuntimeException when parsing fails
+     * @throws RuntimeException Throws a NotSupportedException if the provided base64 string does not correspond
+     * to a supported data type for the specified Kind.
      */
     @SuppressWarnings("unchecked")
     public static <T extends StreamingData> T parse(String data, Class<T> type) {

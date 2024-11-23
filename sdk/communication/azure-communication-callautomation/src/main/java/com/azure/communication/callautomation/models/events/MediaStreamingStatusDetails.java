@@ -68,7 +68,10 @@ public final class MediaStreamingStatusDetails extends ExpandableStringEnum<Medi
         return fromString(name, MediaStreamingStatusDetails.class);
     }
 
-    /** @return known MediaStreamingStatusDetails values. */
+    /**
+     * Get the collection of MediaStreamingStatusDetails values.
+     * @return known MediaStreamingStatusDetails values.
+     */
     public static Collection<MediaStreamingStatusDetails> values() {
         return values(MediaStreamingStatusDetails.class);
     }
