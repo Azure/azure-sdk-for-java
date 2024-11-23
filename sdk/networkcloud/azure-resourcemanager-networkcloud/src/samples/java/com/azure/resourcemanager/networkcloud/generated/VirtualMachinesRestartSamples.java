@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.networkcloud.generated;
 
-/** Samples for VirtualMachines Restart. */
+/**
+ * Samples for VirtualMachines Restart.
+ */
 public final class VirtualMachinesRestartSamples {
     /*
-     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2023-07-01/examples/VirtualMachines_Restart.json
+     * x-ms-original-file:
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-06-01-preview/examples/
+     * VirtualMachines_Restart.json
      */
     /**
      * Sample code: Restart virtual machine.
-     *
+     * 
      * @param manager Entry point to NetworkCloudManager.
      */
     public static void restartVirtualMachine(com.azure.resourcemanager.networkcloud.NetworkCloudManager manager) {

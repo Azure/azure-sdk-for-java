@@ -5,11 +5,15 @@
 package com.azure.resourcemanager.networkcloud.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.networkcloud.models.MachineSkuSlot;
 import com.azure.resourcemanager.networkcloud.models.RackSkuProvisioningState;
 import com.azure.resourcemanager.networkcloud.models.RackSkuType;
 import com.azure.resourcemanager.networkcloud.models.StorageApplianceSkuSlot;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -17,64 +21,58 @@ import java.util.List;
  * compute racks.
  */
 @Immutable
-public final class RackSkuProperties {
+public final class RackSkuProperties implements JsonSerializable<RackSkuProperties> {
     /*
      * The list of machine SKUs and associated rack slot for the compute-dedicated machines in this rack model.
      */
-    @JsonProperty(value = "computeMachines", access = JsonProperty.Access.WRITE_ONLY)
     private List<MachineSkuSlot> computeMachines;
 
     /*
      * The list of machine SKUs and associated rack slot for the control-plane dedicated machines in this rack model.
      */
-    @JsonProperty(value = "controllerMachines", access = JsonProperty.Access.WRITE_ONLY)
     private List<MachineSkuSlot> controllerMachines;
 
     /*
      * The free-form text describing the rack.
      */
-    @JsonProperty(value = "description", access = JsonProperty.Access.WRITE_ONLY)
     private String description;
 
     /*
      * The maximum number of compute racks supported by an aggregator rack. 0 if this is a compute rack or a rack for a
      * single rack cluster(rackType="Single").
      */
-    @JsonProperty(value = "maxClusterSlots", access = JsonProperty.Access.WRITE_ONLY)
     private Long maxClusterSlots;
 
     /*
      * The provisioning state of the rack SKU resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private RackSkuProvisioningState provisioningState;
 
     /*
      * The type of the rack.
      */
-    @JsonProperty(value = "rackType", access = JsonProperty.Access.WRITE_ONLY)
     private RackSkuType rackType;
 
     /*
      * The list of appliance SKUs and associated rack slot for the storage appliance(s) in this rack model.
      */
-    @JsonProperty(value = "storageAppliances", access = JsonProperty.Access.WRITE_ONLY)
     private List<StorageApplianceSkuSlot> storageAppliances;
 
     /*
      * The list of supported SKUs if the rack is an aggregator.
      */
-    @JsonProperty(value = "supportedRackSkuIds", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> supportedRackSkuIds;
 
-    /** Creates an instance of RackSkuProperties class. */
+    /**
+     * Creates an instance of RackSkuProperties class.
+     */
     public RackSkuProperties() {
     }
 
     /**
      * Get the computeMachines property: The list of machine SKUs and associated rack slot for the compute-dedicated
      * machines in this rack model.
-     *
+     * 
      * @return the computeMachines value.
      */
     public List<MachineSkuSlot> computeMachines() {
@@ -84,7 +82,7 @@ public final class RackSkuProperties {
     /**
      * Get the controllerMachines property: The list of machine SKUs and associated rack slot for the control-plane
      * dedicated machines in this rack model.
-     *
+     * 
      * @return the controllerMachines value.
      */
     public List<MachineSkuSlot> controllerMachines() {
@@ -93,7 +91,7 @@ public final class RackSkuProperties {
 
     /**
      * Get the description property: The free-form text describing the rack.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -103,7 +101,7 @@ public final class RackSkuProperties {
     /**
      * Get the maxClusterSlots property: The maximum number of compute racks supported by an aggregator rack. 0 if this
      * is a compute rack or a rack for a single rack cluster(rackType="Single").
-     *
+     * 
      * @return the maxClusterSlots value.
      */
     public Long maxClusterSlots() {
@@ -112,7 +110,7 @@ public final class RackSkuProperties {
 
     /**
      * Get the provisioningState property: The provisioning state of the rack SKU resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public RackSkuProvisioningState provisioningState() {
@@ -121,7 +119,7 @@ public final class RackSkuProperties {
 
     /**
      * Get the rackType property: The type of the rack.
-     *
+     * 
      * @return the rackType value.
      */
     public RackSkuType rackType() {
@@ -131,7 +129,7 @@ public final class RackSkuProperties {
     /**
      * Get the storageAppliances property: The list of appliance SKUs and associated rack slot for the storage
      * appliance(s) in this rack model.
-     *
+     * 
      * @return the storageAppliances value.
      */
     public List<StorageApplianceSkuSlot> storageAppliances() {
@@ -140,7 +138,7 @@ public final class RackSkuProperties {
 
     /**
      * Get the supportedRackSkuIds property: The list of supported SKUs if the rack is an aggregator.
-     *
+     * 
      * @return the supportedRackSkuIds value.
      */
     public List<String> supportedRackSkuIds() {
@@ -149,7 +147,7 @@ public final class RackSkuProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -162,5 +160,62 @@ public final class RackSkuProperties {
         if (storageAppliances() != null) {
             storageAppliances().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RackSkuProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RackSkuProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RackSkuProperties.
+     */
+    public static RackSkuProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RackSkuProperties deserializedRackSkuProperties = new RackSkuProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("computeMachines".equals(fieldName)) {
+                    List<MachineSkuSlot> computeMachines
+                        = reader.readArray(reader1 -> MachineSkuSlot.fromJson(reader1));
+                    deserializedRackSkuProperties.computeMachines = computeMachines;
+                } else if ("controllerMachines".equals(fieldName)) {
+                    List<MachineSkuSlot> controllerMachines
+                        = reader.readArray(reader1 -> MachineSkuSlot.fromJson(reader1));
+                    deserializedRackSkuProperties.controllerMachines = controllerMachines;
+                } else if ("description".equals(fieldName)) {
+                    deserializedRackSkuProperties.description = reader.getString();
+                } else if ("maxClusterSlots".equals(fieldName)) {
+                    deserializedRackSkuProperties.maxClusterSlots = reader.getNullable(JsonReader::getLong);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedRackSkuProperties.provisioningState
+                        = RackSkuProvisioningState.fromString(reader.getString());
+                } else if ("rackType".equals(fieldName)) {
+                    deserializedRackSkuProperties.rackType = RackSkuType.fromString(reader.getString());
+                } else if ("storageAppliances".equals(fieldName)) {
+                    List<StorageApplianceSkuSlot> storageAppliances
+                        = reader.readArray(reader1 -> StorageApplianceSkuSlot.fromJson(reader1));
+                    deserializedRackSkuProperties.storageAppliances = storageAppliances;
+                } else if ("supportedRackSkuIds".equals(fieldName)) {
+                    List<String> supportedRackSkuIds = reader.readArray(reader1 -> reader1.getString());
+                    deserializedRackSkuProperties.supportedRackSkuIds = supportedRackSkuIds;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRackSkuProperties;
+        });
     }
 }

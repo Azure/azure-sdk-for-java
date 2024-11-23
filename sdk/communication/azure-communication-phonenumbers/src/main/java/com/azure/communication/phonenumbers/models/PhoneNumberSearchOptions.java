@@ -14,6 +14,12 @@ public final class PhoneNumberSearchOptions {
     private String administrativeDivision;
 
     /**
+     * Creates a new instance of {@link PhoneNumberSearchOptions}.
+     */
+    public PhoneNumberSearchOptions() {
+    }
+
+    /**
      * Sets the area code property.
      * @param areaCode the areaCode value to set.
      * @return the PhoneNumberSearchOptions object itself.

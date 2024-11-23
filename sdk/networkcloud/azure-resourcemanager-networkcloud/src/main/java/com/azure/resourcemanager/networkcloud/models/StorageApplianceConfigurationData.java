@@ -6,48 +6,46 @@ package com.azure.resourcemanager.networkcloud.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** StorageApplianceConfigurationData represents configuration for the storage application. */
+/**
+ * StorageApplianceConfigurationData represents configuration for the storage application.
+ */
 @Fluent
-public final class StorageApplianceConfigurationData {
+public final class StorageApplianceConfigurationData implements JsonSerializable<StorageApplianceConfigurationData> {
     /*
-     * AdministrativeCredentials represents the admin credentials for the device requiring password-based
-     * authentication.
-     *
      * The credentials of the administrative interface on this storage appliance.
      */
-    @JsonProperty(value = "adminCredentials", required = true)
     private AdministrativeCredentials adminCredentials;
 
     /*
      * The slot that storage appliance is in the rack based on the BOM configuration.
      */
-    @JsonProperty(value = "rackSlot", required = true)
     private long rackSlot;
 
     /*
      * The serial number of the appliance.
      */
-    @JsonProperty(value = "serialNumber", required = true)
     private String serialNumber;
 
     /*
      * The user-provided name for the storage appliance that will be created from this specification.
      */
-    @JsonProperty(value = "storageApplianceName")
     private String storageApplianceName;
 
-    /** Creates an instance of StorageApplianceConfigurationData class. */
+    /**
+     * Creates an instance of StorageApplianceConfigurationData class.
+     */
     public StorageApplianceConfigurationData() {
     }
 
     /**
-     * Get the adminCredentials property: AdministrativeCredentials represents the admin credentials for the device
-     * requiring password-based authentication.
-     *
-     * <p>The credentials of the administrative interface on this storage appliance.
-     *
+     * Get the adminCredentials property: The credentials of the administrative interface on this storage appliance.
+     * 
      * @return the adminCredentials value.
      */
     public AdministrativeCredentials adminCredentials() {
@@ -55,11 +53,8 @@ public final class StorageApplianceConfigurationData {
     }
 
     /**
-     * Set the adminCredentials property: AdministrativeCredentials represents the admin credentials for the device
-     * requiring password-based authentication.
-     *
-     * <p>The credentials of the administrative interface on this storage appliance.
-     *
+     * Set the adminCredentials property: The credentials of the administrative interface on this storage appliance.
+     * 
      * @param adminCredentials the adminCredentials value to set.
      * @return the StorageApplianceConfigurationData object itself.
      */
@@ -70,7 +65,7 @@ public final class StorageApplianceConfigurationData {
 
     /**
      * Get the rackSlot property: The slot that storage appliance is in the rack based on the BOM configuration.
-     *
+     * 
      * @return the rackSlot value.
      */
     public long rackSlot() {
@@ -79,7 +74,7 @@ public final class StorageApplianceConfigurationData {
 
     /**
      * Set the rackSlot property: The slot that storage appliance is in the rack based on the BOM configuration.
-     *
+     * 
      * @param rackSlot the rackSlot value to set.
      * @return the StorageApplianceConfigurationData object itself.
      */
@@ -90,7 +85,7 @@ public final class StorageApplianceConfigurationData {
 
     /**
      * Get the serialNumber property: The serial number of the appliance.
-     *
+     * 
      * @return the serialNumber value.
      */
     public String serialNumber() {
@@ -99,7 +94,7 @@ public final class StorageApplianceConfigurationData {
 
     /**
      * Set the serialNumber property: The serial number of the appliance.
-     *
+     * 
      * @param serialNumber the serialNumber value to set.
      * @return the StorageApplianceConfigurationData object itself.
      */
@@ -111,7 +106,7 @@ public final class StorageApplianceConfigurationData {
     /**
      * Get the storageApplianceName property: The user-provided name for the storage appliance that will be created from
      * this specification.
-     *
+     * 
      * @return the storageApplianceName value.
      */
     public String storageApplianceName() {
@@ -121,7 +116,7 @@ public final class StorageApplianceConfigurationData {
     /**
      * Set the storageApplianceName property: The user-provided name for the storage appliance that will be created from
      * this specification.
-     *
+     * 
      * @param storageApplianceName the storageApplianceName value to set.
      * @return the StorageApplianceConfigurationData object itself.
      */
@@ -132,21 +127,71 @@ public final class StorageApplianceConfigurationData {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (adminCredentials() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property adminCredentials in model StorageApplianceConfigurationData"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property adminCredentials in model StorageApplianceConfigurationData"));
         } else {
             adminCredentials().validate();
         }
         if (serialNumber() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property serialNumber in model StorageApplianceConfigurationData"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property serialNumber in model StorageApplianceConfigurationData"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(StorageApplianceConfigurationData.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("adminCredentials", this.adminCredentials);
+        jsonWriter.writeLongField("rackSlot", this.rackSlot);
+        jsonWriter.writeStringField("serialNumber", this.serialNumber);
+        jsonWriter.writeStringField("storageApplianceName", this.storageApplianceName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StorageApplianceConfigurationData from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StorageApplianceConfigurationData if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the StorageApplianceConfigurationData.
+     */
+    public static StorageApplianceConfigurationData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StorageApplianceConfigurationData deserializedStorageApplianceConfigurationData
+                = new StorageApplianceConfigurationData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("adminCredentials".equals(fieldName)) {
+                    deserializedStorageApplianceConfigurationData.adminCredentials
+                        = AdministrativeCredentials.fromJson(reader);
+                } else if ("rackSlot".equals(fieldName)) {
+                    deserializedStorageApplianceConfigurationData.rackSlot = reader.getLong();
+                } else if ("serialNumber".equals(fieldName)) {
+                    deserializedStorageApplianceConfigurationData.serialNumber = reader.getString();
+                } else if ("storageApplianceName".equals(fieldName)) {
+                    deserializedStorageApplianceConfigurationData.storageApplianceName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStorageApplianceConfigurationData;
+        });
+    }
 }

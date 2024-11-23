@@ -59,6 +59,12 @@ public final class ChatClientBuilder
     private static final String SDK_VERSION = "version";
 
     /**
+     * Creates a new instance of {@link ChatClientBuilder}.
+     */
+    public ChatClientBuilder() {
+    }
+
+    /**
      * Set endpoint of the service
      *
      * @param endpoint url of the service

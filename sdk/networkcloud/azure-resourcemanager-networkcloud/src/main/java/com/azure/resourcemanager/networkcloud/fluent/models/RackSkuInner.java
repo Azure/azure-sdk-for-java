@@ -8,41 +8,55 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.networkcloud.models.MachineSkuSlot;
 import com.azure.resourcemanager.networkcloud.models.RackSkuProvisioningState;
 import com.azure.resourcemanager.networkcloud.models.RackSkuType;
 import com.azure.resourcemanager.networkcloud.models.StorageApplianceSkuSlot;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** RackSku represents the SKU information of the rack. */
+/**
+ * RackSku represents the SKU information of the rack.
+ */
 @Immutable
 public final class RackSkuInner extends ProxyResource {
     /*
-     * RackSkuProperties represents the properties of compute-related hardware for a rack. This supports both
-     * aggregator and compute racks.
-     *
      * The list of the resource properties.
      */
-    @JsonProperty(value = "properties", required = true)
     private RackSkuProperties innerProperties = new RackSkuProperties();
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of RackSkuInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of RackSkuInner class.
+     */
     public RackSkuInner() {
     }
 
     /**
-     * Get the innerProperties property: RackSkuProperties represents the properties of compute-related hardware for a
-     * rack. This supports both aggregator and compute racks.
-     *
-     * <p>The list of the resource properties.
-     *
+     * Get the innerProperties property: The list of the resource properties.
+     * 
      * @return the innerProperties value.
      */
     private RackSkuProperties innerProperties() {
@@ -51,7 +65,7 @@ public final class RackSkuInner extends ProxyResource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -59,9 +73,39 @@ public final class RackSkuInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the computeMachines property: The list of machine SKUs and associated rack slot for the compute-dedicated
      * machines in this rack model.
-     *
+     * 
      * @return the computeMachines value.
      */
     public List<MachineSkuSlot> computeMachines() {
@@ -71,7 +115,7 @@ public final class RackSkuInner extends ProxyResource {
     /**
      * Get the controllerMachines property: The list of machine SKUs and associated rack slot for the control-plane
      * dedicated machines in this rack model.
-     *
+     * 
      * @return the controllerMachines value.
      */
     public List<MachineSkuSlot> controllerMachines() {
@@ -80,7 +124,7 @@ public final class RackSkuInner extends ProxyResource {
 
     /**
      * Get the description property: The free-form text describing the rack.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -90,7 +134,7 @@ public final class RackSkuInner extends ProxyResource {
     /**
      * Get the maxClusterSlots property: The maximum number of compute racks supported by an aggregator rack. 0 if this
      * is a compute rack or a rack for a single rack cluster(rackType="Single").
-     *
+     * 
      * @return the maxClusterSlots value.
      */
     public Long maxClusterSlots() {
@@ -99,7 +143,7 @@ public final class RackSkuInner extends ProxyResource {
 
     /**
      * Get the provisioningState property: The provisioning state of the rack SKU resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public RackSkuProvisioningState provisioningState() {
@@ -108,7 +152,7 @@ public final class RackSkuInner extends ProxyResource {
 
     /**
      * Get the rackType property: The type of the rack.
-     *
+     * 
      * @return the rackType value.
      */
     public RackSkuType rackType() {
@@ -118,7 +162,7 @@ public final class RackSkuInner extends ProxyResource {
     /**
      * Get the storageAppliances property: The list of appliance SKUs and associated rack slot for the storage
      * appliance(s) in this rack model.
-     *
+     * 
      * @return the storageAppliances value.
      */
     public List<StorageApplianceSkuSlot> storageAppliances() {
@@ -127,7 +171,7 @@ public final class RackSkuInner extends ProxyResource {
 
     /**
      * Get the supportedRackSkuIds property: The list of supported SKUs if the rack is an aggregator.
-     *
+     * 
      * @return the supportedRackSkuIds value.
      */
     public List<String> supportedRackSkuIds() {
@@ -136,17 +180,62 @@ public final class RackSkuInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property innerProperties in model RackSkuInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property innerProperties in model RackSkuInner"));
         } else {
             innerProperties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(RackSkuInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RackSkuInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RackSkuInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RackSkuInner.
+     */
+    public static RackSkuInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RackSkuInner deserializedRackSkuInner = new RackSkuInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedRackSkuInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedRackSkuInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedRackSkuInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedRackSkuInner.innerProperties = RackSkuProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedRackSkuInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRackSkuInner;
+        });
+    }
 }

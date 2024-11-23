@@ -14,24 +14,24 @@ public final class EgressEndpointTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EgressEndpoint model = BinaryData.fromString(
-            "{\"category\":\"ynpwlbj\",\"endpoints\":[{\"domainName\":\"gacftadeh\",\"port\":7028050140215699790},{\"domainName\":\"yfsoppu\",\"port\":7161125881545295821},{\"domainName\":\"nzwdejba\",\"port\":8576241637170958939},{\"domainName\":\"zdmohctbqvu\",\"port\":2681919302417118526}]}")
+            "{\"category\":\"gkvtmelmqkrhah\",\"endpoints\":[{\"domainName\":\"juahaquhcdhmdual\",\"port\":495813413204095798},{\"domainName\":\"pvfadmwsrcr\",\"port\":5411587900664634399},{\"domainName\":\"vgomz\",\"port\":8511094552590420060}]}")
             .toObject(EgressEndpoint.class);
-        Assertions.assertEquals("ynpwlbj", model.category());
-        Assertions.assertEquals("gacftadeh", model.endpoints().get(0).domainName());
-        Assertions.assertEquals(7028050140215699790L, model.endpoints().get(0).port());
+        Assertions.assertEquals("gkvtmelmqkrhah", model.category());
+        Assertions.assertEquals("juahaquhcdhmdual", model.endpoints().get(0).domainName());
+        Assertions.assertEquals(495813413204095798L, model.endpoints().get(0).port());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EgressEndpoint model = new EgressEndpoint().withCategory("ynpwlbj")
-            .withEndpoints(
-                Arrays.asList(new EndpointDependency().withDomainName("gacftadeh").withPort(7028050140215699790L),
-                    new EndpointDependency().withDomainName("yfsoppu").withPort(7161125881545295821L),
-                    new EndpointDependency().withDomainName("nzwdejba").withPort(8576241637170958939L),
-                    new EndpointDependency().withDomainName("zdmohctbqvu").withPort(2681919302417118526L)));
+        EgressEndpoint model
+            = new EgressEndpoint().withCategory("gkvtmelmqkrhah")
+                .withEndpoints(Arrays.asList(
+                    new EndpointDependency().withDomainName("juahaquhcdhmdual").withPort(495813413204095798L),
+                    new EndpointDependency().withDomainName("pvfadmwsrcr").withPort(5411587900664634399L),
+                    new EndpointDependency().withDomainName("vgomz").withPort(8511094552590420060L)));
         model = BinaryData.fromObject(model).toObject(EgressEndpoint.class);
-        Assertions.assertEquals("ynpwlbj", model.category());
-        Assertions.assertEquals("gacftadeh", model.endpoints().get(0).domainName());
-        Assertions.assertEquals(7028050140215699790L, model.endpoints().get(0).port());
+        Assertions.assertEquals("gkvtmelmqkrhah", model.category());
+        Assertions.assertEquals("juahaquhcdhmdual", model.endpoints().get(0).domainName());
+        Assertions.assertEquals(495813413204095798L, model.endpoints().get(0).port());
     }
 }

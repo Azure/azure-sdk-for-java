@@ -5,9 +5,13 @@
 package com.azure.resourcemanager.networkcloud.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.networkcloud.models.CloudServicesNetworkEnableDefaultEgressEndpoints;
 import com.azure.resourcemanager.networkcloud.models.EgressEndpoint;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -15,27 +19,28 @@ import java.util.List;
  * a patch request.
  */
 @Fluent
-public final class CloudServicesNetworkPatchProperties {
+public final class CloudServicesNetworkPatchProperties
+    implements JsonSerializable<CloudServicesNetworkPatchProperties> {
     /*
      * The list of egress endpoints. This allows for connection from a Hybrid AKS cluster to the specified endpoint.
      */
-    @JsonProperty(value = "additionalEgressEndpoints")
     private List<EgressEndpoint> additionalEgressEndpoints;
 
     /*
      * The indicator of whether the platform default endpoints are allowed for the egress traffic.
      */
-    @JsonProperty(value = "enableDefaultEgressEndpoints")
     private CloudServicesNetworkEnableDefaultEgressEndpoints enableDefaultEgressEndpoints;
 
-    /** Creates an instance of CloudServicesNetworkPatchProperties class. */
+    /**
+     * Creates an instance of CloudServicesNetworkPatchProperties class.
+     */
     public CloudServicesNetworkPatchProperties() {
     }
 
     /**
      * Get the additionalEgressEndpoints property: The list of egress endpoints. This allows for connection from a
      * Hybrid AKS cluster to the specified endpoint.
-     *
+     * 
      * @return the additionalEgressEndpoints value.
      */
     public List<EgressEndpoint> additionalEgressEndpoints() {
@@ -45,7 +50,7 @@ public final class CloudServicesNetworkPatchProperties {
     /**
      * Set the additionalEgressEndpoints property: The list of egress endpoints. This allows for connection from a
      * Hybrid AKS cluster to the specified endpoint.
-     *
+     * 
      * @param additionalEgressEndpoints the additionalEgressEndpoints value to set.
      * @return the CloudServicesNetworkPatchProperties object itself.
      */
@@ -58,7 +63,7 @@ public final class CloudServicesNetworkPatchProperties {
     /**
      * Get the enableDefaultEgressEndpoints property: The indicator of whether the platform default endpoints are
      * allowed for the egress traffic.
-     *
+     * 
      * @return the enableDefaultEgressEndpoints value.
      */
     public CloudServicesNetworkEnableDefaultEgressEndpoints enableDefaultEgressEndpoints() {
@@ -68,7 +73,7 @@ public final class CloudServicesNetworkPatchProperties {
     /**
      * Set the enableDefaultEgressEndpoints property: The indicator of whether the platform default endpoints are
      * allowed for the egress traffic.
-     *
+     * 
      * @param enableDefaultEgressEndpoints the enableDefaultEgressEndpoints value to set.
      * @return the CloudServicesNetworkPatchProperties object itself.
      */
@@ -80,12 +85,58 @@ public final class CloudServicesNetworkPatchProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (additionalEgressEndpoints() != null) {
             additionalEgressEndpoints().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("additionalEgressEndpoints", this.additionalEgressEndpoints,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("enableDefaultEgressEndpoints",
+            this.enableDefaultEgressEndpoints == null ? null : this.enableDefaultEgressEndpoints.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CloudServicesNetworkPatchProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CloudServicesNetworkPatchProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CloudServicesNetworkPatchProperties.
+     */
+    public static CloudServicesNetworkPatchProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CloudServicesNetworkPatchProperties deserializedCloudServicesNetworkPatchProperties
+                = new CloudServicesNetworkPatchProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("additionalEgressEndpoints".equals(fieldName)) {
+                    List<EgressEndpoint> additionalEgressEndpoints
+                        = reader.readArray(reader1 -> EgressEndpoint.fromJson(reader1));
+                    deserializedCloudServicesNetworkPatchProperties.additionalEgressEndpoints
+                        = additionalEgressEndpoints;
+                } else if ("enableDefaultEgressEndpoints".equals(fieldName)) {
+                    deserializedCloudServicesNetworkPatchProperties.enableDefaultEgressEndpoints
+                        = CloudServicesNetworkEnableDefaultEgressEndpoints.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCloudServicesNetworkPatchProperties;
+        });
     }
 }

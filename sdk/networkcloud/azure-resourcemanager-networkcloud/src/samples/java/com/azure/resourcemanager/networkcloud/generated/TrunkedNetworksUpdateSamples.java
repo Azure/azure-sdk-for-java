@@ -8,23 +8,24 @@ import com.azure.resourcemanager.networkcloud.models.TrunkedNetwork;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for TrunkedNetworks Update. */
+/**
+ * Samples for TrunkedNetworks Update.
+ */
 public final class TrunkedNetworksUpdateSamples {
     /*
-     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2023-07-01/examples/TrunkedNetworks_Patch.json
+     * x-ms-original-file:
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-06-01-preview/examples/
+     * TrunkedNetworks_Patch.json
      */
     /**
      * Sample code: Patch trunked network.
-     *
+     * 
      * @param manager Entry point to NetworkCloudManager.
      */
     public static void patchTrunkedNetwork(com.azure.resourcemanager.networkcloud.NetworkCloudManager manager) {
-        TrunkedNetwork resource =
-            manager
-                .trunkedNetworks()
-                .getByResourceGroupWithResponse(
-                    "resourceGroupName", "trunkedNetworkName", com.azure.core.util.Context.NONE)
-                .getValue();
+        TrunkedNetwork resource = manager.trunkedNetworks()
+            .getByResourceGroupWithResponse("resourceGroupName", "trunkedNetworkName", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("key1", "fakeTokenPlaceholder", "key2", "fakeTokenPlaceholder")).apply();
     }
 

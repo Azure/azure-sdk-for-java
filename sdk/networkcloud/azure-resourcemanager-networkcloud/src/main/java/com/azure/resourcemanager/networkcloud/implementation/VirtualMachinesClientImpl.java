@@ -43,17 +43,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in VirtualMachinesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in VirtualMachinesClient.
+ */
 public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final VirtualMachinesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final NetworkCloudImpl client;
 
     /**
      * Initializes an instance of VirtualMachinesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     VirtualMachinesClientImpl(NetworkCloudImpl client) {
@@ -130,7 +136,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
         @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/virtualMachines/{virtualMachineName}/powerOff")
-        @ExpectedResponses({ 200, 202, 204 })
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> powerOff(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
@@ -141,7 +147,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
         @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/virtualMachines/{virtualMachineName}/reimage")
-        @ExpectedResponses({ 200, 202, 204 })
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> reimage(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
@@ -151,7 +157,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
         @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/virtualMachines/{virtualMachineName}/restart")
-        @ExpectedResponses({ 200, 202, 204 })
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> restart(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
@@ -161,7 +167,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
         @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/virtualMachines/{virtualMachineName}/start")
-        @ExpectedResponses({ 200, 202, 204 })
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> start(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
@@ -188,13 +194,13 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * List virtual machines in the subscription.
-     *
-     * <p>Get a list of virtual machines in the provided subscription.
-     *
+     * 
+     * Get a list of virtual machines in the provided subscription.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of virtual machines in the provided subscription along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VirtualMachineInner>> listSinglePageAsync() {
@@ -217,15 +223,15 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * List virtual machines in the subscription.
-     *
-     * <p>Get a list of virtual machines in the provided subscription.
-     *
+     * 
+     * Get a list of virtual machines in the provided subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of virtual machines in the provided subscription along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VirtualMachineInner>> listSinglePageAsync(Context context) {
@@ -248,9 +254,9 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * List virtual machines in the subscription.
-     *
-     * <p>Get a list of virtual machines in the provided subscription.
-     *
+     * 
+     * Get a list of virtual machines in the provided subscription.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of virtual machines in the provided subscription as paginated response with {@link PagedFlux}.
@@ -263,9 +269,9 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * List virtual machines in the subscription.
-     *
-     * <p>Get a list of virtual machines in the provided subscription.
-     *
+     * 
+     * Get a list of virtual machines in the provided subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -280,9 +286,9 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * List virtual machines in the subscription.
-     *
-     * <p>Get a list of virtual machines in the provided subscription.
-     *
+     * 
+     * Get a list of virtual machines in the provided subscription.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of virtual machines in the provided subscription as paginated response with {@link PagedIterable}.
@@ -294,9 +300,9 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * List virtual machines in the subscription.
-     *
-     * <p>Get a list of virtual machines in the provided subscription.
-     *
+     * 
+     * Get a list of virtual machines in the provided subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -310,15 +316,15 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * List virtual machines in the resource group.
-     *
-     * <p>Get a list of virtual machines in the provided resource group.
-     *
+     * 
+     * Get a list of virtual machines in the provided resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of virtual machines in the provided resource group along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VirtualMachineInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
@@ -345,16 +351,16 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * List virtual machines in the resource group.
-     *
-     * <p>Get a list of virtual machines in the provided resource group.
-     *
+     * 
+     * Get a list of virtual machines in the provided resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of virtual machines in the provided resource group along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VirtualMachineInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
@@ -382,9 +388,9 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * List virtual machines in the resource group.
-     *
-     * <p>Get a list of virtual machines in the provided resource group.
-     *
+     * 
+     * Get a list of virtual machines in the provided resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -399,9 +405,9 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * List virtual machines in the resource group.
-     *
-     * <p>Get a list of virtual machines in the provided resource group.
-     *
+     * 
+     * Get a list of virtual machines in the provided resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -417,15 +423,15 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * List virtual machines in the resource group.
-     *
-     * <p>Get a list of virtual machines in the provided resource group.
-     *
+     * 
+     * Get a list of virtual machines in the provided resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of virtual machines in the provided resource group as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of virtual machines in the provided resource group as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VirtualMachineInner> listByResourceGroup(String resourceGroupName) {
@@ -434,16 +440,16 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * List virtual machines in the resource group.
-     *
-     * <p>Get a list of virtual machines in the provided resource group.
-     *
+     * 
+     * Get a list of virtual machines in the provided resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of virtual machines in the provided resource group as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of virtual machines in the provided resource group as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VirtualMachineInner> listByResourceGroup(String resourceGroupName, Context context) {
@@ -452,16 +458,16 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Retrieve the virtual machine.
-     *
-     * <p>Get properties of the provided virtual machine.
-     *
+     * 
+     * Get properties of the provided virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of the provided virtual machine along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return properties of the provided virtual machine along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<VirtualMachineInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
@@ -491,17 +497,17 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Retrieve the virtual machine.
-     *
-     * <p>Get properties of the provided virtual machine.
-     *
+     * 
+     * Get properties of the provided virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of the provided virtual machine along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return properties of the provided virtual machine along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<VirtualMachineInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
@@ -530,9 +536,9 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Retrieve the virtual machine.
-     *
-     * <p>Get properties of the provided virtual machine.
-     *
+     * 
+     * Get properties of the provided virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -548,9 +554,9 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Retrieve the virtual machine.
-     *
-     * <p>Get properties of the provided virtual machine.
-     *
+     * 
+     * Get properties of the provided virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @param context The context to associate with this operation.
@@ -567,9 +573,9 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Retrieve the virtual machine.
-     *
-     * <p>Get properties of the provided virtual machine.
-     *
+     * 
+     * Get properties of the provided virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -584,9 +590,9 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Create or update the virtual machine.
-     *
-     * <p>Create a new virtual machine or update the properties of the existing virtual machine.
-     *
+     * 
+     * Create a new virtual machine or update the properties of the existing virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @param virtualMachineParameters The request body.
@@ -594,7 +600,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtualMachine represents the on-premises Network Cloud virtual machine along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
@@ -631,9 +637,9 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Create or update the virtual machine.
-     *
-     * <p>Create a new virtual machine or update the properties of the existing virtual machine.
-     *
+     * 
+     * Create a new virtual machine or update the properties of the existing virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @param virtualMachineParameters The request body.
@@ -642,7 +648,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtualMachine represents the on-premises Network Cloud virtual machine along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
@@ -678,9 +684,9 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Create or update the virtual machine.
-     *
-     * <p>Create a new virtual machine or update the properties of the existing virtual machine.
-     *
+     * 
+     * Create a new virtual machine or update the properties of the existing virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @param virtualMachineParameters The request body.
@@ -688,7 +694,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of virtualMachine represents the on-premises Network Cloud virtual
-     *     machine.
+     * machine.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<VirtualMachineInner>, VirtualMachineInner> beginCreateOrUpdateAsync(
@@ -701,9 +707,9 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Create or update the virtual machine.
-     *
-     * <p>Create a new virtual machine or update the properties of the existing virtual machine.
-     *
+     * 
+     * Create a new virtual machine or update the properties of the existing virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @param virtualMachineParameters The request body.
@@ -712,7 +718,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of virtualMachine represents the on-premises Network Cloud virtual
-     *     machine.
+     * machine.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<VirtualMachineInner>, VirtualMachineInner> beginCreateOrUpdateAsync(
@@ -727,9 +733,9 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Create or update the virtual machine.
-     *
-     * <p>Create a new virtual machine or update the properties of the existing virtual machine.
-     *
+     * 
+     * Create a new virtual machine or update the properties of the existing virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @param virtualMachineParameters The request body.
@@ -737,7 +743,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of virtualMachine represents the on-premises Network Cloud virtual
-     *     machine.
+     * machine.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualMachineInner>, VirtualMachineInner> beginCreateOrUpdate(
@@ -748,9 +754,9 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Create or update the virtual machine.
-     *
-     * <p>Create a new virtual machine or update the properties of the existing virtual machine.
-     *
+     * 
+     * Create a new virtual machine or update the properties of the existing virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @param virtualMachineParameters The request body.
@@ -759,7 +765,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of virtualMachine represents the on-premises Network Cloud virtual
-     *     machine.
+     * machine.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualMachineInner>, VirtualMachineInner> beginCreateOrUpdate(
@@ -771,9 +777,9 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Create or update the virtual machine.
-     *
-     * <p>Create a new virtual machine or update the properties of the existing virtual machine.
-     *
+     * 
+     * Create a new virtual machine or update the properties of the existing virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @param virtualMachineParameters The request body.
@@ -781,7 +787,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtualMachine represents the on-premises Network Cloud virtual machine on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<VirtualMachineInner> createOrUpdateAsync(String resourceGroupName, String virtualMachineName,
@@ -792,9 +798,9 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Create or update the virtual machine.
-     *
-     * <p>Create a new virtual machine or update the properties of the existing virtual machine.
-     *
+     * 
+     * Create a new virtual machine or update the properties of the existing virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @param virtualMachineParameters The request body.
@@ -803,7 +809,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtualMachine represents the on-premises Network Cloud virtual machine on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<VirtualMachineInner> createOrUpdateAsync(String resourceGroupName, String virtualMachineName,
@@ -814,9 +820,9 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Create or update the virtual machine.
-     *
-     * <p>Create a new virtual machine or update the properties of the existing virtual machine.
-     *
+     * 
+     * Create a new virtual machine or update the properties of the existing virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @param virtualMachineParameters The request body.
@@ -833,9 +839,9 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Create or update the virtual machine.
-     *
-     * <p>Create a new virtual machine or update the properties of the existing virtual machine.
-     *
+     * 
+     * Create a new virtual machine or update the properties of the existing virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @param virtualMachineParameters The request body.
@@ -853,15 +859,16 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Delete the virtual machine.
-     *
-     * <p>Delete the provided virtual machine.
-     *
+     * 
+     * Delete the provided virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
@@ -891,16 +898,17 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Delete the virtual machine.
-     *
-     * <p>Delete the provided virtual machine.
-     *
+     * 
+     * Delete the provided virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
@@ -929,157 +937,163 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Delete the virtual machine.
-     *
-     * <p>Delete the provided virtual machine.
-     *
+     * 
+     * Delete the provided virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String virtualMachineName) {
+    private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginDeleteAsync(String resourceGroupName, String virtualMachineName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, virtualMachineName);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+        return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(mono,
+            this.client.getHttpPipeline(), OperationStatusResultInner.class, OperationStatusResultInner.class,
             this.client.getContext());
     }
 
     /**
      * Delete the virtual machine.
-     *
-     * <p>Delete the provided virtual machine.
-     *
+     * 
+     * Delete the provided virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String virtualMachineName,
-        Context context) {
+    private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginDeleteAsync(String resourceGroupName, String virtualMachineName, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, virtualMachineName, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
+        return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(mono,
+            this.client.getHttpPipeline(), OperationStatusResultInner.class, OperationStatusResultInner.class, context);
     }
 
     /**
      * Delete the virtual machine.
-     *
-     * <p>Delete the provided virtual machine.
-     *
+     * 
+     * Delete the provided virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String virtualMachineName) {
+    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginDelete(String resourceGroupName, String virtualMachineName) {
         return this.beginDeleteAsync(resourceGroupName, virtualMachineName).getSyncPoller();
     }
 
     /**
      * Delete the virtual machine.
-     *
-     * <p>Delete the provided virtual machine.
-     *
+     * 
+     * Delete the provided virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String virtualMachineName,
-        Context context) {
+    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginDelete(String resourceGroupName, String virtualMachineName, Context context) {
         return this.beginDeleteAsync(resourceGroupName, virtualMachineName, context).getSyncPoller();
     }
 
     /**
      * Delete the virtual machine.
-     *
-     * <p>Delete the provided virtual machine.
-     *
+     * 
+     * Delete the provided virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the current status of an async operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String virtualMachineName) {
+    private Mono<OperationStatusResultInner> deleteAsync(String resourceGroupName, String virtualMachineName) {
         return beginDeleteAsync(resourceGroupName, virtualMachineName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete the virtual machine.
-     *
-     * <p>Delete the provided virtual machine.
-     *
+     * 
+     * Delete the provided virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the current status of an async operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String virtualMachineName, Context context) {
+    private Mono<OperationStatusResultInner> deleteAsync(String resourceGroupName, String virtualMachineName,
+        Context context) {
         return beginDeleteAsync(resourceGroupName, virtualMachineName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete the virtual machine.
-     *
-     * <p>Delete the provided virtual machine.
-     *
+     * 
+     * Delete the provided virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String virtualMachineName) {
-        deleteAsync(resourceGroupName, virtualMachineName).block();
+    public OperationStatusResultInner delete(String resourceGroupName, String virtualMachineName) {
+        return deleteAsync(resourceGroupName, virtualMachineName).block();
     }
 
     /**
      * Delete the virtual machine.
-     *
-     * <p>Delete the provided virtual machine.
-     *
+     * 
+     * Delete the provided virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String virtualMachineName, Context context) {
-        deleteAsync(resourceGroupName, virtualMachineName, context).block();
+    public OperationStatusResultInner delete(String resourceGroupName, String virtualMachineName, Context context) {
+        return deleteAsync(resourceGroupName, virtualMachineName, context).block();
     }
 
     /**
      * Patch the virtual machine.
-     *
-     * <p>Patch the properties of the provided virtual machine, or update the tags associated with the virtual machine.
+     * 
+     * Patch the properties of the provided virtual machine, or update the tags associated with the virtual machine.
      * Properties and tag updates can be done independently.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @param virtualMachineUpdateParameters The request body.
@@ -1087,7 +1101,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtualMachine represents the on-premises Network Cloud virtual machine along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName,
@@ -1121,10 +1135,10 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Patch the virtual machine.
-     *
-     * <p>Patch the properties of the provided virtual machine, or update the tags associated with the virtual machine.
+     * 
+     * Patch the properties of the provided virtual machine, or update the tags associated with the virtual machine.
      * Properties and tag updates can be done independently.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @param virtualMachineUpdateParameters The request body.
@@ -1133,7 +1147,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtualMachine represents the on-premises Network Cloud virtual machine along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName,
@@ -1165,10 +1179,10 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Patch the virtual machine.
-     *
-     * <p>Patch the properties of the provided virtual machine, or update the tags associated with the virtual machine.
+     * 
+     * Patch the properties of the provided virtual machine, or update the tags associated with the virtual machine.
      * Properties and tag updates can be done independently.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @param virtualMachineUpdateParameters The request body.
@@ -1176,7 +1190,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of virtualMachine represents the on-premises Network Cloud virtual
-     *     machine.
+     * machine.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<VirtualMachineInner>, VirtualMachineInner> beginUpdateAsync(String resourceGroupName,
@@ -1189,17 +1203,17 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Patch the virtual machine.
-     *
-     * <p>Patch the properties of the provided virtual machine, or update the tags associated with the virtual machine.
+     * 
+     * Patch the properties of the provided virtual machine, or update the tags associated with the virtual machine.
      * Properties and tag updates can be done independently.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of virtualMachine represents the on-premises Network Cloud virtual
-     *     machine.
+     * machine.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<VirtualMachineInner>, VirtualMachineInner> beginUpdateAsync(String resourceGroupName,
@@ -1213,10 +1227,10 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Patch the virtual machine.
-     *
-     * <p>Patch the properties of the provided virtual machine, or update the tags associated with the virtual machine.
+     * 
+     * Patch the properties of the provided virtual machine, or update the tags associated with the virtual machine.
      * Properties and tag updates can be done independently.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @param virtualMachineUpdateParameters The request body.
@@ -1225,7 +1239,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of virtualMachine represents the on-premises Network Cloud virtual
-     *     machine.
+     * machine.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<VirtualMachineInner>, VirtualMachineInner> beginUpdateAsync(String resourceGroupName,
@@ -1239,17 +1253,17 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Patch the virtual machine.
-     *
-     * <p>Patch the properties of the provided virtual machine, or update the tags associated with the virtual machine.
+     * 
+     * Patch the properties of the provided virtual machine, or update the tags associated with the virtual machine.
      * Properties and tag updates can be done independently.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of virtualMachine represents the on-premises Network Cloud virtual
-     *     machine.
+     * machine.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualMachineInner>, VirtualMachineInner> beginUpdate(String resourceGroupName,
@@ -1261,10 +1275,10 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Patch the virtual machine.
-     *
-     * <p>Patch the properties of the provided virtual machine, or update the tags associated with the virtual machine.
+     * 
+     * Patch the properties of the provided virtual machine, or update the tags associated with the virtual machine.
      * Properties and tag updates can be done independently.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @param virtualMachineUpdateParameters The request body.
@@ -1273,7 +1287,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of virtualMachine represents the on-premises Network Cloud virtual
-     *     machine.
+     * machine.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualMachineInner>, VirtualMachineInner> beginUpdate(String resourceGroupName,
@@ -1284,10 +1298,10 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Patch the virtual machine.
-     *
-     * <p>Patch the properties of the provided virtual machine, or update the tags associated with the virtual machine.
+     * 
+     * Patch the properties of the provided virtual machine, or update the tags associated with the virtual machine.
      * Properties and tag updates can be done independently.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @param virtualMachineUpdateParameters The request body.
@@ -1295,7 +1309,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtualMachine represents the on-premises Network Cloud virtual machine on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<VirtualMachineInner> updateAsync(String resourceGroupName, String virtualMachineName,
@@ -1306,17 +1320,17 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Patch the virtual machine.
-     *
-     * <p>Patch the properties of the provided virtual machine, or update the tags associated with the virtual machine.
+     * 
+     * Patch the properties of the provided virtual machine, or update the tags associated with the virtual machine.
      * Properties and tag updates can be done independently.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtualMachine represents the on-premises Network Cloud virtual machine on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<VirtualMachineInner> updateAsync(String resourceGroupName, String virtualMachineName) {
@@ -1327,10 +1341,10 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Patch the virtual machine.
-     *
-     * <p>Patch the properties of the provided virtual machine, or update the tags associated with the virtual machine.
+     * 
+     * Patch the properties of the provided virtual machine, or update the tags associated with the virtual machine.
      * Properties and tag updates can be done independently.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @param virtualMachineUpdateParameters The request body.
@@ -1339,7 +1353,7 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtualMachine represents the on-premises Network Cloud virtual machine on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<VirtualMachineInner> updateAsync(String resourceGroupName, String virtualMachineName,
@@ -1350,10 +1364,10 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Patch the virtual machine.
-     *
-     * <p>Patch the properties of the provided virtual machine, or update the tags associated with the virtual machine.
+     * 
+     * Patch the properties of the provided virtual machine, or update the tags associated with the virtual machine.
      * Properties and tag updates can be done independently.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1369,10 +1383,10 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Patch the virtual machine.
-     *
-     * <p>Patch the properties of the provided virtual machine, or update the tags associated with the virtual machine.
+     * 
+     * Patch the properties of the provided virtual machine, or update the tags associated with the virtual machine.
      * Properties and tag updates can be done independently.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @param virtualMachineUpdateParameters The request body.
@@ -1390,17 +1404,17 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Power off the virtual machine.
-     *
-     * <p>Power off the provided virtual machine.
-     *
+     * 
+     * Power off the provided virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @param virtualMachinePowerOffParameters The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current status of an async operation along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> powerOffWithResponseAsync(String resourceGroupName,
@@ -1434,9 +1448,9 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Power off the virtual machine.
-     *
-     * <p>Power off the provided virtual machine.
-     *
+     * 
+     * Power off the provided virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @param virtualMachinePowerOffParameters The request body.
@@ -1444,8 +1458,8 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current status of an async operation along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> powerOffWithResponseAsync(String resourceGroupName,
@@ -1477,9 +1491,9 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Power off the virtual machine.
-     *
-     * <p>Power off the provided virtual machine.
-     *
+     * 
+     * Power off the provided virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @param virtualMachinePowerOffParameters The request body.
@@ -1501,9 +1515,9 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Power off the virtual machine.
-     *
-     * <p>Power off the provided virtual machine.
-     *
+     * 
+     * Power off the provided virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1524,9 +1538,9 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Power off the virtual machine.
-     *
-     * <p>Power off the provided virtual machine.
-     *
+     * 
+     * Power off the provided virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @param virtualMachinePowerOffParameters The request body.
@@ -1549,9 +1563,9 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Power off the virtual machine.
-     *
-     * <p>Power off the provided virtual machine.
-     *
+     * 
+     * Power off the provided virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1569,9 +1583,9 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Power off the virtual machine.
-     *
-     * <p>Power off the provided virtual machine.
-     *
+     * 
+     * Power off the provided virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @param virtualMachinePowerOffParameters The request body.
@@ -1591,9 +1605,9 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Power off the virtual machine.
-     *
-     * <p>Power off the provided virtual machine.
-     *
+     * 
+     * Power off the provided virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @param virtualMachinePowerOffParameters The request body.
@@ -1611,9 +1625,9 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Power off the virtual machine.
-     *
-     * <p>Power off the provided virtual machine.
-     *
+     * 
+     * Power off the provided virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1630,9 +1644,9 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Power off the virtual machine.
-     *
-     * <p>Power off the provided virtual machine.
-     *
+     * 
+     * Power off the provided virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @param virtualMachinePowerOffParameters The request body.
@@ -1652,9 +1666,9 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Power off the virtual machine.
-     *
-     * <p>Power off the provided virtual machine.
-     *
+     * 
+     * Power off the provided virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1670,9 +1684,9 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Power off the virtual machine.
-     *
-     * <p>Power off the provided virtual machine.
-     *
+     * 
+     * Power off the provided virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @param virtualMachinePowerOffParameters The request body.
@@ -1690,16 +1704,16 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Reimage the virtual machine.
-     *
-     * <p>Reimage the provided virtual machine.
-     *
+     * 
+     * Reimage the provided virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current status of an async operation along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> reimageWithResponseAsync(String resourceGroupName,
@@ -1729,17 +1743,17 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Reimage the virtual machine.
-     *
-     * <p>Reimage the provided virtual machine.
-     *
+     * 
+     * Reimage the provided virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current status of an async operation along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> reimageWithResponseAsync(String resourceGroupName,
@@ -1768,9 +1782,9 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Reimage the virtual machine.
-     *
-     * <p>Reimage the provided virtual machine.
-     *
+     * 
+     * Reimage the provided virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1789,9 +1803,9 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Reimage the virtual machine.
-     *
-     * <p>Reimage the provided virtual machine.
-     *
+     * 
+     * Reimage the provided virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @param context The context to associate with this operation.
@@ -1812,9 +1826,9 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Reimage the virtual machine.
-     *
-     * <p>Reimage the provided virtual machine.
-     *
+     * 
+     * Reimage the provided virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1830,9 +1844,9 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Reimage the virtual machine.
-     *
-     * <p>Reimage the provided virtual machine.
-     *
+     * 
+     * Reimage the provided virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @param context The context to associate with this operation.
@@ -1849,9 +1863,9 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Reimage the virtual machine.
-     *
-     * <p>Reimage the provided virtual machine.
-     *
+     * 
+     * Reimage the provided virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1867,9 +1881,9 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Reimage the virtual machine.
-     *
-     * <p>Reimage the provided virtual machine.
-     *
+     * 
+     * Reimage the provided virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @param context The context to associate with this operation.
@@ -1887,9 +1901,9 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Reimage the virtual machine.
-     *
-     * <p>Reimage the provided virtual machine.
-     *
+     * 
+     * Reimage the provided virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1904,9 +1918,9 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Reimage the virtual machine.
-     *
-     * <p>Reimage the provided virtual machine.
-     *
+     * 
+     * Reimage the provided virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @param context The context to associate with this operation.
@@ -1922,16 +1936,16 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Restart the virtual machine.
-     *
-     * <p>Restart the provided virtual machine.
-     *
+     * 
+     * Restart the provided virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current status of an async operation along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> restartWithResponseAsync(String resourceGroupName,
@@ -1961,17 +1975,17 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Restart the virtual machine.
-     *
-     * <p>Restart the provided virtual machine.
-     *
+     * 
+     * Restart the provided virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current status of an async operation along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> restartWithResponseAsync(String resourceGroupName,
@@ -2000,9 +2014,9 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Restart the virtual machine.
-     *
-     * <p>Restart the provided virtual machine.
-     *
+     * 
+     * Restart the provided virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2021,9 +2035,9 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Restart the virtual machine.
-     *
-     * <p>Restart the provided virtual machine.
-     *
+     * 
+     * Restart the provided virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @param context The context to associate with this operation.
@@ -2044,9 +2058,9 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Restart the virtual machine.
-     *
-     * <p>Restart the provided virtual machine.
-     *
+     * 
+     * Restart the provided virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2062,9 +2076,9 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Restart the virtual machine.
-     *
-     * <p>Restart the provided virtual machine.
-     *
+     * 
+     * Restart the provided virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @param context The context to associate with this operation.
@@ -2081,9 +2095,9 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Restart the virtual machine.
-     *
-     * <p>Restart the provided virtual machine.
-     *
+     * 
+     * Restart the provided virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2099,9 +2113,9 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Restart the virtual machine.
-     *
-     * <p>Restart the provided virtual machine.
-     *
+     * 
+     * Restart the provided virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @param context The context to associate with this operation.
@@ -2119,9 +2133,9 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Restart the virtual machine.
-     *
-     * <p>Restart the provided virtual machine.
-     *
+     * 
+     * Restart the provided virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2136,9 +2150,9 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Restart the virtual machine.
-     *
-     * <p>Restart the provided virtual machine.
-     *
+     * 
+     * Restart the provided virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @param context The context to associate with this operation.
@@ -2154,16 +2168,16 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Start the virtual machine.
-     *
-     * <p>Start the provided virtual machine.
-     *
+     * 
+     * Start the provided virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current status of an async operation along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> startWithResponseAsync(String resourceGroupName,
@@ -2193,17 +2207,17 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Start the virtual machine.
-     *
-     * <p>Start the provided virtual machine.
-     *
+     * 
+     * Start the provided virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current status of an async operation along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> startWithResponseAsync(String resourceGroupName, String virtualMachineName,
@@ -2232,9 +2246,9 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Start the virtual machine.
-     *
-     * <p>Start the provided virtual machine.
-     *
+     * 
+     * Start the provided virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2253,9 +2267,9 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Start the virtual machine.
-     *
-     * <p>Start the provided virtual machine.
-     *
+     * 
+     * Start the provided virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @param context The context to associate with this operation.
@@ -2275,9 +2289,9 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Start the virtual machine.
-     *
-     * <p>Start the provided virtual machine.
-     *
+     * 
+     * Start the provided virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2293,9 +2307,9 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Start the virtual machine.
-     *
-     * <p>Start the provided virtual machine.
-     *
+     * 
+     * Start the provided virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @param context The context to associate with this operation.
@@ -2312,9 +2326,9 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Start the virtual machine.
-     *
-     * <p>Start the provided virtual machine.
-     *
+     * 
+     * Start the provided virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2330,9 +2344,9 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Start the virtual machine.
-     *
-     * <p>Start the provided virtual machine.
-     *
+     * 
+     * Start the provided virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @param context The context to associate with this operation.
@@ -2350,9 +2364,9 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Start the virtual machine.
-     *
-     * <p>Start the provided virtual machine.
-     *
+     * 
+     * Start the provided virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2367,9 +2381,9 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Start the virtual machine.
-     *
-     * <p>Start the provided virtual machine.
-     *
+     * 
+     * Start the provided virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @param context The context to associate with this operation.
@@ -2385,14 +2399,13 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtualMachineList represents a list of virtual machines along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VirtualMachineInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
@@ -2414,15 +2427,14 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtualMachineList represents a list of virtual machines along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VirtualMachineInner>> listBySubscriptionNextSinglePageAsync(String nextLink,
@@ -2443,14 +2455,13 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtualMachineList represents a list of virtual machines along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VirtualMachineInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -2472,15 +2483,14 @@ public final class VirtualMachinesClientImpl implements VirtualMachinesClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtualMachineList represents a list of virtual machines along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VirtualMachineInner>> listByResourceGroupNextSinglePageAsync(String nextLink,

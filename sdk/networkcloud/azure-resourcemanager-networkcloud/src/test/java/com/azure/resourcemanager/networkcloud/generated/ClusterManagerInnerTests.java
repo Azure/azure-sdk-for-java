@@ -7,6 +7,9 @@ package com.azure.resourcemanager.networkcloud.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.networkcloud.fluent.models.ClusterManagerInner;
 import com.azure.resourcemanager.networkcloud.models.ManagedResourceGroupConfiguration;
+import com.azure.resourcemanager.networkcloud.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.networkcloud.models.ManagedServiceIdentityType;
+import com.azure.resourcemanager.networkcloud.models.UserAssignedIdentity;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,37 +19,42 @@ public final class ClusterManagerInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ClusterManagerInner model = BinaryData.fromString(
-            "{\"properties\":{\"analyticsWorkspaceId\":\"bxzpuzycisp\",\"availabilityZones\":[\"ahmgkbrp\",\"y\",\"hibnuqqkpika\",\"rgvtqag\"],\"clusterVersions\":[{\"supportExpiryDate\":\"nhijggmebfsi\",\"targetClusterVersion\":\"butr\"},{\"supportExpiryDate\":\"pnazzm\",\"targetClusterVersion\":\"runmp\"}],\"detailedStatus\":\"UpdateFailed\",\"detailedStatusMessage\":\"bh\",\"fabricControllerId\":\"bnlankxmyskpb\",\"managedResourceGroupConfiguration\":{\"location\":\"btkcxywnytnrsyn\",\"name\":\"idybyxczf\"},\"managerExtendedLocation\":{\"name\":\"haaxdbabphl\",\"type\":\"rqlfktsthsucocmn\"},\"provisioningState\":\"Canceled\",\"vmSize\":\"t\"},\"location\":\"twwrqp\",\"tags\":{\"xibxujwbhqwalm\":\"ckzywbiexzfeyue\",\"ux\":\"zyoxaepdkzjan\",\"zt\":\"hdwbavxbniwdjs\"},\"id\":\"dbpgnxytxhp\",\"name\":\"xbzpfzab\",\"type\":\"lcuhxwtctyqiklb\"}")
+            "{\"identity\":{\"principalId\":\"6a219ae8-bf79-4c1d-ad7c-710d9c4e4572\",\"tenantId\":\"9394c260-5644-4f16-b350-200dccfdf47e\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"ndslgnayqigynduh\":{\"principalId\":\"067013cc-6ca8-413b-a8e9-6669afb17f10\",\"clientId\":\"0e2d10a9-5d5a-431c-8327-890f1e2547cd\"},\"qlkth\":{\"principalId\":\"5c5d5f50-fa35-488d-bb1c-c262471d1d76\",\"clientId\":\"5ced5514-81e1-4ce7-8f48-ad7e3e4871d1\"},\"qolbgyc\":{\"principalId\":\"473245fd-e236-4482-9a2a-6c557d13d760\",\"clientId\":\"f42102df-3377-4e68-a42a-992ff3574173\"}}},\"properties\":{\"analyticsWorkspaceId\":\"iertgccymvaolp\",\"availabilityZones\":[\"qlfmmdnbb\",\"lzpswiydm\"],\"clusterVersions\":[{\"supportExpiryDate\":\"zdxss\",\"targetClusterVersion\":\"bzmnvdfznud\"}],\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"xzb\",\"fabricControllerId\":\"cblylpstdbhhxsr\",\"managedResourceGroupConfiguration\":{\"location\":\"ucerscdntnevfi\",\"name\":\"mygtdssls\"},\"managerExtendedLocation\":{\"name\":\"mweriofzpy\",\"type\":\"semwabnet\"},\"provisioningState\":\"Failed\",\"vmSize\":\"zhedplvwiw\"},\"location\":\"mwmbes\",\"tags\":{\"wtppjflcxogaoko\":\"k\"},\"id\":\"z\",\"name\":\"nsikvmkqzeqqkdl\",\"type\":\"fzxmhhvhgureodkw\"}")
             .toObject(ClusterManagerInner.class);
-        Assertions.assertEquals("twwrqp", model.location());
-        Assertions.assertEquals("ckzywbiexzfeyue", model.tags().get("xibxujwbhqwalm"));
-        Assertions.assertEquals("bxzpuzycisp", model.analyticsWorkspaceId());
-        Assertions.assertEquals("ahmgkbrp", model.availabilityZones().get(0));
-        Assertions.assertEquals("bnlankxmyskpb", model.fabricControllerId());
-        Assertions.assertEquals("btkcxywnytnrsyn", model.managedResourceGroupConfiguration().location());
-        Assertions.assertEquals("idybyxczf", model.managedResourceGroupConfiguration().name());
-        Assertions.assertEquals("t", model.vmSize());
+        Assertions.assertEquals("mwmbes", model.location());
+        Assertions.assertEquals("k", model.tags().get("wtppjflcxogaoko"));
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("iertgccymvaolp", model.analyticsWorkspaceId());
+        Assertions.assertEquals("qlfmmdnbb", model.availabilityZones().get(0));
+        Assertions.assertEquals("cblylpstdbhhxsr", model.fabricControllerId());
+        Assertions.assertEquals("ucerscdntnevfi", model.managedResourceGroupConfiguration().location());
+        Assertions.assertEquals("mygtdssls", model.managedResourceGroupConfiguration().name());
+        Assertions.assertEquals("zhedplvwiw", model.vmSize());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClusterManagerInner model = new ClusterManagerInner().withLocation("twwrqp")
-            .withTags(mapOf("xibxujwbhqwalm", "ckzywbiexzfeyue", "ux", "zyoxaepdkzjan", "zt", "hdwbavxbniwdjs"))
-            .withAnalyticsWorkspaceId("bxzpuzycisp")
-            .withAvailabilityZones(Arrays.asList("ahmgkbrp", "y", "hibnuqqkpika", "rgvtqag"))
-            .withFabricControllerId("bnlankxmyskpb")
+        ClusterManagerInner model = new ClusterManagerInner().withLocation("mwmbes")
+            .withTags(mapOf("wtppjflcxogaoko", "k"))
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
+                .withUserAssignedIdentities(mapOf("ndslgnayqigynduh", new UserAssignedIdentity(), "qlkth",
+                    new UserAssignedIdentity(), "qolbgyc", new UserAssignedIdentity())))
+            .withAnalyticsWorkspaceId("iertgccymvaolp")
+            .withAvailabilityZones(Arrays.asList("qlfmmdnbb", "lzpswiydm"))
+            .withFabricControllerId("cblylpstdbhhxsr")
             .withManagedResourceGroupConfiguration(
-                new ManagedResourceGroupConfiguration().withLocation("btkcxywnytnrsyn").withName("idybyxczf"))
-            .withVmSize("t");
+                new ManagedResourceGroupConfiguration().withLocation("ucerscdntnevfi").withName("mygtdssls"))
+            .withVmSize("zhedplvwiw");
         model = BinaryData.fromObject(model).toObject(ClusterManagerInner.class);
-        Assertions.assertEquals("twwrqp", model.location());
-        Assertions.assertEquals("ckzywbiexzfeyue", model.tags().get("xibxujwbhqwalm"));
-        Assertions.assertEquals("bxzpuzycisp", model.analyticsWorkspaceId());
-        Assertions.assertEquals("ahmgkbrp", model.availabilityZones().get(0));
-        Assertions.assertEquals("bnlankxmyskpb", model.fabricControllerId());
-        Assertions.assertEquals("btkcxywnytnrsyn", model.managedResourceGroupConfiguration().location());
-        Assertions.assertEquals("idybyxczf", model.managedResourceGroupConfiguration().name());
-        Assertions.assertEquals("t", model.vmSize());
+        Assertions.assertEquals("mwmbes", model.location());
+        Assertions.assertEquals("k", model.tags().get("wtppjflcxogaoko"));
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("iertgccymvaolp", model.analyticsWorkspaceId());
+        Assertions.assertEquals("qlfmmdnbb", model.availabilityZones().get(0));
+        Assertions.assertEquals("cblylpstdbhhxsr", model.fabricControllerId());
+        Assertions.assertEquals("ucerscdntnevfi", model.managedResourceGroupConfiguration().location());
+        Assertions.assertEquals("mygtdssls", model.managedResourceGroupConfiguration().name());
+        Assertions.assertEquals("zhedplvwiw", model.vmSize());
     }
 
     // Use "Map.of" if available
