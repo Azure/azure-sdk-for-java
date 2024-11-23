@@ -16,6 +16,12 @@ import java.time.Duration;
  */
 public class WordData implements JsonSerializable<WordData> {
 
+    /**
+     * Creates a new instance of {@link WordData}.
+     */
+    WordData() {
+    }
+
     /*
      * Text in the phrase.
      */

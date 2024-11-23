@@ -23,6 +23,12 @@ public abstract class StreamingData {
     private StreamingDataKind streamingDataKind;
 
     /**
+     * Creates an instance of {@link StreamingData}.
+     */
+    StreamingData() {
+    }
+
+    /**
      * Get the streaming data kind.
      *
      * @return streaming data kind.

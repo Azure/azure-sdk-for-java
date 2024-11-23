@@ -12,6 +12,12 @@ import com.azure.core.annotation.Fluent;
 public final class StartTranscriptionOptions {
 
     /**
+     * Creates an instance of {@link StartTranscriptionOptions}.
+     */
+    public StartTranscriptionOptions() {
+    }
+
+    /**
      * Defines Locale for the transcription e,g en-US.
      */
     private String locale;
