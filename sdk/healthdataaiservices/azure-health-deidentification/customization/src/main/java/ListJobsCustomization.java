@@ -24,14 +24,12 @@ public class ListJobsCustomization extends Customization {
         ClassCustomization deidentificationClientClass = models.getClass("DeidentificationClient");
         customizeClassByMarkingContinuationTokenOverloadsPrivate(deidentificationClientClass);
         customizeClassByRenamingJobNameParameter(deidentificationClientClass);
-        customizeJavadocByRenamingJobNameParameter(deidentificationClientClass);
+        customizeJavadocByRenamingJobNameParameter(deidentificationClientClass, false);
 
         ClassCustomization deidentificationAsyncClientClass = models.getClass("DeidentificationAsyncClient");
         customizeClassByMarkingContinuationTokenOverloadsPrivate(deidentificationAsyncClientClass);
         customizeClassByRenamingJobNameParameter(deidentificationAsyncClientClass);
-        customizeJavadocByRenamingJobNameParameter(deidentificationAsyncClientClass);
-
-        JavadocCustomization setActiveJavadoc = models.getClass("df").getJavadoc();
+        customizeJavadocByRenamingJobNameParameter(deidentificationAsyncClientClass, true);
     }
 
     private static void customizeClassByMarkingContinuationTokenOverloadsPrivate(ClassCustomization classCustomization) {
@@ -43,14 +41,25 @@ public class ListJobsCustomization extends Customization {
         });
     }
 
-    private static void customizeJavadocByRenamingJobNameParameter(ClassCustomization classCustomization) {
-        JavadocCustomization listJobDocumentsJavadoc = classCustomization.getMethod("listJobDocuments").getJavadoc();
-        listJobDocumentsJavadoc.removeParam("name");
-        listJobDocumentsJavadoc.setParam("jobName", "The name of a job.");
+    private static void customizeJavadocByRenamingJobNameParameter(ClassCustomization classCustomization, Boolean customizeAsync) {
+        if (customizeAsync) {
+            JavadocCustomization listJobDocumentsAsyncJavadoc1 = classCustomization.getMethod("public PagedFlux<BinaryData> listJobDocuments(String jobName, RequestOptions requestOptions)").getJavadoc();
+            listJobDocumentsAsyncJavadoc1.setParam("jobName", "The name of a job.");
+            listJobDocumentsAsyncJavadoc1.removeParam("name");
 
-        JavadocCustomization listJobDocumentsAsyncJavadoc = classCustomization.getMethod("listJobDocumentsAsync").getJavadoc();
-        listJobDocumentsAsyncJavadoc.removeParam("name");
-        listJobDocumentsAsyncJavadoc.setParam("jobName", "The name of a job.");
+            JavadocCustomization listJobDocumentsAsyncJavadoc2 = classCustomization.getMethod("public PagedFlux<DeidentificationDocumentDetails> listJobDocuments(String jobName)").getJavadoc();
+            listJobDocumentsAsyncJavadoc2.setParam("jobName", "The name of a job.");
+            listJobDocumentsAsyncJavadoc2.removeParam("name");
+        }
+        else {
+            JavadocCustomization listJobDocumentsJavadoc1 = classCustomization.getMethod("public PagedIterable<BinaryData> listJobDocuments(String jobName, RequestOptions requestOptions)").getJavadoc();
+            listJobDocumentsJavadoc1.setParam("jobName", "The name of a job.");
+            listJobDocumentsJavadoc1.removeParam("name");
+
+            JavadocCustomization listJobDocumentsJavadoc2 = classCustomization.getMethod("public PagedIterable<DeidentificationDocumentDetails> listJobDocuments(String jobName)").getJavadoc();
+            listJobDocumentsJavadoc2.setParam("jobName", "The name of a job.");
+            listJobDocumentsJavadoc2.removeParam("name");
+        }
     }
 
     private static void customizeClassByRenamingJobNameParameter(ClassCustomization classCustomization) {
