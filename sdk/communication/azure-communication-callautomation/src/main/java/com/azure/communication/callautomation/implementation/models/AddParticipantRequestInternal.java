@@ -24,7 +24,7 @@ public final class AddParticipantRequestInternal implements JsonSerializable<Add
 
     /*
      * (Optional) The display name of the source that is associated with this invite operation when
-     * adding a PSTN participant or teams user. Note: Will not update the display name in the roster.
+     * adding a PSTN participant or teams user.  Note: Will not update the display name in the roster.
      */
     private String sourceDisplayName;
 
@@ -46,8 +46,7 @@ public final class AddParticipantRequestInternal implements JsonSerializable<Add
 
     /*
      * Set a callback URI that overrides the default callback URI set by CreateCall/AnswerCall for this operation.
-     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be
-     * used.
+     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be used.
      */
     private String operationCallbackUri;
 
@@ -63,8 +62,8 @@ public final class AddParticipantRequestInternal implements JsonSerializable<Add
     }
 
     /**
-     * Get the sourceCallerIdNumber property: The source caller Id, a phone number, that's shown to the PSTN
-     * participant being invited.
+     * Get the sourceCallerIdNumber property: The source caller Id, a phone number, that's shown to the PSTN participant
+     * being invited.
      * Required only when inviting a PSTN participant.
      * 
      * @return the sourceCallerIdNumber value.
@@ -74,8 +73,8 @@ public final class AddParticipantRequestInternal implements JsonSerializable<Add
     }
 
     /**
-     * Set the sourceCallerIdNumber property: The source caller Id, a phone number, that's shown to the PSTN
-     * participant being invited.
+     * Set the sourceCallerIdNumber property: The source caller Id, a phone number, that's shown to the PSTN participant
+     * being invited.
      * Required only when inviting a PSTN participant.
      * 
      * @param sourceCallerIdNumber the sourceCallerIdNumber value to set.
@@ -87,8 +86,8 @@ public final class AddParticipantRequestInternal implements JsonSerializable<Add
     }
 
     /**
-     * Get the sourceDisplayName property: (Optional) The display name of the source that is associated with this
-     * invite operation when
+     * Get the sourceDisplayName property: (Optional) The display name of the source that is associated with this invite
+     * operation when
      * adding a PSTN participant or teams user. Note: Will not update the display name in the roster.
      * 
      * @return the sourceDisplayName value.
@@ -98,8 +97,8 @@ public final class AddParticipantRequestInternal implements JsonSerializable<Add
     }
 
     /**
-     * Set the sourceDisplayName property: (Optional) The display name of the source that is associated with this
-     * invite operation when
+     * Set the sourceDisplayName property: (Optional) The display name of the source that is associated with this invite
+     * operation when
      * adding a PSTN participant or teams user. Note: Will not update the display name in the roster.
      * 
      * @param sourceDisplayName the sourceDisplayName value to set.
@@ -179,8 +178,7 @@ public final class AddParticipantRequestInternal implements JsonSerializable<Add
     /**
      * Get the operationCallbackUri property: Set a callback URI that overrides the default callback URI set by
      * CreateCall/AnswerCall for this operation.
-     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be
-     * used.
+     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be used.
      * 
      * @return the operationCallbackUri value.
      */
@@ -191,8 +189,7 @@ public final class AddParticipantRequestInternal implements JsonSerializable<Add
     /**
      * Set the operationCallbackUri property: Set a callback URI that overrides the default callback URI set by
      * CreateCall/AnswerCall for this operation.
-     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be
-     * used.
+     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be used.
      * 
      * @param operationCallbackUri the operationCallbackUri value to set.
      * @return the AddParticipantRequestInternal object itself.
@@ -222,6 +219,9 @@ public final class AddParticipantRequestInternal implements JsonSerializable<Add
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

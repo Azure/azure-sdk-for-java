@@ -72,6 +72,9 @@ public final class RedirectCallRequestInternal implements JsonSerializable<Redir
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

@@ -80,8 +80,8 @@ public final class CreateCallRequestInternal implements JsonSerializable<CreateC
     }
 
     /**
-     * Get the sourceCallerIdNumber property: The source caller Id, a phone number, that's shown to the PSTN
-     * participant being invited.
+     * Get the sourceCallerIdNumber property: The source caller Id, a phone number, that's shown to the PSTN participant
+     * being invited.
      * Required only when calling a PSTN callee.
      * 
      * @return the sourceCallerIdNumber value.
@@ -91,8 +91,8 @@ public final class CreateCallRequestInternal implements JsonSerializable<CreateC
     }
 
     /**
-     * Set the sourceCallerIdNumber property: The source caller Id, a phone number, that's shown to the PSTN
-     * participant being invited.
+     * Set the sourceCallerIdNumber property: The source caller Id, a phone number, that's shown to the PSTN participant
+     * being invited.
      * Required only when calling a PSTN callee.
      * 
      * @param sourceCallerIdNumber the sourceCallerIdNumber value to set.
@@ -204,6 +204,9 @@ public final class CreateCallRequestInternal implements JsonSerializable<CreateC
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

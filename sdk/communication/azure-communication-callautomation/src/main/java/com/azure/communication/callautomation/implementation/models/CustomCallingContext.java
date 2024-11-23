@@ -73,6 +73,9 @@ public final class CustomCallingContext implements JsonSerializable<CustomCallin
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

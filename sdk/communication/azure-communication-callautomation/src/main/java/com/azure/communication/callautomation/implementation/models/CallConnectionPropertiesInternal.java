@@ -69,8 +69,7 @@ public final class CallConnectionPropertiesInternal implements JsonSerializable<
     private CommunicationUserIdentifierModel answeredBy;
 
     /*
-     * Identity of the original PSTN target of an incoming Call. Only populated when the original target is a PSTN
-     * number and an inbound call.
+     * Identity of the original PSTN target of an incoming Call. Only populated when the original target is a PSTN number and an inbound call.
      */
     private PhoneNumberIdentifierModel answeredFor;
 
@@ -182,8 +181,8 @@ public final class CallConnectionPropertiesInternal implements JsonSerializable<
     }
 
     /**
-     * Get the sourceCallerIdNumber property: The source caller Id, a phone number, that's shown to the PSTN
-     * participant being invited.
+     * Get the sourceCallerIdNumber property: The source caller Id, a phone number, that's shown to the PSTN participant
+     * being invited.
      * Only populated in outbound PSTN calls.
      * 
      * @return the sourceCallerIdNumber value.
@@ -193,8 +192,8 @@ public final class CallConnectionPropertiesInternal implements JsonSerializable<
     }
 
     /**
-     * Set the sourceCallerIdNumber property: The source caller Id, a phone number, that's shown to the PSTN
-     * participant being invited.
+     * Set the sourceCallerIdNumber property: The source caller Id, a phone number, that's shown to the PSTN participant
+     * being invited.
      * Only populated in outbound PSTN calls.
      * 
      * @param sourceCallerIdNumber the sourceCallerIdNumber value to set.
@@ -309,6 +308,9 @@ public final class CallConnectionPropertiesInternal implements JsonSerializable<
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

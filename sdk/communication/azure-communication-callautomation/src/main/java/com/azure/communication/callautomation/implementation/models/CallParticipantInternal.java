@@ -97,6 +97,9 @@ public final class CallParticipantInternal implements JsonSerializable<CallParti
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
