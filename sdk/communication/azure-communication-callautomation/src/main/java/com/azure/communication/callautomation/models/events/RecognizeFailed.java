@@ -31,7 +31,7 @@ public final class RecognizeFailed extends CallAutomationEventBaseWithReasonCode
     /**
      * Creates an instance of {@link RecognizeFailed}.
      */
-    private RecognizeFailed() {
+    public RecognizeFailed() {
         this.failedPlaySourceIndex = null;
     }
 
