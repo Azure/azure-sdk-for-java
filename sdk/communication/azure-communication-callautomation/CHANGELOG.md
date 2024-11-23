@@ -1,5 +1,15 @@
 # Release History
 
+## 1.4.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 1.3.0 (2024-11-22)
 
 ### Features Added
@@ -17,11 +27,31 @@
 - Added CreateCallFailed event to signify when create call API fails to establish a call
 - Added AnswerFailed event to signify when answer call API fails to answer a call
 
+## 1.2.5 (2024-09-27)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.51.0` to version `1.52.0`.
+- Upgraded `azure-communication-common` from `1.3.5` to version `1.3.7`.
+
+
 ## 1.3.0-beta.2 (2024-09-10)
 
 ### Features Added
 
 - Added CreateCallFailed event to signify when create call API fails to establish a call
+
+## 1.2.4 (2024-08-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-communication-common` from `1.3.4` to version `1.3.5`.
+- Upgraded `azure-core` from `1.50.0` to version `1.51.0`.
+
 
 ## 1.3.0-beta.1 (2024-08-06)
 
@@ -33,26 +63,6 @@
 - Support to manage the rooms/servercall/group call using connect API
 - Expose original PSTN number target from incoming call event in call connection properties
 - Support for VoIP to PSTN transfer scenario
-
-## 1.2.5 (2024-09-27)
-
-### Other Changes
-
-#### Dependency Updates
-
-- Upgraded `azure-core` from `1.51.0` to version `1.52.0`.
-- Upgraded `azure-communication-common` from `1.3.5` to version `1.3.7`.
-
-
-## 1.2.4 (2024-08-24)
-
-### Other Changes
-
-#### Dependency Updates
-
-- Upgraded `azure-communication-common` from `1.3.4` to version `1.3.5`.
-- Upgraded `azure-core` from `1.50.0` to version `1.51.0`.
-
 
 ## 1.2.3 (2024-07-26)
 
