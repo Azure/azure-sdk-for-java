@@ -25,7 +25,7 @@ public class BatchOperationTestBase extends TestProxyTestBase {
     private static final String FAKE_STORAGE_ACCOUNT_SAS_URI
         = "https://fake_storage_account_sas_uri.blob.core.windows.net/container-sdk-dev-fakeid";
     private static final String FAKE_NEXT_LINK
-        = "https://localhost:5020/jobs/record8-008r/documents?api-version=2024-11-15&maxpagesize=2&continuationToken=1234";
+        = "https://localhost:5020/jobs/recorded8-008r/documents?api-version=2024-11-15&maxpagesize=2&continuationToken=1234";
     private static final String FAKE_CONTINUATION_TOKEN = "1234";
 
     protected DeidentificationClientBuilder getDeidServicesClientBuilder() {

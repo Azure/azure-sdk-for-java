@@ -25,12 +25,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class AsyncJobOperationsTest extends BatchOperationTestBase {
     protected DeidentificationAsyncClient deidentificationAsyncClient;
-    private static final String OUTPUT_FOLDER = "_output";
+    private static final String OUTPUT_FOLDER = "_output/";
 
     @Test
     void testCreateJobReturnsExpected() {
         deidentificationAsyncClient = getDeidServicesClientBuilder().buildAsyncClient();
-        String jobName = getTestMode() == TestMode.LIVE ? getJobName() : "record8-006r";
+        String jobName = getTestMode() == TestMode.LIVE ? getJobName() : "recorded8-006r";
 
         String inputPrefix = "example_patient_1";
         String storageLocation = getStorageAccountLocation();
@@ -66,7 +66,7 @@ class AsyncJobOperationsTest extends BatchOperationTestBase {
     @Test
     void testCreateThenListReturnsExpected() {
         deidentificationAsyncClient = getDeidServicesClientBuilder().buildAsyncClient();
-        String jobName = getTestMode() == TestMode.LIVE ? getJobName() : "record8-007r";
+        String jobName = getTestMode() == TestMode.LIVE ? getJobName() : "recorded8-007r";
 
         String inputPrefix = "example_patient_1";
         String storageLocation = getStorageAccountLocation();
@@ -107,7 +107,7 @@ class AsyncJobOperationsTest extends BatchOperationTestBase {
     @Test
     void testJobE2EWaitUntilSuccess() {
         deidentificationAsyncClient = getDeidServicesClientBuilder().buildAsyncClient();
-        String jobName = getTestMode() == TestMode.LIVE ? getJobName() : "record8-008r";
+        String jobName = getTestMode() == TestMode.LIVE ? getJobName() : "recorded8-008r";
 
         String inputPrefix = "example_patient_1";
         String storageLocation = getStorageAccountLocation();
@@ -117,8 +117,8 @@ class AsyncJobOperationsTest extends BatchOperationTestBase {
         SourceStorageLocation sourceStorageLocation = new SourceStorageLocation(storageLocation, inputPrefix);
         sourceStorageLocation.setExtensions(extensions);
 
-        DeidentificationJob job
-            = new DeidentificationJob(sourceStorageLocation, new TargetStorageLocation(storageLocation, OUTPUT_FOLDER));
+        DeidentificationJob job = new DeidentificationJob(sourceStorageLocation,
+            new TargetStorageLocation(storageLocation, OUTPUT_FOLDER).setOverwrite(true));
         job.setOperation(DeidentificationOperationType.SURROGATE);
 
         PollerFlux<DeidentificationJob, DeidentificationJob> poller
@@ -154,7 +154,7 @@ class AsyncJobOperationsTest extends BatchOperationTestBase {
     @Test
     void testJobE2ECancelJobThenDeleteJobDeletesJob() {
         deidentificationAsyncClient = getDeidServicesClientBuilder().buildAsyncClient();
-        String jobName = getTestMode() == TestMode.LIVE ? getJobName() : "record8-009r";
+        String jobName = getTestMode() == TestMode.LIVE ? getJobName() : "recorded8-009r";
 
         String inputPrefix = "example_patient_1";
         String storageLocation = getStorageAccountLocation();
@@ -188,7 +188,7 @@ class AsyncJobOperationsTest extends BatchOperationTestBase {
     @Test
     void testJobE2ECannotAccessStorageCreateJobFails() {
         deidentificationAsyncClient = getDeidServicesClientBuilder().buildAsyncClient();
-        String jobName = getTestMode() == TestMode.LIVE ? getJobName() : "record8-0010r";
+        String jobName = getTestMode() == TestMode.LIVE ? getJobName() : "recorded8-0010r";
 
         String inputPrefix = "example_patient_1";
         String storageLocation = "FAKE_STORAGE_ACCOUNT";
