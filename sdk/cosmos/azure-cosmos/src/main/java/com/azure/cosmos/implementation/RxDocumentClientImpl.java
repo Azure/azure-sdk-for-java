@@ -192,6 +192,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private final static Logger logger = LoggerFactory.getLogger(RxDocumentClientImpl.class);
     private final String masterKeyOrResourceToken;
     private final URI serviceEndpoint;
+    private final URI thinclientEndpoint;
     private final ConnectionPolicy connectionPolicy;
     private final ConsistencyLevel consistencyLevel;
     private final BaseAuthorizationTokenProvider authorizationTokenProvider;
@@ -488,6 +489,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             this.configs = configs;
             this.masterKeyOrResourceToken = masterKeyOrResourceToken;
             this.serviceEndpoint = serviceEndpoint;
+            this.thinclientEndpoint = configs.getThinclientEndpoint();
             this.credential = credential;
             this.tokenCredential = tokenCredential;
             this.contentResponseOnWriteEnabled = contentResponseOnWriteEnabled;
@@ -795,6 +797,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             }
 
             @Override
+            public URI getThinclientEndpoint() { return RxDocumentClientImpl.this.getThinclientEndpoint(); }
+
+            @Override
             public Flux<DatabaseAccount> getDatabaseAccountFromEndpoint(URI endpoint) {
                 logger.info("Getting database account endpoint from {}", endpoint);
                 return RxDocumentClientImpl.this.getDatabaseAccountFromEndpoint(endpoint);
@@ -861,6 +866,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     @Override
     public URI getServiceEndpoint() {
         return this.serviceEndpoint;
+    }
+
+    @Override
+    public URI getThinclientEndpoint() {
+        return this.thinclientEndpoint;
     }
 
     @Override

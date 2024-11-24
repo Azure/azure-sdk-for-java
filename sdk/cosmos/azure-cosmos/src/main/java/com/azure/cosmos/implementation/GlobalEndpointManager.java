@@ -70,6 +70,7 @@ public class GlobalEndpointManager implements AutoCloseable {
 
             this.owner = owner;
             this.defaultEndpoint = owner.getServiceEndpoint();
+            this.thinclientEndpoint = owner.getThinclientEndpoint(); // ?
             this.connectionPolicy = connectionPolicy;
 
             this.isRefreshing = new AtomicBoolean(false);

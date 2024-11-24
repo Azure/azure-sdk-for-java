@@ -397,6 +397,8 @@ public interface AsyncDocumentClient {
      */
     boolean isContentResponseOnWriteEnabled();
 
+    URI getThinclientEndpoint();
+
     /**
      * Gets the connection policy
      *
