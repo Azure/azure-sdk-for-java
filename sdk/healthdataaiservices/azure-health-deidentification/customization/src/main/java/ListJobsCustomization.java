@@ -5,6 +5,8 @@ import com.azure.autorest.customization.*;
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.Modifier;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
+import com.github.javaparser.ast.body.MethodDeclaration;
+import com.github.javaparser.javadoc.JavadocBlockTag;
 import org.slf4j.Logger;
 
 /**
@@ -14,6 +16,7 @@ import org.slf4j.Logger;
  * <li>Mark the listJobDocuments() overload with continuationToken parameter in DeidentificationClient as private.</li>
  * <li>Mark the listJobDocuments() overload with continuationToken parameter in DeidentificationAsyncClient as private.</li>
  * <li>Rename the 'name' parameter in listJobDocuments() to 'jobName'.</li>
+ * <li>Rename the 'name' parameter in the JavaDoc for listJobDocuments() to 'jobName'.</li>
  */
 public class ListJobsCustomization extends Customization {
 
@@ -24,12 +27,12 @@ public class ListJobsCustomization extends Customization {
         ClassCustomization deidentificationClientClass = models.getClass("DeidentificationClient");
         customizeClassByMarkingContinuationTokenOverloadsPrivate(deidentificationClientClass);
         customizeClassByRenamingJobNameParameter(deidentificationClientClass);
-        //customizeJavadocByRenamingJobNameParameter(deidentificationClientClass, false);
+        customizeJavadocByRenamingJobNameParameter(deidentificationClientClass);
 
         ClassCustomization deidentificationAsyncClientClass = models.getClass("DeidentificationAsyncClient");
         customizeClassByMarkingContinuationTokenOverloadsPrivate(deidentificationAsyncClientClass);
         customizeClassByRenamingJobNameParameter(deidentificationAsyncClientClass);
-        //customizeJavadocByRenamingJobNameParameter(deidentificationAsyncClientClass, true);
+        customizeJavadocByRenamingJobNameParameter(deidentificationAsyncClientClass);
     }
 
     private static void customizeClassByMarkingContinuationTokenOverloadsPrivate(ClassCustomization classCustomization) {
@@ -39,27 +42,6 @@ public class ListJobsCustomization extends Customization {
             clazz.getMethodsBySignature("listJobs", "String").get(0).setModifiers(Modifier.Keyword.PRIVATE);
             clazz.getMethodsBySignature("listJobDocuments", "String", "String").get(0).setModifiers(Modifier.Keyword.PRIVATE);
         });
-    }
-
-    private static void customizeJavadocByRenamingJobNameParameter(ClassCustomization classCustomization, Boolean customizeAsync) {
-        if (customizeAsync) {
-            JavadocCustomization listJobDocumentsAsyncJavadoc1 = classCustomization.getMethod("public PagedFlux<BinaryData> listJobDocuments(String jobName, RequestOptions requestOptions)").getJavadoc();
-            listJobDocumentsAsyncJavadoc1.setParam("jobName", "The name of a job.");
-            listJobDocumentsAsyncJavadoc1.removeParam("name");
-
-            JavadocCustomization listJobDocumentsAsyncJavadoc2 = classCustomization.getMethod("public PagedFlux<DeidentificationDocumentDetails> listJobDocuments(String jobName)").getJavadoc();
-            listJobDocumentsAsyncJavadoc2.setParam("jobName", "The name of a job.");
-            listJobDocumentsAsyncJavadoc2.removeParam("name");
-        }
-        else {
-            JavadocCustomization listJobDocumentsJavadoc1 = classCustomization.getMethod("public PagedIterable<BinaryData> listJobDocuments(String jobName, RequestOptions requestOptions)").getJavadoc();
-            listJobDocumentsJavadoc1.setParam("jobName", "The name of a job.");
-            listJobDocumentsJavadoc1.removeParam("name");
-
-            JavadocCustomization listJobDocumentsJavadoc2 = classCustomization.getMethod("public PagedIterable<DeidentificationDocumentDetails> listJobDocuments(String jobName)").getJavadoc();
-            listJobDocumentsJavadoc2.setParam("jobName", "The name of a job.");
-            listJobDocumentsJavadoc2.removeParam("name");
-        }
     }
 
     private static void customizeClassByRenamingJobNameParameter(ClassCustomization classCustomization) {
@@ -73,6 +55,30 @@ public class ListJobsCustomization extends Customization {
                     String updatedBody = updatedBodySyncOnly.replace("listJobDocumentsAsync(name, requestOptions)", "listJobDocumentsAsync(jobName, requestOptions)");
                     method.setBody(StaticJavaParser.parseBlock(updatedBody));
                 });
+            });
+        });
+    }
+
+    private static void customizeJavadocByRenamingJobNameParameter(ClassCustomization classCustomization) {
+        classCustomization.customizeAst(ast -> {
+            ClassOrInterfaceDeclaration clazz = ast.getClassByName(classCustomization.getClassName()).get();
+
+            MethodDeclaration listJobDocsString = clazz.getMethodsBySignature("listJobDocuments", "String").get(0);
+            listJobDocsString.getJavadoc().ifPresent(javadoc ->
+            {
+                javadoc.getBlockTags().removeIf(javadocBlockTag -> javadocBlockTag.toString().contains("The name of a job."));
+                JavadocBlockTag jobNameParam = new JavadocBlockTag("param", "jobName The name of a job.");
+                javadoc.getBlockTags().addFirst(jobNameParam);
+                listJobDocsString.setJavadocComment(javadoc);
+            });
+
+            MethodDeclaration listJobDocsStringRequestOptions = clazz.getMethodsBySignature("listJobDocuments", "String", "RequestOptions").get(0);
+            listJobDocsStringRequestOptions.getJavadoc().ifPresent(javadoc ->
+            {
+                javadoc.getBlockTags().removeIf(javadocBlockTag -> javadocBlockTag.toString().contains("The name of a job."));
+                JavadocBlockTag jobNameParam = new JavadocBlockTag("param", "jobName The name of a job.");
+                javadoc.getBlockTags().addFirst(jobNameParam);
+                listJobDocsStringRequestOptions.setJavadocComment(javadoc);
             });
         });
     }
