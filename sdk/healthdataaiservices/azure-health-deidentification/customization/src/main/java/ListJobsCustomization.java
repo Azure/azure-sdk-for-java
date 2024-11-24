@@ -66,18 +66,22 @@ public class ListJobsCustomization extends Customization {
             MethodDeclaration listJobDocsString = clazz.getMethodsBySignature("listJobDocuments", "String").get(0);
             listJobDocsString.getJavadoc().ifPresent(javadoc ->
             {
+                // Remove name parameter
                 javadoc.getBlockTags().removeIf(javadocBlockTag -> javadocBlockTag.toString().contains("The name of a job."));
+                // Add jobName parameter at beginning
                 JavadocBlockTag jobNameParam = new JavadocBlockTag("param", "jobName The name of a job.");
-                javadoc.getBlockTags().addFirst(jobNameParam);
+                javadoc.getBlockTags().add(0, jobNameParam);
                 listJobDocsString.setJavadocComment(javadoc);
             });
 
             MethodDeclaration listJobDocsStringRequestOptions = clazz.getMethodsBySignature("listJobDocuments", "String", "RequestOptions").get(0);
             listJobDocsStringRequestOptions.getJavadoc().ifPresent(javadoc ->
             {
+                // Remove name parameter
                 javadoc.getBlockTags().removeIf(javadocBlockTag -> javadocBlockTag.toString().contains("The name of a job."));
+                // Add jobName parameter at beginning
                 JavadocBlockTag jobNameParam = new JavadocBlockTag("param", "jobName The name of a job.");
-                javadoc.getBlockTags().addFirst(jobNameParam);
+                javadoc.getBlockTags().add(0, jobNameParam);
                 listJobDocsStringRequestOptions.setJavadocComment(javadoc);
             });
         });
