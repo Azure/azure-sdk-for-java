@@ -24,12 +24,12 @@ public class ListJobsCustomization extends Customization {
         ClassCustomization deidentificationClientClass = models.getClass("DeidentificationClient");
         customizeClassByMarkingContinuationTokenOverloadsPrivate(deidentificationClientClass);
         customizeClassByRenamingJobNameParameter(deidentificationClientClass);
-        customizeJavadocByRenamingJobNameParameter(deidentificationClientClass, false);
+        //customizeJavadocByRenamingJobNameParameter(deidentificationClientClass, false);
 
         ClassCustomization deidentificationAsyncClientClass = models.getClass("DeidentificationAsyncClient");
         customizeClassByMarkingContinuationTokenOverloadsPrivate(deidentificationAsyncClientClass);
         customizeClassByRenamingJobNameParameter(deidentificationAsyncClientClass);
-        customizeJavadocByRenamingJobNameParameter(deidentificationAsyncClientClass, true);
+        //customizeJavadocByRenamingJobNameParameter(deidentificationAsyncClientClass, true);
     }
 
     private static void customizeClassByMarkingContinuationTokenOverloadsPrivate(ClassCustomization classCustomization) {

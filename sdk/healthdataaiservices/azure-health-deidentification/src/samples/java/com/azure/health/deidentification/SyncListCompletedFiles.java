@@ -19,8 +19,8 @@ import java.time.Instant;
 public class SyncListCompletedFiles {
     public static void main(String[] args) {
         String jobName = "MyJob-" + Instant.now().toEpochMilli();
-        String outputFolder = "_output";
-        String inputPrefix = "example_patient_1";
+        String outputFolder = "output_patient_1/";
+        String inputPrefix = "example_patient_1/";
 
         DeidentificationClientBuilder deidentificationClientbuilder = new DeidentificationClientBuilder()
             .endpoint(Configuration.getGlobalConfiguration().get("DEID_SERVICE_ENDPOINT", "endpoint"))

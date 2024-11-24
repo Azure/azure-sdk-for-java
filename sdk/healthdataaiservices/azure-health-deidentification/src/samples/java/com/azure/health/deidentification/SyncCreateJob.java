@@ -26,8 +26,8 @@ public class SyncCreateJob {
         // BEGIN: com.azure.health.deidentification.sync.createjob.create
         String storageLocation = "https://" + Configuration.getGlobalConfiguration().get("STORAGE_ACCOUNT_NAME") + ".blob.core.windows.net/" + Configuration.getGlobalConfiguration().get("STORAGE_CONTAINER_NAME");
         String jobName = "MyJob-" + Instant.now().toEpochMilli();
-        String outputFolder = "_output";
-        String inputPrefix = "example_patient_1";
+        String outputFolder = "output_patient_1/";
+        String inputPrefix = "example_patient_1/";
         SourceStorageLocation sourceStorageLocation = new SourceStorageLocation(storageLocation, inputPrefix);
 
         DeidentificationJob job = new DeidentificationJob(sourceStorageLocation, new TargetStorageLocation(storageLocation, outputFolder));

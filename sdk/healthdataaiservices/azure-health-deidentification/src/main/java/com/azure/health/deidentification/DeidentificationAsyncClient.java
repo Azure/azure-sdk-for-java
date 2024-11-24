@@ -313,33 +313,52 @@ public final class DeidentificationAsyncClient {
     }
 
     /**
-     * List processed documents within a job. Resource list operation template. <p><strong>Query Parameters</strong></p>
-     * <table border="1"> <caption>Query Parameters</caption>
+     * List processed documents within a job.
+     *
+     * Resource list operation template.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>The maximum number of result items per page.</td></tr>
      * <tr><td>continuationToken</td><td>String</td><td>No</td><td>Token to continue a previous query.</td></tr>
-     * </table> You can add these to a request with {@link RequestOptions#addQueryParam} <p><strong>Response Body
-     * Schema</strong></p>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
-     * {@code { id: String (Required) input (Required): { location: String (Required) etag: String (Required) } output
-     * (Optional): (recursive schema, see output above) status: String(NotStarted/Running/Succeeded/Failed/Canceled)
-     * (Required) error (Optional): { code: String (Required) message: String (Required) target: String (Optional)
-     * details (Optional): [ (recursive schema, see above) ] innererror (Optional): { code: String (Optional) innererror
-     * (Optional): (recursive schema, see innererror above) } } }
-     * 
+     * {@code
+     * {
+     *     id: String (Required)
+     *     input (Required): {
+     *         location: String (Required)
+     *         etag: String (Required)
+     *     }
+     *     output (Optional): (recursive schema, see output above)
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
+     *     error (Optional): {
+     *         code: String (Required)
+     *         message: String (Required)
+     *         target: String (Optional)
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param name The name of a job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * 
-     * @param jobName The name of a job.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return paged collection of DeidentificationDocumentDetails items as paginated response with {@link PagedFlux}.
-     * @throws ResourceModifiedException ResourceModifiedException ResourceModifiedException thrown if the request is
-     * rejected by server on status code 409.
-     * @throws ResourceNotFoundException ResourceNotFoundException ResourceNotFoundException thrown if the request is
-     * rejected by server on status code 404.
-     * @throws ClientAuthenticationException ClientAuthenticationException ClientAuthenticationException thrown if the
-     * request is rejected by server on status code 401.
-     * @throws HttpResponseException HttpResponseException HttpResponseException thrown if the request is rejected by
-     * server.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -660,21 +679,17 @@ public final class DeidentificationAsyncClient {
 
     /**
      * List processed documents within a job.
-     * 
-     * @param jobName The name of a job.
+     *
+     * Resource list operation template.
+     *
+     * @param name The name of a job.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged collection of DeidentificationDocumentDetails items as paginated response with {@link PagedFlux}.
-     * @throws RuntimeException RuntimeException RuntimeException all other wrapped checked exceptions if the request
-     * fails to be sent.
-     * @throws ResourceModifiedException ResourceModifiedException ResourceModifiedException thrown if the request is
-     * rejected by server on status code 409.
-     * @throws ResourceNotFoundException ResourceNotFoundException ResourceNotFoundException thrown if the request is
-     * rejected by server on status code 404.
-     * @throws ClientAuthenticationException ClientAuthenticationException ClientAuthenticationException thrown if the
-     * request is rejected by server on status code 401.
-     * @throws HttpResponseException HttpResponseException HttpResponseException thrown if the request is rejected by
-     * server.
-     * @throws IllegalArgumentException IllegalArgumentException IllegalArgumentException thrown if parameters fail the
-     * validation.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
