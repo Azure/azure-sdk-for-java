@@ -17,7 +17,7 @@ public interface CloudHsmClusters {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudHsmClusterName The name of the Cloud HSM Cluster within the specified resource group. Cloud HSM
-     * Cluster names must be between 3 and 24 characters in length.
+     * Cluster names must be between 3 and 23 characters in length.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -32,7 +32,7 @@ public interface CloudHsmClusters {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudHsmClusterName The name of the Cloud HSM Cluster within the specified resource group. Cloud HSM
-     * Cluster names must be between 3 and 24 characters in length.
+     * Cluster names must be between 3 and 23 characters in length.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -45,7 +45,7 @@ public interface CloudHsmClusters {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudHsmClusterName The name of the Cloud HSM Cluster within the specified resource group. Cloud HSM
-     * Cluster names must be between 3 and 24 characters in length.
+     * Cluster names must be between 3 and 23 characters in length.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -57,7 +57,7 @@ public interface CloudHsmClusters {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudHsmClusterName The name of the Cloud HSM Cluster within the specified resource group. Cloud HSM
-     * Cluster names must be between 3 and 24 characters in length.
+     * Cluster names must be between 3 and 23 characters in length.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -111,6 +111,126 @@ public interface CloudHsmClusters {
      * @return list of Cloud HSM Clusters as paginated response with {@link PagedIterable}.
      */
     PagedIterable<CloudHsmCluster> list(String skiptoken, Context context);
+
+    /**
+     * Pre Backup operation to validate whether the customer can perform a backup on the Cloud HSM Cluster resource in
+     * the specified subscription.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cloudHsmClusterName The name of the Cloud HSM Cluster within the specified resource group. Cloud HSM
+     * Cluster names must be between 3 and 23 characters in length.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return backup operation Result.
+     */
+    BackupResult validateBackupProperties(String resourceGroupName, String cloudHsmClusterName);
+
+    /**
+     * Pre Backup operation to validate whether the customer can perform a backup on the Cloud HSM Cluster resource in
+     * the specified subscription.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cloudHsmClusterName The name of the Cloud HSM Cluster within the specified resource group. Cloud HSM
+     * Cluster names must be between 3 and 23 characters in length.
+     * @param backupRequestProperties Backup Operation Required properties.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return backup operation Result.
+     */
+    BackupResult validateBackupProperties(String resourceGroupName, String cloudHsmClusterName,
+        BackupRequestProperties backupRequestProperties, Context context);
+
+    /**
+     * Create a backup of the Cloud HSM Cluster in the specified subscription.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cloudHsmClusterName The name of the Cloud HSM Cluster within the specified resource group. Cloud HSM
+     * Cluster names must be between 3 and 23 characters in length.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return backup operation Result.
+     */
+    BackupResult backup(String resourceGroupName, String cloudHsmClusterName);
+
+    /**
+     * Create a backup of the Cloud HSM Cluster in the specified subscription.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cloudHsmClusterName The name of the Cloud HSM Cluster within the specified resource group. Cloud HSM
+     * Cluster names must be between 3 and 23 characters in length.
+     * @param backupRequestProperties Azure storage Resource Uri.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return backup operation Result.
+     */
+    BackupResult backup(String resourceGroupName, String cloudHsmClusterName,
+        BackupRequestProperties backupRequestProperties, Context context);
+
+    /**
+     * Queued validating pre restore operation.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cloudHsmClusterName The name of the Cloud HSM Cluster within the specified resource group. Cloud HSM
+     * Cluster names must be between 3 and 23 characters in length.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return restore operation properties.
+     */
+    RestoreResult validateRestoreProperties(String resourceGroupName, String cloudHsmClusterName);
+
+    /**
+     * Queued validating pre restore operation.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cloudHsmClusterName The name of the Cloud HSM Cluster within the specified resource group. Cloud HSM
+     * Cluster names must be between 3 and 23 characters in length.
+     * @param restoreRequestProperties Optional Parameters to validate prior performing a restore operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return restore operation properties.
+     */
+    RestoreResult validateRestoreProperties(String resourceGroupName, String cloudHsmClusterName,
+        RestoreRequestProperties restoreRequestProperties, Context context);
+
+    /**
+     * Restores all key materials of a specified Cloud HSM Cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cloudHsmClusterName The name of the Cloud HSM Cluster within the specified resource group. Cloud HSM
+     * Cluster names must be between 3 and 23 characters in length.
+     * @param restoreRequestProperties Restore Operation Required properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return restore operation properties.
+     */
+    RestoreResult restore(String resourceGroupName, String cloudHsmClusterName,
+        RestoreRequestProperties restoreRequestProperties);
+
+    /**
+     * Restores all key materials of a specified Cloud HSM Cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cloudHsmClusterName The name of the Cloud HSM Cluster within the specified resource group. Cloud HSM
+     * Cluster names must be between 3 and 23 characters in length.
+     * @param restoreRequestProperties Restore Operation Required properties.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return restore operation properties.
+     */
+    RestoreResult restore(String resourceGroupName, String cloudHsmClusterName,
+        RestoreRequestProperties restoreRequestProperties, Context context);
 
     /**
      * Gets the specified Cloud HSM Cluster.
