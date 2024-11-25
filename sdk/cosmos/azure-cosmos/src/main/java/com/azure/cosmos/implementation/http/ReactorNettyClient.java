@@ -149,13 +149,13 @@ public class ReactorNettyClient implements HttpClient {
                         .maxChunkSize(this.httpClientConfig.getMaxChunkSize())
                         .validateHeaders(true));
 
-        if (httpClientConfig.isHttp2Enabled()) {
+        if (httpClientConfig.getHttp2ConnectionConfig().isEnabled()) {
             this.httpClient = this.httpClient
                 .secure(sslContextSpec ->
                     sslContextSpec.sslContext(
                         configs.getSslContext(
                             httpClientConfig.isServerCertValidationDisabled(),
-                            httpClientConfig.isHttp2Enabled()
+                            true
                         )))
                 .protocol(HttpProtocol.H2, HttpProtocol.HTTP11)
                 .doOnConnected((connection -> {

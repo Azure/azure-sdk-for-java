@@ -20,6 +20,7 @@ import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.CosmosResponseValidator;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GatewayConnectionConfig;
+import com.azure.cosmos.Http2ConnectionConfig;
 import com.azure.cosmos.TestNGLogListener;
 import com.azure.cosmos.ThrottlingRetryOptions;
 import com.azure.cosmos.implementation.Configs;
@@ -1444,6 +1445,15 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         boolean retryOnThrottledRequests) {
 
         GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
+        if (Configs.isHttp2Enabled()) {
+            Http2ConnectionConfig http2ConnectionConfig = new Http2ConnectionConfig()
+                .setEnabled(true)
+                .setMaxConnectionPoolSize(10)
+                .setMinConnectionPoolSize(1)
+                .setMaxConcurrentStreams(30);
+            gatewayConnectionConfig.setHttp2ConnectionConfig(http2ConnectionConfig);
+        }
+
         CosmosClientBuilder builder = new CosmosClientBuilder().endpoint(endpoint)
             .credential(credential)
             .gatewayMode(gatewayConnectionConfig)

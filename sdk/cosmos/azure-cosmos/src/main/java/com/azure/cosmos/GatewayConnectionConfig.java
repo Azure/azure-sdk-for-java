@@ -5,6 +5,7 @@ package com.azure.cosmos;
 
 import com.azure.core.http.ProxyOptions;
 import com.azure.cosmos.implementation.Configs;
+import com.azure.cosmos.util.Beta;
 
 import java.time.Duration;
 
@@ -24,6 +25,7 @@ public final class GatewayConnectionConfig {
     private int maxConnectionPoolSize;
     private Duration idleConnectionTimeout;
     private ProxyOptions proxy;
+    private Http2ConnectionConfig http2ConnectionConfig;
 
     /**
      * Constructor.
@@ -32,6 +34,7 @@ public final class GatewayConnectionConfig {
         this.idleConnectionTimeout = DEFAULT_IDLE_CONNECTION_TIMEOUT;
         this.maxConnectionPoolSize = Configs.getDefaultHttpPoolSize();
         this.networkRequestTimeout = DEFAULT_NETWORK_REQUEST_TIMEOUT;
+        this.http2ConnectionConfig = new Http2ConnectionConfig();
     }
 
     /**
@@ -136,6 +139,25 @@ public final class GatewayConnectionConfig {
         return this;
     }
 
+    /***
+     * Get the http2 connection config.
+     * @return the {@link Http2ConnectionConfig}.
+     */
+    @Beta(value = Beta.SinceVersion.V4_66_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public Http2ConnectionConfig getHttp2ConnectionConfig() {
+        return http2ConnectionConfig;
+    }
+
+    /***
+     * Set the http2 connection config.
+     * @param http2ConnectionConfig the {@link Http2ConnectionConfig}.
+     */
+    @Beta(value = Beta.SinceVersion.V4_66_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public GatewayConnectionConfig setHttp2ConnectionConfig(Http2ConnectionConfig http2ConnectionConfig) {
+        this.http2ConnectionConfig = http2ConnectionConfig;
+        return this;
+    }
+
     @Override
     public String toString() {
         String proxyType = proxy != null ? proxy.getType().toString() : null;
@@ -147,6 +169,7 @@ public final class GatewayConnectionConfig {
             ", networkRequestTimeout=" + networkRequestTimeout +
             ", proxyType=" + proxyType +
             ", inetSocketProxyAddress=" + proxyAddress +
+            ", http2ConnectionConfig=" + http2ConnectionConfig.toString() +
             '}';
     }
 }

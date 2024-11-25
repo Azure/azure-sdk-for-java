@@ -9,7 +9,9 @@ import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.CosmosExcludedRegions;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GatewayConnectionConfig;
+import com.azure.cosmos.Http2ConnectionConfig;
 import com.azure.cosmos.ThrottlingRetryOptions;
+import reactor.netty.Connection;
 
 import java.time.Duration;
 import java.util.Collections;
@@ -38,6 +40,7 @@ public final class ConnectionPolicy {
     private Duration httpNetworkRequestTimeout;
     private ProxyOptions proxy;
     private Duration idleHttpConnectionTimeout;
+    private Http2ConnectionConfig http2ConnectionConfig;
 
     //  Direct connection config properties
     private Duration connectTimeout;
@@ -100,6 +103,7 @@ public final class ConnectionPolicy {
                 .DirectConnectionConfigHelper
                 .getDirectConnectionConfigAccessor()
                 .isHealthCheckTimeoutDetectionEnabled(directConnectionConfig);
+        this.http2ConnectionConfig = gatewayConnectionConfig.getHttp2ConnectionConfig();
 
         // NOTE: should be compared with COSMOS.MIN_CONNECTION_POOL_SIZE_PER_ENDPOINT
         // read during client initialization before connections are created for the container
@@ -635,6 +639,25 @@ public final class ConnectionPolicy {
         return this.serverCertValidationDisabled;
     }
 
+    /***
+     * Get the Http2ConnectionConfig for gateway request.
+     * @return the configured {@link Http2ConnectionConfig}.
+     */
+    public Http2ConnectionConfig getHttp2ConnectionConfig() {
+        return http2ConnectionConfig;
+    }
+
+    /***
+     * Set the Http2ConnectionConfig for gateway request.
+     *
+     * @param http2ConnectionConfig the configured http2ConnectionConfig.
+     * @return the current {@link ConnectionPolicy}.
+     */
+    public ConnectionPolicy setHttp2ConnectionConfig(Http2ConnectionConfig http2ConnectionConfig) {
+        this.http2ConnectionConfig = http2ConnectionConfig;
+        return this;
+    }
+
     @Override
     public String toString() {
         return "ConnectionPolicy{" +
@@ -663,6 +686,7 @@ public final class ConnectionPolicy {
             ", minConnectionPoolSizePerEndpoint=" + minConnectionPoolSizePerEndpoint +
             ", openConnectionsConcurrency=" + openConnectionsConcurrency +
             ", aggressiveWarmupConcurrency=" + aggressiveWarmupConcurrency +
+            ", http2ConnectionConfig=" + this.http2ConnectionConfig.toString() +
             '}';
     }
 }
