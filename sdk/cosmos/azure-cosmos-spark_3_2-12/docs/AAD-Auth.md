@@ -18,7 +18,7 @@ This authentication option allows using a system managed identity via simple con
 
 ### Prerequisites  
 
-To enable managed identity support out-of-the-box, the Spark environment needs to allow access to the MSI (Managed System Identity) endpoint via the [Azure IMDS - Instance Metadata Service](https://learn.microsoft.com/en-us/entra/identity/managed-identities-azure-resources/how-to-use-vm-token) endpoint or a redirected endpoint following the same protocol (like in Azure AppServices). Azure Databricks supports this mode with recently created workspaces. Azure Synapse and Azure HDInsights do not support managed identities out-of-the-box currently - see [Using a custom Token Provider](#using-a-custom-token-provider) to use custom access tokens there.
+To enable managed identity support out-of-the-box, the Spark environment needs to allow access to the MSI (Managed System Identity) endpoint via the [Azure IMDS - Instance Metadata Service](https://learn.microsoft.com/entra/identity/managed-identities-azure-resources/how-to-use-vm-token) endpoint or a redirected endpoint following the same protocol (like in Azure AppServices). Azure Databricks supports this mode with recently created workspaces. Azure Synapse and Azure HDInsights do not support managed identities out-of-the-box currently - see [Using a custom Token Provider](#using-a-custom-token-provider) to use custom access tokens there.
 
 
 
@@ -36,7 +36,7 @@ To enable managed identity support out-of-the-box, the Spark environment needs t
 
 #### Environment variables or system properties
 
-By default the Azure SDK for Java uses the [Azure IMDS - Instance Metadata Service](https://learn.microsoft.com/en-us/entra/identity/managed-identities-azure-resources/how-to-use-vm-token) to retrieve MSI tokens. The default endpoint is `http://169.254.169.254/metadata/identity/oauth2/token`. In some Spark environment or Compute environments access to the IMDS endpoint is disallowed (for example because it can become dangerous in multi-tenant environments because every tenant would be allowed to use the same identity if not disallowed). Some Compute environments like Azure AppServices provide an alternative endpoint for MSI authentication which uses the same wire protocol - so, overriding the MSI endpoint is sufficient to make this work safely.
+By default the Azure SDK for Java uses the [Azure IMDS - Instance Metadata Service](https://learn.microsoft.com/entra/identity/managed-identities-azure-resources/how-to-use-vm-token) to retrieve MSI tokens. The default endpoint is `http://169.254.169.254/metadata/identity/oauth2/token`. In some Spark environment or Compute environments access to the IMDS endpoint is disallowed (for example because it can become dangerous in multi-tenant environments because every tenant would be allowed to use the same identity if not disallowed). Some Compute environments like Azure AppServices provide an alternative endpoint for MSI authentication which uses the same wire protocol - so, overriding the MSI endpoint is sufficient to make this work safely.
 The MSI endpoint can be overridden via the `AZURE_POD_IDENTITY_TOKEN_URL` environment variable or JVM system property. If both are presented the JVM system property trumps the environment variable. 
 
 
@@ -63,7 +63,7 @@ This authentication option allows using a `ServicePrincipal` with either passwor
 
 #### Environment variables or system properties
 
-By default the Azure SDK for Java uses the [Azure IMDS - Instance Metadata Service](https://learn.microsoft.com/en-us/entra/identity/managed-identities-azure-resources/how-to-use-vm-token) to retrieve MSI tokens. The default endpoint is `http://169.254.169.254/metadata/identity/oauth2/token`. In some Spark environment or Compute environments access to the IMDS endpoint is disallowed (for example because it can become dangerous in multi-tenant environments because every tenant would be allowed to use the same identity if not disallowed). Some Compute environments like Azure AppServices provide an alternative endpoint for MSI authentication which uses the same wire protocol - so, overriding the MSI endpoint is sufficient to make this work safely.
+By default the Azure SDK for Java uses the [Azure IMDS - Instance Metadata Service](https://learn.microsoft.com/entra/identity/managed-identities-azure-resources/how-to-use-vm-token) to retrieve MSI tokens. The default endpoint is `http://169.254.169.254/metadata/identity/oauth2/token`. In some Spark environment or Compute environments access to the IMDS endpoint is disallowed (for example because it can become dangerous in multi-tenant environments because every tenant would be allowed to use the same identity if not disallowed). Some Compute environments like Azure AppServices provide an alternative endpoint for MSI authentication which uses the same wire protocol - so, overriding the MSI endpoint is sufficient to make this work safely.
 The MSI endpoint can be overridden via the `AZURE_POD_IDENTITY_TOKEN_URL` environment variable or JVM system property. If both are presented the JVM system property trumps the environment variable. 
 
 
