@@ -5,11 +5,11 @@
 package com.azure.resourcemanager.cognitiveservices.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.cognitiveservices.fluent.models.UsageInner;
 import com.azure.resourcemanager.cognitiveservices.fluent.models.UsageListResultInner;
 import com.azure.resourcemanager.cognitiveservices.models.MetricName;
 import com.azure.resourcemanager.cognitiveservices.models.QuotaUsageStatus;
 import com.azure.resourcemanager.cognitiveservices.models.UnitType;
+import com.azure.resourcemanager.cognitiveservices.models.Usage;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
@@ -34,28 +34,28 @@ public final class UsageListResultInnerTests {
     public void testSerialize() throws Exception {
         UsageListResultInner model = new UsageListResultInner().withNextLink("mohctb")
             .withValue(Arrays.asList(
-                new UsageInner().withUnit(UnitType.BYTES_PER_SECOND)
+                new Usage().withUnit(UnitType.BYTES_PER_SECOND)
                     .withName(new MetricName().withValue("ndnvo").withLocalizedValue("ujjugwdkcglh"))
                     .withQuotaPeriod("azjdyggd")
                     .withLimit(92.2174087854439D)
                     .withCurrentValue(3.8497339257224095D)
                     .withNextResetTime("ofqweykhmenevfye")
                     .withStatus(QuotaUsageStatus.BLOCKED),
-                new UsageInner().withUnit(UnitType.BYTES)
+                new Usage().withUnit(UnitType.BYTES)
                     .withName(new MetricName().withValue("i").withLocalizedValue("yvdcsitynnaa"))
                     .withQuotaPeriod("ectehf")
                     .withLimit(43.32844185113748D)
                     .withCurrentValue(61.13135450146281D)
                     .withNextResetTime("vhezrkgqhcj")
                     .withStatus(QuotaUsageStatus.UNKNOWN),
-                new UsageInner().withUnit(UnitType.MILLISECONDS)
+                new Usage().withUnit(UnitType.MILLISECONDS)
                     .withName(new MetricName().withValue("kqsleyyvxy").withLocalizedValue("pkc"))
                     .withQuotaPeriod("tpngjcrcczsqpjh")
                     .withLimit(15.683771184024254D)
                     .withCurrentValue(5.670664395942426D)
                     .withNextResetTime("sounqecanoaeu")
                     .withStatus(QuotaUsageStatus.INCLUDED),
-                new UsageInner().withUnit(UnitType.BYTES_PER_SECOND)
+                new Usage().withUnit(UnitType.BYTES_PER_SECOND)
                     .withName(new MetricName().withValue("rpmopjmc").withLocalizedValue("tuo"))
                     .withQuotaPeriod("hfuiuaodsfc")
                     .withLimit(36.548139076292394D)

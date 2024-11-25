@@ -5,6 +5,7 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -93,6 +94,9 @@ public final class UsageStats implements JsonSerializable<UsageStats> {
         return this.dataFeedCount;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -115,8 +119,8 @@ public final class UsageStats implements JsonSerializable<UsageStats> {
                 reader.nextToken();
 
                 if ("timestamp".equals(fieldName)) {
-                    deserializedUsageStats.timestamp
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedUsageStats.timestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("activeSeriesCount".equals(fieldName)) {
                     deserializedUsageStats.activeSeriesCount = reader.getNullable(JsonReader::getInt);
                 } else if ("allSeriesCount".equals(fieldName)) {

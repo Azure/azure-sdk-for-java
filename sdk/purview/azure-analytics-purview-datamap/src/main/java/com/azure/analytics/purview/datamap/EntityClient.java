@@ -79,17 +79,17 @@ public final class EntityClient {
      *     referredEntities (Optional): {
      *         String (Required): {
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
      *             businessAttributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             classifications (Optional): [
      *                  (Optional){
      *                     attributes (Optional): {
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     lastModifiedTS: String (Optional)
@@ -133,7 +133,7 @@ public final class EntityClient {
      *             provenanceType: Integer (Optional)
      *             proxy: Boolean (Optional)
      *             relationshipAttributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             status: String(ACTIVE/DELETED) (Optional)
      *             updateTime: Long (Optional)
@@ -166,7 +166,7 @@ public final class EntityClient {
      *         String (Required): [
      *              (Required){
      *                 attributes (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -176,7 +176,7 @@ public final class EntityClient {
      *                 classifications (Optional): [
      *                      (Optional){
      *                         attributes (Optional): {
-     *                             String: Object (Required)
+     *                             String: BinaryData (Required)
      *                         }
      *                         typeName: String (Optional)
      *                         lastModifiedTS: String (Optional)
@@ -259,17 +259,17 @@ public final class EntityClient {
      *     referredEntities (Optional): {
      *         String (Required): {
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
      *             businessAttributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             classifications (Optional): [
      *                  (Optional){
      *                     attributes (Optional): {
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     lastModifiedTS: String (Optional)
@@ -313,7 +313,7 @@ public final class EntityClient {
      *             provenanceType: Integer (Optional)
      *             proxy: Boolean (Optional)
      *             relationshipAttributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             status: String(ACTIVE/DELETED) (Optional)
      *             updateTime: Long (Optional)
@@ -380,17 +380,17 @@ public final class EntityClient {
      *     referredEntities (Optional): {
      *         String (Required): {
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
      *             businessAttributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             classifications (Optional): [
      *                  (Optional){
      *                     attributes (Optional): {
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     lastModifiedTS: String (Optional)
@@ -434,7 +434,7 @@ public final class EntityClient {
      *             provenanceType: Integer (Optional)
      *             proxy: Boolean (Optional)
      *             relationshipAttributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             status: String(ACTIVE/DELETED) (Optional)
      *             updateTime: Long (Optional)
@@ -469,7 +469,7 @@ public final class EntityClient {
      *         String (Required): [
      *              (Required){
      *                 attributes (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -479,7 +479,7 @@ public final class EntityClient {
      *                 classifications (Optional): [
      *                      (Optional){
      *                         attributes (Optional): {
-     *                             String: Object (Required)
+     *                             String: BinaryData (Required)
      *                         }
      *                         typeName: String (Optional)
      *                         lastModifiedTS: String (Optional)
@@ -557,7 +557,7 @@ public final class EntityClient {
      *         String (Required): [
      *              (Required){
      *                 attributes (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -567,7 +567,7 @@ public final class EntityClient {
      *                 classifications (Optional): [
      *                      (Optional){
      *                         attributes (Optional): {
-     *                             String: Object (Required)
+     *                             String: BinaryData (Required)
      *                         }
      *                         typeName: String (Optional)
      *                         lastModifiedTS: String (Optional)
@@ -639,7 +639,7 @@ public final class EntityClient {
      * {
      *     classification (Optional): {
      *         attributes (Optional): {
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *         typeName: String (Optional)
      *         lastModifiedTS: String (Optional)
@@ -695,17 +695,17 @@ public final class EntityClient {
      *     referredEntities (Optional): {
      *         String (Required): {
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
      *             businessAttributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             classifications (Optional): [
      *                  (Optional){
      *                     attributes (Optional): {
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     lastModifiedTS: String (Optional)
@@ -749,7 +749,7 @@ public final class EntityClient {
      *             provenanceType: Integer (Optional)
      *             proxy: Boolean (Optional)
      *             relationshipAttributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             status: String(ACTIVE/DELETED) (Optional)
      *             updateTime: Long (Optional)
@@ -794,7 +794,7 @@ public final class EntityClient {
      * 
      * <pre>
      * {@code
-     * Object
+     * BinaryData
      * }
      * </pre>
      * 
@@ -810,7 +810,7 @@ public final class EntityClient {
      *         String (Required): [
      *              (Required){
      *                 attributes (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -820,7 +820,7 @@ public final class EntityClient {
      *                 classifications (Optional): [
      *                      (Optional){
      *                         attributes (Optional): {
-     *                             String: Object (Required)
+     *                             String: BinaryData (Required)
      *                         }
      *                         typeName: String (Optional)
      *                         lastModifiedTS: String (Optional)
@@ -900,7 +900,7 @@ public final class EntityClient {
      *         String (Required): [
      *              (Required){
      *                 attributes (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -910,7 +910,7 @@ public final class EntityClient {
      *                 classifications (Optional): [
      *                      (Optional){
      *                         attributes (Optional): {
-     *                             String: Object (Required)
+     *                             String: BinaryData (Required)
      *                         }
      *                         typeName: String (Optional)
      *                         lastModifiedTS: String (Optional)
@@ -981,7 +981,7 @@ public final class EntityClient {
      * {@code
      * {
      *     attributes (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *     typeName: String (Optional)
      *     lastModifiedTS: String (Optional)
@@ -1042,7 +1042,7 @@ public final class EntityClient {
      * {@code
      * {
      *     list (Optional): [
-     *         Object (Optional)
+     *         BinaryData (Optional)
      *     ]
      *     pageSize: Integer (Optional)
      *     sortBy: String (Optional)
@@ -1076,7 +1076,7 @@ public final class EntityClient {
      * [
      *      (Required){
      *         attributes (Optional): {
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *         typeName: String (Optional)
      *         lastModifiedTS: String (Optional)
@@ -1119,7 +1119,7 @@ public final class EntityClient {
      * [
      *      (Required){
      *         attributes (Optional): {
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *         typeName: String (Optional)
      *         lastModifiedTS: String (Optional)
@@ -1190,17 +1190,17 @@ public final class EntityClient {
      *     referredEntities (Optional): {
      *         String (Required): {
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
      *             businessAttributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             classifications (Optional): [
      *                  (Optional){
      *                     attributes (Optional): {
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     lastModifiedTS: String (Optional)
@@ -1244,7 +1244,7 @@ public final class EntityClient {
      *             provenanceType: Integer (Optional)
      *             proxy: Boolean (Optional)
      *             relationshipAttributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             status: String(ACTIVE/DELETED) (Optional)
      *             updateTime: Long (Optional)
@@ -1326,17 +1326,17 @@ public final class EntityClient {
      *     referredEntities (Optional): {
      *         String (Required): {
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
      *             businessAttributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             classifications (Optional): [
      *                  (Optional){
      *                     attributes (Optional): {
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     lastModifiedTS: String (Optional)
@@ -1380,7 +1380,7 @@ public final class EntityClient {
      *             provenanceType: Integer (Optional)
      *             proxy: Boolean (Optional)
      *             relationshipAttributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             status: String(ACTIVE/DELETED) (Optional)
      *             updateTime: Long (Optional)
@@ -1413,7 +1413,7 @@ public final class EntityClient {
      *         String (Required): [
      *              (Required){
      *                 attributes (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -1423,7 +1423,7 @@ public final class EntityClient {
      *                 classifications (Optional): [
      *                      (Optional){
      *                         attributes (Optional): {
-     *                             String: Object (Required)
+     *                             String: BinaryData (Required)
      *                         }
      *                         typeName: String (Optional)
      *                         lastModifiedTS: String (Optional)
@@ -1522,7 +1522,7 @@ public final class EntityClient {
      *         String (Required): [
      *              (Required){
      *                 attributes (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -1532,7 +1532,7 @@ public final class EntityClient {
      *                 classifications (Optional): [
      *                      (Optional){
      *                         attributes (Optional): {
-     *                             String: Object (Required)
+     *                             String: BinaryData (Required)
      *                         }
      *                         typeName: String (Optional)
      *                         lastModifiedTS: String (Optional)
@@ -1643,7 +1643,7 @@ public final class EntityClient {
      * [
      *      (Required){
      *         attributes (Optional): {
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *         typeName: String (Optional)
      *         lastModifiedTS: String (Optional)
@@ -1696,7 +1696,7 @@ public final class EntityClient {
      * [
      *      (Required){
      *         attributes (Optional): {
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *         typeName: String (Optional)
      *         lastModifiedTS: String (Optional)
@@ -1741,7 +1741,7 @@ public final class EntityClient {
      *     guidHeaderMap (Optional): {
      *         String (Required): {
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -1751,7 +1751,7 @@ public final class EntityClient {
      *             classifications (Optional): [
      *                  (Optional){
      *                     attributes (Optional): {
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     lastModifiedTS: String (Optional)
@@ -1861,17 +1861,17 @@ public final class EntityClient {
      *     referredEntities (Optional): {
      *         String (Required): {
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
      *             businessAttributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             classifications (Optional): [
      *                  (Optional){
      *                     attributes (Optional): {
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     lastModifiedTS: String (Optional)
@@ -1915,7 +1915,7 @@ public final class EntityClient {
      *             provenanceType: Integer (Optional)
      *             proxy: Boolean (Optional)
      *             relationshipAttributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             status: String(ACTIVE/DELETED) (Optional)
      *             updateTime: Long (Optional)
@@ -1961,7 +1961,7 @@ public final class EntityClient {
      * {@code
      * {
      *     attributes (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *     typeName: String (Optional)
      *     lastModifiedTS: String (Optional)
@@ -1971,7 +1971,7 @@ public final class EntityClient {
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -2036,7 +2036,7 @@ public final class EntityClient {
      * {@code
      * {
      *     String (Required): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      * }
      * }
@@ -2075,7 +2075,7 @@ public final class EntityClient {
      * {@code
      * {
      *     String (Required): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      * }
      * }
@@ -2104,7 +2104,7 @@ public final class EntityClient {
      * <pre>
      * {@code
      * {
-     *     String: Object (Required)
+     *     String: BinaryData (Required)
      * }
      * }
      * </pre>
@@ -2134,7 +2134,7 @@ public final class EntityClient {
      * <pre>
      * {@code
      * {
-     *     String: Object (Required)
+     *     String: BinaryData (Required)
      * }
      * }
      * </pre>
@@ -2515,7 +2515,7 @@ public final class EntityClient {
      *         String (Required): [
      *              (Required){
      *                 attributes (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -2525,7 +2525,7 @@ public final class EntityClient {
      *                 classifications (Optional): [
      *                      (Optional){
      *                         attributes (Optional): {
-     *                             String: Object (Required)
+     *                             String: BinaryData (Required)
      *                         }
      *                         typeName: String (Optional)
      *                         lastModifiedTS: String (Optional)
@@ -2882,10 +2882,10 @@ public final class EntityClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public EntityMutationResult updateAttributeById(String guid, String name, Object body) {
+    public EntityMutationResult updateAttributeById(String guid, String name, BinaryData body) {
         // Generated convenience method for updateAttributeByIdWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return updateAttributeByIdWithResponse(guid, name, BinaryData.fromObject(body), requestOptions).getValue()
+        return updateAttributeByIdWithResponse(guid, name, body, requestOptions).getValue()
             .toObject(EntityMutationResult.class);
     }
 
@@ -3558,7 +3558,7 @@ public final class EntityClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void removeBusinessMetadata(String guid, Map<String, Map<String, Object>> body) {
+    public void removeBusinessMetadata(String guid, Map<String, Map<String, BinaryData>> body) {
         // Generated convenience method for removeBusinessMetadataWithResponse
         RequestOptions requestOptions = new RequestOptions();
         removeBusinessMetadataWithResponse(guid, BinaryData.fromObject(body), requestOptions).getValue();
@@ -3580,7 +3580,7 @@ public final class EntityClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void addOrUpdateBusinessMetadata(String guid, Map<String, Map<String, Object>> body, Boolean overwrite) {
+    public void addOrUpdateBusinessMetadata(String guid, Map<String, Map<String, BinaryData>> body, Boolean overwrite) {
         // Generated convenience method for addOrUpdateBusinessMetadataWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (overwrite != null) {
@@ -3603,7 +3603,7 @@ public final class EntityClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void addOrUpdateBusinessMetadata(String guid, Map<String, Map<String, Object>> body) {
+    public void addOrUpdateBusinessMetadata(String guid, Map<String, Map<String, BinaryData>> body) {
         // Generated convenience method for addOrUpdateBusinessMetadataWithResponse
         RequestOptions requestOptions = new RequestOptions();
         addOrUpdateBusinessMetadataWithResponse(guid, BinaryData.fromObject(body), requestOptions).getValue();
@@ -3624,7 +3624,8 @@ public final class EntityClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void removeBusinessMetadataAttributes(String businessMetadataName, String guid, Map<String, Object> body) {
+    public void removeBusinessMetadataAttributes(String businessMetadataName, String guid,
+        Map<String, BinaryData> body) {
         // Generated convenience method for removeBusinessMetadataAttributesWithResponse
         RequestOptions requestOptions = new RequestOptions();
         removeBusinessMetadataAttributesWithResponse(businessMetadataName, guid, BinaryData.fromObject(body),
@@ -3647,7 +3648,7 @@ public final class EntityClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void addOrUpdateBusinessMetadataAttributes(String businessMetadataName, String guid,
-        Map<String, Object> body) {
+        Map<String, BinaryData> body) {
         // Generated convenience method for addOrUpdateBusinessMetadataAttributesWithResponse
         RequestOptions requestOptions = new RequestOptions();
         addOrUpdateBusinessMetadataAttributesWithResponse(businessMetadataName, guid, BinaryData.fromObject(body),

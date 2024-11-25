@@ -9,9 +9,11 @@ import com.azure.ai.formrecognizer.documentanalysis.administration.models.Classi
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentClassifierDetails;
 import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzeDocumentOptions;
 import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzeResult;
+import com.azure.ai.formrecognizer.documentanalysis.models.CurrencyValue;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentAnalysisFeature;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentBarcode;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentBarcodeKind;
+import com.azure.ai.formrecognizer.documentanalysis.models.DocumentField;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentFormula;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentFormulaKind;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentStyle;
@@ -993,6 +995,11 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
 
             AnalyzeResult analyzeResult = syncPoller.getFinalResult();
             Assertions.assertEquals(1, analyzeResult.getPages().size());
+            Map<String, DocumentField> invoicePage1Fields = analyzeResult.getDocuments().get(0).getFields();
+            CurrencyValue invoiceTotalField = invoicePage1Fields.get("InvoiceTotal").getValueAsCurrency();
+            assertEquals(56651.49, invoiceTotalField.getAmount());
+            assertEquals("$", invoiceTotalField.getSymbol());
+            assertEquals("USD", invoiceTotalField.getCode());
         }, INVOICE_PDF);
     }
 

@@ -1,8 +1,33 @@
 # Release History
-# (Unreleased)
-Upgrade Spring Boot dependencies version to 3.3.5 and Spring Cloud dependencies version to 2023.0.3
 
-## 5.18.0-beta.1 (unreleased)
+## 5.19.0-beta.1 (Unreleased)
+
+### Spring Cloud Azure Autoconfigure
+This section includes changes in `spring-cloud-azure-autoconfigure` module.
+
+#### Features Added
+- Support customize StaticConnectionStringProvider<AzureServiceType.EventHubs> bean. [#42919](https://github.com/Azure/azure-sdk-for-java/pull/42919).
+- Support customize StaticConnectionStringProvider<AzureServiceType.ServiceBus> bean. [#43076](https://github.com/Azure/azure-sdk-for-java/pull/43076).
+
+#### Bugs Fixed
+- Fix error: Event Hubs connection string is still used when it's configured to empty string. [#42880](https://github.com/Azure/azure-sdk-for-java/issues/42880).
+- Fix error: Service Bus connection string is still used when it's configured to empty string. [#42880](https://github.com/Azure/azure-sdk-for-java/issues/42880).
+
+### Spring Integration Azure Core
+This section includes changes in the `spring-integration-azure-core` module.
+
+#### Bugs Fixed
+- Fix `DefaultMessageHandler.handleMessageInternal` error: When using a parallel Reactor Scheduler, blocking calls are prohibited. [#35215](https://github.com/Azure/azure-sdk-for-java/issues/35215).
+
+### Spring Integration Azure Event Hubs
+This section includes changes in the `spring-integration-azure-eventhubs` module.
+
+#### Bugs Fixed
+- Fix `EventHubsTemplate.doSend` error: When using a parallel Reactor Scheduler, blocking calls are prohibited. Thanks to [@AlanKrueger](https://github.com/AlanKrueger) for his contribution. [#40772](https://github.com/Azure/azure-sdk-for-java/pull/40772).
+
+## 5.18.0 (2024-11-05)
+- This release is compatible with Spring Boot 3.0.0-3.0.13, 3.1.0-3.1.12, 3.2.0-3.2.11, 3.3.0-3.3.5. (Note: 3.0.x (x>13), 3.1.y (y>12), 3.2.z (z>11) and 3.3.m (m>5) should be supported, but they aren't tested with this release.)
+- This release is compatible with Spring Cloud 2022.0.0-2022.0.5, 2023.0.0-2023.0.3. (Note: 2022.0.x (x>5) and 2023.0.y (y>3) should be supported, but they aren't tested with this release.)
 
 ### Spring Cloud Azure Autoconfigure
 This section includes changes in `spring-cloud-azure-autoconfigure` module.
@@ -28,6 +53,10 @@ This section includes changes in `spring-cloud-azure-stream-binder-eventhubs` mo
 
 #### Features Added
 - Support propagating the custom beans for Event Hubs binder. [#42771](https://github.com/Azure/azure-sdk-for-java/pull/42771).
+
+### Azure Spring Data Cosmos
+This section includes changes in `azure-spring-data-cosmos` module.
+Please refer to [azure-spring-data-cosmos/CHANGELOG.md](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-data-cosmos/CHANGELOG.md#5180-2024-11-05) for more details.
 
 ## 5.17.1 (2024-10-11)
 - This release is compatible with Spring Boot 3.0.0-3.0.13, 3.1.0-3.1.12, 3.2.0-3.2.10, 3.3.0-3.3.4. (Note: 3.0.x (x>13), 3.1.y (y>12), 3.2.z (z>10) and 3.3.m (m>4) should be supported, but they aren't tested with this release.)

@@ -5,6 +5,7 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -164,6 +165,9 @@ public final class AcsChatThreadCreatedEventData extends AcsChatThreadEventInThr
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -200,8 +204,8 @@ public final class AcsChatThreadCreatedEventData extends AcsChatThreadEventInThr
                 } else if ("threadId".equals(fieldName)) {
                     deserializedAcsChatThreadCreatedEventData.setThreadId(reader.getString());
                 } else if ("createTime".equals(fieldName)) {
-                    deserializedAcsChatThreadCreatedEventData.setCreateTime(
-                        reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())));
+                    deserializedAcsChatThreadCreatedEventData.setCreateTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
                 } else if ("version".equals(fieldName)) {
                     deserializedAcsChatThreadCreatedEventData.setVersion(reader.getNullable(JsonReader::getLong));
                 } else if ("createdByCommunicationIdentifier".equals(fieldName)) {

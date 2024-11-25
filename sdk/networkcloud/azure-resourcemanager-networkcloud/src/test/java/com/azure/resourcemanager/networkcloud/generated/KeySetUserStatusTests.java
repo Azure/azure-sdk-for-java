@@ -11,7 +11,7 @@ public final class KeySetUserStatusTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         KeySetUserStatus model = BinaryData
-            .fromString("{\"azureUserName\":\"edmurrxxge\",\"status\":\"Invalid\",\"statusMessage\":\"vqylkmqpzoyhl\"}")
+            .fromString("{\"azureUserName\":\"lqbctqhamzjrw\",\"status\":\"Invalid\",\"statusMessage\":\"eqyj\"}")
             .toObject(KeySetUserStatus.class);
     }
 

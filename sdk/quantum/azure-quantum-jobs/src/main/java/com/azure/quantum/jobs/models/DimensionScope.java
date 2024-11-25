@@ -37,7 +37,10 @@ public final class DimensionScope extends ExpandableStringEnum<DimensionScope> {
         return fromString(name, DimensionScope.class);
     }
 
-    /** @return known DimensionScope values. */
+    /**
+     * Gets the known values for DimensionScope.
+     * @return known DimensionScope values.
+     */
     public static Collection<DimensionScope> values() {
         return values(DimensionScope.class);
     }

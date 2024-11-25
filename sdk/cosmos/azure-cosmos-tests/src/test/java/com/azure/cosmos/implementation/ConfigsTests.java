@@ -6,6 +6,8 @@ package com.azure.cosmos.implementation;
 import com.azure.cosmos.implementation.clienttelemetry.MetricCategory;
 import com.azure.cosmos.implementation.clienttelemetry.TagName;
 import com.azure.cosmos.implementation.directconnectivity.Protocol;
+import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
+import io.netty.handler.ssl.SslContext;
 import org.testng.annotations.Test;
 
 import java.util.EnumSet;
@@ -68,5 +70,48 @@ public class ConfigsTests {
         } finally {
             System.clearProperty("COSMOS.METRICS_CONFIG");
         }
+    }
+
+    @Test(groups = { "emulator" })
+    public void httpConnectionWithoutTLSAllowed() {
+        Configs config = new Configs();
+        assertThat(config.isHttpConnectionWithoutTLSAllowed()).isFalse();
+
+        System.setProperty("COSMOS.HTTP_CONNECTION_WITHOUT_TLS_ALLOWED", "true");
+        assertThat(config.isHttpConnectionWithoutTLSAllowed()).isTrue();
+
+        System.clearProperty("COSMOS.HTTP_CONNECTION_WITHOUT_TLS_ALLOWED");
+    }
+
+    @Test(groups = { "emulator" })
+    public void emulatorCertValidationDisabled() {
+        Configs config = new Configs();
+        assertThat(config.isEmulatorServerCertValidationDisabled()).isFalse();
+
+        System.setProperty("COSMOS.EMULATOR_SERVER_CERTIFICATE_VALIDATION_DISABLED", "true");
+        assertThat(config.isEmulatorServerCertValidationDisabled()).isTrue();
+
+        System.clearProperty("COSMOS.EMULATOR_SERVER_CERTIFICATE_VALIDATION_DISABLED");
+    }
+
+    @Test(groups = { "emulator" })
+    public void emulatorHost() {
+        Configs config = new Configs();
+        assertThat(config.getEmulatorHost()).isEmpty();
+
+        System.setProperty("COSMOS.EMULATOR_HOST", "randomHost");
+        assertThat(config.getEmulatorHost()).isEqualTo("randomHost");
+
+        System.clearProperty("COSMOS.EMULATOR_HOST");
+    }
+
+    @Test(groups = { "emulator" })
+    public void sslContextTest() {
+        Configs config = new Configs();
+        SslContext sslContext = config.getSslContext(false);
+        assertThat(sslContext).isEqualTo(ReflectionUtils.getSslContext(config));
+
+        sslContext = config.getSslContext(true);
+        assertThat(sslContext).isEqualTo(ReflectionUtils.getSslContextWithCertValidationDisabled(config));
     }
 }

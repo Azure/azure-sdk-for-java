@@ -11,7 +11,8 @@
 #### Other Changes
 
 ### 4.34.0 (2024-10-10)
-
+> [!IMPORTANT]
+> We strongly recommend our customers to use version 4.34.0 and above.
 #### Bugs Fixed
 * Fixed an issue to avoid transient `IllegalArgumentException` due to duplicate json properties for the `uniqueKeyPolicy` property in `DocumentCollection`. - See [PR 41608](https://github.com/Azure/azure-sdk-for-java/pull/41608) and [PR 42244](https://github.com/Azure/azure-sdk-for-java/pull/42244)
 

@@ -5,6 +5,7 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -20,14 +21,54 @@ import java.util.UUID;
 @Fluent
 public final class AzureDataExplorerDataFeed extends DataFeedDetail {
     /*
+     * data source type
+     */
+    private DataSourceType dataSourceType = DataSourceType.AZURE_DATA_EXPLORER;
+
+    /*
      * The dataSourceParameter property.
      */
     private SqlSourceParameter dataSourceParameter;
+
+    /*
+     * data feed created time
+     */
+    private OffsetDateTime createdTime;
+
+    /*
+     * data feed status
+     */
+    private EntityStatus status;
+
+    /*
+     * data feed creator
+     */
+    private String creator;
+
+    /*
+     * the query user is one of data feed administrator or not
+     */
+    private Boolean isAdmin;
+
+    /*
+     * data feed unique id
+     */
+    private UUID dataFeedId;
 
     /**
      * Creates an instance of AzureDataExplorerDataFeed class.
      */
     public AzureDataExplorerDataFeed() {
+    }
+
+    /**
+     * Get the dataSourceType property: data source type.
+     * 
+     * @return the dataSourceType value.
+     */
+    @Override
+    public DataSourceType getDataSourceType() {
+        return this.dataSourceType;
     }
 
     /**
@@ -48,6 +89,56 @@ public final class AzureDataExplorerDataFeed extends DataFeedDetail {
     public AzureDataExplorerDataFeed setDataSourceParameter(SqlSourceParameter dataSourceParameter) {
         this.dataSourceParameter = dataSourceParameter;
         return this;
+    }
+
+    /**
+     * Get the createdTime property: data feed created time.
+     * 
+     * @return the createdTime value.
+     */
+    @Override
+    public OffsetDateTime getCreatedTime() {
+        return this.createdTime;
+    }
+
+    /**
+     * Get the status property: data feed status.
+     * 
+     * @return the status value.
+     */
+    @Override
+    public EntityStatus getStatus() {
+        return this.status;
+    }
+
+    /**
+     * Get the creator property: data feed creator.
+     * 
+     * @return the creator value.
+     */
+    @Override
+    public String getCreator() {
+        return this.creator;
+    }
+
+    /**
+     * Get the isAdmin property: the query user is one of data feed administrator or not.
+     * 
+     * @return the isAdmin value.
+     */
+    @Override
+    public Boolean isAdmin() {
+        return this.isAdmin;
+    }
+
+    /**
+     * Get the dataFeedId property: data feed unique id.
+     * 
+     * @return the dataFeedId value.
+     */
+    @Override
+    public UUID getDataFeedId() {
+        return this.dataFeedId;
     }
 
     /**
@@ -266,11 +357,12 @@ public final class AzureDataExplorerDataFeed extends DataFeedDetail {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("dataSourceType",
-            DataSourceType.AZURE_DATA_EXPLORER == null ? null : DataSourceType.AZURE_DATA_EXPLORER.toString());
         jsonWriter.writeStringField("dataFeedName", getDataFeedName());
         jsonWriter.writeStringField("granularityName",
             getGranularityName() == null ? null : getGranularityName().toString());
@@ -301,6 +393,8 @@ public final class AzureDataExplorerDataFeed extends DataFeedDetail {
             getAuthenticationType() == null ? null : getAuthenticationType().toString());
         jsonWriter.writeStringField("credentialId", getCredentialId());
         jsonWriter.writeJsonField("dataSourceParameter", this.dataSourceParameter);
+        jsonWriter.writeStringField("dataSourceType",
+            this.dataSourceType == null ? null : this.dataSourceType.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -310,8 +404,7 @@ public final class AzureDataExplorerDataFeed extends DataFeedDetail {
      * @param jsonReader The JsonReader being read.
      * @return An instance of AzureDataExplorerDataFeed if the JsonReader was pointing to an instance of it, or null if
      * it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
-     * polymorphic discriminator.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AzureDataExplorerDataFeed.
      */
     public static AzureDataExplorerDataFeed fromJson(JsonReader jsonReader) throws IOException {
@@ -321,14 +414,7 @@ public final class AzureDataExplorerDataFeed extends DataFeedDetail {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("dataSourceType".equals(fieldName)) {
-                    String dataSourceType = reader.getString();
-                    if (!"AzureDataExplorer".equals(dataSourceType)) {
-                        throw new IllegalStateException(
-                            "'dataSourceType' was expected to be non-null and equal to 'AzureDataExplorer'. The found 'dataSourceType' was '"
-                                + dataSourceType + "'.");
-                    }
-                } else if ("dataFeedName".equals(fieldName)) {
+                if ("dataFeedName".equals(fieldName)) {
                     deserializedAzureDataExplorerDataFeed.setDataFeedName(reader.getString());
                 } else if ("granularityName".equals(fieldName)) {
                     deserializedAzureDataExplorerDataFeed
@@ -337,11 +423,11 @@ public final class AzureDataExplorerDataFeed extends DataFeedDetail {
                     List<DataFeedMetric> metrics = reader.readArray(reader1 -> DataFeedMetric.fromJson(reader1));
                     deserializedAzureDataExplorerDataFeed.setMetrics(metrics);
                 } else if ("dataStartFrom".equals(fieldName)) {
-                    deserializedAzureDataExplorerDataFeed.setDataStartFrom(
-                        reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())));
+                    deserializedAzureDataExplorerDataFeed.setDataStartFrom(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
                 } else if ("dataFeedId".equals(fieldName)) {
-                    deserializedAzureDataExplorerDataFeed
-                        .setDataFeedId(reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString())));
+                    deserializedAzureDataExplorerDataFeed.dataFeedId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
                 } else if ("dataFeedDescription".equals(fieldName)) {
                     deserializedAzureDataExplorerDataFeed.setDataFeedDescription(reader.getString());
                 } else if ("granularityAmount".equals(fieldName)) {
@@ -387,14 +473,14 @@ public final class AzureDataExplorerDataFeed extends DataFeedDetail {
                     List<String> viewers = reader.readArray(reader1 -> reader1.getString());
                     deserializedAzureDataExplorerDataFeed.setViewers(viewers);
                 } else if ("isAdmin".equals(fieldName)) {
-                    deserializedAzureDataExplorerDataFeed.setIsAdmin(reader.getNullable(JsonReader::getBoolean));
+                    deserializedAzureDataExplorerDataFeed.isAdmin = reader.getNullable(JsonReader::getBoolean);
                 } else if ("creator".equals(fieldName)) {
-                    deserializedAzureDataExplorerDataFeed.setCreator(reader.getString());
+                    deserializedAzureDataExplorerDataFeed.creator = reader.getString();
                 } else if ("status".equals(fieldName)) {
-                    deserializedAzureDataExplorerDataFeed.setStatus(EntityStatus.fromString(reader.getString()));
+                    deserializedAzureDataExplorerDataFeed.status = EntityStatus.fromString(reader.getString());
                 } else if ("createdTime".equals(fieldName)) {
-                    deserializedAzureDataExplorerDataFeed.setCreatedTime(
-                        reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())));
+                    deserializedAzureDataExplorerDataFeed.createdTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("actionLinkTemplate".equals(fieldName)) {
                     deserializedAzureDataExplorerDataFeed.setActionLinkTemplate(reader.getString());
                 } else if ("authenticationType".equals(fieldName)) {
@@ -404,6 +490,9 @@ public final class AzureDataExplorerDataFeed extends DataFeedDetail {
                     deserializedAzureDataExplorerDataFeed.setCredentialId(reader.getString());
                 } else if ("dataSourceParameter".equals(fieldName)) {
                     deserializedAzureDataExplorerDataFeed.dataSourceParameter = SqlSourceParameter.fromJson(reader);
+                } else if ("dataSourceType".equals(fieldName)) {
+                    deserializedAzureDataExplorerDataFeed.dataSourceType
+                        = DataSourceType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

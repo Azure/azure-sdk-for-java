@@ -12,7 +12,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>spring-cloud-azure-stream-binder-eventhubs</artifactId>
-  <version>5.18.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-stream-binder-eventhubs;current} -->
+  <version>5.19.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-stream-binder-eventhubs;current} -->
 
   <name>Spring Cloud Azure Stream Binder Event Hubs</name>
   <description>Spring Cloud Azure Stream Binder Event Hubs</description>
@@ -41,12 +41,12 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-cloud-azure-autoconfigure</artifactId>
-      <version>5.18.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-autoconfigure;current} -->
+      <version>5.19.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-autoconfigure;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-cloud-azure-stream-binder-eventhubs-core</artifactId>
-      <version>5.18.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-stream-binder-eventhubs-core;current} -->
+      <version>5.19.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-stream-binder-eventhubs-core;current} -->
     </dependency>
     <!-- Contains Azure Storage Blobs checkpoint store when using EventProcessorClient -->
     <dependency>
@@ -64,7 +64,7 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-cloud-azure-resourcemanager</artifactId>
-      <version>5.18.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-resourcemanager;current} -->
+      <version>5.19.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-resourcemanager;current} -->
     </dependency>
 
     <dependency>
@@ -182,4 +182,25 @@
       </plugin>
     </plugins>
   </build>
+
+  <profiles>
+    <!-- Library cannot build for Java 16 and below -->
+    <profile>
+      <id>below-java-17</id>
+      <activation>
+        <jdk>[,17)</jdk>
+      </activation>
+      <properties>
+        <jacoco.skip>true</jacoco.skip>
+        <skipCompile>true</skipCompile>
+        <skipTestCompile>true</skipTestCompile>
+        <codesnippet.skip>true</codesnippet.skip>
+        <checkstyle.skip>true</checkstyle.skip>
+        <spotbugs.skip>true</spotbugs.skip>
+        <revapi.skip>true</revapi.skip>
+        <maven.test.skip>true</maven.test.skip>
+        <maven.javadoc.skip>true</maven.javadoc.skip>
+      </properties>
+    </profile>
+  </profiles>
 </project>

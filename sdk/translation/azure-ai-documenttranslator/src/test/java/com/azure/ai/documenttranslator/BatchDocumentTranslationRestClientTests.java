@@ -3,42 +3,50 @@
 
 package com.azure.ai.documenttranslator;
 
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
+import com.azure.json.models.JsonArray;
+import com.azure.json.models.JsonElement;
+import com.azure.json.models.JsonObject;
 import org.junit.jupiter.api.Test;
 
-import javax.json.Json;
-import javax.json.JsonObject;
-import javax.json.JsonReader;
-import java.io.StringReader;
+import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class BatchDocumentTranslationRestClientTests extends BatchDocumentTranslationClientTestBase {
     @Test
-    public void testGetSupportedDocumentFormats() {
+    public void testGetSupportedDocumentFormats() throws IOException {
         BatchDocumentTranslationClient client = getClient();
         String response = client.getSupportedDocumentFormatsWithResponse(null).getValue().toString();
 
         assertNotNull(response);
 
-        JsonReader jsonReader = Json.createReader(new StringReader(response));
-        JsonObject result = jsonReader.readObject();
+        try (JsonReader jsonReader = JsonProviders.createReader(response)) {
+            JsonObject jsonObject = JsonObject.fromJson(jsonReader);
 
-        assertTrue(result.containsKey("value"));
-        assertTrue(result.getJsonArray("value").size() > 0);
+            JsonElement jsonElement = jsonObject.getProperty("value");
+            assertNotNull(jsonElement);
+            assertTrue(jsonElement.isArray(), "Expected value to be an array");
+            assertTrue(((JsonArray) jsonElement).size() > 0, "Expected value to have at least one element");
+        }
     }
 
     @Test
-    public void testGetSupportedGlossaryFormats() {
+    public void testGetSupportedGlossaryFormats() throws IOException {
         BatchDocumentTranslationClient client = getClient();
         String response = client.getSupportedGlossaryFormatsWithResponse(null).getValue().toString();
 
         assertNotNull(response);
 
-        JsonReader jsonReader = Json.createReader(new StringReader(response));
-        JsonObject result = jsonReader.readObject();
+        try (JsonReader jsonReader = JsonProviders.createReader(response)) {
+            JsonObject jsonObject = JsonObject.fromJson(jsonReader);
 
-        assertTrue(result.containsKey("value"));
-        assertTrue(result.getJsonArray("value").size() > 0);
+            JsonElement jsonElement = jsonObject.getProperty("value");
+            assertNotNull(jsonElement);
+            assertTrue(jsonElement.isArray(), "Expected value to be an array");
+            assertTrue(((JsonArray) jsonElement).size() > 0, "Expected value to have at least one element");
+        }
     }
 }

@@ -6,45 +6,47 @@ package com.azure.resourcemanager.networkcloud.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * ServicePrincipalInformation represents the details of the service principal to be used by the cluster during Arc
  * Appliance installation.
  */
 @Fluent
-public final class ServicePrincipalInformation {
+public final class ServicePrincipalInformation implements JsonSerializable<ServicePrincipalInformation> {
     /*
      * The application ID, also known as client ID, of the service principal.
      */
-    @JsonProperty(value = "applicationId", required = true)
     private String applicationId;
 
     /*
      * The password of the service principal.
      */
-    @JsonProperty(value = "password")
     private String password;
 
     /*
      * The principal ID, also known as the object ID, of the service principal.
      */
-    @JsonProperty(value = "principalId", required = true)
     private String principalId;
 
     /*
      * The tenant ID, also known as the directory ID, of the tenant in which the service principal is created.
      */
-    @JsonProperty(value = "tenantId", required = true)
     private String tenantId;
 
-    /** Creates an instance of ServicePrincipalInformation class. */
+    /**
+     * Creates an instance of ServicePrincipalInformation class.
+     */
     public ServicePrincipalInformation() {
     }
 
     /**
      * Get the applicationId property: The application ID, also known as client ID, of the service principal.
-     *
+     * 
      * @return the applicationId value.
      */
     public String applicationId() {
@@ -53,7 +55,7 @@ public final class ServicePrincipalInformation {
 
     /**
      * Set the applicationId property: The application ID, also known as client ID, of the service principal.
-     *
+     * 
      * @param applicationId the applicationId value to set.
      * @return the ServicePrincipalInformation object itself.
      */
@@ -64,7 +66,7 @@ public final class ServicePrincipalInformation {
 
     /**
      * Get the password property: The password of the service principal.
-     *
+     * 
      * @return the password value.
      */
     public String password() {
@@ -73,7 +75,7 @@ public final class ServicePrincipalInformation {
 
     /**
      * Set the password property: The password of the service principal.
-     *
+     * 
      * @param password the password value to set.
      * @return the ServicePrincipalInformation object itself.
      */
@@ -84,7 +86,7 @@ public final class ServicePrincipalInformation {
 
     /**
      * Get the principalId property: The principal ID, also known as the object ID, of the service principal.
-     *
+     * 
      * @return the principalId value.
      */
     public String principalId() {
@@ -93,7 +95,7 @@ public final class ServicePrincipalInformation {
 
     /**
      * Set the principalId property: The principal ID, also known as the object ID, of the service principal.
-     *
+     * 
      * @param principalId the principalId value to set.
      * @return the ServicePrincipalInformation object itself.
      */
@@ -105,7 +107,7 @@ public final class ServicePrincipalInformation {
     /**
      * Get the tenantId property: The tenant ID, also known as the directory ID, of the tenant in which the service
      * principal is created.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -115,7 +117,7 @@ public final class ServicePrincipalInformation {
     /**
      * Set the tenantId property: The tenant ID, also known as the directory ID, of the tenant in which the service
      * principal is created.
-     *
+     * 
      * @param tenantId the tenantId value to set.
      * @return the ServicePrincipalInformation object itself.
      */
@@ -126,27 +128,77 @@ public final class ServicePrincipalInformation {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (applicationId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property applicationId in model ServicePrincipalInformation"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property applicationId in model ServicePrincipalInformation"));
         }
         if (password() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property password in model ServicePrincipalInformation"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property password in model ServicePrincipalInformation"));
         }
         if (principalId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property principalId in model ServicePrincipalInformation"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property principalId in model ServicePrincipalInformation"));
         }
         if (tenantId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property tenantId in model ServicePrincipalInformation"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property tenantId in model ServicePrincipalInformation"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ServicePrincipalInformation.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("applicationId", this.applicationId);
+        jsonWriter.writeStringField("password", this.password);
+        jsonWriter.writeStringField("principalId", this.principalId);
+        jsonWriter.writeStringField("tenantId", this.tenantId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServicePrincipalInformation from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServicePrincipalInformation if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ServicePrincipalInformation.
+     */
+    public static ServicePrincipalInformation fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServicePrincipalInformation deserializedServicePrincipalInformation = new ServicePrincipalInformation();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("applicationId".equals(fieldName)) {
+                    deserializedServicePrincipalInformation.applicationId = reader.getString();
+                } else if ("password".equals(fieldName)) {
+                    deserializedServicePrincipalInformation.password = reader.getString();
+                } else if ("principalId".equals(fieldName)) {
+                    deserializedServicePrincipalInformation.principalId = reader.getString();
+                } else if ("tenantId".equals(fieldName)) {
+                    deserializedServicePrincipalInformation.tenantId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServicePrincipalInformation;
+        });
+    }
 }

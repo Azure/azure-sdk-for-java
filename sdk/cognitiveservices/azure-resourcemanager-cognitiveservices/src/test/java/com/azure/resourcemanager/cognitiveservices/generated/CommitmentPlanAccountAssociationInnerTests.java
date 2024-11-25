@@ -6,21 +6,39 @@ package com.azure.resourcemanager.cognitiveservices.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.cognitiveservices.fluent.models.CommitmentPlanAccountAssociationInner;
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 
 public final class CommitmentPlanAccountAssociationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CommitmentPlanAccountAssociationInner model = BinaryData.fromString(
-            "{\"etag\":\"einqf\",\"properties\":{\"accountId\":\"x\"},\"id\":\"knpirgnepttwq\",\"name\":\"sniffc\",\"type\":\"mqnrojlpijnkr\"}")
+            "{\"etag\":\"gxdbeesmie\",\"tags\":{\"iaa\":\"ra\",\"agt\":\"iuagydwqfbylyrfg\",\"zjvusfzldmo\":\"ojocqwogf\"},\"properties\":{\"accountId\":\"ylfsbtk\"},\"id\":\"dp\",\"name\":\"s\",\"type\":\"wn\"}")
             .toObject(CommitmentPlanAccountAssociationInner.class);
-        Assertions.assertEquals("x", model.accountId());
+        Assertions.assertEquals("ra", model.tags().get("iaa"));
+        Assertions.assertEquals("ylfsbtk", model.accountId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CommitmentPlanAccountAssociationInner model = new CommitmentPlanAccountAssociationInner().withAccountId("x");
+        CommitmentPlanAccountAssociationInner model = new CommitmentPlanAccountAssociationInner()
+            .withTags(mapOf("iaa", "ra", "agt", "iuagydwqfbylyrfg", "zjvusfzldmo", "ojocqwogf"))
+            .withAccountId("ylfsbtk");
         model = BinaryData.fromObject(model).toObject(CommitmentPlanAccountAssociationInner.class);
-        Assertions.assertEquals("x", model.accountId());
+        Assertions.assertEquals("ra", model.tags().get("iaa"));
+        Assertions.assertEquals("ylfsbtk", model.accountId());
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }

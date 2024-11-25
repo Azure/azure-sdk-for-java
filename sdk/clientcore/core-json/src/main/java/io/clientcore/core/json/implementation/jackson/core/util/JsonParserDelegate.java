@@ -1,13 +1,19 @@
 // Original file from https://github.com/FasterXML/jackson-core under Apache-2.0 license.
 package io.clientcore.core.json.implementation.jackson.core.util;
 
+import io.clientcore.core.json.implementation.jackson.core.Base64Variant;
+import io.clientcore.core.json.implementation.jackson.core.FormatSchema;
+import io.clientcore.core.json.implementation.jackson.core.JsonLocation;
+import io.clientcore.core.json.implementation.jackson.core.JsonParser;
+import io.clientcore.core.json.implementation.jackson.core.JsonStreamContext;
+import io.clientcore.core.json.implementation.jackson.core.JsonToken;
+import io.clientcore.core.json.implementation.jackson.core.StreamReadCapability;
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Writer;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-
-import io.clientcore.core.json.implementation.jackson.core.*;
 
 /**
  * Helper class that implements
@@ -27,20 +33,10 @@ public class JsonParserDelegate extends JsonParser {
     }
 
     /*
-    /**********************************************************************
-    /* Public API, configuration
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Public API, configuration
+     * /**********************************************************************
      */
-
-    @Override
-    public void setCodec(ObjectCodec c) {
-        delegate.setCodec(c);
-    }
-
-    @Override
-    public ObjectCodec getCodec() {
-        return delegate.getCodec();
-    }
 
     @Override
     public JsonParser enable(Feature f) {
@@ -99,25 +95,15 @@ public class JsonParserDelegate extends JsonParser {
     }
 
     @Override
-    public Version version() {
-        return delegate.version();
-    }
-
-    @Override
     public Object getInputSource() {
         return delegate.getInputSource();
     }
 
     /*
-    /**********************************************************************
-    /* Capability introspection
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Capability introspection
+     * /**********************************************************************
      */
-
-    @Override
-    public boolean requiresCustomCodec() {
-        return delegate.requiresCustomCodec();
-    }
 
     @Override
     public JacksonFeatureSet<StreamReadCapability> getReadCapabilities() {
@@ -125,9 +111,9 @@ public class JsonParserDelegate extends JsonParser {
     }
 
     /*
-    /**********************************************************************
-    /* Closeable impl
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Closeable impl
+     * /**********************************************************************
      */
 
     @Override
@@ -141,9 +127,9 @@ public class JsonParserDelegate extends JsonParser {
     }
 
     /*
-    /**********************************************************************
-    /* Public API, state change/override methods
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Public API, state change/override methods
+     * /**********************************************************************
      */
 
     @Override
@@ -173,9 +159,9 @@ public class JsonParserDelegate extends JsonParser {
     }
 
     /*
-    /**********************************************************************
-    /* Public API, state/location accessors
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Public API, state/location accessors
+     * /**********************************************************************
      */
 
     @Override
@@ -250,9 +236,9 @@ public class JsonParserDelegate extends JsonParser {
     }
 
     /*
-    /**********************************************************************
-    /* Public API, token accessors
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Public API, token accessors
+     * /**********************************************************************
      */
 
     @Override
@@ -291,9 +277,9 @@ public class JsonParserDelegate extends JsonParser {
     }
 
     /*
-    /**********************************************************************
-    /* Public API, access to token textual content
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Public API, access to token textual content
+     * /**********************************************************************
      */
 
     @Override
@@ -327,9 +313,9 @@ public class JsonParserDelegate extends JsonParser {
     }
 
     /*
-    /**********************************************************************
-    /* Public API, access to token numeric values
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Public API, access to token numeric values
+     * /**********************************************************************
      */
 
     @Override
@@ -393,9 +379,9 @@ public class JsonParserDelegate extends JsonParser {
     }
 
     /*
-    /**********************************************************************
-    /* Public API, access to token information, coercion/conversion
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Public API, access to token information, coercion/conversion
+     * /**********************************************************************
      */
 
     @Override
@@ -449,9 +435,9 @@ public class JsonParserDelegate extends JsonParser {
     }
 
     /*
-    /**********************************************************************
-    /* Public API, access to token values, other
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Public API, access to token values, other
+     * /**********************************************************************
      */
 
     @Override
@@ -492,9 +478,9 @@ public class JsonParserDelegate extends JsonParser {
     }
 
     /*
-    /**********************************************************************
-    /* Public API, Native Ids (type, object)
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Public API, Native Ids (type, object)
+     * /**********************************************************************
      */
 
     @Override
@@ -518,19 +504,9 @@ public class JsonParserDelegate extends JsonParser {
     }
 
     /*
-    /**********************************************************************
-    /* Extended API
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Extended API
+     * /**********************************************************************
      */
 
-    /**
-     * Accessor for getting the immediate {@link JsonParser} this parser delegates calls to.
-     *
-     * @return Underlying parser calls are delegated to
-     *
-     * @since 2.10
-     */
-    public JsonParser delegate() {
-        return delegate;
-    }
 }

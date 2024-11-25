@@ -5,7 +5,6 @@ package com.azure.cosmos.implementation;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.implementation.circuitBreaker.GlobalPartitionEndpointManagerForCircuitBreaker;
 import com.azure.cosmos.implementation.directconnectivity.Protocol;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.implementation.http.HttpClient;
@@ -199,15 +198,11 @@ public class SpyClientUnderTestFactory {
 
         private Mono<HttpResponse> captureHttpRequest(InvocationOnMock invocationOnMock) {
             HttpRequest httpRequest = invocationOnMock.getArgument(0, HttpRequest.class);
-            Duration responseTimeout = Duration.ofSeconds(Configs.getHttpResponseTimeoutInSeconds());
-            if (invocationOnMock.getArguments().length == 2) {
-                responseTimeout = invocationOnMock.getArgument(1, Duration.class);
-            }
             CompletableFuture<HttpResponse> f = new CompletableFuture<>();
             this.requestsResponsePairs.add(Pair.of(httpRequest, f));
 
             return origHttpClient
-                .send(httpRequest, responseTimeout)
+                .send(httpRequest)
                 .doOnNext(httpResponse -> f.complete(httpResponse.buffer()))
                 .doOnError(f::completeExceptionally);
         }

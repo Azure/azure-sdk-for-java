@@ -6,94 +6,91 @@ package com.azure.resourcemanager.networkcloud.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.networkcloud.models.HybridAksPluginType;
 import com.azure.resourcemanager.networkcloud.models.TrunkedNetworkDetailedStatus;
 import com.azure.resourcemanager.networkcloud.models.TrunkedNetworkProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** TrunkedNetworkProperties represents properties of the trunked network. */
+/**
+ * TrunkedNetworkProperties represents properties of the trunked network.
+ */
 @Fluent
-public final class TrunkedNetworkProperties {
+public final class TrunkedNetworkProperties implements JsonSerializable<TrunkedNetworkProperties> {
     /*
      * The list of resource IDs for the other Microsoft.NetworkCloud resources that have attached this network.
      */
-    @JsonProperty(value = "associatedResourceIds", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> associatedResourceIds;
 
     /*
      * The resource ID of the Network Cloud cluster this trunked network is associated with.
      */
-    @JsonProperty(value = "clusterId", access = JsonProperty.Access.WRITE_ONLY)
     private String clusterId;
 
     /*
      * The more detailed status of the trunked network.
      */
-    @JsonProperty(value = "detailedStatus", access = JsonProperty.Access.WRITE_ONLY)
     private TrunkedNetworkDetailedStatus detailedStatus;
 
     /*
      * The descriptive message about the current detailed status.
      */
-    @JsonProperty(value = "detailedStatusMessage", access = JsonProperty.Access.WRITE_ONLY)
     private String detailedStatusMessage;
 
     /*
      * Field Deprecated. These fields will be empty/omitted. The list of Hybrid AKS cluster resource IDs that are
      * associated with this trunked network.
      */
-    @JsonProperty(value = "hybridAksClustersAssociatedIds", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> hybridAksClustersAssociatedIds;
 
     /*
      * Field Deprecated. The field was previously optional, now it will have no defined behavior and will be ignored.
      * The network plugin type for Hybrid AKS.
      */
-    @JsonProperty(value = "hybridAksPluginType")
     private HybridAksPluginType hybridAksPluginType;
 
     /*
      * The default interface name for this trunked network in the virtual machine. This name can be overridden by the
      * name supplied in the network attachment configuration of that virtual machine.
      */
-    @JsonProperty(value = "interfaceName")
     private String interfaceName;
 
     /*
      * The list of resource IDs representing the Network Fabric isolation domains. It can be any combination of
      * l2IsolationDomain and l3IsolationDomain resources.
      */
-    @JsonProperty(value = "isolationDomainIds", required = true)
     private List<String> isolationDomainIds;
 
     /*
      * The provisioning state of the trunked network.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private TrunkedNetworkProvisioningState provisioningState;
 
     /*
      * Field Deprecated. These fields will be empty/omitted. The list of virtual machine resource IDs, excluding any
      * Hybrid AKS virtual machines, that are currently using this trunked network.
      */
-    @JsonProperty(value = "virtualMachinesAssociatedIds", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> virtualMachinesAssociatedIds;
 
     /*
      * The list of vlans that are selected from the isolation domains for trunking.
      */
-    @JsonProperty(value = "vlans", required = true)
     private List<Long> vlans;
 
-    /** Creates an instance of TrunkedNetworkProperties class. */
+    /**
+     * Creates an instance of TrunkedNetworkProperties class.
+     */
     public TrunkedNetworkProperties() {
     }
 
     /**
      * Get the associatedResourceIds property: The list of resource IDs for the other Microsoft.NetworkCloud resources
      * that have attached this network.
-     *
+     * 
      * @return the associatedResourceIds value.
      */
     public List<String> associatedResourceIds() {
@@ -102,7 +99,7 @@ public final class TrunkedNetworkProperties {
 
     /**
      * Get the clusterId property: The resource ID of the Network Cloud cluster this trunked network is associated with.
-     *
+     * 
      * @return the clusterId value.
      */
     public String clusterId() {
@@ -111,7 +108,7 @@ public final class TrunkedNetworkProperties {
 
     /**
      * Get the detailedStatus property: The more detailed status of the trunked network.
-     *
+     * 
      * @return the detailedStatus value.
      */
     public TrunkedNetworkDetailedStatus detailedStatus() {
@@ -120,7 +117,7 @@ public final class TrunkedNetworkProperties {
 
     /**
      * Get the detailedStatusMessage property: The descriptive message about the current detailed status.
-     *
+     * 
      * @return the detailedStatusMessage value.
      */
     public String detailedStatusMessage() {
@@ -130,7 +127,7 @@ public final class TrunkedNetworkProperties {
     /**
      * Get the hybridAksClustersAssociatedIds property: Field Deprecated. These fields will be empty/omitted. The list
      * of Hybrid AKS cluster resource IDs that are associated with this trunked network.
-     *
+     * 
      * @return the hybridAksClustersAssociatedIds value.
      */
     public List<String> hybridAksClustersAssociatedIds() {
@@ -140,7 +137,7 @@ public final class TrunkedNetworkProperties {
     /**
      * Get the hybridAksPluginType property: Field Deprecated. The field was previously optional, now it will have no
      * defined behavior and will be ignored. The network plugin type for Hybrid AKS.
-     *
+     * 
      * @return the hybridAksPluginType value.
      */
     public HybridAksPluginType hybridAksPluginType() {
@@ -150,7 +147,7 @@ public final class TrunkedNetworkProperties {
     /**
      * Set the hybridAksPluginType property: Field Deprecated. The field was previously optional, now it will have no
      * defined behavior and will be ignored. The network plugin type for Hybrid AKS.
-     *
+     * 
      * @param hybridAksPluginType the hybridAksPluginType value to set.
      * @return the TrunkedNetworkProperties object itself.
      */
@@ -162,7 +159,7 @@ public final class TrunkedNetworkProperties {
     /**
      * Get the interfaceName property: The default interface name for this trunked network in the virtual machine. This
      * name can be overridden by the name supplied in the network attachment configuration of that virtual machine.
-     *
+     * 
      * @return the interfaceName value.
      */
     public String interfaceName() {
@@ -172,7 +169,7 @@ public final class TrunkedNetworkProperties {
     /**
      * Set the interfaceName property: The default interface name for this trunked network in the virtual machine. This
      * name can be overridden by the name supplied in the network attachment configuration of that virtual machine.
-     *
+     * 
      * @param interfaceName the interfaceName value to set.
      * @return the TrunkedNetworkProperties object itself.
      */
@@ -184,7 +181,7 @@ public final class TrunkedNetworkProperties {
     /**
      * Get the isolationDomainIds property: The list of resource IDs representing the Network Fabric isolation domains.
      * It can be any combination of l2IsolationDomain and l3IsolationDomain resources.
-     *
+     * 
      * @return the isolationDomainIds value.
      */
     public List<String> isolationDomainIds() {
@@ -194,7 +191,7 @@ public final class TrunkedNetworkProperties {
     /**
      * Set the isolationDomainIds property: The list of resource IDs representing the Network Fabric isolation domains.
      * It can be any combination of l2IsolationDomain and l3IsolationDomain resources.
-     *
+     * 
      * @param isolationDomainIds the isolationDomainIds value to set.
      * @return the TrunkedNetworkProperties object itself.
      */
@@ -205,7 +202,7 @@ public final class TrunkedNetworkProperties {
 
     /**
      * Get the provisioningState property: The provisioning state of the trunked network.
-     *
+     * 
      * @return the provisioningState value.
      */
     public TrunkedNetworkProvisioningState provisioningState() {
@@ -216,7 +213,7 @@ public final class TrunkedNetworkProperties {
      * Get the virtualMachinesAssociatedIds property: Field Deprecated. These fields will be empty/omitted. The list of
      * virtual machine resource IDs, excluding any Hybrid AKS virtual machines, that are currently using this trunked
      * network.
-     *
+     * 
      * @return the virtualMachinesAssociatedIds value.
      */
     public List<String> virtualMachinesAssociatedIds() {
@@ -225,7 +222,7 @@ public final class TrunkedNetworkProperties {
 
     /**
      * Get the vlans property: The list of vlans that are selected from the isolation domains for trunking.
-     *
+     * 
      * @return the vlans value.
      */
     public List<Long> vlans() {
@@ -234,7 +231,7 @@ public final class TrunkedNetworkProperties {
 
     /**
      * Set the vlans property: The list of vlans that are selected from the isolation domains for trunking.
-     *
+     * 
      * @param vlans the vlans value to set.
      * @return the TrunkedNetworkProperties object itself.
      */
@@ -245,19 +242,91 @@ public final class TrunkedNetworkProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (isolationDomainIds() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property isolationDomainIds in model TrunkedNetworkProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property isolationDomainIds in model TrunkedNetworkProperties"));
         }
         if (vlans() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property vlans in model TrunkedNetworkProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property vlans in model TrunkedNetworkProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(TrunkedNetworkProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("isolationDomainIds", this.isolationDomainIds,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("vlans", this.vlans, (writer, element) -> writer.writeLong(element));
+        jsonWriter.writeStringField("hybridAksPluginType",
+            this.hybridAksPluginType == null ? null : this.hybridAksPluginType.toString());
+        jsonWriter.writeStringField("interfaceName", this.interfaceName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TrunkedNetworkProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TrunkedNetworkProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the TrunkedNetworkProperties.
+     */
+    public static TrunkedNetworkProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TrunkedNetworkProperties deserializedTrunkedNetworkProperties = new TrunkedNetworkProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("isolationDomainIds".equals(fieldName)) {
+                    List<String> isolationDomainIds = reader.readArray(reader1 -> reader1.getString());
+                    deserializedTrunkedNetworkProperties.isolationDomainIds = isolationDomainIds;
+                } else if ("vlans".equals(fieldName)) {
+                    List<Long> vlans = reader.readArray(reader1 -> reader1.getLong());
+                    deserializedTrunkedNetworkProperties.vlans = vlans;
+                } else if ("associatedResourceIds".equals(fieldName)) {
+                    List<String> associatedResourceIds = reader.readArray(reader1 -> reader1.getString());
+                    deserializedTrunkedNetworkProperties.associatedResourceIds = associatedResourceIds;
+                } else if ("clusterId".equals(fieldName)) {
+                    deserializedTrunkedNetworkProperties.clusterId = reader.getString();
+                } else if ("detailedStatus".equals(fieldName)) {
+                    deserializedTrunkedNetworkProperties.detailedStatus
+                        = TrunkedNetworkDetailedStatus.fromString(reader.getString());
+                } else if ("detailedStatusMessage".equals(fieldName)) {
+                    deserializedTrunkedNetworkProperties.detailedStatusMessage = reader.getString();
+                } else if ("hybridAksClustersAssociatedIds".equals(fieldName)) {
+                    List<String> hybridAksClustersAssociatedIds = reader.readArray(reader1 -> reader1.getString());
+                    deserializedTrunkedNetworkProperties.hybridAksClustersAssociatedIds
+                        = hybridAksClustersAssociatedIds;
+                } else if ("hybridAksPluginType".equals(fieldName)) {
+                    deserializedTrunkedNetworkProperties.hybridAksPluginType
+                        = HybridAksPluginType.fromString(reader.getString());
+                } else if ("interfaceName".equals(fieldName)) {
+                    deserializedTrunkedNetworkProperties.interfaceName = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedTrunkedNetworkProperties.provisioningState
+                        = TrunkedNetworkProvisioningState.fromString(reader.getString());
+                } else if ("virtualMachinesAssociatedIds".equals(fieldName)) {
+                    List<String> virtualMachinesAssociatedIds = reader.readArray(reader1 -> reader1.getString());
+                    deserializedTrunkedNetworkProperties.virtualMachinesAssociatedIds = virtualMachinesAssociatedIds;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTrunkedNetworkProperties;
+        });
+    }
 }

@@ -91,7 +91,7 @@ public class ConnectionStateListenerTest {
         SslContext sslContext = SslContextUtils.CreateSslContext("client.jks", false);
 
         Configs config = Mockito.mock(Configs.class);
-        Mockito.doReturn(sslContext).when(config).getSslContext();
+        Mockito.doReturn(sslContext).when(config).getSslContext(false);
 
         RntbdTransportClient client = new RntbdTransportClient(
             config,

@@ -43,7 +43,7 @@ import static com.azure.cosmos.kafka.connect.implementation.KafkaCosmosConfig.va
 /**
  * A Sink connector that publishes topic messages to CosmosDB.
  */
-public final class CosmosSinkConnector extends SinkConnector {
+public final class CosmosSinkConnector extends SinkConnector implements AutoCloseable {
     private static final Logger LOGGER = LoggerFactory.getLogger(CosmosSinkConnector.class);
     private static final String CONNECTOR_NAME = "name";
 
@@ -205,5 +205,10 @@ public final class CosmosSinkConnector extends SinkConnector {
         validateThroughputControlConfig(configValues);
         validateWriteConfig(configValues);
         return config;
+    }
+
+    @Override
+    public void close() {
+        this.stop();
     }
 }

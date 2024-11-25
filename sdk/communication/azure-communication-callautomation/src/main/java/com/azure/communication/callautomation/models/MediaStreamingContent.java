@@ -5,12 +5,22 @@
 package com.azure.communication.callautomation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
+
 import java.util.Collection;
 
 /** Defines values for MediaStreamingContentType. */
 public final class MediaStreamingContent extends ExpandableStringEnum<MediaStreamingContent> {
     /** Static value audio for MediaStreamingContentType. */
     public static final MediaStreamingContent AUDIO = fromString("audio");
+
+    /**
+     * Creates an instance of {@link MediaStreamingContent} with no string value.
+     *
+     * @deprecated Please use {@link #fromString(String)} to create an instance of MediaStreamingContent.
+     */
+    @Deprecated
+    public MediaStreamingContent() {
+    }
 
     /**
      * Creates or finds a MediaStreamingContentType from its string representation.
@@ -22,7 +32,10 @@ public final class MediaStreamingContent extends ExpandableStringEnum<MediaStrea
         return fromString(name, MediaStreamingContent.class);
     }
 
-    /** @return known MediaStreamingContentType values. */
+    /**
+     * Get the collection of MediaStreamingContentType values.
+     * @return known MediaStreamingContentType values.
+     */
     public static Collection<MediaStreamingContent> values() {
         return values(MediaStreamingContent.class);
     }

@@ -108,6 +108,9 @@ public final class MediaLiveEventIncomingDataChunkDroppedEventData
         return this.trackName;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

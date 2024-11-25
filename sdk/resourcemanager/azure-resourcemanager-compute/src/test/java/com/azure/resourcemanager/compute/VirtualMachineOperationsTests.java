@@ -17,6 +17,8 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
+import com.azure.resourcemanager.compute.fluent.models.CapacityReservationGroupInner;
+import com.azure.resourcemanager.compute.fluent.models.CapacityReservationInner;
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachineInner;
 import com.azure.resourcemanager.compute.models.ApiErrorException;
 import com.azure.resourcemanager.compute.models.AvailabilitySet;
@@ -38,6 +40,7 @@ import com.azure.resourcemanager.compute.models.ProximityPlacementGroupType;
 import com.azure.resourcemanager.compute.models.RunCommandInputParameter;
 import com.azure.resourcemanager.compute.models.RunCommandResult;
 import com.azure.resourcemanager.compute.models.SecurityTypes;
+import com.azure.resourcemanager.compute.models.Sku;
 import com.azure.resourcemanager.compute.models.UpgradeMode;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.compute.models.VirtualMachineDiskOptions;
@@ -77,6 +80,7 @@ import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -112,6 +116,96 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
         if (rgName != null) {
             resourceManager.resourceGroups().beginDeleteByName(rgName);
         }
+    }
+
+    @Test
+    @Disabled("No found any available vm size and zone(s) (if zonal) for capacity reservation.")
+    public void canCreateAndUpdateVirtualMachineWithCapacityReservation() {
+        final String crgNameForCreate = generateRandomResourceName("crg", 15);
+        final String crgNameForUpdate = generateRandomResourceName("crg", 15);
+
+        // Create resource group
+        resourceManager.resourceGroups().define(rgName).withRegion(region).create();
+
+        // Create a capacity reservation group for create virtual machine
+        CapacityReservationGroupInner crgForCreate = computeManager.serviceClient()
+            .getCapacityReservationGroups()
+            .createOrUpdate(rgName, crgNameForCreate,
+                new CapacityReservationGroupInner().withLocation(region.name()).withZones(Arrays.asList("1")));
+
+        computeManager.serviceClient()
+            .getCapacityReservations()
+            .createOrUpdate(rgName, crgNameForCreate, generateRandomResourceName("cr", 15),
+                new CapacityReservationInner().withLocation(region.name())
+                    .withZones(Arrays.asList("1"))
+                    .withSku(new Sku().withName("Standard_DS1_v2").withCapacity(4L)));
+
+        // Create another capacity reservation group for update virtual machine
+        CapacityReservationGroupInner crgForUpdate = computeManager.serviceClient()
+            .getCapacityReservationGroups()
+            .createOrUpdate(rgName, crgNameForUpdate,
+                new CapacityReservationGroupInner().withLocation(region.name()).withZones(Arrays.asList("1")));
+
+        // Create network for virtual machine
+        Network network = computeManager.networkManager()
+            .networks()
+            .define(generateRandomResourceName("vnet", 15))
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withAddressSpace("10.0.0.0/28")
+            .create();
+
+        computeManager.serviceClient()
+            .getCapacityReservations()
+            .createOrUpdate(rgName, crgNameForUpdate, generateRandomResourceName("cr", 15),
+                new CapacityReservationInner().withLocation(region.name())
+                    .withZones(Arrays.asList("1"))
+                    .withSku(new Sku().withName("Standard_DS1_v2").withCapacity(4L)));
+
+        // Create virtual machine without any capacity reservations
+        VirtualMachine vm = computeManager.virtualMachines()
+            .define(generateRandomResourceName("vm", 15))
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withExistingPrimaryNetwork(network)
+            .withSubnet(generateRandomResourceName("subnet", 15))
+            .withPrimaryPrivateIPAddressDynamic()
+            .withoutPrimaryPublicIPAddress()
+            .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2019_DATACENTER_GEN2)
+            .withAdminUsername("Foo12")
+            .withAdminPassword(password())
+            .withNewDataDisk(127)
+            .withSize(VirtualMachineSizeTypes.STANDARD_DS1_V2)
+            .create();
+
+        // Update virtual machine with capacity reservation group
+        vm.update().withCapacityReservationGroup(crgForUpdate.id()).apply();
+        Assertions.assertEquals(crgForUpdate.id(), vm.capacityReservationGroupId());
+        computeManager.virtualMachines().deleteById(vm.id());
+
+        // Create virtual machine with capacity reservation group
+        vm = computeManager.virtualMachines()
+            .define(generateRandomResourceName("vm", 15))
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withExistingPrimaryNetwork(network)
+            .withSubnet(generateRandomResourceName("subnet", 15))
+            .withPrimaryPrivateIPAddressDynamic()
+            .withoutPrimaryPublicIPAddress()
+            .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2019_DATACENTER_GEN2)
+            .withAdminUsername("Foo12")
+            .withAdminPassword(password())
+            .withNewDataDisk(127)
+            .withSize(VirtualMachineSizeTypes.STANDARD_DS1_V2)
+            .withCapacityReservationGroup(crgForCreate.id())
+            .create();
+
+        Assertions.assertEquals(crgForCreate.id(), vm.capacityReservationGroupId());
+
+        // Update virtual machine with another capacity reservation group
+        vm.update().withCapacityReservationGroup(crgForUpdate.id()).apply();
+
+        Assertions.assertEquals(crgForUpdate.id(), vm.capacityReservationGroupId());
     }
 
     @Test

@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.appconfiguration.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appconfiguration.fluent.models.OperationDefinitionInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The result of a request to list configuration store operations. */
+/**
+ * The result of a request to list configuration store operations.
+ */
 @Fluent
-public final class OperationDefinitionListResult {
+public final class OperationDefinitionListResult implements JsonSerializable<OperationDefinitionListResult> {
     /*
      * The collection value.
      */
-    @JsonProperty(value = "value")
     private List<OperationDefinitionInner> value;
 
     /*
      * The URI that can be used to request the next set of paged results.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of OperationDefinitionListResult class. */
+    /**
+     * Creates an instance of OperationDefinitionListResult class.
+     */
     public OperationDefinitionListResult() {
     }
 
     /**
      * Get the value property: The collection value.
-     *
+     * 
      * @return the value value.
      */
     public List<OperationDefinitionInner> value() {
@@ -39,7 +45,7 @@ public final class OperationDefinitionListResult {
 
     /**
      * Set the value property: The collection value.
-     *
+     * 
      * @param value the value value to set.
      * @return the OperationDefinitionListResult object itself.
      */
@@ -50,7 +56,7 @@ public final class OperationDefinitionListResult {
 
     /**
      * Get the nextLink property: The URI that can be used to request the next set of paged results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +65,7 @@ public final class OperationDefinitionListResult {
 
     /**
      * Set the nextLink property: The URI that can be used to request the next set of paged results.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the OperationDefinitionListResult object itself.
      */
@@ -70,12 +76,54 @@ public final class OperationDefinitionListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OperationDefinitionListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OperationDefinitionListResult if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OperationDefinitionListResult.
+     */
+    public static OperationDefinitionListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OperationDefinitionListResult deserializedOperationDefinitionListResult
+                = new OperationDefinitionListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<OperationDefinitionInner> value
+                        = reader.readArray(reader1 -> OperationDefinitionInner.fromJson(reader1));
+                    deserializedOperationDefinitionListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedOperationDefinitionListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOperationDefinitionListResult;
+        });
     }
 }

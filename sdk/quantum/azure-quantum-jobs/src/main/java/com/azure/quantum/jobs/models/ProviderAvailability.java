@@ -40,7 +40,10 @@ public final class ProviderAvailability extends ExpandableStringEnum<ProviderAva
         return fromString(name, ProviderAvailability.class);
     }
 
-    /** @return known ProviderAvailability values. */
+    /**
+     * Gets the known values for ProviderAvailability.
+     * @return known ProviderAvailability values.
+     */
     public static Collection<ProviderAvailability> values() {
         return values(ProviderAvailability.class);
     }

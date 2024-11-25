@@ -31,9 +31,9 @@ import com.azure.resourcemanager.appservice.fluent.models.HostnameBindingInner;
 import com.azure.resourcemanager.appservice.fluent.models.HybridConnectionInner;
 import com.azure.resourcemanager.appservice.fluent.models.IdentifierInner;
 import com.azure.resourcemanager.appservice.fluent.models.KeyInfoInner;
-import com.azure.resourcemanager.appservice.fluent.models.MigrateMySqlStatusInner;
 import com.azure.resourcemanager.appservice.fluent.models.MSDeployLogInner;
 import com.azure.resourcemanager.appservice.fluent.models.MSDeployStatusInner;
+import com.azure.resourcemanager.appservice.fluent.models.MigrateMySqlStatusInner;
 import com.azure.resourcemanager.appservice.fluent.models.NetworkFeaturesInner;
 import com.azure.resourcemanager.appservice.fluent.models.NetworkTraceInner;
 import com.azure.resourcemanager.appservice.fluent.models.OperationInner;
@@ -79,8 +79,8 @@ import com.azure.resourcemanager.appservice.models.CsmDeploymentStatus;
 import com.azure.resourcemanager.appservice.models.CsmPublishingProfileOptions;
 import com.azure.resourcemanager.appservice.models.CsmSlotEntity;
 import com.azure.resourcemanager.appservice.models.DeletedAppRestoreRequest;
-import com.azure.resourcemanager.appservice.models.MigrateMySqlRequest;
 import com.azure.resourcemanager.appservice.models.MSDeploy;
+import com.azure.resourcemanager.appservice.models.MigrateMySqlRequest;
 import com.azure.resourcemanager.appservice.models.PremierAddOnPatchResource;
 import com.azure.resourcemanager.appservice.models.SnapshotRestoreRequest;
 import com.azure.resourcemanager.appservice.models.StorageMigrationOptions;
@@ -9179,6 +9179,63 @@ public interface WebAppsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     FunctionSecretsInner listSyncFunctionTriggers(String resourceGroupName, String name);
+
+    /**
+     * Updates the machine key of an app.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return any object along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Object>> updateMachineKeyWithResponseAsync(String resourceGroupName, String name);
+
+    /**
+     * Updates the machine key of an app.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return any object on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Object> updateMachineKeyAsync(String resourceGroupName, String name);
+
+    /**
+     * Updates the machine key of an app.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return any object along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Object> updateMachineKeyWithResponse(String resourceGroupName, String name, Context context);
+
+    /**
+     * Updates the machine key of an app.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return any object.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Object updateMachineKey(String resourceGroupName, String name);
 
     /**
      * Restores a web app.

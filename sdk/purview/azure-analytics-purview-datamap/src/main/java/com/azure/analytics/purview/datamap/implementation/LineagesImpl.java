@@ -88,7 +88,7 @@ public final class LineagesImpl {
             @QueryParam("direction") String direction, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
-        @Get("/lineage/{guid}/next/")
+        @Get("/lineage/{guid}/next")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
@@ -99,7 +99,7 @@ public final class LineagesImpl {
             @QueryParam("direction") String direction, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
-        @Get("/lineage/{guid}/next/")
+        @Get("/lineage/{guid}/next")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
@@ -149,7 +149,7 @@ public final class LineagesImpl {
      *     guidEntityMap (Optional): {
      *         String (Required): {
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -159,7 +159,7 @@ public final class LineagesImpl {
      *             classifications (Optional): [
      *                  (Optional){
      *                     attributes (Optional): {
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     lastModifiedTS: String (Optional)
@@ -202,7 +202,7 @@ public final class LineagesImpl {
      *     }
      *     widthCounts (Optional): {
      *         String (Required): {
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *     }
      *     lineageDepth: Integer (Optional)
@@ -264,7 +264,7 @@ public final class LineagesImpl {
      *     guidEntityMap (Optional): {
      *         String (Required): {
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -274,7 +274,7 @@ public final class LineagesImpl {
      *             classifications (Optional): [
      *                  (Optional){
      *                     attributes (Optional): {
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     lastModifiedTS: String (Optional)
@@ -317,7 +317,7 @@ public final class LineagesImpl {
      *     }
      *     widthCounts (Optional): {
      *         String (Required): {
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *     }
      *     lineageDepth: Integer (Optional)
@@ -377,7 +377,7 @@ public final class LineagesImpl {
      *     guidEntityMap (Optional): {
      *         String (Required): {
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -387,7 +387,7 @@ public final class LineagesImpl {
      *             classifications (Optional): [
      *                  (Optional){
      *                     attributes (Optional): {
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     lastModifiedTS: String (Optional)
@@ -430,7 +430,7 @@ public final class LineagesImpl {
      *     }
      *     widthCounts (Optional): {
      *         String (Required): {
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *     }
      *     lineageDepth: Integer (Optional)
@@ -492,7 +492,7 @@ public final class LineagesImpl {
      *     guidEntityMap (Optional): {
      *         String (Required): {
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -502,7 +502,7 @@ public final class LineagesImpl {
      *             classifications (Optional): [
      *                  (Optional){
      *                     attributes (Optional): {
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     lastModifiedTS: String (Optional)
@@ -545,7 +545,7 @@ public final class LineagesImpl {
      *     }
      *     widthCounts (Optional): {
      *         String (Required): {
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *     }
      *     lineageDepth: Integer (Optional)
@@ -623,7 +623,7 @@ public final class LineagesImpl {
      *     guidEntityMap (Optional): {
      *         String (Required): {
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -633,7 +633,7 @@ public final class LineagesImpl {
      *             classifications (Optional): [
      *                  (Optional){
      *                     attributes (Optional): {
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     lastModifiedTS: String (Optional)
@@ -676,7 +676,7 @@ public final class LineagesImpl {
      *     }
      *     widthCounts (Optional): {
      *         String (Required): {
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *     }
      *     lineageDepth: Integer (Optional)
@@ -755,7 +755,7 @@ public final class LineagesImpl {
      *     guidEntityMap (Optional): {
      *         String (Required): {
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -765,7 +765,7 @@ public final class LineagesImpl {
      *             classifications (Optional): [
      *                  (Optional){
      *                     attributes (Optional): {
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     lastModifiedTS: String (Optional)
@@ -808,7 +808,7 @@ public final class LineagesImpl {
      *     }
      *     widthCounts (Optional): {
      *         String (Required): {
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *     }
      *     lineageDepth: Integer (Optional)

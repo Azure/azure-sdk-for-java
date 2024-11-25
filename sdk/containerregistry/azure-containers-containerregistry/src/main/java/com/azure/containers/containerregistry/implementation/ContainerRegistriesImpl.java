@@ -53,17 +53,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ContainerRegistries. */
+/**
+ * An instance of this class provides access to all the operations defined in ContainerRegistries.
+ */
 public final class ContainerRegistriesImpl {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ContainerRegistriesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AzureContainerRegistryImpl client;
 
     /**
      * Initializes an instance of ContainerRegistriesImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ContainerRegistriesImpl(AzureContainerRegistryImpl client) {
@@ -115,6 +121,14 @@ public final class ContainerRegistriesImpl {
         @Put("/v2/{name}/manifests/{reference}")
         @ExpectedResponses({ 201 })
         @UnexpectedResponseExceptionType(AcrErrorsException.class)
+        Mono<Response<Void>> createManifestNoCustomHeaders(@HostParam("url") String url, @PathParam("name") String name,
+            @PathParam("reference") String reference, @HeaderParam("Content-Type") String contentType,
+            @BodyParam("application/vnd.docker.distribution.manifest.v2+json") Flux<ByteBuffer> payload,
+            @HeaderParam("Content-Length") long contentLength, @HeaderParam("Accept") String accept, Context context);
+
+        @Put("/v2/{name}/manifests/{reference}")
+        @ExpectedResponses({ 201 })
+        @UnexpectedResponseExceptionType(AcrErrorsException.class)
         Mono<ResponseBase<ContainerRegistriesCreateManifestHeaders, Void>> createManifest(@HostParam("url") String url,
             @PathParam("name") String name, @PathParam("reference") String reference,
             @HeaderParam("Content-Type") String contentType,
@@ -124,9 +138,25 @@ public final class ContainerRegistriesImpl {
         @Put("/v2/{name}/manifests/{reference}")
         @ExpectedResponses({ 201 })
         @UnexpectedResponseExceptionType(AcrErrorsException.class)
+        Mono<Response<Void>> createManifestNoCustomHeaders(@HostParam("url") String url, @PathParam("name") String name,
+            @PathParam("reference") String reference, @HeaderParam("Content-Type") String contentType,
+            @BodyParam("application/vnd.docker.distribution.manifest.v2+json") BinaryData payload,
+            @HeaderParam("Content-Length") long contentLength, @HeaderParam("Accept") String accept, Context context);
+
+        @Put("/v2/{name}/manifests/{reference}")
+        @ExpectedResponses({ 201 })
+        @UnexpectedResponseExceptionType(AcrErrorsException.class)
         ResponseBase<ContainerRegistriesCreateManifestHeaders, Void> createManifestSync(@HostParam("url") String url,
             @PathParam("name") String name, @PathParam("reference") String reference,
             @HeaderParam("Content-Type") String contentType,
+            @BodyParam("application/vnd.docker.distribution.manifest.v2+json") BinaryData payload,
+            @HeaderParam("Content-Length") long contentLength, @HeaderParam("Accept") String accept, Context context);
+
+        @Put("/v2/{name}/manifests/{reference}")
+        @ExpectedResponses({ 201 })
+        @UnexpectedResponseExceptionType(AcrErrorsException.class)
+        Response<Void> createManifestNoCustomHeadersSync(@HostParam("url") String url, @PathParam("name") String name,
+            @PathParam("reference") String reference, @HeaderParam("Content-Type") String contentType,
             @BodyParam("application/vnd.docker.distribution.manifest.v2+json") BinaryData payload,
             @HeaderParam("Content-Length") long contentLength, @HeaderParam("Accept") String accept, Context context);
 
@@ -152,9 +182,23 @@ public final class ContainerRegistriesImpl {
         @Get("/acr/v1/_catalog")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(AcrErrorsException.class)
+        Mono<Response<Repositories>> getRepositoriesNoCustomHeaders(@HostParam("url") String url,
+            @QueryParam("last") String last, @QueryParam("n") Integer n, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Get("/acr/v1/_catalog")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(AcrErrorsException.class)
         ResponseBase<ContainerRegistriesGetRepositoriesHeaders, Repositories> getRepositoriesSync(
             @HostParam("url") String url, @QueryParam("last") String last, @QueryParam("n") Integer n,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Get("/acr/v1/_catalog")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(AcrErrorsException.class)
+        Response<Repositories> getRepositoriesNoCustomHeadersSync(@HostParam("url") String url,
+            @QueryParam("last") String last, @QueryParam("n") Integer n, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Get("/acr/v1/{name}")
         @ExpectedResponses({ 200 })
@@ -211,10 +255,26 @@ public final class ContainerRegistriesImpl {
         @Get("/acr/v1/{name}/_tags")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(AcrErrorsException.class)
+        Mono<Response<TagList>> getTagsNoCustomHeaders(@HostParam("url") String url, @PathParam("name") String name,
+            @QueryParam("last") String last, @QueryParam("n") Integer n, @QueryParam("orderby") String orderBy,
+            @QueryParam("digest") String digest, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Get("/acr/v1/{name}/_tags")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(AcrErrorsException.class)
         ResponseBase<ContainerRegistriesGetTagsHeaders, TagList> getTagsSync(@HostParam("url") String url,
             @PathParam("name") String name, @QueryParam("last") String last, @QueryParam("n") Integer n,
             @QueryParam("orderby") String orderBy, @QueryParam("digest") String digest,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Get("/acr/v1/{name}/_tags")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(AcrErrorsException.class)
+        Response<TagList> getTagsNoCustomHeadersSync(@HostParam("url") String url, @PathParam("name") String name,
+            @QueryParam("last") String last, @QueryParam("n") Integer n, @QueryParam("orderby") String orderBy,
+            @QueryParam("digest") String digest, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Get("/acr/v1/{name}/_tags/{reference}")
         @ExpectedResponses({ 200 })
@@ -271,10 +331,26 @@ public final class ContainerRegistriesImpl {
         @Get("/acr/v1/{name}/_manifests")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(AcrErrorsException.class)
+        Mono<Response<AcrManifests>> getManifestsNoCustomHeaders(@HostParam("url") String url,
+            @PathParam("name") String name, @QueryParam("last") String last, @QueryParam("n") Integer n,
+            @QueryParam("orderby") String orderBy, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Get("/acr/v1/{name}/_manifests")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(AcrErrorsException.class)
         ResponseBase<ContainerRegistriesGetManifestsHeaders, AcrManifests> getManifestsSync(
             @HostParam("url") String url, @PathParam("name") String name, @QueryParam("last") String last,
             @QueryParam("n") Integer n, @QueryParam("orderby") String orderBy,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Get("/acr/v1/{name}/_manifests")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(AcrErrorsException.class)
+        Response<AcrManifests> getManifestsNoCustomHeadersSync(@HostParam("url") String url,
+            @PathParam("name") String name, @QueryParam("last") String last, @QueryParam("n") Integer n,
+            @QueryParam("orderby") String orderBy, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Get("/acr/v1/{name}/_manifests/{digest}")
         @ExpectedResponses({ 200 })
@@ -318,7 +394,21 @@ public final class ContainerRegistriesImpl {
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(AcrErrorsException.class)
+        Mono<Response<Repositories>> getRepositoriesNextNoCustomHeaders(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("url") String url,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(AcrErrorsException.class)
         ResponseBase<ContainerRegistriesGetRepositoriesNextHeaders, Repositories> getRepositoriesNextSync(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("url") String url,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(AcrErrorsException.class)
+        Response<Repositories> getRepositoriesNextNoCustomHeadersSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("url") String url,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -332,9 +422,22 @@ public final class ContainerRegistriesImpl {
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(AcrErrorsException.class)
+        Mono<Response<TagList>> getTagsNextNoCustomHeaders(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("url") String url,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(AcrErrorsException.class)
         ResponseBase<ContainerRegistriesGetTagsNextHeaders, TagList> getTagsNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("url") String url,
             @HeaderParam("Accept") String accept, Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(AcrErrorsException.class)
+        Response<TagList> getTagsNextNoCustomHeadersSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("url") String url, @HeaderParam("Accept") String accept, Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
@@ -346,27 +449,40 @@ public final class ContainerRegistriesImpl {
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(AcrErrorsException.class)
+        Mono<Response<AcrManifests>> getManifestsNextNoCustomHeaders(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("url") String url,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(AcrErrorsException.class)
         ResponseBase<ContainerRegistriesGetManifestsNextHeaders, AcrManifests> getManifestsNextSync(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("url") String url,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(AcrErrorsException.class)
+        Response<AcrManifests> getManifestsNextNoCustomHeadersSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("url") String url,
             @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Tells whether this Docker Registry instance supports Docker Registry HTTP API v2.
-     *
+     * 
      * @throws AcrErrorsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> checkDockerV2SupportWithResponseAsync() {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.checkDockerV2Support(this.client.getUrl(), accept, context));
+        return FluxUtil.withContext(context -> checkDockerV2SupportWithResponseAsync(context));
     }
 
     /**
      * Tells whether this Docker Registry instance supports Docker Registry HTTP API v2.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AcrErrorsException thrown if the request is rejected by server.
@@ -381,7 +497,7 @@ public final class ContainerRegistriesImpl {
 
     /**
      * Tells whether this Docker Registry instance supports Docker Registry HTTP API v2.
-     *
+     * 
      * @throws AcrErrorsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
@@ -393,7 +509,7 @@ public final class ContainerRegistriesImpl {
 
     /**
      * Tells whether this Docker Registry instance supports Docker Registry HTTP API v2.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AcrErrorsException thrown if the request is rejected by server.
@@ -407,7 +523,7 @@ public final class ContainerRegistriesImpl {
 
     /**
      * Tells whether this Docker Registry instance supports Docker Registry HTTP API v2.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AcrErrorsException thrown if the request is rejected by server.
@@ -422,7 +538,7 @@ public final class ContainerRegistriesImpl {
 
     /**
      * Tells whether this Docker Registry instance supports Docker Registry HTTP API v2.
-     *
+     * 
      * @throws AcrErrorsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
@@ -433,36 +549,35 @@ public final class ContainerRegistriesImpl {
 
     /**
      * Get the manifest identified by `name` and `reference` where `reference` can be a tag or digest.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @param reference A tag or a digest, pointing to a specific image.
      * @param accept Accept header string delimited by comma. For example,
-     *     application/vnd.docker.distribution.manifest.v2+json.
+     * application/vnd.docker.distribution.manifest.v2+json.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AcrErrorsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the manifest identified by `name` and `reference` where `reference` can be a tag or digest along with
-     *     {@link Response} on successful completion of {@link Mono}.
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getManifestWithResponseAsync(String name, String reference, String accept) {
-        return FluxUtil
-            .withContext(context -> service.getManifest(this.client.getUrl(), name, reference, accept, context));
+        return FluxUtil.withContext(context -> getManifestWithResponseAsync(name, reference, accept, context));
     }
 
     /**
      * Get the manifest identified by `name` and `reference` where `reference` can be a tag or digest.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @param reference A tag or a digest, pointing to a specific image.
      * @param accept Accept header string delimited by comma. For example,
-     *     application/vnd.docker.distribution.manifest.v2+json.
+     * application/vnd.docker.distribution.manifest.v2+json.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AcrErrorsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the manifest identified by `name` and `reference` where `reference` can be a tag or digest along with
-     *     {@link Response} on successful completion of {@link Mono}.
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getManifestWithResponseAsync(String name, String reference, String accept,
@@ -472,16 +587,16 @@ public final class ContainerRegistriesImpl {
 
     /**
      * Get the manifest identified by `name` and `reference` where `reference` can be a tag or digest.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @param reference A tag or a digest, pointing to a specific image.
      * @param accept Accept header string delimited by comma. For example,
-     *     application/vnd.docker.distribution.manifest.v2+json.
+     * application/vnd.docker.distribution.manifest.v2+json.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AcrErrorsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the manifest identified by `name` and `reference` where `reference` can be a tag or digest on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> getManifestAsync(String name, String reference, String accept) {
@@ -490,17 +605,17 @@ public final class ContainerRegistriesImpl {
 
     /**
      * Get the manifest identified by `name` and `reference` where `reference` can be a tag or digest.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @param reference A tag or a digest, pointing to a specific image.
      * @param accept Accept header string delimited by comma. For example,
-     *     application/vnd.docker.distribution.manifest.v2+json.
+     * application/vnd.docker.distribution.manifest.v2+json.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AcrErrorsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the manifest identified by `name` and `reference` where `reference` can be a tag or digest on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BinaryData> getManifestAsync(String name, String reference, String accept, Context context) {
@@ -510,17 +625,17 @@ public final class ContainerRegistriesImpl {
 
     /**
      * Get the manifest identified by `name` and `reference` where `reference` can be a tag or digest.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @param reference A tag or a digest, pointing to a specific image.
      * @param accept Accept header string delimited by comma. For example,
-     *     application/vnd.docker.distribution.manifest.v2+json.
+     * application/vnd.docker.distribution.manifest.v2+json.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AcrErrorsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the manifest identified by `name` and `reference` where `reference` can be a tag or digest along with
-     *     {@link Response}.
+     * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getManifestWithResponse(String name, String reference, String accept, Context context) {
@@ -529,11 +644,11 @@ public final class ContainerRegistriesImpl {
 
     /**
      * Get the manifest identified by `name` and `reference` where `reference` can be a tag or digest.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @param reference A tag or a digest, pointing to a specific image.
      * @param accept Accept header string delimited by comma. For example,
-     *     application/vnd.docker.distribution.manifest.v2+json.
+     * application/vnd.docker.distribution.manifest.v2+json.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AcrErrorsException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -546,7 +661,7 @@ public final class ContainerRegistriesImpl {
 
     /**
      * Put the manifest identified by `name` and `reference` where `reference` can be a tag or digest.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @param reference A tag or a digest, pointing to a specific image.
      * @param payload Manifest body, can take v1 or v2 values depending on accept header.
@@ -560,14 +675,13 @@ public final class ContainerRegistriesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<ContainerRegistriesCreateManifestHeaders, Void>> createManifestWithResponseAsync(
         String name, String reference, Flux<ByteBuffer> payload, long contentLength, String contentType) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.createManifest(this.client.getUrl(), name, reference,
-            contentType, payload, contentLength, accept, context));
+        return FluxUtil.withContext(
+            context -> createManifestWithResponseAsync(name, reference, payload, contentLength, contentType, context));
     }
 
     /**
      * Put the manifest identified by `name` and `reference` where `reference` can be a tag or digest.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @param reference A tag or a digest, pointing to a specific image.
      * @param payload Manifest body, can take v1 or v2 values depending on accept header.
@@ -590,7 +704,7 @@ public final class ContainerRegistriesImpl {
 
     /**
      * Put the manifest identified by `name` and `reference` where `reference` can be a tag or digest.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @param reference A tag or a digest, pointing to a specific image.
      * @param payload Manifest body, can take v1 or v2 values depending on accept header.
@@ -610,7 +724,7 @@ public final class ContainerRegistriesImpl {
 
     /**
      * Put the manifest identified by `name` and `reference` where `reference` can be a tag or digest.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @param reference A tag or a digest, pointing to a specific image.
      * @param payload Manifest body, can take v1 or v2 values depending on accept header.
@@ -631,7 +745,49 @@ public final class ContainerRegistriesImpl {
 
     /**
      * Put the manifest identified by `name` and `reference` where `reference` can be a tag or digest.
-     *
+     * 
+     * @param name Name of the image (including the namespace).
+     * @param reference A tag or a digest, pointing to a specific image.
+     * @param payload Manifest body, can take v1 or v2 values depending on accept header.
+     * @param contentLength The Content-Length header for the request.
+     * @param contentType The manifest's Content-Type.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws AcrErrorsException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> createManifestNoCustomHeadersWithResponseAsync(String name, String reference,
+        Flux<ByteBuffer> payload, long contentLength, String contentType) {
+        return FluxUtil.withContext(context -> createManifestNoCustomHeadersWithResponseAsync(name, reference, payload,
+            contentLength, contentType, context));
+    }
+
+    /**
+     * Put the manifest identified by `name` and `reference` where `reference` can be a tag or digest.
+     * 
+     * @param name Name of the image (including the namespace).
+     * @param reference A tag or a digest, pointing to a specific image.
+     * @param payload Manifest body, can take v1 or v2 values depending on accept header.
+     * @param contentLength The Content-Length header for the request.
+     * @param contentType The manifest's Content-Type.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws AcrErrorsException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> createManifestNoCustomHeadersWithResponseAsync(String name, String reference,
+        Flux<ByteBuffer> payload, long contentLength, String contentType, Context context) {
+        final String accept = "application/json";
+        return service.createManifestNoCustomHeaders(this.client.getUrl(), name, reference, contentType, payload,
+            contentLength, accept, context);
+    }
+
+    /**
+     * Put the manifest identified by `name` and `reference` where `reference` can be a tag or digest.
+     * 
      * @param name Name of the image (including the namespace).
      * @param reference A tag or a digest, pointing to a specific image.
      * @param payload Manifest body, can take v1 or v2 values depending on accept header.
@@ -645,14 +801,13 @@ public final class ContainerRegistriesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<ContainerRegistriesCreateManifestHeaders, Void>> createManifestWithResponseAsync(
         String name, String reference, BinaryData payload, long contentLength, String contentType) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.createManifest(this.client.getUrl(), name, reference,
-            contentType, payload, contentLength, accept, context));
+        return FluxUtil.withContext(
+            context -> createManifestWithResponseAsync(name, reference, payload, contentLength, contentType, context));
     }
 
     /**
      * Put the manifest identified by `name` and `reference` where `reference` can be a tag or digest.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @param reference A tag or a digest, pointing to a specific image.
      * @param payload Manifest body, can take v1 or v2 values depending on accept header.
@@ -674,7 +829,7 @@ public final class ContainerRegistriesImpl {
 
     /**
      * Put the manifest identified by `name` and `reference` where `reference` can be a tag or digest.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @param reference A tag or a digest, pointing to a specific image.
      * @param payload Manifest body, can take v1 or v2 values depending on accept header.
@@ -694,7 +849,7 @@ public final class ContainerRegistriesImpl {
 
     /**
      * Put the manifest identified by `name` and `reference` where `reference` can be a tag or digest.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @param reference A tag or a digest, pointing to a specific image.
      * @param payload Manifest body, can take v1 or v2 values depending on accept header.
@@ -715,7 +870,49 @@ public final class ContainerRegistriesImpl {
 
     /**
      * Put the manifest identified by `name` and `reference` where `reference` can be a tag or digest.
-     *
+     * 
+     * @param name Name of the image (including the namespace).
+     * @param reference A tag or a digest, pointing to a specific image.
+     * @param payload Manifest body, can take v1 or v2 values depending on accept header.
+     * @param contentLength The Content-Length header for the request.
+     * @param contentType The manifest's Content-Type.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws AcrErrorsException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> createManifestNoCustomHeadersWithResponseAsync(String name, String reference,
+        BinaryData payload, long contentLength, String contentType) {
+        return FluxUtil.withContext(context -> createManifestNoCustomHeadersWithResponseAsync(name, reference, payload,
+            contentLength, contentType, context));
+    }
+
+    /**
+     * Put the manifest identified by `name` and `reference` where `reference` can be a tag or digest.
+     * 
+     * @param name Name of the image (including the namespace).
+     * @param reference A tag or a digest, pointing to a specific image.
+     * @param payload Manifest body, can take v1 or v2 values depending on accept header.
+     * @param contentLength The Content-Length header for the request.
+     * @param contentType The manifest's Content-Type.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws AcrErrorsException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> createManifestNoCustomHeadersWithResponseAsync(String name, String reference,
+        BinaryData payload, long contentLength, String contentType, Context context) {
+        final String accept = "application/json";
+        return service.createManifestNoCustomHeaders(this.client.getUrl(), name, reference, contentType, payload,
+            contentLength, accept, context);
+    }
+
+    /**
+     * Put the manifest identified by `name` and `reference` where `reference` can be a tag or digest.
+     * 
      * @param name Name of the image (including the namespace).
      * @param reference A tag or a digest, pointing to a specific image.
      * @param payload Manifest body, can take v1 or v2 values depending on accept header.
@@ -737,7 +934,7 @@ public final class ContainerRegistriesImpl {
 
     /**
      * Put the manifest identified by `name` and `reference` where `reference` can be a tag or digest.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @param reference A tag or a digest, pointing to a specific image.
      * @param payload Manifest body, can take v1 or v2 values depending on accept header.
@@ -754,8 +951,30 @@ public final class ContainerRegistriesImpl {
     }
 
     /**
+     * Put the manifest identified by `name` and `reference` where `reference` can be a tag or digest.
+     * 
+     * @param name Name of the image (including the namespace).
+     * @param reference A tag or a digest, pointing to a specific image.
+     * @param payload Manifest body, can take v1 or v2 values depending on accept header.
+     * @param contentLength The Content-Length header for the request.
+     * @param contentType The manifest's Content-Type.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws AcrErrorsException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> createManifestNoCustomHeadersWithResponse(String name, String reference, BinaryData payload,
+        long contentLength, String contentType, Context context) {
+        final String accept = "application/json";
+        return service.createManifestNoCustomHeadersSync(this.client.getUrl(), name, reference, contentType, payload,
+            contentLength, accept, context);
+    }
+
+    /**
      * Delete the manifest identified by `name` and `reference`. Note that a manifest can _only_ be deleted by `digest`.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @param reference Digest of a BLOB.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -765,14 +984,12 @@ public final class ContainerRegistriesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteManifestWithResponseAsync(String name, String reference) {
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.deleteManifest(this.client.getUrl(), name, reference, accept, context));
+        return FluxUtil.withContext(context -> deleteManifestWithResponseAsync(name, reference, context));
     }
 
     /**
      * Delete the manifest identified by `name` and `reference`. Note that a manifest can _only_ be deleted by `digest`.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @param reference Digest of a BLOB.
      * @param context The context to associate with this operation.
@@ -789,7 +1006,7 @@ public final class ContainerRegistriesImpl {
 
     /**
      * Delete the manifest identified by `name` and `reference`. Note that a manifest can _only_ be deleted by `digest`.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @param reference Digest of a BLOB.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -804,7 +1021,7 @@ public final class ContainerRegistriesImpl {
 
     /**
      * Delete the manifest identified by `name` and `reference`. Note that a manifest can _only_ be deleted by `digest`.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @param reference Digest of a BLOB.
      * @param context The context to associate with this operation.
@@ -820,7 +1037,7 @@ public final class ContainerRegistriesImpl {
 
     /**
      * Delete the manifest identified by `name` and `reference`. Note that a manifest can _only_ be deleted by `digest`.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @param reference Digest of a BLOB.
      * @param context The context to associate with this operation.
@@ -837,7 +1054,7 @@ public final class ContainerRegistriesImpl {
 
     /**
      * Delete the manifest identified by `name` and `reference`. Note that a manifest can _only_ be deleted by `digest`.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @param reference Digest of a BLOB.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -851,9 +1068,9 @@ public final class ContainerRegistriesImpl {
 
     /**
      * List repositories.
-     *
+     * 
      * @param last Query parameter for the last item in previous query. Result set will include values lexically after
-     *     last.
+     * last.
      * @param n query parameter for max number of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -871,9 +1088,9 @@ public final class ContainerRegistriesImpl {
 
     /**
      * List repositories.
-     *
+     * 
      * @param last Query parameter for the last item in previous query. Result set will include values lexically after
-     *     last.
+     * last.
      * @param n query parameter for max number of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -889,9 +1106,49 @@ public final class ContainerRegistriesImpl {
 
     /**
      * List repositories.
-     *
+     * 
      * @param last Query parameter for the last item in previous query. Result set will include values lexically after
-     *     last.
+     * last.
+     * @param n query parameter for max number of items.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws AcrErrorsException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of repositories along with {@link PagedResponse} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<String>> getRepositoriesNoCustomHeadersSinglePageAsync(String last, Integer n,
+        Context context) {
+        final String accept = "application/json";
+        return service
+            .getRepositoriesNoCustomHeaders(this.client.getUrl(), last, n, this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getRepositories(), res.getValue().getLink(), null));
+    }
+
+    /**
+     * List repositories.
+     * 
+     * @param last Query parameter for the last item in previous query. Result set will include values lexically after
+     * last.
+     * @param n query parameter for max number of items.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws AcrErrorsException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of repositories as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<String> getRepositoriesNoCustomHeadersAsync(String last, Integer n, Context context) {
+        return new PagedFlux<>(() -> getRepositoriesNoCustomHeadersSinglePageAsync(last, n, context),
+            nextLink -> getRepositoriesNextSinglePageAsync(nextLink, context));
+    }
+
+    /**
+     * List repositories.
+     * 
+     * @param last Query parameter for the last item in previous query. Result set will include values lexically after
+     * last.
      * @param n query parameter for max number of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -910,9 +1167,9 @@ public final class ContainerRegistriesImpl {
 
     /**
      * List repositories.
-     *
+     * 
      * @param last Query parameter for the last item in previous query. Result set will include values lexically after
-     *     last.
+     * last.
      * @param n query parameter for max number of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -927,8 +1184,47 @@ public final class ContainerRegistriesImpl {
     }
 
     /**
+     * List repositories.
+     * 
+     * @param last Query parameter for the last item in previous query. Result set will include values lexically after
+     * last.
+     * @param n query parameter for max number of items.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws AcrErrorsException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of repositories along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PagedResponse<String> getRepositoriesNoCustomHeadersSinglePage(String last, Integer n, Context context) {
+        final String accept = "application/json";
+        Response<Repositories> res = service.getRepositoriesNoCustomHeadersSync(this.client.getUrl(), last, n,
+            this.client.getApiVersion(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            res.getValue().getRepositories(), res.getValue().getLink(), null);
+    }
+
+    /**
+     * List repositories.
+     * 
+     * @param last Query parameter for the last item in previous query. Result set will include values lexically after
+     * last.
+     * @param n query parameter for max number of items.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws AcrErrorsException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of repositories as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<String> getRepositoriesNoCustomHeaders(String last, Integer n, Context context) {
+        return new PagedIterable<>(() -> getRepositoriesNoCustomHeadersSinglePage(last, n, context),
+            nextLink -> getRepositoriesNextSinglePage(nextLink, context));
+    }
+
+    /**
      * Get repository attributes.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AcrErrorsException thrown if the request is rejected by server.
@@ -937,14 +1233,12 @@ public final class ContainerRegistriesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ContainerRepositoryProperties>> getPropertiesWithResponseAsync(String name) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.getProperties(this.client.getUrl(), name, this.client.getApiVersion(), accept, context));
+        return FluxUtil.withContext(context -> getPropertiesWithResponseAsync(name, context));
     }
 
     /**
      * Get repository attributes.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -960,7 +1254,7 @@ public final class ContainerRegistriesImpl {
 
     /**
      * Get repository attributes.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AcrErrorsException thrown if the request is rejected by server.
@@ -974,7 +1268,7 @@ public final class ContainerRegistriesImpl {
 
     /**
      * Get repository attributes.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -989,7 +1283,7 @@ public final class ContainerRegistriesImpl {
 
     /**
      * Get repository attributes.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1005,7 +1299,7 @@ public final class ContainerRegistriesImpl {
 
     /**
      * Get repository attributes.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AcrErrorsException thrown if the request is rejected by server.
@@ -1019,7 +1313,7 @@ public final class ContainerRegistriesImpl {
 
     /**
      * Delete the repository identified by `name`.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AcrErrorsException thrown if the request is rejected by server.
@@ -1028,14 +1322,12 @@ public final class ContainerRegistriesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DeleteRepositoryResult>> deleteRepositoryWithResponseAsync(String name) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.deleteRepository(this.client.getUrl(), name,
-            this.client.getApiVersion(), accept, context));
+        return FluxUtil.withContext(context -> deleteRepositoryWithResponseAsync(name, context));
     }
 
     /**
      * Delete the repository identified by `name`.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1051,7 +1343,7 @@ public final class ContainerRegistriesImpl {
 
     /**
      * Delete the repository identified by `name`.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AcrErrorsException thrown if the request is rejected by server.
@@ -1065,7 +1357,7 @@ public final class ContainerRegistriesImpl {
 
     /**
      * Delete the repository identified by `name`.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1080,7 +1372,7 @@ public final class ContainerRegistriesImpl {
 
     /**
      * Delete the repository identified by `name`.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1096,7 +1388,7 @@ public final class ContainerRegistriesImpl {
 
     /**
      * Delete the repository identified by `name`.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AcrErrorsException thrown if the request is rejected by server.
@@ -1110,7 +1402,7 @@ public final class ContainerRegistriesImpl {
 
     /**
      * Update the attribute identified by `name` where `reference` is the name of the repository.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @param value Repository attribute value.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1121,14 +1413,12 @@ public final class ContainerRegistriesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ContainerRepositoryProperties>> updatePropertiesWithResponseAsync(String name,
         RepositoryWriteableProperties value) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.updateProperties(this.client.getUrl(), name,
-            this.client.getApiVersion(), value, accept, context));
+        return FluxUtil.withContext(context -> updatePropertiesWithResponseAsync(name, value, context));
     }
 
     /**
      * Update the attribute identified by `name` where `reference` is the name of the repository.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @param value Repository attribute value.
      * @param context The context to associate with this operation.
@@ -1147,7 +1437,7 @@ public final class ContainerRegistriesImpl {
 
     /**
      * Update the attribute identified by `name` where `reference` is the name of the repository.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @param value Repository attribute value.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1162,7 +1452,7 @@ public final class ContainerRegistriesImpl {
 
     /**
      * Update the attribute identified by `name` where `reference` is the name of the repository.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @param value Repository attribute value.
      * @param context The context to associate with this operation.
@@ -1179,7 +1469,7 @@ public final class ContainerRegistriesImpl {
 
     /**
      * Update the attribute identified by `name` where `reference` is the name of the repository.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @param value Repository attribute value.
      * @param context The context to associate with this operation.
@@ -1198,7 +1488,7 @@ public final class ContainerRegistriesImpl {
 
     /**
      * Update the attribute identified by `name` where `reference` is the name of the repository.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @param value Repository attribute value.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1213,10 +1503,10 @@ public final class ContainerRegistriesImpl {
 
     /**
      * List tags of a repository.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @param last Query parameter for the last item in previous query. Result set will include values lexically after
-     *     last.
+     * last.
      * @param n query parameter for max number of items.
      * @param orderBy orderby query parameter.
      * @param digest filter by digest.
@@ -1238,10 +1528,10 @@ public final class ContainerRegistriesImpl {
 
     /**
      * List tags of a repository.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @param last Query parameter for the last item in previous query. Result set will include values lexically after
-     *     last.
+     * last.
      * @param n query parameter for max number of items.
      * @param orderBy orderby query parameter.
      * @param digest filter by digest.
@@ -1260,10 +1550,58 @@ public final class ContainerRegistriesImpl {
 
     /**
      * List tags of a repository.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @param last Query parameter for the last item in previous query. Result set will include values lexically after
-     *     last.
+     * last.
+     * @param n query parameter for max number of items.
+     * @param orderBy orderby query parameter.
+     * @param digest filter by digest.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws AcrErrorsException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of tag details along with {@link PagedResponse} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<TagAttributesBase>> getTagsNoCustomHeadersSinglePageAsync(String name, String last,
+        Integer n, String orderBy, String digest, Context context) {
+        final String accept = "application/json";
+        return service
+            .getTagsNoCustomHeaders(this.client.getUrl(), name, last, n, orderBy, digest, this.client.getApiVersion(),
+                accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getTagAttributeBases(), res.getValue().getLink(), null));
+    }
+
+    /**
+     * List tags of a repository.
+     * 
+     * @param name Name of the image (including the namespace).
+     * @param last Query parameter for the last item in previous query. Result set will include values lexically after
+     * last.
+     * @param n query parameter for max number of items.
+     * @param orderBy orderby query parameter.
+     * @param digest filter by digest.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws AcrErrorsException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of tag details as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<TagAttributesBase> getTagsNoCustomHeadersAsync(String name, String last, Integer n, String orderBy,
+        String digest, Context context) {
+        return new PagedFlux<>(() -> getTagsNoCustomHeadersSinglePageAsync(name, last, n, orderBy, digest, context),
+            nextLink -> getTagsNextSinglePageAsync(nextLink, context));
+    }
+
+    /**
+     * List tags of a repository.
+     * 
+     * @param name Name of the image (including the namespace).
+     * @param last Query parameter for the last item in previous query. Result set will include values lexically after
+     * last.
      * @param n query parameter for max number of items.
      * @param orderBy orderby query parameter.
      * @param digest filter by digest.
@@ -1285,10 +1623,10 @@ public final class ContainerRegistriesImpl {
 
     /**
      * List tags of a repository.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @param last Query parameter for the last item in previous query. Result set will include values lexically after
-     *     last.
+     * last.
      * @param n query parameter for max number of items.
      * @param orderBy orderby query parameter.
      * @param digest filter by digest.
@@ -1306,8 +1644,55 @@ public final class ContainerRegistriesImpl {
     }
 
     /**
+     * List tags of a repository.
+     * 
+     * @param name Name of the image (including the namespace).
+     * @param last Query parameter for the last item in previous query. Result set will include values lexically after
+     * last.
+     * @param n query parameter for max number of items.
+     * @param orderBy orderby query parameter.
+     * @param digest filter by digest.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws AcrErrorsException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of tag details along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PagedResponse<TagAttributesBase> getTagsNoCustomHeadersSinglePage(String name, String last, Integer n,
+        String orderBy, String digest, Context context) {
+        final String accept = "application/json";
+        Response<TagList> res = service.getTagsNoCustomHeadersSync(this.client.getUrl(), name, last, n, orderBy, digest,
+            this.client.getApiVersion(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            res.getValue().getTagAttributeBases(), res.getValue().getLink(), null);
+    }
+
+    /**
+     * List tags of a repository.
+     * 
+     * @param name Name of the image (including the namespace).
+     * @param last Query parameter for the last item in previous query. Result set will include values lexically after
+     * last.
+     * @param n query parameter for max number of items.
+     * @param orderBy orderby query parameter.
+     * @param digest filter by digest.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws AcrErrorsException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of tag details as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<TagAttributesBase> getTagsNoCustomHeaders(String name, String last, Integer n, String orderBy,
+        String digest, Context context) {
+        return new PagedIterable<>(() -> getTagsNoCustomHeadersSinglePage(name, last, n, orderBy, digest, context),
+            nextLink -> getTagsNextSinglePage(nextLink, context));
+    }
+
+    /**
      * Get tag attributes by tag.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @param reference Tag name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1318,14 +1703,12 @@ public final class ContainerRegistriesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ArtifactTagPropertiesInternal>> getTagPropertiesWithResponseAsync(String name,
         String reference) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getTagProperties(this.client.getUrl(), name, reference,
-            this.client.getApiVersion(), accept, context));
+        return FluxUtil.withContext(context -> getTagPropertiesWithResponseAsync(name, reference, context));
     }
 
     /**
      * Get tag attributes by tag.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @param reference Tag name.
      * @param context The context to associate with this operation.
@@ -1344,7 +1727,7 @@ public final class ContainerRegistriesImpl {
 
     /**
      * Get tag attributes by tag.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @param reference Tag name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1359,7 +1742,7 @@ public final class ContainerRegistriesImpl {
 
     /**
      * Get tag attributes by tag.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @param reference Tag name.
      * @param context The context to associate with this operation.
@@ -1376,7 +1759,7 @@ public final class ContainerRegistriesImpl {
 
     /**
      * Get tag attributes by tag.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @param reference Tag name.
      * @param context The context to associate with this operation.
@@ -1395,7 +1778,7 @@ public final class ContainerRegistriesImpl {
 
     /**
      * Get tag attributes by tag.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @param reference Tag name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1410,7 +1793,7 @@ public final class ContainerRegistriesImpl {
 
     /**
      * Update tag attributes.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @param reference Tag name.
      * @param value Tag attribute value.
@@ -1422,14 +1805,12 @@ public final class ContainerRegistriesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ArtifactTagPropertiesInternal>> updateTagAttributesWithResponseAsync(String name,
         String reference, TagWriteableProperties value) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.updateTagAttributes(this.client.getUrl(), name, reference,
-            this.client.getApiVersion(), value, accept, context));
+        return FluxUtil.withContext(context -> updateTagAttributesWithResponseAsync(name, reference, value, context));
     }
 
     /**
      * Update tag attributes.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @param reference Tag name.
      * @param value Tag attribute value.
@@ -1449,7 +1830,7 @@ public final class ContainerRegistriesImpl {
 
     /**
      * Update tag attributes.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @param reference Tag name.
      * @param value Tag attribute value.
@@ -1467,7 +1848,7 @@ public final class ContainerRegistriesImpl {
 
     /**
      * Update tag attributes.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @param reference Tag name.
      * @param value Tag attribute value.
@@ -1486,7 +1867,7 @@ public final class ContainerRegistriesImpl {
 
     /**
      * Update tag attributes.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @param reference Tag name.
      * @param value Tag attribute value.
@@ -1506,7 +1887,7 @@ public final class ContainerRegistriesImpl {
 
     /**
      * Update tag attributes.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @param reference Tag name.
      * @param value Tag attribute value.
@@ -1523,7 +1904,7 @@ public final class ContainerRegistriesImpl {
 
     /**
      * Delete tag.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @param reference Tag name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1533,14 +1914,12 @@ public final class ContainerRegistriesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteTagWithResponseAsync(String name, String reference) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.deleteTag(this.client.getUrl(), name, reference,
-            this.client.getApiVersion(), accept, context));
+        return FluxUtil.withContext(context -> deleteTagWithResponseAsync(name, reference, context));
     }
 
     /**
      * Delete tag.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @param reference Tag name.
      * @param context The context to associate with this operation.
@@ -1557,7 +1936,7 @@ public final class ContainerRegistriesImpl {
 
     /**
      * Delete tag.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @param reference Tag name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1572,7 +1951,7 @@ public final class ContainerRegistriesImpl {
 
     /**
      * Delete tag.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @param reference Tag name.
      * @param context The context to associate with this operation.
@@ -1588,7 +1967,7 @@ public final class ContainerRegistriesImpl {
 
     /**
      * Delete tag.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @param reference Tag name.
      * @param context The context to associate with this operation.
@@ -1606,7 +1985,7 @@ public final class ContainerRegistriesImpl {
 
     /**
      * Delete tag.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @param reference Tag name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1620,10 +1999,10 @@ public final class ContainerRegistriesImpl {
 
     /**
      * List manifests of a repository.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @param last Query parameter for the last item in previous query. Result set will include values lexically after
-     *     last.
+     * last.
      * @param n query parameter for max number of items.
      * @param orderBy orderby query parameter.
      * @param context The context to associate with this operation.
@@ -1644,10 +2023,10 @@ public final class ContainerRegistriesImpl {
 
     /**
      * List manifests of a repository.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @param last Query parameter for the last item in previous query. Result set will include values lexically after
-     *     last.
+     * last.
      * @param n query parameter for max number of items.
      * @param orderBy orderby query parameter.
      * @param context The context to associate with this operation.
@@ -1665,10 +2044,56 @@ public final class ContainerRegistriesImpl {
 
     /**
      * List manifests of a repository.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @param last Query parameter for the last item in previous query. Result set will include values lexically after
-     *     last.
+     * last.
+     * @param n query parameter for max number of items.
+     * @param orderBy orderby query parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws AcrErrorsException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return manifest attributes along with {@link PagedResponse} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<ManifestAttributesBase>> getManifestsNoCustomHeadersSinglePageAsync(String name,
+        String last, Integer n, String orderBy, Context context) {
+        final String accept = "application/json";
+        return service
+            .getManifestsNoCustomHeaders(this.client.getUrl(), name, last, n, orderBy, this.client.getApiVersion(),
+                accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getManifests(), res.getValue().getLink(), null));
+    }
+
+    /**
+     * List manifests of a repository.
+     * 
+     * @param name Name of the image (including the namespace).
+     * @param last Query parameter for the last item in previous query. Result set will include values lexically after
+     * last.
+     * @param n query parameter for max number of items.
+     * @param orderBy orderby query parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws AcrErrorsException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return manifest attributes as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<ManifestAttributesBase> getManifestsNoCustomHeadersAsync(String name, String last, Integer n,
+        String orderBy, Context context) {
+        return new PagedFlux<>(() -> getManifestsNoCustomHeadersSinglePageAsync(name, last, n, orderBy, context),
+            nextLink -> getManifestsNextSinglePageAsync(nextLink, context));
+    }
+
+    /**
+     * List manifests of a repository.
+     * 
+     * @param name Name of the image (including the namespace).
+     * @param last Query parameter for the last item in previous query. Result set will include values lexically after
+     * last.
      * @param n query parameter for max number of items.
      * @param orderBy orderby query parameter.
      * @param context The context to associate with this operation.
@@ -1689,10 +2114,10 @@ public final class ContainerRegistriesImpl {
 
     /**
      * List manifests of a repository.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @param last Query parameter for the last item in previous query. Result set will include values lexically after
-     *     last.
+     * last.
      * @param n query parameter for max number of items.
      * @param orderBy orderby query parameter.
      * @param context The context to associate with this operation.
@@ -1709,8 +2134,53 @@ public final class ContainerRegistriesImpl {
     }
 
     /**
+     * List manifests of a repository.
+     * 
+     * @param name Name of the image (including the namespace).
+     * @param last Query parameter for the last item in previous query. Result set will include values lexically after
+     * last.
+     * @param n query parameter for max number of items.
+     * @param orderBy orderby query parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws AcrErrorsException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return manifest attributes along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PagedResponse<ManifestAttributesBase> getManifestsNoCustomHeadersSinglePage(String name, String last,
+        Integer n, String orderBy, Context context) {
+        final String accept = "application/json";
+        Response<AcrManifests> res = service.getManifestsNoCustomHeadersSync(this.client.getUrl(), name, last, n,
+            orderBy, this.client.getApiVersion(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            res.getValue().getManifests(), res.getValue().getLink(), null);
+    }
+
+    /**
+     * List manifests of a repository.
+     * 
+     * @param name Name of the image (including the namespace).
+     * @param last Query parameter for the last item in previous query. Result set will include values lexically after
+     * last.
+     * @param n query parameter for max number of items.
+     * @param orderBy orderby query parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws AcrErrorsException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return manifest attributes as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ManifestAttributesBase> getManifestsNoCustomHeaders(String name, String last, Integer n,
+        String orderBy, Context context) {
+        return new PagedIterable<>(() -> getManifestsNoCustomHeadersSinglePage(name, last, n, orderBy, context),
+            nextLink -> getManifestsNextSinglePage(nextLink, context));
+    }
+
+    /**
      * Get manifest attributes.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @param digest Digest of a BLOB.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1721,14 +2191,12 @@ public final class ContainerRegistriesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ArtifactManifestPropertiesInternal>> getManifestPropertiesWithResponseAsync(String name,
         String digest) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getManifestProperties(this.client.getUrl(), name, digest,
-            this.client.getApiVersion(), accept, context));
+        return FluxUtil.withContext(context -> getManifestPropertiesWithResponseAsync(name, digest, context));
     }
 
     /**
      * Get manifest attributes.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @param digest Digest of a BLOB.
      * @param context The context to associate with this operation.
@@ -1747,7 +2215,7 @@ public final class ContainerRegistriesImpl {
 
     /**
      * Get manifest attributes.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @param digest Digest of a BLOB.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1762,7 +2230,7 @@ public final class ContainerRegistriesImpl {
 
     /**
      * Get manifest attributes.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @param digest Digest of a BLOB.
      * @param context The context to associate with this operation.
@@ -1780,7 +2248,7 @@ public final class ContainerRegistriesImpl {
 
     /**
      * Get manifest attributes.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @param digest Digest of a BLOB.
      * @param context The context to associate with this operation.
@@ -1799,7 +2267,7 @@ public final class ContainerRegistriesImpl {
 
     /**
      * Get manifest attributes.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @param digest Digest of a BLOB.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1814,7 +2282,7 @@ public final class ContainerRegistriesImpl {
 
     /**
      * Update properties of a manifest.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @param digest Digest of a BLOB.
      * @param value Manifest attribute value.
@@ -1826,14 +2294,12 @@ public final class ContainerRegistriesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ArtifactManifestPropertiesInternal>> updateManifestPropertiesWithResponseAsync(String name,
         String digest, ManifestWriteableProperties value) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.updateManifestProperties(this.client.getUrl(), name, digest,
-            this.client.getApiVersion(), value, accept, context));
+        return FluxUtil.withContext(context -> updateManifestPropertiesWithResponseAsync(name, digest, value, context));
     }
 
     /**
      * Update properties of a manifest.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @param digest Digest of a BLOB.
      * @param value Manifest attribute value.
@@ -1853,7 +2319,7 @@ public final class ContainerRegistriesImpl {
 
     /**
      * Update properties of a manifest.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @param digest Digest of a BLOB.
      * @param value Manifest attribute value.
@@ -1871,7 +2337,7 @@ public final class ContainerRegistriesImpl {
 
     /**
      * Update properties of a manifest.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @param digest Digest of a BLOB.
      * @param value Manifest attribute value.
@@ -1890,7 +2356,7 @@ public final class ContainerRegistriesImpl {
 
     /**
      * Update properties of a manifest.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @param digest Digest of a BLOB.
      * @param value Manifest attribute value.
@@ -1910,7 +2376,7 @@ public final class ContainerRegistriesImpl {
 
     /**
      * Update properties of a manifest.
-     *
+     * 
      * @param name Name of the image (including the namespace).
      * @param digest Digest of a BLOB.
      * @param value Manifest attribute value.
@@ -1927,9 +2393,8 @@ public final class ContainerRegistriesImpl {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AcrErrorsException thrown if the request is rejected by server.
@@ -1946,9 +2411,27 @@ public final class ContainerRegistriesImpl {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws AcrErrorsException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of repositories along with {@link PagedResponse} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<String>> getRepositoriesNextNoCustomHeadersSinglePageAsync(String nextLink,
+        Context context) {
+        final String accept = "application/json";
+        return service.getRepositoriesNextNoCustomHeaders(nextLink, this.client.getUrl(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getRepositories(), res.getValue().getLink(), null));
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AcrErrorsException thrown if the request is rejected by server.
@@ -1966,9 +2449,27 @@ public final class ContainerRegistriesImpl {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws AcrErrorsException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of repositories along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PagedResponse<String> getRepositoriesNextNoCustomHeadersSinglePage(String nextLink, Context context) {
+        final String accept = "application/json";
+        Response<Repositories> res
+            = service.getRepositoriesNextNoCustomHeadersSync(nextLink, this.client.getUrl(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            res.getValue().getRepositories(), res.getValue().getLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AcrErrorsException thrown if the request is rejected by server.
@@ -1985,9 +2486,27 @@ public final class ContainerRegistriesImpl {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws AcrErrorsException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of tag details along with {@link PagedResponse} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<TagAttributesBase>> getTagsNextNoCustomHeadersSinglePageAsync(String nextLink,
+        Context context) {
+        final String accept = "application/json";
+        return service.getTagsNextNoCustomHeaders(nextLink, this.client.getUrl(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getTagAttributeBases(), res.getValue().getLink(), null));
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AcrErrorsException thrown if the request is rejected by server.
@@ -2005,9 +2524,26 @@ public final class ContainerRegistriesImpl {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws AcrErrorsException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of tag details along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PagedResponse<TagAttributesBase> getTagsNextNoCustomHeadersSinglePage(String nextLink, Context context) {
+        final String accept = "application/json";
+        Response<TagList> res = service.getTagsNextNoCustomHeadersSync(nextLink, this.client.getUrl(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            res.getValue().getTagAttributeBases(), res.getValue().getLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AcrErrorsException thrown if the request is rejected by server.
@@ -2025,9 +2561,27 @@ public final class ContainerRegistriesImpl {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws AcrErrorsException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return manifest attributes along with {@link PagedResponse} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<ManifestAttributesBase>> getManifestsNextNoCustomHeadersSinglePageAsync(String nextLink,
+        Context context) {
+        final String accept = "application/json";
+        return service.getManifestsNextNoCustomHeaders(nextLink, this.client.getUrl(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getManifests(), res.getValue().getLink(), null));
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AcrErrorsException thrown if the request is rejected by server.
@@ -2041,5 +2595,25 @@ public final class ContainerRegistriesImpl {
             = service.getManifestsNextSync(nextLink, this.client.getUrl(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             res.getValue().getManifests(), res.getValue().getLink(), res.getDeserializedHeaders());
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws AcrErrorsException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return manifest attributes along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PagedResponse<ManifestAttributesBase> getManifestsNextNoCustomHeadersSinglePage(String nextLink,
+        Context context) {
+        final String accept = "application/json";
+        Response<AcrManifests> res
+            = service.getManifestsNextNoCustomHeadersSync(nextLink, this.client.getUrl(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            res.getValue().getManifests(), res.getValue().getLink(), null);
     }
 }

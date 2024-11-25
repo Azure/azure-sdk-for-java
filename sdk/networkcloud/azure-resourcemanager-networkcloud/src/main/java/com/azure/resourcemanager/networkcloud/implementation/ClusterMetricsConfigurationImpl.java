@@ -170,9 +170,10 @@ public final class ClusterMetricsConfigurationImpl
         com.azure.resourcemanager.networkcloud.NetworkCloudManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.clusterName = Utils.getValueFromIdByName(innerObject.id(), "clusters");
-        this.metricsConfigurationName = Utils.getValueFromIdByName(innerObject.id(), "metricsConfigurations");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.clusterName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "clusters");
+        this.metricsConfigurationName
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "metricsConfigurations");
     }
 
     public ClusterMetricsConfiguration refresh() {

@@ -36,7 +36,6 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 
-import static com.azure.ai.documentintelligence.TestUtils.BATCH_SAMPLE_PDF;
 import static com.azure.ai.documentintelligence.TestUtils.CONTENT_FORM_JPG;
 import static com.azure.ai.documentintelligence.TestUtils.CONTENT_GERMAN_PDF;
 import static com.azure.ai.documentintelligence.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
@@ -48,6 +47,7 @@ import static com.azure.ai.documentintelligence.TestUtils.MULTIPAGE_INVOICE_PDF;
 import static com.azure.ai.documentintelligence.TestUtils.RECEIPT_CONTOSO_JPG;
 import static com.azure.ai.documentintelligence.TestUtils.urlRunner;
 import static com.azure.ai.documentintelligence.models.AnalyzeOutputOption.PDF;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class DocumentIntelligenceClientTest extends DocumentIntelligenceClientTestBase {
     private DocumentIntelligenceClient client;
@@ -151,7 +151,7 @@ public class DocumentIntelligenceClientTest extends DocumentIntelligenceClientTe
                     .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
             AnalyzeResult analyzeResult = syncPoller.getFinalResult();
-            Assertions.assertEquals(2, analyzeResult.getPages().size());
+            assertEquals(2, analyzeResult.getPages().size());
         }, MULTIPAGE_INVOICE_PDF);
     }
 
@@ -194,7 +194,6 @@ public class DocumentIntelligenceClientTest extends DocumentIntelligenceClientTe
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.documentintelligence.TestUtils#getTestParameters")
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/41027")
     public void analyzeCustomDocument(HttpClient httpClient, DocumentIntelligenceServiceVersion serviceVersion) {
         client = getDocumentAnalysisClient(httpClient, serviceVersion);
         DocumentIntelligenceAdministrationClient adminClient = getDocumentModelAdminClient(httpClient, serviceVersion);
@@ -352,7 +351,6 @@ public class DocumentIntelligenceClientTest extends DocumentIntelligenceClientTe
     @RecordWithoutRequestBody
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.documentintelligence.TestUtils#getTestParameters")
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/41027")
     public void testClassifyAnalyzeFromUrl(HttpClient httpClient, DocumentIntelligenceServiceVersion serviceVersion) {
         client = getDocumentAnalysisClient(httpClient, serviceVersion);
         String classifierId1 = interceptorManager.isPlaybackMode() ? "REDACTED" : "classifierId" + UUID.randomUUID();
@@ -390,8 +388,8 @@ public class DocumentIntelligenceClientTest extends DocumentIntelligenceClientTe
                 AnalyzeResult analyzeResult = syncPoller.getFinalResult();
                 Assertions.assertNotNull(analyzeResult);
                 // TODO: (service bug) Document count should be 3
-                Assertions.assertEquals(1, analyzeResult.getDocuments().size());
-                Assertions.assertEquals(analyzeResult.getModelId(), classifierId);
+                assertEquals(1, analyzeResult.getDocuments().size());
+                assertEquals(analyzeResult.getModelId(), classifierId);
             }, IRS_1040);
         }
     }
@@ -399,7 +397,6 @@ public class DocumentIntelligenceClientTest extends DocumentIntelligenceClientTe
     @RecordWithoutRequestBody
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.documentintelligence.TestUtils#getTestParameters")
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/41027")
     public void testClassifyAnalyze(HttpClient httpClient, DocumentIntelligenceServiceVersion serviceVersion) {
         client = getDocumentAnalysisClient(httpClient, serviceVersion);
         DocumentIntelligenceAdministrationClient adminClient = getDocumentModelAdminClient(httpClient, serviceVersion);
@@ -437,8 +434,8 @@ public class DocumentIntelligenceClientTest extends DocumentIntelligenceClientTe
                 AnalyzeResult analyzeResult = syncPoller.getFinalResult();
                 Assertions.assertNotNull(analyzeResult);
                 // TODO: (service bug) Document count should be 3
-                Assertions.assertEquals(1, analyzeResult.getDocuments().size());
-                Assertions.assertEquals(analyzeResult.getModelId(), classifierId);
+                assertEquals(1, analyzeResult.getDocuments().size());
+                assertEquals(analyzeResult.getModelId(), classifierId);
             }, IRS_1040);
         }
     }
@@ -500,11 +497,11 @@ public class DocumentIntelligenceClientTest extends DocumentIntelligenceClientTe
     @RecordWithoutRequestBody
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.documentintelligence.TestUtils#getTestParameters")
-    @Disabled("Disabled until file available on main")
+    @Disabled("com.azure.core.exception.AzureException: Long running operation failed.\n")
     public void analyzeBatchDocuments(HttpClient httpClient, DocumentIntelligenceServiceVersion serviceVersion) {
         client = getDocumentAnalysisClient(httpClient, serviceVersion);
         DocumentIntelligenceAdministrationClient adminClient = getDocumentModelAdminClient(httpClient, serviceVersion);
-        buildBatchModelRunner((trainingFilesUrl) -> {
+        buildBatchModelRunner((trainingFilesUrl, trainingFilesResultUrl) -> {
             SyncPoller<DocumentModelBuildOperationDetails, DocumentModelDetails> buildModelPoller = adminClient
                 .beginBuildDocumentModel(
                     new BuildDocumentModelRequest("modelID" + UUID.randomUUID(), DocumentBuildMode.GENERATIVE)
@@ -514,15 +511,15 @@ public class DocumentIntelligenceClientTest extends DocumentIntelligenceClientTe
 
             String modelId = buildModelPoller.getFinalResult().getModelId();
 
-            urlRunner((sourceUrl) -> {
-                SyncPoller<AnalyzeBatchResultOperation, AnalyzeBatchResult> syncPoller = client
-                    .beginAnalyzeBatchDocuments(modelId, null, null, null, null, null, null,
-                        Collections.singletonList(PDF),
-                        new AnalyzeBatchDocumentsRequest(trainingFilesUrl).setResultPrefix("trainingDocsResult/")
-                            .setAzureBlobSource(new AzureBlobContentSource(sourceUrl)))
-                    .setPollInterval(durationTestMode);
-                syncPoller.waitForCompletion();
-            }, BATCH_SAMPLE_PDF);
+            SyncPoller<AnalyzeBatchResultOperation, AnalyzeBatchResult> syncPoller = client
+                .beginAnalyzeBatchDocuments(modelId, null, null, null, null, null, null, null,
+                    new AnalyzeBatchDocumentsRequest(trainingFilesResultUrl)
+                        .setAzureBlobSource(new AzureBlobContentSource(trainingFilesUrl).setPrefix("result")))
+                .setPollInterval(durationTestMode);
+            syncPoller.waitForCompletion();
+
+            AnalyzeBatchResult analyzeBatchResult = syncPoller.getFinalResult();
+            assertEquals(trainingFilesResultUrl, analyzeBatchResult.getDetails().get(0).getResultUrl());
         });
     }
 }

@@ -3,7 +3,7 @@
 
 package com.azure.core.implementation.jackson;
 
-import com.azure.core.implementation.ImplUtils;
+import com.azure.core.implementation.AccessControllerUtils;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
@@ -89,7 +89,7 @@ final class ObjectMapperFactory {
             try {
                 if (USE_ACCESS_HELPER) {
                     try {
-                        return ImplUtils
+                        return AccessControllerUtils
                             .doPrivilegedException(() -> JacksonDatabind215.mutateStreamReadConstraints(objectMapper));
                     } catch (Exception ex) {
                         final Throwable cause = ex.getCause();

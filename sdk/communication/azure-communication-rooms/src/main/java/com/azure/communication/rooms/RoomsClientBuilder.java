@@ -94,6 +94,12 @@ public final class RoomsClientBuilder implements HttpTrait<RoomsClientBuilder>, 
     private RoomsServiceVersion serviceVersion;
 
     /**
+     * Creates a new instance of the {@link RoomsClientBuilder}.
+     */
+    public RoomsClientBuilder() {
+    }
+
+    /**
      * Set endpoint of the service
      *
      * @param endpoint url of the service

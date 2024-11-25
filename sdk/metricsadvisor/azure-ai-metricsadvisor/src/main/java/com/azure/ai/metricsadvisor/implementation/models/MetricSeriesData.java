@@ -5,6 +5,7 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -77,6 +78,9 @@ public final class MetricSeriesData implements JsonSerializable<MetricSeriesData
         return this.valueList;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -103,7 +107,7 @@ public final class MetricSeriesData implements JsonSerializable<MetricSeriesData
                     deserializedMetricSeriesData.id = MetricSeriesItem.fromJson(reader);
                 } else if ("timestampList".equals(fieldName)) {
                     List<OffsetDateTime> timestampList = reader.readArray(reader1 -> reader1
-                        .getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())));
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
                     deserializedMetricSeriesData.timestampList = timestampList;
                 } else if ("valueList".equals(fieldName)) {
                     List<Double> valueList = reader.readArray(reader1 -> reader1.getDouble());

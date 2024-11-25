@@ -455,6 +455,13 @@ public interface VirtualMachine extends GroupableResource<ComputeManager, Virtua
      */
     String userData();
 
+    /**
+     * Gets resource id of capacity reservation group for the virtual machine.
+     *
+     * @return the resource id of capacity reservation group for the virtual machine.
+     */
+    String capacityReservationGroupId();
+
     // Setters
     //
 
@@ -1952,6 +1959,17 @@ public interface VirtualMachine extends GroupableResource<ComputeManager, Virtua
             WithCreate withUserData(String base64EncodedUserData);
         }
 
+        /** The stage of a virtual machine definition allowing to specify capacity reservation configurations. */
+        interface WithCapacityReservation {
+            /**
+             * Specifies resource id of capacity reservation group for the virtual machine.
+             *
+             * @param capacityReservationGroupId the resource id of capacity reservation group
+             * @return the next stage of the definition
+             */
+            WithCreate withCapacityReservationGroup(String capacityReservationGroupId);
+        }
+
         /**
          * The stage of the definition which contains all the minimum required inputs for the resource to be created,
          * but also allows for any other optional settings to be specified.
@@ -1965,7 +1983,8 @@ public interface VirtualMachine extends GroupableResource<ComputeManager, Virtua
             DefinitionStages.WithUserAssignedManagedServiceIdentity, DefinitionStages.WithLicenseType,
             DefinitionStages.WithAdditionalCapacities, DefinitionStages.WithNetworkInterfaceDeleteOptions,
             DefinitionStages.WithEphemeralOSDisk, DefinitionStages.WithScaleSet, DefinitionStages.WithSecurityTypes,
-            DefinitionStages.WithSecurityProfile, DefinitionStages.WithUserData {
+            DefinitionStages.WithSecurityProfile, DefinitionStages.WithUserData,
+            DefinitionStages.WithCapacityReservation {
 
             /**
              * Begins creating the virtual machine resource.
@@ -2617,6 +2636,17 @@ public interface VirtualMachine extends GroupableResource<ComputeManager, Virtua
              */
             Update withUserData(String base64EncodedUserData);
         }
+
+        /** The stage of the virtual machine update allowing to capacity reservation configurations. */
+        interface WithCapacityReservation {
+            /**
+             * Specifies resource id of capacity reservation group for the virtual machine.
+             *
+             * @param capacityReservationGroupId the resource id of capacity reservation group
+             * @return the next stage of the update
+             */
+            Update withCapacityReservationGroup(String capacityReservationGroupId);
+        }
     }
 
     /** The template for an update operation, containing all the settings that can be modified. */
@@ -2626,7 +2656,8 @@ public interface VirtualMachine extends GroupableResource<ComputeManager, Virtua
         UpdateStages.WithBillingProfile, UpdateStages.WithSystemAssignedManagedServiceIdentity,
         UpdateStages.WithUserAssignedManagedServiceIdentity, UpdateStages.WithLicenseType,
         UpdateStages.WithAdditionalCapacities, UpdateStages.WithOSDisk, UpdateStages.WithSecurityFeatures,
-        UpdateStages.WithDeleteOptions, UpdateStages.WithSecurityProfile, UpdateStages.WithUserData {
+        UpdateStages.WithDeleteOptions, UpdateStages.WithSecurityProfile, UpdateStages.WithUserData,
+        UpdateStages.WithCapacityReservation {
         /**
          * Specifies the encryption settings for the OS Disk.
          *

@@ -81,17 +81,17 @@ public final class EntityAsyncClient {
      *     referredEntities (Optional): {
      *         String (Required): {
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
      *             businessAttributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             classifications (Optional): [
      *                  (Optional){
      *                     attributes (Optional): {
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     lastModifiedTS: String (Optional)
@@ -135,7 +135,7 @@ public final class EntityAsyncClient {
      *             provenanceType: Integer (Optional)
      *             proxy: Boolean (Optional)
      *             relationshipAttributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             status: String(ACTIVE/DELETED) (Optional)
      *             updateTime: Long (Optional)
@@ -168,7 +168,7 @@ public final class EntityAsyncClient {
      *         String (Required): [
      *              (Required){
      *                 attributes (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -178,7 +178,7 @@ public final class EntityAsyncClient {
      *                 classifications (Optional): [
      *                      (Optional){
      *                         attributes (Optional): {
-     *                             String: Object (Required)
+     *                             String: BinaryData (Required)
      *                         }
      *                         typeName: String (Optional)
      *                         lastModifiedTS: String (Optional)
@@ -262,17 +262,17 @@ public final class EntityAsyncClient {
      *     referredEntities (Optional): {
      *         String (Required): {
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
      *             businessAttributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             classifications (Optional): [
      *                  (Optional){
      *                     attributes (Optional): {
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     lastModifiedTS: String (Optional)
@@ -316,7 +316,7 @@ public final class EntityAsyncClient {
      *             provenanceType: Integer (Optional)
      *             proxy: Boolean (Optional)
      *             relationshipAttributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             status: String(ACTIVE/DELETED) (Optional)
      *             updateTime: Long (Optional)
@@ -383,17 +383,17 @@ public final class EntityAsyncClient {
      *     referredEntities (Optional): {
      *         String (Required): {
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
      *             businessAttributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             classifications (Optional): [
      *                  (Optional){
      *                     attributes (Optional): {
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     lastModifiedTS: String (Optional)
@@ -437,7 +437,7 @@ public final class EntityAsyncClient {
      *             provenanceType: Integer (Optional)
      *             proxy: Boolean (Optional)
      *             relationshipAttributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             status: String(ACTIVE/DELETED) (Optional)
      *             updateTime: Long (Optional)
@@ -472,7 +472,7 @@ public final class EntityAsyncClient {
      *         String (Required): [
      *              (Required){
      *                 attributes (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -482,7 +482,7 @@ public final class EntityAsyncClient {
      *                 classifications (Optional): [
      *                      (Optional){
      *                         attributes (Optional): {
-     *                             String: Object (Required)
+     *                             String: BinaryData (Required)
      *                         }
      *                         typeName: String (Optional)
      *                         lastModifiedTS: String (Optional)
@@ -561,7 +561,7 @@ public final class EntityAsyncClient {
      *         String (Required): [
      *              (Required){
      *                 attributes (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -571,7 +571,7 @@ public final class EntityAsyncClient {
      *                 classifications (Optional): [
      *                      (Optional){
      *                         attributes (Optional): {
-     *                             String: Object (Required)
+     *                             String: BinaryData (Required)
      *                         }
      *                         typeName: String (Optional)
      *                         lastModifiedTS: String (Optional)
@@ -644,7 +644,7 @@ public final class EntityAsyncClient {
      * {
      *     classification (Optional): {
      *         attributes (Optional): {
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *         typeName: String (Optional)
      *         lastModifiedTS: String (Optional)
@@ -700,17 +700,17 @@ public final class EntityAsyncClient {
      *     referredEntities (Optional): {
      *         String (Required): {
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
      *             businessAttributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             classifications (Optional): [
      *                  (Optional){
      *                     attributes (Optional): {
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     lastModifiedTS: String (Optional)
@@ -754,7 +754,7 @@ public final class EntityAsyncClient {
      *             provenanceType: Integer (Optional)
      *             proxy: Boolean (Optional)
      *             relationshipAttributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             status: String(ACTIVE/DELETED) (Optional)
      *             updateTime: Long (Optional)
@@ -800,7 +800,7 @@ public final class EntityAsyncClient {
      * 
      * <pre>
      * {@code
-     * Object
+     * BinaryData
      * }
      * </pre>
      * 
@@ -816,7 +816,7 @@ public final class EntityAsyncClient {
      *         String (Required): [
      *              (Required){
      *                 attributes (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -826,7 +826,7 @@ public final class EntityAsyncClient {
      *                 classifications (Optional): [
      *                      (Optional){
      *                         attributes (Optional): {
-     *                             String: Object (Required)
+     *                             String: BinaryData (Required)
      *                         }
      *                         typeName: String (Optional)
      *                         lastModifiedTS: String (Optional)
@@ -907,7 +907,7 @@ public final class EntityAsyncClient {
      *         String (Required): [
      *              (Required){
      *                 attributes (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -917,7 +917,7 @@ public final class EntityAsyncClient {
      *                 classifications (Optional): [
      *                      (Optional){
      *                         attributes (Optional): {
-     *                             String: Object (Required)
+     *                             String: BinaryData (Required)
      *                         }
      *                         typeName: String (Optional)
      *                         lastModifiedTS: String (Optional)
@@ -989,7 +989,7 @@ public final class EntityAsyncClient {
      * {@code
      * {
      *     attributes (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *     typeName: String (Optional)
      *     lastModifiedTS: String (Optional)
@@ -1051,7 +1051,7 @@ public final class EntityAsyncClient {
      * {@code
      * {
      *     list (Optional): [
-     *         Object (Optional)
+     *         BinaryData (Optional)
      *     ]
      *     pageSize: Integer (Optional)
      *     sortBy: String (Optional)
@@ -1085,7 +1085,7 @@ public final class EntityAsyncClient {
      * [
      *      (Required){
      *         attributes (Optional): {
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *         typeName: String (Optional)
      *         lastModifiedTS: String (Optional)
@@ -1129,7 +1129,7 @@ public final class EntityAsyncClient {
      * [
      *      (Required){
      *         attributes (Optional): {
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *         typeName: String (Optional)
      *         lastModifiedTS: String (Optional)
@@ -1200,17 +1200,17 @@ public final class EntityAsyncClient {
      *     referredEntities (Optional): {
      *         String (Required): {
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
      *             businessAttributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             classifications (Optional): [
      *                  (Optional){
      *                     attributes (Optional): {
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     lastModifiedTS: String (Optional)
@@ -1254,7 +1254,7 @@ public final class EntityAsyncClient {
      *             provenanceType: Integer (Optional)
      *             proxy: Boolean (Optional)
      *             relationshipAttributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             status: String(ACTIVE/DELETED) (Optional)
      *             updateTime: Long (Optional)
@@ -1337,17 +1337,17 @@ public final class EntityAsyncClient {
      *     referredEntities (Optional): {
      *         String (Required): {
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
      *             businessAttributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             classifications (Optional): [
      *                  (Optional){
      *                     attributes (Optional): {
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     lastModifiedTS: String (Optional)
@@ -1391,7 +1391,7 @@ public final class EntityAsyncClient {
      *             provenanceType: Integer (Optional)
      *             proxy: Boolean (Optional)
      *             relationshipAttributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             status: String(ACTIVE/DELETED) (Optional)
      *             updateTime: Long (Optional)
@@ -1424,7 +1424,7 @@ public final class EntityAsyncClient {
      *         String (Required): [
      *              (Required){
      *                 attributes (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -1434,7 +1434,7 @@ public final class EntityAsyncClient {
      *                 classifications (Optional): [
      *                      (Optional){
      *                         attributes (Optional): {
-     *                             String: Object (Required)
+     *                             String: BinaryData (Required)
      *                         }
      *                         typeName: String (Optional)
      *                         lastModifiedTS: String (Optional)
@@ -1534,7 +1534,7 @@ public final class EntityAsyncClient {
      *         String (Required): [
      *              (Required){
      *                 attributes (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -1544,7 +1544,7 @@ public final class EntityAsyncClient {
      *                 classifications (Optional): [
      *                      (Optional){
      *                         attributes (Optional): {
-     *                             String: Object (Required)
+     *                             String: BinaryData (Required)
      *                         }
      *                         typeName: String (Optional)
      *                         lastModifiedTS: String (Optional)
@@ -1657,7 +1657,7 @@ public final class EntityAsyncClient {
      * [
      *      (Required){
      *         attributes (Optional): {
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *         typeName: String (Optional)
      *         lastModifiedTS: String (Optional)
@@ -1710,7 +1710,7 @@ public final class EntityAsyncClient {
      * [
      *      (Required){
      *         attributes (Optional): {
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *         typeName: String (Optional)
      *         lastModifiedTS: String (Optional)
@@ -1756,7 +1756,7 @@ public final class EntityAsyncClient {
      *     guidHeaderMap (Optional): {
      *         String (Required): {
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -1766,7 +1766,7 @@ public final class EntityAsyncClient {
      *             classifications (Optional): [
      *                  (Optional){
      *                     attributes (Optional): {
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     lastModifiedTS: String (Optional)
@@ -1877,17 +1877,17 @@ public final class EntityAsyncClient {
      *     referredEntities (Optional): {
      *         String (Required): {
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
      *             businessAttributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             classifications (Optional): [
      *                  (Optional){
      *                     attributes (Optional): {
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     lastModifiedTS: String (Optional)
@@ -1931,7 +1931,7 @@ public final class EntityAsyncClient {
      *             provenanceType: Integer (Optional)
      *             proxy: Boolean (Optional)
      *             relationshipAttributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             status: String(ACTIVE/DELETED) (Optional)
      *             updateTime: Long (Optional)
@@ -1978,7 +1978,7 @@ public final class EntityAsyncClient {
      * {@code
      * {
      *     attributes (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      *     typeName: String (Optional)
      *     lastModifiedTS: String (Optional)
@@ -1988,7 +1988,7 @@ public final class EntityAsyncClient {
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -2053,7 +2053,7 @@ public final class EntityAsyncClient {
      * {@code
      * {
      *     String (Required): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      * }
      * }
@@ -2092,7 +2092,7 @@ public final class EntityAsyncClient {
      * {@code
      * {
      *     String (Required): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      * }
      * }
@@ -2121,7 +2121,7 @@ public final class EntityAsyncClient {
      * <pre>
      * {@code
      * {
-     *     String: Object (Required)
+     *     String: BinaryData (Required)
      * }
      * }
      * </pre>
@@ -2151,7 +2151,7 @@ public final class EntityAsyncClient {
      * <pre>
      * {@code
      * {
-     *     String: Object (Required)
+     *     String: BinaryData (Required)
      * }
      * }
      * </pre>
@@ -2534,7 +2534,7 @@ public final class EntityAsyncClient {
      *         String (Required): [
      *              (Required){
      *                 attributes (Optional): {
-     *                     String: Object (Required)
+     *                     String: BinaryData (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -2544,7 +2544,7 @@ public final class EntityAsyncClient {
      *                 classifications (Optional): [
      *                      (Optional){
      *                         attributes (Optional): {
-     *                             String: Object (Required)
+     *                             String: BinaryData (Required)
      *                         }
      *                         typeName: String (Optional)
      *                         lastModifiedTS: String (Optional)
@@ -2908,11 +2908,10 @@ public final class EntityAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<EntityMutationResult> updateAttributeById(String guid, String name, Object body) {
+    public Mono<EntityMutationResult> updateAttributeById(String guid, String name, BinaryData body) {
         // Generated convenience method for updateAttributeByIdWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return updateAttributeByIdWithResponse(guid, name, BinaryData.fromObject(body), requestOptions)
-            .flatMap(FluxUtil::toMono)
+        return updateAttributeByIdWithResponse(guid, name, body, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(EntityMutationResult.class));
     }
 
@@ -3607,7 +3606,7 @@ public final class EntityAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> removeBusinessMetadata(String guid, Map<String, Map<String, Object>> body) {
+    public Mono<Void> removeBusinessMetadata(String guid, Map<String, Map<String, BinaryData>> body) {
         // Generated convenience method for removeBusinessMetadataWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return removeBusinessMetadataWithResponse(guid, BinaryData.fromObject(body), requestOptions)
@@ -3631,7 +3630,7 @@ public final class EntityAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> addOrUpdateBusinessMetadata(String guid, Map<String, Map<String, Object>> body,
+    public Mono<Void> addOrUpdateBusinessMetadata(String guid, Map<String, Map<String, BinaryData>> body,
         Boolean overwrite) {
         // Generated convenience method for addOrUpdateBusinessMetadataWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -3657,7 +3656,7 @@ public final class EntityAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> addOrUpdateBusinessMetadata(String guid, Map<String, Map<String, Object>> body) {
+    public Mono<Void> addOrUpdateBusinessMetadata(String guid, Map<String, Map<String, BinaryData>> body) {
         // Generated convenience method for addOrUpdateBusinessMetadataWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return addOrUpdateBusinessMetadataWithResponse(guid, BinaryData.fromObject(body), requestOptions)
@@ -3681,7 +3680,7 @@ public final class EntityAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> removeBusinessMetadataAttributes(String businessMetadataName, String guid,
-        Map<String, Object> body) {
+        Map<String, BinaryData> body) {
         // Generated convenience method for removeBusinessMetadataAttributesWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return removeBusinessMetadataAttributesWithResponse(businessMetadataName, guid, BinaryData.fromObject(body),
@@ -3705,7 +3704,7 @@ public final class EntityAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> addOrUpdateBusinessMetadataAttributes(String businessMetadataName, String guid,
-        Map<String, Object> body) {
+        Map<String, BinaryData> body) {
         // Generated convenience method for addOrUpdateBusinessMetadataAttributesWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return addOrUpdateBusinessMetadataAttributesWithResponse(businessMetadataName, guid,

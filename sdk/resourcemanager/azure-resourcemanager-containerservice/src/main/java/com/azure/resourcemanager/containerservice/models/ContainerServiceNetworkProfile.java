@@ -43,6 +43,12 @@ public final class ContainerServiceNetworkProfile implements JsonSerializable<Co
     private NetworkDataplane networkDataplane;
 
     /*
+     * Advanced Networking profile for enabling observability and security feature suite on a cluster. For more
+     * information see aka.ms/aksadvancednetworking.
+     */
+    private AdvancedNetworking advancedNetworking;
+
+    /*
      * A CIDR notation IP range from which to assign pod IPs when kubenet is used.
      */
     private String podCidr;
@@ -201,6 +207,28 @@ public final class ContainerServiceNetworkProfile implements JsonSerializable<Co
      */
     public ContainerServiceNetworkProfile withNetworkDataplane(NetworkDataplane networkDataplane) {
         this.networkDataplane = networkDataplane;
+        return this;
+    }
+
+    /**
+     * Get the advancedNetworking property: Advanced Networking profile for enabling observability and security feature
+     * suite on a cluster. For more information see aka.ms/aksadvancednetworking.
+     * 
+     * @return the advancedNetworking value.
+     */
+    public AdvancedNetworking advancedNetworking() {
+        return this.advancedNetworking;
+    }
+
+    /**
+     * Set the advancedNetworking property: Advanced Networking profile for enabling observability and security feature
+     * suite on a cluster. For more information see aka.ms/aksadvancednetworking.
+     * 
+     * @param advancedNetworking the advancedNetworking value to set.
+     * @return the ContainerServiceNetworkProfile object itself.
+     */
+    public ContainerServiceNetworkProfile withAdvancedNetworking(AdvancedNetworking advancedNetworking) {
+        this.advancedNetworking = advancedNetworking;
         return this;
     }
 
@@ -427,6 +455,9 @@ public final class ContainerServiceNetworkProfile implements JsonSerializable<Co
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (advancedNetworking() != null) {
+            advancedNetworking().validate();
+        }
         if (loadBalancerProfile() != null) {
             loadBalancerProfile().validate();
         }
@@ -448,6 +479,7 @@ public final class ContainerServiceNetworkProfile implements JsonSerializable<Co
         jsonWriter.writeStringField("networkMode", this.networkMode == null ? null : this.networkMode.toString());
         jsonWriter.writeStringField("networkDataplane",
             this.networkDataplane == null ? null : this.networkDataplane.toString());
+        jsonWriter.writeJsonField("advancedNetworking", this.advancedNetworking);
         jsonWriter.writeStringField("podCidr", this.podCidr);
         jsonWriter.writeStringField("serviceCidr", this.serviceCidr);
         jsonWriter.writeStringField("dnsServiceIP", this.dnsServiceIp);
@@ -493,6 +525,8 @@ public final class ContainerServiceNetworkProfile implements JsonSerializable<Co
                 } else if ("networkDataplane".equals(fieldName)) {
                     deserializedContainerServiceNetworkProfile.networkDataplane
                         = NetworkDataplane.fromString(reader.getString());
+                } else if ("advancedNetworking".equals(fieldName)) {
+                    deserializedContainerServiceNetworkProfile.advancedNetworking = AdvancedNetworking.fromJson(reader);
                 } else if ("podCidr".equals(fieldName)) {
                     deserializedContainerServiceNetworkProfile.podCidr = reader.getString();
                 } else if ("serviceCidr".equals(fieldName)) {

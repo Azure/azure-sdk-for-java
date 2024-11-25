@@ -9,6 +9,12 @@ public class ListSupportedBatchImagesOptions extends BatchBaseOptions {
     private String filter;
 
     /**
+     * Creates an instance of {@link ListSupportedBatchImagesOptions}.
+     */
+    public ListSupportedBatchImagesOptions() {
+    }
+
+    /**
      * Gets the OData $filter clause used for filtering results.
      *
      * @return The OData $filter clause.

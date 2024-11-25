@@ -11,6 +11,7 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -19,12 +20,11 @@ import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
-import com.azure.core.management.http.policy.ArmChallengeAuthenticationPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.devopsinfrastructure.fluent.DevOpsInfrastructureClient;
-import com.azure.resourcemanager.devopsinfrastructure.implementation.DevOpsInfrastructureClientBuilder;
+import com.azure.resourcemanager.devopsinfrastructure.fluent.DevOpsInfrastructureManagementClient;
+import com.azure.resourcemanager.devopsinfrastructure.implementation.DevOpsInfrastructureManagementClientBuilder;
 import com.azure.resourcemanager.devopsinfrastructure.implementation.ImageVersionsImpl;
 import com.azure.resourcemanager.devopsinfrastructure.implementation.OperationsImpl;
 import com.azure.resourcemanager.devopsinfrastructure.implementation.PoolsImpl;
@@ -60,12 +60,12 @@ public final class DevOpsInfrastructureManager {
 
     private ImageVersions imageVersions;
 
-    private final DevOpsInfrastructureClient clientObject;
+    private final DevOpsInfrastructureManagementClient clientObject;
 
     private DevOpsInfrastructureManager(HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
-        this.clientObject = new DevOpsInfrastructureClientBuilder().pipeline(httpPipeline)
+        this.clientObject = new DevOpsInfrastructureManagementClientBuilder().pipeline(httpPipeline)
             .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
             .subscriptionId(profile.getSubscriptionId())
             .defaultPollInterval(defaultPollInterval)
@@ -257,7 +257,7 @@ public final class DevOpsInfrastructureManager {
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
-            policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
+            policies.add(new BearerTokenAuthenticationPolicy(credential, scopes.toArray(new String[0])));
             policies.addAll(this.policies.stream()
                 .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
                 .collect(Collectors.toList()));
@@ -343,12 +343,12 @@ public final class DevOpsInfrastructureManager {
     }
 
     /**
-     * Gets wrapped service client DevOpsInfrastructureClient providing direct access to the underlying auto-generated
-     * API implementation, based on Azure REST API.
+     * Gets wrapped service client DevOpsInfrastructureManagementClient providing direct access to the underlying
+     * auto-generated API implementation, based on Azure REST API.
      * 
-     * @return Wrapped service client DevOpsInfrastructureClient.
+     * @return Wrapped service client DevOpsInfrastructureManagementClient.
      */
-    public DevOpsInfrastructureClient serviceClient() {
+    public DevOpsInfrastructureManagementClient serviceClient() {
         return this.clientObject;
     }
 }

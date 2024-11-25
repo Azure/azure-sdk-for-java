@@ -16,19 +16,19 @@ public final class ManagedServiceIdentityUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ManagedServiceIdentityUpdate model = BinaryData.fromString(
-            "{\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"d\":{\"principalId\":\"abnetshh\",\"clientId\":\"h\"},\"lcxog\":{\"principalId\":\"vwiwubmwmbesld\",\"clientId\":\"wwtppj\"},\"qkdltfz\":{\"principalId\":\"konzmnsik\",\"clientId\":\"kqze\"},\"odkwobd\":{\"principalId\":\"hhvh\",\"clientId\":\"r\"}}}")
+            "{\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"mcbxvwvxysl\":{\"principalId\":\"ivetvtcq\",\"clientId\":\"tdo\"},\"wwfbkrvrnsvshq\":{\"principalId\":\"hsfxoblytkb\",\"clientId\":\"pe\"}}}")
             .toObject(ManagedServiceIdentityUpdate.class);
-        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.type());
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ManagedServiceIdentityUpdate model
-            = new ManagedServiceIdentityUpdate().withType(ManagedServiceIdentityType.USER_ASSIGNED)
-                .withUserAssignedIdentities(mapOf("d", new UserAssignedIdentity(), "lcxog", new UserAssignedIdentity(),
-                    "qkdltfz", new UserAssignedIdentity(), "odkwobd", new UserAssignedIdentity()));
+            = new ManagedServiceIdentityUpdate().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
+                .withUserAssignedIdentities(
+                    mapOf("mcbxvwvxysl", new UserAssignedIdentity(), "wwfbkrvrnsvshq", new UserAssignedIdentity()));
         model = BinaryData.fromObject(model).toObject(ManagedServiceIdentityUpdate.class);
-        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.type());
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.type());
     }
 
     // Use "Map.of" if available

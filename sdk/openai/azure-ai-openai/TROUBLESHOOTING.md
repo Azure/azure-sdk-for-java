@@ -42,7 +42,7 @@ OpenAIClient openAIClient = new OpenAIClientBuilder()
         .buildClient();
 // or
 DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
-OpenAIClient configurationClientAad = new OpenAIClientBuilder()
+OpenAIClient configurationClientEntraID = new OpenAIClientBuilder()
         .credential(credential)
         .endpoint("{endpoint}")
         .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
@@ -107,7 +107,7 @@ asyncClient.getChatCompletions("{deploymentOrModelName}", new ChatCompletionsOpt
 
 ### Authentication errors
 
-Azure OpenAI supports Azure Active Directory authentication. [OpenAIClientBuilder][openai_client_builder]
+Azure OpenAI supports Azure Entra ID authentication. [OpenAIClientBuilder][openai_client_builder]
 has method to set the `credential`. To provide a valid credential, you can use `azure-identity` dependency. For more
 details on getting started, refer to the [README][how_to_create_openai_client] of Azure OpenAI library.
 You can also refer to the [Azure Identity documentation][identity_doc] for more details on the various types of

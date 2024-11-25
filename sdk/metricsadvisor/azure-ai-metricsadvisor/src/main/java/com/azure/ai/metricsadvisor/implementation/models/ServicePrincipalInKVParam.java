@@ -176,6 +176,9 @@ public final class ServicePrincipalInKVParam implements JsonSerializable<Service
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

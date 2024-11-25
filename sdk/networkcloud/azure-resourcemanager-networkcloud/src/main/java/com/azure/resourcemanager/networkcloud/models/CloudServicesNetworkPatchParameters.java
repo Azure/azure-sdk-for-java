@@ -5,41 +5,40 @@
 package com.azure.resourcemanager.networkcloud.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.networkcloud.fluent.models.CloudServicesNetworkPatchProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** CloudServicesNetworkPatchParameters represents the body of the request to patch the cloud services network. */
+/**
+ * CloudServicesNetworkPatchParameters represents the body of the request to patch the cloud services network.
+ */
 @Fluent
-public final class CloudServicesNetworkPatchParameters {
+public final class CloudServicesNetworkPatchParameters
+    implements JsonSerializable<CloudServicesNetworkPatchParameters> {
     /*
-     * CloudServicesNetworkPatchProperties represents the properties of the cloud services network that can be updated
-     * using a patch request.
-     *
      * The list of the resource properties.
      */
-    @JsonProperty(value = "properties")
     private CloudServicesNetworkPatchProperties innerProperties;
 
     /*
      * The Azure resource tags that will replace the existing ones.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
-    /** Creates an instance of CloudServicesNetworkPatchParameters class. */
+    /**
+     * Creates an instance of CloudServicesNetworkPatchParameters class.
+     */
     public CloudServicesNetworkPatchParameters() {
     }
 
     /**
-     * Get the innerProperties property: CloudServicesNetworkPatchProperties represents the properties of the cloud
-     * services network that can be updated using a patch request.
-     *
-     * <p>The list of the resource properties.
-     *
+     * Get the innerProperties property: The list of the resource properties.
+     * 
      * @return the innerProperties value.
      */
     private CloudServicesNetworkPatchProperties innerProperties() {
@@ -48,7 +47,7 @@ public final class CloudServicesNetworkPatchParameters {
 
     /**
      * Get the tags property: The Azure resource tags that will replace the existing ones.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -57,7 +56,7 @@ public final class CloudServicesNetworkPatchParameters {
 
     /**
      * Set the tags property: The Azure resource tags that will replace the existing ones.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the CloudServicesNetworkPatchParameters object itself.
      */
@@ -69,7 +68,7 @@ public final class CloudServicesNetworkPatchParameters {
     /**
      * Get the additionalEgressEndpoints property: The list of egress endpoints. This allows for connection from a
      * Hybrid AKS cluster to the specified endpoint.
-     *
+     * 
      * @return the additionalEgressEndpoints value.
      */
     public List<EgressEndpoint> additionalEgressEndpoints() {
@@ -79,7 +78,7 @@ public final class CloudServicesNetworkPatchParameters {
     /**
      * Set the additionalEgressEndpoints property: The list of egress endpoints. This allows for connection from a
      * Hybrid AKS cluster to the specified endpoint.
-     *
+     * 
      * @param additionalEgressEndpoints the additionalEgressEndpoints value to set.
      * @return the CloudServicesNetworkPatchParameters object itself.
      */
@@ -95,7 +94,7 @@ public final class CloudServicesNetworkPatchParameters {
     /**
      * Get the enableDefaultEgressEndpoints property: The indicator of whether the platform default endpoints are
      * allowed for the egress traffic.
-     *
+     * 
      * @return the enableDefaultEgressEndpoints value.
      */
     public CloudServicesNetworkEnableDefaultEgressEndpoints enableDefaultEgressEndpoints() {
@@ -105,7 +104,7 @@ public final class CloudServicesNetworkPatchParameters {
     /**
      * Set the enableDefaultEgressEndpoints property: The indicator of whether the platform default endpoints are
      * allowed for the egress traffic.
-     *
+     * 
      * @param enableDefaultEgressEndpoints the enableDefaultEgressEndpoints value to set.
      * @return the CloudServicesNetworkPatchParameters object itself.
      */
@@ -120,12 +119,54 @@ public final class CloudServicesNetworkPatchParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CloudServicesNetworkPatchParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CloudServicesNetworkPatchParameters if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CloudServicesNetworkPatchParameters.
+     */
+    public static CloudServicesNetworkPatchParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CloudServicesNetworkPatchParameters deserializedCloudServicesNetworkPatchParameters
+                = new CloudServicesNetworkPatchParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedCloudServicesNetworkPatchParameters.innerProperties
+                        = CloudServicesNetworkPatchProperties.fromJson(reader);
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedCloudServicesNetworkPatchParameters.tags = tags;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCloudServicesNetworkPatchParameters;
+        });
     }
 }
