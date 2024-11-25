@@ -7,7 +7,6 @@ import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.HttpConstants;
-import com.azure.cosmos.implementation.InvalidPartitionException;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.ShouldRetryResult;
@@ -313,18 +312,19 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
             this.tryGetOverlappingRanges(partitionKeyRangeCache, effectiveTokenRange, true);
 
         return resolvedRangesTask.flatMap(resolvedRanges -> {
-            if (resolvedRanges.v != null) {
-                if (resolvedRanges.v.size() == 1) {
-                    // Merge happen, will continue draining from the current range
-                    LOGGER.debug("ChangeFeedFetcher detected feed range gone due to merge for range [{}]", effectiveTokenRange);
-                } else {
-                    this.createChildRanges(resolvedRanges.v, effectiveTokenRange);
-                    LOGGER.debug("ChangeFeedFetcher detected feed range gone due to split for range [{}]", effectiveTokenRange);
-                }
-            } else {
+            if (resolvedRanges.v == null || resolvedRanges.v.isEmpty()) {
                 // there is no matching feed ranges, it is possible the container has been recreated, throw exception here to at least retry once
-                throw new InvalidPartitionException();
+                throw new IllegalStateException("Failed to find at least one child range");
             }
+
+            if (resolvedRanges.v.size() == 1) {
+                // Merge happen, will continue draining from the current range
+                LOGGER.debug("ChangeFeedFetcher detected feed range gone due to merge for range [{}]", effectiveTokenRange);
+            } else {
+                this.createChildRanges(resolvedRanges.v, effectiveTokenRange);
+                LOGGER.debug("ChangeFeedFetcher detected feed range gone due to split for range [{}]", effectiveTokenRange);
+            }
+
             return Mono.just(ShouldRetryResult.RETRY_NOW);
         });
     }
