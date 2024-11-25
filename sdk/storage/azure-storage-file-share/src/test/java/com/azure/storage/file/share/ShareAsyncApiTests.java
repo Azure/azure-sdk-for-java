@@ -42,7 +42,6 @@ import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -399,10 +398,10 @@ public class ShareAsyncApiTests extends FileShareTestBase {
                     .then(premiumShareClient.getProperties())))
                 .assertNext(it -> assertEquals(rootSquash, it.getRootSquash()))
                 .verifyComplete();
-        }
 
-        //cleanup
-        premiumFileServiceAsyncClient.getShareAsyncClient(shareName).delete().block();
+            //cleanup
+            premiumFileServiceAsyncClient.getShareAsyncClient(shareName).delete().block();
+        }
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
