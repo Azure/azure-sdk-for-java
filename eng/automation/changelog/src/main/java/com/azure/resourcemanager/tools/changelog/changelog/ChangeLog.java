@@ -169,6 +169,8 @@ public class ChangeLog {
     }
 
     public boolean onlyAzureJson() {
-        return migrateToAzureJson() && this.newFeature.stream().filter(newFeature -> newFeature.startsWith("* ") && !newFeature.contains("json")).count() == 2;
+        return
+            migrateToAzureJson()
+                && this.newFeature.stream().noneMatch(newFeature -> newFeature.startsWith("* ") && !newFeature.contains("json"));
     }
 }
