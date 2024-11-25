@@ -54,12 +54,13 @@ public class BreakingChangeTests {
 
     @Test
     public void testAzureJson() {
-
         URL oldJar = BreakingChangeTests.class.getResource("/jackson.jar");
         URL newJar = BreakingChangeTests.class.getResource("/azure-json.jar");
         System.setProperty("OLD_JAR", oldJar.getFile());
         System.setProperty("NEW_JAR", newJar.getFile());
         JSONObject jsonObject = Main.getChangelog();
-        System.out.println(jsonObject);
+        Assertions.assertTrue(jsonObject.toString().contains("DedicatedHsmListResult"));
+        Assertions.assertFalse(jsonObject.toString().contains("toJson"));
+        Assertions.assertFalse(jsonObject.toString().contains("fromJson"));
     }
 }
