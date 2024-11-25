@@ -6,10 +6,13 @@ package com.azure.ai.openai.implementation;
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.JsonSerializerProviders;
 import com.azure.core.util.serializer.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
 import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Schedulers;
+
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
@@ -21,7 +24,6 @@ import java.util.List;
 public final class OpenAIServerSentEvents<T> {
 
     private static final List<String> STREAM_COMPLETION_EVENT = Arrays.asList("data: [DONE]", "data:[DONE]");
-    private static final ObjectMapper objectMapper = new ObjectMapper();
     private final Flux<ByteBuffer> source;
     private final Class<T> type;
     private ByteArrayOutputStream outStream;
@@ -98,10 +100,10 @@ public final class OpenAIServerSentEvents<T> {
     }
 
     private static boolean isValidJson(String jsonString) {
-        try {
-            objectMapper.readTree(jsonString);
+        try (JsonReader jsonReader = JsonProviders.createReader(jsonString)) {
+            jsonReader.readUntyped();
             return true;
-        } catch (Exception e) {
+        } catch (IOException ignored) {
             return false;
         }
     }
