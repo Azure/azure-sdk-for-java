@@ -99,6 +99,7 @@ class ChangeFeedQueryImpl<T> {
                 null);
         }
         this.changeFeedState = state;
+        this.validateContainerRid(collectionRid);
     }
 
     public Flux<FeedResponse<T>> executeAsync() {
@@ -119,6 +120,17 @@ class ChangeFeedQueryImpl<T> {
                 .getCosmosChangeFeedRequestOptionsAccessor()
                 .getOperationContext(this.options)
         );
+    }
+
+    private void validateContainerRid(String currentContainerRid) {
+        if (!currentContainerRid.equalsIgnoreCase(this.changeFeedState.getContainerRid())) {
+            throw new IllegalStateException(
+                String.format(
+                    "The provided change feed continuation state is for a different container. " +
+                    "ChangeFeedState containerRid: {}, current container {}",
+                    this.changeFeedState.getContainerRid(),
+                    currentContainerRid));
+        }
     }
 
     private RxDocumentServiceRequest createDocumentServiceRequest() {
@@ -159,7 +171,10 @@ class ChangeFeedQueryImpl<T> {
         if (this.operationContextAndListener == null) {
             return handlePartitionLevelCircuitBreakingPrerequisites(request)
                 .flatMap(client::readFeed)
-                .map(rsp -> feedResponseAccessor.createChangeFeedResponse(rsp, this.itemSerializer, klass, rsp.getCosmosDiagnostics()));
+                .map(rsp -> {
+                    validateContainerRid(rsp.getResponseHeaders().get(HttpConstants.HttpHeaders.OWNER_ID));
+                    return feedResponseAccessor.createChangeFeedResponse(rsp, this.itemSerializer, klass, rsp.getCosmosDiagnostics());
+                });
         } else {
             final OperationListener listener = operationContextAndListener.getOperationListener();
             final OperationContext operationContext = operationContextAndListener.getOperationContext();

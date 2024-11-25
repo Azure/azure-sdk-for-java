@@ -17,6 +17,7 @@ import com.azure.cosmos.implementation.guava25.collect.ArrayListMultimap;
 import com.azure.cosmos.implementation.guava25.collect.Multimap;
 import com.azure.cosmos.implementation.query.CompositeContinuationToken;
 import com.azure.cosmos.implementation.routing.Range;
+import com.azure.cosmos.implementation.throughputControl.TestItem;
 import com.azure.cosmos.models.ChangeFeedPolicy;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosContainerProperties;
@@ -843,7 +844,7 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
         assertThat(stateAfterLastDrainAttempt.getContinuation().getCompositeContinuationTokens()).hasSize(3);
     }
 
-    @Test(groups = { "emulator" }, dataProvider = "changeFeedQueryCompleteAfterAvailableNowDataProvider", timeOut = 100 * TIMEOUT)
+    @Test(groups = { "emulator" }, dataProvider = "changeFeedQueryCompleteAfterAvailableNowDataProvider", timeOut = 4 * TIMEOUT)
     public void changeFeedQueryCompleteAfterAvailableNow(
         int throughput,
         boolean shouldContinuouslyIngestItems) {
@@ -886,6 +887,64 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
             assertThat(totalQueryCount.get()).isEqualTo(5);
         } finally {
             safeDeleteCollection(this.createdAsyncDatabase.getContainer(testContainerId));
+        }
+    }
+
+    @Test(groups = { "emulator" }, timeOut = 4 * TIMEOUT)
+    public void changeFeedQueryWithIncorrectCollectionRidInContinuationToken() throws InterruptedException {
+        String testContainerId = UUID.randomUUID().toString();
+        CosmosContainerProperties containerProperties = new CosmosContainerProperties(testContainerId, "/mypk");
+        CosmosAsyncContainer testContainer =
+            createCollection(
+                this.createdAsyncDatabase,
+                containerProperties,
+                new CosmosContainerRequestOptions(),
+                400);
+
+        String testContainerRid = testContainer.read().block().getProperties().getResourceId();
+
+        // create items
+        for (int i = 0; i < 10; i++) {
+            testContainer.createItem(TestItem.createNewItem()).block();
+        }
+
+        // using query changeFeed
+        logger.info("Doing initial changeFeed query on the container " + testContainerId);
+        AtomicReference<String> continuationToken = new AtomicReference<>();
+        CosmosChangeFeedRequestOptions changeFeedRequestOptions =
+            CosmosChangeFeedRequestOptions.createForProcessingFromBeginning(FeedRange.forFullRange());
+        testContainer.queryChangeFeed(changeFeedRequestOptions, TestItem.class)
+            .byPage()
+            .doOnNext(response -> {
+                continuationToken.set(response.getContinuationToken());
+            })
+            .blockLast();
+
+        logger.info("Delete the container");
+        testContainer.delete().block();
+
+        Thread.sleep(Duration.ofSeconds(5).toMillis());
+        logger.info("Re-create the container");
+        testContainer =
+            createCollection(
+                this.createdAsyncDatabase,
+                containerProperties,
+                new CosmosContainerRequestOptions(),
+                400);
+        Thread.sleep(Duration.ofSeconds(5).toMillis());
+
+        String reCreatedContainerRid = testContainer.read().block().getProperties().getResourceId();
+        assertThat(testContainerRid).isNotEqualTo(reCreatedContainerRid);
+
+        logger.info("Using continuation token with incorrect containerRid");
+        changeFeedRequestOptions = CosmosChangeFeedRequestOptions.createForProcessingFromContinuation(continuationToken.get());
+        try {
+            testContainer.queryChangeFeed(changeFeedRequestOptions, TestItem.class)
+                .byPage()
+                .blockLast();
+            fail("ChangeFeed query request should fail when using incorrect collectionRid in the continuation token");
+        } catch (IllegalStateException e) {
+            assertThat(e.getMessage().equalsIgnoreCase("The provided change feed continuation state is for a different container"));
         }
     }
 
