@@ -253,7 +253,11 @@ class SubnetImpl extends ChildResourceImpl<SubnetInner, NetworkImpl, Network>
             NetworkInterface nic = nics.get(nicID);
             if (nic == null) {
                 //  NIC not previously found, so ask Azure for it
-                nic = this.parent().manager().networkInterfaces().getById(nicID);
+                String resourceType = ResourceUtils.resourceTypeFromResourceId(nicID);
+                if (resourceType.equalsIgnoreCase("networkInterfaces")) {
+                    // skip other reosurce types like "bastionHosts"
+                    nic = this.parent().manager().networkInterfaces().getById(nicID);
+                }
             }
 
             if (nic == null) {
