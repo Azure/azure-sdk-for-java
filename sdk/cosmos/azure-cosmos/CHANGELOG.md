@@ -9,6 +9,7 @@
 #### Bugs Fixed
 
 #### Other Changes
+* Added client vmId info to Rntbd health check logs - See [43079](https://github.com/Azure/azure-sdk-for-java/pull/43079)
 
 ### 4.65.0 (2024-11-19)
 
