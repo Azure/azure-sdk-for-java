@@ -206,25 +206,6 @@ public final class RntbdClientChannelPool implements ChannelPool {
      * @param durableEndpointMetrics a holder for the metric state (which should be
      *      durable for endpoints with the same address)
      */
-/*    RntbdClientChannelPool(
-        final RntbdServiceEndpoint endpoint,
-        final Bootstrap bootstrap,
-        final Config config,
-        final ClientTelemetry clientTelemetry,
-        final RntbdConnectionStateListener connectionStateListener,
-        final RntbdServerErrorInjector faultInjectionInterceptors,
-        final RntbdDurableEndpointMetrics durableEndpointMetrics) {
-        this(
-            endpoint,
-            bootstrap,
-            config,
-            new RntbdClientChannelHealthChecker(config),
-            clientTelemetry,
-            connectionStateListener,
-            faultInjectionInterceptors,
-            durableEndpointMetrics);
-    }*/
-
     RntbdClientChannelPool(
         final RntbdServiceEndpoint endpoint,
         final Bootstrap bootstrap,
@@ -1203,7 +1184,6 @@ public final class RntbdClientChannelPool implements ChannelPool {
                 }
 
                 if (promise.trySuccess(channel)) {
-
                     if (logger.isDebugEnabled()) {
                         logger.debug("established a channel local {}, remote {}", channel.localAddress(), channel.remoteAddress());
                     }
