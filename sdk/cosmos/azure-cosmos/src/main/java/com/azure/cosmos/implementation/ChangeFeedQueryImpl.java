@@ -127,7 +127,7 @@ class ChangeFeedQueryImpl<T> {
             throw new IllegalStateException(
                 String.format(
                     "The provided change feed continuation state is for a different container. " +
-                    "ChangeFeedState containerRid: {}, current container {}",
+                    "ChangeFeedState containerRid: %s, current container %s",
                     this.changeFeedState.getContainerRid(),
                     currentContainerRid));
         }
