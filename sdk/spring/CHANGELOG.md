@@ -7,9 +7,11 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 
 #### Features Added
 - Support customize StaticConnectionStringProvider<AzureServiceType.EventHubs> bean. [#42919](https://github.com/Azure/azure-sdk-for-java/pull/42919).
+- Support customize StaticConnectionStringProvider<AzureServiceType.ServiceBus> bean. [#43076](https://github.com/Azure/azure-sdk-for-java/pull/43076).
 
 #### Bugs Fixed
 - Fix error: Event Hubs connection string is still used when it's configured to empty string. [#42880](https://github.com/Azure/azure-sdk-for-java/issues/42880).
+- Fix error: Service Bus connection string is still used when it's configured to empty string. [#42880](https://github.com/Azure/azure-sdk-for-java/issues/42880).
 
 ### Spring Integration Azure Core
 This section includes changes in the `spring-integration-azure-core` module.
