@@ -22,7 +22,6 @@ import com.azure.cosmos.implementation.RequestTimeoutException;
 import com.azure.cosmos.implementation.RetryWithException;
 import com.azure.cosmos.implementation.ServiceUnavailableException;
 import com.azure.cosmos.implementation.UnauthorizedException;
-import com.azure.cosmos.implementation.query.NonStreamingOrderByBadRequestException;
 import com.azure.spring.data.cosmos.core.ResponseDiagnosticsProcessor;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -86,14 +85,6 @@ public class CosmosExceptionUtilsTest {
         MethodNotAllowedException methodNotAllowedException = new MethodNotAllowedException("Method Not Allowed", null, null, null);
         assertThrows(CosmosMethodNotAllowedException.class, () -> {
             CosmosExceptionUtils.exceptionHandler("Method Not Allowed", methodNotAllowedException, responseDiagnosticsProcessor).block();
-        });
-    }
-
-    @Test
-    public void testNonStreamingOrderByBadRequestException() {
-        NonStreamingOrderByBadRequestException nonStreamingOrderByBadRequestException = new NonStreamingOrderByBadRequestException(999, "Non-Streaming Order By Bad Request");
-        assertThrows(CosmosNonStreamingOrderByBadRequestException.class, () -> {
-            CosmosExceptionUtils.exceptionHandler("Non-Streaming Order By Bad Request", nonStreamingOrderByBadRequestException, responseDiagnosticsProcessor).block();
         });
     }
 
