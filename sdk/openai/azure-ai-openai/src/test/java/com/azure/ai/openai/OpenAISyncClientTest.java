@@ -240,10 +240,22 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testGetChatCompletionsStreamUsage(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIClient(httpClient, serviceVersion);
-        getChatCompletionsUsageRunnerForNonAzure((deploymentId, chatCompletionsOptions) -> {
+        getChatCompletionsStreamUsageRunner((deploymentId, chatCompletionsOptions) -> {
             IterableStream<ChatCompletions> resultChatCompletions
                 = client.getChatCompletionsStream(deploymentId, chatCompletionsOptions);
             assertChatCompletionStreamUsage(resultChatCompletions.stream().collect(Collectors.toList()));
+        });
+    }
+
+    @Disabled("promps and completion tokens are null in Azure")
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testGetChatCompletionsStreamUsageTokenDetails(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIClient(httpClient, serviceVersion);
+        getChatCompletionsStreamUsageRunner((deploymentId, chatCompletionsOptions) -> {
+            IterableStream<ChatCompletions> resultChatCompletions
+                = client.getChatCompletionsStream(deploymentId, chatCompletionsOptions);
+            assertChatCompletionStreamUsageTokenDetails(resultChatCompletions.stream().collect(Collectors.toList()));
         });
     }
 
@@ -252,7 +264,7 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testGetChatCompletionsStreamTokenCutoff(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIClient(httpClient, serviceVersion);
-        getChatCompletionsStreamTokenCutoffRunnerForNonAzure((deploymentId, chatCompletionsOptions) -> {
+        getChatCompletionsStreamTokenCutoffRunner((deploymentId, chatCompletionsOptions) -> {
             IterableStream<ChatCompletions> resultChatCompletions
                 = client.getChatCompletionsStream(deploymentId, chatCompletionsOptions);
             assertChatCompletionStreamTokenCutoff(resultChatCompletions.stream().collect(Collectors.toList()));

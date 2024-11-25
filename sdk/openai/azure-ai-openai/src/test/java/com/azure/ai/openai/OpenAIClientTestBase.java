@@ -754,6 +754,16 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         assertTrue(usage.getTotalTokens() > 0);
     }
 
+    static void assertChatCompletionStreamUsageTokenDetails(List<ChatCompletions> completions) {
+        int size = completions.size();
+        assertTrue(size > 0);
+        ChatCompletions lastCompletion = completions.get(size - 1);
+        CompletionsUsage usage = lastCompletion.getUsage();
+        assertNotNull(usage);
+        assertNotNull(usage.getPromptTokensDetails());
+        assertNotNull(usage.getCompletionTokensDetails());
+    }
+
     static void assertChatCompletionStreamTokenCutoff(List<ChatCompletions> completions) {
         assertChatCompletionStreamUsage(completions);
         int size = completions.size();
