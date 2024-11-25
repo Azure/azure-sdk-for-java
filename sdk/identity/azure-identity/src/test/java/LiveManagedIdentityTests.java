@@ -2,25 +2,22 @@
 // Licensed under the MIT License.
 
 import com.azure.core.credential.AccessToken;
-import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.test.InterceptorManager;
 import com.azure.core.test.TestProxyTestBase;
-import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
-import com.azure.identity.*;
+import com.azure.identity.ClientSecretCredential;
+import com.azure.identity.ClientSecretCredentialBuilder;
+import com.azure.identity.implementation.Retry;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 import org.junit.jupiter.api.condition.EnabledIfSystemProperty;
-import reactor.core.scheduler.Schedulers;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -36,7 +33,9 @@ public class LiveManagedIdentityTests extends TestProxyTestBase {
 
     @Test
     @EnabledIfEnvironmentVariable(named = "AZURE_TEST_MODE", matches = "LIVE")
+    @Retry(maxRetries = 3)
     public void testManagedIdentityFuncDeployment() {
+
         HttpClient client = HttpClient.createDefault();
         String functionUrl = "https://" + System.getenv("IDENTITY_FUNCTION_NAME") + ".azurewebsites.net/api/mitest";
         HttpRequest request = new HttpRequest(HttpMethod.GET, functionUrl);
@@ -49,6 +48,7 @@ public class LiveManagedIdentityTests extends TestProxyTestBase {
 
     @Test
     @EnabledIfEnvironmentVariable(named = "AZURE_TEST_MODE", matches = "LIVE")
+    @Retry(maxRetries = 3)
     public void testManagedIdentityWebAppDeployment() {
         HttpClient client = HttpClient.createDefault();
         String functionUrl = "https://" + System.getenv("IDENTITY_WEBAPP_NAME") + ".azurewebsites.net/mitest";
@@ -66,6 +66,7 @@ public class LiveManagedIdentityTests extends TestProxyTestBase {
     @EnabledIfEnvironmentVariable(named = "AZURE_TEST_MODE", matches = "LIVE")
     @EnabledIfSystemProperty(named = "os.name", matches = "Linux")
     @Timeout(value = 15, unit = TimeUnit.MINUTES)
+    @Retry(maxRetries = 3)
     public void testManagedIdentityAksDeployment() {
 
         String os = System.getProperty("os.name");
@@ -74,7 +75,7 @@ public class LiveManagedIdentityTests extends TestProxyTestBase {
         Configuration configuration = Configuration.getGlobalConfiguration().clone();
 
         String spClientId = configuration.get("AZURESUBSCRIPTION_CLIENT_ID");
-        String oidc = configuration.get("ARM_OIDC_TOKEN");
+        String oidc = configuration.get("AZ_OIDC_TOKEN");
         String tenantId = configuration.get("AZURESUBSCRIPTION_TENANT_ID");
         String resourceGroup = configuration.get("IDENTITY_RESOURCE_GROUP");
         String aksCluster = configuration.get("IDENTITY_AKS_CLUSTER_NAME");
@@ -85,7 +86,8 @@ public class LiveManagedIdentityTests extends TestProxyTestBase {
         String azPath = runCommand(pathCommand, "az").trim();
         String kubectlPath = runCommand(pathCommand, "kubectl").trim();
 
-        runCommand(azPath, "login", "--federated-token", oidc,  "--service-principal", "-u", spClientId, "--tenant", tenantId);
+        runCommand(azPath, "login", "--federated-token", oidc, "--service-principal", "-u", spClientId, "--tenant",
+            tenantId);
         runCommand(azPath, "account", "set", "--subscription", subscriptionId);
         runCommand(azPath, "aks", "get-credentials", "--resource-group", resourceGroup, "--name", aksCluster,
             "--overwrite-existing");
@@ -102,6 +104,7 @@ public class LiveManagedIdentityTests extends TestProxyTestBase {
     @EnabledIfEnvironmentVariable(named = "AZURE_TEST_MODE", matches = "LIVE")
     @EnabledIfSystemProperty(named = "os.name", matches = "Linux")
     @Timeout(value = 15, unit = TimeUnit.MINUTES)
+    @Retry(maxRetries = 3)
     public void testManagedIdentityVmDeployment() {
 
         String os = System.getProperty("os.name");
@@ -110,7 +113,7 @@ public class LiveManagedIdentityTests extends TestProxyTestBase {
         Configuration configuration = Configuration.getGlobalConfiguration().clone();
 
         String spClientId = configuration.get("AZURESUBSCRIPTION_CLIENT_ID");
-        String oidc = configuration.get("ARM_OIDC_TOKEN");
+        String oidc = configuration.get("AZ_OIDC_TOKEN");
         String tenantId = configuration.get("AZURESUBSCRIPTION_TENANT_ID");
         String resourceGroup = configuration.get("IDENTITY_RESOURCE_GROUP");
         String subscriptionId = configuration.get("IDENTITY_SUBSCRIPTION_ID");
@@ -122,7 +125,8 @@ public class LiveManagedIdentityTests extends TestProxyTestBase {
         String azPath = runCommand(isWindows ? "where" : "which", "az").trim();
         azPath = isWindows ? extractAzCmdPath(azPath) : azPath;
 
-        runCommand(azPath, "login", "--federated-token", oidc,  "--service-principal", "-u", spClientId, "--tenant", tenantId);
+        runCommand(azPath, "login", "--federated-token", oidc, "--service-principal", "-u", spClientId, "--tenant",
+            tenantId);
         runCommand(azPath, "account", "set", "--subscription", subscriptionId);
 
         String storageKey = runCommand(azPath, "storage", "account", "keys", "list", "--account-name",
@@ -147,6 +151,7 @@ public class LiveManagedIdentityTests extends TestProxyTestBase {
 
     @Test
     @EnabledIfEnvironmentVariable(named = "AZURE_TEST_MODE", matches = "LIVE")
+    @Retry(maxRetries = 3)
     public void callGraphWithClientSecret() {
         Configuration configuration = Configuration.getGlobalConfiguration().clone();
 

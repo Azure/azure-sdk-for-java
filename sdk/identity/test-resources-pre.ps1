@@ -1,3 +1,5 @@
+# cspell:ignore OIDC, oidc
+
 [CmdletBinding(SupportsShouldProcess = $true, ConfirmImpact = 'Medium')]
 param (
     # Captures any arguments from eng/New-TestResources.ps1 not declared here (no parameter errors).

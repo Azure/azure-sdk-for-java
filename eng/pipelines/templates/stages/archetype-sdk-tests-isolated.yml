@@ -26,6 +26,9 @@ parameters:
 - name: DisableAzureResourceCreation
   type: boolean
   default: false
+- name: PreTestRunSteps
+  type: object
+  default: []
 - name: PreSteps
   type: object
   default: []
@@ -147,6 +150,8 @@ stages:
               - ${{ parameters.AdditionalSparseCheckoutPaths }}
             JobTemplatePath: /eng/pipelines/templates/jobs/live.tests.yml
             AdditionalParameters:
+              PreTestRunSteps:
+                - ${{ parameters.PreTestRunSteps }}
               PreSteps:
                 - ${{ parameters.PlatformPreSteps }}
                 - ${{ parameters.PreSteps }}

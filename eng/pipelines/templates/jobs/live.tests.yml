@@ -4,6 +4,7 @@ parameters:
   EnvVars: {}
   MaxParallel: 0
   PreSteps: []
+  PreTestRunSteps: []
   PostSteps: []
   TimeoutInMinutes: 60
   TestMode: 'LIVE'
@@ -126,6 +127,7 @@ jobs:
 
       - template: /eng/pipelines/templates/steps/build-and-test.yml
         parameters:
+          PreTestRunSteps: ${{ parameters.PreTestRunSteps }}
           ParallelTestPlayback: 'false'
           BuildParallelization: ${{ parameters.BuildParallelization }}
           BuildOptions: ${{ parameters.BuildOptions }}
