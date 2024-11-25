@@ -13,14 +13,16 @@ import com.azure.storage.common.implementation.StorageImplUtils;
  */
 @Fluent
 public class BlobSetAccessTierOptions {
-
     private final AccessTier tier;
     private RehydratePriority priority;
     private String leaseId;
     private String tagsConditions;
 
     /**
+     * Creates a new instance of {@link BlobSetAccessTierOptions}.
+     *
      * @param tier The new tier for the blob.
+     * @throws NullPointerException If {@code tier} is null.
      */
     public BlobSetAccessTierOptions(AccessTier tier) {
         StorageImplUtils.assertNotNull("tier", tier);
@@ -28,6 +30,8 @@ public class BlobSetAccessTierOptions {
     }
 
     /**
+     * Gets the new tier for the blob.
+     *
      * @return The new tier for the blob.
      */
     public AccessTier getTier() {
@@ -35,6 +39,8 @@ public class BlobSetAccessTierOptions {
     }
 
     /**
+     * Gets the priority to set for re-hydrating blobs.
+     *
      * @return Priority to set for re-hydrating blobs.
      */
     public RehydratePriority getPriority() {
@@ -42,6 +48,8 @@ public class BlobSetAccessTierOptions {
     }
 
     /**
+     * Sets the priority to set for re-hydrating blobs.
+     *
      * @param priority Priority to set for re-hydrating blobs.
      * @return The updated BlobSetAccessTierOptions.
      */
@@ -51,6 +59,8 @@ public class BlobSetAccessTierOptions {
     }
 
     /**
+     * Gets the lease ID the active lease on the blob must match.
+     *
      * @return The lease ID the active lease on the blob must match.
      */
     public String getLeaseId() {
@@ -58,6 +68,8 @@ public class BlobSetAccessTierOptions {
     }
 
     /**
+     * Sets the lease ID the active lease on the blob must match.
+     *
      * @param leaseId The lease ID the active lease on the blob must match.
      * @return The updated BlobSetAccessTierOptions.
      */
@@ -67,6 +79,8 @@ public class BlobSetAccessTierOptions {
     }
 
     /**
+     * Gets the SQL statement that apply to the tags of the blob.
+     *
      * @return The SQL statement that apply to the tags of the blob.
      */
     public String getTagsConditions() {
@@ -74,6 +88,8 @@ public class BlobSetAccessTierOptions {
     }
 
     /**
+     * Sets the SQL statement that apply to the tags of the blob.
+     *
      * @param tagsConditions The SQL statement that apply to the tags of the blob.
      * @return The updated BlobSetAccessTierOptions.
      */
