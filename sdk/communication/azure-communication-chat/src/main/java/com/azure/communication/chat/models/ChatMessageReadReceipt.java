@@ -42,6 +42,12 @@ public final class ChatMessageReadReceipt implements JsonSerializable<ChatMessag
     private OffsetDateTime readOn;
 
     /**
+     * Creates a new instance of {@link ChatMessageReadReceipt}.
+     */
+    public ChatMessageReadReceipt() {
+    }
+
+    /**
      * Get the sender property: Identifies a participant in Azure Communication services. A
      * participant is, for example, a phone number or an Azure communication user. This model must be interpreted as a
      * union: Apart from rawId, at most one further property may be set.

@@ -14,6 +14,12 @@ import java.io.IOException;
 @Fluent
 public final class RecognizeFailed extends CallAutomationEventBaseWithReasonCode {
     /**
+     * Creates an instance of {@link RecognizeFailed}.
+     */
+    public RecognizeFailed() {
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override

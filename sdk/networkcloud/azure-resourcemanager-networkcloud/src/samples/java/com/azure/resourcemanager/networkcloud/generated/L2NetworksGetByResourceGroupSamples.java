@@ -4,19 +4,22 @@
 
 package com.azure.resourcemanager.networkcloud.generated;
 
-/** Samples for L2Networks GetByResourceGroup. */
+/**
+ * Samples for L2Networks GetByResourceGroup.
+ */
 public final class L2NetworksGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2023-07-01/examples/L2Networks_Get.json
+     * x-ms-original-file:
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-06-01-preview/examples/
+     * L2Networks_Get.json
      */
     /**
      * Sample code: Get L2 network.
-     *
+     * 
      * @param manager Entry point to NetworkCloudManager.
      */
     public static void getL2Network(com.azure.resourcemanager.networkcloud.NetworkCloudManager manager) {
-        manager
-            .l2Networks()
+        manager.l2Networks()
             .getByResourceGroupWithResponse("resourceGroupName", "l2NetworkName", com.azure.core.util.Context.NONE);
     }
 }

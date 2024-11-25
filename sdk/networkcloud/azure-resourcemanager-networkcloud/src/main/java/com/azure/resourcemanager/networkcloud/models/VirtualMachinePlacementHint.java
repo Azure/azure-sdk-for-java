@@ -6,45 +6,49 @@ package com.azure.resourcemanager.networkcloud.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** VirtualMachinePlacementHint represents a single scheduling hint of the virtual machine. */
+/**
+ * VirtualMachinePlacementHint represents a single scheduling hint of the virtual machine.
+ */
 @Fluent
-public final class VirtualMachinePlacementHint {
+public final class VirtualMachinePlacementHint implements JsonSerializable<VirtualMachinePlacementHint> {
     /*
      * The specification of whether this hint supports affinity or anti-affinity with the referenced resources.
      */
-    @JsonProperty(value = "hintType", required = true)
     private VirtualMachinePlacementHintType hintType;
 
     /*
      * The resource ID of the target object that the placement hints will be checked against, e.g., the bare metal node
      * to host the virtual machine.
      */
-    @JsonProperty(value = "resourceId", required = true)
     private String resourceId;
 
     /*
      * The indicator of whether the hint is a hard or soft requirement during scheduling.
      */
-    @JsonProperty(value = "schedulingExecution", required = true)
     private VirtualMachineSchedulingExecution schedulingExecution;
 
     /*
      * The scope for the virtual machine affinity or anti-affinity placement hint. It should always be "Machine" in the
      * case of node affinity.
      */
-    @JsonProperty(value = "scope", required = true)
     private VirtualMachinePlacementHintPodAffinityScope scope;
 
-    /** Creates an instance of VirtualMachinePlacementHint class. */
+    /**
+     * Creates an instance of VirtualMachinePlacementHint class.
+     */
     public VirtualMachinePlacementHint() {
     }
 
     /**
      * Get the hintType property: The specification of whether this hint supports affinity or anti-affinity with the
      * referenced resources.
-     *
+     * 
      * @return the hintType value.
      */
     public VirtualMachinePlacementHintType hintType() {
@@ -54,7 +58,7 @@ public final class VirtualMachinePlacementHint {
     /**
      * Set the hintType property: The specification of whether this hint supports affinity or anti-affinity with the
      * referenced resources.
-     *
+     * 
      * @param hintType the hintType value to set.
      * @return the VirtualMachinePlacementHint object itself.
      */
@@ -66,7 +70,7 @@ public final class VirtualMachinePlacementHint {
     /**
      * Get the resourceId property: The resource ID of the target object that the placement hints will be checked
      * against, e.g., the bare metal node to host the virtual machine.
-     *
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -76,7 +80,7 @@ public final class VirtualMachinePlacementHint {
     /**
      * Set the resourceId property: The resource ID of the target object that the placement hints will be checked
      * against, e.g., the bare metal node to host the virtual machine.
-     *
+     * 
      * @param resourceId the resourceId value to set.
      * @return the VirtualMachinePlacementHint object itself.
      */
@@ -88,7 +92,7 @@ public final class VirtualMachinePlacementHint {
     /**
      * Get the schedulingExecution property: The indicator of whether the hint is a hard or soft requirement during
      * scheduling.
-     *
+     * 
      * @return the schedulingExecution value.
      */
     public VirtualMachineSchedulingExecution schedulingExecution() {
@@ -98,7 +102,7 @@ public final class VirtualMachinePlacementHint {
     /**
      * Set the schedulingExecution property: The indicator of whether the hint is a hard or soft requirement during
      * scheduling.
-     *
+     * 
      * @param schedulingExecution the schedulingExecution value to set.
      * @return the VirtualMachinePlacementHint object itself.
      */
@@ -110,7 +114,7 @@ public final class VirtualMachinePlacementHint {
     /**
      * Get the scope property: The scope for the virtual machine affinity or anti-affinity placement hint. It should
      * always be "Machine" in the case of node affinity.
-     *
+     * 
      * @return the scope value.
      */
     public VirtualMachinePlacementHintPodAffinityScope scope() {
@@ -120,7 +124,7 @@ public final class VirtualMachinePlacementHint {
     /**
      * Set the scope property: The scope for the virtual machine affinity or anti-affinity placement hint. It should
      * always be "Machine" in the case of node affinity.
-     *
+     * 
      * @param scope the scope value to set.
      * @return the VirtualMachinePlacementHint object itself.
      */
@@ -131,27 +135,81 @@ public final class VirtualMachinePlacementHint {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (hintType() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property hintType in model VirtualMachinePlacementHint"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property hintType in model VirtualMachinePlacementHint"));
         }
         if (resourceId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property resourceId in model VirtualMachinePlacementHint"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property resourceId in model VirtualMachinePlacementHint"));
         }
         if (schedulingExecution() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property schedulingExecution in model VirtualMachinePlacementHint"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property schedulingExecution in model VirtualMachinePlacementHint"));
         }
         if (scope() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property scope in model VirtualMachinePlacementHint"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property scope in model VirtualMachinePlacementHint"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(VirtualMachinePlacementHint.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("hintType", this.hintType == null ? null : this.hintType.toString());
+        jsonWriter.writeStringField("resourceId", this.resourceId);
+        jsonWriter.writeStringField("schedulingExecution",
+            this.schedulingExecution == null ? null : this.schedulingExecution.toString());
+        jsonWriter.writeStringField("scope", this.scope == null ? null : this.scope.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualMachinePlacementHint from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualMachinePlacementHint if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the VirtualMachinePlacementHint.
+     */
+    public static VirtualMachinePlacementHint fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualMachinePlacementHint deserializedVirtualMachinePlacementHint = new VirtualMachinePlacementHint();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("hintType".equals(fieldName)) {
+                    deserializedVirtualMachinePlacementHint.hintType
+                        = VirtualMachinePlacementHintType.fromString(reader.getString());
+                } else if ("resourceId".equals(fieldName)) {
+                    deserializedVirtualMachinePlacementHint.resourceId = reader.getString();
+                } else if ("schedulingExecution".equals(fieldName)) {
+                    deserializedVirtualMachinePlacementHint.schedulingExecution
+                        = VirtualMachineSchedulingExecution.fromString(reader.getString());
+                } else if ("scope".equals(fieldName)) {
+                    deserializedVirtualMachinePlacementHint.scope
+                        = VirtualMachinePlacementHintPodAffinityScope.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualMachinePlacementHint;
+        });
+    }
 }

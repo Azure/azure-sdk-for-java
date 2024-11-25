@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.networkcloud.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The version lifecycle indicator. */
+/**
+ * The version lifecycle indicator.
+ */
 public final class AvailabilityLifecycle extends ExpandableStringEnum<AvailabilityLifecycle> {
-    /** Static value Preview for AvailabilityLifecycle. */
+    /**
+     * Static value Preview for AvailabilityLifecycle.
+     */
     public static final AvailabilityLifecycle PREVIEW = fromString("Preview");
 
-    /** Static value GenerallyAvailable for AvailabilityLifecycle. */
+    /**
+     * Static value GenerallyAvailable for AvailabilityLifecycle.
+     */
     public static final AvailabilityLifecycle GENERALLY_AVAILABLE = fromString("GenerallyAvailable");
 
     /**
      * Creates a new instance of AvailabilityLifecycle value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class AvailabilityLifecycle extends ExpandableStringEnum<Availabili
 
     /**
      * Creates or finds a AvailabilityLifecycle from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AvailabilityLifecycle.
      */
-    @JsonCreator
     public static AvailabilityLifecycle fromString(String name) {
         return fromString(name, AvailabilityLifecycle.class);
     }
 
     /**
      * Gets known AvailabilityLifecycle values.
-     *
+     * 
      * @return known AvailabilityLifecycle values.
      */
     public static Collection<AvailabilityLifecycle> values() {

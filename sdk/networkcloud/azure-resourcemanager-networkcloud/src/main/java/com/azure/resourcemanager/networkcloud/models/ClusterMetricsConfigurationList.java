@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.networkcloud.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.networkcloud.fluent.models.ClusterMetricsConfigurationInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** ClusterMetricsConfigurationList represents a list of metrics configuration of the cluster. */
+/**
+ * ClusterMetricsConfigurationList represents a list of metrics configuration of the cluster.
+ */
 @Fluent
-public final class ClusterMetricsConfigurationList {
+public final class ClusterMetricsConfigurationList implements JsonSerializable<ClusterMetricsConfigurationList> {
     /*
      * The link used to get the next page of operations.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /*
      * The list of metrics configurations.
      */
-    @JsonProperty(value = "value")
     private List<ClusterMetricsConfigurationInner> value;
 
-    /** Creates an instance of ClusterMetricsConfigurationList class. */
+    /**
+     * Creates an instance of ClusterMetricsConfigurationList class.
+     */
     public ClusterMetricsConfigurationList() {
     }
 
     /**
      * Get the nextLink property: The link used to get the next page of operations.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -39,7 +45,7 @@ public final class ClusterMetricsConfigurationList {
 
     /**
      * Set the nextLink property: The link used to get the next page of operations.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the ClusterMetricsConfigurationList object itself.
      */
@@ -50,7 +56,7 @@ public final class ClusterMetricsConfigurationList {
 
     /**
      * Get the value property: The list of metrics configurations.
-     *
+     * 
      * @return the value value.
      */
     public List<ClusterMetricsConfigurationInner> value() {
@@ -59,7 +65,7 @@ public final class ClusterMetricsConfigurationList {
 
     /**
      * Set the value property: The list of metrics configurations.
-     *
+     * 
      * @param value the value value to set.
      * @return the ClusterMetricsConfigurationList object itself.
      */
@@ -70,12 +76,54 @@ public final class ClusterMetricsConfigurationList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ClusterMetricsConfigurationList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ClusterMetricsConfigurationList if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ClusterMetricsConfigurationList.
+     */
+    public static ClusterMetricsConfigurationList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ClusterMetricsConfigurationList deserializedClusterMetricsConfigurationList
+                = new ClusterMetricsConfigurationList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("nextLink".equals(fieldName)) {
+                    deserializedClusterMetricsConfigurationList.nextLink = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    List<ClusterMetricsConfigurationInner> value
+                        = reader.readArray(reader1 -> ClusterMetricsConfigurationInner.fromJson(reader1));
+                    deserializedClusterMetricsConfigurationList.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedClusterMetricsConfigurationList;
+        });
     }
 }

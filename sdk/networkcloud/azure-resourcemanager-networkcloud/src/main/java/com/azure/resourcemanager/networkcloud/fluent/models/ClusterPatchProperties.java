@@ -5,65 +5,84 @@
 package com.azure.resourcemanager.networkcloud.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.networkcloud.models.ClusterSecretArchive;
+import com.azure.resourcemanager.networkcloud.models.ClusterUpdateStrategy;
+import com.azure.resourcemanager.networkcloud.models.CommandOutputSettings;
 import com.azure.resourcemanager.networkcloud.models.RackDefinition;
+import com.azure.resourcemanager.networkcloud.models.RuntimeProtectionConfiguration;
 import com.azure.resourcemanager.networkcloud.models.ServicePrincipalInformation;
 import com.azure.resourcemanager.networkcloud.models.ValidationThreshold;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** ClusterPatchProperties represents the properties of the cluster for patching. */
+/**
+ * ClusterPatchProperties represents the properties of the cluster for patching.
+ */
 @Fluent
-public final class ClusterPatchProperties {
+public final class ClusterPatchProperties implements JsonSerializable<ClusterPatchProperties> {
     /*
-     * RackDefinition represents details regarding the rack.
-     *
      * The rack definition that is intended to reflect only a single rack in a single rack cluster, or an aggregator
      * rack in a multi-rack cluster.
      */
-    @JsonProperty(value = "aggregatorOrSingleRackDefinition")
     private RackDefinition aggregatorOrSingleRackDefinition;
 
     /*
      * The customer-provided location information to identify where the cluster resides.
      */
-    @JsonProperty(value = "clusterLocation")
     private String clusterLocation;
 
     /*
-     * ServicePrincipalInformation represents the details of the service principal to be used by the cluster during Arc
-     * Appliance installation.
-     *
      * The service principal to be used by the cluster during Arc Appliance installation.
      */
-    @JsonProperty(value = "clusterServicePrincipal")
     private ServicePrincipalInformation clusterServicePrincipal;
 
     /*
-     * ValidationThreshold indicates allowed machine and node hardware and deployment failures.
-     *
+     * The settings for commands run in this cluster, such as bare metal machine run read only commands and data
+     * extracts.
+     */
+    private CommandOutputSettings commandOutputSettings;
+
+    /*
      * The validation threshold indicating the allowable failures of compute machines during environment validation and
      * deployment.
      */
-    @JsonProperty(value = "computeDeploymentThreshold")
     private ValidationThreshold computeDeploymentThreshold;
 
     /*
      * The list of rack definitions for the compute racks in a multi-rack
      * cluster, or an empty list in a single-rack cluster.
      */
-    @JsonProperty(value = "computeRackDefinitions")
     private List<RackDefinition> computeRackDefinitions;
 
-    /** Creates an instance of ClusterPatchProperties class. */
+    /*
+     * The settings for cluster runtime protection.
+     */
+    private RuntimeProtectionConfiguration runtimeProtectionConfiguration;
+
+    /*
+     * The configuration for use of a key vault to store secrets for later retrieval by the operator.
+     */
+    private ClusterSecretArchive secretArchive;
+
+    /*
+     * The strategy for updating the cluster.
+     */
+    private ClusterUpdateStrategy updateStrategy;
+
+    /**
+     * Creates an instance of ClusterPatchProperties class.
+     */
     public ClusterPatchProperties() {
     }
 
     /**
-     * Get the aggregatorOrSingleRackDefinition property: RackDefinition represents details regarding the rack.
-     *
-     * <p>The rack definition that is intended to reflect only a single rack in a single rack cluster, or an aggregator
-     * rack in a multi-rack cluster.
-     *
+     * Get the aggregatorOrSingleRackDefinition property: The rack definition that is intended to reflect only a single
+     * rack in a single rack cluster, or an aggregator rack in a multi-rack cluster.
+     * 
      * @return the aggregatorOrSingleRackDefinition value.
      */
     public RackDefinition aggregatorOrSingleRackDefinition() {
@@ -71,11 +90,9 @@ public final class ClusterPatchProperties {
     }
 
     /**
-     * Set the aggregatorOrSingleRackDefinition property: RackDefinition represents details regarding the rack.
-     *
-     * <p>The rack definition that is intended to reflect only a single rack in a single rack cluster, or an aggregator
-     * rack in a multi-rack cluster.
-     *
+     * Set the aggregatorOrSingleRackDefinition property: The rack definition that is intended to reflect only a single
+     * rack in a single rack cluster, or an aggregator rack in a multi-rack cluster.
+     * 
      * @param aggregatorOrSingleRackDefinition the aggregatorOrSingleRackDefinition value to set.
      * @return the ClusterPatchProperties object itself.
      */
@@ -88,7 +105,7 @@ public final class ClusterPatchProperties {
     /**
      * Get the clusterLocation property: The customer-provided location information to identify where the cluster
      * resides.
-     *
+     * 
      * @return the clusterLocation value.
      */
     public String clusterLocation() {
@@ -98,7 +115,7 @@ public final class ClusterPatchProperties {
     /**
      * Set the clusterLocation property: The customer-provided location information to identify where the cluster
      * resides.
-     *
+     * 
      * @param clusterLocation the clusterLocation value to set.
      * @return the ClusterPatchProperties object itself.
      */
@@ -108,11 +125,9 @@ public final class ClusterPatchProperties {
     }
 
     /**
-     * Get the clusterServicePrincipal property: ServicePrincipalInformation represents the details of the service
-     * principal to be used by the cluster during Arc Appliance installation.
-     *
-     * <p>The service principal to be used by the cluster during Arc Appliance installation.
-     *
+     * Get the clusterServicePrincipal property: The service principal to be used by the cluster during Arc Appliance
+     * installation.
+     * 
      * @return the clusterServicePrincipal value.
      */
     public ServicePrincipalInformation clusterServicePrincipal() {
@@ -120,11 +135,9 @@ public final class ClusterPatchProperties {
     }
 
     /**
-     * Set the clusterServicePrincipal property: ServicePrincipalInformation represents the details of the service
-     * principal to be used by the cluster during Arc Appliance installation.
-     *
-     * <p>The service principal to be used by the cluster during Arc Appliance installation.
-     *
+     * Set the clusterServicePrincipal property: The service principal to be used by the cluster during Arc Appliance
+     * installation.
+     * 
      * @param clusterServicePrincipal the clusterServicePrincipal value to set.
      * @return the ClusterPatchProperties object itself.
      */
@@ -134,12 +147,31 @@ public final class ClusterPatchProperties {
     }
 
     /**
-     * Get the computeDeploymentThreshold property: ValidationThreshold indicates allowed machine and node hardware and
-     * deployment failures.
-     *
-     * <p>The validation threshold indicating the allowable failures of compute machines during environment validation
-     * and deployment.
-     *
+     * Get the commandOutputSettings property: The settings for commands run in this cluster, such as bare metal machine
+     * run read only commands and data extracts.
+     * 
+     * @return the commandOutputSettings value.
+     */
+    public CommandOutputSettings commandOutputSettings() {
+        return this.commandOutputSettings;
+    }
+
+    /**
+     * Set the commandOutputSettings property: The settings for commands run in this cluster, such as bare metal machine
+     * run read only commands and data extracts.
+     * 
+     * @param commandOutputSettings the commandOutputSettings value to set.
+     * @return the ClusterPatchProperties object itself.
+     */
+    public ClusterPatchProperties withCommandOutputSettings(CommandOutputSettings commandOutputSettings) {
+        this.commandOutputSettings = commandOutputSettings;
+        return this;
+    }
+
+    /**
+     * Get the computeDeploymentThreshold property: The validation threshold indicating the allowable failures of
+     * compute machines during environment validation and deployment.
+     * 
      * @return the computeDeploymentThreshold value.
      */
     public ValidationThreshold computeDeploymentThreshold() {
@@ -147,12 +179,9 @@ public final class ClusterPatchProperties {
     }
 
     /**
-     * Set the computeDeploymentThreshold property: ValidationThreshold indicates allowed machine and node hardware and
-     * deployment failures.
-     *
-     * <p>The validation threshold indicating the allowable failures of compute machines during environment validation
-     * and deployment.
-     *
+     * Set the computeDeploymentThreshold property: The validation threshold indicating the allowable failures of
+     * compute machines during environment validation and deployment.
+     * 
      * @param computeDeploymentThreshold the computeDeploymentThreshold value to set.
      * @return the ClusterPatchProperties object itself.
      */
@@ -164,7 +193,7 @@ public final class ClusterPatchProperties {
     /**
      * Get the computeRackDefinitions property: The list of rack definitions for the compute racks in a multi-rack
      * cluster, or an empty list in a single-rack cluster.
-     *
+     * 
      * @return the computeRackDefinitions value.
      */
     public List<RackDefinition> computeRackDefinitions() {
@@ -174,7 +203,7 @@ public final class ClusterPatchProperties {
     /**
      * Set the computeRackDefinitions property: The list of rack definitions for the compute racks in a multi-rack
      * cluster, or an empty list in a single-rack cluster.
-     *
+     * 
      * @param computeRackDefinitions the computeRackDefinitions value to set.
      * @return the ClusterPatchProperties object itself.
      */
@@ -184,8 +213,71 @@ public final class ClusterPatchProperties {
     }
 
     /**
+     * Get the runtimeProtectionConfiguration property: The settings for cluster runtime protection.
+     * 
+     * @return the runtimeProtectionConfiguration value.
+     */
+    public RuntimeProtectionConfiguration runtimeProtectionConfiguration() {
+        return this.runtimeProtectionConfiguration;
+    }
+
+    /**
+     * Set the runtimeProtectionConfiguration property: The settings for cluster runtime protection.
+     * 
+     * @param runtimeProtectionConfiguration the runtimeProtectionConfiguration value to set.
+     * @return the ClusterPatchProperties object itself.
+     */
+    public ClusterPatchProperties
+        withRuntimeProtectionConfiguration(RuntimeProtectionConfiguration runtimeProtectionConfiguration) {
+        this.runtimeProtectionConfiguration = runtimeProtectionConfiguration;
+        return this;
+    }
+
+    /**
+     * Get the secretArchive property: The configuration for use of a key vault to store secrets for later retrieval by
+     * the operator.
+     * 
+     * @return the secretArchive value.
+     */
+    public ClusterSecretArchive secretArchive() {
+        return this.secretArchive;
+    }
+
+    /**
+     * Set the secretArchive property: The configuration for use of a key vault to store secrets for later retrieval by
+     * the operator.
+     * 
+     * @param secretArchive the secretArchive value to set.
+     * @return the ClusterPatchProperties object itself.
+     */
+    public ClusterPatchProperties withSecretArchive(ClusterSecretArchive secretArchive) {
+        this.secretArchive = secretArchive;
+        return this;
+    }
+
+    /**
+     * Get the updateStrategy property: The strategy for updating the cluster.
+     * 
+     * @return the updateStrategy value.
+     */
+    public ClusterUpdateStrategy updateStrategy() {
+        return this.updateStrategy;
+    }
+
+    /**
+     * Set the updateStrategy property: The strategy for updating the cluster.
+     * 
+     * @param updateStrategy the updateStrategy value to set.
+     * @return the ClusterPatchProperties object itself.
+     */
+    public ClusterPatchProperties withUpdateStrategy(ClusterUpdateStrategy updateStrategy) {
+        this.updateStrategy = updateStrategy;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -195,11 +287,90 @@ public final class ClusterPatchProperties {
         if (clusterServicePrincipal() != null) {
             clusterServicePrincipal().validate();
         }
+        if (commandOutputSettings() != null) {
+            commandOutputSettings().validate();
+        }
         if (computeDeploymentThreshold() != null) {
             computeDeploymentThreshold().validate();
         }
         if (computeRackDefinitions() != null) {
             computeRackDefinitions().forEach(e -> e.validate());
         }
+        if (runtimeProtectionConfiguration() != null) {
+            runtimeProtectionConfiguration().validate();
+        }
+        if (secretArchive() != null) {
+            secretArchive().validate();
+        }
+        if (updateStrategy() != null) {
+            updateStrategy().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("aggregatorOrSingleRackDefinition", this.aggregatorOrSingleRackDefinition);
+        jsonWriter.writeStringField("clusterLocation", this.clusterLocation);
+        jsonWriter.writeJsonField("clusterServicePrincipal", this.clusterServicePrincipal);
+        jsonWriter.writeJsonField("commandOutputSettings", this.commandOutputSettings);
+        jsonWriter.writeJsonField("computeDeploymentThreshold", this.computeDeploymentThreshold);
+        jsonWriter.writeArrayField("computeRackDefinitions", this.computeRackDefinitions,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("runtimeProtectionConfiguration", this.runtimeProtectionConfiguration);
+        jsonWriter.writeJsonField("secretArchive", this.secretArchive);
+        jsonWriter.writeJsonField("updateStrategy", this.updateStrategy);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ClusterPatchProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ClusterPatchProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ClusterPatchProperties.
+     */
+    public static ClusterPatchProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ClusterPatchProperties deserializedClusterPatchProperties = new ClusterPatchProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("aggregatorOrSingleRackDefinition".equals(fieldName)) {
+                    deserializedClusterPatchProperties.aggregatorOrSingleRackDefinition
+                        = RackDefinition.fromJson(reader);
+                } else if ("clusterLocation".equals(fieldName)) {
+                    deserializedClusterPatchProperties.clusterLocation = reader.getString();
+                } else if ("clusterServicePrincipal".equals(fieldName)) {
+                    deserializedClusterPatchProperties.clusterServicePrincipal
+                        = ServicePrincipalInformation.fromJson(reader);
+                } else if ("commandOutputSettings".equals(fieldName)) {
+                    deserializedClusterPatchProperties.commandOutputSettings = CommandOutputSettings.fromJson(reader);
+                } else if ("computeDeploymentThreshold".equals(fieldName)) {
+                    deserializedClusterPatchProperties.computeDeploymentThreshold
+                        = ValidationThreshold.fromJson(reader);
+                } else if ("computeRackDefinitions".equals(fieldName)) {
+                    List<RackDefinition> computeRackDefinitions
+                        = reader.readArray(reader1 -> RackDefinition.fromJson(reader1));
+                    deserializedClusterPatchProperties.computeRackDefinitions = computeRackDefinitions;
+                } else if ("runtimeProtectionConfiguration".equals(fieldName)) {
+                    deserializedClusterPatchProperties.runtimeProtectionConfiguration
+                        = RuntimeProtectionConfiguration.fromJson(reader);
+                } else if ("secretArchive".equals(fieldName)) {
+                    deserializedClusterPatchProperties.secretArchive = ClusterSecretArchive.fromJson(reader);
+                } else if ("updateStrategy".equals(fieldName)) {
+                    deserializedClusterPatchProperties.updateStrategy = ClusterUpdateStrategy.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedClusterPatchProperties;
+        });
     }
 }

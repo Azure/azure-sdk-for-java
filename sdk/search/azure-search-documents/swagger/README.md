@@ -481,3 +481,13 @@ directive:
       delete $["@search.documentDebugInfo"].type;
       delete $["@search.documentDebugInfo"].items;
 ```
+
+### `SearchDocumentsResult["@search.debugInfo"]` -> `SearchDocumentsResult["@search.debug"]`
+``` yaml $(tag) == 'searchindex'
+directive:
+  - from: swagger-document
+    where: $.definitions.SearchDocumentsResult.properties
+    transform: >
+      $["@search.debug"] = $["@search.debugInfo"];
+      delete $["@search.debugInfo"];
+```
