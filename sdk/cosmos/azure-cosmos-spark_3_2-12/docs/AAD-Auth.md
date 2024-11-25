@@ -81,15 +81,37 @@ Due to the fact that support for system managed identities and token/secret APIs
 | `spark.cosmos.account.subscriptionId`         | None        | The `SubscriptionId` of the Azure Cosmos DB account resource specified under `spark.cosmos.accountEndpoint`. This parameter is required for all management operations when using AAD / Microsoft Entra ID authentication.                                          |
 | `spark.cosmos.account.tenantId`               | None        | The `AAD TenantId` of the Azure Cosmos DB account resource specified under `spark.cosmos.accountEndpoint`. This parameter is required for all management operations when using AAD / Microsoft Entra ID authentication.                                            |
 | `spark.cosmos.account.resourceGroupName`      | None        | The  simple resource group name (not the full qualified one) of the Azure Cosmos DB account resource specified under `spark.cosmos.accountEndpoint`. This parameter is required for all management operations when using AAD / Microsoft Entra ID  authentication. |
+| `your.own.custom.property`                    |             | You can add add an duse custom properties for the configuration of your custom `AccountDataResolver` implementation.                                                                                                                                               |
 
 ### Implementation of a custom `AccountDataResolver`
 
 The latest and complete API documentation for the service interface can be found in the source code for the [`com.azure.cosmos.spark.AccountDataResolver`](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/cosmos/azure-cosmos-spark_3_2-12/src/main/scala/com/azure/cosmos/spark/AccountDataResolver.scala) file. In general, there are two methods that a custom `AccountDataResolver` implementation needs to implement:
 
 - `getAccountDataConfig`: The purpose of this method is to allow applying configuration changes from the custom `AccountDataResolver`. In Azure Synapse a custom `AccountDataResolver` for example is used to apply the key-based auth configuration for a `Linked Service`. This method could also be used to map other configuration providers (environment variables, separate config files etc.) to the Spark configuration map. Last-but-not-least in many custom 'AccountDataResolver' implementations the configuration entry `spark.cosmos.auth.type` would be set to `AccessToken` to ensure AAD / Microsoft Entra ID authentication via a custom access token provider is used. 
-- `getAccessTokenProvider`: The purpose of this method is to allow the custom `AccountDataResolver` implementation to return a token minting function depending on the configuration map chosen. For performance reasons it is critical that each set of relevant configuration entries only produces a singleton Function instance - what set of configuration entries is relevant to you token minting function depends on your custom implementation. A sample on how to achieve this singleton-pattern based off of the relevant config subset can be found [here](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/cosmos/azure-cosmos-spark-account-data-resolver-sample/src/main/scala/com/azure/cosmos/spark/samples/ManagedIdentityAccountDataResolver.scala). In general, any configuration entry reflecting the AAD/Microsoft Entra-Login Uri or the actual token minting approach (for example `TokenCredential` you are using) should be considered `relevant`.
+- `getAccessTokenProvider`: The purpose of this method is to allow the custom `AccountDataResolver` implementation to return a token minting function depending on the configuration map chosen. For performance reasons it is critical that each set of relevant configuration entries only produces a singleton Function instance - what set of configuration entries is relevant to you token minting function depends on your custom implementation. A sample on how to achieve this singleton-pattern based off of the relevant config subset can be found [here](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/cosmos/azure-cosmos-spark-account-data-resolver-sample/src/main/scala/com/azure/cosmos/spark/samples/ManagedIdentityAccountDataResolver.scala). In general, any configuration entry reflecting the AAD/Microsoft Entra-Login Uri or the actual token minting approach (for example `TokenCredential` you are using) should be considered `relevant`. **NOTE: When the token-minting function is invoked, the `List[String]` input parameter contains a list of the requested audiences/scopes. In most cases you probably want to honor these audiences and pass them to the `TokenRequestContext`when creating the access token, but you have the option to also filter/modify audiences when needed.**
 
+#### Project structure
+A sample project structure for a jar containing a custom `AccountDataResolver` would look like below. See the [end-to-end sample for a custom `AccountDataResolver` implementation](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/cosmos/azure-cosmos-spark-account-data-resolver-sample) for more details.
 
+```
+├───src
+│   └───main
+│       ├───java
+│       |   └───com
+│       |       └───your-company
+│       |       |   └───your-packagename
+│                       └───YourJavaResolver.java
+│       ├───resources
+│       │   └───META-INF
+│       │       └───services
+|       |           └───com.azure.cosmos.spark.AccountDataResolver
+│       └───scala
+│       |   └───com
+│       |       └───your-company
+│       |       |   └───your-packagename
+│                       └───YourScalaResolver.scala
+└───pom.xml
+```
 
 ### Using the custom `AccountDataResolver` 
 
@@ -101,21 +123,15 @@ This means, to make sure the Spark job can find and use your custom `AccountData
 - You set the `spark.cosmos.accountDataResolverServiceName` config entry to point to your custom `AccountDataResolver` implementation
 - The `jar` containing the implementation is correctly announcing the service in a `META-INF/services/com.azure.cosmos.spark.AccountDataResolver` file.
 
-
-
 ## Configuration options in Azure air gapped (non-public) clouds.
 
 Currently management operations (creating, modifying or deleting databases or containers via Spark-Catalog API) are not supported in non-public Azure clouds. Support will be added in CY2025.
-
-
 
 ## Out of scope
 
 Please follow-up with any questions around usage of the Spark environment specific APIs to retrieve secrets in Azure Databricks, Azure Synapse or Azure HDInsights with the respective owners. The Azure Cosmos DB connector is completely decoupled from these token APIs and as such we can't help there.
 
 The same is true for questions regarding the conversion of client certificates from PFX into PEM. The Azure SDK for Java uses the PEM format - and as such the configuration for client certificates expects the certificate with private key in Base64 encoded PEM format. There are usually Token/secret APIs that allow getting the client certificate from Azure KeyVault in PEM format - or to convert them. A sample for converting the certificate from PFX to PEM format is below - but this is porvided without any support simply for convenience. Please look at the token/secret APIs of your Spark environment first and only rely on this conversion when there are really no APIs provided that allow accessing the client certificate in PEM format.
-
-
 
 #### Scala sample for converting PFX to base64-encoded PEM 
 
