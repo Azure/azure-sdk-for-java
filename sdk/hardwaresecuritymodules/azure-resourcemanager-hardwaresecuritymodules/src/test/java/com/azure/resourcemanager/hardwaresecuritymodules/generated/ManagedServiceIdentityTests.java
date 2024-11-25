@@ -16,7 +16,7 @@ public final class ManagedServiceIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ManagedServiceIdentity model = BinaryData.fromString(
-            "{\"principalId\":\"839706cf-1e1d-477f-b44c-ed1b6de2c031\",\"tenantId\":\"1e52fbd7-3c3b-4c0e-bff5-c522dae1a24e\",\"type\":\"None\",\"userAssignedIdentities\":{\"qwpgrjbzn\":{\"principalId\":\"9f9e02cb-4aa4-44d9-9e00-6384fd9170d8\",\"clientId\":\"26b7a83e-cefa-478f-b227-cc765a4f04bc\"},\"jxvsnbyxqabn\":{\"principalId\":\"746c574d-7881-4142-950f-780bd286be00\",\"clientId\":\"7d9ac898-07ff-4fdc-b875-cea6f196a5e6\"},\"pcyshu\":{\"principalId\":\"5efb8b79-f34a-4d17-b077-b934afebd875\",\"clientId\":\"b1133db1-6c8d-44e9-a4b0-99a0834d5298\"}}}")
+            "{\"principalId\":\"76e5c315-4a67-4701-9896-0381ca594469\",\"tenantId\":\"947925c2-5c13-472e-af4a-cd8d3c41103e\",\"type\":\"None\",\"userAssignedIdentities\":{\"bciqfouflm\":{\"principalId\":\"1c86ac58-f1da-470e-8699-2fb3b510b22a\",\"clientId\":\"8d90ad8b-276d-46e0-832b-98eebb0a6ac6\"},\"zsm\":{\"principalId\":\"80ee3de2-4029-4ca4-81e9-1bd649ef1b5d\",\"clientId\":\"c48f5d63-7dbe-4e62-9d8e-329a93d85a79\"}}}")
             .toObject(ManagedServiceIdentity.class);
         Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.type());
     }
@@ -24,8 +24,8 @@ public final class ManagedServiceIdentityTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ManagedServiceIdentity model = new ManagedServiceIdentity().withType(ManagedServiceIdentityType.NONE)
-            .withUserAssignedIdentities(mapOf("qwpgrjbzn", new UserAssignedIdentity(), "jxvsnbyxqabn",
-                new UserAssignedIdentity(), "pcyshu", new UserAssignedIdentity()));
+            .withUserAssignedIdentities(
+                mapOf("bciqfouflm", new UserAssignedIdentity(), "zsm", new UserAssignedIdentity()));
         model = BinaryData.fromObject(model).toObject(ManagedServiceIdentity.class);
         Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.type());
     }
