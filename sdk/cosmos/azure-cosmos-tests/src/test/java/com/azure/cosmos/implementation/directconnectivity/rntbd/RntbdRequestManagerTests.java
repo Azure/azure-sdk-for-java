@@ -7,6 +7,8 @@ import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
+import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
+import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetryInfo;
 import com.azure.cosmos.implementation.directconnectivity.RntbdTransportClient;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
 import io.netty.channel.Channel;
@@ -40,7 +42,13 @@ public class RntbdRequestManagerTests {
                 new RntbdTransportClient.Options.Builder(ConnectionPolicy.getDefaultPolicy()).build(),
                 sslContextMock,
                 LogLevel.INFO);
-        RntbdClientChannelHealthChecker healthChecker = new RntbdClientChannelHealthChecker(config);
+
+        ClientTelemetry clientTelemetryMock = Mockito.mock(ClientTelemetry.class);
+        ClientTelemetryInfo clientTelemetryInfoMock = Mockito.mock(ClientTelemetryInfo.class);
+        Mockito.when(clientTelemetryMock.getClientTelemetryInfo()).thenReturn(clientTelemetryInfoMock);
+        Mockito.when(clientTelemetryInfoMock.getMachineId()).thenReturn("testClientVmId");
+
+        RntbdClientChannelHealthChecker healthChecker = new RntbdClientChannelHealthChecker(config, clientTelemetryMock);
 
         RntbdConnectionStateListener connectionStateListener = Mockito.mock(RntbdConnectionStateListener.class);
 
@@ -119,7 +127,13 @@ public class RntbdRequestManagerTests {
             new RntbdTransportClient.Options.Builder(ConnectionPolicy.getDefaultPolicy()).build(),
             sslContextMock,
             LogLevel.INFO);
-        RntbdClientChannelHealthChecker healthChecker = new RntbdClientChannelHealthChecker(config);
+
+        ClientTelemetry clientTelemetryMock = Mockito.mock(ClientTelemetry.class);
+        ClientTelemetryInfo clientTelemetryInfoMock = Mockito.mock(ClientTelemetryInfo.class);
+        Mockito.when(clientTelemetryMock.getClientTelemetryInfo()).thenReturn(clientTelemetryInfoMock);
+        Mockito.when(clientTelemetryInfoMock.getMachineId()).thenReturn("testClientVmId");
+
+        RntbdClientChannelHealthChecker healthChecker = new RntbdClientChannelHealthChecker(config, clientTelemetryMock);
 
         RntbdConnectionStateListener connectionStateListener = Mockito.mock(RntbdConnectionStateListener.class);
 

@@ -4,6 +4,7 @@
 package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.cpu.CpuMemoryMonitor;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpoint.Config;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -75,12 +76,19 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
     private final long nonRespondingChannelReadDelayTimeLimitInNanos;
     @JsonProperty
     private final int cancellationCountSinceLastReadThreshold;
+    // VM ID of the SDK client instance.
+    // We have this property in client diagnostics, but they can only be obtained if
+    // an operation fails or succeeds. If an operation hangs, the diagnostics will not
+    // be available. Floating this value to the health check logs will give us access to
+    // the client VM ID in scenarios where the operation hangs.
+    @JsonProperty
+    private final String clientVmId;
 
     // endregion
 
     // region Constructors
 
-    public RntbdClientChannelHealthChecker(final Config config) {
+    public RntbdClientChannelHealthChecker(final Config config, final ClientTelemetry clientTelemetry) {
 
         checkNotNull(config, "expected non-null config");
 
@@ -104,6 +112,7 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
         this.timeoutOnWriteTimeLimitInNanos = config.timeoutDetectionOnWriteTimeLimitInNanos();
         this.nonRespondingChannelReadDelayTimeLimitInNanos = config.nonRespondingChannelReadDelayTimeLimitInNanos();
         this.cancellationCountSinceLastReadThreshold = config.cancellationCountSinceLastReadThreshold();
+        this.clientVmId = clientTelemetry.getClientTelemetryInfo().getMachineId();
     }
 
     // endregion
@@ -266,14 +275,15 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
             writeHangMessage = MessageFormat.format(
                     "{0} health check failed due to non-responding write: [lastChannelWriteAttemptTime: {1}, " +
                             "lastChannelWriteTime: {2}, writeDelayInNanos: {3}, writeDelayLimitInNanos: {4}, " +
-                            "rntbdContext: {5}, pendingRequestCount: {6}]",
+                            "rntbdContext: {5}, pendingRequestCount: {6}, clientVmId: {7}]",
                     channel,
                     timestamps.lastChannelWriteAttemptTime(),
                     timestamps.lastChannelWriteTime(),
                     writeDelayInNanos,
                     this.writeDelayLimitInNanos,
                     rntbdContext,
-                    pendingRequestCount);
+                    pendingRequestCount,
+                    this.clientVmId);
 
             logger.warn(writeHangMessage);
         }
@@ -298,14 +308,15 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
 
             readHangMessage = MessageFormat.format(
                     "{0} health check failed due to non-responding read: [lastChannelWrite: {1}, lastChannelRead: {2}, "
-                            + "readDelay: {3}, readDelayLimit: {4}, rntbdContext: {5}, pendingRequestCount: {6}]",
+                            + "readDelay: {3}, readDelayLimit: {4}, rntbdContext: {5}, pendingRequestCount: {6}, clientVmId: {7}]",
                     channel,
                     timestamps.lastChannelWriteTime(),
                     timestamps.lastChannelReadTime(),
                     readDelay,
                     this.readDelayLimitInNanos,
                     rntbdContext,
-                    pendingRequestCount);
+                    pendingRequestCount,
+                    this.clientVmId);
 
 
             logger.warn(readHangMessage);

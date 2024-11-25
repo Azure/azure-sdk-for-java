@@ -206,7 +206,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
      * @param durableEndpointMetrics a holder for the metric state (which should be
      *      durable for endpoints with the same address)
      */
-    RntbdClientChannelPool(
+/*    RntbdClientChannelPool(
         final RntbdServiceEndpoint endpoint,
         final Bootstrap bootstrap,
         final Config config,
@@ -223,13 +223,12 @@ public final class RntbdClientChannelPool implements ChannelPool {
             connectionStateListener,
             faultInjectionInterceptors,
             durableEndpointMetrics);
-    }
+    }*/
 
-    private RntbdClientChannelPool(
+    RntbdClientChannelPool(
         final RntbdServiceEndpoint endpoint,
         final Bootstrap bootstrap,
         final Config config,
-        final RntbdClientChannelHealthChecker healthChecker,
         final ClientTelemetry clientTelemetry,
         final RntbdConnectionStateListener connectionStateListener,
         final RntbdServerErrorInjector serverErrorInjector,
@@ -238,9 +237,9 @@ public final class RntbdClientChannelPool implements ChannelPool {
         checkNotNull(endpoint, "expected non-null endpoint");
         checkNotNull(bootstrap, "expected non-null bootstrap");
         checkNotNull(config, "expected non-null config");
-        checkNotNull(healthChecker, "expected non-null healthChecker");
         checkNotNull(durableEndpointMetrics, "expected non-null durableEndpointMetrics");
 
+        RntbdClientChannelHealthChecker healthChecker = new RntbdClientChannelHealthChecker(config, clientTelemetry);
         this.poolHandler = new RntbdClientChannelHandler(config, healthChecker, connectionStateListener, serverErrorInjector);
         this.executor = bootstrap.config().group().next();
         this.healthChecker = healthChecker;
@@ -1204,7 +1203,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
                 }
 
                 if (promise.trySuccess(channel)) {
-  
+
                     if (logger.isDebugEnabled()) {
                         logger.debug("established a channel local {}, remote {}", channel.localAddress(), channel.remoteAddress());
                     }
