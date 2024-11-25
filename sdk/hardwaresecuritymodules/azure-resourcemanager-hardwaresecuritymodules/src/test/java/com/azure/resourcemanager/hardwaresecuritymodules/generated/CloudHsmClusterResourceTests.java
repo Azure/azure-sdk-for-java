@@ -20,32 +20,34 @@ public final class CloudHsmClusterResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CloudHsmClusterResource model = BinaryData.fromString(
-            "{\"sku\":{\"family\":\"B\",\"name\":\"Standard_B1\",\"capacity\":1582483628},\"identity\":{\"principalId\":\"4f11dac8-4e71-4dfa-8105-0418cf952ab0\",\"tenantId\":\"504b0a0e-e882-470c-af93-4df9963e3260\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"fufsrpymzi\":{\"principalId\":\"954a955c-60ba-4652-9255-32e3cb90af1f\",\"clientId\":\"0408a470-595b-4c6c-9ee4-3de317eb444e\"}}},\"location\":\"sezcxtb\",\"tags\":{\"newmdwzjeiachbo\":\"fycc\",\"eeh\":\"sflnrosfqp\"},\"id\":\"zvypyqrimzinp\",\"name\":\"swjdkirso\",\"type\":\"dqxhcrmnohjtckwh\"}")
+            "{\"identity\":{\"principalId\":\"294ea183-6505-4cfd-a309-33db66adcb7e\",\"tenantId\":\"db4c352c-0ad4-4091-9aca-cd371fe63c9b\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"wrwjfeu\":{\"principalId\":\"4fc58c68-16dc-4800-be96-5da0286d6a0e\",\"clientId\":\"b7fe5ab1-90d5-4cb0-8fd3-88faf0b61fa1\"},\"utjeltmrldhugj\":{\"principalId\":\"d3d31520-c2f3-4600-93b7-7bbce6abc283\",\"clientId\":\"54082391-d723-4108-88c9-eb0f8391ff5e\"},\"atqxho\":{\"principalId\":\"e053b968-1859-477a-b4a9-2184551fabe4\",\"clientId\":\"879c8501-9d25-46ac-b07e-85504caaa6d0\"}}},\"sku\":{\"family\":\"B\",\"name\":\"Standard_B1\",\"capacity\":274751337},\"location\":\"gphuticndvka\",\"tags\":{\"ftyxolniw\":\"yiftyhxhuro\",\"ryplwckbasyypn\":\"wcukjfkgiawxk\",\"phejkotynqgoulz\":\"dhsgcba\"},\"id\":\"dlikwyqkgfgibma\",\"name\":\"gakeqsr\",\"type\":\"yb\"}")
             .toObject(CloudHsmClusterResource.class);
-        Assertions.assertEquals("sezcxtb", model.location());
-        Assertions.assertEquals("fycc", model.tags().get("newmdwzjeiachbo"));
+        Assertions.assertEquals("gphuticndvka", model.location());
+        Assertions.assertEquals("yiftyhxhuro", model.tags().get("ftyxolniw"));
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
         Assertions.assertEquals(CloudHsmClusterSkuFamily.B, model.sku().family());
         Assertions.assertEquals(CloudHsmClusterSkuName.STANDARD_B1, model.sku().name());
-        Assertions.assertEquals(1582483628, model.sku().capacity());
-        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.identity().type());
+        Assertions.assertEquals(274751337, model.sku().capacity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CloudHsmClusterResource model = new CloudHsmClusterResource().withLocation("sezcxtb")
-            .withTags(mapOf("newmdwzjeiachbo", "fycc", "eeh", "sflnrosfqp"))
+        CloudHsmClusterResource model = new CloudHsmClusterResource().withLocation("gphuticndvka")
+            .withTags(
+                mapOf("ftyxolniw", "yiftyhxhuro", "ryplwckbasyypn", "wcukjfkgiawxk", "phejkotynqgoulz", "dhsgcba"))
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
+                .withUserAssignedIdentities(mapOf("wrwjfeu", new UserAssignedIdentity(), "utjeltmrldhugj",
+                    new UserAssignedIdentity(), "atqxho", new UserAssignedIdentity())))
             .withSku(new CloudHsmClusterSku().withFamily(CloudHsmClusterSkuFamily.B)
                 .withName(CloudHsmClusterSkuName.STANDARD_B1)
-                .withCapacity(1582483628))
-            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
-                .withUserAssignedIdentities(mapOf("fufsrpymzi", new UserAssignedIdentity())));
+                .withCapacity(274751337));
         model = BinaryData.fromObject(model).toObject(CloudHsmClusterResource.class);
-        Assertions.assertEquals("sezcxtb", model.location());
-        Assertions.assertEquals("fycc", model.tags().get("newmdwzjeiachbo"));
+        Assertions.assertEquals("gphuticndvka", model.location());
+        Assertions.assertEquals("yiftyhxhuro", model.tags().get("ftyxolniw"));
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
         Assertions.assertEquals(CloudHsmClusterSkuFamily.B, model.sku().family());
         Assertions.assertEquals(CloudHsmClusterSkuName.STANDARD_B1, model.sku().name());
-        Assertions.assertEquals(1582483628, model.sku().capacity());
-        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.identity().type());
+        Assertions.assertEquals(274751337, model.sku().capacity());
     }
 
     // Use "Map.of" if available
