@@ -13,8 +13,7 @@ import java.time.OffsetDateTime;
 public final class ExtractiveSummaryOperationDetailPropertiesHelper {
     private static ExtractiveSummaryOperationDetailAccessor accessor;
 
-    private ExtractiveSummaryOperationDetailPropertiesHelper() {
-    }
+    private ExtractiveSummaryOperationDetailPropertiesHelper() { }
 
     /**
      * Type defining the methods to set the non-public properties of an {@link ExtractiveSummaryOperationDetail}
@@ -22,13 +21,9 @@ public final class ExtractiveSummaryOperationDetailPropertiesHelper {
      */
     public interface ExtractiveSummaryOperationDetailAccessor {
         void setOperationId(ExtractiveSummaryOperationDetail operationDetail, String operationId);
-
         void setDisplayName(ExtractiveSummaryOperationDetail operationDetail, String name);
-
         void setCreatedAt(ExtractiveSummaryOperationDetail operationDetail, OffsetDateTime createdAt);
-
         void setExpiresAt(ExtractiveSummaryOperationDetail operationDetail, OffsetDateTime expiresAt);
-
         void setLastModifiedAt(ExtractiveSummaryOperationDetail operationDetail, OffsetDateTime lastModifiedAt);
     }
 
@@ -37,8 +32,8 @@ public final class ExtractiveSummaryOperationDetailPropertiesHelper {
      *
      * @param extractiveSummaryOperationDetailAccessor The accessor.
      */
-    public static void
-        setAccessor(final ExtractiveSummaryOperationDetailAccessor extractiveSummaryOperationDetailAccessor) {
+    public static void setAccessor(
+        final ExtractiveSummaryOperationDetailAccessor extractiveSummaryOperationDetailAccessor) {
         accessor = extractiveSummaryOperationDetailAccessor;
     }
 
@@ -58,8 +53,7 @@ public final class ExtractiveSummaryOperationDetailPropertiesHelper {
         accessor.setExpiresAt(operationDetail, expiresAt);
     }
 
-    public static void setLastModifiedAt(ExtractiveSummaryOperationDetail operationDetail,
-        OffsetDateTime lastModifiedAt) {
+    public static void setLastModifiedAt(ExtractiveSummaryOperationDetail operationDetail, OffsetDateTime lastModifiedAt) {
         accessor.setLastModifiedAt(operationDetail, lastModifiedAt);
     }
 }

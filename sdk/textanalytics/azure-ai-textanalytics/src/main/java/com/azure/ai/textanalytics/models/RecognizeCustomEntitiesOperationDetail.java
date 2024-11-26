@@ -21,9 +21,11 @@ public final class RecognizeCustomEntitiesOperationDetail {
 
     static {
         RecognizeCustomEntitiesOperationDetailPropertiesHelper.setAccessor(
-            new RecognizeCustomEntitiesOperationDetailPropertiesHelper.RecognizeCustomEntitiesOperationDetailAccessor() {
+            new RecognizeCustomEntitiesOperationDetailPropertiesHelper.
+                    RecognizeCustomEntitiesOperationDetailAccessor() {
                 @Override
-                public void setOperationId(RecognizeCustomEntitiesOperationDetail operationResult, String operationId) {
+                public void setOperationId(RecognizeCustomEntitiesOperationDetail operationResult,
+                    String operationId) {
                     operationResult.setOperationId(operationId);
                 }
 
@@ -49,7 +51,8 @@ public final class RecognizeCustomEntitiesOperationDetail {
                     OffsetDateTime lastModifiedAt) {
                     operationDetail.setLastModifiedAt(lastModifiedAt);
                 }
-            });
+            }
+        );
     }
 
     /**

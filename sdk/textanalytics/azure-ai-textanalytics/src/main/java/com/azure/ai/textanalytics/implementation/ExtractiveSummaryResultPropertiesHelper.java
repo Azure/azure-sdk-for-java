@@ -14,15 +14,13 @@ import com.azure.core.util.IterableStream;
 public final class ExtractiveSummaryResultPropertiesHelper {
     private static ExtractiveSummaryResultAccessor accessor;
 
-    private ExtractiveSummaryResultPropertiesHelper() {
-    }
+    private ExtractiveSummaryResultPropertiesHelper() { }
 
     /**
      * Type defining the methods to set the non-public properties of an {@link ExtractiveSummaryResult} instance.
      */
     public interface ExtractiveSummaryResultAccessor {
         void setSentences(ExtractiveSummaryResult documentResult, IterableStream<ExtractiveSummarySentence> sentences);
-
         void setWarnings(ExtractiveSummaryResult documentResult, IterableStream<TextAnalyticsWarning> warnings);
     }
 
@@ -36,12 +34,12 @@ public final class ExtractiveSummaryResultPropertiesHelper {
     }
 
     public static void setSentences(ExtractiveSummaryResult documentResult,
-        IterableStream<ExtractiveSummarySentence> sentences) {
+                                    IterableStream<ExtractiveSummarySentence> sentences) {
         accessor.setSentences(documentResult, sentences);
     }
 
     public static void setWarnings(ExtractiveSummaryResult documentResult,
-        IterableStream<TextAnalyticsWarning> warnings) {
+                                   IterableStream<TextAnalyticsWarning> warnings) {
         accessor.setWarnings(documentResult, warnings);
     }
 }

@@ -10,8 +10,7 @@ import java.time.OffsetDateTime;
 public final class AnalyzeHealthcareEntitiesOperationDetailPropertiesHelper {
     private static AnalyzeHealthcareEntitiesOperationDetailAccessor accessor;
 
-    private AnalyzeHealthcareEntitiesOperationDetailPropertiesHelper() {
-    }
+    private AnalyzeHealthcareEntitiesOperationDetailPropertiesHelper() { }
 
     /**
      * Type defining the methods to set the non-public properties of an
@@ -20,14 +19,11 @@ public final class AnalyzeHealthcareEntitiesOperationDetailPropertiesHelper {
      */
     public interface AnalyzeHealthcareEntitiesOperationDetailAccessor {
         void setOperationId(AnalyzeHealthcareEntitiesOperationDetail operationDetail, String operationId);
-
         void setDisplayName(AnalyzeHealthcareEntitiesOperationDetail operationDetail, String name);
-
         void setCreatedAt(AnalyzeHealthcareEntitiesOperationDetail operationDetail, OffsetDateTime createdAt);
-
         void setExpiresAt(AnalyzeHealthcareEntitiesOperationDetail operationDetail, OffsetDateTime expiresAt);
-
-        void setLastModifiedAt(AnalyzeHealthcareEntitiesOperationDetail operationDetail, OffsetDateTime lastModifiedAt);
+        void setLastModifiedAt(AnalyzeHealthcareEntitiesOperationDetail operationDetail,
+            OffsetDateTime lastModifiedAt);
     }
 
     /**
