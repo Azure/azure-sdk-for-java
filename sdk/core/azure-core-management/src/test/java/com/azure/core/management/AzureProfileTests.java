@@ -27,6 +27,7 @@ public class AzureProfileTests {
         // exception when initializing using custom AzureCloud
         Assertions.assertThrows(IllegalArgumentException.class, () -> new AzureProfile(AzureCloud.fromString("Custom")));
 
+        @Deprecated
         AzureProfile customEnvironment = new AzureProfile(new AzureEnvironment(new HashMap<>()));
     }
 }
