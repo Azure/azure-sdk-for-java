@@ -2,9 +2,12 @@
 // Licensed under the MIT License.
 package com.azure.core.management.profile;
 
+import com.azure.core.AzureCloud;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.util.Configuration;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -15,6 +18,47 @@ public final class AzureProfile {
     private final String tenantId;
     private final String subscriptionId;
     private final AzureEnvironment environment;
+    private static final Map<AzureCloud, AzureEnvironment> ENDPOINT_MAP = new HashMap<>();
+
+    static {
+        ENDPOINT_MAP.put(AzureCloud.AZURE_PUBLIC_CLOUD, AzureEnvironment.AZURE);
+        ENDPOINT_MAP.put(AzureCloud.AZURE_CHINA_CLOUD, AzureEnvironment.AZURE_CHINA);
+        ENDPOINT_MAP.put(AzureCloud.AZURE_US_GOVERNMENT, AzureEnvironment.AZURE_US_GOVERNMENT);
+    }
+
+    /**
+     * Creates AzureProfile instance with Azure cloud. The global cloud is {@link AzureCloud#AZURE_PUBLIC_CLOUD}.
+     * The tenant ID and subscription ID can be set via environment variables. The environment variables are expected
+     * as below:
+     * <ul>
+     *     <li>{@link Configuration#PROPERTY_AZURE_TENANT_ID AZURE_TENANT_ID}</li>
+     *     <li>{@link Configuration#PROPERTY_AZURE_SUBSCRIPTION_ID AZURE_SUBSCRIPTION_ID}</li>
+     * </ul>
+     *
+     * @param azureCloud the Azure cloud
+     */
+    public AzureProfile(AzureCloud azureCloud) {
+        Objects.requireNonNull(azureCloud);
+        this.environment = fromAzureCloud(azureCloud);
+        Configuration configuration = Configuration.getGlobalConfiguration();
+        this.tenantId = configuration.get(Configuration.PROPERTY_AZURE_TENANT_ID);
+        this.subscriptionId = configuration.get(Configuration.PROPERTY_AZURE_SUBSCRIPTION_ID);
+    }
+
+    /**
+     * Creates AzureProfile instance with tenant ID, subscription ID and Azure cloud.
+     * The global cloud is {@link AzureCloud#AZURE_PUBLIC_CLOUD}.
+     *
+     * @param tenantId the tenant ID required for Graph Rbac
+     * @param subscriptionId the subscription ID required for resource management
+     * @param azureCloud the Azure cloud
+     */
+    public AzureProfile(String tenantId, String subscriptionId, AzureCloud azureCloud) {
+        Objects.requireNonNull(azureCloud);
+        this.environment = fromAzureCloud(azureCloud);
+        this.tenantId = tenantId;
+        this.subscriptionId = subscriptionId;
+    }
 
     /**
      * Creates AzureProfile instance with Azure environment. The global environment is {@link AzureEnvironment#AZURE}.
@@ -26,7 +70,10 @@ public final class AzureProfile {
      * </ul>
      *
      * @param environment the Azure environment
+     * @deprecated use {@link AzureProfile#AzureProfile(AzureCloud)}
+     * @see AzureProfile#AzureProfile(AzureCloud)
      */
+    @Deprecated
     public AzureProfile(AzureEnvironment environment) {
         Objects.requireNonNull(environment);
         this.environment = environment;
@@ -42,7 +89,10 @@ public final class AzureProfile {
      * @param tenantId the tenant ID required for Graph Rbac
      * @param subscriptionId the subscription ID required for resource management
      * @param environment the Azure environment
+     * @deprecated use {@link AzureProfile#AzureProfile(String, String, AzureCloud)}
+     * @see AzureProfile#AzureProfile(String, String, AzureCloud)
      */
+    @Deprecated
     public AzureProfile(String tenantId, String subscriptionId, AzureEnvironment environment) {
         Objects.requireNonNull(environment);
         this.tenantId = tenantId;
@@ -75,5 +125,13 @@ public final class AzureProfile {
      */
     public AzureEnvironment getEnvironment() {
         return environment;
+    }
+
+    private AzureEnvironment fromAzureCloud(AzureCloud azureCloud) {
+        AzureEnvironment azureEnvironment = ENDPOINT_MAP.get(azureCloud);
+        if (azureEnvironment == null) {
+            throw new IllegalArgumentException(String.format("No endpoint mapping defined for AzureCloud: [%s].", azureCloud));
+        }
+        return azureEnvironment;
     }
 }

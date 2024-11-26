@@ -16,6 +16,7 @@ module com.azure.core {
     requires transitive com.fasterxml.jackson.datatype.jsr310;
 
     // public API surface area
+    exports com.azure.core;
     exports com.azure.core.annotation;
     exports com.azure.core.client.traits;
     exports com.azure.core.credential;
@@ -49,6 +50,7 @@ module com.azure.core {
     exports com.azure.core.util.polling.implementation to com.azure.core.experimental;
 
     // exporting some packages specifically for Jackson
+    opens com.azure.core to com.fasterxml.jackson.databind;
     opens com.azure.core.credential to com.fasterxml.jackson.databind;
     opens com.azure.core.http to com.fasterxml.jackson.databind;
     opens com.azure.core.models to com.fasterxml.jackson.databind;
