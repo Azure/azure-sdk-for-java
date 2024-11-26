@@ -2,18 +2,16 @@
 // Licensed under the MIT License.
 
 package com.azure.security.attestation.implementation.models;
-
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.Base64Util;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.json.JsonProviders;
-import com.azure.json.JsonReader;
 import com.azure.security.attestation.models.AttestationSigner;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nimbusds.jose.jwk.JWK;
 import com.nimbusds.jose.util.Base64;
 
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
@@ -28,13 +26,13 @@ import java.util.stream.Collectors;
  */
 @Fluent
 public class AttestationSignerImpl implements AttestationSigner {
-    private static final ClientLogger LOGGER = new ClientLogger(AttestationSignerImpl.class);
+    private static final ObjectMapper MAPPER = new ObjectMapper();
 
-    /**
-    * Sets the signing certificate.
-    * @param certificates Array of X509Certificate objects.
-    * @return AttestationSigner
-    */
+     /**
+     * Sets the signing certificate.
+     * @param certificates Array of X509Certificate objects.
+     * @return AttestationSigner
+     */
     AttestationSignerImpl setCertificates(final X509Certificate[] certificates) {
         this.certificates = cloneX509CertificateChain(certificates);
         return this;
@@ -47,13 +45,14 @@ public class AttestationSignerImpl implements AttestationSigner {
      * @return Deep cloned X.509 certificate chain.
      */
     private List<X509Certificate> cloneX509CertificateChain(X509Certificate[] certificates) {
+        ClientLogger logger = new ClientLogger(AttestationSignerImpl.class);
         return Arrays.stream(certificates).map(certificate -> {
             X509Certificate newCert;
             try {
                 CertificateFactory cf = CertificateFactory.getInstance("X.509");
                 newCert = (X509Certificate) cf.generateCertificate(new ByteArrayInputStream(certificate.getEncoded()));
             } catch (CertificateException e) {
-                throw LOGGER.logExceptionAsError(new RuntimeException(e));
+                throw logger.logExceptionAsError(new RuntimeException(e));
             }
             return newCert;
         }).collect(Collectors.toList());
@@ -61,7 +60,7 @@ public class AttestationSignerImpl implements AttestationSigner {
 
     /**
      * Sets the KeyId.
-     * <p>
+     *
      * The KeyId is matched with the "kid" property in a JsonWebSignature object. It corresponds
      * to the kid property defined in <a href="https://datatracker.ietf.org/doc/html/rfc7517#section-4.5">JsonWebKey RFC section 4.5</a>
      *
@@ -75,37 +74,34 @@ public class AttestationSignerImpl implements AttestationSigner {
 
     /**
      * Gets the Certificates associated with this signer.
-     * <p>
+     *
      * Certificates are an X.509 certificate chain associated with a particular attestation signer.
-     * <p>
+     *
      * It corresponds to the `x5c` property on a JSON Web Key. See <a href="https://datatracker.ietf.org/doc/html/rfc7517#section-4.7">JsonWebKey RFC Section 4.7</a>
      * for more details.
      *
      * @return Certificate chain used to sign an attestation token.
      */
-    @Override
-    public final List<X509Certificate> getCertificates() {
+    @Override public final List<X509Certificate> getCertificates() {
         return cloneX509CertificateChain(this.certificates.toArray(new X509Certificate[0]));
     }
 
     /**
      * Gets the KeyId.
-     * <p>
-     * The KeyId is matched with the "kid" property in a JsonWebSignature object. It corresponds to the kid property
-     * defined in <a href="https://datatracker.ietf.org/doc/html/rfc7517#section-4.5">JsonWebKey RFC section 4.5</a>
+     *
+     * The KeyId is matched with the "kid" property in a JsonWebSignature object. It corresponds
+     * to the kid property defined in <a href="https://datatracker.ietf.org/doc/html/rfc7517#section-4.5">JsonWebKey RFC section 4.5</a>
      *
      * @return KeyId.
      */
-    @Override
-    public String getKeyId() {
+    @Override public String getKeyId() {
         return keyId;
     }
 
     /**
      * Validate that the attestation signer is valid.
      */
-    @Override
-    public void validate() {
+    @Override public void validate() {
         Objects.requireNonNull(certificates);
         for (X509Certificate certificate : certificates) {
             Objects.requireNonNull(certificate);
@@ -118,11 +114,15 @@ public class AttestationSignerImpl implements AttestationSigner {
      * @return An attestation signer associated with the specified certificate chain.
      */
     public static AttestationSigner fromCertificateChain(List<Base64> certificateChain) {
-        X509Certificate[] certChain = certificateChain.stream()
+        X509Certificate[] certChain = certificateChain
+            .stream()
             .map(AttestationSignerImpl::certificateFromBase64)
             .toArray(X509Certificate[]::new);
-        return new AttestationSignerImpl().setCertificates(certChain);
+        return new AttestationSignerImpl()
+            .setCertificates(certChain);
     }
+
+
 
     /**
      * Create this signer from a Json Web Key.
@@ -131,23 +131,29 @@ public class AttestationSignerImpl implements AttestationSigner {
      * @throws Error - when the attestation signer could not be created from the JWK.
      */
     public static AttestationSigner fromJWK(JWK jwk) throws Error {
+        ClientLogger logger = new ClientLogger(AttestationSignerImpl.class);
         String serializedKey = jwk.toJSONString();
 
-        try (JsonReader jsonReader = JsonProviders.createReader(serializedKey)) {
-            return AttestationSignerImpl.fromJsonWebKey(JsonWebKey.fromJson(jsonReader));
-        } catch (IOException e) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(e.getMessage()));
+        JsonWebKey jsonWebKey;
+        try {
+            jsonWebKey = MAPPER.readValue(serializedKey, JsonWebKey.class);
+        } catch (JsonProcessingException e) {
+            throw logger.logExceptionAsError(new RuntimeException(e.getMessage()));
         }
+        return AttestationSignerImpl.fromJsonWebKey(jsonWebKey);
 
     }
 
     public static AttestationSigner fromJsonWebKey(JsonWebKey jsonWebKey) {
         List<String> certificateChain = jsonWebKey.getX5C();
         if (certificateChain != null) {
-            X509Certificate[] certificateArray = certificateChain.stream()
+            X509Certificate[] certificateArray =  certificateChain
+                .stream()
                 .map(AttestationSignerImpl::certificateFromBase64String)
                 .toArray(X509Certificate[]::new);
-            return new AttestationSignerImpl().setCertificates(certificateArray).setKeyId(jsonWebKey.getKid());
+            return new AttestationSignerImpl()
+                .setCertificates(certificateArray)
+                .setKeyId(jsonWebKey.getKid());
         }
         throw new Error("Could not resolve AttestationSigner from JWK.");
     }
@@ -158,8 +164,13 @@ public class AttestationSignerImpl implements AttestationSigner {
      * @return Array of {@link AttestationSigner}s created from the JWK.
      */
     public static List<AttestationSigner> attestationSignersFromJwks(JsonWebKeySet jwks) {
-        return jwks.getKeys().stream().map(AttestationSignerImpl::fromJsonWebKey).collect(Collectors.toList());
+        return jwks
+            .getKeys()
+            .stream()
+            .map(AttestationSignerImpl::fromJsonWebKey)
+            .collect(Collectors.toList());
     }
+
 
     /**
      * Create an X.509 certificate from a Base64 encoded certificate.
@@ -171,19 +182,21 @@ public class AttestationSignerImpl implements AttestationSigner {
     }
 
     static X509Certificate certificateFromBase64String(String base64certificate) {
+        ClientLogger logger = new ClientLogger(AttestationSignerImpl.class);
+
         byte[] decodedCertificate = Base64Util.decodeString(base64certificate);
 
         CertificateFactory cf;
         try {
             cf = CertificateFactory.getInstance("X.509");
         } catch (CertificateException e) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(e.getMessage()));
+            throw logger.logExceptionAsError(new RuntimeException(e.getMessage()));
         }
         Certificate cert;
         try {
             cert = cf.generateCertificate(new ByteArrayInputStream(decodedCertificate));
         } catch (CertificateException e) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(e.getMessage()));
+            throw logger.logExceptionAsError(new RuntimeException(e.getMessage()));
         }
 
         return (X509Certificate) cert;
