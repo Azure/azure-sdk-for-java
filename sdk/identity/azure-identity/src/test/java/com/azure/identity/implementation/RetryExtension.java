@@ -11,6 +11,9 @@ import org.opentest4j.TestAbortedException;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
+/**
+ * @TODO: @g2vinay, move this to azure-core-test.
+ */
 public class RetryExtension implements TestExecutionExceptionHandler, BeforeTestExecutionCallback {
 
     private static final int DEFAULT_MAX_RETRIES = 3;

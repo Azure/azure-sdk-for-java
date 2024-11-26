@@ -10,6 +10,9 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * @TODO: @g2vinay, move this to azure-core-test.
+ */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 @ExtendWith(RetryExtension.class)
