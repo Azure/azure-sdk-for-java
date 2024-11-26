@@ -90,12 +90,12 @@ Replace the placeholders with the following values, which are used throughout th
 #### Create an Azure Database for PostgreSQL server
 
 ```Azure CLI
-az postgres server create \
+az postgres flexible-server create \
     --resource-group $AZ_RESOURCE_GROUP \
     --name $AZ_DATABASE_NAME \
     --location $AZ_LOCATION \
-    --sku-name B_Gen5_1 \
-    --storage-size 5120 \
+    --sku-name Standard_D16s_v3 \
+    --storage-size 32 \
     --output tsv
 ```
 
@@ -105,10 +105,10 @@ If you are going to connect to the PostgreSQL server from local machine, you nee
 it.
 
 ```Azure CLI
-az postgres server firewall-rule create \
+az postgres flexible-server firewall-rule create \
     --resource-group $AZ_RESOURCE_GROUP \
-    --name $AZ_DATABASE_NAME-database-allow-local-ip \
-    --server $AZ_DATABASE_NAME \
+    --name $AZ_DATABASE_NAME \
+    --rule-name $AZ_DATABASE_NAME-database-allow-local-ip \
     --start-ip-address $AZ_LOCAL_IP_ADDRESS \
     --end-ip-address $AZ_LOCAL_IP_ADDRESS \
     --output tsv
@@ -120,11 +120,11 @@ To use Microsoft Entra access with Azure Database for PostgreSQL, you should set
 Only a Microsoft Entra admin user can create/enable users for Microsoft Entra-based authentication.
 
 ```Azure CLI
-az postgres server ad-admin create \
+az postgres flexible-server ad-admin create \
     --resource-group $AZ_RESOURCE_GROUP \
     --server-name $AZ_DATABASE_NAME \
     --display-name $AZ_POSTGRESQL_AD_ADMIN_USERNAME \
-    --object-id `(az ad signed-in-user show --query id -o tsv)`
+    --object-id $(az ad signed-in-user show --query id)
 ```
 
 ## Key concepts
