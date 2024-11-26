@@ -89,7 +89,7 @@ public final class IngestionUsingDataCollectionRulesClientBuilder
     @Override
     public IngestionUsingDataCollectionRulesClientBuilder pipeline(HttpPipeline pipeline) {
         if (this.pipeline != null && pipeline == null) {
-            LOGGER.atInfo().log("HttpPipeline is being set to 'null' when it was previously configured.");
+            LOGGER.info("HttpPipeline is being set to 'null' when it was previously configured.");
         }
         this.pipeline = pipeline;
         return this;
@@ -262,20 +262,12 @@ public final class IngestionUsingDataCollectionRulesClientBuilder
      */
     @Generated
     private IngestionUsingDataCollectionRulesClientImpl buildInnerClient() {
-        this.validateClient();
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
         IngestionUsingDataCollectionRulesServiceVersion localServiceVersion
             = (serviceVersion != null) ? serviceVersion : IngestionUsingDataCollectionRulesServiceVersion.getLatest();
         IngestionUsingDataCollectionRulesClientImpl client = new IngestionUsingDataCollectionRulesClientImpl(
             localPipeline, JacksonAdapter.createDefaultSerializerAdapter(), this.endpoint, localServiceVersion);
         return client;
-    }
-
-    @Generated
-    private void validateClient() {
-        // This method is invoked from 'buildInnerClient'/'buildClient' method.
-        // Developer can customize this method, to validate that the necessary conditions are met for the new client.
-        Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
     }
 
     @Generated
@@ -297,8 +289,7 @@ public final class IngestionUsingDataCollectionRulesClientBuilder
         if (headers.getSize() > 0) {
             policies.add(new AddHeadersPolicy(headers));
         }
-        this.pipelinePolicies.stream()
-            .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+        this.pipelinePolicies.stream().filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
             .forEach(p -> policies.add(p));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions, new RetryPolicy()));
@@ -307,15 +298,12 @@ public final class IngestionUsingDataCollectionRulesClientBuilder
             policies.add(new BearerTokenAuthenticationPolicy(tokenCredential,
                 audience == null ? DEFAULT_SCOPES : new String[] { audience.toString() }));
         }
-        this.pipelinePolicies.stream()
-            .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+        this.pipelinePolicies.stream().filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
             .forEach(p -> policies.add(p));
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(localHttpLogOptions));
         HttpPipeline httpPipeline = new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
-            .httpClient(httpClient)
-            .clientOptions(localClientOptions)
-            .build();
+            .httpClient(httpClient).clientOptions(localClientOptions).build();
         return httpPipeline;
     }
 
