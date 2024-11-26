@@ -11,9 +11,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 
-/**
- * Changeable attributes.
- */
+/** Changeable attributes. */
 @Fluent
 public final class ManifestWriteableProperties implements JsonSerializable<ManifestWriteableProperties> {
     /*
@@ -36,15 +34,12 @@ public final class ManifestWriteableProperties implements JsonSerializable<Manif
      */
     private Boolean readEnabled;
 
-    /**
-     * Creates an instance of ManifestWriteableProperties class.
-     */
-    public ManifestWriteableProperties() {
-    }
+    /** Creates an instance of ManifestWriteableProperties class. */
+    public ManifestWriteableProperties() {}
 
     /**
      * Get the deleteEnabled property: Delete enabled.
-     * 
+     *
      * @return the deleteEnabled value.
      */
     public Boolean isDeleteEnabled() {
@@ -53,7 +48,7 @@ public final class ManifestWriteableProperties implements JsonSerializable<Manif
 
     /**
      * Set the deleteEnabled property: Delete enabled.
-     * 
+     *
      * @param deleteEnabled the deleteEnabled value to set.
      * @return the ManifestWriteableProperties object itself.
      */
@@ -64,7 +59,7 @@ public final class ManifestWriteableProperties implements JsonSerializable<Manif
 
     /**
      * Get the writeEnabled property: Write enabled.
-     * 
+     *
      * @return the writeEnabled value.
      */
     public Boolean isWriteEnabled() {
@@ -73,7 +68,7 @@ public final class ManifestWriteableProperties implements JsonSerializable<Manif
 
     /**
      * Set the writeEnabled property: Write enabled.
-     * 
+     *
      * @param writeEnabled the writeEnabled value to set.
      * @return the ManifestWriteableProperties object itself.
      */
@@ -84,7 +79,7 @@ public final class ManifestWriteableProperties implements JsonSerializable<Manif
 
     /**
      * Get the listEnabled property: List enabled.
-     * 
+     *
      * @return the listEnabled value.
      */
     public Boolean isListEnabled() {
@@ -93,7 +88,7 @@ public final class ManifestWriteableProperties implements JsonSerializable<Manif
 
     /**
      * Set the listEnabled property: List enabled.
-     * 
+     *
      * @param listEnabled the listEnabled value to set.
      * @return the ManifestWriteableProperties object itself.
      */
@@ -104,7 +99,7 @@ public final class ManifestWriteableProperties implements JsonSerializable<Manif
 
     /**
      * Get the readEnabled property: Read enabled.
-     * 
+     *
      * @return the readEnabled value.
      */
     public Boolean isReadEnabled() {
@@ -113,7 +108,7 @@ public final class ManifestWriteableProperties implements JsonSerializable<Manif
 
     /**
      * Set the readEnabled property: Read enabled.
-     * 
+     *
      * @param readEnabled the readEnabled value to set.
      * @return the ManifestWriteableProperties object itself.
      */
@@ -122,9 +117,6 @@ public final class ManifestWriteableProperties implements JsonSerializable<Manif
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -137,33 +129,39 @@ public final class ManifestWriteableProperties implements JsonSerializable<Manif
 
     /**
      * Reads an instance of ManifestWriteableProperties from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of ManifestWriteableProperties if the JsonReader was pointing to an instance of it, or null
-     * if it was pointing to JSON null.
+     *     if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the ManifestWriteableProperties.
      */
     public static ManifestWriteableProperties fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            ManifestWriteableProperties deserializedManifestWriteableProperties = new ManifestWriteableProperties();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
+        return jsonReader.readObject(
+                reader -> {
+                    ManifestWriteableProperties deserializedManifestWriteableProperties =
+                            new ManifestWriteableProperties();
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
 
-                if ("deleteEnabled".equals(fieldName)) {
-                    deserializedManifestWriteableProperties.deleteEnabled = reader.getNullable(JsonReader::getBoolean);
-                } else if ("writeEnabled".equals(fieldName)) {
-                    deserializedManifestWriteableProperties.writeEnabled = reader.getNullable(JsonReader::getBoolean);
-                } else if ("listEnabled".equals(fieldName)) {
-                    deserializedManifestWriteableProperties.listEnabled = reader.getNullable(JsonReader::getBoolean);
-                } else if ("readEnabled".equals(fieldName)) {
-                    deserializedManifestWriteableProperties.readEnabled = reader.getNullable(JsonReader::getBoolean);
-                } else {
-                    reader.skipChildren();
-                }
-            }
+                        if ("deleteEnabled".equals(fieldName)) {
+                            deserializedManifestWriteableProperties.deleteEnabled =
+                                    reader.getNullable(JsonReader::getBoolean);
+                        } else if ("writeEnabled".equals(fieldName)) {
+                            deserializedManifestWriteableProperties.writeEnabled =
+                                    reader.getNullable(JsonReader::getBoolean);
+                        } else if ("listEnabled".equals(fieldName)) {
+                            deserializedManifestWriteableProperties.listEnabled =
+                                    reader.getNullable(JsonReader::getBoolean);
+                        } else if ("readEnabled".equals(fieldName)) {
+                            deserializedManifestWriteableProperties.readEnabled =
+                                    reader.getNullable(JsonReader::getBoolean);
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
 
-            return deserializedManifestWriteableProperties;
-        });
+                    return deserializedManifestWriteableProperties;
+                });
     }
 }

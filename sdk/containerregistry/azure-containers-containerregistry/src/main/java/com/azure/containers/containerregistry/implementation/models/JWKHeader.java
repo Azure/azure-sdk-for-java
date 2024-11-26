@@ -11,9 +11,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 
-/**
- * JSON web key parameter.
- */
+/** JSON web key parameter. */
 @Fluent
 public final class JWKHeader implements JsonSerializable<JWKHeader> {
     /*
@@ -41,15 +39,12 @@ public final class JWKHeader implements JsonSerializable<JWKHeader> {
      */
     private String y;
 
-    /**
-     * Creates an instance of JWKHeader class.
-     */
-    public JWKHeader() {
-    }
+    /** Creates an instance of JWKHeader class. */
+    public JWKHeader() {}
 
     /**
      * Get the crv property: crv value.
-     * 
+     *
      * @return the crv value.
      */
     public String getCrv() {
@@ -58,7 +53,7 @@ public final class JWKHeader implements JsonSerializable<JWKHeader> {
 
     /**
      * Set the crv property: crv value.
-     * 
+     *
      * @param crv the crv value to set.
      * @return the JWKHeader object itself.
      */
@@ -69,7 +64,7 @@ public final class JWKHeader implements JsonSerializable<JWKHeader> {
 
     /**
      * Get the kid property: kid value.
-     * 
+     *
      * @return the kid value.
      */
     public String getKid() {
@@ -78,7 +73,7 @@ public final class JWKHeader implements JsonSerializable<JWKHeader> {
 
     /**
      * Set the kid property: kid value.
-     * 
+     *
      * @param kid the kid value to set.
      * @return the JWKHeader object itself.
      */
@@ -89,7 +84,7 @@ public final class JWKHeader implements JsonSerializable<JWKHeader> {
 
     /**
      * Get the kty property: kty value.
-     * 
+     *
      * @return the kty value.
      */
     public String getKty() {
@@ -98,7 +93,7 @@ public final class JWKHeader implements JsonSerializable<JWKHeader> {
 
     /**
      * Set the kty property: kty value.
-     * 
+     *
      * @param kty the kty value to set.
      * @return the JWKHeader object itself.
      */
@@ -109,7 +104,7 @@ public final class JWKHeader implements JsonSerializable<JWKHeader> {
 
     /**
      * Get the x property: x value.
-     * 
+     *
      * @return the x value.
      */
     public String getX() {
@@ -118,7 +113,7 @@ public final class JWKHeader implements JsonSerializable<JWKHeader> {
 
     /**
      * Set the x property: x value.
-     * 
+     *
      * @param x the x value to set.
      * @return the JWKHeader object itself.
      */
@@ -129,7 +124,7 @@ public final class JWKHeader implements JsonSerializable<JWKHeader> {
 
     /**
      * Get the y property: y value.
-     * 
+     *
      * @return the y value.
      */
     public String getY() {
@@ -138,7 +133,7 @@ public final class JWKHeader implements JsonSerializable<JWKHeader> {
 
     /**
      * Set the y property: y value.
-     * 
+     *
      * @param y the y value to set.
      * @return the JWKHeader object itself.
      */
@@ -147,9 +142,6 @@ public final class JWKHeader implements JsonSerializable<JWKHeader> {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -163,35 +155,36 @@ public final class JWKHeader implements JsonSerializable<JWKHeader> {
 
     /**
      * Reads an instance of JWKHeader from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of JWKHeader if the JsonReader was pointing to an instance of it, or null if it was pointing
-     * to JSON null.
+     *     to JSON null.
      * @throws IOException If an error occurs while reading the JWKHeader.
      */
     public static JWKHeader fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            JWKHeader deserializedJWKHeader = new JWKHeader();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
+        return jsonReader.readObject(
+                reader -> {
+                    JWKHeader deserializedJWKHeader = new JWKHeader();
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
 
-                if ("crv".equals(fieldName)) {
-                    deserializedJWKHeader.crv = reader.getString();
-                } else if ("kid".equals(fieldName)) {
-                    deserializedJWKHeader.kid = reader.getString();
-                } else if ("kty".equals(fieldName)) {
-                    deserializedJWKHeader.kty = reader.getString();
-                } else if ("x".equals(fieldName)) {
-                    deserializedJWKHeader.x = reader.getString();
-                } else if ("y".equals(fieldName)) {
-                    deserializedJWKHeader.y = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
+                        if ("crv".equals(fieldName)) {
+                            deserializedJWKHeader.crv = reader.getString();
+                        } else if ("kid".equals(fieldName)) {
+                            deserializedJWKHeader.kid = reader.getString();
+                        } else if ("kty".equals(fieldName)) {
+                            deserializedJWKHeader.kty = reader.getString();
+                        } else if ("x".equals(fieldName)) {
+                            deserializedJWKHeader.x = reader.getString();
+                        } else if ("y".equals(fieldName)) {
+                            deserializedJWKHeader.y = reader.getString();
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
 
-            return deserializedJWKHeader;
-        });
+                    return deserializedJWKHeader;
+                });
     }
 }
