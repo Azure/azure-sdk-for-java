@@ -3,11 +3,9 @@
 
 package com.azure.search.documents.implementation.util;
 
-import com.azure.search.documents.models.DebugInfo;
 import com.azure.search.documents.models.FacetResult;
 import com.azure.search.documents.models.QueryAnswerResult;
 import com.azure.search.documents.models.SemanticErrorReason;
-import com.azure.search.documents.models.SemanticQueryRewritesResultType;
 import com.azure.search.documents.models.SemanticSearchResultsType;
 import com.azure.search.documents.util.SearchPagedResponse;
 
@@ -82,23 +80,6 @@ public final class SearchPagedResponseAccessHelper {
          * @return the semanticPartialResponseType value.
          */
         SemanticSearchResultsType getSemanticSearchResultsType(SearchPagedResponse response);
-
-        /**
-         * Get the debugInfo property: Contains debugging information that can be used to further explore your search
-         * results.
-         *
-         * @param response The {@link SearchPagedResponse} being accessed.
-         * @return the debugInfo value.
-         */
-        DebugInfo getDebugInfo(SearchPagedResponse response);
-
-        /**
-         * Get the semanticQueryRewritesResultType property: Type of query rewrite that was used to retrieve documents.
-         *
-         * @param response The {@link SearchPagedResponse} being accessed.
-         * @return the semanticQueryRewritesResultType value.
-         */
-        SemanticQueryRewritesResultType getSemanticQueryRewritesResultType(SearchPagedResponse response);
     }
 
     /**
@@ -167,24 +148,6 @@ public final class SearchPagedResponseAccessHelper {
      */
     public static SemanticSearchResultsType getSemanticSearchResultsType(SearchPagedResponse response) {
         return accessor.getSemanticSearchResultsType(response);
-    }
-
-    /**
-     * Contains debugging information that can be used to further explore your search results.
-     * @param response The {@link SearchPagedResponse} being accessed.
-     * @return The debugging information that can be used to further explore your search results.
-     */
-    public static DebugInfo getDebugInfo(SearchPagedResponse response) {
-        return accessor.getDebugInfo(response);
-    }
-
-    /**
-     * Type of query rewrite that was used to retrieve documents.
-     * @param response The {@link SearchPagedResponse} being accessed.
-     * @return The type of query rewrite that was used to retrieve documents.
-     */
-    public static SemanticQueryRewritesResultType getSemanticQueryRewritesResultType(SearchPagedResponse response) {
-        return accessor.getSemanticQueryRewritesResultType(response);
     }
 
     public static void setAccessor(SearchPagedResponseAccessor searchPagedResponseAccessor) {
