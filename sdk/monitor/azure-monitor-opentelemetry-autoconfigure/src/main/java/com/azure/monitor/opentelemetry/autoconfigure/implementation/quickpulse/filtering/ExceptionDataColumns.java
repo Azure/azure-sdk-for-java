@@ -5,51 +5,50 @@ package com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.
 
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.TelemetryExceptionData;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.TelemetryExceptionDetails;
-import java.util.List;
 
-// Casing of private fields is to match the names of fields passed down via filtering configuration
-public class ExceptionDataColumns extends TelemetryColumns {
-    private final String message;
-    private final String stackTrace;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+public class ExceptionDataColumns implements TelemetryColumns {
+
+    private final CustomDimensions customDims;
+
+    private final Map<String, Object> mapping = new HashMap<>();
 
     public ExceptionDataColumns(TelemetryExceptionData exceptionData) {
-        super();
-        setCustomDimensions(exceptionData.getProperties(), exceptionData.getMeasurements());
+        customDims = new CustomDimensions();
+        customDims.setCustomDimensions(exceptionData.getProperties(), exceptionData.getMeasurements());
         List<TelemetryExceptionDetails> details = exceptionData.getExceptions();
-        if (details != null && !details.isEmpty()) {
-            this.message = details.get(0).getMessage();
-            this.stackTrace = details.get(0).getStack();
-        } else {
-            this.message = "";
-            this.stackTrace = "";
+        mapping.put(KnownExceptionColumns.MESSAGE,
+            details != null && !details.isEmpty() ? details.get(0).getMessage() : "");
+        mapping.put(KnownExceptionColumns.STACK,
+            details != null && !details.isEmpty() ? details.get(0).getStack() : "");
+    }
+
+    // To be used in tests only
+    public ExceptionDataColumns(String message, String stackTrace, Map<String, String> dims,
+        Map<String, Double> measurements) {
+        customDims = new CustomDimensions();
+        customDims.setCustomDimensions(dims, measurements);
+        mapping.put(KnownExceptionColumns.MESSAGE, message);
+        mapping.put(KnownExceptionColumns.STACK, stackTrace);
+    }
+
+    public Map<String, String> getCustomDimensions() {
+        return this.customDims.getCustomDimensions();
+    }
+
+    public <T> T getFieldValue(String fieldName, Class<T> type) {
+        return type.cast(mapping.get(fieldName));
+    }
+
+    public List<String> getAllFieldValuesAsString() {
+        List<String> result = new ArrayList<>();
+        for (Object value : mapping.values()) {
+            result.add((String) value);
         }
-    }
-
-    // To be used in tests only
-    public ExceptionDataColumns(String message, String stackTrace) {
-        super();
-        this.message = message;
-        this.stackTrace = stackTrace;
-    }
-
-    @Override
-    public Object getFieldValue(String fieldName) {
-        if ("Exception.Message".equals(fieldName)) {
-            return this.message;
-        } else if ("Exception.StackTrace".equals(fieldName)) {
-            return this.stackTrace;
-        } else {
-            return null;
-        }
-    }
-
-    // To be used in tests only
-    public String getMessage() {
-        return this.message;
-    }
-
-    // To be used in tests only
-    public String getStackTrace() {
-        return this.stackTrace;
+        return result;
     }
 }

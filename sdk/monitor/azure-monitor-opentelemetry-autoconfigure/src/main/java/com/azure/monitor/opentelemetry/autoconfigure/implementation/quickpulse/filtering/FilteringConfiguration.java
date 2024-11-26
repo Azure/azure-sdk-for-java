@@ -78,8 +78,8 @@ public class FilteringConfiguration {
             derivedMetricInfo.getFilterGroups().forEach(filterGroup -> {
                 filterGroup.getFilters().forEach(filter -> {
                     TelemetryType telemetryType = TelemetryType.fromString(derivedMetricInfo.getTelemetryType());
-                    validateFieldNames(filter.getFieldName(), telemetryType);
-                    validatePredicateAndComparand(filter);
+                    //validateFieldNames(filter.getFieldName(), telemetryType);
+                    //validatePredicateAndComparand(filter);
                 });
             });
         }
@@ -87,8 +87,8 @@ public class FilteringConfiguration {
         public void validateDocumentFilters(DocumentFilterConjunctionGroupInfo documentFilterConjunctionGroupInfo) {
             FilterConjunctionGroupInfo conjunctionGroupInfo = documentFilterConjunctionGroupInfo.getFilters();
             conjunctionGroupInfo.getFilters().forEach(filter -> {
-                validateFieldNames(filter.getFieldName(), documentFilterConjunctionGroupInfo.getTelemetryType());
-                validatePredicateAndComparand(filter);
+                //validateFieldNames(filter.getFieldName(), documentFilterConjunctionGroupInfo.getTelemetryType());
+                //validatePredicateAndComparand(filter);
             });
         }
 

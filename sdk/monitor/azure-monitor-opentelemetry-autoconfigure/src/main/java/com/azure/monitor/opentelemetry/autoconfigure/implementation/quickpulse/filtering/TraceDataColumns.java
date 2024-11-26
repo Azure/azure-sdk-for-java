@@ -5,32 +5,40 @@ package com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.
 
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.MessageData;
 
-public class TraceDataColumns extends TelemetryColumns {
-    private final String message;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+public class TraceDataColumns implements TelemetryColumns {
+    private final Map<String, Object> mapping = new HashMap<>();
+
+    private final CustomDimensions customDims;
 
     public TraceDataColumns(MessageData traceData) {
-        super();
-        setCustomDimensions(traceData.getProperties(), traceData.getMeasurements());
-        this.message = traceData.getMessage();
+        customDims = new CustomDimensions();
+        customDims.setCustomDimensions(traceData.getProperties(), traceData.getMeasurements());
+        mapping.put(KnownTraceColumns.MESSAGE, traceData.getMessage());
     }
 
     // to be used in tests only
-    public TraceDataColumns(String message) {
-        super();
-        this.message = message;
+    public TraceDataColumns(String message, Map<String, String> dims, Map<String, Double> measurements) {
+        customDims = new CustomDimensions();
+        customDims.setCustomDimensions(dims, measurements);
+        mapping.put(KnownTraceColumns.MESSAGE, message);
     }
 
-    @Override
-    public Object getFieldValue(String fieldName) {
-        if ("Message".equals(fieldName)) {
-            return this.message;
-        } else {
-            return null;
-        }
+    public Map<String, String> getCustomDimensions() {
+        return this.customDims.getCustomDimensions();
     }
 
-    // To be used in tests only
-    public String getMessage() {
-        return this.message;
+    public <T> T getFieldValue(String fieldName, Class<T> type) {
+        return type.cast(mapping.get(fieldName));
+    }
+
+    public List<String> getAllFieldValuesAsString() {
+        List<String> result = new ArrayList<>();
+        result.add((String) mapping.get(KnownTraceColumns.MESSAGE));
+        return result;
     }
 }

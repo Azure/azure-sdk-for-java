@@ -18,6 +18,8 @@ import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.f
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.TraceDataColumns;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.DependencyDataColumns;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.ExceptionDataColumns;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.KnownTraceColumns;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.KnownExceptionColumns;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.AggregationType;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.DerivedMetricInfo;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.FilterInfo;
@@ -78,11 +80,11 @@ class FilterTest {
         FilterInfo anyFieldForBoolean = createFilterInfoWithParams(Filter.ANY_FIELD, PredicateType.CONTAINS, "true");
 
         RequestDataColumns request1
-            = new RequestDataColumns("https://test.com/hiThere", 200, 200, true, "GET /hiThere");
-        RequestDataColumns request2 = new RequestDataColumns("https://test.com/bye", 200, 200, true, "GET /bye");
+            = new RequestDataColumns("https://test.com/hiThere", 200, 200, true, "GET /hiThere", null, null);
         Map<String, String> customDims = new HashMap<>();
         customDims.put("property", "cool");
-        request2.setCustomDimensions(customDims, null);
+        RequestDataColumns request2
+            = new RequestDataColumns("https://test.com/bye", 200, 200, true, "GET /bye", customDims, null);
 
         List<FilterConjunctionGroupInfo> filterGroups
             = createListWithOneFilterConjunctionGroupAndOneFilter(anyFieldContainsHi);
@@ -132,7 +134,6 @@ class FilterTest {
             = createListWithOneFilterConjunctionGroupAndOneFilter(customDimFilter);
         DerivedMetricInfo derivedMetricInfo = createDerivedMetricInfo("random-id", "Request", AggregationType.SUM,
             AggregationType.SUM, "Count()", filterGroups);
-        RequestDataColumns request = new RequestDataColumns("https://test.com/hiThere", 200, 200, true, "GET /hiThere");
 
         Map<String, String> customDims1 = new HashMap<>();
         customDims1.put("property", "hi");
@@ -146,39 +147,43 @@ class FilterTest {
         Map<String, String> customDimsHiThere = new HashMap<>();
         customDimsHiThere.put("hi", "hi there");
 
-        request.setCustomDimensions(customDims1, null);
+        RequestDataColumns request1
+            = new RequestDataColumns("https://test.com/hiThere", 200, 200, true, "GET /hiThere", customDims1, null);
+        RequestDataColumns requestHiBye
+            = new RequestDataColumns("https://test.com/hiThere", 200, 200, true, "GET /hiThere", customDimsHiBye, null);
+        RequestDataColumns requestHi
+            = new RequestDataColumns("https://test.com/hiThere", 200, 200, true, "GET /hiThere", customDimsHi, null);
+        RequestDataColumns requestHiThere = new RequestDataColumns("https://test.com/hiThere", 200, 200, true,
+            "GET /hiThere", customDimsHiThere, null);
+
         FilterConjunctionGroupInfo filterGroup = filterGroups.get(0);
 
         // the asked for field is not in the custom dimensions so return false
-        assertFalse(Filter.checkFilterConjunctionGroup(filterGroup, request));
-        assertFalse(Filter.checkMetricFilters(derivedMetricInfo, request));
+        assertFalse(Filter.checkFilterConjunctionGroup(filterGroup, request1));
+        assertFalse(Filter.checkMetricFilters(derivedMetricInfo, request1));
 
         // the asked for field is in the custom dimensions but value does not match
-        request.setCustomDimensions(customDimsHiBye, null);
-        assertFalse(Filter.checkFilterConjunctionGroup(filterGroup, request));
-        assertFalse(Filter.checkMetricFilters(derivedMetricInfo, request));
+        assertFalse(Filter.checkFilterConjunctionGroup(filterGroup, requestHiBye));
+        assertFalse(Filter.checkMetricFilters(derivedMetricInfo, requestHiBye));
 
         // the asked for field is in the custom dimensions and value matches
-        request.setCustomDimensions(customDimsHi, null);
-        assertTrue(Filter.checkFilterConjunctionGroup(filterGroup, request));
-        assertTrue(Filter.checkMetricFilters(derivedMetricInfo, request));
+        assertTrue(Filter.checkFilterConjunctionGroup(filterGroup, requestHi));
+        assertTrue(Filter.checkMetricFilters(derivedMetricInfo, requestHi));
 
         // testing not equal predicate. The CustomDimensions.hi value != hi so return true.
         customDimFilter.setPredicate(PredicateType.NOT_EQUAL);
-        request.setCustomDimensions(customDimsHiBye, null);
-        assertTrue(Filter.checkFilterConjunctionGroup(filterGroup, request));
-        assertTrue(Filter.checkMetricFilters(derivedMetricInfo, request));
+        assertTrue(Filter.checkFilterConjunctionGroup(filterGroup, requestHiBye));
+        assertTrue(Filter.checkMetricFilters(derivedMetricInfo, requestHiBye));
 
         // testing does not contain predicate. The CustomDimensions.hi value does not contain hi so return true.
         customDimFilter.setPredicate(PredicateType.DOES_NOT_CONTAIN);
-        assertTrue(Filter.checkFilterConjunctionGroup(filterGroup, request));
-        assertTrue(Filter.checkMetricFilters(derivedMetricInfo, request));
+        assertTrue(Filter.checkFilterConjunctionGroup(filterGroup, requestHiBye));
+        assertTrue(Filter.checkMetricFilters(derivedMetricInfo, requestHiBye));
 
         // testing contains predicate. The CustomDimensions.hi value contains hi so return true.
         customDimFilter.setPredicate(PredicateType.CONTAINS);
-        request.setCustomDimensions(customDimsHiThere, null);
-        assertTrue(Filter.checkFilterConjunctionGroup(filterGroup, request));
-        assertTrue(Filter.checkMetricFilters(derivedMetricInfo, request));
+        assertTrue(Filter.checkFilterConjunctionGroup(filterGroup, requestHiThere));
+        assertTrue(Filter.checkMetricFilters(derivedMetricInfo, requestHiThere));
     }
 
     @Test
@@ -190,13 +195,14 @@ class FilterTest {
         DerivedMetricInfo derivedMetricInfo = createDerivedMetricInfo("random-id", "Request", AggregationType.SUM,
             AggregationType.SUM, "Count()", filterGroups);
         RequestDataColumns requestTrue
-            = new RequestDataColumns("https://test.com/hiThere", 200, 200, true, "GET /hiThere");
+            = new RequestDataColumns("https://test.com/hiThere", 200, 200, true, "GET /hiThere", null, null);
         RequestDataColumns requestFalse
-            = new RequestDataColumns("https://test.com/hiThere", 200, 0, false, "GET /hiThere");
+            = new RequestDataColumns("https://test.com/hiThere", 200, 0, false, "GET /hiThere", null, null);
         DependencyDataColumns dependencyTrue = new DependencyDataColumns("test.com", 200, true, "GET /hiThere", 200,
-            "HTTP", "https://test.com/hiThere?x=y");
+            "HTTP", "https://test.com/hiThere?x=y", null, null);
         DependencyDataColumns dependencyFalse = new DependencyDataColumns("test.com", 200, false, "GET /hiThere", 0,
-            "HTTP", "https://test.com/hiThere?x=y");
+            "HTTP", "https://test.com/hiThere?x=y", null, null);
+
         FilterConjunctionGroupInfo filterGroup = filterGroups.get(0);
 
         // Request Success filter matches
@@ -238,17 +244,18 @@ class FilterTest {
         DerivedMetricInfo derivedMetricInfo = createDerivedMetricInfo("random-id", "Request", AggregationType.SUM,
             AggregationType.SUM, "Count()", filterGroups);
         RequestDataColumns requestSuccessful
-            = new RequestDataColumns("https://test.com/hiThere", 1234567890000L, 200, true, "GET /hiThere");
-        RequestDataColumns requestFail
-            = new RequestDataColumns("https://test.com/hiThere", 1234567890000L, 404, false, "GET /hiThere");
+            = new RequestDataColumns("https://test.com/hiThere", 1234567890000L, 200, true, "GET /hiThere", null, null);
+        RequestDataColumns requestFail = new RequestDataColumns("https://test.com/hiThere", 1234567890000L, 404, false,
+            "GET /hiThere", null, null);
         RequestDataColumns requestShortDuration
-            = new RequestDataColumns("https://test.com/hiThere", 400, 200, true, "GET /hiThere");
+            = new RequestDataColumns("https://test.com/hiThere", 400, 200, true, "GET /hiThere", null, null);
         DependencyDataColumns dependencySuccessful = new DependencyDataColumns("test.com", 1234567890000L, true,
-            "GET /hiThere", 200, "HTTP", "https://test.com/hiThere?x=y");
+            "GET /hiThere", 200, "HTTP", "https://test.com/hiThere?x=y", null, null);
         DependencyDataColumns dependencyFail = new DependencyDataColumns("test.com", 1234567890000L, false,
-            "GET /hiThere", 0, "HTTP", "https://test.com/hiThere?x=y");
+            "GET /hiThere", 0, "HTTP", "https://test.com/hiThere?x=y", null, null);
         DependencyDataColumns dependencyShortDuration = new DependencyDataColumns("test.com", 400, true, "GET /hiThere",
-            200, "HTTP", "https://test.com/hiThere?x=y");
+            200, "HTTP", "https://test.com/hiThere?x=y", null, null);
+
         FilterConjunctionGroupInfo filterGroup = filterGroups.get(0);
 
         // Request ResponseCode filter matches
@@ -326,16 +333,18 @@ class FilterTest {
         DerivedMetricInfo derivedMetricInfo = createDerivedMetricInfo("random-id", "Request", AggregationType.SUM,
             AggregationType.SUM, "Count()", filterGroups);
         RequestDataColumns requestHi
-            = new RequestDataColumns("https://test.com/hiThere", 200, 200, true, "GET /hiThere");
-        RequestDataColumns requestBye = new RequestDataColumns("https://test.com/bye", 200, 200, true, "GET /bye");
+            = new RequestDataColumns("https://test.com/hiThere", 200, 200, true, "GET /hiThere", null, null);
+        RequestDataColumns requestBye
+            = new RequestDataColumns("https://test.com/bye", 200, 200, true, "GET /bye", null, null);
         DependencyDataColumns dependencyHi = new DependencyDataColumns("test.com", 200, true, "GET /hiThere", 200,
-            "HTTP", "https://test.com/hiThere?x=y");
-        DependencyDataColumns dependencyBye
-            = new DependencyDataColumns("test.com", 200, true, "GET /bye", 200, "HTTP", "https://test.com/bye");
-        TraceDataColumns traceHi = new TraceDataColumns("hi there");
-        TraceDataColumns traceBye = new TraceDataColumns("bye");
-        ExceptionDataColumns exceptionHi = new ExceptionDataColumns("Exception Message hi", "Stack Trace");
-        ExceptionDataColumns exception = new ExceptionDataColumns("Exception Message", "Stack Trace");
+            "HTTP", "https://test.com/hiThere?x=y", null, null);
+        DependencyDataColumns dependencyBye = new DependencyDataColumns("test.com", 200, true, "GET /bye", 200, "HTTP",
+            "https://test.com/bye", null, null);
+        TraceDataColumns traceHi = new TraceDataColumns("hi there", null, null);
+        TraceDataColumns traceBye = new TraceDataColumns("bye", null, null);
+        ExceptionDataColumns exceptionHi = new ExceptionDataColumns("Exception Message hi", "Stack Trace", null, null);
+        ExceptionDataColumns exception = new ExceptionDataColumns("Exception Message", "Stack Trace", null, null);
+
         FilterConjunctionGroupInfo filterGroup = filterGroups.get(0);
 
         // Request Url filter matches
@@ -358,7 +367,7 @@ class FilterTest {
 
         // Trace Message filter matches
         derivedMetricInfo.setTelemetryType("Trace");
-        stringFilter.setFieldName("Message");
+        stringFilter.setFieldName(KnownTraceColumns.MESSAGE);
         assertTrue(Filter.checkFilterConjunctionGroup(filterGroup, traceHi));
         assertTrue(Filter.checkMetricFilters(derivedMetricInfo, traceHi));
 
@@ -368,7 +377,7 @@ class FilterTest {
 
         // Exception.Message filter matches.
         derivedMetricInfo.setTelemetryType("Exception");
-        stringFilter.setFieldName("Exception.Message");
+        stringFilter.setFieldName(KnownExceptionColumns.MESSAGE);
         assertTrue(Filter.checkFilterConjunctionGroup(filterGroup, exceptionHi));
         assertTrue(Filter.checkMetricFilters(derivedMetricInfo, exceptionHi));
 
@@ -402,7 +411,8 @@ class FilterTest {
 
         DerivedMetricInfo derivedMetricInfo = createDerivedMetricInfo("random-id", "Request", AggregationType.SUM,
             AggregationType.SUM, "Count()", filterGroups);
-        RequestDataColumns request = new RequestDataColumns("https://test.com/hiThere", 200, 200, true, "GET /hiThere");
+        RequestDataColumns request
+            = new RequestDataColumns("https://test.com/hiThere", 200, 200, true, "GET /hiThere", null, null);
 
         assertTrue(Filter.checkFilterConjunctionGroup(filterGroup, request));
         assertTrue(Filter.checkMetricFilters(derivedMetricInfo, request));
@@ -420,8 +430,9 @@ class FilterTest {
         DerivedMetricInfo derivedMetricInfo = createDerivedMetricInfo("random-id", "Request", AggregationType.SUM,
             AggregationType.SUM, "Count()", filterGroups);
         RequestDataColumns requestHi
-            = new RequestDataColumns("https://test.com/hiThere", 200, 200, true, "GET /hiThere");
-        RequestDataColumns requestBye = new RequestDataColumns("https://test.com/bye", 200, 200, true, "GET /bye");
+            = new RequestDataColumns("https://test.com/hiThere", 200, 200, true, "GET /hiThere", null, null);
+        RequestDataColumns requestBye
+            = new RequestDataColumns("https://test.com/bye", 200, 200, true, "GET /bye", null, null);
 
         // matches both filters
         assertTrue(Filter.checkFilterConjunctionGroup(filterGroup, requestHi));
@@ -461,24 +472,26 @@ class FilterTest {
         ExceptionDataColumns exceptionData = new ExceptionDataColumns(exceptionItem);
         TraceDataColumns traceDataColumns = new TraceDataColumns(traceItem);
 
-        assertTrue(requestDataColumns.getSuccess());
-        assertEquals(requestDataColumns.getDuration(), 1234567890000L);
-        assertEquals(requestDataColumns.getResponseCode(), 200);
-        assertEquals(requestDataColumns.getName(), "GET /hiThere");
-        assertEquals(requestDataColumns.getUrl(), "foo");
+        assertTrue(requestDataColumns.getFieldValue(KnownRequestColumns.SUCCESS, Boolean.class));
+        assertEquals(requestDataColumns.getFieldValue(KnownRequestColumns.DURATION, Long.class), 1234567890000L);
+        assertEquals(requestDataColumns.getFieldValue(KnownRequestColumns.RESPONSE_CODE, Integer.class), 200);
+        assertEquals(requestDataColumns.getFieldValue(KnownRequestColumns.NAME, String.class), "GET /hiThere");
+        assertEquals(requestDataColumns.getFieldValue(KnownRequestColumns.URL, String.class), "foo");
 
-        assertTrue(dependencyDataColumns.getSuccess());
-        assertEquals(dependencyDataColumns.getData(), "https://test.com/hiThere?x=y");
-        assertEquals(dependencyDataColumns.getName(), "GET /hiThere");
-        assertEquals(dependencyDataColumns.getType(), "HTTP");
-        assertEquals(dependencyDataColumns.getDuration(), 400000L);
-        assertEquals(dependencyDataColumns.getResultCode(), 200);
-        assertEquals(dependencyDataColumns.getTarget(), "test.com");
+        assertTrue(dependencyDataColumns.getFieldValue(KnownRequestColumns.SUCCESS, Boolean.class));
+        assertEquals(dependencyDataColumns.getFieldValue(KnownDependencyColumns.DATA, String.class),
+            "https://test.com/hiThere?x=y");
+        assertEquals(dependencyDataColumns.getFieldValue(KnownRequestColumns.NAME, String.class), "GET /hiThere");
+        assertEquals(dependencyDataColumns.getFieldValue(KnownDependencyColumns.TYPE, String.class), "HTTP");
+        assertEquals(dependencyDataColumns.getFieldValue(KnownRequestColumns.DURATION, Long.class), 400000L);
+        assertEquals(dependencyDataColumns.getFieldValue(KnownDependencyColumns.RESULT_CODE, Integer.class), 200);
+        assertEquals(dependencyDataColumns.getFieldValue(KnownDependencyColumns.TARGET, String.class), "test.com");
 
-        assertEquals(exceptionData.getMessage(), "A message");
-        assertEquals(exceptionData.getStackTrace(), "A stack trace");
+        assertEquals(exceptionData.getFieldValue(KnownExceptionColumns.MESSAGE, String.class), "A message");
+        assertEquals(exceptionData.getFieldValue(KnownExceptionColumns.STACK, String.class), "A stack trace");
 
-        assertEquals(traceDataColumns.getMessage(), "A message");
+        assertEquals(traceDataColumns.getFieldValue(KnownTraceColumns.MESSAGE, String.class), "A message");
+
     }
 
 }

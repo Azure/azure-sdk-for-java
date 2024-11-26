@@ -22,5 +22,4 @@ public class KnownRequestColumns {
         SUCCESS,
         NAME
     ));
-
 }

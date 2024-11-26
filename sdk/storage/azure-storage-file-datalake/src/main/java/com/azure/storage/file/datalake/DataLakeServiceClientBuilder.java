@@ -113,6 +113,9 @@ public class DataLakeServiceClientBuilder implements TokenCredentialTrait<DataLa
     }
 
     /**
+     * Creates a {@link DataLakeServiceClient} based on options set in the builder. Every time {@code buildClient()} is
+     * called, a new instance of {@link DataLakeServiceClient} is created.
+     *
      * @return a {@link DataLakeServiceClient} created from the configurations in this builder.
      * @throws IllegalStateException If multiple credentials have been specified.
      * @throws IllegalStateException If both {@link #retryOptions(RetryOptions)}
@@ -126,6 +129,9 @@ public class DataLakeServiceClientBuilder implements TokenCredentialTrait<DataLa
     }
 
     /**
+     * Creates a {@link DataLakeServiceAsyncClient} based on options set in the builder. Every time
+     * {@code buildAsyncClient()} is called, a new instance of {@link DataLakeServiceAsyncClient} is created.
+     *
      * @return a {@link DataLakeServiceAsyncClient} created from the configurations in this builder.
      * @throws IllegalStateException If multiple credentials have been specified.
      * @throws IllegalStateException If both {@link #retryOptions(RetryOptions)}

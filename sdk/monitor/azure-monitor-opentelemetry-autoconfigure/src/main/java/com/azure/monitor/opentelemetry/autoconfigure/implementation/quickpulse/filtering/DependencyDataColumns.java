@@ -5,96 +5,70 @@ package com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.
 
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.RemoteDependencyData;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.FormattedDuration;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-// Casing of private fields is to match the names of fields passed down via filtering configuration
-public class DependencyDataColumns extends TelemetryColumns {
-    private final String target;
-    private final long duration; // in microseconds
-    private final boolean success;
-    private final String name;
-    private final int resultCode;
-    private final String type;
-    private final String data;
+public class DependencyDataColumns implements TelemetryColumns {
+    private final CustomDimensions customDims;
+    private final Map<String, Object> mapping = new HashMap<>();
 
     public DependencyDataColumns(RemoteDependencyData rdData) {
-        super();
-        setCustomDimensions(rdData.getProperties(), rdData.getMeasurements());
-        this.target = rdData.getTarget();
-        this.duration = FormattedDuration.getDurationFromTelemetryItemDurationString(rdData.getDuration());
-        this.success = rdData.isSuccess();
-        this.name = rdData.getName();
-        this.type = rdData.getType();
-        this.data = rdData.getData();
+        customDims = new CustomDimensions();
+        customDims.setCustomDimensions(rdData.getProperties(), rdData.getMeasurements());
+        mapping.put(KnownDependencyColumns.TARGET, rdData.getTarget());
+        mapping.put(KnownDependencyColumns.DURATION,
+            FormattedDuration.getDurationFromTelemetryItemDurationString(rdData.getDuration()));
+        mapping.put(KnownDependencyColumns.SUCCESS, rdData.isSuccess());
+        mapping.put(KnownDependencyColumns.NAME, rdData.getName());
         int resultCode;
         try {
             resultCode = Integer.parseInt(rdData.getResultCode());
         } catch (NumberFormatException e) {
             resultCode = -1;
         }
-        this.resultCode = resultCode;
+        mapping.put(KnownDependencyColumns.RESULT_CODE, resultCode);
+        mapping.put(KnownDependencyColumns.TYPE, rdData.getType());
+        mapping.put(KnownDependencyColumns.DATA, rdData.getData());
     }
 
     // To be used for tests only
     public DependencyDataColumns(String target, long duration, boolean success, String name, int resultCode,
-        String type, String data) {
-        super();
-        this.target = target;
-        this.duration = duration;
-        this.success = success;
-        this.name = name;
-        this.resultCode = resultCode;
-        this.type = type;
-        this.data = data;
+        String type, String data, Map<String, String> dims, Map<String, Double> measurements) {
+        customDims = new CustomDimensions();
+        customDims.setCustomDimensions(dims, measurements);
+        mapping.put(KnownDependencyColumns.TARGET, target);
+        mapping.put(KnownDependencyColumns.DURATION, duration);
+        mapping.put(KnownDependencyColumns.SUCCESS, success);
+        mapping.put(KnownDependencyColumns.NAME, name);
+        mapping.put(KnownDependencyColumns.RESULT_CODE, resultCode);
+        mapping.put(KnownDependencyColumns.TYPE, type);
+        mapping.put(KnownDependencyColumns.DATA, data);
     }
 
-    @Override
-    public Object getFieldValue(String fieldName) {
+    public <T> T getFieldValue(String fieldName, Class<T> type) {
+        return type.cast(mapping.get(fieldName));
+    }
 
-        if (fieldName.equals(KnownDependencyColumns.TARGET)) {
-            return this.target;
-        } else if (fieldName.equals(KnownDependencyColumns.DURATION)) {
-            return this.duration;
-        } else if (fieldName.equals(KnownDependencyColumns.SUCCESS)) {
-            return this.success;
-        } else if (fieldName.equals(KnownDependencyColumns.NAME)) {
-            return this.name;
-        } else if (fieldName.equals(KnownDependencyColumns.RESULT_CODE)) {
-            return this.resultCode;
-        } else if (fieldName.equals(KnownDependencyColumns.TYPE)) {
-            return this.type;
-        } else if (fieldName.equals(KnownDependencyColumns.DATA)) {
-            return this.data;
-        } else {
-            return null;
+    public Map<String, String> getCustomDimensions() {
+        return this.customDims.getCustomDimensions();
+    }
+
+    public List<String> getAllFieldValuesAsString() {
+        List<String> result = new ArrayList<>();
+        for (Object value : mapping.values()) {
+            if (value instanceof String) {
+                result.add((String) value);
+            } else if (value instanceof Integer) {
+                result.add(((Integer) value).toString());
+            } else if (value instanceof Long) {
+                result.add(((Long) value).toString());
+            } else { // boolean
+                result.add(((Boolean) value).toString());
+            }
         }
-    }
-
-    public String getTarget() {
-        return this.target;
-    }
-
-    public long getDuration() {
-        return this.duration;
-    }
-
-    public boolean getSuccess() {
-        return this.success;
-    }
-
-    public String getName() {
-        return this.name;
-    }
-
-    public String getData() {
-        return this.data;
-    }
-
-    public String getType() {
-        return this.type;
-    }
-
-    public int getResultCode() {
-        return this.resultCode;
+        return result;
     }
 
 }

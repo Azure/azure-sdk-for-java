@@ -28,6 +28,8 @@ public class BlockBlobCommitBlockListOptions {
     private Boolean legalHold;
 
     /**
+     * Creates a new instance of {@link BlockBlobCommitBlockListOptions}.
+     *
      * @param base64BlockIds A list of base64 encode {@code String}s that specifies the block IDs to be committed.
      */
     public BlockBlobCommitBlockListOptions(List<String> base64BlockIds) {
@@ -35,6 +37,8 @@ public class BlockBlobCommitBlockListOptions {
     }
 
     /**
+     * Gets the list of base64 encode {@code String}s that specifies the block IDs to be committed.
+     *
      * @return A list of base64 encode {@code String}s that specifies the block IDs to be committed.
      */
     public List<String> getBase64BlockIds() {
@@ -42,6 +46,8 @@ public class BlockBlobCommitBlockListOptions {
     }
 
     /**
+     * Gets the {@link BlobHttpHeaders}.
+     *
      * @return {@link BlobHttpHeaders}
      */
     public BlobHttpHeaders getHeaders() {
@@ -49,6 +55,8 @@ public class BlockBlobCommitBlockListOptions {
     }
 
     /**
+     * Sets the {@link BlobHttpHeaders}.
+     *
      * @param headers {@link BlobHttpHeaders}
      * @return The updated {@code AppendBlobCreateOptions}
      */
@@ -58,6 +66,8 @@ public class BlockBlobCommitBlockListOptions {
     }
 
     /**
+     * Gets the metadata to associate with the blob.
+     *
      * @return The metadata to associate with the blob.
      */
     public Map<String, String> getMetadata() {
@@ -65,6 +75,8 @@ public class BlockBlobCommitBlockListOptions {
     }
 
     /**
+     * Sets the metadata to associate with the blob.
+     *
      * @param metadata The metadata to associate with the blob.
      * @return The updated options
      */
@@ -74,6 +86,8 @@ public class BlockBlobCommitBlockListOptions {
     }
 
     /**
+     * Gets the tags to associate with the blob.
+     *
      * @return The tags to associate with the blob.
      */
     public Map<String, String> getTags() {
@@ -81,6 +95,8 @@ public class BlockBlobCommitBlockListOptions {
     }
 
     /**
+     * Sets the tags to associate with the blob.
+     *
      * @param tags The tags to associate with the blob.
      * @return The updated options.
      */
@@ -90,6 +106,8 @@ public class BlockBlobCommitBlockListOptions {
     }
 
     /**
+     * Gets the {@link AccessTier}.
+     *
      * @return {@link AccessTier}
      */
     public AccessTier getTier() {
@@ -97,6 +115,8 @@ public class BlockBlobCommitBlockListOptions {
     }
 
     /**
+     * Sets the {@link AccessTier}.
+     *
      * @param tier {@link AccessTier}
      * @return The updated options.
      */
@@ -106,6 +126,8 @@ public class BlockBlobCommitBlockListOptions {
     }
 
     /**
+     * Gets the {@link BlobRequestConditions}.
+     *
      * @return {@link BlobRequestConditions}
      */
     public BlobRequestConditions getRequestConditions() {
@@ -113,6 +135,8 @@ public class BlockBlobCommitBlockListOptions {
     }
 
     /**
+     * Sets the {@link BlobRequestConditions}.
+     *
      * @param requestConditions {@link BlobRequestConditions}
      * @return The updated options.
      */
@@ -122,6 +146,8 @@ public class BlockBlobCommitBlockListOptions {
     }
 
     /**
+     * Gets the {@link BlobImmutabilityPolicy}.
+     *
      * @return {@link BlobImmutabilityPolicy}
      */
     public BlobImmutabilityPolicy getImmutabilityPolicy() {
@@ -129,8 +155,11 @@ public class BlockBlobCommitBlockListOptions {
     }
 
     /**
+     * Sets the {@link BlobImmutabilityPolicy}.
+     * <p>
      * Note that this parameter is only applicable to a blob within a container that has immutable storage with
      * versioning enabled.
+     *
      * @param immutabilityPolicy {@link BlobImmutabilityPolicy}
      * @return The updated options.
      */
@@ -140,6 +169,8 @@ public class BlockBlobCommitBlockListOptions {
     }
 
     /**
+     * Gets if a legal hold should be placed on the blob.
+     *
      * @return If a legal hold should be placed on the blob.
      */
     public Boolean isLegalHold() {
@@ -147,8 +178,11 @@ public class BlockBlobCommitBlockListOptions {
     }
 
     /**
+     * Sets if a legal hold should be placed on the blob.
+     * <p>
      * Note that this parameter is only applicable to a blob within a container that has immutable storage with
      * versioning enabled.
+     *
      * @param legalHold Indicates if a legal hold should be placed on the blob.
      * @return The updated options.
      */

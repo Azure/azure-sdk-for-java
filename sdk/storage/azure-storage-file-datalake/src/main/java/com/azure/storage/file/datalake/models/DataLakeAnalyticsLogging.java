@@ -36,6 +36,12 @@ public final class DataLakeAnalyticsLogging {
     private DataLakeRetentionPolicy retentionPolicy;
 
     /**
+     * Creates a new instance of {@link DataLakeAnalyticsLogging}.
+     */
+    public DataLakeAnalyticsLogging() {
+    }
+
+    /**
      * Get the version property: The version of Storage Analytics to configure.
      *
      * @return the version value.
