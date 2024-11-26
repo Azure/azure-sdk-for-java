@@ -19,6 +19,11 @@ import java.util.Map;
 @Fluent
 public final class DirectoriesGetPropertiesHeaders {
     /*
+     * The x-ms-group property.
+     */
+    private String xMsGroup;
+
+    /*
      * The x-ms-version property.
      */
     private String xMsVersion;
@@ -39,6 +44,11 @@ public final class DirectoriesGetPropertiesHeaders {
     private OffsetDateTime xMsFileCreationTime;
 
     /*
+     * The x-ms-file-file-type property.
+     */
+    private NfsFileType xMsFileFileType;
+
+    /*
      * The Last-Modified property.
      */
     private DateTimeRfc1123 lastModified;
@@ -52,6 +62,11 @@ public final class DirectoriesGetPropertiesHeaders {
      * The Date property.
      */
     private DateTimeRfc1123 date;
+
+    /*
+     * The x-ms-mode property.
+     */
+    private String xMsMode;
 
     /*
      * The x-ms-server-encrypted property.
@@ -88,6 +103,13 @@ public final class DirectoriesGetPropertiesHeaders {
      */
     private OffsetDateTime xMsFileLastWriteTime;
 
+    /*
+     * The x-ms-owner property.
+     */
+    private String xMsOwner;
+
+    private static final HttpHeaderName X_MS_GROUP = HttpHeaderName.fromString("x-ms-group");
+
     private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
 
     private static final HttpHeaderName X_MS_FILE_PERMISSION_KEY
@@ -96,6 +118,10 @@ public final class DirectoriesGetPropertiesHeaders {
     private static final HttpHeaderName X_MS_FILE_ID = HttpHeaderName.fromString("x-ms-file-id");
 
     private static final HttpHeaderName X_MS_FILE_CREATION_TIME = HttpHeaderName.fromString("x-ms-file-creation-time");
+
+    private static final HttpHeaderName X_MS_FILE_FILE_TYPE = HttpHeaderName.fromString("x-ms-file-file-type");
+
+    private static final HttpHeaderName X_MS_MODE = HttpHeaderName.fromString("x-ms-mode");
 
     private static final HttpHeaderName X_MS_SERVER_ENCRYPTED = HttpHeaderName.fromString("x-ms-server-encrypted");
 
@@ -108,6 +134,8 @@ public final class DirectoriesGetPropertiesHeaders {
     private static final HttpHeaderName X_MS_FILE_LAST_WRITE_TIME
         = HttpHeaderName.fromString("x-ms-file-last-write-time");
 
+    private static final HttpHeaderName X_MS_OWNER = HttpHeaderName.fromString("x-ms-owner");
+
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of DirectoriesGetPropertiesHeaders class.
@@ -115,12 +143,17 @@ public final class DirectoriesGetPropertiesHeaders {
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public DirectoriesGetPropertiesHeaders(HttpHeaders rawHeaders) {
+        this.xMsGroup = rawHeaders.getValue(X_MS_GROUP);
         this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
         this.xMsFilePermissionKey = rawHeaders.getValue(X_MS_FILE_PERMISSION_KEY);
         this.xMsFileId = rawHeaders.getValue(X_MS_FILE_ID);
         String xMsFileCreationTime = rawHeaders.getValue(X_MS_FILE_CREATION_TIME);
         if (xMsFileCreationTime != null) {
             this.xMsFileCreationTime = OffsetDateTime.parse(xMsFileCreationTime);
+        }
+        String xMsFileFileType = rawHeaders.getValue(X_MS_FILE_FILE_TYPE);
+        if (xMsFileFileType != null) {
+            this.xMsFileFileType = NfsFileType.fromString(xMsFileFileType);
         }
         String lastModified = rawHeaders.getValue(HttpHeaderName.LAST_MODIFIED);
         if (lastModified != null) {
@@ -130,6 +163,7 @@ public final class DirectoriesGetPropertiesHeaders {
         if (date != null) {
             this.date = new DateTimeRfc1123(date);
         }
+        this.xMsMode = rawHeaders.getValue(X_MS_MODE);
         String xMsServerEncrypted = rawHeaders.getValue(X_MS_SERVER_ENCRYPTED);
         if (xMsServerEncrypted != null) {
             this.xMsServerEncrypted = Boolean.parseBoolean(xMsServerEncrypted);
@@ -146,6 +180,7 @@ public final class DirectoriesGetPropertiesHeaders {
         if (xMsFileLastWriteTime != null) {
             this.xMsFileLastWriteTime = OffsetDateTime.parse(xMsFileLastWriteTime);
         }
+        this.xMsOwner = rawHeaders.getValue(X_MS_OWNER);
         Map<String, String> xMsMetaHeaderCollection = new HashMap<>();
 
         for (HttpHeader header : rawHeaders) {
@@ -156,6 +191,26 @@ public final class DirectoriesGetPropertiesHeaders {
         }
 
         this.xMsMeta = xMsMetaHeaderCollection;
+    }
+
+    /**
+     * Get the xMsGroup property: The x-ms-group property.
+     * 
+     * @return the xMsGroup value.
+     */
+    public String getXMsGroup() {
+        return this.xMsGroup;
+    }
+
+    /**
+     * Set the xMsGroup property: The x-ms-group property.
+     * 
+     * @param xMsGroup the xMsGroup value to set.
+     * @return the DirectoriesGetPropertiesHeaders object itself.
+     */
+    public DirectoriesGetPropertiesHeaders setXMsGroup(String xMsGroup) {
+        this.xMsGroup = xMsGroup;
+        return this;
     }
 
     /**
@@ -239,6 +294,26 @@ public final class DirectoriesGetPropertiesHeaders {
     }
 
     /**
+     * Get the xMsFileFileType property: The x-ms-file-file-type property.
+     * 
+     * @return the xMsFileFileType value.
+     */
+    public NfsFileType getXMsFileFileType() {
+        return this.xMsFileFileType;
+    }
+
+    /**
+     * Set the xMsFileFileType property: The x-ms-file-file-type property.
+     * 
+     * @param xMsFileFileType the xMsFileFileType value to set.
+     * @return the DirectoriesGetPropertiesHeaders object itself.
+     */
+    public DirectoriesGetPropertiesHeaders setXMsFileFileType(NfsFileType xMsFileFileType) {
+        this.xMsFileFileType = xMsFileFileType;
+        return this;
+    }
+
+    /**
      * Get the lastModified property: The Last-Modified property.
      * 
      * @return the lastModified value.
@@ -309,6 +384,26 @@ public final class DirectoriesGetPropertiesHeaders {
         } else {
             this.date = new DateTimeRfc1123(date);
         }
+        return this;
+    }
+
+    /**
+     * Get the xMsMode property: The x-ms-mode property.
+     * 
+     * @return the xMsMode value.
+     */
+    public String getXMsMode() {
+        return this.xMsMode;
+    }
+
+    /**
+     * Set the xMsMode property: The x-ms-mode property.
+     * 
+     * @param xMsMode the xMsMode value to set.
+     * @return the DirectoriesGetPropertiesHeaders object itself.
+     */
+    public DirectoriesGetPropertiesHeaders setXMsMode(String xMsMode) {
+        this.xMsMode = xMsMode;
         return this;
     }
 
@@ -449,6 +544,26 @@ public final class DirectoriesGetPropertiesHeaders {
      */
     public DirectoriesGetPropertiesHeaders setXMsFileLastWriteTime(OffsetDateTime xMsFileLastWriteTime) {
         this.xMsFileLastWriteTime = xMsFileLastWriteTime;
+        return this;
+    }
+
+    /**
+     * Get the xMsOwner property: The x-ms-owner property.
+     * 
+     * @return the xMsOwner value.
+     */
+    public String getXMsOwner() {
+        return this.xMsOwner;
+    }
+
+    /**
+     * Set the xMsOwner property: The x-ms-owner property.
+     * 
+     * @param xMsOwner the xMsOwner value to set.
+     * @return the DirectoriesGetPropertiesHeaders object itself.
+     */
+    public DirectoriesGetPropertiesHeaders setXMsOwner(String xMsOwner) {
+        this.xMsOwner = xMsOwner;
         return this;
     }
 }

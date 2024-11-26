@@ -16,6 +16,7 @@ public final class ShareDirectoryInfo {
     private final String eTag;
     private final OffsetDateTime lastModified;
     private final FileSmbProperties smbProperties;
+    private final FilePosixProperties nfsProperties;
 
     /**
      * Creates an instance of information about a specific Directory.
@@ -24,10 +25,12 @@ public final class ShareDirectoryInfo {
      * @param lastModified Last time the directory was modified.
      * @param smbProperties The SMB properties of the directory.
      */
-    public ShareDirectoryInfo(String eTag, OffsetDateTime lastModified, FileSmbProperties smbProperties) {
+    public ShareDirectoryInfo(String eTag, OffsetDateTime lastModified, FileSmbProperties smbProperties,
+        FilePosixProperties nfsProperties) {
         this.eTag = eTag;
         this.lastModified = lastModified;
         this.smbProperties = smbProperties;
+        this.nfsProperties = nfsProperties;
     }
 
     /**
@@ -55,5 +58,15 @@ public final class ShareDirectoryInfo {
      */
     public FileSmbProperties getSmbProperties() {
         return smbProperties;
+    }
+
+    /**
+     * Gets the file's NFS properties.
+     * Only applicable to files in a NFS share.
+     *
+     * @return The NFS Properties of the file.
+     */
+    public FilePosixProperties getNfsProperties() {
+        return nfsProperties;
     }
 }

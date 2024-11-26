@@ -31,6 +31,7 @@ import com.azure.storage.file.share.implementation.util.ModelHelper;
 import com.azure.storage.file.share.implementation.util.ShareSasImplUtil;
 import com.azure.storage.file.share.models.CloseHandlesInfo;
 import com.azure.storage.file.share.models.FilePermissionFormat;
+import com.azure.storage.file.share.models.FilePosixProperties;
 import com.azure.storage.file.share.models.HandleItem;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
 import com.azure.storage.file.share.models.ShareDirectoryInfo;
@@ -39,6 +40,7 @@ import com.azure.storage.file.share.models.ShareDirectorySetMetadataInfo;
 import com.azure.storage.file.share.models.ShareErrorCode;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.ShareFileItem;
+import com.azure.storage.file.share.models.ShareFilePermission;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 import com.azure.storage.file.share.models.ShareStorageException;
 import com.azure.storage.file.share.options.ShareDirectoryCreateOptions;
@@ -310,7 +312,8 @@ public class ShareDirectoryAsyncClient {
     public Mono<Response<ShareDirectoryInfo>> createWithResponse(FileSmbProperties smbProperties, String filePermission,
         Map<String, String> metadata) {
         try {
-            return withContext(context -> createWithResponse(smbProperties, filePermission, null, metadata, context));
+            return withContext(
+                context -> createWithResponse(smbProperties, filePermission, null, null, metadata, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -350,32 +353,30 @@ public class ShareDirectoryAsyncClient {
     public Mono<Response<ShareDirectoryInfo>> createWithResponse(ShareDirectoryCreateOptions options) {
         try {
             return withContext(context -> createWithResponse(options.getSmbProperties(), options.getFilePermission(),
-                options.getFilePermissionFormat(), options.getMetadata(), context));
+                options.getFilePermissionFormat(), options.getNfsProperties(), options.getMetadata(), context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
     }
 
     Mono<Response<ShareDirectoryInfo>> createWithResponse(FileSmbProperties smbProperties, String filePermission,
-        FilePermissionFormat filePermissionFormat, Map<String, String> metadata, Context context) {
-        FileSmbProperties properties = smbProperties == null ? new FileSmbProperties() : smbProperties;
-
-        // Checks that file permission and file permission key are valid
-        ModelHelper.validateFilePermissionAndKey(filePermission, properties.getFilePermissionKey());
-
-        // If file permission and file permission key are both not set then set default value
-        filePermission = properties.setFilePermission(filePermission, FileConstants.FILE_PERMISSION_INHERIT);
-        String filePermissionKey = properties.getFilePermissionKey();
-
-        String fileAttributes = properties.setNtfsFileAttributes(FileConstants.FILE_ATTRIBUTES_NONE);
-        String fileCreationTime = properties.setFileCreationTime(FileConstants.FILE_TIME_NOW);
-        String fileLastWriteTime = properties.setFileLastWriteTime(FileConstants.FILE_TIME_NOW);
-        String fileChangeTime = properties.getFileChangeTimeString();
+        FilePermissionFormat filePermissionFormat, FilePosixProperties nfsProperties, Map<String, String> metadata,
+        Context context) {
         context = context == null ? Context.NONE : context;
 
+        FileSmbProperties finalSmbProperties = smbProperties == null ? new FileSmbProperties() : smbProperties;
+
+        FilePosixProperties finalFileNfsProperties = nfsProperties == null ? new FilePosixProperties() : nfsProperties;
+
+        // Checks that file permission and file permission key are valid
+        ModelHelper.validateFilePermissionAndKey(filePermission, finalSmbProperties.getFilePermissionKey());
+
         return azureFileStorageClient.getDirectories()
-            .createWithResponseAsync(shareName, directoryPath, fileAttributes, null, metadata, filePermission,
-                filePermissionFormat, filePermissionKey, fileCreationTime, fileLastWriteTime, fileChangeTime, context)
+            .createWithResponseAsync(shareName, directoryPath, null, metadata, filePermission, filePermissionFormat,
+                finalSmbProperties.getFilePermissionKey(), finalSmbProperties.getNtfsFileAttributesString(),
+                finalSmbProperties.getFileCreationTimeString(), finalSmbProperties.getFileLastWriteTimeString(),
+                finalSmbProperties.getFileChangeTimeString(), finalFileNfsProperties.getOwner(),
+                finalFileNfsProperties.getGroup(), finalFileNfsProperties.getFileMode(), context)
             .map(ModelHelper::mapShareDirectoryInfo);
     }
 
@@ -456,7 +457,7 @@ public class ShareDirectoryAsyncClient {
         try {
             options = options == null ? new ShareDirectoryCreateOptions() : options;
             return createWithResponse(options.getSmbProperties(), options.getFilePermission(), null,
-                options.getMetadata(), context).onErrorResume(
+                options.getNfsProperties(), options.getMetadata(), context).onErrorResume(
                     t -> t instanceof ShareStorageException && ((ShareStorageException) t).getStatusCode() == 409,
                     t -> {
                         HttpResponse response = ((ShareStorageException) t).getResponse();
@@ -729,7 +730,8 @@ public class ShareDirectoryAsyncClient {
     public Mono<Response<ShareDirectoryInfo>> setPropertiesWithResponse(FileSmbProperties smbProperties,
         String filePermission) {
         try {
-            return withContext(context -> setPropertiesWithResponse(smbProperties, filePermission, null, context));
+            return withContext(
+                context -> setPropertiesWithResponse(smbProperties, filePermission, null, null, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -763,35 +765,33 @@ public class ShareDirectoryAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ShareDirectoryInfo>> setPropertiesWithResponse(ShareDirectorySetPropertiesOptions options) {
         try {
-            return withContext(context -> setPropertiesWithResponse(options.getSmbProperties(),
-                options.getFilePermissions().getPermission(), options.getFilePermissions().getPermissionFormat(),
-                context));
+            ShareFilePermission filePermission
+                = options.getFilePermissions() == null ? new ShareFilePermission() : options.getFilePermissions();
+            return withContext(
+                context -> setPropertiesWithResponse(options.getSmbProperties(), filePermission.getPermission(),
+                    filePermission.getPermissionFormat(), options.getNfsProperties(), context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
     }
 
     Mono<Response<ShareDirectoryInfo>> setPropertiesWithResponse(FileSmbProperties smbProperties, String filePermission,
-        FilePermissionFormat filePermissionFormat, Context context) {
+        FilePermissionFormat filePermissionFormat, FilePosixProperties nfsProperties, Context context) {
+        context = context == null ? Context.NONE : context;
 
-        FileSmbProperties properties = smbProperties == null ? new FileSmbProperties() : smbProperties;
+        FileSmbProperties finalSmbProperties = smbProperties == null ? new FileSmbProperties() : smbProperties;
+
+        FilePosixProperties finalFileNfsProperties = nfsProperties == null ? new FilePosixProperties() : nfsProperties;
 
         // Checks that file permission and file permission key are valid
-        ModelHelper.validateFilePermissionAndKey(filePermission, properties.getFilePermissionKey());
+        ModelHelper.validateFilePermissionAndKey(filePermission, finalSmbProperties.getFilePermissionKey());
 
-        // If file permission and file permission key are both not set then set default value
-        filePermission = properties.setFilePermission(filePermission, FileConstants.PRESERVE);
-        String filePermissionKey = properties.getFilePermissionKey();
-
-        String fileAttributes = properties.setNtfsFileAttributes(FileConstants.PRESERVE);
-        String fileCreationTime = properties.setFileCreationTime(FileConstants.PRESERVE);
-        String fileLastWriteTime = properties.setFileLastWriteTime(FileConstants.PRESERVE);
-        String fileChangeTime = properties.getFileChangeTimeString();
-
-        context = context == null ? Context.NONE : context;
         return azureFileStorageClient.getDirectories()
-            .setPropertiesWithResponseAsync(shareName, directoryPath, fileAttributes, null, filePermission,
-                filePermissionFormat, filePermissionKey, fileCreationTime, fileLastWriteTime, fileChangeTime, context)
+            .setPropertiesWithResponseAsync(shareName, directoryPath, null, filePermission, filePermissionFormat,
+                finalSmbProperties.getFilePermissionKey(), finalSmbProperties.getNtfsFileAttributesString(),
+                finalSmbProperties.getFileCreationTimeString(), finalSmbProperties.getFileLastWriteTimeString(),
+                finalSmbProperties.getFileChangeTimeString(), finalFileNfsProperties.getOwner(),
+                finalFileNfsProperties.getGroup(), finalFileNfsProperties.getFileMode(), context)
             .map(ModelHelper::mapSetPropertiesResponse);
     }
 
@@ -1388,7 +1388,7 @@ public class ShareDirectoryAsyncClient {
     Mono<Response<ShareDirectoryAsyncClient>> createSubdirectoryWithResponse(String subdirectoryName,
         FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata, Context context) {
         ShareDirectoryAsyncClient createSubClient = getSubdirectoryClient(subdirectoryName);
-        return createSubClient.createWithResponse(smbProperties, filePermission, null, metadata, context)
+        return createSubClient.createWithResponse(smbProperties, filePermission, null, null, metadata, context)
             .map(response -> new SimpleResponse<>(response, createSubClient));
     }
 
@@ -1774,8 +1774,8 @@ public class ShareDirectoryAsyncClient {
         Map<String, String> metadata, ShareRequestConditions requestConditions, Context context) {
         ShareFileAsyncClient shareFileAsyncClient = getFileClient(fileName);
         return shareFileAsyncClient
-            .createWithResponse(maxSize, httpHeaders, smbProperties, filePermission, null, metadata, requestConditions,
-                context)
+            .createWithResponse(maxSize, httpHeaders, smbProperties, filePermission, null, null, metadata,
+                requestConditions, context)
             .map(response -> new SimpleResponse<>(response, shareFileAsyncClient));
     }
 

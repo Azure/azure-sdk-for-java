@@ -11,8 +11,11 @@ import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
+import com.azure.storage.file.share.implementation.models.NfsFileType;
+import com.azure.storage.file.share.implementation.util.ModelHelper;
 import com.azure.storage.file.share.models.CloseHandlesInfo;
 import com.azure.storage.file.share.models.FilePermissionFormat;
+import com.azure.storage.file.share.models.FilePosixProperties;
 import com.azure.storage.file.share.models.HandleItem;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
 import com.azure.storage.file.share.models.ShareAudience;
@@ -21,15 +24,21 @@ import com.azure.storage.file.share.models.ShareDirectoryProperties;
 import com.azure.storage.file.share.models.ShareDirectorySetMetadataInfo;
 import com.azure.storage.file.share.models.ShareErrorCode;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
+import com.azure.storage.file.share.models.ShareFileInfo;
 import com.azure.storage.file.share.models.ShareFileItem;
 import com.azure.storage.file.share.models.ShareFilePermission;
+import com.azure.storage.file.share.models.ShareFileProperties;
+import com.azure.storage.file.share.models.ShareProtocols;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 import com.azure.storage.file.share.models.ShareSnapshotInfo;
 import com.azure.storage.file.share.models.ShareStorageException;
 import com.azure.storage.file.share.models.ShareTokenIntent;
+import com.azure.storage.file.share.options.ShareCreateOptions;
 import com.azure.storage.file.share.options.ShareDirectoryCreateOptions;
 import com.azure.storage.file.share.options.ShareDirectorySetPropertiesOptions;
+import com.azure.storage.file.share.options.ShareFileCreateOptions;
 import com.azure.storage.file.share.options.ShareFileRenameOptions;
+import com.azure.storage.file.share.options.ShareFileSetPropertiesOptions;
 import com.azure.storage.file.share.options.ShareListFilesAndDirectoriesOptions;
 import com.azure.storage.file.share.sas.ShareFileSasPermission;
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
@@ -61,6 +70,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -1745,5 +1755,89 @@ public class DirectoryApiTests extends FileShareTestBase {
 
         ShareDirectoryClient aadDirClient = oAuthServiceClient.getShareClient(shareName).getDirectoryClient(dirName);
         assertTrue(aadDirClient.exists());
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2025-05-05")
+    @Test
+    public void createNFS() {
+        ShareProtocols enabledProtocol = ModelHelper.parseShareProtocols("NFS");
+        ShareClient premiumShareClient
+            = premiumFileServiceClient
+                .createShareWithResponse(generateShareName(), new ShareCreateOptions().setProtocols(enabledProtocol),
+                    null, null)
+                .getValue();
+
+        ShareDirectoryClient premiumDirectoryClient = premiumShareClient.getDirectoryClient(generatePathName());
+
+        ShareDirectoryCreateOptions options = new ShareDirectoryCreateOptions()
+            .setNfsProperties(new FilePosixProperties().setOwner("345").setGroup("123").setFileMode("7777"));
+        ShareDirectoryInfo response = premiumDirectoryClient.createWithResponse(options, null, null).getValue();
+
+        assertEquals(NfsFileType.DIRECTORY, response.getNfsProperties().getFileType());
+        assertEquals("345", response.getNfsProperties().getOwner());
+        assertEquals("123", response.getNfsProperties().getGroup());
+        assertEquals("7777", response.getNfsProperties().getFileMode());
+
+        assertNull(response.getSmbProperties().getFilePermissionKey());
+        assertNull(response.getSmbProperties().getNtfsFileAttributes());
+
+        //cleanup
+        premiumShareClient.delete();
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2025-05-05")
+    @Test
+    public void setPropertiesNFS() {
+        ShareProtocols enabledProtocol = ModelHelper.parseShareProtocols("NFS");
+        ShareClient premiumShareClient
+            = premiumFileServiceClient
+                .createShareWithResponse(generateShareName(), new ShareCreateOptions().setProtocols(enabledProtocol),
+                    null, null)
+                .getValue();
+
+        ShareDirectoryClient premiumDirectoryClient = premiumShareClient.getDirectoryClient(generatePathName());
+        premiumDirectoryClient.create();
+
+        ShareDirectorySetPropertiesOptions options = new ShareDirectorySetPropertiesOptions()
+            .setNfsProperties(new FilePosixProperties().setOwner("345").setGroup("123").setFileMode("7777"));
+
+        ShareDirectoryInfo response = premiumDirectoryClient.setPropertiesWithResponse(options, null, null).getValue();
+
+        assertEquals("345", response.getNfsProperties().getOwner());
+        assertEquals("123", response.getNfsProperties().getGroup());
+        assertEquals("7777", response.getNfsProperties().getFileMode());
+
+        assertNull(response.getSmbProperties().getFilePermissionKey());
+        assertNull(response.getSmbProperties().getNtfsFileAttributes());
+
+        //cleanup
+        premiumShareClient.delete();
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2025-05-05")
+    @Test
+    public void getPropertiesNFS() {
+        ShareProtocols enabledProtocol = ModelHelper.parseShareProtocols("NFS");
+        ShareClient premiumShareClient
+            = premiumFileServiceClient
+                .createShareWithResponse(generateShareName(), new ShareCreateOptions().setProtocols(enabledProtocol),
+                    null, null)
+                .getValue();
+
+        ShareDirectoryClient premiumDirectoryClient = premiumShareClient.getDirectoryClient(generatePathName());
+        premiumDirectoryClient.create();
+
+        ShareDirectoryProperties response = premiumDirectoryClient.getPropertiesWithResponse(null, null).getValue();
+
+        assertEquals(NfsFileType.DIRECTORY, response.getNfsProperties().getFileType());
+        assertEquals("0", response.getNfsProperties().getOwner());
+        assertEquals("0", response.getNfsProperties().getGroup());
+        assertEquals("0755", response.getNfsProperties().getFileMode());
+
+        assertNull(response.getSmbProperties().getFilePermissionKey());
+        assertNull(response.getSmbProperties().getNtfsFileAttributes());
+
+        //cleanup
+        premiumShareClient.delete();
     }
 }

@@ -17,6 +17,7 @@ public final class ShareFileInfo {
     private final OffsetDateTime lastModified;
     private final Boolean isServerEncrypted;
     private final FileSmbProperties smbProperties;
+    private final FilePosixProperties nfsProperties;
 
     /**
      * Creates an instance of information about a specific Directory.
@@ -28,11 +29,12 @@ public final class ShareFileInfo {
      * @param smbProperties The SMB properties of the file.
      */
     public ShareFileInfo(String eTag, OffsetDateTime lastModified, Boolean isServerEncrypted,
-        FileSmbProperties smbProperties) {
+        FileSmbProperties smbProperties, FilePosixProperties nfsProperties) {
         this.eTag = eTag;
         this.lastModified = lastModified;
         this.isServerEncrypted = isServerEncrypted;
         this.smbProperties = smbProperties;
+        this.nfsProperties = nfsProperties;
     }
 
     /**
@@ -71,5 +73,15 @@ public final class ShareFileInfo {
      */
     public FileSmbProperties getSmbProperties() {
         return smbProperties;
+    }
+
+    /**
+     * Gets the file's NFS properties.
+     * Only applicable to files in a NFS share.
+     *
+     * @return The NFS Properties of the file.
+     */
+    public FilePosixProperties getNfsProperties() {
+        return nfsProperties;
     }
 }

@@ -190,6 +190,33 @@ public class FileSmbProperties {
     }
 
     /**
+     * Gets the string representation of the file's {@link NtfsFileAttributes}.
+     *
+     * @return The value of the file's {@link NtfsFileAttributes}.
+     */
+    String getNtfsFileAttributesString() {
+        return ntfsFileAttributes == null ? null : NtfsFileAttributes.toString(ntfsFileAttributes);
+    }
+
+    /**
+     * Gets the string representation of the file's creation time.
+     *
+     * @return The value of the file's creation time.
+     */
+    String getFileCreationTimeString() {
+        return fileCreationTime == null ? null : parseFileSMBDate(fileCreationTime);
+    }
+
+    /**
+     * Gets the string representation of the file's last write time.
+     *
+     * @return The value of the file's last write time.
+     */
+    String getFileLastWriteTimeString() {
+        return fileLastWriteTime == null ? null : parseFileSMBDate(fileLastWriteTime);
+    }
+
+    /**
      * Given an <code>OffsetDateTime</code>, generates a {@code String} representing a date in the format needed for
      * file SMB properties
      *

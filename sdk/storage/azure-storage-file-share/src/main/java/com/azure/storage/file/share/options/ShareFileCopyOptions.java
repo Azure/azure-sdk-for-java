@@ -7,6 +7,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.storage.file.share.FileSmbProperties;
 import com.azure.storage.file.share.models.CopyableFileSmbPropertiesList;
 import com.azure.storage.file.share.models.FilePermissionFormat;
+import com.azure.storage.file.share.models.FilePosixProperties;
 import com.azure.storage.file.share.models.PermissionCopyModeType;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 
@@ -26,6 +27,7 @@ public final class ShareFileCopyOptions {
     private Map<String, String> metadata;
     private ShareRequestConditions destinationRequestConditions;
     private CopyableFileSmbPropertiesList smbPropertiesToCopy;
+    private FilePosixProperties nfsProperties;
 
     /**
      * Creates a new instance of {@link ShareFileCopyOptions}.
@@ -227,6 +229,28 @@ public final class ShareFileCopyOptions {
      */
     public ShareFileCopyOptions setFilePermissionFormat(FilePermissionFormat filePermissionFormat) {
         this.filePermissionFormat = filePermissionFormat;
+        return this;
+    }
+
+    /**
+     *  Optional properties to set on NFS files.
+     *  Note that this property is only applicable to files created in NFS shares.
+     *
+     * @return The NFS file properties.
+     */
+    public FilePosixProperties getNfsProperties() {
+        return nfsProperties;
+    }
+
+    /**
+     *  Optional properties to set on NFS files.
+     *  Note that this property is only applicable to files created in NFS shares.
+     *
+     * @param nfsProperties the file permission format.
+     * @return The updated options.
+     */
+    public ShareFileCopyOptions setNfsProperties(FilePosixProperties nfsProperties) {
+        this.nfsProperties = nfsProperties;
         return this;
     }
 }

@@ -4,6 +4,7 @@ package com.azure.storage.file.share.options;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.storage.file.share.FileSmbProperties;
+import com.azure.storage.file.share.models.FilePosixProperties;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.ShareFilePermission;
 import com.azure.storage.file.share.models.ShareRequestConditions;
@@ -18,6 +19,7 @@ public class ShareFileSetPropertiesOptions {
     private FileSmbProperties smbProperties;
     private ShareFilePermission filePermissions;
     private ShareRequestConditions requestConditions;
+    private FilePosixProperties nfsProperties;
 
     /**
      * @param sizeInBytes Specifies the new size for the file share in bytes. If the specified byte value is less than the
@@ -108,6 +110,28 @@ public class ShareFileSetPropertiesOptions {
      */
     public ShareFileSetPropertiesOptions setRequestConditions(ShareRequestConditions requestConditions) {
         this.requestConditions = requestConditions;
+        return this;
+    }
+
+    /**
+     *  Optional properties to set on NFS files.
+     *  Note that this property is only applicable to files created in NFS shares.
+     *
+     * @return The NFS file properties.
+     */
+    public FilePosixProperties getNfsProperties() {
+        return nfsProperties;
+    }
+
+    /**
+     *  Optional properties to set on NFS files.
+     *  Note that this property is only applicable to files created in NFS shares.
+     *
+     * @param nfsProperties the file permission format.
+     * @return The updated options.
+     */
+    public ShareFileSetPropertiesOptions setNfsProperties(FilePosixProperties nfsProperties) {
+        this.nfsProperties = nfsProperties;
         return this;
     }
 }

@@ -34,6 +34,7 @@ import com.azure.storage.common.implementation.StorageSeekableByteChannel;
 import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
 import com.azure.storage.file.share.implementation.models.CopyFileSmbInfo;
 import com.azure.storage.file.share.implementation.models.DestinationLeaseAccessConditions;
+import com.azure.storage.file.share.implementation.models.FilesCreateHardLinkHeaders;
 import com.azure.storage.file.share.implementation.models.FilesCreateHeaders;
 import com.azure.storage.file.share.implementation.models.FilesForceCloseHandlesHeaders;
 import com.azure.storage.file.share.implementation.models.FilesGetPropertiesHeaders;
@@ -45,6 +46,8 @@ import com.azure.storage.file.share.implementation.models.FilesStartCopyHeaders;
 import com.azure.storage.file.share.implementation.models.FilesUploadRangeFromURLHeaders;
 import com.azure.storage.file.share.implementation.models.FilesUploadRangeHeaders;
 import com.azure.storage.file.share.implementation.models.ListHandlesResponse;
+import com.azure.storage.file.share.implementation.models.ModeCopyMode;
+import com.azure.storage.file.share.implementation.models.OwnerCopyMode;
 import com.azure.storage.file.share.implementation.models.ShareFileRangeWriteType;
 import com.azure.storage.file.share.implementation.models.SourceLeaseAccessConditions;
 import com.azure.storage.file.share.implementation.util.ModelHelper;
@@ -52,6 +55,8 @@ import com.azure.storage.file.share.implementation.util.ShareSasImplUtil;
 import com.azure.storage.file.share.models.CloseHandlesInfo;
 import com.azure.storage.file.share.models.CopyStatusType;
 import com.azure.storage.file.share.models.CopyableFileSmbPropertiesList;
+import com.azure.storage.file.share.models.FilePermissionFormat;
+import com.azure.storage.file.share.models.FilePosixProperties;
 import com.azure.storage.file.share.models.HandleItem;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
 import com.azure.storage.file.share.models.PermissionCopyModeType;
@@ -62,6 +67,7 @@ import com.azure.storage.file.share.models.ShareFileDownloadResponse;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.ShareFileInfo;
 import com.azure.storage.file.share.models.ShareFileMetadataInfo;
+import com.azure.storage.file.share.models.ShareFilePermission;
 import com.azure.storage.file.share.models.ShareFileProperties;
 import com.azure.storage.file.share.models.ShareFileRange;
 import com.azure.storage.file.share.models.ShareFileRangeList;
@@ -72,6 +78,7 @@ import com.azure.storage.file.share.models.ShareFileUploadRangeOptions;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 import com.azure.storage.file.share.models.ShareStorageException;
 import com.azure.storage.file.share.options.ShareFileCopyOptions;
+import com.azure.storage.file.share.options.ShareFileCreateHardLinkOptions;
 import com.azure.storage.file.share.options.ShareFileCreateOptions;
 import com.azure.storage.file.share.options.ShareFileDownloadOptions;
 import com.azure.storage.file.share.options.ShareFileListRangesDiffOptions;
@@ -462,29 +469,8 @@ public class ShareFileClient {
     public Response<ShareFileInfo> createWithResponse(long maxSize, ShareFileHttpHeaders httpHeaders,
         FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata,
         ShareRequestConditions requestConditions, Duration timeout, Context context) {
-        Context finalContext = context == null ? Context.NONE : context;
-        ShareRequestConditions finalRequestConditions
-            = requestConditions == null ? new ShareRequestConditions() : requestConditions;
-        smbProperties = smbProperties == null ? new FileSmbProperties() : smbProperties;
-
-        // Checks that file permission and file permission key are valid
-        ModelHelper.validateFilePermissionAndKey(filePermission, smbProperties.getFilePermissionKey());
-
-        // If file permission and file permission key are both not set then set default value
-        String finalFilePermission
-            = smbProperties.setFilePermission(filePermission, FileConstants.FILE_PERMISSION_INHERIT);
-        String filePermissionKey = smbProperties.getFilePermissionKey();
-
-        String fileAttributes = smbProperties.setNtfsFileAttributes(FileConstants.FILE_ATTRIBUTES_NONE);
-        String fileCreationTime = smbProperties.setFileCreationTime(FileConstants.FILE_TIME_NOW);
-        String fileLastWriteTime = smbProperties.setFileLastWriteTime(FileConstants.FILE_TIME_NOW);
-        String fileChangeTime = smbProperties.getFileChangeTimeString();
-        Callable<ResponseBase<FilesCreateHeaders, Void>> operation = () -> this.azureFileStorageClient.getFiles()
-            .createWithResponse(shareName, filePath, maxSize, fileAttributes, null, metadata, finalFilePermission, null,
-                filePermissionKey, fileCreationTime, fileLastWriteTime, fileChangeTime,
-                finalRequestConditions.getLeaseId(), httpHeaders, finalContext);
-
-        return ModelHelper.createFileInfoResponse(sendRequest(operation, timeout, ShareStorageException.class));
+        return createWithResponse(maxSize, httpHeaders, smbProperties, filePermission, null, null, metadata,
+            requestConditions, timeout, context);
     }
 
     /**
@@ -536,30 +522,37 @@ public class ShareFileClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ShareFileInfo> createWithResponse(ShareFileCreateOptions options, Duration timeout,
         Context context) {
+        return createWithResponse(options.getSize(), options.getShareFileHttpHeaders(), options.getSmbProperties(),
+            options.getFilePermission(), options.getFilePermissionFormat(), options.getNfsProperties(),
+            options.getMetadata(), options.getRequestConditions(), timeout, context);
+    }
+
+    Response<ShareFileInfo> createWithResponse(long maxSize, ShareFileHttpHeaders httpHeaders,
+        FileSmbProperties smbProperties, String filePermission, FilePermissionFormat filePermissionFormat,
+        FilePosixProperties fileNfsProperties, Map<String, String> metadata, ShareRequestConditions requestConditions,
+        Duration timeout, Context context) {
         Context finalContext = context == null ? Context.NONE : context;
-        ShareRequestConditions requestConditions = options.getRequestConditions();
-        ShareRequestConditions finalRequestConditions
-            = requestConditions == null ? new ShareRequestConditions() : requestConditions;
-        FileSmbProperties smbProperties = options.getSmbProperties();
+
+        requestConditions = requestConditions == null ? new ShareRequestConditions() : requestConditions;
+        ShareRequestConditions finalRequestConditions = requestConditions;
+
         smbProperties = smbProperties == null ? new FileSmbProperties() : smbProperties;
+        FileSmbProperties finalSmbProperties = smbProperties;
+
+        fileNfsProperties = fileNfsProperties == null ? new FilePosixProperties() : fileNfsProperties;
+        FilePosixProperties finalFilePosixProperties = fileNfsProperties;
 
         // Checks that file permission and file permission key are valid
-        ModelHelper.validateFilePermissionAndKey(options.getFilePermission(), smbProperties.getFilePermissionKey());
+        ModelHelper.validateFilePermissionAndKey(filePermission, smbProperties.getFilePermissionKey());
 
-        // If file permission and file permission key are both not set then set default value
-        String finalFilePermission
-            = smbProperties.setFilePermission(options.getFilePermission(), FileConstants.FILE_PERMISSION_INHERIT);
-        String filePermissionKey = smbProperties.getFilePermissionKey();
-
-        String fileAttributes = smbProperties.setNtfsFileAttributes(FileConstants.FILE_ATTRIBUTES_NONE);
-        String fileCreationTime = smbProperties.setFileCreationTime(FileConstants.FILE_TIME_NOW);
-        String fileLastWriteTime = smbProperties.setFileLastWriteTime(FileConstants.FILE_TIME_NOW);
-        String fileChangeTime = smbProperties.getFileChangeTimeString();
         Callable<ResponseBase<FilesCreateHeaders, Void>> operation = () -> this.azureFileStorageClient.getFiles()
-            .createWithResponse(shareName, filePath, options.getSize(), fileAttributes, null, options.getMetadata(),
-                finalFilePermission, options.getFilePermissionFormat(), filePermissionKey, fileCreationTime,
-                fileLastWriteTime, fileChangeTime, finalRequestConditions.getLeaseId(),
-                options.getShareFileHttpHeaders(), finalContext);
+            .createWithResponse(shareName, filePath, maxSize, null, metadata, filePermission, filePermissionFormat,
+                finalSmbProperties.getFilePermissionKey(), finalSmbProperties.getNtfsFileAttributesString(),
+                finalSmbProperties.getFileCreationTimeString(), finalSmbProperties.getFileLastWriteTimeString(),
+                finalSmbProperties.getFileChangeTimeString(), finalRequestConditions.getLeaseId(),
+                finalFilePosixProperties.getOwner(), finalFilePosixProperties.getGroup(),
+                finalFilePosixProperties.getFileMode(), finalFilePosixProperties.getFileType(), httpHeaders,
+                finalContext);
 
         return ModelHelper.createFileInfoResponse(sendRequest(operation, timeout, ShareStorageException.class));
     }
@@ -756,18 +749,15 @@ public class ShareFileClient {
             throw LOGGER.logExceptionAsError(ex);
         }
 
-        String fileAttributes = list.isFileAttributes()
-            ? FileConstants.COPY_SOURCE
-            : NtfsFileAttributes.toString(tempSmbProperties.getNtfsFileAttributes());
-        String fileCreationTime = list.isCreatedOn()
-            ? FileConstants.COPY_SOURCE
-            : FileSmbProperties.parseFileSMBDate(tempSmbProperties.getFileCreationTime());
+        String fileAttributes
+            = list.isFileAttributes() ? null : NtfsFileAttributes.toString(tempSmbProperties.getNtfsFileAttributes());
+        String fileCreationTime
+            = list.isCreatedOn() ? null : FileSmbProperties.parseFileSMBDate(tempSmbProperties.getFileCreationTime());
         String fileLastWriteTime = list.isLastWrittenOn()
-            ? FileConstants.COPY_SOURCE
+            ? null
             : FileSmbProperties.parseFileSMBDate(tempSmbProperties.getFileLastWriteTime());
-        String fileChangedOnTime = list.isChangedOn()
-            ? FileConstants.COPY_SOURCE
-            : FileSmbProperties.parseFileSMBDate(tempSmbProperties.getFileChangeTime());
+        String fileChangedOnTime
+            = list.isChangedOn() ? null : FileSmbProperties.parseFileSMBDate(tempSmbProperties.getFileChangeTime());
 
         final CopyFileSmbInfo copyFileSmbInfo
             = new CopyFileSmbInfo().setFilePermissionCopyMode(options.getPermissionCopyModeType())
@@ -780,13 +770,28 @@ public class ShareFileClient {
 
         final String copySource = Utility.encodeUrlPath(sourceUrl);
 
+        ModeCopyMode modeCopyMode;
+        if (options.getNfsProperties().getFileMode() != null) {
+            modeCopyMode = ModeCopyMode.OVERRIDE;
+        } else {
+            modeCopyMode = null;
+        }
+
+        OwnerCopyMode ownerCopyMode;
+        if (options.getNfsProperties().getOwner() != null || options.getNfsProperties().getGroup() != null) {
+            ownerCopyMode = OwnerCopyMode.OVERRIDE;
+        } else {
+            ownerCopyMode = null;
+        }
+
         Function<PollingContext<ShareFileCopyInfo>, PollResponse<ShareFileCopyInfo>> syncActivationOperation
             = (pollingContext) -> {
                 ResponseBase<FilesStartCopyHeaders, Void> response = azureFileStorageClient.getFiles()
                     .startCopyWithResponse(shareName, filePath, copySource, null, options.getMetadata(),
                         options.getFilePermission(), options.getFilePermissionFormat(),
-                        tempSmbProperties.getFilePermissionKey(), finalRequestConditions.getLeaseId(), copyFileSmbInfo,
-                        null);
+                        tempSmbProperties.getFilePermissionKey(), finalRequestConditions.getLeaseId(),
+                        options.getNfsProperties().getOwner(), options.getNfsProperties().getGroup(),
+                        options.getNfsProperties().getFileMode(), modeCopyMode, ownerCopyMode, copyFileSmbInfo, null);
 
                 FilesStartCopyHeaders headers = response.getDeserializedHeaders();
                 copyId.set(headers.getXMsCopyId());
@@ -1659,28 +1664,8 @@ public class ShareFileClient {
     public Response<ShareFileInfo> setPropertiesWithResponse(long newFileSize, ShareFileHttpHeaders httpHeaders,
         FileSmbProperties smbProperties, String filePermission, ShareRequestConditions requestConditions,
         Duration timeout, Context context) {
-        Context finalContext = context == null ? Context.NONE : context;
-        ShareRequestConditions finalRequestConditions
-            = requestConditions == null ? new ShareRequestConditions() : requestConditions;
-        smbProperties = smbProperties == null ? new FileSmbProperties() : smbProperties;
-
-        // Checks that file permission and file permission key are valid
-        ModelHelper.validateFilePermissionAndKey(filePermission, smbProperties.getFilePermissionKey());
-
-        // If file permission and file permission key are both not set then set default value
-        String finalFilePermission = smbProperties.setFilePermission(filePermission, FileConstants.PRESERVE);
-        String filePermissionKey = smbProperties.getFilePermissionKey();
-
-        String fileAttributes = smbProperties.setNtfsFileAttributes(FileConstants.PRESERVE);
-        String fileCreationTime = smbProperties.setFileCreationTime(FileConstants.PRESERVE);
-        String fileLastWriteTime = smbProperties.setFileLastWriteTime(FileConstants.PRESERVE);
-        String fileChangeTime = smbProperties.getFileChangeTimeString();
-        Callable<ResponseBase<FilesSetHttpHeadersHeaders, Void>> operation = () -> azureFileStorageClient.getFiles()
-            .setHttpHeadersWithResponse(shareName, filePath, fileAttributes, null, newFileSize, finalFilePermission,
-                null, filePermissionKey, fileCreationTime, fileLastWriteTime, fileChangeTime,
-                finalRequestConditions.getLeaseId(), httpHeaders, finalContext);
-
-        return ModelHelper.setPropertiesResponse(sendRequest(operation, timeout, ShareStorageException.class));
+        return setPropertiesWithResponse(newFileSize, httpHeaders, smbProperties, filePermission, null, null,
+            requestConditions, timeout, context);
     }
 
     /**
@@ -1729,31 +1714,38 @@ public class ShareFileClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ShareFileInfo> setPropertiesWithResponse(ShareFileSetPropertiesOptions options, Duration timeout,
         Context context) {
+        ShareFilePermission filePermission
+            = options.getFilePermissions() == null ? new ShareFilePermission() : options.getFilePermissions();
+        return setPropertiesWithResponse(options.getSizeInBytes(), options.getHttpHeaders(), options.getSmbProperties(),
+            filePermission.getPermission(), filePermission.getPermissionFormat(), options.getNfsProperties(),
+            options.getRequestConditions(), timeout, context);
+    }
+
+    Response<ShareFileInfo> setPropertiesWithResponse(long newFileSize, ShareFileHttpHeaders httpHeaders,
+        FileSmbProperties smbProperties, String filePermission, FilePermissionFormat filePermissionFormat,
+        FilePosixProperties fileNfsProperties, ShareRequestConditions requestConditions, Duration timeout,
+        Context context) {
         Context finalContext = context == null ? Context.NONE : context;
-        ShareRequestConditions requestConditions = options.getRequestConditions();
-        ShareRequestConditions finalRequestConditions
-            = requestConditions == null ? new ShareRequestConditions() : requestConditions;
-        FileSmbProperties smbProperties = options.getSmbProperties();
+
+        requestConditions = requestConditions == null ? new ShareRequestConditions() : requestConditions;
+        ShareRequestConditions finalRequestConditions = requestConditions;
+
         smbProperties = smbProperties == null ? new FileSmbProperties() : smbProperties;
+        FileSmbProperties finalSmbProperties = smbProperties;
+
+        fileNfsProperties = fileNfsProperties == null ? new FilePosixProperties() : fileNfsProperties;
+        FilePosixProperties finalFilePosixProperties = fileNfsProperties;
 
         // Checks that file permission and file permission key are valid
-        ModelHelper.validateFilePermissionAndKey(options.getFilePermissions().getPermission(),
-            smbProperties.getFilePermissionKey());
+        ModelHelper.validateFilePermissionAndKey(filePermission, smbProperties.getFilePermissionKey());
 
-        // If file permission and file permission key are both not set then set default value
-        String finalFilePermission
-            = smbProperties.setFilePermission(options.getFilePermissions().getPermission(), FileConstants.PRESERVE);
-        String filePermissionKey = smbProperties.getFilePermissionKey();
-
-        String fileAttributes = smbProperties.setNtfsFileAttributes(FileConstants.PRESERVE);
-        String fileCreationTime = smbProperties.setFileCreationTime(FileConstants.PRESERVE);
-        String fileLastWriteTime = smbProperties.setFileLastWriteTime(FileConstants.PRESERVE);
-        String fileChangeTime = smbProperties.getFileChangeTimeString();
         Callable<ResponseBase<FilesSetHttpHeadersHeaders, Void>> operation = () -> azureFileStorageClient.getFiles()
-            .setHttpHeadersWithResponse(shareName, filePath, fileAttributes, null, options.getSizeInBytes(),
-                finalFilePermission, options.getFilePermissions().getPermissionFormat(), filePermissionKey,
-                fileCreationTime, fileLastWriteTime, fileChangeTime, finalRequestConditions.getLeaseId(),
-                options.getHttpHeaders(), finalContext);
+            .setHttpHeadersWithResponse(shareName, filePath, null, newFileSize, filePermission, filePermissionFormat,
+                finalSmbProperties.getFilePermissionKey(), finalSmbProperties.getNtfsFileAttributesString(),
+                finalSmbProperties.getFileCreationTimeString(), finalSmbProperties.getFileLastWriteTimeString(),
+                finalSmbProperties.getFileChangeTimeString(), finalRequestConditions.getLeaseId(),
+                finalFilePosixProperties.getOwner(), finalFilePosixProperties.getGroup(),
+                finalFilePosixProperties.getFileMode(), httpHeaders, finalContext);
 
         return ModelHelper.setPropertiesResponse(sendRequest(operation, timeout, ShareStorageException.class));
     }
@@ -3141,5 +3133,32 @@ public class ShareFileClient {
         Consumer<String> stringToSignHandler, Context context) {
         return new ShareSasImplUtil(shareServiceSasSignatureValues, getShareName(), getFilePath())
             .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), stringToSignHandler, context);
+    }
+
+    //todo isbr: javadoc
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ShareFileInfo createHardLink(String targetFile) {
+        return createHardLinkWithResponse(targetFile, null, null, null).getValue();
+    }
+
+    //todo isbr: javadoc
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ShareFileInfo> createHardLinkWithResponse(ShareFileCreateHardLinkOptions options, Duration timeout,
+        Context context) {
+        return createHardLinkWithResponse(options.getTargetFile(), options.getRequestConditions(), timeout, context);
+    }
+
+    Response<ShareFileInfo> createHardLinkWithResponse(String targetFile, ShareRequestConditions requestConditions,
+        Duration timeout, Context context) {
+        ShareRequestConditions finalRequestConditions
+            = requestConditions == null ? new ShareRequestConditions() : requestConditions;
+        Context finalContext = context == null ? Context.NONE : context;
+
+        Callable<ResponseBase<FilesCreateHardLinkHeaders, Void>> operation
+            = () -> this.azureFileStorageClient.getFiles()
+                .createHardLinkWithResponse(shareName, filePath, targetFile, null, null,
+                    finalRequestConditions.getLeaseId(), finalContext);
+
+        return ModelHelper.createHardLinkResponse(sendRequest(operation, timeout, ShareStorageException.class));
     }
 }

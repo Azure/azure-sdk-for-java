@@ -6,16 +6,22 @@ package com.azure.storage.file.share;
 import com.azure.core.exception.UnexpectedLengthException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
+import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
+import com.azure.storage.file.share.implementation.models.NfsFileType;
+import com.azure.storage.file.share.implementation.util.ModelHelper;
 import com.azure.storage.file.share.models.ClearRange;
 import com.azure.storage.file.share.models.CopyableFileSmbPropertiesList;
 import com.azure.storage.file.share.models.FilePermissionFormat;
+import com.azure.storage.file.share.models.FilePosixProperties;
 import com.azure.storage.file.share.models.FileRange;
 import com.azure.storage.file.share.models.HandleItem;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
@@ -30,10 +36,12 @@ import com.azure.storage.file.share.models.ShareFilePermission;
 import com.azure.storage.file.share.models.ShareFileProperties;
 import com.azure.storage.file.share.models.ShareFileRange;
 import com.azure.storage.file.share.models.ShareFileUploadRangeOptions;
+import com.azure.storage.file.share.models.ShareProtocols;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 import com.azure.storage.file.share.models.ShareSnapshotInfo;
 import com.azure.storage.file.share.models.ShareStorageException;
 import com.azure.storage.file.share.models.ShareTokenIntent;
+import com.azure.storage.file.share.options.ShareCreateOptions;
 import com.azure.storage.file.share.options.ShareFileCopyOptions;
 import com.azure.storage.file.share.options.ShareFileCreateOptions;
 import com.azure.storage.file.share.options.ShareFileListRangesDiffOptions;
@@ -51,6 +59,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
+import reactor.util.function.Tuple4;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -77,6 +86,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -1771,5 +1781,159 @@ public class FileAsyncApiTests extends FileShareTestBase {
         ShareFileAsyncClient fileClient = directoryClient.getFileClient("test.txt");
         List<HandleItem> list = fileClient.listHandles().collectList().block();
         assertNotNull(list.get(0).getClientName());
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2025-05-05")
+    @Test
+    public void createNFS() {
+        ShareProtocols enabledProtocol = ModelHelper.parseShareProtocols("NFS");
+        ShareFileCreateOptions options = new ShareFileCreateOptions(1024)
+            .setNfsProperties(new FilePosixProperties().setOwner("345").setGroup("123").setFileMode("7777"));
+
+        String shareName = generateShareName();
+        Mono<Response<ShareFileInfo>> create = premiumFileServiceAsyncClient
+            .createShareWithResponse(shareName, new ShareCreateOptions().setProtocols(enabledProtocol))
+            .flatMap(premiumShareClient -> {
+                ShareFileAsyncClient premiumFileClient
+                    = premiumShareClient.getValue().getFileClient(generatePathName());
+                return premiumFileClient.createWithResponse(options);
+            });
+
+        StepVerifier.create(create).assertNext(r -> {
+            ShareFileInfo response = r.getValue();
+            assertEquals(NfsFileType.REGULAR, response.getNfsProperties().getFileType());
+            assertEquals("345", response.getNfsProperties().getOwner());
+            assertEquals("123", response.getNfsProperties().getGroup());
+            assertEquals("7777", response.getNfsProperties().getFileMode());
+
+            assertNull(response.getSmbProperties().getFilePermissionKey());
+            assertNull(response.getSmbProperties().getNtfsFileAttributes());
+        }).verifyComplete();
+
+        //cleanup
+        premiumFileServiceAsyncClient.getShareAsyncClient(shareName).delete().block();
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2025-05-05")
+    @Test
+    public void setPropertiesNFS() {
+        ShareProtocols enabledProtocol = ModelHelper.parseShareProtocols("NFS");
+        ShareFileSetPropertiesOptions options = new ShareFileSetPropertiesOptions(1024)
+            .setNfsProperties(new FilePosixProperties().setOwner("345").setGroup("123").setFileMode("7777"));
+
+        String shareName = generateShareName();
+        Mono<Response<ShareFileInfo>> create = premiumFileServiceAsyncClient
+            .createShareWithResponse(shareName, new ShareCreateOptions().setProtocols(enabledProtocol))
+            .flatMap(premiumShareClient -> {
+                ShareFileAsyncClient premiumFileClient
+                    = premiumShareClient.getValue().getFileClient(generatePathName());
+                return premiumFileClient.create(1024).then(premiumFileClient.setPropertiesWithResponse(options));
+            });
+
+        StepVerifier.create(create).assertNext(r -> {
+            ShareFileInfo response = r.getValue();
+            assertEquals("345", response.getNfsProperties().getOwner());
+            assertEquals("123", response.getNfsProperties().getGroup());
+            assertEquals("7777", response.getNfsProperties().getFileMode());
+            assertNotNull(response.getNfsProperties().getLinkCount());
+
+            assertNull(response.getSmbProperties().getFilePermissionKey());
+            assertNull(response.getSmbProperties().getNtfsFileAttributes());
+        }).verifyComplete();
+
+        //cleanup
+        premiumFileServiceAsyncClient.getShareAsyncClient(shareName).delete().block();
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2025-05-05")
+    @Test
+    public void getPropertiesNFS() {
+        ShareProtocols enabledProtocol = ModelHelper.parseShareProtocols("NFS");
+
+        String shareName = generateShareName();
+        Mono<Response<ShareFileProperties>> create = premiumFileServiceAsyncClient
+            .createShareWithResponse(shareName, new ShareCreateOptions().setProtocols(enabledProtocol))
+            .flatMap(premiumShareClient -> {
+                ShareFileAsyncClient premiumFileClient
+                    = premiumShareClient.getValue().getFileClient(generatePathName());
+                return premiumFileClient.create(1024).then(premiumFileClient.getPropertiesWithResponse());
+            });
+
+        StepVerifier.create(create).assertNext(r -> {
+            ShareFileProperties response = r.getValue();
+
+            assertEquals(NfsFileType.REGULAR, response.getNfsProperties().getFileType());
+            assertEquals("0", response.getNfsProperties().getOwner());
+            assertEquals("0", response.getNfsProperties().getGroup());
+            assertEquals("0664", response.getNfsProperties().getFileMode());
+            assertEquals(1, response.getNfsProperties().getLinkCount());
+
+            assertNull(response.getSmbProperties().getFilePermissionKey());
+            assertNull(response.getSmbProperties().getNtfsFileAttributes());
+        }).verifyComplete();
+
+        //cleanup
+        premiumFileServiceAsyncClient.getShareAsyncClient(shareName).delete().block();
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2025-05-05")
+    @ParameterizedTest
+    @ValueSource(booleans = { true, false })
+    public void beginCopyNFS(boolean overwriteOwnerAndMode) {
+        ShareProtocols enabledProtocol = ModelHelper.parseShareProtocols("NFS");
+        String shareName = generateShareName();
+        Mono<ShareAsyncClient> premiumShareClientMono = premiumFileServiceAsyncClient
+            .createShareWithResponse(shareName, new ShareCreateOptions().setProtocols(enabledProtocol))
+            .map(Response::getValue);
+
+        String sourcePath = generatePathName() + "source";
+        String destPath = generatePathName() + "dest";
+
+        Mono<Tuple4<ShareFileProperties, String, String, String>> setup
+            = premiumShareClientMono.flatMap(premiumShareClient -> {
+                ShareFileAsyncClient premiumFileClientSource = premiumShareClient.getFileClient(sourcePath);
+                ShareFileAsyncClient premiumFileClientDest = premiumShareClient.getFileClient(destPath);
+
+                return premiumFileClientSource.create(1024)
+                    .then(premiumFileClientSource.uploadRange(DATA.getDefaultFlux(), DATA.getDefaultDataSizeLong()))
+                    .then(premiumFileClientDest.create(1024))
+                    .then(premiumFileClientSource.getProperties())
+                    .flatMap(sourceProperties -> {
+                        String owner;
+                        String group;
+                        String mode;
+
+                        ShareFileCopyOptions options
+                            = new ShareFileCopyOptions().setNfsProperties(new FilePosixProperties());
+
+                        if (overwriteOwnerAndMode) {
+                            owner = "54321";
+                            group = "12345";
+                            mode = "7777";
+                            options.getNfsProperties().setOwner(owner);
+                            options.getNfsProperties().setGroup(group);
+                            options.getNfsProperties().setFileMode(mode);
+                        } else {
+                            owner = sourceProperties.getNfsProperties().getOwner();
+                            group = sourceProperties.getNfsProperties().getGroup();
+                            mode = sourceProperties.getNfsProperties().getFileMode();
+                        }
+
+                        return setPlaybackPollerFluxPollInterval(
+                            premiumFileClientDest.beginCopy(premiumFileClientSource.getFileUrl(), options, null)).last()
+                                .flatMap(ignore -> premiumFileClientDest.getProperties())
+                                .flatMap(properties -> Mono.zip(Mono.just(properties), Mono.just(owner),
+                                    Mono.just(group), Mono.just(mode)));
+                    });
+            });
+
+        StepVerifier.create(setup).assertNext(r -> {
+            assertEquals(r.getT2(), r.getT1().getNfsProperties().getOwner());
+            assertEquals(r.getT3(), r.getT1().getNfsProperties().getGroup());
+            assertEquals(r.getT4(), r.getT1().getNfsProperties().getFileMode());
+        }).verifyComplete();
+
+        //cleanup
+        premiumFileServiceAsyncClient.getShareAsyncClient(shareName).delete().block();
     }
 }

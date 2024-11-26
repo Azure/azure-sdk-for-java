@@ -16,6 +16,11 @@ import java.time.OffsetDateTime;
 @Fluent
 public final class FilesSetHttpHeadersHeaders {
     /*
+     * The x-ms-group property.
+     */
+    private String xMsGroup;
+
+    /*
      * The x-ms-version property.
      */
     private String xMsVersion;
@@ -51,9 +56,19 @@ public final class FilesSetHttpHeadersHeaders {
     private DateTimeRfc1123 date;
 
     /*
+     * The x-ms-mode property.
+     */
+    private String xMsMode;
+
+    /*
      * The ETag property.
      */
     private String eTag;
+
+    /*
+     * The x-ms-link-count property.
+     */
+    private Long xMsLinkCount;
 
     /*
      * The x-ms-file-attributes property.
@@ -80,6 +95,13 @@ public final class FilesSetHttpHeadersHeaders {
      */
     private OffsetDateTime xMsFileLastWriteTime;
 
+    /*
+     * The x-ms-owner property.
+     */
+    private String xMsOwner;
+
+    private static final HttpHeaderName X_MS_GROUP = HttpHeaderName.fromString("x-ms-group");
+
     private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
 
     private static final HttpHeaderName X_MS_FILE_PERMISSION_KEY
@@ -92,6 +114,10 @@ public final class FilesSetHttpHeadersHeaders {
     private static final HttpHeaderName X_MS_REQUEST_SERVER_ENCRYPTED
         = HttpHeaderName.fromString("x-ms-request-server-encrypted");
 
+    private static final HttpHeaderName X_MS_MODE = HttpHeaderName.fromString("x-ms-mode");
+
+    private static final HttpHeaderName X_MS_LINK_COUNT = HttpHeaderName.fromString("x-ms-link-count");
+
     private static final HttpHeaderName X_MS_FILE_ATTRIBUTES = HttpHeaderName.fromString("x-ms-file-attributes");
 
     private static final HttpHeaderName X_MS_FILE_CHANGE_TIME = HttpHeaderName.fromString("x-ms-file-change-time");
@@ -101,6 +127,8 @@ public final class FilesSetHttpHeadersHeaders {
     private static final HttpHeaderName X_MS_FILE_LAST_WRITE_TIME
         = HttpHeaderName.fromString("x-ms-file-last-write-time");
 
+    private static final HttpHeaderName X_MS_OWNER = HttpHeaderName.fromString("x-ms-owner");
+
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of FilesSetHttpHeadersHeaders class.
@@ -108,6 +136,7 @@ public final class FilesSetHttpHeadersHeaders {
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public FilesSetHttpHeadersHeaders(HttpHeaders rawHeaders) {
+        this.xMsGroup = rawHeaders.getValue(X_MS_GROUP);
         this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
         this.xMsFilePermissionKey = rawHeaders.getValue(X_MS_FILE_PERMISSION_KEY);
         this.xMsFileId = rawHeaders.getValue(X_MS_FILE_ID);
@@ -127,7 +156,12 @@ public final class FilesSetHttpHeadersHeaders {
         if (date != null) {
             this.date = new DateTimeRfc1123(date);
         }
+        this.xMsMode = rawHeaders.getValue(X_MS_MODE);
         this.eTag = rawHeaders.getValue(HttpHeaderName.ETAG);
+        String xMsLinkCount = rawHeaders.getValue(X_MS_LINK_COUNT);
+        if (xMsLinkCount != null) {
+            this.xMsLinkCount = Long.parseLong(xMsLinkCount);
+        }
         this.xMsFileAttributes = rawHeaders.getValue(X_MS_FILE_ATTRIBUTES);
         String xMsFileChangeTime = rawHeaders.getValue(X_MS_FILE_CHANGE_TIME);
         if (xMsFileChangeTime != null) {
@@ -139,6 +173,27 @@ public final class FilesSetHttpHeadersHeaders {
         if (xMsFileLastWriteTime != null) {
             this.xMsFileLastWriteTime = OffsetDateTime.parse(xMsFileLastWriteTime);
         }
+        this.xMsOwner = rawHeaders.getValue(X_MS_OWNER);
+    }
+
+    /**
+     * Get the xMsGroup property: The x-ms-group property.
+     * 
+     * @return the xMsGroup value.
+     */
+    public String getXMsGroup() {
+        return this.xMsGroup;
+    }
+
+    /**
+     * Set the xMsGroup property: The x-ms-group property.
+     * 
+     * @param xMsGroup the xMsGroup value to set.
+     * @return the FilesSetHttpHeadersHeaders object itself.
+     */
+    public FilesSetHttpHeadersHeaders setXMsGroup(String xMsGroup) {
+        this.xMsGroup = xMsGroup;
+        return this;
     }
 
     /**
@@ -296,6 +351,26 @@ public final class FilesSetHttpHeadersHeaders {
     }
 
     /**
+     * Get the xMsMode property: The x-ms-mode property.
+     * 
+     * @return the xMsMode value.
+     */
+    public String getXMsMode() {
+        return this.xMsMode;
+    }
+
+    /**
+     * Set the xMsMode property: The x-ms-mode property.
+     * 
+     * @param xMsMode the xMsMode value to set.
+     * @return the FilesSetHttpHeadersHeaders object itself.
+     */
+    public FilesSetHttpHeadersHeaders setXMsMode(String xMsMode) {
+        this.xMsMode = xMsMode;
+        return this;
+    }
+
+    /**
      * Get the eTag property: The ETag property.
      * 
      * @return the eTag value.
@@ -312,6 +387,26 @@ public final class FilesSetHttpHeadersHeaders {
      */
     public FilesSetHttpHeadersHeaders setETag(String eTag) {
         this.eTag = eTag;
+        return this;
+    }
+
+    /**
+     * Get the xMsLinkCount property: The x-ms-link-count property.
+     * 
+     * @return the xMsLinkCount value.
+     */
+    public Long getXMsLinkCount() {
+        return this.xMsLinkCount;
+    }
+
+    /**
+     * Set the xMsLinkCount property: The x-ms-link-count property.
+     * 
+     * @param xMsLinkCount the xMsLinkCount value to set.
+     * @return the FilesSetHttpHeadersHeaders object itself.
+     */
+    public FilesSetHttpHeadersHeaders setXMsLinkCount(Long xMsLinkCount) {
+        this.xMsLinkCount = xMsLinkCount;
         return this;
     }
 
@@ -412,6 +507,26 @@ public final class FilesSetHttpHeadersHeaders {
      */
     public FilesSetHttpHeadersHeaders setXMsFileLastWriteTime(OffsetDateTime xMsFileLastWriteTime) {
         this.xMsFileLastWriteTime = xMsFileLastWriteTime;
+        return this;
+    }
+
+    /**
+     * Get the xMsOwner property: The x-ms-owner property.
+     * 
+     * @return the xMsOwner value.
+     */
+    public String getXMsOwner() {
+        return this.xMsOwner;
+    }
+
+    /**
+     * Set the xMsOwner property: The x-ms-owner property.
+     * 
+     * @param xMsOwner the xMsOwner value to set.
+     * @return the FilesSetHttpHeadersHeaders object itself.
+     */
+    public FilesSetHttpHeadersHeaders setXMsOwner(String xMsOwner) {
+        this.xMsOwner = xMsOwner;
         return this;
     }
 }

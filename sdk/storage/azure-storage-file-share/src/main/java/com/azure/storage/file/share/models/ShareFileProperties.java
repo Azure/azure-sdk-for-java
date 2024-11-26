@@ -36,6 +36,7 @@ public final class ShareFileProperties {
     private final CopyStatusType copyStatus;
     private final Boolean isServerEncrypted;
     private final FileSmbProperties smbProperties;
+    private final FilePosixProperties nfsProperties;
 
     /**
      * Creates an instance of property information about a specific File.
@@ -78,10 +79,10 @@ public final class ShareFileProperties {
         Long contentLength, String contentType, byte[] contentMd5, String contentEncoding, String cacheControl,
         String contentDisposition, OffsetDateTime copyCompletionTime, String copyStatusDescription, String copyId,
         String copyProgress, String copySource, CopyStatusType copyStatus, Boolean isServerEncrypted,
-        FileSmbProperties smbProperties) {
+        FileSmbProperties smbProperties, FilePosixProperties nfsProperties) {
         this(eTag, lastModified, metadata, fileType, contentLength, contentType, contentMd5, contentEncoding,
             cacheControl, contentDisposition, null, null, null, copyCompletionTime, copyStatusDescription, copyId,
-            copyProgress, copySource, copyStatus, isServerEncrypted, smbProperties);
+            copyProgress, copySource, copyStatus, isServerEncrypted, smbProperties, nfsProperties);
     }
 
     /**
@@ -129,7 +130,7 @@ public final class ShareFileProperties {
         String contentDisposition, LeaseStatusType leaseStatusType, LeaseStateType leaseStateType,
         LeaseDurationType leaseDurationType, OffsetDateTime copyCompletionTime, String copyStatusDescription,
         String copyId, String copyProgress, String copySource, CopyStatusType copyStatus, Boolean isServerEncrypted,
-        FileSmbProperties smbProperties) {
+        FileSmbProperties smbProperties, FilePosixProperties nfsProperties) {
         this.eTag = eTag;
         this.lastModified = lastModified;
         this.metadata = metadata;
@@ -151,6 +152,7 @@ public final class ShareFileProperties {
         this.copyStatus = copyStatus;
         this.isServerEncrypted = isServerEncrypted;
         this.smbProperties = smbProperties;
+        this.nfsProperties = nfsProperties;
     }
 
     /**
@@ -349,5 +351,15 @@ public final class ShareFileProperties {
      */
     public FileSmbProperties getSmbProperties() {
         return smbProperties;
+    }
+
+    /**
+     * Gets the file's NFS properties.
+     * Only applicable to files in a NFS share.
+     *
+     * @return The NFS Properties of the file.
+     */
+    public FilePosixProperties getNfsProperties() {
+        return nfsProperties;
     }
 }
