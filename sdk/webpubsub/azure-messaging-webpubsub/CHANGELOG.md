@@ -1,17 +1,5 @@
 # Release History
 
-## 1.4.0-beta.1 (Unreleased)
-
-### Features Added
-
-- Added support for `socketIO` when generating client access URI.
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
-
 ## 1.3.2 (2024-10-25)
 
 ### Other Changes
