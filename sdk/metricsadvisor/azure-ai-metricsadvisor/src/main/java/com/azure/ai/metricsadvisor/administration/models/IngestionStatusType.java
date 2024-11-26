@@ -51,6 +51,7 @@ public final class IngestionStatusType extends ExpandableStringEnum<IngestionSta
      */
     public static final IngestionStatusType PAUSED = fromString("Paused");
 
+
     /**
      * Constructs a IngestionStatusType object.
      *

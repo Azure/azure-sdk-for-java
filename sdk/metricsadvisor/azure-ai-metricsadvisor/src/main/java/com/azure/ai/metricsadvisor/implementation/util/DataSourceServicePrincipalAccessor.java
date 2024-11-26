@@ -17,7 +17,6 @@ public final class DataSourceServicePrincipalAccessor {
      */
     public interface Accessor {
         void setId(DataSourceServicePrincipal entity, String id);
-
         String getClientSecret(DataSourceServicePrincipal entity);
     }
 

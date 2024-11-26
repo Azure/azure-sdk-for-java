@@ -33,8 +33,7 @@ public class DetectionConfigurationTest extends DetectionConfigurationTestBase {
         try {
             dataFeed = super.createDataFeed(httpClient, serviceVersion);
 
-            Optional<DataFeedMetric> optMetric = dataFeed.getSchema()
-                .getMetrics()
+            Optional<DataFeedMetric> optMetric = dataFeed.getSchema().getMetrics()
                 .stream()
                 .filter(m -> m.getName().equalsIgnoreCase("cost"))
                 .findFirst();
@@ -42,7 +41,8 @@ public class DetectionConfigurationTest extends DetectionConfigurationTestBase {
             final DataFeedMetric costMetric = optMetric.get();
             final String costMetricId = costMetric.getId();
 
-            AnomalyDetectionConfiguration configuration = client.createDetectionConfig(costMetricId,
+            AnomalyDetectionConfiguration configuration
+                = client.createDetectionConfig(costMetricId,
                 CreateDetectionConfigurationForWholeSeriesInput.INSTANCE.detectionConfiguration);
             assertNotNull(configuration);
 
@@ -63,7 +63,7 @@ public class DetectionConfigurationTest extends DetectionConfigurationTestBase {
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
     @Override
     public void createDetectionConfigurationForSeriesAndGroup(HttpClient httpClient,
-        MetricsAdvisorServiceVersion serviceVersion) {
+                                                              MetricsAdvisorServiceVersion serviceVersion) {
         DataFeed dataFeed = null;
         MetricsAdvisorAdministrationClient client
             = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, true).buildClient();
@@ -71,8 +71,7 @@ public class DetectionConfigurationTest extends DetectionConfigurationTestBase {
         try {
             dataFeed = super.createDataFeed(httpClient, serviceVersion);
 
-            Optional<DataFeedMetric> optMetric = dataFeed.getSchema()
-                .getMetrics()
+            Optional<DataFeedMetric> optMetric = dataFeed.getSchema().getMetrics()
                 .stream()
                 .filter(m -> m.getName().equalsIgnoreCase("cost"))
                 .findFirst();
@@ -80,7 +79,8 @@ public class DetectionConfigurationTest extends DetectionConfigurationTestBase {
             final DataFeedMetric costMetric = optMetric.get();
             final String costMetricId = costMetric.getId();
 
-            AnomalyDetectionConfiguration configuration = client.createDetectionConfig(costMetricId,
+            AnomalyDetectionConfiguration configuration
+                = client.createDetectionConfig(costMetricId,
                 CreateDetectionConfigurationForSeriesAndGroupInput.INSTANCE.detectionConfiguration);
             assertNotNull(configuration);
             id.set(configuration.getId());
@@ -100,7 +100,7 @@ public class DetectionConfigurationTest extends DetectionConfigurationTestBase {
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
     @Override
     public void createDetectionConfigurationForMultipleSeriesAndGroup(HttpClient httpClient,
-        MetricsAdvisorServiceVersion serviceVersion) {
+                                                                      MetricsAdvisorServiceVersion serviceVersion) {
         DataFeed dataFeed = null;
         MetricsAdvisorAdministrationClient client
             = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, true).buildClient();
@@ -108,8 +108,7 @@ public class DetectionConfigurationTest extends DetectionConfigurationTestBase {
         try {
             dataFeed = super.createDataFeed(httpClient, serviceVersion);
 
-            Optional<DataFeedMetric> optMetric = dataFeed.getSchema()
-                .getMetrics()
+            Optional<DataFeedMetric> optMetric = dataFeed.getSchema().getMetrics()
                 .stream()
                 .filter(m -> m.getName().equalsIgnoreCase("cost"))
                 .findFirst();
@@ -117,14 +116,16 @@ public class DetectionConfigurationTest extends DetectionConfigurationTestBase {
             final DataFeedMetric costMetric = optMetric.get();
             final String costMetricId = costMetric.getId();
 
-            AnomalyDetectionConfiguration configuration = client.createDetectionConfig(costMetricId,
+            AnomalyDetectionConfiguration configuration
+                = client.createDetectionConfig(costMetricId,
                 CreateDetectionConfigurationForMultipleSeriesAndGroupInput.INSTANCE.detectionConfiguration);
 
             super.assertCreateDetectionConfigurationForMultipleSeriesAndGroupOutput(configuration, costMetricId);
             assertNotNull(configuration);
             id.set(configuration.getId());
 
-            client.listDetectionConfigs(costMetricId).forEach(Assertions::assertNotNull);
+            client.listDetectionConfigs(costMetricId)
+                .forEach(Assertions::assertNotNull);
         } finally {
             if (!CoreUtils.isNullOrEmpty(id.get())) {
                 client.deleteDetectionConfig(id.get());
@@ -138,7 +139,8 @@ public class DetectionConfigurationTest extends DetectionConfigurationTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
     @Override
-    public void updateDetectionConfiguration(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
+    public void updateDetectionConfiguration(HttpClient httpClient,
+                                             MetricsAdvisorServiceVersion serviceVersion) {
         DataFeed dataFeed = null;
         MetricsAdvisorAdministrationClient client
             = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, true).buildClient();
@@ -146,8 +148,7 @@ public class DetectionConfigurationTest extends DetectionConfigurationTestBase {
         try {
             dataFeed = super.createDataFeed(httpClient, serviceVersion);
 
-            Optional<DataFeedMetric> optMetric = dataFeed.getSchema()
-                .getMetrics()
+            Optional<DataFeedMetric> optMetric = dataFeed.getSchema().getMetrics()
                 .stream()
                 .filter(m -> m.getName().equalsIgnoreCase("cost"))
                 .findFirst();
@@ -155,16 +156,19 @@ public class DetectionConfigurationTest extends DetectionConfigurationTestBase {
             final DataFeedMetric costMetric = optMetric.get();
             final String costMetricId = costMetric.getId();
 
-            AnomalyDetectionConfiguration configuration = client.createDetectionConfig(costMetricId,
+            AnomalyDetectionConfiguration configuration
+                = client.createDetectionConfig(costMetricId,
                 UpdateDetectionConfigurationInput.INSTANCE.detectionConfiguration);
 
             Assertions.assertNotNull(configuration);
 
-            configuration.removeSingleSeriesDetectionCondition(
-                UpdateDetectionConfigurationInput.INSTANCE.seriesKeyToRemoveOnUpdate);
+            configuration.removeSingleSeriesDetectionCondition(UpdateDetectionConfigurationInput
+                .INSTANCE
+                .seriesKeyToRemoveOnUpdate);
 
-            configuration.addSeriesGroupDetectionCondition(
-                UpdateDetectionConfigurationInput.INSTANCE.seriesGroupConditionToAddOnUpdate);
+            configuration.addSeriesGroupDetectionCondition(UpdateDetectionConfigurationInput
+                .INSTANCE
+                .seriesGroupConditionToAddOnUpdate);
 
             configuration = client.updateDetectionConfig(configuration);
             super.assertUpdateDetectionConfigurationOutput(configuration, costMetricId);

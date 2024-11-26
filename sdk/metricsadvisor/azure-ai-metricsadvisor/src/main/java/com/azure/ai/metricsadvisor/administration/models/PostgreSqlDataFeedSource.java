@@ -22,12 +22,13 @@ public final class PostgreSqlDataFeedSource extends DataFeedSource {
     private final String query;
 
     static {
-        PostgreSqlDataFeedSourceAccessor.setAccessor(new PostgreSqlDataFeedSourceAccessor.Accessor() {
-            @Override
-            public String getConnectionString(PostgreSqlDataFeedSource feedSource) {
-                return feedSource.getConnectionString();
-            }
-        });
+        PostgreSqlDataFeedSourceAccessor.setAccessor(
+            new PostgreSqlDataFeedSourceAccessor.Accessor() {
+                @Override
+                public String getConnectionString(PostgreSqlDataFeedSource feedSource) {
+                    return feedSource.getConnectionString();
+                }
+            });
     }
 
     /**

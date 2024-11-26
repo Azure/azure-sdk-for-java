@@ -73,9 +73,6 @@ public final class DetectionAnomalyFilterCondition implements JsonSerializable<D
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

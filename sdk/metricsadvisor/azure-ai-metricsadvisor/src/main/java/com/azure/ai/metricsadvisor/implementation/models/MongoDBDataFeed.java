@@ -5,7 +5,6 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,54 +20,14 @@ import java.util.UUID;
 @Fluent
 public final class MongoDBDataFeed extends DataFeedDetail {
     /*
-     * data source type
-     */
-    private DataSourceType dataSourceType = DataSourceType.MONGO_DB;
-
-    /*
      * The dataSourceParameter property.
      */
     private MongoDBParameter dataSourceParameter;
-
-    /*
-     * data feed created time
-     */
-    private OffsetDateTime createdTime;
-
-    /*
-     * data feed status
-     */
-    private EntityStatus status;
-
-    /*
-     * data feed creator
-     */
-    private String creator;
-
-    /*
-     * the query user is one of data feed administrator or not
-     */
-    private Boolean isAdmin;
-
-    /*
-     * data feed unique id
-     */
-    private UUID dataFeedId;
 
     /**
      * Creates an instance of MongoDBDataFeed class.
      */
     public MongoDBDataFeed() {
-    }
-
-    /**
-     * Get the dataSourceType property: data source type.
-     * 
-     * @return the dataSourceType value.
-     */
-    @Override
-    public DataSourceType getDataSourceType() {
-        return this.dataSourceType;
     }
 
     /**
@@ -89,56 +48,6 @@ public final class MongoDBDataFeed extends DataFeedDetail {
     public MongoDBDataFeed setDataSourceParameter(MongoDBParameter dataSourceParameter) {
         this.dataSourceParameter = dataSourceParameter;
         return this;
-    }
-
-    /**
-     * Get the createdTime property: data feed created time.
-     * 
-     * @return the createdTime value.
-     */
-    @Override
-    public OffsetDateTime getCreatedTime() {
-        return this.createdTime;
-    }
-
-    /**
-     * Get the status property: data feed status.
-     * 
-     * @return the status value.
-     */
-    @Override
-    public EntityStatus getStatus() {
-        return this.status;
-    }
-
-    /**
-     * Get the creator property: data feed creator.
-     * 
-     * @return the creator value.
-     */
-    @Override
-    public String getCreator() {
-        return this.creator;
-    }
-
-    /**
-     * Get the isAdmin property: the query user is one of data feed administrator or not.
-     * 
-     * @return the isAdmin value.
-     */
-    @Override
-    public Boolean isAdmin() {
-        return this.isAdmin;
-    }
-
-    /**
-     * Get the dataFeedId property: data feed unique id.
-     * 
-     * @return the dataFeedId value.
-     */
-    @Override
-    public UUID getDataFeedId() {
-        return this.dataFeedId;
     }
 
     /**
@@ -357,12 +266,11 @@ public final class MongoDBDataFeed extends DataFeedDetail {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("dataSourceType",
+            DataSourceType.MONGO_DB == null ? null : DataSourceType.MONGO_DB.toString());
         jsonWriter.writeStringField("dataFeedName", getDataFeedName());
         jsonWriter.writeStringField("granularityName",
             getGranularityName() == null ? null : getGranularityName().toString());
@@ -393,8 +301,6 @@ public final class MongoDBDataFeed extends DataFeedDetail {
             getAuthenticationType() == null ? null : getAuthenticationType().toString());
         jsonWriter.writeStringField("credentialId", getCredentialId());
         jsonWriter.writeJsonField("dataSourceParameter", this.dataSourceParameter);
-        jsonWriter.writeStringField("dataSourceType",
-            this.dataSourceType == null ? null : this.dataSourceType.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -404,7 +310,8 @@ public final class MongoDBDataFeed extends DataFeedDetail {
      * @param jsonReader The JsonReader being read.
      * @return An instance of MongoDBDataFeed if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
+     * polymorphic discriminator.
      * @throws IOException If an error occurs while reading the MongoDBDataFeed.
      */
     public static MongoDBDataFeed fromJson(JsonReader jsonReader) throws IOException {
@@ -414,7 +321,14 @@ public final class MongoDBDataFeed extends DataFeedDetail {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("dataFeedName".equals(fieldName)) {
+                if ("dataSourceType".equals(fieldName)) {
+                    String dataSourceType = reader.getString();
+                    if (!"MongoDB".equals(dataSourceType)) {
+                        throw new IllegalStateException(
+                            "'dataSourceType' was expected to be non-null and equal to 'MongoDB'. The found 'dataSourceType' was '"
+                                + dataSourceType + "'.");
+                    }
+                } else if ("dataFeedName".equals(fieldName)) {
                     deserializedMongoDBDataFeed.setDataFeedName(reader.getString());
                 } else if ("granularityName".equals(fieldName)) {
                     deserializedMongoDBDataFeed.setGranularityName(Granularity.fromString(reader.getString()));
@@ -422,11 +336,11 @@ public final class MongoDBDataFeed extends DataFeedDetail {
                     List<DataFeedMetric> metrics = reader.readArray(reader1 -> DataFeedMetric.fromJson(reader1));
                     deserializedMongoDBDataFeed.setMetrics(metrics);
                 } else if ("dataStartFrom".equals(fieldName)) {
-                    deserializedMongoDBDataFeed.setDataStartFrom(reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                    deserializedMongoDBDataFeed.setDataStartFrom(
+                        reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())));
                 } else if ("dataFeedId".equals(fieldName)) {
-                    deserializedMongoDBDataFeed.dataFeedId
-                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                    deserializedMongoDBDataFeed
+                        .setDataFeedId(reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString())));
                 } else if ("dataFeedDescription".equals(fieldName)) {
                     deserializedMongoDBDataFeed.setDataFeedDescription(reader.getString());
                 } else if ("granularityAmount".equals(fieldName)) {
@@ -468,14 +382,14 @@ public final class MongoDBDataFeed extends DataFeedDetail {
                     List<String> viewers = reader.readArray(reader1 -> reader1.getString());
                     deserializedMongoDBDataFeed.setViewers(viewers);
                 } else if ("isAdmin".equals(fieldName)) {
-                    deserializedMongoDBDataFeed.isAdmin = reader.getNullable(JsonReader::getBoolean);
+                    deserializedMongoDBDataFeed.setIsAdmin(reader.getNullable(JsonReader::getBoolean));
                 } else if ("creator".equals(fieldName)) {
-                    deserializedMongoDBDataFeed.creator = reader.getString();
+                    deserializedMongoDBDataFeed.setCreator(reader.getString());
                 } else if ("status".equals(fieldName)) {
-                    deserializedMongoDBDataFeed.status = EntityStatus.fromString(reader.getString());
+                    deserializedMongoDBDataFeed.setStatus(EntityStatus.fromString(reader.getString()));
                 } else if ("createdTime".equals(fieldName)) {
-                    deserializedMongoDBDataFeed.createdTime = reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                    deserializedMongoDBDataFeed.setCreatedTime(
+                        reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())));
                 } else if ("actionLinkTemplate".equals(fieldName)) {
                     deserializedMongoDBDataFeed.setActionLinkTemplate(reader.getString());
                 } else if ("authenticationType".equals(fieldName)) {
@@ -485,8 +399,6 @@ public final class MongoDBDataFeed extends DataFeedDetail {
                     deserializedMongoDBDataFeed.setCredentialId(reader.getString());
                 } else if ("dataSourceParameter".equals(fieldName)) {
                     deserializedMongoDBDataFeed.dataSourceParameter = MongoDBParameter.fromJson(reader);
-                } else if ("dataSourceType".equals(fieldName)) {
-                    deserializedMongoDBDataFeed.dataSourceType = DataSourceType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

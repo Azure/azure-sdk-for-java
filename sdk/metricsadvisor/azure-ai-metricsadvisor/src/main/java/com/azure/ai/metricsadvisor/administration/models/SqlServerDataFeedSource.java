@@ -32,16 +32,19 @@ public final class SqlServerDataFeedSource extends DataFeedSource {
     private final DataSourceAuthenticationType authType;
 
     static {
-        SqlServerDataFeedSourceAccessor.setAccessor(new SqlServerDataFeedSourceAccessor.Accessor() {
-            @Override
-            public String getConnectionString(SqlServerDataFeedSource feedSource) {
-                return feedSource.getConnectionString();
-            }
-        });
+        SqlServerDataFeedSourceAccessor.setAccessor(
+            new SqlServerDataFeedSourceAccessor.Accessor() {
+                @Override
+                public String getConnectionString(SqlServerDataFeedSource feedSource) {
+                    return feedSource.getConnectionString();
+                }
+            });
     }
 
-    private SqlServerDataFeedSource(final String connectionString, final String query, final String credentialId,
-        final DataSourceAuthenticationType authType) {
+    private SqlServerDataFeedSource(final String connectionString,
+                                    final String query,
+                                    final String credentialId,
+                                    final DataSourceAuthenticationType authType) {
         this.connectionString = connectionString;
         this.query = query;
         this.credentialId = credentialId;
@@ -56,7 +59,8 @@ public final class SqlServerDataFeedSource extends DataFeedSource {
      *
      * @return The SQLServerDataFeedSource.
      */
-    public static SqlServerDataFeedSource fromBasicCredential(final String connectionString, final String query) {
+    public static SqlServerDataFeedSource fromBasicCredential(final String connectionString,
+                                                              final String query) {
         return new SqlServerDataFeedSource(connectionString, query, null, DataSourceAuthenticationType.BASIC);
     }
 
@@ -69,8 +73,10 @@ public final class SqlServerDataFeedSource extends DataFeedSource {
      * @return The SQLServerDataFeedSource.
      */
     public static SqlServerDataFeedSource fromManagedIdentityCredential(final String connectionString,
-        final String query) {
-        return new SqlServerDataFeedSource(connectionString, query, null,
+                                                                        final String query) {
+        return new SqlServerDataFeedSource(connectionString,
+            query,
+            null,
             DataSourceAuthenticationType.MANAGED_IDENTITY);
     }
 
@@ -85,8 +91,10 @@ public final class SqlServerDataFeedSource extends DataFeedSource {
      * @return The SQLServerDataFeedSource.
      */
     public static SqlServerDataFeedSource fromConnectionStringCredential(final String query,
-        final String credentialId) {
-        return new SqlServerDataFeedSource(null, query, credentialId,
+                                                                         final String credentialId) {
+        return new SqlServerDataFeedSource(null,
+            query,
+            credentialId,
             DataSourceAuthenticationType.AZURE_SQL_CONNECTION_STRING);
     }
 
@@ -103,8 +111,11 @@ public final class SqlServerDataFeedSource extends DataFeedSource {
      * @return The SQLServerDataFeedSource.
      */
     public static SqlServerDataFeedSource fromServicePrincipalCredential(final String connectionString,
-        final String query, final String credentialId) {
-        return new SqlServerDataFeedSource(connectionString, query, credentialId,
+                                                                         final String query,
+                                                                         final String credentialId) {
+        return new SqlServerDataFeedSource(connectionString,
+            query,
+            credentialId,
             DataSourceAuthenticationType.SERVICE_PRINCIPAL);
     }
 
@@ -121,8 +132,11 @@ public final class SqlServerDataFeedSource extends DataFeedSource {
      * @return The SQLServerDataFeedSource.
      */
     public static SqlServerDataFeedSource fromServicePrincipalInKeyVaultCredential(final String connectionString,
-        final String query, final String credentialId) {
-        return new SqlServerDataFeedSource(connectionString, query, credentialId,
+                                                                                   final String query,
+                                                                                   final String credentialId) {
+        return new SqlServerDataFeedSource(connectionString,
+            query,
+            credentialId,
             DataSourceAuthenticationType.SERVICE_PRINCIPAL_IN_KV);
     }
 
