@@ -44,7 +44,7 @@ class SubnetImpl extends ChildResourceImpl<SubnetInner, NetworkImpl, Network>
     implements Subnet, Subnet.Definition<Network.DefinitionStages.WithCreateAndSubnet>,
     Subnet.UpdateDefinition<Network.Update>, Subnet.Update {
 
-    private final static ClientLogger LOGGER = new ClientLogger(SubnetImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SubnetImpl.class);
 
     SubnetImpl(SubnetInner inner, NetworkImpl parent) {
         super(inner, parent);
