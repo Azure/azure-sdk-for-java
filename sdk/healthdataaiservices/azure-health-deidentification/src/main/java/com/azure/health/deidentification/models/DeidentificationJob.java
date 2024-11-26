@@ -54,7 +54,7 @@ public final class DeidentificationJob implements JsonSerializable<Deidentificat
      * Current status of a job.
      */
     @Generated
-    private DeidentificationJobStatus status;
+    private OperationState status;
 
     /*
      * Error when job fails in it's entirety.
@@ -182,7 +182,7 @@ public final class DeidentificationJob implements JsonSerializable<Deidentificat
      * @return the status value.
      */
     @Generated
-    public DeidentificationJobStatus getStatus() {
+    public OperationState getStatus() {
         return this.status;
     }
 
@@ -269,7 +269,7 @@ public final class DeidentificationJob implements JsonSerializable<Deidentificat
             String name = null;
             SourceStorageLocation sourceLocation = null;
             TargetStorageLocation targetLocation = null;
-            DeidentificationJobStatus status = null;
+            OperationState status = null;
             OffsetDateTime lastUpdatedAt = null;
             OffsetDateTime createdAt = null;
             DeidentificationOperationType operation = null;
@@ -288,7 +288,7 @@ public final class DeidentificationJob implements JsonSerializable<Deidentificat
                 } else if ("targetLocation".equals(fieldName)) {
                     targetLocation = TargetStorageLocation.fromJson(reader);
                 } else if ("status".equals(fieldName)) {
-                    status = DeidentificationJobStatus.fromString(reader.getString());
+                    status = OperationState.fromString(reader.getString());
                 } else if ("lastUpdatedAt".equals(fieldName)) {
                     lastUpdatedAt = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));

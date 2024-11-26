@@ -68,7 +68,7 @@ public final class DeidentificationClient {
      *         redactionFormat: String (Optional)
      *         surrogateLocale: String (Optional)
      *     }
-     *     status: String(NotStarted/Running/Succeeded/PartialFailed/Failed/Canceled) (Required)
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
@@ -138,7 +138,7 @@ public final class DeidentificationClient {
      *         redactionFormat: String (Optional)
      *         surrogateLocale: String (Optional)
      *     }
-     *     status: String(NotStarted/Running/Succeeded/PartialFailed/Failed/Canceled) (Required)
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
@@ -188,7 +188,7 @@ public final class DeidentificationClient {
      *         redactionFormat: String (Optional)
      *         surrogateLocale: String (Optional)
      *     }
-     *     status: String(NotStarted/Running/Succeeded/PartialFailed/Failed/Canceled) (Required)
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
@@ -266,7 +266,7 @@ public final class DeidentificationClient {
      *         redactionFormat: String (Optional)
      *         surrogateLocale: String (Optional)
      *     }
-     *     status: String(NotStarted/Running/Succeeded/PartialFailed/Failed/Canceled) (Required)
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)
@@ -393,7 +393,7 @@ public final class DeidentificationClient {
      *         redactionFormat: String (Optional)
      *         surrogateLocale: String (Optional)
      *     }
-     *     status: String(NotStarted/Running/Succeeded/PartialFailed/Failed/Canceled) (Required)
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
      *     error (Optional): {
      *         code: String (Required)
      *         message: String (Required)

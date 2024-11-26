@@ -6,9 +6,9 @@ package com.azure.health.deidentification.generated;
 
 import com.azure.health.deidentification.models.DeidentificationJob;
 import com.azure.health.deidentification.models.DeidentificationJobCustomizationOptions;
-import com.azure.health.deidentification.models.DeidentificationJobStatus;
 import com.azure.health.deidentification.models.DeidentificationJobSummary;
 import com.azure.health.deidentification.models.DeidentificationOperationType;
+import com.azure.health.deidentification.models.OperationState;
 import com.azure.health.deidentification.models.SourceStorageLocation;
 import com.azure.health.deidentification.models.TargetStorageLocation;
 import org.junit.jupiter.api.Assertions;
@@ -47,7 +47,7 @@ public final class CancelADeIdentificationJobTests extends DeidentificationClien
         Assertions.assertNotNull(responseCustomizations);
         Assertions.assertEquals("[{type}]", responseCustomizations.getRedactionFormat());
         // verify property "status"
-        Assertions.assertEquals(DeidentificationJobStatus.CANCELED, response.getStatus());
+        Assertions.assertEquals(OperationState.CANCELED, response.getStatus());
         // verify property "lastUpdatedAt"
         Assertions.assertNotNull(response.getLastUpdatedAt());
         // verify property "createdAt"
