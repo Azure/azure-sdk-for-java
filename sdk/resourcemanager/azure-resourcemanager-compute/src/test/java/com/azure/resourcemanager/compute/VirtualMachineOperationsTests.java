@@ -86,6 +86,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -2056,8 +2057,11 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
 
     @Test
     public void canEnableWriteAccelerator() {
+        // required to be run on "Azure SDK Test Resources" subscription
+
         // ref https://learn.microsoft.com/azure/virtual-machines/how-to-enable-write-accelerator
         // 8 CPU likely to be the smallest VM that supports write accelerator on disks.
+        // only 1 disk is allowed to have write accelerator for M8
         final String vmSize = "Standard_M8-2ms";
         final int diskSize = 127;
 
@@ -2092,11 +2096,11 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withOSDiskStorageAccountType(StorageAccountTypes.PREMIUM_LRS)
             .withOSDiskDeleteOptions(DeleteOptions.DELETE)
             .withOSDiskCaching(CachingTypes.READ_ONLY)
-            .withOSDiskWriteAcceleratorEnabled(true)
+            .withOSDiskWriteAcceleratorEnabled(false)
             .withSize(vmSize)
             .create();
 
-        Assertions.assertTrue(vm.isOsDiskWriteAcceleratorEnabled());
+        Assertions.assertFalse(vm.isOsDiskWriteAcceleratorEnabled());
         Assertions.assertTrue(vm.dataDisks().values().iterator().next().isWriteAcceleratorEnabled());
 
         Disk dataDisk = computeManager.disks()
@@ -2105,19 +2109,21 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withExistingResourceGroup(rgName)
             .withData()
             .withSizeInGB(diskSize)
+            .withSku(DiskSkuTypes.PREMIUM_LRS)
             .create();
 
+        vm.update().withoutDataDisk(0).apply();
         vm.update()
-            .withOSDiskWriteAcceleratorEnabled(false)
-            .withoutDataDisk(0)
             .withDataDiskDefaultDeleteOptions(DeleteOptions.DETACH)
             .withDataDiskDefaultCachingType(CachingTypes.NONE)
             .withDataDiskDefaultWriteAcceleratorEnabled(true)
-            .withExistingDataDisk(dataDisk)
+            .withExistingDataDisk(dataDisk, 1, CachingTypes.NONE)
             .apply();
 
         Assertions.assertFalse(vm.isOsDiskWriteAcceleratorEnabled());
         Assertions.assertTrue(vm.dataDisks().values().iterator().next().isWriteAcceleratorEnabled());
+        Assertions.assertEquals(dataDisk.id().toLowerCase(Locale.ROOT),
+            vm.dataDisks().values().iterator().next().id().toLowerCase(Locale.ROOT));
 
         computeManager.virtualMachines().deleteById(vm.id());
 
@@ -2135,7 +2141,9 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             // data disk
             .withNewDataDisk(diskSize, 0, new VirtualMachineDiskOptions().withDeleteOptions(DeleteOptions.DELETE))
             // os disk
+            .withOSDiskStorageAccountType(StorageAccountTypes.PREMIUM_LRS)
             .withOSDiskDeleteOptions(DeleteOptions.DELETE)
+            .withOSDiskCaching(CachingTypes.NONE)
             .withSize(vmSize)
             .create();
 
@@ -2143,17 +2151,25 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
         Assertions.assertFalse(vm.dataDisks().values().iterator().next().isWriteAcceleratorEnabled());
 
         vm.update()
-            .withOSDiskWriteAcceleratorEnabled(true)
             .withoutDataDisk(0)
-            .withExistingDataDisk(dataDisk, diskSize, 0,
+            .withExistingDataDisk(dataDisk, diskSize, 1,
                 new VirtualMachineDiskOptions().withDeleteOptions(DeleteOptions.DETACH)
                     .withStorageAccountTypes(StorageAccountTypes.PREMIUM_LRS)
                     .withCachingTypes(CachingTypes.NONE)
                     .withWriteAcceleratorEnabled(true))
             .apply();
 
-        Assertions.assertTrue(vm.isOsDiskWriteAcceleratorEnabled());
+        Assertions.assertFalse(vm.isOsDiskWriteAcceleratorEnabled());
         Assertions.assertTrue(vm.dataDisks().values().iterator().next().isWriteAcceleratorEnabled());
+
+        vm.update().withoutDataDisk(1).apply();
+        vm.update().withOSDiskWriteAcceleratorEnabled(true).apply();
+
+        Assertions.assertTrue(vm.isOsDiskWriteAcceleratorEnabled());
+
+        vm.update().withOSDiskWriteAcceleratorEnabled(false).apply();
+
+        Assertions.assertFalse(vm.isOsDiskWriteAcceleratorEnabled());
     }
 
     // *********************************** helper methods ***********************************
