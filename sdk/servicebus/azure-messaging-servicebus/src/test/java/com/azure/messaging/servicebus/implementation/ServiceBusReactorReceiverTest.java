@@ -26,8 +26,9 @@ import org.junit.jupiter.api.TestInfo;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import reactor.core.publisher.EmitterProcessor;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Sinks;
+import reactor.core.publisher.FluxSink;
 import reactor.test.StepVerifier;
 
 import java.io.IOException;
@@ -55,10 +56,10 @@ class ServiceBusReactorReceiverTest {
     private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(60);
 
     private static final ClientLogger LOGGER = new ClientLogger(ServiceBusReactorReceiver.class);
-    private final Sinks.Many<EndpointState> endpointStates
-        = Sinks.many().replay().latestOrDefault(EndpointState.UNINITIALIZED);
+    private final EmitterProcessor<EndpointState> endpointStates = EmitterProcessor.create();
+    private final FluxSink<EndpointState> endpointStatesSink = endpointStates.sink();
 
-    private final Sinks.Many<Delivery> deliveries = Sinks.many().multicast().onBackpressureBuffer();
+    private final EmitterProcessor<Delivery> deliveryProcessor = EmitterProcessor.create();
 
     @Mock
     private Receiver receiver;
@@ -95,12 +96,12 @@ class ServiceBusReactorReceiverTest {
         ReceiveLinkHandler receiveLinkHandler = new ReceiveLinkHandler(CONNECTION_ID, "", LINK_NAME, "", null) {
             @Override
             public Flux<Delivery> getDeliveredMessages() {
-                return deliveries.asFlux();
+                return deliveryProcessor;
             }
 
             @Override
             public Flux<EndpointState> getEndpointStates() {
-                return endpointStates.asFlux();
+                return endpointStates;
             }
         };
 
@@ -136,7 +137,7 @@ class ServiceBusReactorReceiverTest {
 
         // Act & Assert
         StepVerifier.create(reactorReceiver.getSessionId())
-            .then(() -> endpointStates.emitNext(EndpointState.ACTIVE, Sinks.EmitFailureHandler.FAIL_FAST))
+            .then(() -> endpointStatesSink.next(EndpointState.ACTIVE))
             .expectNext(actualSession)
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
@@ -156,7 +157,7 @@ class ServiceBusReactorReceiverTest {
 
         // Act & Assert
         StepVerifier.create(reactorReceiver.getSessionId())
-            .then(() -> endpointStates.emitNext(EndpointState.ACTIVE, Sinks.EmitFailureHandler.FAIL_FAST))
+            .then(() -> endpointStatesSink.next(EndpointState.ACTIVE))
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
     }
@@ -179,7 +180,7 @@ class ServiceBusReactorReceiverTest {
 
         // Act & Assert
         StepVerifier.create(reactorReceiver.getSessionLockedUntil())
-            .then(() -> endpointStates.emitNext(EndpointState.ACTIVE, Sinks.EmitFailureHandler.FAIL_FAST))
+            .then(() -> endpointStatesSink.next(EndpointState.ACTIVE))
             .expectNext(lockedUntil)
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);

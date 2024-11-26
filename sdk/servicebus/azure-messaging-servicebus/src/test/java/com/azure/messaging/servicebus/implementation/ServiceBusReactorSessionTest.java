@@ -43,8 +43,9 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
-import reactor.core.publisher.Sinks;
+import reactor.core.publisher.ReplayProcessor;
 import reactor.test.StepVerifier;
 
 import java.io.IOException;
@@ -134,10 +135,10 @@ public class ServiceBusReactorSessionTest {
         doNothing().when(reactor).update(selectable);
         when(reactor.selectable()).thenReturn(selectable);
 
-        final Sinks.Many<EndpointState> endpointStates
-            = Sinks.many().replay().latestOrDefault(EndpointState.UNINITIALIZED);
-        when(handler.getEndpointStates()).thenReturn(endpointStates.asFlux());
-        endpointStates.emitNext(EndpointState.ACTIVE, Sinks.EmitFailureHandler.FAIL_FAST);
+        final ReplayProcessor<EndpointState> endpointStateReplayProcessor = ReplayProcessor.cacheLast();
+        when(handler.getEndpointStates()).thenReturn(endpointStateReplayProcessor);
+        FluxSink<EndpointState> sink1 = endpointStateReplayProcessor.sink();
+        sink1.next(EndpointState.ACTIVE);
         when(handler.getSessionName()).thenReturn(SESSION_NAME);
         when(handler.getHostname()).thenReturn(HOSTNAME);
         when(handler.getConnectionId()).thenReturn(CONNECTION_ID);
@@ -159,7 +160,7 @@ public class ServiceBusReactorSessionTest {
 
             @Override
             public Flux<EndpointState> getEndpointStates() {
-                return endpointStates.asFlux();
+                return endpointStateReplayProcessor;
             }
         };
         sendEntityLinkHandler = new SendLinkHandler("", "", "", "", null) {
@@ -175,7 +176,7 @@ public class ServiceBusReactorSessionTest {
 
             @Override
             public Flux<EndpointState> getEndpointStates() {
-                return endpointStates.asFlux();
+                return endpointStateReplayProcessor;
             }
         };
         when(handlerProvider.createSendLinkHandler(CONNECTION_ID, HOSTNAME, VIA_ENTITY_PATH_SENDER_LINK_NAME,
