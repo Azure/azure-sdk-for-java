@@ -30,7 +30,8 @@ public final class SecretsModelsUtils {
             return null;
         }
 
-        return new SecretAttributes().setEnabled(secretProperties.isEnabled())
+        return new SecretAttributes()
+            .setEnabled(secretProperties.isEnabled())
             .setNotBefore(secretProperties.getNotBefore())
             .setExpires(secretProperties.getExpiresOn());
     }
@@ -58,7 +59,8 @@ public final class SecretsModelsUtils {
     }
 
     private static void setSecretPropertiesValues(SecretBundle secretBundle, SecretProperties secretProperties) {
-        secretProperties.setContentType(secretBundle.getContentType()).setTags(secretBundle.getTags());
+        secretProperties.setContentType(secretBundle.getContentType())
+            .setTags(secretBundle.getTags());
 
         SecretPropertiesHelper.setId(secretProperties, secretBundle.getId());
         SecretPropertiesHelper.setKeyId(secretProperties, secretBundle.getKid());
@@ -92,7 +94,8 @@ public final class SecretsModelsUtils {
     }
 
     private static void setSecretPropertiesValues(SecretItem secretItem, SecretProperties secretProperties) {
-        secretProperties.setContentType(secretItem.getContentType()).setTags(secretItem.getTags());
+        secretProperties.setContentType(secretItem.getContentType())
+            .setTags(secretItem.getTags());
 
         SecretPropertiesHelper.setId(secretProperties, secretItem.getId());
         SecretPropertiesHelper.setManaged(secretProperties, secretItem.isManaged());
