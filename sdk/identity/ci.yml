@@ -79,7 +79,7 @@ extends:
               env:
                 ARM_OIDC_TOKEN: $(ARM_OIDC_TOKEN)
               inputs:
-                azureSubscription: azure-sdk-tests-public
+                azureSubscription: ${{ coalesce(cloud.value.ServiceConnection, lower(format('azure-sdk-tests-{0}', cloud.key))) }}
                 addSpnToEnvironment: true
                 scriptLocation: inlineScript
                 scriptType: pscore
@@ -95,7 +95,6 @@ extends:
           CloudConfig:
             Public:
               SubscriptionConfigurations:
-                - $(sub-config-azure-cloud-test-resources)
                 - $(sub-config-identity-test-resources)
           Artifacts:
             - name: azure-identity

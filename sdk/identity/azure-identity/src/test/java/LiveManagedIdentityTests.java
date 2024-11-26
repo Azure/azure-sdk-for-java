@@ -68,7 +68,7 @@ public class LiveManagedIdentityTests extends TestProxyTestBase {
     @Timeout(value = 15, unit = TimeUnit.MINUTES)
     @Retry(maxRetries = 3)
     public void testManagedIdentityAksDeployment() {
-
+        System.out.println("Environment: " + System.getenv("IDENTITY_ENVIRONMENT"));
         String os = System.getProperty("os.name");
         System.out.println("OS: " + os);
         //Setup Env
@@ -86,11 +86,11 @@ public class LiveManagedIdentityTests extends TestProxyTestBase {
         String azPath = runCommand(pathCommand, "az").trim();
         String kubectlPath = runCommand(pathCommand, "kubectl").trim();
 
-        runCommand(azPath, "login", "--federated-token", oidc, "--service-principal", "-u", spClientId, "--tenant",
-            tenantId);
-        runCommand(azPath, "account", "set", "--subscription", subscriptionId);
-        runCommand(azPath, "aks", "get-credentials", "--resource-group", resourceGroup, "--name", aksCluster,
-            "--overwrite-existing");
+//        runCommand(azPath, "login", "--federated-token", oidc, "--service-principal", "-u", spClientId, "--tenant",
+//            tenantId);
+//        runCommand(azPath, "account", "set", "--subscription", subscriptionId);
+//        runCommand(azPath, "aks", "get-credentials", "--resource-group", resourceGroup, "--name", aksCluster,
+//            "--overwrite-existing");
 
         String podOutput = runCommand(kubectlPath, "get", "pods", "-o", "jsonpath='{.items[0].metadata.name}'");
         assertTrue(podOutput.contains(podName), "Pod name not found in the output");
@@ -102,11 +102,12 @@ public class LiveManagedIdentityTests extends TestProxyTestBase {
 
     @Test
     @EnabledIfEnvironmentVariable(named = "AZURE_TEST_MODE", matches = "LIVE")
+    @EnabledIfEnvironmentVariable(named = "IDENTITY_ENVIRONMENT", matches = "AzureCloud")
     @EnabledIfSystemProperty(named = "os.name", matches = "Linux")
     @Timeout(value = 15, unit = TimeUnit.MINUTES)
     @Retry(maxRetries = 3)
     public void testManagedIdentityVmDeployment() {
-
+        System.out.println("Environment: " + System.getenv("IDENTITY_ENVIRONMENT"));
         String os = System.getProperty("os.name");
         System.out.println("OS: " + os);
         //Setup Env
@@ -155,8 +156,8 @@ public class LiveManagedIdentityTests extends TestProxyTestBase {
     public void callGraphWithClientSecret() {
         Configuration configuration = Configuration.getGlobalConfiguration().clone();
 
-        String multiTenantId = configuration.get("AZURE_IDENTITY_MULTI_TENANT_TENANT_ID");
-        String multiClientId = configuration.get("AZURE_IDENTITY_MULTI_TENANT_CLIENT_ID");
+        String multiTenantId = "54826b22-38d6-4fb2-bad9-b7b93a3e9c5a";
+        String multiClientId = "4fc2b07b-9d91-4a4a-86e0-96d5b9145075";
         String multiClientSecret = configuration.get("AZURE_IDENTITY_MULTI_TENANT_CLIENT_SECRET");
 
         ClientSecretCredential credential = new ClientSecretCredentialBuilder().tenantId(multiTenantId)
