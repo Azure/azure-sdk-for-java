@@ -297,6 +297,10 @@ public class FileShareTestBase extends TestProxyTestBase {
         return new ShareLeaseClientBuilder().shareClient(shareClient).leaseId(leaseId).buildClient();
     }
 
+    protected static ShareLeaseAsyncClient createLeaseClient(ShareAsyncClient shareClient, String leaseId) {
+        return new ShareLeaseClientBuilder().shareAsyncClient(shareClient).leaseId(leaseId).buildAsyncClient();
+    }
+
     protected ShareServiceClient getOAuthServiceClient(ShareServiceClientBuilder builder) {
         if (builder == null) {
             builder = new ShareServiceClientBuilder();

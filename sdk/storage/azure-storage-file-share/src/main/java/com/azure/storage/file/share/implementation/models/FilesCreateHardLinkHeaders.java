@@ -121,7 +121,7 @@ public final class FilesCreateHardLinkHeaders {
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of FilesCreateHardLinkHeaders class.
-     * 
+     *
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public FilesCreateHardLinkHeaders(HttpHeaders rawHeaders) {
@@ -130,7 +130,7 @@ public final class FilesCreateHardLinkHeaders {
         this.xMsFileId = rawHeaders.getValue(X_MS_FILE_ID);
         String xMsFileCreationTime = rawHeaders.getValue(X_MS_FILE_CREATION_TIME);
         if (xMsFileCreationTime != null) {
-            this.xMsFileCreationTime = new DateTimeRfc1123(xMsFileCreationTime);
+            this.xMsFileCreationTime = new DateTimeRfc1123(OffsetDateTime.parse(xMsFileCreationTime));
         }
         String xMsFileFileType = rawHeaders.getValue(X_MS_FILE_FILE_TYPE);
         if (xMsFileFileType != null) {
@@ -152,13 +152,13 @@ public final class FilesCreateHardLinkHeaders {
         }
         String xMsFileChangeTime = rawHeaders.getValue(X_MS_FILE_CHANGE_TIME);
         if (xMsFileChangeTime != null) {
-            this.xMsFileChangeTime = new DateTimeRfc1123(xMsFileChangeTime);
+            this.xMsFileChangeTime = new DateTimeRfc1123(OffsetDateTime.parse(xMsFileChangeTime));
         }
         this.xMsFileParentId = rawHeaders.getValue(X_MS_FILE_PARENT_ID);
         this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
         String xMsFileLastWriteTime = rawHeaders.getValue(X_MS_FILE_LAST_WRITE_TIME);
         if (xMsFileLastWriteTime != null) {
-            this.xMsFileLastWriteTime = new DateTimeRfc1123(xMsFileLastWriteTime);
+            this.xMsFileLastWriteTime = new DateTimeRfc1123(OffsetDateTime.parse(xMsFileLastWriteTime));
         }
         this.xMsClientRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_CLIENT_REQUEST_ID);
         this.xMsOwner = rawHeaders.getValue(X_MS_OWNER);
@@ -166,7 +166,7 @@ public final class FilesCreateHardLinkHeaders {
 
     /**
      * Get the xMsGroup property: The x-ms-group property.
-     * 
+     *
      * @return the xMsGroup value.
      */
     public String getXMsGroup() {
@@ -175,7 +175,7 @@ public final class FilesCreateHardLinkHeaders {
 
     /**
      * Set the xMsGroup property: The x-ms-group property.
-     * 
+     *
      * @param xMsGroup the xMsGroup value to set.
      * @return the FilesCreateHardLinkHeaders object itself.
      */
@@ -186,7 +186,7 @@ public final class FilesCreateHardLinkHeaders {
 
     /**
      * Get the xMsVersion property: The x-ms-version property.
-     * 
+     *
      * @return the xMsVersion value.
      */
     public String getXMsVersion() {
@@ -195,7 +195,7 @@ public final class FilesCreateHardLinkHeaders {
 
     /**
      * Set the xMsVersion property: The x-ms-version property.
-     * 
+     *
      * @param xMsVersion the xMsVersion value to set.
      * @return the FilesCreateHardLinkHeaders object itself.
      */
@@ -206,7 +206,7 @@ public final class FilesCreateHardLinkHeaders {
 
     /**
      * Get the xMsFileId property: The x-ms-file-id property.
-     * 
+     *
      * @return the xMsFileId value.
      */
     public String getXMsFileId() {
@@ -215,7 +215,7 @@ public final class FilesCreateHardLinkHeaders {
 
     /**
      * Set the xMsFileId property: The x-ms-file-id property.
-     * 
+     *
      * @param xMsFileId the xMsFileId value to set.
      * @return the FilesCreateHardLinkHeaders object itself.
      */
@@ -226,7 +226,7 @@ public final class FilesCreateHardLinkHeaders {
 
     /**
      * Get the xMsFileCreationTime property: The x-ms-file-creation-time property.
-     * 
+     *
      * @return the xMsFileCreationTime value.
      */
     public OffsetDateTime getXMsFileCreationTime() {
@@ -238,7 +238,7 @@ public final class FilesCreateHardLinkHeaders {
 
     /**
      * Set the xMsFileCreationTime property: The x-ms-file-creation-time property.
-     * 
+     *
      * @param xMsFileCreationTime the xMsFileCreationTime value to set.
      * @return the FilesCreateHardLinkHeaders object itself.
      */
@@ -253,7 +253,7 @@ public final class FilesCreateHardLinkHeaders {
 
     /**
      * Get the xMsFileFileType property: The x-ms-file-file-type property.
-     * 
+     *
      * @return the xMsFileFileType value.
      */
     public NfsFileType getXMsFileFileType() {
@@ -262,7 +262,7 @@ public final class FilesCreateHardLinkHeaders {
 
     /**
      * Set the xMsFileFileType property: The x-ms-file-file-type property.
-     * 
+     *
      * @param xMsFileFileType the xMsFileFileType value to set.
      * @return the FilesCreateHardLinkHeaders object itself.
      */
@@ -273,7 +273,7 @@ public final class FilesCreateHardLinkHeaders {
 
     /**
      * Get the lastModified property: The Last-Modified property.
-     * 
+     *
      * @return the lastModified value.
      */
     public OffsetDateTime getLastModified() {
@@ -285,7 +285,7 @@ public final class FilesCreateHardLinkHeaders {
 
     /**
      * Set the lastModified property: The Last-Modified property.
-     * 
+     *
      * @param lastModified the lastModified value to set.
      * @return the FilesCreateHardLinkHeaders object itself.
      */
@@ -300,7 +300,7 @@ public final class FilesCreateHardLinkHeaders {
 
     /**
      * Get the date property: The Date property.
-     * 
+     *
      * @return the date value.
      */
     public OffsetDateTime getDate() {
@@ -312,7 +312,7 @@ public final class FilesCreateHardLinkHeaders {
 
     /**
      * Set the date property: The Date property.
-     * 
+     *
      * @param date the date value to set.
      * @return the FilesCreateHardLinkHeaders object itself.
      */
@@ -327,7 +327,7 @@ public final class FilesCreateHardLinkHeaders {
 
     /**
      * Get the xMsMode property: The x-ms-mode property.
-     * 
+     *
      * @return the xMsMode value.
      */
     public String getXMsMode() {
@@ -336,7 +336,7 @@ public final class FilesCreateHardLinkHeaders {
 
     /**
      * Set the xMsMode property: The x-ms-mode property.
-     * 
+     *
      * @param xMsMode the xMsMode value to set.
      * @return the FilesCreateHardLinkHeaders object itself.
      */
@@ -347,7 +347,7 @@ public final class FilesCreateHardLinkHeaders {
 
     /**
      * Get the eTag property: The ETag property.
-     * 
+     *
      * @return the eTag value.
      */
     public String getETag() {
@@ -356,7 +356,7 @@ public final class FilesCreateHardLinkHeaders {
 
     /**
      * Set the eTag property: The ETag property.
-     * 
+     *
      * @param eTag the eTag value to set.
      * @return the FilesCreateHardLinkHeaders object itself.
      */
@@ -367,7 +367,7 @@ public final class FilesCreateHardLinkHeaders {
 
     /**
      * Get the xMsLinkCount property: The x-ms-link-count property.
-     * 
+     *
      * @return the xMsLinkCount value.
      */
     public Long getXMsLinkCount() {
@@ -376,7 +376,7 @@ public final class FilesCreateHardLinkHeaders {
 
     /**
      * Set the xMsLinkCount property: The x-ms-link-count property.
-     * 
+     *
      * @param xMsLinkCount the xMsLinkCount value to set.
      * @return the FilesCreateHardLinkHeaders object itself.
      */
@@ -387,7 +387,7 @@ public final class FilesCreateHardLinkHeaders {
 
     /**
      * Get the xMsFileChangeTime property: The x-ms-file-change-time property.
-     * 
+     *
      * @return the xMsFileChangeTime value.
      */
     public OffsetDateTime getXMsFileChangeTime() {
@@ -399,7 +399,7 @@ public final class FilesCreateHardLinkHeaders {
 
     /**
      * Set the xMsFileChangeTime property: The x-ms-file-change-time property.
-     * 
+     *
      * @param xMsFileChangeTime the xMsFileChangeTime value to set.
      * @return the FilesCreateHardLinkHeaders object itself.
      */
@@ -414,7 +414,7 @@ public final class FilesCreateHardLinkHeaders {
 
     /**
      * Get the xMsFileParentId property: The x-ms-file-parent-id property.
-     * 
+     *
      * @return the xMsFileParentId value.
      */
     public String getXMsFileParentId() {
@@ -423,7 +423,7 @@ public final class FilesCreateHardLinkHeaders {
 
     /**
      * Set the xMsFileParentId property: The x-ms-file-parent-id property.
-     * 
+     *
      * @param xMsFileParentId the xMsFileParentId value to set.
      * @return the FilesCreateHardLinkHeaders object itself.
      */
@@ -434,7 +434,7 @@ public final class FilesCreateHardLinkHeaders {
 
     /**
      * Get the xMsRequestId property: The x-ms-request-id property.
-     * 
+     *
      * @return the xMsRequestId value.
      */
     public String getXMsRequestId() {
@@ -443,7 +443,7 @@ public final class FilesCreateHardLinkHeaders {
 
     /**
      * Set the xMsRequestId property: The x-ms-request-id property.
-     * 
+     *
      * @param xMsRequestId the xMsRequestId value to set.
      * @return the FilesCreateHardLinkHeaders object itself.
      */
@@ -454,7 +454,7 @@ public final class FilesCreateHardLinkHeaders {
 
     /**
      * Get the xMsFileLastWriteTime property: The x-ms-file-last-write-time property.
-     * 
+     *
      * @return the xMsFileLastWriteTime value.
      */
     public OffsetDateTime getXMsFileLastWriteTime() {
@@ -466,7 +466,7 @@ public final class FilesCreateHardLinkHeaders {
 
     /**
      * Set the xMsFileLastWriteTime property: The x-ms-file-last-write-time property.
-     * 
+     *
      * @param xMsFileLastWriteTime the xMsFileLastWriteTime value to set.
      * @return the FilesCreateHardLinkHeaders object itself.
      */
@@ -481,7 +481,7 @@ public final class FilesCreateHardLinkHeaders {
 
     /**
      * Get the xMsClientRequestId property: The x-ms-client-request-id property.
-     * 
+     *
      * @return the xMsClientRequestId value.
      */
     public String getXMsClientRequestId() {
@@ -490,7 +490,7 @@ public final class FilesCreateHardLinkHeaders {
 
     /**
      * Set the xMsClientRequestId property: The x-ms-client-request-id property.
-     * 
+     *
      * @param xMsClientRequestId the xMsClientRequestId value to set.
      * @return the FilesCreateHardLinkHeaders object itself.
      */
@@ -501,7 +501,7 @@ public final class FilesCreateHardLinkHeaders {
 
     /**
      * Get the xMsOwner property: The x-ms-owner property.
-     * 
+     *
      * @return the xMsOwner value.
      */
     public String getXMsOwner() {
@@ -510,7 +510,7 @@ public final class FilesCreateHardLinkHeaders {
 
     /**
      * Set the xMsOwner property: The x-ms-owner property.
-     * 
+     *
      * @param xMsOwner the xMsOwner value to set.
      * @return the FilesCreateHardLinkHeaders object itself.
      */

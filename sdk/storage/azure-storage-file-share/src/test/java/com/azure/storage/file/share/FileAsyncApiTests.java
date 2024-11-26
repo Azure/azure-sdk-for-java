@@ -43,12 +43,15 @@ import com.azure.storage.file.share.models.ShareStorageException;
 import com.azure.storage.file.share.models.ShareTokenIntent;
 import com.azure.storage.file.share.options.ShareCreateOptions;
 import com.azure.storage.file.share.options.ShareFileCopyOptions;
+import com.azure.storage.file.share.options.ShareFileCreateHardLinkOptions;
 import com.azure.storage.file.share.options.ShareFileCreateOptions;
 import com.azure.storage.file.share.options.ShareFileListRangesDiffOptions;
 import com.azure.storage.file.share.options.ShareFileRenameOptions;
 import com.azure.storage.file.share.options.ShareFileSetPropertiesOptions;
 import com.azure.storage.file.share.sas.ShareFileSasPermission;
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
+import com.azure.storage.file.share.specialized.ShareLeaseAsyncClient;
+import com.azure.storage.file.share.specialized.ShareLeaseClient;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -685,7 +688,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
     @Test
     public void uploadRangeFromURLSourceErrorAndStatusCode() {
         ShareFileAsyncClient destinationClient = shareAsyncClient.getFileClient(generatePathName());
-    
+
         StepVerifier.create(primaryFileAsyncClient.create(1024).then(destinationClient.create(1024))
             .then(destinationClient.uploadRangeFromUrl(5, 0, 0, primaryFileAsyncClient.getFileUrl())))
             .verifyErrorSatisfies(r -> {
@@ -875,10 +878,10 @@ public class FileAsyncApiTests extends FileShareTestBase {
     @Test
     public void startCopySourceErrorAndStatusCode() {
         primaryFileAsyncClient.create(1024);
-    
+
         PollerFlux<ShareFileCopyInfo, Void> poller = setPlaybackPollerFluxPollInterval(
             primaryFileAsyncClient.beginCopy("https://error.file.core.windows.net/garbage", new ShareFileCopyOptions(), null));
-    
+
         StepVerifier.create(primaryFileAsyncClient.create(1024).thenMany(poller))
             .verifyErrorSatisfies(r -> {
                 ShareStorageException e = assertInstanceOf(ShareStorageException.class, r);
@@ -1932,6 +1935,53 @@ public class FileAsyncApiTests extends FileShareTestBase {
             assertEquals(r.getT3(), r.getT1().getNfsProperties().getGroup());
             assertEquals(r.getT4(), r.getT1().getNfsProperties().getFileMode());
         }).verifyComplete();
+
+        //cleanup
+        premiumFileServiceAsyncClient.getShareAsyncClient(shareName).delete().block();
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2025-05-05")
+    @Test
+    public void createHardLink() {
+        ShareProtocols enabledProtocol = ModelHelper.parseShareProtocols("NFS");
+        String shareName = generateShareName();
+
+        Mono<Void> response = premiumFileServiceAsyncClient
+            .createShareWithResponse(shareName, new ShareCreateOptions().setProtocols(enabledProtocol))
+            .flatMap(r -> {
+                ShareAsyncClient premiumShareClient = r.getValue();
+                ShareFileAsyncClient source = premiumShareClient.getFileClient(generatePathName());
+
+                String leaseId = testResourceNamer.randomUuid();
+                ShareLeaseAsyncClient leaseClient = createLeaseClient(premiumShareClient, leaseId);
+
+                return source.create(1024).then(leaseClient.acquireLease()).flatMap(lease -> {
+                    ShareFileAsyncClient hardLink = premiumShareClient.getFileClient(generatePathName() + "hardlink");
+                    ShareFileCreateHardLinkOptions options = new ShareFileCreateHardLinkOptions(source.getFilePath())
+                        .setRequestConditions(new ShareRequestConditions().setLeaseId(lease));
+                    return hardLink.createHardLinkWithResponse(options).flatMap(res -> {
+                        ShareFileInfo info = res.getValue();
+                        assertEquals(NfsFileType.REGULAR, info.getNfsProperties().getFileType());
+                        assertEquals("0", info.getNfsProperties().getOwner());
+                        assertEquals("0", info.getNfsProperties().getGroup());
+                        assertEquals("0664", info.getNfsProperties().getFileMode());
+                        assertEquals(2, info.getNfsProperties().getLinkCount());
+
+                        assertNotNull(info.getSmbProperties().getFileCreationTime());
+                        assertNotNull(info.getSmbProperties().getFileLastWriteTime());
+                        assertNotNull(info.getSmbProperties().getFileChangeTime());
+                        assertNotNull(info.getSmbProperties().getFileId());
+                        assertNotNull(info.getSmbProperties().getParentId());
+
+                        assertNull(info.getSmbProperties().getFilePermissionKey());
+                        assertNull(info.getSmbProperties().getNtfsFileAttributes());
+                        //cleanup
+                        return leaseClient.releaseLease();
+                    });
+                });
+            });
+
+        StepVerifier.create(response).verifyComplete();
 
         //cleanup
         premiumFileServiceAsyncClient.getShareAsyncClient(shareName).delete().block();

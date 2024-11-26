@@ -3160,5 +3160,4 @@ class FileApiTests extends FileShareTestBase {
         leaseClient.releaseLease();
         premiumShareClient.delete();
     }
-
 }
