@@ -41,7 +41,7 @@ public class CosmosExceptionUtils {
         if (unwrappedThrowable instanceof CosmosException cosmosException) {
             CosmosUtils.fillAndProcessCosmosExceptionDiagnostics(responseDiagnosticsProcessor, cosmosException);
 
-            switch (((CosmosException) unwrappedThrowable).getStatusCode()) {
+            switch (cosmosException.getStatusCode()) {
                 case HttpConstants.StatusCodes.BADREQUEST -> throw new CosmosBadRequestException(message, unwrappedThrowable);
                 case HttpConstants.StatusCodes.CONFLICT -> throw new CosmosConflictException(message, unwrappedThrowable);
                 case HttpConstants.StatusCodes.FORBIDDEN -> throw new CosmosForbiddenException(message, unwrappedThrowable);
