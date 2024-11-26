@@ -54,11 +54,7 @@ final class PollingUtils {
                 break;
 
             case "NOT_VALIDATED":
-                if ("JMX_FILE".equalsIgnoreCase(fileType)) {
-                    lroStatus = LongRunningOperationStatus.NOT_STARTED;
-                } else {
-                    lroStatus = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
-                }
+                lroStatus = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
 
                 break;
 
