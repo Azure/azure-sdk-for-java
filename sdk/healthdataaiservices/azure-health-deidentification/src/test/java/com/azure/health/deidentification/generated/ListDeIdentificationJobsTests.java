@@ -5,13 +5,7 @@
 package com.azure.health.deidentification.generated;
 
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.health.deidentification.models.DeidentificationJob;
-import com.azure.health.deidentification.models.DeidentificationJobCustomizationOptions;
-import com.azure.health.deidentification.models.DeidentificationJobStatus;
-import com.azure.health.deidentification.models.DeidentificationJobSummary;
-import com.azure.health.deidentification.models.DeidentificationOperationType;
-import com.azure.health.deidentification.models.SourceStorageLocation;
-import com.azure.health.deidentification.models.TargetStorageLocation;
+import com.azure.health.deidentification.models.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -50,7 +44,7 @@ public final class ListDeIdentificationJobsTests extends DeidentificationClientT
         Assertions.assertNotNull(firstItemCustomizations);
         Assertions.assertEquals("[{type}]", firstItemCustomizations.getRedactionFormat());
         // verify property "status"
-        Assertions.assertEquals(DeidentificationJobStatus.SUCCEEDED, firstItem.getStatus());
+        Assertions.assertEquals(OperationState.SUCCEEDED, firstItem.getStatus());
         // verify property "lastUpdatedAt"
         Assertions.assertNotNull(firstItem.getLastUpdatedAt());
         // verify property "createdAt"
