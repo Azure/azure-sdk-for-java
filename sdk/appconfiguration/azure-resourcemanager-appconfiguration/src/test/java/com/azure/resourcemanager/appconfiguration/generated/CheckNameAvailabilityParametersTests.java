@@ -13,19 +13,19 @@ public final class CheckNameAvailabilityParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CheckNameAvailabilityParameters model = BinaryData
-            .fromString("{\"name\":\"hmuouqfprwzwbn\",\"type\":\"Microsoft.AppConfiguration/configurationStores\"}")
+            .fromString("{\"name\":\"yoqpsoaccta\",\"type\":\"Microsoft.AppConfiguration/configurationStores\"}")
             .toObject(CheckNameAvailabilityParameters.class);
-        Assertions.assertEquals("hmuouqfprwzwbn", model.name());
+        Assertions.assertEquals("yoqpsoaccta", model.name());
         Assertions.assertEquals(ConfigurationResourceType.MICROSOFT_APP_CONFIGURATION_CONFIGURATION_STORES,
             model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CheckNameAvailabilityParameters model = new CheckNameAvailabilityParameters().withName("hmuouqfprwzwbn")
+        CheckNameAvailabilityParameters model = new CheckNameAvailabilityParameters().withName("yoqpsoaccta")
             .withType(ConfigurationResourceType.MICROSOFT_APP_CONFIGURATION_CONFIGURATION_STORES);
         model = BinaryData.fromObject(model).toObject(CheckNameAvailabilityParameters.class);
-        Assertions.assertEquals("hmuouqfprwzwbn", model.name());
+        Assertions.assertEquals("yoqpsoaccta", model.name());
         Assertions.assertEquals(ConfigurationResourceType.MICROSOFT_APP_CONFIGURATION_CONFIGURATION_STORES,
             model.type());
     }

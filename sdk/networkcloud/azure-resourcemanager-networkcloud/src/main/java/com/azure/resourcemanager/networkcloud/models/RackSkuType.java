@@ -5,23 +5,30 @@
 package com.azure.resourcemanager.networkcloud.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The type of the rack. */
+/**
+ * The type of the rack.
+ */
 public final class RackSkuType extends ExpandableStringEnum<RackSkuType> {
-    /** Static value Aggregator for RackSkuType. */
+    /**
+     * Static value Aggregator for RackSkuType.
+     */
     public static final RackSkuType AGGREGATOR = fromString("Aggregator");
 
-    /** Static value Compute for RackSkuType. */
+    /**
+     * Static value Compute for RackSkuType.
+     */
     public static final RackSkuType COMPUTE = fromString("Compute");
 
-    /** Static value Single for RackSkuType. */
+    /**
+     * Static value Single for RackSkuType.
+     */
     public static final RackSkuType SINGLE = fromString("Single");
 
     /**
      * Creates a new instance of RackSkuType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +37,17 @@ public final class RackSkuType extends ExpandableStringEnum<RackSkuType> {
 
     /**
      * Creates or finds a RackSkuType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding RackSkuType.
      */
-    @JsonCreator
     public static RackSkuType fromString(String name) {
         return fromString(name, RackSkuType.class);
     }
 
     /**
      * Gets known RackSkuType values.
-     *
+     * 
      * @return known RackSkuType values.
      */
     public static Collection<RackSkuType> values() {

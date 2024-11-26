@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.networkcloud.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.networkcloud.fluent.models.VolumeInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** VolumeList represents a list of volumes. */
+/**
+ * VolumeList represents a list of volumes.
+ */
 @Fluent
-public final class VolumeList {
+public final class VolumeList implements JsonSerializable<VolumeList> {
     /*
      * The link used to get the next page of operations.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /*
      * The list of volumes.
      */
-    @JsonProperty(value = "value")
     private List<VolumeInner> value;
 
-    /** Creates an instance of VolumeList class. */
+    /**
+     * Creates an instance of VolumeList class.
+     */
     public VolumeList() {
     }
 
     /**
      * Get the nextLink property: The link used to get the next page of operations.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -39,7 +45,7 @@ public final class VolumeList {
 
     /**
      * Set the nextLink property: The link used to get the next page of operations.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the VolumeList object itself.
      */
@@ -50,7 +56,7 @@ public final class VolumeList {
 
     /**
      * Get the value property: The list of volumes.
-     *
+     * 
      * @return the value value.
      */
     public List<VolumeInner> value() {
@@ -59,7 +65,7 @@ public final class VolumeList {
 
     /**
      * Set the value property: The list of volumes.
-     *
+     * 
      * @param value the value value to set.
      * @return the VolumeList object itself.
      */
@@ -70,12 +76,52 @@ public final class VolumeList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VolumeList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VolumeList if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the VolumeList.
+     */
+    public static VolumeList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VolumeList deserializedVolumeList = new VolumeList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("nextLink".equals(fieldName)) {
+                    deserializedVolumeList.nextLink = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    List<VolumeInner> value = reader.readArray(reader1 -> VolumeInner.fromJson(reader1));
+                    deserializedVolumeList.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVolumeList;
+        });
     }
 }

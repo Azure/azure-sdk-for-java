@@ -8,48 +8,60 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.networkcloud.models.ClusterMetricsConfigurationDetailedStatus;
 import com.azure.resourcemanager.networkcloud.models.ClusterMetricsConfigurationProvisioningState;
 import com.azure.resourcemanager.networkcloud.models.ExtendedLocation;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** ClusterMetricsConfiguration represents the metrics configuration of an on-premises Network Cloud cluster. */
+/**
+ * ClusterMetricsConfiguration represents the metrics configuration of an on-premises Network Cloud cluster.
+ */
 @Fluent
 public final class ClusterMetricsConfigurationInner extends Resource {
     /*
-     * ExtendedLocation represents the Azure custom location where the resource will be created.
-     *
      * The extended location of the cluster associated with the resource.
      */
-    @JsonProperty(value = "extendedLocation", required = true)
     private ExtendedLocation extendedLocation;
 
     /*
-     * ClusterMetricsConfigurationProperties represents the properties of metrics configuration for the cluster.
-     *
      * The list of the resource properties.
      */
-    @JsonProperty(value = "properties", required = true)
     private ClusterMetricsConfigurationProperties innerProperties = new ClusterMetricsConfigurationProperties();
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of ClusterMetricsConfigurationInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of ClusterMetricsConfigurationInner class.
+     */
     public ClusterMetricsConfigurationInner() {
     }
 
     /**
-     * Get the extendedLocation property: ExtendedLocation represents the Azure custom location where the resource will
-     * be created.
-     *
-     * <p>The extended location of the cluster associated with the resource.
-     *
+     * Get the extendedLocation property: The extended location of the cluster associated with the resource.
+     * 
      * @return the extendedLocation value.
      */
     public ExtendedLocation extendedLocation() {
@@ -57,11 +69,8 @@ public final class ClusterMetricsConfigurationInner extends Resource {
     }
 
     /**
-     * Set the extendedLocation property: ExtendedLocation represents the Azure custom location where the resource will
-     * be created.
-     *
-     * <p>The extended location of the cluster associated with the resource.
-     *
+     * Set the extendedLocation property: The extended location of the cluster associated with the resource.
+     * 
      * @param extendedLocation the extendedLocation value to set.
      * @return the ClusterMetricsConfigurationInner object itself.
      */
@@ -71,11 +80,8 @@ public final class ClusterMetricsConfigurationInner extends Resource {
     }
 
     /**
-     * Get the innerProperties property: ClusterMetricsConfigurationProperties represents the properties of metrics
-     * configuration for the cluster.
-     *
-     * <p>The list of the resource properties.
-     *
+     * Get the innerProperties property: The list of the resource properties.
+     * 
      * @return the innerProperties value.
      */
     private ClusterMetricsConfigurationProperties innerProperties() {
@@ -84,21 +90,55 @@ public final class ClusterMetricsConfigurationInner extends Resource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ClusterMetricsConfigurationInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ClusterMetricsConfigurationInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -107,7 +147,7 @@ public final class ClusterMetricsConfigurationInner extends Resource {
 
     /**
      * Get the collectionInterval property: The interval in minutes by which metrics will be collected.
-     *
+     * 
      * @return the collectionInterval value.
      */
     public long collectionInterval() {
@@ -116,7 +156,7 @@ public final class ClusterMetricsConfigurationInner extends Resource {
 
     /**
      * Set the collectionInterval property: The interval in minutes by which metrics will be collected.
-     *
+     * 
      * @param collectionInterval the collectionInterval value to set.
      * @return the ClusterMetricsConfigurationInner object itself.
      */
@@ -130,7 +170,7 @@ public final class ClusterMetricsConfigurationInner extends Resource {
 
     /**
      * Get the detailedStatus property: The more detailed status of the metrics configuration.
-     *
+     * 
      * @return the detailedStatus value.
      */
     public ClusterMetricsConfigurationDetailedStatus detailedStatus() {
@@ -139,7 +179,7 @@ public final class ClusterMetricsConfigurationInner extends Resource {
 
     /**
      * Get the detailedStatusMessage property: The descriptive message about the current detailed status.
-     *
+     * 
      * @return the detailedStatusMessage value.
      */
     public String detailedStatusMessage() {
@@ -149,7 +189,7 @@ public final class ClusterMetricsConfigurationInner extends Resource {
     /**
      * Get the disabledMetrics property: The list of metrics that are available for the cluster but disabled at the
      * moment.
-     *
+     * 
      * @return the disabledMetrics value.
      */
     public List<String> disabledMetrics() {
@@ -159,7 +199,7 @@ public final class ClusterMetricsConfigurationInner extends Resource {
     /**
      * Get the enabledMetrics property: The list of metric names that have been chosen to be enabled in addition to the
      * core set of enabled metrics.
-     *
+     * 
      * @return the enabledMetrics value.
      */
     public List<String> enabledMetrics() {
@@ -169,7 +209,7 @@ public final class ClusterMetricsConfigurationInner extends Resource {
     /**
      * Set the enabledMetrics property: The list of metric names that have been chosen to be enabled in addition to the
      * core set of enabled metrics.
-     *
+     * 
      * @param enabledMetrics the enabledMetrics value to set.
      * @return the ClusterMetricsConfigurationInner object itself.
      */
@@ -183,7 +223,7 @@ public final class ClusterMetricsConfigurationInner extends Resource {
 
     /**
      * Get the provisioningState property: The provisioning state of the metrics configuration.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ClusterMetricsConfigurationProvisioningState provisioningState() {
@@ -192,23 +232,82 @@ public final class ClusterMetricsConfigurationInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (extendedLocation() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property extendedLocation in model ClusterMetricsConfigurationInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property extendedLocation in model ClusterMetricsConfigurationInner"));
         } else {
             extendedLocation().validate();
         }
         if (innerProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property innerProperties in model ClusterMetricsConfigurationInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model ClusterMetricsConfigurationInner"));
         } else {
             innerProperties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ClusterMetricsConfigurationInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("extendedLocation", this.extendedLocation);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ClusterMetricsConfigurationInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ClusterMetricsConfigurationInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ClusterMetricsConfigurationInner.
+     */
+    public static ClusterMetricsConfigurationInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ClusterMetricsConfigurationInner deserializedClusterMetricsConfigurationInner
+                = new ClusterMetricsConfigurationInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedClusterMetricsConfigurationInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedClusterMetricsConfigurationInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedClusterMetricsConfigurationInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedClusterMetricsConfigurationInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedClusterMetricsConfigurationInner.withTags(tags);
+                } else if ("extendedLocation".equals(fieldName)) {
+                    deserializedClusterMetricsConfigurationInner.extendedLocation = ExtendedLocation.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedClusterMetricsConfigurationInner.innerProperties
+                        = ClusterMetricsConfigurationProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedClusterMetricsConfigurationInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedClusterMetricsConfigurationInner;
+        });
+    }
 }

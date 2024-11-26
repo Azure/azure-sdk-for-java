@@ -36,25 +36,33 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.networkcloud.fluent.ClustersClient;
 import com.azure.resourcemanager.networkcloud.fluent.models.ClusterInner;
 import com.azure.resourcemanager.networkcloud.fluent.models.OperationStatusResultInner;
+import com.azure.resourcemanager.networkcloud.models.ClusterContinueUpdateVersionParameters;
 import com.azure.resourcemanager.networkcloud.models.ClusterDeployParameters;
 import com.azure.resourcemanager.networkcloud.models.ClusterList;
 import com.azure.resourcemanager.networkcloud.models.ClusterPatchParameters;
+import com.azure.resourcemanager.networkcloud.models.ClusterScanRuntimeParameters;
 import com.azure.resourcemanager.networkcloud.models.ClusterUpdateVersionParameters;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ClustersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ClustersClient.
+ */
 public final class ClustersClientImpl implements ClustersClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ClustersService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final NetworkCloudImpl client;
 
     /**
      * Initializes an instance of ClustersClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ClustersClientImpl(NetworkCloudImpl client) {
@@ -125,8 +133,18 @@ public final class ClustersClientImpl implements ClustersClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/clusters/{clusterName}/continueUpdateVersion")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> continueUpdateVersion(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @BodyParam("application/json") ClusterContinueUpdateVersionParameters clusterContinueUpdateVersionParameters,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/clusters/{clusterName}/deploy")
-        @ExpectedResponses({ 200, 202, 204 })
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> deploy(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
@@ -135,8 +153,18 @@ public final class ClustersClientImpl implements ClustersClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/clusters/{clusterName}/scanRuntime")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> scanRuntime(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @BodyParam("application/json") ClusterScanRuntimeParameters clusterScanRuntimeParameters,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/clusters/{clusterName}/updateVersion")
-        @ExpectedResponses({ 200, 202, 204 })
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> updateVersion(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
@@ -163,13 +191,13 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * List clusters in the subscription.
-     *
-     * <p>Get a list of clusters in the provided subscription.
-     *
+     * 
+     * Get a list of clusters in the provided subscription.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of clusters in the provided subscription along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ClusterInner>> listSinglePageAsync() {
@@ -192,15 +220,15 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * List clusters in the subscription.
-     *
-     * <p>Get a list of clusters in the provided subscription.
-     *
+     * 
+     * Get a list of clusters in the provided subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of clusters in the provided subscription along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ClusterInner>> listSinglePageAsync(Context context) {
@@ -223,9 +251,9 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * List clusters in the subscription.
-     *
-     * <p>Get a list of clusters in the provided subscription.
-     *
+     * 
+     * Get a list of clusters in the provided subscription.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of clusters in the provided subscription as paginated response with {@link PagedFlux}.
@@ -238,9 +266,9 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * List clusters in the subscription.
-     *
-     * <p>Get a list of clusters in the provided subscription.
-     *
+     * 
+     * Get a list of clusters in the provided subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -255,9 +283,9 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * List clusters in the subscription.
-     *
-     * <p>Get a list of clusters in the provided subscription.
-     *
+     * 
+     * Get a list of clusters in the provided subscription.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of clusters in the provided subscription as paginated response with {@link PagedIterable}.
@@ -269,9 +297,9 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * List clusters in the subscription.
-     *
-     * <p>Get a list of clusters in the provided subscription.
-     *
+     * 
+     * Get a list of clusters in the provided subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -285,15 +313,15 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * List clusters in the resource group.
-     *
-     * <p>Get a list of clusters in the provided resource group.
-     *
+     * 
+     * Get a list of clusters in the provided resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of clusters in the provided resource group along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ClusterInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
@@ -320,16 +348,16 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * List clusters in the resource group.
-     *
-     * <p>Get a list of clusters in the provided resource group.
-     *
+     * 
+     * Get a list of clusters in the provided resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of clusters in the provided resource group along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ClusterInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
@@ -357,9 +385,9 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * List clusters in the resource group.
-     *
-     * <p>Get a list of clusters in the provided resource group.
-     *
+     * 
+     * Get a list of clusters in the provided resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -374,9 +402,9 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * List clusters in the resource group.
-     *
-     * <p>Get a list of clusters in the provided resource group.
-     *
+     * 
+     * Get a list of clusters in the provided resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -392,9 +420,9 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * List clusters in the resource group.
-     *
-     * <p>Get a list of clusters in the provided resource group.
-     *
+     * 
+     * Get a list of clusters in the provided resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -408,9 +436,9 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * List clusters in the resource group.
-     *
-     * <p>Get a list of clusters in the provided resource group.
-     *
+     * 
+     * Get a list of clusters in the provided resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -425,9 +453,9 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Retrieve the cluster.
-     *
-     * <p>Get properties of the provided cluster.
-     *
+     * 
+     * Get properties of the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -462,9 +490,9 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Retrieve the cluster.
-     *
-     * <p>Get properties of the provided cluster.
-     *
+     * 
+     * Get properties of the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param context The context to associate with this operation.
@@ -499,9 +527,9 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Retrieve the cluster.
-     *
-     * <p>Get properties of the provided cluster.
-     *
+     * 
+     * Get properties of the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -517,9 +545,9 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Retrieve the cluster.
-     *
-     * <p>Get properties of the provided cluster.
-     *
+     * 
+     * Get properties of the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param context The context to associate with this operation.
@@ -536,9 +564,9 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Retrieve the cluster.
-     *
-     * <p>Get properties of the provided cluster.
-     *
+     * 
+     * Get properties of the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -553,9 +581,9 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Create or update the cluster.
-     *
-     * <p>Create a new cluster or update the properties of the cluster if it exists.
-     *
+     * 
+     * Create a new cluster or update the properties of the cluster if it exists.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param clusterParameters The request body.
@@ -563,7 +591,7 @@ public final class ClustersClientImpl implements ClustersClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return cluster represents the on-premises Network Cloud cluster along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
@@ -598,9 +626,9 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Create or update the cluster.
-     *
-     * <p>Create a new cluster or update the properties of the cluster if it exists.
-     *
+     * 
+     * Create a new cluster or update the properties of the cluster if it exists.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param clusterParameters The request body.
@@ -609,7 +637,7 @@ public final class ClustersClientImpl implements ClustersClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return cluster represents the on-premises Network Cloud cluster along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
@@ -643,9 +671,9 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Create or update the cluster.
-     *
-     * <p>Create a new cluster or update the properties of the cluster if it exists.
-     *
+     * 
+     * Create a new cluster or update the properties of the cluster if it exists.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param clusterParameters The request body.
@@ -665,9 +693,9 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Create or update the cluster.
-     *
-     * <p>Create a new cluster or update the properties of the cluster if it exists.
-     *
+     * 
+     * Create a new cluster or update the properties of the cluster if it exists.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param clusterParameters The request body.
@@ -689,9 +717,9 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Create or update the cluster.
-     *
-     * <p>Create a new cluster or update the properties of the cluster if it exists.
-     *
+     * 
+     * Create a new cluster or update the properties of the cluster if it exists.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param clusterParameters The request body.
@@ -708,9 +736,9 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Create or update the cluster.
-     *
-     * <p>Create a new cluster or update the properties of the cluster if it exists.
-     *
+     * 
+     * Create a new cluster or update the properties of the cluster if it exists.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param clusterParameters The request body.
@@ -729,9 +757,9 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Create or update the cluster.
-     *
-     * <p>Create a new cluster or update the properties of the cluster if it exists.
-     *
+     * 
+     * Create a new cluster or update the properties of the cluster if it exists.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param clusterParameters The request body.
@@ -749,9 +777,9 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Create or update the cluster.
-     *
-     * <p>Create a new cluster or update the properties of the cluster if it exists.
-     *
+     * 
+     * Create a new cluster or update the properties of the cluster if it exists.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param clusterParameters The request body.
@@ -770,9 +798,9 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Create or update the cluster.
-     *
-     * <p>Create a new cluster or update the properties of the cluster if it exists.
-     *
+     * 
+     * Create a new cluster or update the properties of the cluster if it exists.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param clusterParameters The request body.
@@ -788,9 +816,9 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Create or update the cluster.
-     *
-     * <p>Create a new cluster or update the properties of the cluster if it exists.
-     *
+     * 
+     * Create a new cluster or update the properties of the cluster if it exists.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param clusterParameters The request body.
@@ -808,15 +836,16 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Delete the cluster.
-     *
-     * <p>Delete the provided cluster.
-     *
+     * 
+     * Delete the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String clusterName) {
@@ -844,16 +873,17 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Delete the cluster.
-     *
-     * <p>Delete the provided cluster.
-     *
+     * 
+     * Delete the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String clusterName,
@@ -881,156 +911,162 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Delete the cluster.
-     *
-     * <p>Delete the provided cluster.
-     *
+     * 
+     * Delete the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String clusterName) {
+    private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginDeleteAsync(String resourceGroupName, String clusterName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, clusterName);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+        return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(mono,
+            this.client.getHttpPipeline(), OperationStatusResultInner.class, OperationStatusResultInner.class,
             this.client.getContext());
     }
 
     /**
      * Delete the cluster.
-     *
-     * <p>Delete the provided cluster.
-     *
+     * 
+     * Delete the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String clusterName,
-        Context context) {
+    private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginDeleteAsync(String resourceGroupName, String clusterName, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, clusterName, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
+        return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(mono,
+            this.client.getHttpPipeline(), OperationStatusResultInner.class, OperationStatusResultInner.class, context);
     }
 
     /**
      * Delete the cluster.
-     *
-     * <p>Delete the provided cluster.
-     *
+     * 
+     * Delete the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName) {
+    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginDelete(String resourceGroupName, String clusterName) {
         return this.beginDeleteAsync(resourceGroupName, clusterName).getSyncPoller();
     }
 
     /**
      * Delete the cluster.
-     *
-     * <p>Delete the provided cluster.
-     *
+     * 
+     * Delete the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName,
-        Context context) {
+    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginDelete(String resourceGroupName, String clusterName, Context context) {
         return this.beginDeleteAsync(resourceGroupName, clusterName, context).getSyncPoller();
     }
 
     /**
      * Delete the cluster.
-     *
-     * <p>Delete the provided cluster.
-     *
+     * 
+     * Delete the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the current status of an async operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String clusterName) {
+    private Mono<OperationStatusResultInner> deleteAsync(String resourceGroupName, String clusterName) {
         return beginDeleteAsync(resourceGroupName, clusterName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete the cluster.
-     *
-     * <p>Delete the provided cluster.
-     *
+     * 
+     * Delete the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the current status of an async operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String clusterName, Context context) {
+    private Mono<OperationStatusResultInner> deleteAsync(String resourceGroupName, String clusterName,
+        Context context) {
         return beginDeleteAsync(resourceGroupName, clusterName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete the cluster.
-     *
-     * <p>Delete the provided cluster.
-     *
+     * 
+     * Delete the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String clusterName) {
-        deleteAsync(resourceGroupName, clusterName).block();
+    public OperationStatusResultInner delete(String resourceGroupName, String clusterName) {
+        return deleteAsync(resourceGroupName, clusterName).block();
     }
 
     /**
      * Delete the cluster.
-     *
-     * <p>Delete the provided cluster.
-     *
+     * 
+     * Delete the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String clusterName, Context context) {
-        deleteAsync(resourceGroupName, clusterName, context).block();
+    public OperationStatusResultInner delete(String resourceGroupName, String clusterName, Context context) {
+        return deleteAsync(resourceGroupName, clusterName, context).block();
     }
 
     /**
      * Patch the cluster.
-     *
-     * <p>Patch the properties of the provided cluster, or update the tags associated with the cluster. Properties and
-     * tag updates can be done independently.
-     *
+     * 
+     * Patch the properties of the provided cluster, or update the tags associated with the cluster. Properties and tag
+     * updates can be done independently.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param clusterUpdateParameters The request body.
@@ -1038,7 +1074,7 @@ public final class ClustersClientImpl implements ClustersClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return cluster represents the on-premises Network Cloud cluster along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String clusterName,
@@ -1069,10 +1105,10 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Patch the cluster.
-     *
-     * <p>Patch the properties of the provided cluster, or update the tags associated with the cluster. Properties and
-     * tag updates can be done independently.
-     *
+     * 
+     * Patch the properties of the provided cluster, or update the tags associated with the cluster. Properties and tag
+     * updates can be done independently.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param clusterUpdateParameters The request body.
@@ -1081,7 +1117,7 @@ public final class ClustersClientImpl implements ClustersClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return cluster represents the on-premises Network Cloud cluster along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String clusterName,
@@ -1112,10 +1148,10 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Patch the cluster.
-     *
-     * <p>Patch the properties of the provided cluster, or update the tags associated with the cluster. Properties and
-     * tag updates can be done independently.
-     *
+     * 
+     * Patch the properties of the provided cluster, or update the tags associated with the cluster. Properties and tag
+     * updates can be done independently.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param clusterUpdateParameters The request body.
@@ -1135,10 +1171,10 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Patch the cluster.
-     *
-     * <p>Patch the properties of the provided cluster, or update the tags associated with the cluster. Properties and
-     * tag updates can be done independently.
-     *
+     * 
+     * Patch the properties of the provided cluster, or update the tags associated with the cluster. Properties and tag
+     * updates can be done independently.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1158,10 +1194,10 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Patch the cluster.
-     *
-     * <p>Patch the properties of the provided cluster, or update the tags associated with the cluster. Properties and
-     * tag updates can be done independently.
-     *
+     * 
+     * Patch the properties of the provided cluster, or update the tags associated with the cluster. Properties and tag
+     * updates can be done independently.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param clusterUpdateParameters The request body.
@@ -1183,10 +1219,10 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Patch the cluster.
-     *
-     * <p>Patch the properties of the provided cluster, or update the tags associated with the cluster. Properties and
-     * tag updates can be done independently.
-     *
+     * 
+     * Patch the properties of the provided cluster, or update the tags associated with the cluster. Properties and tag
+     * updates can be done independently.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1203,10 +1239,10 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Patch the cluster.
-     *
-     * <p>Patch the properties of the provided cluster, or update the tags associated with the cluster. Properties and
-     * tag updates can be done independently.
-     *
+     * 
+     * Patch the properties of the provided cluster, or update the tags associated with the cluster. Properties and tag
+     * updates can be done independently.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param clusterUpdateParameters The request body.
@@ -1224,10 +1260,10 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Patch the cluster.
-     *
-     * <p>Patch the properties of the provided cluster, or update the tags associated with the cluster. Properties and
-     * tag updates can be done independently.
-     *
+     * 
+     * Patch the properties of the provided cluster, or update the tags associated with the cluster. Properties and tag
+     * updates can be done independently.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param clusterUpdateParameters The request body.
@@ -1245,10 +1281,10 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Patch the cluster.
-     *
-     * <p>Patch the properties of the provided cluster, or update the tags associated with the cluster. Properties and
-     * tag updates can be done independently.
-     *
+     * 
+     * Patch the properties of the provided cluster, or update the tags associated with the cluster. Properties and tag
+     * updates can be done independently.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1265,10 +1301,10 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Patch the cluster.
-     *
-     * <p>Patch the properties of the provided cluster, or update the tags associated with the cluster. Properties and
-     * tag updates can be done independently.
-     *
+     * 
+     * Patch the properties of the provided cluster, or update the tags associated with the cluster. Properties and tag
+     * updates can be done independently.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param clusterUpdateParameters The request body.
@@ -1287,10 +1323,10 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Patch the cluster.
-     *
-     * <p>Patch the properties of the provided cluster, or update the tags associated with the cluster. Properties and
-     * tag updates can be done independently.
-     *
+     * 
+     * Patch the properties of the provided cluster, or update the tags associated with the cluster. Properties and tag
+     * updates can be done independently.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1306,10 +1342,10 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Patch the cluster.
-     *
-     * <p>Patch the properties of the provided cluster, or update the tags associated with the cluster. Properties and
-     * tag updates can be done independently.
-     *
+     * 
+     * Patch the properties of the provided cluster, or update the tags associated with the cluster. Properties and tag
+     * updates can be done independently.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param clusterUpdateParameters The request body.
@@ -1326,18 +1362,299 @@ public final class ClustersClientImpl implements ClustersClient {
     }
 
     /**
-     * Deploy the cluster to the rack.
-     *
-     * <p>Deploy the cluster to the provided rack.
-     *
+     * Continue a paused update to the cluster version.
+     * 
+     * Trigger the continuation of an update for a cluster with a matching update strategy that has paused after
+     * completing a segment of the update.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param clusterContinueUpdateVersionParameters The request body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> continueUpdateVersionWithResponseAsync(String resourceGroupName,
+        String clusterName, ClusterContinueUpdateVersionParameters clusterContinueUpdateVersionParameters) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (clusterName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
+        }
+        if (clusterContinueUpdateVersionParameters == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter clusterContinueUpdateVersionParameters is required and cannot be null."));
+        } else {
+            clusterContinueUpdateVersionParameters.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.continueUpdateVersion(this.client.getEndpoint(),
+                this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, clusterName,
+                clusterContinueUpdateVersionParameters, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Continue a paused update to the cluster version.
+     * 
+     * Trigger the continuation of an update for a cluster with a matching update strategy that has paused after
+     * completing a segment of the update.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param clusterContinueUpdateVersionParameters The request body.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> continueUpdateVersionWithResponseAsync(String resourceGroupName,
+        String clusterName, ClusterContinueUpdateVersionParameters clusterContinueUpdateVersionParameters,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (clusterName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
+        }
+        if (clusterContinueUpdateVersionParameters == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter clusterContinueUpdateVersionParameters is required and cannot be null."));
+        } else {
+            clusterContinueUpdateVersionParameters.validate();
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.continueUpdateVersion(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, clusterName, clusterContinueUpdateVersionParameters,
+            accept, context);
+    }
+
+    /**
+     * Continue a paused update to the cluster version.
+     * 
+     * Trigger the continuation of an update for a cluster with a matching update strategy that has paused after
+     * completing a segment of the update.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param clusterContinueUpdateVersionParameters The request body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginContinueUpdateVersionAsync(String resourceGroupName, String clusterName,
+            ClusterContinueUpdateVersionParameters clusterContinueUpdateVersionParameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono = continueUpdateVersionWithResponseAsync(resourceGroupName, clusterName,
+            clusterContinueUpdateVersionParameters);
+        return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(mono,
+            this.client.getHttpPipeline(), OperationStatusResultInner.class, OperationStatusResultInner.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Continue a paused update to the cluster version.
+     * 
+     * Trigger the continuation of an update for a cluster with a matching update strategy that has paused after
+     * completing a segment of the update.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param clusterContinueUpdateVersionParameters The request body.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginContinueUpdateVersionAsync(String resourceGroupName, String clusterName,
+            ClusterContinueUpdateVersionParameters clusterContinueUpdateVersionParameters, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono = continueUpdateVersionWithResponseAsync(resourceGroupName, clusterName,
+            clusterContinueUpdateVersionParameters, context);
+        return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(mono,
+            this.client.getHttpPipeline(), OperationStatusResultInner.class, OperationStatusResultInner.class, context);
+    }
+
+    /**
+     * Continue a paused update to the cluster version.
+     * 
+     * Trigger the continuation of an update for a cluster with a matching update strategy that has paused after
+     * completing a segment of the update.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param clusterContinueUpdateVersionParameters The request body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginContinueUpdateVersion(
+        String resourceGroupName, String clusterName,
+        ClusterContinueUpdateVersionParameters clusterContinueUpdateVersionParameters) {
+        return this
+            .beginContinueUpdateVersionAsync(resourceGroupName, clusterName, clusterContinueUpdateVersionParameters)
+            .getSyncPoller();
+    }
+
+    /**
+     * Continue a paused update to the cluster version.
+     * 
+     * Trigger the continuation of an update for a cluster with a matching update strategy that has paused after
+     * completing a segment of the update.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param clusterContinueUpdateVersionParameters The request body.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginContinueUpdateVersion(
+        String resourceGroupName, String clusterName,
+        ClusterContinueUpdateVersionParameters clusterContinueUpdateVersionParameters, Context context) {
+        return this
+            .beginContinueUpdateVersionAsync(resourceGroupName, clusterName, clusterContinueUpdateVersionParameters,
+                context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Continue a paused update to the cluster version.
+     * 
+     * Trigger the continuation of an update for a cluster with a matching update strategy that has paused after
+     * completing a segment of the update.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param clusterContinueUpdateVersionParameters The request body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<OperationStatusResultInner> continueUpdateVersionAsync(String resourceGroupName, String clusterName,
+        ClusterContinueUpdateVersionParameters clusterContinueUpdateVersionParameters) {
+        return beginContinueUpdateVersionAsync(resourceGroupName, clusterName, clusterContinueUpdateVersionParameters)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Continue a paused update to the cluster version.
+     * 
+     * Trigger the continuation of an update for a cluster with a matching update strategy that has paused after
+     * completing a segment of the update.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param clusterContinueUpdateVersionParameters The request body.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<OperationStatusResultInner> continueUpdateVersionAsync(String resourceGroupName, String clusterName,
+        ClusterContinueUpdateVersionParameters clusterContinueUpdateVersionParameters, Context context) {
+        return beginContinueUpdateVersionAsync(resourceGroupName, clusterName, clusterContinueUpdateVersionParameters,
+            context).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Continue a paused update to the cluster version.
+     * 
+     * Trigger the continuation of an update for a cluster with a matching update strategy that has paused after
+     * completing a segment of the update.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param clusterContinueUpdateVersionParameters The request body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public OperationStatusResultInner continueUpdateVersion(String resourceGroupName, String clusterName,
+        ClusterContinueUpdateVersionParameters clusterContinueUpdateVersionParameters) {
+        return continueUpdateVersionAsync(resourceGroupName, clusterName, clusterContinueUpdateVersionParameters)
+            .block();
+    }
+
+    /**
+     * Continue a paused update to the cluster version.
+     * 
+     * Trigger the continuation of an update for a cluster with a matching update strategy that has paused after
+     * completing a segment of the update.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param clusterContinueUpdateVersionParameters The request body.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public OperationStatusResultInner continueUpdateVersion(String resourceGroupName, String clusterName,
+        ClusterContinueUpdateVersionParameters clusterContinueUpdateVersionParameters, Context context) {
+        return continueUpdateVersionAsync(resourceGroupName, clusterName, clusterContinueUpdateVersionParameters,
+            context).block();
+    }
+
+    /**
+     * Deploy the cluster.
+     * 
+     * Deploy the cluster using the rack configuration provided during creation.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param clusterDeployParameters The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current status of an async operation along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deployWithResponseAsync(String resourceGroupName, String clusterName,
@@ -1367,10 +1684,10 @@ public final class ClustersClientImpl implements ClustersClient {
     }
 
     /**
-     * Deploy the cluster to the rack.
-     *
-     * <p>Deploy the cluster to the provided rack.
-     *
+     * Deploy the cluster.
+     * 
+     * Deploy the cluster using the rack configuration provided during creation.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param clusterDeployParameters The request body.
@@ -1378,8 +1695,8 @@ public final class ClustersClientImpl implements ClustersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current status of an async operation along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deployWithResponseAsync(String resourceGroupName, String clusterName,
@@ -1409,10 +1726,10 @@ public final class ClustersClientImpl implements ClustersClient {
     }
 
     /**
-     * Deploy the cluster to the rack.
-     *
-     * <p>Deploy the cluster to the provided rack.
-     *
+     * Deploy the cluster.
+     * 
+     * Deploy the cluster using the rack configuration provided during creation.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param clusterDeployParameters The request body.
@@ -1432,10 +1749,10 @@ public final class ClustersClientImpl implements ClustersClient {
     }
 
     /**
-     * Deploy the cluster to the rack.
-     *
-     * <p>Deploy the cluster to the provided rack.
-     *
+     * Deploy the cluster.
+     * 
+     * Deploy the cluster using the rack configuration provided during creation.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1455,10 +1772,10 @@ public final class ClustersClientImpl implements ClustersClient {
     }
 
     /**
-     * Deploy the cluster to the rack.
-     *
-     * <p>Deploy the cluster to the provided rack.
-     *
+     * Deploy the cluster.
+     * 
+     * Deploy the cluster using the rack configuration provided during creation.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param clusterDeployParameters The request body.
@@ -1480,10 +1797,10 @@ public final class ClustersClientImpl implements ClustersClient {
     }
 
     /**
-     * Deploy the cluster to the rack.
-     *
-     * <p>Deploy the cluster to the provided rack.
-     *
+     * Deploy the cluster.
+     * 
+     * Deploy the cluster using the rack configuration provided during creation.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1499,10 +1816,10 @@ public final class ClustersClientImpl implements ClustersClient {
     }
 
     /**
-     * Deploy the cluster to the rack.
-     *
-     * <p>Deploy the cluster to the provided rack.
-     *
+     * Deploy the cluster.
+     * 
+     * Deploy the cluster using the rack configuration provided during creation.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param clusterDeployParameters The request body.
@@ -1520,10 +1837,10 @@ public final class ClustersClientImpl implements ClustersClient {
     }
 
     /**
-     * Deploy the cluster to the rack.
-     *
-     * <p>Deploy the cluster to the provided rack.
-     *
+     * Deploy the cluster.
+     * 
+     * Deploy the cluster using the rack configuration provided during creation.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param clusterDeployParameters The request body.
@@ -1540,10 +1857,10 @@ public final class ClustersClientImpl implements ClustersClient {
     }
 
     /**
-     * Deploy the cluster to the rack.
-     *
-     * <p>Deploy the cluster to the provided rack.
-     *
+     * Deploy the cluster.
+     * 
+     * Deploy the cluster using the rack configuration provided during creation.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1559,10 +1876,10 @@ public final class ClustersClientImpl implements ClustersClient {
     }
 
     /**
-     * Deploy the cluster to the rack.
-     *
-     * <p>Deploy the cluster to the provided rack.
-     *
+     * Deploy the cluster.
+     * 
+     * Deploy the cluster using the rack configuration provided during creation.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param clusterDeployParameters The request body.
@@ -1580,10 +1897,10 @@ public final class ClustersClientImpl implements ClustersClient {
     }
 
     /**
-     * Deploy the cluster to the rack.
-     *
-     * <p>Deploy the cluster to the provided rack.
-     *
+     * Deploy the cluster.
+     * 
+     * Deploy the cluster using the rack configuration provided during creation.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1598,10 +1915,10 @@ public final class ClustersClientImpl implements ClustersClient {
     }
 
     /**
-     * Deploy the cluster to the rack.
-     *
-     * <p>Deploy the cluster to the provided rack.
-     *
+     * Deploy the cluster.
+     * 
+     * Deploy the cluster using the rack configuration provided during creation.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param clusterDeployParameters The request body.
@@ -1618,18 +1935,326 @@ public final class ClustersClientImpl implements ClustersClient {
     }
 
     /**
+     * Execute a runtime protection scan on the cluster.
+     * 
+     * Triggers the execution of a runtime protection scan to detect and remediate detected issues, in accordance with
+     * the cluster configuration.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param clusterScanRuntimeParameters The request body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> scanRuntimeWithResponseAsync(String resourceGroupName, String clusterName,
+        ClusterScanRuntimeParameters clusterScanRuntimeParameters) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (clusterName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
+        }
+        if (clusterScanRuntimeParameters != null) {
+            clusterScanRuntimeParameters.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.scanRuntime(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, clusterName, clusterScanRuntimeParameters, accept,
+                context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Execute a runtime protection scan on the cluster.
+     * 
+     * Triggers the execution of a runtime protection scan to detect and remediate detected issues, in accordance with
+     * the cluster configuration.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param clusterScanRuntimeParameters The request body.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> scanRuntimeWithResponseAsync(String resourceGroupName, String clusterName,
+        ClusterScanRuntimeParameters clusterScanRuntimeParameters, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (clusterName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
+        }
+        if (clusterScanRuntimeParameters != null) {
+            clusterScanRuntimeParameters.validate();
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.scanRuntime(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, clusterName, clusterScanRuntimeParameters, accept,
+            context);
+    }
+
+    /**
+     * Execute a runtime protection scan on the cluster.
+     * 
+     * Triggers the execution of a runtime protection scan to detect and remediate detected issues, in accordance with
+     * the cluster configuration.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param clusterScanRuntimeParameters The request body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginScanRuntimeAsync(
+        String resourceGroupName, String clusterName, ClusterScanRuntimeParameters clusterScanRuntimeParameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = scanRuntimeWithResponseAsync(resourceGroupName, clusterName, clusterScanRuntimeParameters);
+        return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(mono,
+            this.client.getHttpPipeline(), OperationStatusResultInner.class, OperationStatusResultInner.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Execute a runtime protection scan on the cluster.
+     * 
+     * Triggers the execution of a runtime protection scan to detect and remediate detected issues, in accordance with
+     * the cluster configuration.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginScanRuntimeAsync(String resourceGroupName, String clusterName) {
+        final ClusterScanRuntimeParameters clusterScanRuntimeParameters = null;
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = scanRuntimeWithResponseAsync(resourceGroupName, clusterName, clusterScanRuntimeParameters);
+        return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(mono,
+            this.client.getHttpPipeline(), OperationStatusResultInner.class, OperationStatusResultInner.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Execute a runtime protection scan on the cluster.
+     * 
+     * Triggers the execution of a runtime protection scan to detect and remediate detected issues, in accordance with
+     * the cluster configuration.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param clusterScanRuntimeParameters The request body.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginScanRuntimeAsync(
+        String resourceGroupName, String clusterName, ClusterScanRuntimeParameters clusterScanRuntimeParameters,
+        Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = scanRuntimeWithResponseAsync(resourceGroupName, clusterName, clusterScanRuntimeParameters, context);
+        return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(mono,
+            this.client.getHttpPipeline(), OperationStatusResultInner.class, OperationStatusResultInner.class, context);
+    }
+
+    /**
+     * Execute a runtime protection scan on the cluster.
+     * 
+     * Triggers the execution of a runtime protection scan to detect and remediate detected issues, in accordance with
+     * the cluster configuration.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginScanRuntime(String resourceGroupName, String clusterName) {
+        final ClusterScanRuntimeParameters clusterScanRuntimeParameters = null;
+        return this.beginScanRuntimeAsync(resourceGroupName, clusterName, clusterScanRuntimeParameters).getSyncPoller();
+    }
+
+    /**
+     * Execute a runtime protection scan on the cluster.
+     * 
+     * Triggers the execution of a runtime protection scan to detect and remediate detected issues, in accordance with
+     * the cluster configuration.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param clusterScanRuntimeParameters The request body.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginScanRuntime(
+        String resourceGroupName, String clusterName, ClusterScanRuntimeParameters clusterScanRuntimeParameters,
+        Context context) {
+        return this.beginScanRuntimeAsync(resourceGroupName, clusterName, clusterScanRuntimeParameters, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Execute a runtime protection scan on the cluster.
+     * 
+     * Triggers the execution of a runtime protection scan to detect and remediate detected issues, in accordance with
+     * the cluster configuration.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param clusterScanRuntimeParameters The request body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<OperationStatusResultInner> scanRuntimeAsync(String resourceGroupName, String clusterName,
+        ClusterScanRuntimeParameters clusterScanRuntimeParameters) {
+        return beginScanRuntimeAsync(resourceGroupName, clusterName, clusterScanRuntimeParameters).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Execute a runtime protection scan on the cluster.
+     * 
+     * Triggers the execution of a runtime protection scan to detect and remediate detected issues, in accordance with
+     * the cluster configuration.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<OperationStatusResultInner> scanRuntimeAsync(String resourceGroupName, String clusterName) {
+        final ClusterScanRuntimeParameters clusterScanRuntimeParameters = null;
+        return beginScanRuntimeAsync(resourceGroupName, clusterName, clusterScanRuntimeParameters).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Execute a runtime protection scan on the cluster.
+     * 
+     * Triggers the execution of a runtime protection scan to detect and remediate detected issues, in accordance with
+     * the cluster configuration.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param clusterScanRuntimeParameters The request body.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<OperationStatusResultInner> scanRuntimeAsync(String resourceGroupName, String clusterName,
+        ClusterScanRuntimeParameters clusterScanRuntimeParameters, Context context) {
+        return beginScanRuntimeAsync(resourceGroupName, clusterName, clusterScanRuntimeParameters, context).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Execute a runtime protection scan on the cluster.
+     * 
+     * Triggers the execution of a runtime protection scan to detect and remediate detected issues, in accordance with
+     * the cluster configuration.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public OperationStatusResultInner scanRuntime(String resourceGroupName, String clusterName) {
+        final ClusterScanRuntimeParameters clusterScanRuntimeParameters = null;
+        return scanRuntimeAsync(resourceGroupName, clusterName, clusterScanRuntimeParameters).block();
+    }
+
+    /**
+     * Execute a runtime protection scan on the cluster.
+     * 
+     * Triggers the execution of a runtime protection scan to detect and remediate detected issues, in accordance with
+     * the cluster configuration.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param clusterScanRuntimeParameters The request body.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public OperationStatusResultInner scanRuntime(String resourceGroupName, String clusterName,
+        ClusterScanRuntimeParameters clusterScanRuntimeParameters, Context context) {
+        return scanRuntimeAsync(resourceGroupName, clusterName, clusterScanRuntimeParameters, context).block();
+    }
+
+    /**
      * Update the cluster version.
-     *
-     * <p>Update the version of the provided cluster to one of the available supported versions.
-     *
+     * 
+     * Update the version of the provided cluster to one of the available supported versions.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param clusterUpdateVersionParameters The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current status of an async operation along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateVersionWithResponseAsync(String resourceGroupName,
@@ -1665,9 +2290,9 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Update the cluster version.
-     *
-     * <p>Update the version of the provided cluster to one of the available supported versions.
-     *
+     * 
+     * Update the version of the provided cluster to one of the available supported versions.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param clusterUpdateVersionParameters The request body.
@@ -1675,8 +2300,8 @@ public final class ClustersClientImpl implements ClustersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current status of an async operation along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateVersionWithResponseAsync(String resourceGroupName,
@@ -1711,9 +2336,9 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Update the cluster version.
-     *
-     * <p>Update the version of the provided cluster to one of the available supported versions.
-     *
+     * 
+     * Update the version of the provided cluster to one of the available supported versions.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param clusterUpdateVersionParameters The request body.
@@ -1734,9 +2359,9 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Update the cluster version.
-     *
-     * <p>Update the version of the provided cluster to one of the available supported versions.
-     *
+     * 
+     * Update the version of the provided cluster to one of the available supported versions.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param clusterUpdateVersionParameters The request body.
@@ -1759,9 +2384,9 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Update the cluster version.
-     *
-     * <p>Update the version of the provided cluster to one of the available supported versions.
-     *
+     * 
+     * Update the version of the provided cluster to one of the available supported versions.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param clusterUpdateVersionParameters The request body.
@@ -1779,9 +2404,9 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Update the cluster version.
-     *
-     * <p>Update the version of the provided cluster to one of the available supported versions.
-     *
+     * 
+     * Update the version of the provided cluster to one of the available supported versions.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param clusterUpdateVersionParameters The request body.
@@ -1801,9 +2426,9 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Update the cluster version.
-     *
-     * <p>Update the version of the provided cluster to one of the available supported versions.
-     *
+     * 
+     * Update the version of the provided cluster to one of the available supported versions.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param clusterUpdateVersionParameters The request body.
@@ -1821,9 +2446,9 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Update the cluster version.
-     *
-     * <p>Update the version of the provided cluster to one of the available supported versions.
-     *
+     * 
+     * Update the version of the provided cluster to one of the available supported versions.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param clusterUpdateVersionParameters The request body.
@@ -1842,9 +2467,9 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Update the cluster version.
-     *
-     * <p>Update the version of the provided cluster to one of the available supported versions.
-     *
+     * 
+     * Update the version of the provided cluster to one of the available supported versions.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param clusterUpdateVersionParameters The request body.
@@ -1861,9 +2486,9 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Update the cluster version.
-     *
-     * <p>Update the version of the provided cluster to one of the available supported versions.
-     *
+     * 
+     * Update the version of the provided cluster to one of the available supported versions.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param clusterUpdateVersionParameters The request body.
@@ -1881,14 +2506,13 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return clusterList represents a list of clusters along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ClusterInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
@@ -1910,15 +2534,14 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return clusterList represents a list of clusters along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ClusterInner>> listBySubscriptionNextSinglePageAsync(String nextLink, Context context) {
@@ -1938,14 +2561,13 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return clusterList represents a list of clusters along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ClusterInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -1967,15 +2589,14 @@ public final class ClustersClientImpl implements ClustersClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return clusterList represents a list of clusters along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ClusterInner>> listByResourceGroupNextSinglePageAsync(String nextLink, Context context) {

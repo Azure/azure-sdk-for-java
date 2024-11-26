@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.appconfiguration.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appconfiguration.fluent.models.ConfigurationStoreInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The result of a request to list configuration stores. */
+/**
+ * The result of a request to list configuration stores.
+ */
 @Fluent
-public final class ConfigurationStoreListResult {
+public final class ConfigurationStoreListResult implements JsonSerializable<ConfigurationStoreListResult> {
     /*
      * The collection value.
      */
-    @JsonProperty(value = "value")
     private List<ConfigurationStoreInner> value;
 
     /*
      * The URI that can be used to request the next set of paged results.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of ConfigurationStoreListResult class. */
+    /**
+     * Creates an instance of ConfigurationStoreListResult class.
+     */
     public ConfigurationStoreListResult() {
     }
 
     /**
      * Get the value property: The collection value.
-     *
+     * 
      * @return the value value.
      */
     public List<ConfigurationStoreInner> value() {
@@ -39,7 +45,7 @@ public final class ConfigurationStoreListResult {
 
     /**
      * Set the value property: The collection value.
-     *
+     * 
      * @param value the value value to set.
      * @return the ConfigurationStoreListResult object itself.
      */
@@ -50,7 +56,7 @@ public final class ConfigurationStoreListResult {
 
     /**
      * Get the nextLink property: The URI that can be used to request the next set of paged results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +65,7 @@ public final class ConfigurationStoreListResult {
 
     /**
      * Set the nextLink property: The URI that can be used to request the next set of paged results.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the ConfigurationStoreListResult object itself.
      */
@@ -70,12 +76,53 @@ public final class ConfigurationStoreListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConfigurationStoreListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConfigurationStoreListResult if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ConfigurationStoreListResult.
+     */
+    public static ConfigurationStoreListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConfigurationStoreListResult deserializedConfigurationStoreListResult = new ConfigurationStoreListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<ConfigurationStoreInner> value
+                        = reader.readArray(reader1 -> ConfigurationStoreInner.fromJson(reader1));
+                    deserializedConfigurationStoreListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedConfigurationStoreListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConfigurationStoreListResult;
+        });
     }
 }

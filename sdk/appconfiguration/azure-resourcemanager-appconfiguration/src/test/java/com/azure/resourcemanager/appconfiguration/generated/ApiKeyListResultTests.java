@@ -14,16 +14,17 @@ public final class ApiKeyListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ApiKeyListResult model = BinaryData.fromString(
-            "{\"value\":[{\"id\":\"kyfi\",\"name\":\"fidfvzw\",\"value\":\"uht\",\"connectionString\":\"wisdkft\",\"lastModified\":\"2021-06-08T12:42:14Z\",\"readOnly\":true},{\"id\":\"eiwaopvkmi\",\"name\":\"mmxdcu\",\"value\":\"fsrpymzidnse\",\"connectionString\":\"xtbzsgfyccsne\",\"lastModified\":\"2021-01-16T10:20:52Z\",\"readOnly\":false}],\"nextLink\":\"eiachboosflnr\"}")
+            "{\"value\":[{\"id\":\"ojakhmsbzjhcrze\",\"name\":\"phlxa\",\"value\":\"thqt\",\"connectionString\":\"qjbpfzfsin\",\"lastModified\":\"2021-11-15T02:44:36Z\",\"readOnly\":true},{\"id\":\"rwzoxxjtfelluwf\",\"name\":\"tonpe\",\"value\":\"pjkjlxofpdv\",\"connectionString\":\"fxxypininmayhuy\",\"lastModified\":\"2021-05-05T04:33:07Z\",\"readOnly\":true},{\"id\":\"epoo\",\"name\":\"nuvamiheogna\",\"value\":\"zxtheotusivyevcc\",\"connectionString\":\"ihnhun\",\"lastModified\":\"2021-08-15T16:10:49Z\",\"readOnly\":false},{\"id\":\"nfygxgispemvtz\",\"name\":\"ufubl\",\"value\":\"fxqeof\",\"connectionString\":\"e\",\"lastModified\":\"2021-01-23T13:20:17Z\",\"readOnly\":true}],\"nextLink\":\"asvm\"}")
             .toObject(ApiKeyListResult.class);
-        Assertions.assertEquals("eiachboosflnr", model.nextLink());
+        Assertions.assertEquals("asvm", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApiKeyListResult model = new ApiKeyListResult().withValue(Arrays.asList(new ApiKeyInner(), new ApiKeyInner()))
-            .withNextLink("eiachboosflnr");
+        ApiKeyListResult model = new ApiKeyListResult()
+            .withValue(Arrays.asList(new ApiKeyInner(), new ApiKeyInner(), new ApiKeyInner(), new ApiKeyInner()))
+            .withNextLink("asvm");
         model = BinaryData.fromObject(model).toObject(ApiKeyListResult.class);
-        Assertions.assertEquals("eiachboosflnr", model.nextLink());
+        Assertions.assertEquals("asvm", model.nextLink());
     }
 }

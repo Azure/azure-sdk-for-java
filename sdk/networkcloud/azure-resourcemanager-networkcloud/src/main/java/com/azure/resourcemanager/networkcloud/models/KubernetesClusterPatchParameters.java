@@ -5,39 +5,38 @@
 package com.azure.resourcemanager.networkcloud.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.networkcloud.fluent.models.KubernetesClusterPatchProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** KubernetesClusterPatchParameters represents the body of the request to patch the Hybrid AKS cluster. */
+/**
+ * KubernetesClusterPatchParameters represents the body of the request to patch the Hybrid AKS cluster.
+ */
 @Fluent
-public final class KubernetesClusterPatchParameters {
+public final class KubernetesClusterPatchParameters implements JsonSerializable<KubernetesClusterPatchParameters> {
     /*
-     * KubernetesClusterPatchProperties represents the properties of the Kubernetes cluster that can be patched.
-     *
      * The list of the resource properties.
      */
-    @JsonProperty(value = "properties")
     private KubernetesClusterPatchProperties innerProperties;
 
     /*
      * The Azure resource tags that will replace the existing ones.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
-    /** Creates an instance of KubernetesClusterPatchParameters class. */
+    /**
+     * Creates an instance of KubernetesClusterPatchParameters class.
+     */
     public KubernetesClusterPatchParameters() {
     }
 
     /**
-     * Get the innerProperties property: KubernetesClusterPatchProperties represents the properties of the Kubernetes
-     * cluster that can be patched.
-     *
-     * <p>The list of the resource properties.
-     *
+     * Get the innerProperties property: The list of the resource properties.
+     * 
      * @return the innerProperties value.
      */
     private KubernetesClusterPatchProperties innerProperties() {
@@ -46,7 +45,7 @@ public final class KubernetesClusterPatchParameters {
 
     /**
      * Get the tags property: The Azure resource tags that will replace the existing ones.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -55,7 +54,7 @@ public final class KubernetesClusterPatchParameters {
 
     /**
      * Set the tags property: The Azure resource tags that will replace the existing ones.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the KubernetesClusterPatchParameters object itself.
      */
@@ -65,11 +64,33 @@ public final class KubernetesClusterPatchParameters {
     }
 
     /**
-     * Get the controlPlaneNodeConfiguration property: ControlPlaneNodePatchConfiguration represents the properties of
-     * the control plane that can be patched for this Kubernetes cluster.
-     *
-     * <p>The defining characteristics of the control plane that can be patched for this Kubernetes cluster.
-     *
+     * Get the administratorConfiguration property: The configuration of the default administrator credentials.
+     * 
+     * @return the administratorConfiguration value.
+     */
+    public AdministratorConfigurationPatch administratorConfiguration() {
+        return this.innerProperties() == null ? null : this.innerProperties().administratorConfiguration();
+    }
+
+    /**
+     * Set the administratorConfiguration property: The configuration of the default administrator credentials.
+     * 
+     * @param administratorConfiguration the administratorConfiguration value to set.
+     * @return the KubernetesClusterPatchParameters object itself.
+     */
+    public KubernetesClusterPatchParameters
+        withAdministratorConfiguration(AdministratorConfigurationPatch administratorConfiguration) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new KubernetesClusterPatchProperties();
+        }
+        this.innerProperties().withAdministratorConfiguration(administratorConfiguration);
+        return this;
+    }
+
+    /**
+     * Get the controlPlaneNodeConfiguration property: The defining characteristics of the control plane that can be
+     * patched for this Kubernetes cluster.
+     * 
      * @return the controlPlaneNodeConfiguration value.
      */
     public ControlPlaneNodePatchConfiguration controlPlaneNodeConfiguration() {
@@ -77,11 +98,9 @@ public final class KubernetesClusterPatchParameters {
     }
 
     /**
-     * Set the controlPlaneNodeConfiguration property: ControlPlaneNodePatchConfiguration represents the properties of
-     * the control plane that can be patched for this Kubernetes cluster.
-     *
-     * <p>The defining characteristics of the control plane that can be patched for this Kubernetes cluster.
-     *
+     * Set the controlPlaneNodeConfiguration property: The defining characteristics of the control plane that can be
+     * patched for this Kubernetes cluster.
+     * 
      * @param controlPlaneNodeConfiguration the controlPlaneNodeConfiguration value to set.
      * @return the KubernetesClusterPatchParameters object itself.
      */
@@ -95,9 +114,8 @@ public final class KubernetesClusterPatchParameters {
     }
 
     /**
-     * Get the kubernetesVersion property: The Kubernetes version for this cluster. Accepts n.n, n.n.n, and n.n.n-n
-     * format. The interpreted version used will be resolved into this field after creation or update.
-     *
+     * Get the kubernetesVersion property: The Kubernetes version for this cluster.
+     * 
      * @return the kubernetesVersion value.
      */
     public String kubernetesVersion() {
@@ -105,9 +123,8 @@ public final class KubernetesClusterPatchParameters {
     }
 
     /**
-     * Set the kubernetesVersion property: The Kubernetes version for this cluster. Accepts n.n, n.n.n, and n.n.n-n
-     * format. The interpreted version used will be resolved into this field after creation or update.
-     *
+     * Set the kubernetesVersion property: The Kubernetes version for this cluster.
+     * 
      * @param kubernetesVersion the kubernetesVersion value to set.
      * @return the KubernetesClusterPatchParameters object itself.
      */
@@ -121,12 +138,54 @@ public final class KubernetesClusterPatchParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of KubernetesClusterPatchParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of KubernetesClusterPatchParameters if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the KubernetesClusterPatchParameters.
+     */
+    public static KubernetesClusterPatchParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            KubernetesClusterPatchParameters deserializedKubernetesClusterPatchParameters
+                = new KubernetesClusterPatchParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedKubernetesClusterPatchParameters.innerProperties
+                        = KubernetesClusterPatchProperties.fromJson(reader);
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedKubernetesClusterPatchParameters.tags = tags;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedKubernetesClusterPatchParameters;
+        });
     }
 }

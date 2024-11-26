@@ -49,6 +49,7 @@
     <module>sdk/computeschedule</module>
     <module>sdk/confidentialledger</module>
     <module>sdk/confluent</module>
+    <module>sdk/connectedcache</module>
     <module>sdk/connectedvmware</module>
     <module>sdk/consumption</module>
     <module>sdk/containerorchestratorruntime</module>
@@ -220,6 +221,7 @@
     <module>sdk/synapse</module>
     <module>sdk/tables</module>
     <module>sdk/template</module>
+    <module>sdk/terraform</module>
     <module>sdk/textanalytics</module>
     <module>sdk/timeseriesinsights</module>
     <module>sdk/tools</module>

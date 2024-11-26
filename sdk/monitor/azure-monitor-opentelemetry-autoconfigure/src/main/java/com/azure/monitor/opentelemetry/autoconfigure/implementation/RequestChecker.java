@@ -11,7 +11,7 @@ import io.opentelemetry.sdk.trace.data.SpanData;
 
 import java.util.function.Function;
 
-import static com.azure.monitor.opentelemetry.autoconfigure.implementation.AiSemanticAttributes.*;
+import static com.azure.monitor.opentelemetry.autoconfigure.implementation.AiSemanticAttributes.JOB_SYSTEM;
 
 public final class RequestChecker {
 

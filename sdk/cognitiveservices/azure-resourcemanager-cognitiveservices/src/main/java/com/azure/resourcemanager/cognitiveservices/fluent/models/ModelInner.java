@@ -17,19 +17,24 @@ import java.io.IOException;
 @Fluent
 public final class ModelInner implements JsonSerializable<ModelInner> {
     /*
-     * Model Metadata.
+     * Cognitive Services account Model.
      */
     private AccountModelInner model;
 
     /*
-     * The Kind of the Model.
+     * The kind (type) of cognitive service account.
      */
     private String kind;
 
     /*
-     * The SKU of the Model.
+     * The name of SKU.
      */
     private String skuName;
+
+    /*
+     * The description of the model.
+     */
+    private String description;
 
     /**
      * Creates an instance of ModelInner class.
@@ -38,7 +43,7 @@ public final class ModelInner implements JsonSerializable<ModelInner> {
     }
 
     /**
-     * Get the model property: Model Metadata.
+     * Get the model property: Cognitive Services account Model.
      * 
      * @return the model value.
      */
@@ -47,7 +52,7 @@ public final class ModelInner implements JsonSerializable<ModelInner> {
     }
 
     /**
-     * Set the model property: Model Metadata.
+     * Set the model property: Cognitive Services account Model.
      * 
      * @param model the model value to set.
      * @return the ModelInner object itself.
@@ -58,7 +63,7 @@ public final class ModelInner implements JsonSerializable<ModelInner> {
     }
 
     /**
-     * Get the kind property: The Kind of the Model.
+     * Get the kind property: The kind (type) of cognitive service account.
      * 
      * @return the kind value.
      */
@@ -67,7 +72,7 @@ public final class ModelInner implements JsonSerializable<ModelInner> {
     }
 
     /**
-     * Set the kind property: The Kind of the Model.
+     * Set the kind property: The kind (type) of cognitive service account.
      * 
      * @param kind the kind value to set.
      * @return the ModelInner object itself.
@@ -78,7 +83,7 @@ public final class ModelInner implements JsonSerializable<ModelInner> {
     }
 
     /**
-     * Get the skuName property: The SKU of the Model.
+     * Get the skuName property: The name of SKU.
      * 
      * @return the skuName value.
      */
@@ -87,13 +92,33 @@ public final class ModelInner implements JsonSerializable<ModelInner> {
     }
 
     /**
-     * Set the skuName property: The SKU of the Model.
+     * Set the skuName property: The name of SKU.
      * 
      * @param skuName the skuName value to set.
      * @return the ModelInner object itself.
      */
     public ModelInner withSkuName(String skuName) {
         this.skuName = skuName;
+        return this;
+    }
+
+    /**
+     * Get the description property: The description of the model.
+     * 
+     * @return the description value.
+     */
+    public String description() {
+        return this.description;
+    }
+
+    /**
+     * Set the description property: The description of the model.
+     * 
+     * @param description the description value to set.
+     * @return the ModelInner object itself.
+     */
+    public ModelInner withDescription(String description) {
+        this.description = description;
         return this;
     }
 
@@ -117,6 +142,7 @@ public final class ModelInner implements JsonSerializable<ModelInner> {
         jsonWriter.writeJsonField("model", this.model);
         jsonWriter.writeStringField("kind", this.kind);
         jsonWriter.writeStringField("skuName", this.skuName);
+        jsonWriter.writeStringField("description", this.description);
         return jsonWriter.writeEndObject();
     }
 
@@ -141,6 +167,8 @@ public final class ModelInner implements JsonSerializable<ModelInner> {
                     deserializedModelInner.kind = reader.getString();
                 } else if ("skuName".equals(fieldName)) {
                     deserializedModelInner.skuName = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedModelInner.description = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

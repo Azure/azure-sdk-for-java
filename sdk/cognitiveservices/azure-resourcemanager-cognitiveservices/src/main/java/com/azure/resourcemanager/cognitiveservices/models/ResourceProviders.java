@@ -60,4 +60,28 @@ public interface ResourceProviders {
      * @return domain availability.
      */
     DomainAvailability checkDomainAvailability(CheckDomainAvailabilityParameter parameters);
+
+    /**
+     * Model capacity calculator.
+     * 
+     * @param parameters Check Domain Availability parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return calculate Model Capacity result along with {@link Response}.
+     */
+    Response<CalculateModelCapacityResult>
+        calculateModelCapacityWithResponse(CalculateModelCapacityParameter parameters, Context context);
+
+    /**
+     * Model capacity calculator.
+     * 
+     * @param parameters Check Domain Availability parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return calculate Model Capacity result.
+     */
+    CalculateModelCapacityResult calculateModelCapacity(CalculateModelCapacityParameter parameters);
 }

@@ -5,58 +5,60 @@
 package com.azure.resourcemanager.appconfiguration.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/** Properties of the deleted configuration store. */
+/**
+ * Properties of the deleted configuration store.
+ */
 @Immutable
-public final class DeletedConfigurationStoreProperties {
+public final class DeletedConfigurationStoreProperties
+    implements JsonSerializable<DeletedConfigurationStoreProperties> {
     /*
      * The resource id of the original configuration store.
      */
-    @JsonProperty(value = "configurationStoreId", access = JsonProperty.Access.WRITE_ONLY)
     private String configurationStoreId;
 
     /*
      * The location of the original configuration store.
      */
-    @JsonProperty(value = "location", access = JsonProperty.Access.WRITE_ONLY)
     private String location;
 
     /*
      * The deleted date.
      */
-    @JsonProperty(value = "deletionDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime deletionDate;
 
     /*
      * The scheduled purged date.
      */
-    @JsonProperty(value = "scheduledPurgeDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime scheduledPurgeDate;
 
     /*
      * Tags of the original configuration store.
      */
-    @JsonProperty(value = "tags", access = JsonProperty.Access.WRITE_ONLY)
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
      * Purge protection status of the original configuration store.
      */
-    @JsonProperty(value = "purgeProtectionEnabled", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean purgeProtectionEnabled;
 
-    /** Creates an instance of DeletedConfigurationStoreProperties class. */
+    /**
+     * Creates an instance of DeletedConfigurationStoreProperties class.
+     */
     public DeletedConfigurationStoreProperties() {
     }
 
     /**
      * Get the configurationStoreId property: The resource id of the original configuration store.
-     *
+     * 
      * @return the configurationStoreId value.
      */
     public String configurationStoreId() {
@@ -65,7 +67,7 @@ public final class DeletedConfigurationStoreProperties {
 
     /**
      * Get the location property: The location of the original configuration store.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -74,7 +76,7 @@ public final class DeletedConfigurationStoreProperties {
 
     /**
      * Get the deletionDate property: The deleted date.
-     *
+     * 
      * @return the deletionDate value.
      */
     public OffsetDateTime deletionDate() {
@@ -83,7 +85,7 @@ public final class DeletedConfigurationStoreProperties {
 
     /**
      * Get the scheduledPurgeDate property: The scheduled purged date.
-     *
+     * 
      * @return the scheduledPurgeDate value.
      */
     public OffsetDateTime scheduledPurgeDate() {
@@ -92,7 +94,7 @@ public final class DeletedConfigurationStoreProperties {
 
     /**
      * Get the tags property: Tags of the original configuration store.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -101,7 +103,7 @@ public final class DeletedConfigurationStoreProperties {
 
     /**
      * Get the purgeProtectionEnabled property: Purge protection status of the original configuration store.
-     *
+     * 
      * @return the purgeProtectionEnabled value.
      */
     public Boolean purgeProtectionEnabled() {
@@ -110,9 +112,59 @@ public final class DeletedConfigurationStoreProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DeletedConfigurationStoreProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DeletedConfigurationStoreProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DeletedConfigurationStoreProperties.
+     */
+    public static DeletedConfigurationStoreProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DeletedConfigurationStoreProperties deserializedDeletedConfigurationStoreProperties
+                = new DeletedConfigurationStoreProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("configurationStoreId".equals(fieldName)) {
+                    deserializedDeletedConfigurationStoreProperties.configurationStoreId = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedDeletedConfigurationStoreProperties.location = reader.getString();
+                } else if ("deletionDate".equals(fieldName)) {
+                    deserializedDeletedConfigurationStoreProperties.deletionDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("scheduledPurgeDate".equals(fieldName)) {
+                    deserializedDeletedConfigurationStoreProperties.scheduledPurgeDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedDeletedConfigurationStoreProperties.tags = tags;
+                } else if ("purgeProtectionEnabled".equals(fieldName)) {
+                    deserializedDeletedConfigurationStoreProperties.purgeProtectionEnabled
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDeletedConfigurationStoreProperties;
+        });
     }
 }

@@ -13,7 +13,7 @@ import javax.management.ObjectName;
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
 
-import static com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.AzureMonitorMsgId.*;
+import static com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.AzureMonitorMsgId.CPU_METRIC_ERROR;
 
 public final class CpuPerformanceCounterCalculator {
 

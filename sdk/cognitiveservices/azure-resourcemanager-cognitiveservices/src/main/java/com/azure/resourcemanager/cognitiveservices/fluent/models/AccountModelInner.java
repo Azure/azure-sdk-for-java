@@ -24,7 +24,7 @@ import java.util.Map;
 @Fluent
 public final class AccountModelInner extends DeploymentModel {
     /*
-     * Base Model Identifier.
+     * Properties of Cognitive Services account deployment model.
      */
     private DeploymentModel baseModel;
 
@@ -80,7 +80,7 @@ public final class AccountModelInner extends DeploymentModel {
     }
 
     /**
-     * Get the baseModel property: Base Model Identifier.
+     * Get the baseModel property: Properties of Cognitive Services account deployment model.
      * 
      * @return the baseModel value.
      */
@@ -89,7 +89,7 @@ public final class AccountModelInner extends DeploymentModel {
     }
 
     /**
-     * Set the baseModel property: Base Model Identifier.
+     * Set the baseModel property: Properties of Cognitive Services account deployment model.
      * 
      * @param baseModel the baseModel value to set.
      * @return the AccountModelInner object itself.
@@ -262,6 +262,15 @@ public final class AccountModelInner extends DeploymentModel {
      * {@inheritDoc}
      */
     @Override
+    public AccountModelInner withPublisher(String publisher) {
+        super.withPublisher(publisher);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public AccountModelInner withFormat(String format) {
         super.withFormat(format);
         return this;
@@ -295,6 +304,15 @@ public final class AccountModelInner extends DeploymentModel {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AccountModelInner withSourceAccount(String sourceAccount) {
+        super.withSourceAccount(sourceAccount);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -321,10 +339,12 @@ public final class AccountModelInner extends DeploymentModel {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("publisher", publisher());
         jsonWriter.writeStringField("format", format());
         jsonWriter.writeStringField("name", name());
         jsonWriter.writeStringField("version", version());
         jsonWriter.writeStringField("source", source());
+        jsonWriter.writeStringField("sourceAccount", sourceAccount());
         jsonWriter.writeJsonField("baseModel", this.baseModel);
         jsonWriter.writeBooleanField("isDefaultVersion", this.isDefaultVersion);
         jsonWriter.writeArrayField("skus", this.skus, (writer, element) -> writer.writeJson(element));
@@ -353,7 +373,9 @@ public final class AccountModelInner extends DeploymentModel {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("format".equals(fieldName)) {
+                if ("publisher".equals(fieldName)) {
+                    deserializedAccountModelInner.withPublisher(reader.getString());
+                } else if ("format".equals(fieldName)) {
                     deserializedAccountModelInner.withFormat(reader.getString());
                 } else if ("name".equals(fieldName)) {
                     deserializedAccountModelInner.withName(reader.getString());
@@ -361,6 +383,8 @@ public final class AccountModelInner extends DeploymentModel {
                     deserializedAccountModelInner.withVersion(reader.getString());
                 } else if ("source".equals(fieldName)) {
                     deserializedAccountModelInner.withSource(reader.getString());
+                } else if ("sourceAccount".equals(fieldName)) {
+                    deserializedAccountModelInner.withSourceAccount(reader.getString());
                 } else if ("callRateLimit".equals(fieldName)) {
                     deserializedAccountModelInner.callRateLimit = CallRateLimit.fromJson(reader);
                 } else if ("baseModel".equals(fieldName)) {

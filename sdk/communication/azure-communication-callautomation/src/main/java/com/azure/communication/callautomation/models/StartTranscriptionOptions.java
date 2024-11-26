@@ -19,6 +19,12 @@ public class StartTranscriptionOptions {
     private String operationContext;
 
     /**
+     * Creates an instance of {@link StartTranscriptionOptions}.
+     */
+    public StartTranscriptionOptions() {
+    }
+
+    /**
      * Get the locale.
      *
      * @return locale.
