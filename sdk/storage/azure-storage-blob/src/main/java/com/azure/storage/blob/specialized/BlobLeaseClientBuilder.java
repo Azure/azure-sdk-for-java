@@ -81,12 +81,6 @@ public final class BlobLeaseClientBuilder {
     private BlobServiceVersion serviceVersion;
 
     /**
-     * Creates a {@link BlobLeaseClientBuilder}.
-     */
-    public BlobLeaseClientBuilder() {
-    }
-
-    /**
      * Creates a {@link BlobLeaseClient} based on the configurations set in the builder.
      *
      * @return a {@link BlobLeaseClient} based on the configurations in this builder.
