@@ -18,14 +18,8 @@ public final class CancelAddParticipantFailed extends CallAutomationEventBase {
      */
     private String invitationId;
 
-    /*
-     * Contains the resulting SIP code, sub-code and message.
-     */
-    private ResultInformation resultInformation;
-
     private CancelAddParticipantFailed() {
         invitationId = null;
-        resultInformation = null;
     }
 
     /**
@@ -38,23 +32,12 @@ public final class CancelAddParticipantFailed extends CallAutomationEventBase {
     }
 
     /**
-     * Get the resultInformation property: Contains the resulting SIP code, sub-code
-     * and message.
-     *
-     * @return the resultInformation value.
-     */
-    public ResultInformation getResultInformation() {
-        return resultInformation;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("invitationId", invitationId);
-        jsonWriter.writeJsonField("resultInformation", resultInformation);
         super.writeFields(jsonWriter);
         return jsonWriter.writeEndObject();
     }
@@ -75,8 +58,6 @@ public final class CancelAddParticipantFailed extends CallAutomationEventBase {
                 reader.nextToken();
                 if ("invitationId".equals(fieldName)) {
                     event.invitationId = reader.getString();
-                } else if ("resultInformation".equals(fieldName)) {
-                    event.resultInformation = ResultInformation.fromJson(reader);
                 } else {
                     if (!event.readField(fieldName, reader)) {
                         reader.skipChildren();

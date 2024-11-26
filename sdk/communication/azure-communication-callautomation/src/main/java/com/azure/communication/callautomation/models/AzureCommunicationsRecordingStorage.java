@@ -36,8 +36,7 @@ public class AzureCommunicationsRecordingStorage extends RecordingStorage {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("recordingStorageType",
-            recordingStorageType != null ? recordingStorageType.toString() : null);
+        jsonWriter.writeStringField("recordingStorageType", recordingStorageType != null ? recordingStorageType.toString() : null);
         return jsonWriter.writeEndObject();
     }
 

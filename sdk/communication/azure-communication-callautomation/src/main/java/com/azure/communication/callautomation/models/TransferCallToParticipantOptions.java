@@ -7,7 +7,6 @@ import java.util.HashMap;
 
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
-import com.azure.communication.common.MicrosoftTeamsAppIdentifier;
 import com.azure.communication.common.MicrosoftTeamsUserIdentifier;
 import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.core.annotation.Fluent;
@@ -39,7 +38,7 @@ public final class TransferCallToParticipantOptions {
      * Required only when this is an incoming voip call and there will be a transfer call request to a PSTN target.
      */
     private PhoneNumberIdentifier sourceCallerIdNumber;
-
+    
     /**
      * Constructor
      *
@@ -79,23 +78,13 @@ public final class TransferCallToParticipantOptions {
         this.targetParticipant = targetParticipant;
         this.customCallingContext = new CustomCallingContext(null, new HashMap<>());
     }
-
-    /**
-     * Constructor
-     *
-     * @param targetParticipant {@link MicrosoftTeamsAppIdentifier} contains information for TransferTarget(to whom the call is transferred).
-     */
-    public TransferCallToParticipantOptions(MicrosoftTeamsAppIdentifier targetParticipant) {
-        this.targetParticipant = targetParticipant;
-        this.customCallingContext = new CustomCallingContext(null, new HashMap<>());
-    }
-
+    
     /**
      * Get the operationContext.
      *
      * @return the operationContext
      */
-    public String getOperationContext() {
+    public String  getOperationContext() {
         return operationContext;
     }
 
@@ -166,16 +155,16 @@ public final class TransferCallToParticipantOptions {
         this.operationCallbackUrl = operationCallbackUrl;
         return this;
     }
-
-    /**
-    * Get the sourceCallerIdNumber.
-    *
-    * @return the sourceCallerIdNumber
-    */
+    
+     /**
+     * Get the sourceCallerIdNumber.
+     *
+     * @return the sourceCallerIdNumber
+     */
     public PhoneNumberIdentifier getSourceCallerIdNumber() {
         return sourceCallerIdNumber;
     }
-
+    
     /**
      * Set the sourceCallerIdNumber.
      *

@@ -11,8 +11,7 @@ import com.azure.json.JsonSerializable;
 public abstract class RecordingStorage implements JsonSerializable<RecordingStorage> {
 
     /** Creates an instance of ExternalStorageInternal class. */
-    public RecordingStorage() {
-    }
+    public RecordingStorage() {}
 
     /**
      * Get the recordingStorageType property: Defines the kind of external storage.

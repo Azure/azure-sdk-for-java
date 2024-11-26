@@ -18,9 +18,15 @@ import java.io.IOException;
 public final class StopMediaStreamingRequest implements JsonSerializable<StopMediaStreamingRequest> {
     /*
      * Set a callback URI that overrides the default callback URI set by CreateCall/AnswerCall for this operation.
-     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be used.
+     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be
+     * used.
      */
     private String operationCallbackUri;
+
+    /*
+     * The value to identify context of the operation.
+     */
+    private String operationContext;
 
     /**
      * Creates an instance of StopMediaStreamingRequest class.
@@ -31,7 +37,8 @@ public final class StopMediaStreamingRequest implements JsonSerializable<StopMed
     /**
      * Get the operationCallbackUri property: Set a callback URI that overrides the default callback URI set by
      * CreateCall/AnswerCall for this operation.
-     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be used.
+     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be
+     * used.
      * 
      * @return the operationCallbackUri value.
      */
@@ -42,7 +49,8 @@ public final class StopMediaStreamingRequest implements JsonSerializable<StopMed
     /**
      * Set the operationCallbackUri property: Set a callback URI that overrides the default callback URI set by
      * CreateCall/AnswerCall for this operation.
-     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be used.
+     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be
+     * used.
      * 
      * @param operationCallbackUri the operationCallbackUri value to set.
      * @return the StopMediaStreamingRequest object itself.
@@ -53,12 +61,30 @@ public final class StopMediaStreamingRequest implements JsonSerializable<StopMed
     }
 
     /**
-     * {@inheritDoc}
+     * Get the operationContext property: The value to identify context of the operation.
+     * 
+     * @return the operationContext value.
      */
+    public String getOperationContext() {
+        return this.operationContext;
+    }
+
+    /**
+     * Set the operationContext property: The value to identify context of the operation.
+     * 
+     * @param operationContext the operationContext value to set.
+     * @return the StopMediaStreamingRequest object itself.
+     */
+    public StopMediaStreamingRequest setOperationContext(String operationContext) {
+        this.operationContext = operationContext;
+        return this;
+    }
+
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("operationCallbackUri", this.operationCallbackUri);
+        jsonWriter.writeStringField("operationContext", this.operationContext);
         return jsonWriter.writeEndObject();
     }
 
@@ -79,6 +105,8 @@ public final class StopMediaStreamingRequest implements JsonSerializable<StopMed
 
                 if ("operationCallbackUri".equals(fieldName)) {
                     deserializedStopMediaStreamingRequest.operationCallbackUri = reader.getString();
+                } else if ("operationContext".equals(fieldName)) {
+                    deserializedStopMediaStreamingRequest.operationContext = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
