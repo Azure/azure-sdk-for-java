@@ -5,9 +5,6 @@ package com.azure.storage.file.share;
 
 import com.azure.core.exception.UnexpectedLengthException;
 import com.azure.core.http.HttpHeaderName;
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
@@ -644,35 +641,84 @@ class FileApiTests extends FileShareTestBase {
     }
 
     @Test
-    public void testDownloadToFileWithPartialFailures() throws Exception {
-        // Arrange: Set up test data and temporary files
-        byte[] testData = "This is the test data for download".getBytes(StandardCharsets.UTF_8);
+    public void downloadToFileWithPartialDownloads() throws Exception {
         File uploadFile = File.createTempFile(CoreUtils.randomUuid().toString(), ".txt");
         uploadFile.deleteOnExit();
-        Files.write(uploadFile.toPath(), testData); // Write test data to the upload file
+        Files.write(uploadFile.toPath(), DATA.getDefaultBytes());
 
         File outFile = new File(generatePathName() + ".txt");
         if (outFile.exists()) {
             assertTrue(outFile.delete());
         }
 
-        // Create a custom pipeline with the MockPartialResponsePolicy
-        HttpPipelinePolicy partialResponsePolicy = new MockFailureResponsePolicy(5);
-        HttpPipeline pipeline = new HttpPipelineBuilder().policies(partialResponsePolicy).build();
+        MockPartialResponsePolicy policy = new MockPartialResponsePolicy(5);
 
-        // Create a ShareFileAsyncClient using the custom pipeline
-        ShareFileClient downloadClient = fileBuilderHelper(shareName, filePath).pipeline(pipeline).buildFileClient();
+        // Create a ShareFileClient for download using the custom pipeline
+        ShareFileClient downloadClient
+            = getFileClient(ENVIRONMENT.getPrimaryAccount().getCredential(), primaryFileClient.getFileUrl(), policy);
 
         // Upload the test data
-        primaryFileClient.create(testData.length);
+        primaryFileClient.create(DATA.getDefaultDataSize());
         primaryFileClient.uploadFromFile(uploadFile.toString());
 
-        // Act: Download the file with fault injection
         downloadClient.downloadToFile(outFile.toString());
 
-        // Assert: Verify the downloaded data
         byte[] downloadedData = Files.readAllBytes(outFile.toPath());
-        Assertions.assertArrayEquals(testData, downloadedData, "Downloaded data should match uploaded data");
+        Assertions.assertArrayEquals(DATA.getDefaultBytes(), downloadedData);
+
+        // Assert that we retried the correct number of times (5)
+        assertEquals(0, policy.getTriesRemaining());
+
+        // Assert that the range headers that were retried match what was returned from MockPartialResponsePolicy
+        List<int[]> actualRanges = policy.getRangesList();
+        for (int i = 0; i < actualRanges.size(); i++) {
+            int[] range = actualRanges.get(i);
+            assertEquals(i, range[0]);
+            assertEquals(DATA.getDefaultDataSize() - 1, range[1]);
+        }
+
+        // Clean up
+        Files.deleteIfExists(outFile.toPath());
+        Files.deleteIfExists(uploadFile.toPath());
+    }
+
+    @Test
+    public void downloadToFileRetryExhausted() throws Exception {
+        File uploadFile = File.createTempFile(CoreUtils.randomUuid().toString(), ".txt");
+        uploadFile.deleteOnExit();
+        Files.write(uploadFile.toPath(), DATA.getDefaultBytes());
+
+        File outFile = new File(generatePathName() + ".txt");
+        if (outFile.exists()) {
+            assertTrue(outFile.delete());
+        }
+
+        MockPartialResponsePolicy policy = new MockPartialResponsePolicy(6);
+
+        // Create a ShareFileClient for download using the custom pipeline
+        ShareFileClient downloadClient
+            = getFileClient(ENVIRONMENT.getPrimaryAccount().getCredential(), primaryFileClient.getFileUrl(), policy);
+
+        // Upload the test data
+        primaryFileClient.create(DATA.getDefaultDataSize());
+        primaryFileClient.uploadFromFile(uploadFile.toString());
+
+        try {
+            downloadClient.downloadToFile(outFile.toString());
+        } catch (Throwable e) {
+            assertInstanceOf(IOException.class, e.getCause());
+        }
+
+        // Assert that we retried the correct number of times (5) even though the retry policy allowed for 6 retries
+        assertEquals(0, policy.getTriesRemaining());
+
+        // Assert that the range headers that were retried match what was returned from MockPartialResponsePolicy
+        List<int[]> actualRanges = policy.getRangesList();
+        for (int i = 0; i < actualRanges.size(); i++) {
+            int[] range = actualRanges.get(i);
+            assertEquals(i, range[0]);
+            assertEquals(DATA.getDefaultDataSize() - 1, range[1]);
+        }
 
         // Clean up
         Files.deleteIfExists(outFile.toPath());
@@ -1160,10 +1206,10 @@ class FileApiTests extends FileShareTestBase {
         primaryFileClient.create(1024);
         ShareFileClient destinationClient = shareClient.getFileClient(generatePathName());
         destinationClient.create(1024);
-    
+
         ShareStorageException e = assertThrows(ShareStorageException.class,
             () -> destinationClient.uploadRangeFromUrl(5, 0, 0, primaryFileClient.getFileUrl()));
-    
+
         assertTrue(e.getStatusCode() == 401);
         assertTrue(e.getServiceMessage().contains("NoAuthenticationInformation"));
         assertTrue(e.getServiceMessage().contains("Server failed to authenticate the request. Please refer to the information in the www-authenticate header."));
@@ -1417,12 +1463,12 @@ class FileApiTests extends FileShareTestBase {
     @Test
     public void startCopySourceErrorAndStatusCode() {
         primaryFileClient.create(1024);
-    
+
         ShareStorageException e = assertThrows(ShareStorageException.class, () -> {
             SyncPoller<ShareFileCopyInfo, Void> poller = primaryFileClient.beginCopy("https://error.file.core.windows.net/garbage", testMetadata, null);
             poller.waitForCompletion();
         });
-    
+
         assertTrue(e.getStatusCode() == 400);
         assertTrue(e.getServiceMessage().contains("InvalidUri"));
         assertTrue(e.getServiceMessage().contains("The requested URI does not represent any resource on the server."));

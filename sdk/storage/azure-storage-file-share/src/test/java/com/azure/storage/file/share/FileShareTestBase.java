@@ -264,6 +264,15 @@ public class FileShareTestBase extends TestProxyTestBase {
         return builder.buildFileClient();
     }
 
+    protected ShareFileAsyncClient getFileAsyncClient(StorageSharedKeyCredential credential, String endpoint,
+        HttpPipelinePolicy... policies) {
+        ShareFileClientBuilder builder = getFileClientBuilder(endpoint, policies);
+        if (credential != null) {
+            builder.credential(credential);
+        }
+        return builder.buildFileAsyncClient();
+    }
+
     protected ShareFileClientBuilder getFileClientBuilder(String endpoint, HttpPipelinePolicy... policies) {
         ShareFileClientBuilder builder = new ShareFileClientBuilder().endpoint(endpoint);
         for (HttpPipelinePolicy policy : policies) {

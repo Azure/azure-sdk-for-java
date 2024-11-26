@@ -7,12 +7,10 @@ import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.util.BinaryData;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
-import java.nio.ByteBuffer;
 
 public class MockFailureResponsePolicy implements HttpPipelinePolicy {
 
@@ -26,12 +24,9 @@ public class MockFailureResponsePolicy implements HttpPipelinePolicy {
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         return next.process().flatMap(response -> {
             if (this.tries == 0) {
-                System.out.println("tries: " + this.tries);
-//                System.out.println("data: " + response.getBodyAsBinaryData());
                 return Mono.just(response);
             } else {
                 this.tries -= 1;
-                System.out.println("tries: " + this.tries);
                 return Mono.just(new MockDownloadHttpResponse(response, 206, Flux.error(new IOException())));
             }
         });
