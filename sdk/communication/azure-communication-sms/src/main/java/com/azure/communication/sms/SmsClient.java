@@ -75,8 +75,7 @@ public final class SmsClient {
      * @return response for a successful send Sms request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Iterable<SmsSendResult>> sendWithResponse(String from, Iterable<String> to, String message,
-        SmsSendOptions options, Context context) {
+    public Response<Iterable<SmsSendResult>> sendWithResponse(String from, Iterable<String> to, String message, SmsSendOptions options, Context context) {
         return smsAsyncClient.sendWithResponse(from, to, message, options, context).block();
     }
 }
