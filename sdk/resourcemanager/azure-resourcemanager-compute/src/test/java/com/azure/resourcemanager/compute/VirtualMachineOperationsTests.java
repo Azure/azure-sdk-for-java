@@ -2104,7 +2104,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
         Assertions.assertTrue(vm.dataDisks().values().iterator().next().isWriteAcceleratorEnabled());
 
         Disk dataDisk = computeManager.disks()
-            .define(vm + "Disk1")
+            .define(vmName + "Disk1")
             .withRegion(region)
             .withExistingResourceGroup(rgName)
             .withData()
