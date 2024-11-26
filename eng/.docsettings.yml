@@ -5,6 +5,7 @@ omitted_paths:
   - sdk/*/azure-*/samples/*
   - sdk/authorization/microsoft-azure-authentication-msi-token-provider/*
   - sdk/*/azure-monitor-opentelemetry-exporter/*/samples/*
+  - sdk/*/azure-monitor-opentelemetry-autoconfigure/*/samples/*
   - sdk/boms/spring-cloud-azure-dependencies/*
   - sdk/spring/*
   - "sdk/spring/*/*"

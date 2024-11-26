@@ -194,7 +194,7 @@ final class ReflectionUtilsMethodHandle implements ReflectionUtilsApi {
             return (MethodHandles.Lookup) METHOD_HANDLES_PRIVATE_LOOKUP_IN_METHOD_HANDLE.invokeExact(targetClass,
                 LOOKUP);
         } else {
-            return ImplUtils.doPrivilegedException(() -> {
+            return AccessControllerUtils.doPrivilegedException(() -> {
                 try {
                     return (MethodHandles.Lookup) METHOD_HANDLES_PRIVATE_LOOKUP_IN_METHOD_HANDLE
                         .invokeExact(targetClass, LOOKUP);

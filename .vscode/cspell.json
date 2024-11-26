@@ -148,6 +148,7 @@
     "sdk/keyvault/test-resources/test-resources.json",
     "sdk/keyvault/test-resources-jca/test-resources.json",
     "sdk/formrecognizer/azure-ai-formrecognizer/**",
+    "sdk/formrecognizer/test-resources.json",
     "sdk/documentintelligence/azure-ai-documentintelligence/**",
     "sdk/documentintelligence/test-resources.json",
     "sdk/maps/azure-maps-render/**",
@@ -157,6 +158,7 @@
     "sdk/maps/azure-maps-search/**",
     "sdk/monitor/azure-monitor-query/**",
     "sdk/monitor/azure-monitor-opentelemetry-exporter/**",
+    "sdk/monitor/azure-monitor-opentelemetry-autoconfigure/**",
     "sdk/monitor/test-resources.json",
     "sdk/modelsrepository/azure-iot-modelsrepository/**",
     "sdk/parents/azure-client-sdk-parent/**",
@@ -1281,11 +1283,18 @@
       ]
     },
     {
+      "filename": "sdk/tables/**",
+      "words": [
+        "mmspecial"
+      ]
+    },
+    {
       "filename": "sdk/tables/azure-data-tables/**",
       "words": [
         "upserts",
         "upserted",
-        "raud"
+        "raud",
+        "mmspecial"
       ]
     },
     {

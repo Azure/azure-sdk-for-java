@@ -27,6 +27,7 @@ import com.azure.resourcemanager.compute.models.AvailabilitySetSkuTypes;
 import com.azure.resourcemanager.compute.models.BillingProfile;
 import com.azure.resourcemanager.compute.models.BootDiagnostics;
 import com.azure.resourcemanager.compute.models.CachingTypes;
+import com.azure.resourcemanager.compute.models.CapacityReservationProfile;
 import com.azure.resourcemanager.compute.models.DataDisk;
 import com.azure.resourcemanager.compute.models.DeleteOptions;
 import com.azure.resourcemanager.compute.models.DiagnosticsProfile;
@@ -2019,6 +2020,15 @@ class VirtualMachineImpl
         return this.innerModel().userData();
     }
 
+    @Override
+    public String capacityReservationGroupId() {
+        if (this.innerModel().capacityReservation() != null
+            && this.innerModel().capacityReservation().capacityReservationGroup() != null) {
+            return this.innerModel().capacityReservation().capacityReservationGroup().id();
+        }
+        return null;
+    }
+
     // CreateUpdateTaskGroup.ResourceCreator.beforeGroupCreateOrUpdate implementation
     @Override
     public void beforeGroupCreateOrUpdate() {
@@ -2754,6 +2764,8 @@ class VirtualMachineImpl
         updateParameter.withPriority(this.innerModel().priority());
         updateParameter.withEvictionPolicy(this.innerModel().evictionPolicy());
         updateParameter.withUserData(this.innerModel().userData());
+        updateParameter.withCapacityReservation(this.innerModel().capacityReservation());
+        updateParameter.withApplicationProfile(this.innerModel().applicationProfile());
     }
 
     RoleAssignmentHelper.IdProvider idProvider() {
@@ -2889,6 +2901,17 @@ class VirtualMachineImpl
     @Override
     public VirtualMachineImpl withoutEncryptionAtHost() {
         ensureSecurityProfile().withEncryptionAtHost(false);
+        return this;
+    }
+
+    @Override
+    public VirtualMachineImpl withCapacityReservationGroup(String capacityReservationGroupId) {
+        if (this.innerModel().capacityReservation() == null) {
+            this.innerModel().withCapacityReservation(new CapacityReservationProfile());
+        }
+        this.innerModel()
+            .capacityReservation()
+            .withCapacityReservationGroup(new SubResource().withId(capacityReservationGroupId));
         return this;
     }
 

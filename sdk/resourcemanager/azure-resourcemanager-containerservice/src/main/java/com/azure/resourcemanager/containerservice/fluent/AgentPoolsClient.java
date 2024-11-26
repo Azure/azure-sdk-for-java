@@ -262,6 +262,8 @@ public interface AgentPoolsClient {
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
      * @param parameters The agent pool to create or update.
+     * @param ifMatch The request should only proceed if an entity matches this string.
+     * @param ifNoneMatch The request should only proceed if no entity matches this string.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -269,7 +271,25 @@ public interface AgentPoolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String resourceName,
-        String agentPoolName, AgentPoolInner parameters);
+        String agentPoolName, AgentPoolInner parameters, String ifMatch, String ifNoneMatch);
+
+    /**
+     * Creates or updates an agent pool in the specified managed cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @param agentPoolName The name of the agent pool.
+     * @param parameters The agent pool to create or update.
+     * @param ifMatch The request should only proceed if an entity matches this string.
+     * @param ifNoneMatch The request should only proceed if no entity matches this string.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of agent Pool.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<AgentPoolInner>, AgentPoolInner> beginCreateOrUpdateAsync(String resourceGroupName,
+        String resourceName, String agentPoolName, AgentPoolInner parameters, String ifMatch, String ifNoneMatch);
 
     /**
      * Creates or updates an agent pool in the specified managed cluster.
@@ -310,6 +330,8 @@ public interface AgentPoolsClient {
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
      * @param parameters The agent pool to create or update.
+     * @param ifMatch The request should only proceed if an entity matches this string.
+     * @param ifNoneMatch The request should only proceed if no entity matches this string.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -318,7 +340,26 @@ public interface AgentPoolsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<AgentPoolInner>, AgentPoolInner> beginCreateOrUpdate(String resourceGroupName,
-        String resourceName, String agentPoolName, AgentPoolInner parameters, Context context);
+        String resourceName, String agentPoolName, AgentPoolInner parameters, String ifMatch, String ifNoneMatch,
+        Context context);
+
+    /**
+     * Creates or updates an agent pool in the specified managed cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @param agentPoolName The name of the agent pool.
+     * @param parameters The agent pool to create or update.
+     * @param ifMatch The request should only proceed if an entity matches this string.
+     * @param ifNoneMatch The request should only proceed if no entity matches this string.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return agent Pool on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<AgentPoolInner> createOrUpdateAsync(String resourceGroupName, String resourceName, String agentPoolName,
+        AgentPoolInner parameters, String ifMatch, String ifNoneMatch);
 
     /**
      * Creates or updates an agent pool in the specified managed cluster.
@@ -359,6 +400,8 @@ public interface AgentPoolsClient {
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
      * @param parameters The agent pool to create or update.
+     * @param ifMatch The request should only proceed if an entity matches this string.
+     * @param ifNoneMatch The request should only proceed if no entity matches this string.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -367,7 +410,7 @@ public interface AgentPoolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     AgentPoolInner createOrUpdate(String resourceGroupName, String resourceName, String agentPoolName,
-        AgentPoolInner parameters, Context context);
+        AgentPoolInner parameters, String ifMatch, String ifNoneMatch, Context context);
 
     /**
      * Deletes an agent pool in the specified managed cluster.
@@ -377,6 +420,7 @@ public interface AgentPoolsClient {
      * @param agentPoolName The name of the agent pool.
      * @param ignorePodDisruptionBudget ignore-pod-disruption-budget=true to delete those pods on a node without
      * considering Pod Disruption Budget.
+     * @param ifMatch The request should only proceed if an entity matches this string.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -384,7 +428,7 @@ public interface AgentPoolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String resourceName,
-        String agentPoolName, Boolean ignorePodDisruptionBudget);
+        String agentPoolName, Boolean ignorePodDisruptionBudget, String ifMatch);
 
     /**
      * Deletes an agent pool in the specified managed cluster.
@@ -394,6 +438,7 @@ public interface AgentPoolsClient {
      * @param agentPoolName The name of the agent pool.
      * @param ignorePodDisruptionBudget ignore-pod-disruption-budget=true to delete those pods on a node without
      * considering Pod Disruption Budget.
+     * @param ifMatch The request should only proceed if an entity matches this string.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -401,7 +446,7 @@ public interface AgentPoolsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String resourceName,
-        String agentPoolName, Boolean ignorePodDisruptionBudget);
+        String agentPoolName, Boolean ignorePodDisruptionBudget, String ifMatch);
 
     /**
      * Deletes an agent pool in the specified managed cluster.
@@ -440,6 +485,7 @@ public interface AgentPoolsClient {
      * @param agentPoolName The name of the agent pool.
      * @param ignorePodDisruptionBudget ignore-pod-disruption-budget=true to delete those pods on a node without
      * considering Pod Disruption Budget.
+     * @param ifMatch The request should only proceed if an entity matches this string.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -448,7 +494,7 @@ public interface AgentPoolsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName, String agentPoolName,
-        Boolean ignorePodDisruptionBudget, Context context);
+        Boolean ignorePodDisruptionBudget, String ifMatch, Context context);
 
     /**
      * Deletes an agent pool in the specified managed cluster.
@@ -458,6 +504,7 @@ public interface AgentPoolsClient {
      * @param agentPoolName The name of the agent pool.
      * @param ignorePodDisruptionBudget ignore-pod-disruption-budget=true to delete those pods on a node without
      * considering Pod Disruption Budget.
+     * @param ifMatch The request should only proceed if an entity matches this string.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -465,7 +512,7 @@ public interface AgentPoolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> deleteAsync(String resourceGroupName, String resourceName, String agentPoolName,
-        Boolean ignorePodDisruptionBudget);
+        Boolean ignorePodDisruptionBudget, String ifMatch);
 
     /**
      * Deletes an agent pool in the specified managed cluster.
@@ -502,6 +549,7 @@ public interface AgentPoolsClient {
      * @param agentPoolName The name of the agent pool.
      * @param ignorePodDisruptionBudget ignore-pod-disruption-budget=true to delete those pods on a node without
      * considering Pod Disruption Budget.
+     * @param ifMatch The request should only proceed if an entity matches this string.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -509,7 +557,7 @@ public interface AgentPoolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void delete(String resourceGroupName, String resourceName, String agentPoolName, Boolean ignorePodDisruptionBudget,
-        Context context);
+        String ifMatch, Context context);
 
     /**
      * Gets the upgrade profile for an agent pool.

@@ -159,8 +159,8 @@ public final class RackImpl implements Rack, Rack.Definition, Rack.Update {
     RackImpl(RackInner innerObject, com.azure.resourcemanager.networkcloud.NetworkCloudManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.rackName = Utils.getValueFromIdByName(innerObject.id(), "racks");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.rackName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "racks");
     }
 
     public Rack refresh() {

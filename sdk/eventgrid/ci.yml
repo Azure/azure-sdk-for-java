@@ -51,7 +51,7 @@ parameters:
 - name: release_azuremessagingeventgridcloudnativecloudevents
   displayName: 'azure-messaging-eventgrid-cloudnative-cloudevents'
   type: boolean
-  default: true
+  default: false
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
@@ -70,3 +70,4 @@ extends:
         groupId: com.azure
         safeName: azuremessagingeventgridcloudnativecloudevents
         releaseInBatch: ${{ parameters.release_azuremessagingeventgridcloudnativecloudevents }}
+

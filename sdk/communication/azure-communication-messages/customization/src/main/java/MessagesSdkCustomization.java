@@ -176,14 +176,14 @@ public class MessagesSdkCustomization extends Customization {
 
     private void updateWhatsAppMessageTemplateItemWithBinaryDataContent(PackageCustomization channelsModelsPackage) {
         channelsModelsPackage.getClass("WhatsAppMessageTemplateItem").customizeAst(ast -> {
-            ast.addImport("com.azure.core.util.BinaryData");
+            // ast.addImport("com.azure.core.util.BinaryData");
             ast.addImport(
                 "com.azure.communication.messages.implementation.accesshelpers.MessageTemplateItemAccessHelper");
             ast.getClassByName("WhatsAppMessageTemplateItem").ifPresent(clazz -> {
-                clazz.getMethodsByName("getContent")
-                    .get(0)
-                    .setType("BinaryData")
-                    .setBody(StaticJavaParser.parseBlock("{return BinaryData.fromObject(this.content);}"));
+                // clazz.getMethodsByName("getContent")
+                //     .get(0)
+                //     .setType("BinaryData")
+                //     .setBody(StaticJavaParser.parseBlock("{return BinaryData.fromObject(this.content);}"));
 
                 String fromJson = clazz.getMethodsByName("fromJson").get(0).getBody().get().toString()
                     .replace("deserializedWhatsAppMessageTemplateItem.setName(name);",

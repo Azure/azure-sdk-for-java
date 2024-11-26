@@ -4,65 +4,261 @@
 
 package com.azure.resourcemanager.cognitiveservices.models;
 
-import com.azure.resourcemanager.cognitiveservices.fluent.models.UsageInner;
+import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
- * An immutable client-side representation of Usage.
+ * The usage data for a usage request.
  */
-public interface Usage {
+@Fluent
+public final class Usage implements JsonSerializable<Usage> {
+    /*
+     * The unit of the metric.
+     */
+    private UnitType unit;
+
+    /*
+     * The name information for the metric.
+     */
+    private MetricName name;
+
+    /*
+     * The quota period used to summarize the usage values.
+     */
+    private String quotaPeriod;
+
+    /*
+     * Maximum value for this metric.
+     */
+    private Double limit;
+
+    /*
+     * Current value for this metric.
+     */
+    private Double currentValue;
+
+    /*
+     * Next reset time for current quota.
+     */
+    private String nextResetTime;
+
+    /*
+     * Cognitive Services account quota usage status.
+     */
+    private QuotaUsageStatus status;
+
     /**
-     * Gets the unit property: The unit of the metric.
+     * Creates an instance of Usage class.
+     */
+    public Usage() {
+    }
+
+    /**
+     * Get the unit property: The unit of the metric.
      * 
      * @return the unit value.
      */
-    UnitType unit();
+    public UnitType unit() {
+        return this.unit;
+    }
 
     /**
-     * Gets the name property: The name information for the metric.
+     * Set the unit property: The unit of the metric.
+     * 
+     * @param unit the unit value to set.
+     * @return the Usage object itself.
+     */
+    public Usage withUnit(UnitType unit) {
+        this.unit = unit;
+        return this;
+    }
+
+    /**
+     * Get the name property: The name information for the metric.
      * 
      * @return the name value.
      */
-    MetricName name();
+    public MetricName name() {
+        return this.name;
+    }
 
     /**
-     * Gets the quotaPeriod property: The quota period used to summarize the usage values.
+     * Set the name property: The name information for the metric.
+     * 
+     * @param name the name value to set.
+     * @return the Usage object itself.
+     */
+    public Usage withName(MetricName name) {
+        this.name = name;
+        return this;
+    }
+
+    /**
+     * Get the quotaPeriod property: The quota period used to summarize the usage values.
      * 
      * @return the quotaPeriod value.
      */
-    String quotaPeriod();
+    public String quotaPeriod() {
+        return this.quotaPeriod;
+    }
 
     /**
-     * Gets the limit property: Maximum value for this metric.
+     * Set the quotaPeriod property: The quota period used to summarize the usage values.
+     * 
+     * @param quotaPeriod the quotaPeriod value to set.
+     * @return the Usage object itself.
+     */
+    public Usage withQuotaPeriod(String quotaPeriod) {
+        this.quotaPeriod = quotaPeriod;
+        return this;
+    }
+
+    /**
+     * Get the limit property: Maximum value for this metric.
      * 
      * @return the limit value.
      */
-    Double limit();
+    public Double limit() {
+        return this.limit;
+    }
 
     /**
-     * Gets the currentValue property: Current value for this metric.
+     * Set the limit property: Maximum value for this metric.
+     * 
+     * @param limit the limit value to set.
+     * @return the Usage object itself.
+     */
+    public Usage withLimit(Double limit) {
+        this.limit = limit;
+        return this;
+    }
+
+    /**
+     * Get the currentValue property: Current value for this metric.
      * 
      * @return the currentValue value.
      */
-    Double currentValue();
+    public Double currentValue() {
+        return this.currentValue;
+    }
 
     /**
-     * Gets the nextResetTime property: Next reset time for current quota.
+     * Set the currentValue property: Current value for this metric.
+     * 
+     * @param currentValue the currentValue value to set.
+     * @return the Usage object itself.
+     */
+    public Usage withCurrentValue(Double currentValue) {
+        this.currentValue = currentValue;
+        return this;
+    }
+
+    /**
+     * Get the nextResetTime property: Next reset time for current quota.
      * 
      * @return the nextResetTime value.
      */
-    String nextResetTime();
+    public String nextResetTime() {
+        return this.nextResetTime;
+    }
 
     /**
-     * Gets the status property: Cognitive Services account quota usage status.
+     * Set the nextResetTime property: Next reset time for current quota.
+     * 
+     * @param nextResetTime the nextResetTime value to set.
+     * @return the Usage object itself.
+     */
+    public Usage withNextResetTime(String nextResetTime) {
+        this.nextResetTime = nextResetTime;
+        return this;
+    }
+
+    /**
+     * Get the status property: Cognitive Services account quota usage status.
      * 
      * @return the status value.
      */
-    QuotaUsageStatus status();
+    public QuotaUsageStatus status() {
+        return this.status;
+    }
 
     /**
-     * Gets the inner com.azure.resourcemanager.cognitiveservices.fluent.models.UsageInner object.
+     * Set the status property: Cognitive Services account quota usage status.
      * 
-     * @return the inner object.
+     * @param status the status value to set.
+     * @return the Usage object itself.
      */
-    UsageInner innerModel();
+    public Usage withStatus(QuotaUsageStatus status) {
+        this.status = status;
+        return this;
+    }
+
+    /**
+     * Validates the instance.
+     * 
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (name() != null) {
+            name().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("unit", this.unit == null ? null : this.unit.toString());
+        jsonWriter.writeJsonField("name", this.name);
+        jsonWriter.writeStringField("quotaPeriod", this.quotaPeriod);
+        jsonWriter.writeNumberField("limit", this.limit);
+        jsonWriter.writeNumberField("currentValue", this.currentValue);
+        jsonWriter.writeStringField("nextResetTime", this.nextResetTime);
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Usage from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Usage if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IOException If an error occurs while reading the Usage.
+     */
+    public static Usage fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Usage deserializedUsage = new Usage();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("unit".equals(fieldName)) {
+                    deserializedUsage.unit = UnitType.fromString(reader.getString());
+                } else if ("name".equals(fieldName)) {
+                    deserializedUsage.name = MetricName.fromJson(reader);
+                } else if ("quotaPeriod".equals(fieldName)) {
+                    deserializedUsage.quotaPeriod = reader.getString();
+                } else if ("limit".equals(fieldName)) {
+                    deserializedUsage.limit = reader.getNullable(JsonReader::getDouble);
+                } else if ("currentValue".equals(fieldName)) {
+                    deserializedUsage.currentValue = reader.getNullable(JsonReader::getDouble);
+                } else if ("nextResetTime".equals(fieldName)) {
+                    deserializedUsage.nextResetTime = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedUsage.status = QuotaUsageStatus.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUsage;
+        });
+    }
 }

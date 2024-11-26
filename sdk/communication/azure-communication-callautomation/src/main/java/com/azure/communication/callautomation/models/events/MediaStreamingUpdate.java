@@ -30,6 +30,12 @@ public final class MediaStreamingUpdate implements JsonSerializable<MediaStreami
     private MediaStreamingStatusDetails mediaStreamingStatusDetails;
 
     /**
+     * Creates an instance of {@link MediaStreamingUpdate}.
+     */
+    public MediaStreamingUpdate() {
+    }
+
+    /**
      * Get the contentType property: The contentType property.
      *
      * @return the contentType value.

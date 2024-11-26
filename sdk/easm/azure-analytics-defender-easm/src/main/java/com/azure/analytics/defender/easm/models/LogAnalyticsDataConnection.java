@@ -31,7 +31,7 @@ public final class LogAnalyticsDataConnection extends DataConnection {
     private final LogAnalyticsDataConnectionProperties properties;
 
     /*
-     * The system generated unique id for the resource.
+     * This is typically the same as the name but might be different for different models.
      */
     @Generated
     private String id;
@@ -61,7 +61,7 @@ public final class LogAnalyticsDataConnection extends DataConnection {
     private DataConnectionFrequency frequency;
 
     /*
-     * The day to update the data connection on.
+     * The day to update the data connection on. (1-7 for weekly, 1-31 for monthly)
      */
     @Generated
     private Integer frequencyOffset;
@@ -122,7 +122,7 @@ public final class LogAnalyticsDataConnection extends DataConnection {
     }
 
     /**
-     * Get the id property: The system generated unique id for the resource.
+     * Get the id property: This is typically the same as the name but might be different for different models.
      *
      * @return the id value.
      */
@@ -177,7 +177,7 @@ public final class LogAnalyticsDataConnection extends DataConnection {
     }
 
     /**
-     * Get the frequencyOffset property: The day to update the data connection on.
+     * Get the frequencyOffset property: The day to update the data connection on. (1-7 for weekly, 1-31 for monthly).
      *
      * @return the frequencyOffset value.
      */

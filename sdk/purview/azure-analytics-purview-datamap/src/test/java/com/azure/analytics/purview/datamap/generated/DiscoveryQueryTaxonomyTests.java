@@ -13,9 +13,8 @@ import com.azure.analytics.purview.datamap.models.SearchResultValue;
 import com.azure.analytics.purview.datamap.models.SearchSortOrder;
 import com.azure.analytics.purview.datamap.models.SearchTaxonomySetting;
 import com.azure.analytics.purview.datamap.models.TermSearchResultValue;
-import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.serializer.SerializerEncoding;
-import java.io.IOException;
+import com.azure.core.util.BinaryData;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
@@ -26,14 +25,13 @@ import org.junit.jupiter.api.Test;
 public final class DiscoveryQueryTaxonomyTests extends DataMapClientTestBase {
     @Test
     @Disabled
-    public void testDiscoveryQueryTaxonomyTests() throws IOException {
+    public void testDiscoveryQueryTaxonomyTests() {
         // method invocation
         QueryResult response = discoveryClient.query(new QueryOptions().setKeywords("fakeTokenPlaceholder")
             .setLimit(10)
-            .setFilter(JacksonAdapter.createDefaultSerializerAdapter()
-                .deserialize(
-                    "{\"and\":[{\"objectType\":\"Files\"},{\"not\":{\"or\":[{\"attributeName\":\"size\",\"operator\":\"eq\",\"attributeValue\":0},{\"attributeName\":\"fileSize\",\"operator\":\"eq\",\"attributeValue\":0}]}},{\"not\":{\"classification\":\"MICROSOFT.SYSTEM.TEMP_FILE\"}}]}",
-                    Object.class, SerializerEncoding.JSON))
+            .setFilter(BinaryData.fromBytes(
+                "{and=[{objectType=Files}, {not={or=[{attributeName=size, operator=eq, attributeValue=0}, {attributeName=fileSize, operator=eq, attributeValue=0}]}}, {not={classification=MICROSOFT.SYSTEM.TEMP_FILE}}]}"
+                    .getBytes(StandardCharsets.UTF_8)))
             .setTaxonomySetting(new SearchTaxonomySetting().setAssetTypes(Arrays.asList("Azure Blob Storage"))
                 .setFacet(new SearchFacetItem().setCount(10)
                     .setSort(new SearchFacetSort().setCount(SearchSortOrder.DESCEND)))));

@@ -5,50 +5,53 @@
 package com.azure.resourcemanager.appconfiguration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** An identity that can be associated with a resource. */
+/**
+ * An identity that can be associated with a resource.
+ */
 @Fluent
-public final class ResourceIdentity {
+public final class ResourceIdentity implements JsonSerializable<ResourceIdentity> {
     /*
      * The type of managed identity used. The type 'SystemAssigned, UserAssigned' includes both an implicitly created
      * identity and a set of user-assigned identities. The type 'None' will remove any identities.
      */
-    @JsonProperty(value = "type")
     private IdentityType type;
 
     /*
      * The list of user-assigned identities associated with the resource. The user-assigned identity dictionary keys
      * will be ARM resource ids in the form:
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/
+     * userAssignedIdentities/{identityName}'.
      */
-    @JsonProperty(value = "userAssignedIdentities")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, UserIdentity> userAssignedIdentities;
 
     /*
      * The principal id of the identity. This property will only be provided for a system-assigned identity.
      */
-    @JsonProperty(value = "principalId", access = JsonProperty.Access.WRITE_ONLY)
     private String principalId;
 
     /*
      * The tenant id associated with the resource's identity. This property will only be provided for a system-assigned
      * identity.
      */
-    @JsonProperty(value = "tenantId", access = JsonProperty.Access.WRITE_ONLY)
     private String tenantId;
 
-    /** Creates an instance of ResourceIdentity class. */
+    /**
+     * Creates an instance of ResourceIdentity class.
+     */
     public ResourceIdentity() {
     }
 
     /**
      * Get the type property: The type of managed identity used. The type 'SystemAssigned, UserAssigned' includes both
      * an implicitly created identity and a set of user-assigned identities. The type 'None' will remove any identities.
-     *
+     * 
      * @return the type value.
      */
     public IdentityType type() {
@@ -58,7 +61,7 @@ public final class ResourceIdentity {
     /**
      * Set the type property: The type of managed identity used. The type 'SystemAssigned, UserAssigned' includes both
      * an implicitly created identity and a set of user-assigned identities. The type 'None' will remove any identities.
-     *
+     * 
      * @param type the type value to set.
      * @return the ResourceIdentity object itself.
      */
@@ -71,7 +74,7 @@ public final class ResourceIdentity {
      * Get the userAssignedIdentities property: The list of user-assigned identities associated with the resource. The
      * user-assigned identity dictionary keys will be ARM resource ids in the form:
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
-     *
+     * 
      * @return the userAssignedIdentities value.
      */
     public Map<String, UserIdentity> userAssignedIdentities() {
@@ -82,7 +85,7 @@ public final class ResourceIdentity {
      * Set the userAssignedIdentities property: The list of user-assigned identities associated with the resource. The
      * user-assigned identity dictionary keys will be ARM resource ids in the form:
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
-     *
+     * 
      * @param userAssignedIdentities the userAssignedIdentities value to set.
      * @return the ResourceIdentity object itself.
      */
@@ -94,7 +97,7 @@ public final class ResourceIdentity {
     /**
      * Get the principalId property: The principal id of the identity. This property will only be provided for a
      * system-assigned identity.
-     *
+     * 
      * @return the principalId value.
      */
     public String principalId() {
@@ -104,7 +107,7 @@ public final class ResourceIdentity {
     /**
      * Get the tenantId property: The tenant id associated with the resource's identity. This property will only be
      * provided for a system-assigned identity.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -113,7 +116,7 @@ public final class ResourceIdentity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -124,5 +127,51 @@ public final class ResourceIdentity {
                 }
             });
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeMapField("userAssignedIdentities", this.userAssignedIdentities,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourceIdentity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourceIdentity if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ResourceIdentity.
+     */
+    public static ResourceIdentity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourceIdentity deserializedResourceIdentity = new ResourceIdentity();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedResourceIdentity.type = IdentityType.fromString(reader.getString());
+                } else if ("userAssignedIdentities".equals(fieldName)) {
+                    Map<String, UserIdentity> userAssignedIdentities
+                        = reader.readMap(reader1 -> UserIdentity.fromJson(reader1));
+                    deserializedResourceIdentity.userAssignedIdentities = userAssignedIdentities;
+                } else if ("principalId".equals(fieldName)) {
+                    deserializedResourceIdentity.principalId = reader.getString();
+                } else if ("tenantId".equals(fieldName)) {
+                    deserializedResourceIdentity.tenantId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResourceIdentity;
+        });
     }
 }

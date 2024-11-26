@@ -48,7 +48,7 @@ To use the [DefaultAzureCredential][DefaultAzureCredential] provider shown below
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.13.3</version>
+    <version>1.14.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

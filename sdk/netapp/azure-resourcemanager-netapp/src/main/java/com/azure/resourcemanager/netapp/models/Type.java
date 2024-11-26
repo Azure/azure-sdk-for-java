@@ -10,7 +10,7 @@ import java.util.Collection;
 /**
  * quotaType
  * 
- * Type of quota.
+ * Type of quota rule.
  */
 public final class Type extends ExpandableStringEnum<Type> {
     /**

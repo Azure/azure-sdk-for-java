@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.appconfiguration.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The result of a request to check the availability of a resource name. */
+/**
+ * The result of a request to check the availability of a resource name.
+ */
 @Immutable
-public final class NameAvailabilityStatusInner {
+public final class NameAvailabilityStatusInner implements JsonSerializable<NameAvailabilityStatusInner> {
     /*
      * The value indicating whether the resource name is available.
      */
-    @JsonProperty(value = "nameAvailable", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean nameAvailable;
 
     /*
      * If any, the error message that provides more detail for the reason that the name is not available.
      */
-    @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
     private String message;
 
     /*
      * If any, the reason that the name is not available.
      */
-    @JsonProperty(value = "reason", access = JsonProperty.Access.WRITE_ONLY)
     private String reason;
 
-    /** Creates an instance of NameAvailabilityStatusInner class. */
+    /**
+     * Creates an instance of NameAvailabilityStatusInner class.
+     */
     public NameAvailabilityStatusInner() {
     }
 
     /**
      * Get the nameAvailable property: The value indicating whether the resource name is available.
-     *
+     * 
      * @return the nameAvailable value.
      */
     public Boolean nameAvailable() {
@@ -44,7 +49,7 @@ public final class NameAvailabilityStatusInner {
     /**
      * Get the message property: If any, the error message that provides more detail for the reason that the name is not
      * available.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -53,7 +58,7 @@ public final class NameAvailabilityStatusInner {
 
     /**
      * Get the reason property: If any, the reason that the name is not available.
-     *
+     * 
      * @return the reason value.
      */
     public String reason() {
@@ -62,9 +67,48 @@ public final class NameAvailabilityStatusInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NameAvailabilityStatusInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NameAvailabilityStatusInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NameAvailabilityStatusInner.
+     */
+    public static NameAvailabilityStatusInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NameAvailabilityStatusInner deserializedNameAvailabilityStatusInner = new NameAvailabilityStatusInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("nameAvailable".equals(fieldName)) {
+                    deserializedNameAvailabilityStatusInner.nameAvailable = reader.getNullable(JsonReader::getBoolean);
+                } else if ("message".equals(fieldName)) {
+                    deserializedNameAvailabilityStatusInner.message = reader.getString();
+                } else if ("reason".equals(fieldName)) {
+                    deserializedNameAvailabilityStatusInner.reason = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNameAvailabilityStatusInner;
+        });
     }
 }

@@ -4,6 +4,7 @@
 
 ### Features Added
 
+- Supported `capacityReservationGroupId` and `withCapacityReservationGroup` methods for `VirtualMachine`.
 - Supported enabling write accelerator for OS disk and data disks in `VirtualMachine` class.
 
 ### Breaking Changes

@@ -1,13 +1,14 @@
 // Original file from https://github.com/FasterXML/jackson-core under Apache-2.0 license.
 package io.clientcore.core.json.implementation.jackson.core.json;
 
-import java.util.*;
+import io.clientcore.core.json.implementation.jackson.core.JsonGenerator;
+import io.clientcore.core.json.implementation.jackson.core.JsonParser;
 
-import io.clientcore.core.json.implementation.jackson.core.*;
+import java.util.HashSet;
 
 /**
  * Helper class used if
- * {@link io.clientcore.core.json.implementation.jackson.core.JsonParser.Feature#STRICT_DUPLICATE_DETECTION}
+ * {@link JsonParser.Feature#STRICT_DUPLICATE_DETECTION}
  * is enabled.
  * Optimized to try to limit memory usage and processing overhead for smallest
  * entries, but without adding trashing (immutable objects would achieve optimal
@@ -55,15 +56,6 @@ public class DupDetector {
         _seen = null;
     }
 
-    public JsonLocation findLocation() {
-        // ugly but:
-        if (_source instanceof JsonParser) {
-            return ((JsonParser) _source).getCurrentLocation();
-        }
-        // do generators have a way to provide Location? Apparently not...
-        return null;
-    }
-
     /**
      * @return Source object (parser / generator) used to construct this detector
      *
@@ -82,10 +74,8 @@ public class DupDetector {
      *
      * @return {@code True} if the property had already been seen before in this context
      *
-     * @throws JsonParseException to report possible operation problem (default implementation
-     *    never throws it)
      */
-    public boolean isDup(String name) throws JsonParseException {
+    public boolean isDup(String name) {
         if (_firstName == null) {
             _firstName = name;
             return false;
@@ -101,7 +91,7 @@ public class DupDetector {
             return true;
         }
         if (_seen == null) {
-            _seen = new HashSet<String>(16); // 16 is default, seems reasonable
+            _seen = new HashSet<>(16); // 16 is default, seems reasonable
             _seen.add(_firstName);
             _seen.add(_secondName);
         }

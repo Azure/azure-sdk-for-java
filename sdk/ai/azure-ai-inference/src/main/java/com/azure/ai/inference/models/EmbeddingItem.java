@@ -84,7 +84,8 @@ public final class EmbeddingItem implements JsonSerializable<EmbeddingItem> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("embedding", this.embedding.toObject(Object.class));
+        jsonWriter.writeFieldName("embedding");
+        this.embedding.writeTo(jsonWriter);
         jsonWriter.writeIntField("index", this.index);
         return jsonWriter.writeEndObject();
     }

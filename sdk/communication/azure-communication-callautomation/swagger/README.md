@@ -21,7 +21,7 @@ There is one swagger for Calling management APIs.
 
 ```ps
 cd <swagger-folder>
-autorest README.md --java --v4 --use=@autorest/java@4.0.20 --use=@autorest/modelerfour@4.15.442
+autorest README.md --java --v4
 ```
 
 ### Code generation settings
@@ -29,7 +29,7 @@ autorest README.md --java --v4 --use=@autorest/java@4.0.20 --use=@autorest/model
 tag: package-2023-10-03-preview
 use: '@autorest/java@4.1.29'
 require:
-    - https://github.com/Azure/azure-rest-api-specs/blob/156ff363e44f764ddd8a0a6adcd371610240ba15/specification/communication/data-plane/CallAutomation/readme.md
+    - https://github.com/Azure/azure-rest-api-specs/blob/be2a0fa68829fcb15c4e6b47aa6bc4bdd566c1cf/specification/communication/data-plane/CallAutomation/readme.md
 java: true
 output-folder: ../
 license-header: MICROSOFT_MIT_SMALL

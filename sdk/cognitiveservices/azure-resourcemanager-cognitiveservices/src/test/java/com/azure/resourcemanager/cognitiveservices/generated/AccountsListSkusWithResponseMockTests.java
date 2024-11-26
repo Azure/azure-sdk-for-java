@@ -22,7 +22,7 @@ public final class AccountsListSkusWithResponseMockTests {
     @Test
     public void testListSkusWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":[{\"resourceType\":\"fgslqubkwdl\",\"sku\":{\"name\":\"rds\",\"tier\":\"Free\",\"size\":\"bazpjuohmi\",\"family\":\"flnorwmduvwp\",\"capacity\":1862028450}},{\"resourceType\":\"w\",\"sku\":{\"name\":\"gdxpg\",\"tier\":\"Basic\",\"size\":\"isze\",\"family\":\"nb\",\"capacity\":1746749164}}]}";
+            = "{\"value\":[{\"resourceType\":\"lgg\",\"sku\":{\"name\":\"bemzqkzszuwi\",\"tier\":\"Free\",\"size\":\"xxhljfpgpic\",\"family\":\"nzhrgmqgjsxvpqcb\",\"capacity\":1162167874}}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,14 +32,14 @@ public final class AccountsListSkusWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         AccountSkuListResult response = manager.accounts()
-            .listSkusWithResponse("uaadraufactkahzo", "ajjziuxxpshne", com.azure.core.util.Context.NONE)
+            .listSkusWithResponse("kfvxcnq", "xqpswok", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("fgslqubkwdl", response.value().get(0).resourceType());
-        Assertions.assertEquals("rds", response.value().get(0).sku().name());
+        Assertions.assertEquals("lgg", response.value().get(0).resourceType());
+        Assertions.assertEquals("bemzqkzszuwi", response.value().get(0).sku().name());
         Assertions.assertEquals(SkuTier.FREE, response.value().get(0).sku().tier());
-        Assertions.assertEquals("bazpjuohmi", response.value().get(0).sku().size());
-        Assertions.assertEquals("flnorwmduvwp", response.value().get(0).sku().family());
-        Assertions.assertEquals(1862028450, response.value().get(0).sku().capacity());
+        Assertions.assertEquals("xxhljfpgpic", response.value().get(0).sku().size());
+        Assertions.assertEquals("nzhrgmqgjsxvpqcb", response.value().get(0).sku().family());
+        Assertions.assertEquals(1162167874, response.value().get(0).sku().capacity());
     }
 }

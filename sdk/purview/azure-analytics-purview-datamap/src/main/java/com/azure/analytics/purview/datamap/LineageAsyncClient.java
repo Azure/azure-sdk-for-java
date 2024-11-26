@@ -57,7 +57,7 @@ public final class LineageAsyncClient {
      *     guidEntityMap (Optional): {
      *         String (Required): {
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -67,7 +67,7 @@ public final class LineageAsyncClient {
      *             classifications (Optional): [
      *                  (Optional){
      *                     attributes (Optional): {
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     lastModifiedTS: String (Optional)
@@ -110,7 +110,7 @@ public final class LineageAsyncClient {
      *     }
      *     widthCounts (Optional): {
      *         String (Required): {
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *     }
      *     lineageDepth: Integer (Optional)
@@ -171,7 +171,7 @@ public final class LineageAsyncClient {
      *     guidEntityMap (Optional): {
      *         String (Required): {
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -181,7 +181,7 @@ public final class LineageAsyncClient {
      *             classifications (Optional): [
      *                  (Optional){
      *                     attributes (Optional): {
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     lastModifiedTS: String (Optional)
@@ -224,7 +224,7 @@ public final class LineageAsyncClient {
      *     }
      *     widthCounts (Optional): {
      *         String (Required): {
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *     }
      *     lineageDepth: Integer (Optional)
@@ -302,7 +302,7 @@ public final class LineageAsyncClient {
      *     guidEntityMap (Optional): {
      *         String (Required): {
      *             attributes (Optional): {
-     *                 String: Object (Required)
+     *                 String: BinaryData (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -312,7 +312,7 @@ public final class LineageAsyncClient {
      *             classifications (Optional): [
      *                  (Optional){
      *                     attributes (Optional): {
-     *                         String: Object (Required)
+     *                         String: BinaryData (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     lastModifiedTS: String (Optional)
@@ -355,7 +355,7 @@ public final class LineageAsyncClient {
      *     }
      *     widthCounts (Optional): {
      *         String (Required): {
-     *             String: Object (Required)
+     *             String: BinaryData (Required)
      *         }
      *     }
      *     lineageDepth: Integer (Optional)

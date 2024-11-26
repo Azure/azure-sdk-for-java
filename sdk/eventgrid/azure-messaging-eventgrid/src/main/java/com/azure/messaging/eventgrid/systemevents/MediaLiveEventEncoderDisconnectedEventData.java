@@ -94,6 +94,9 @@ public final class MediaLiveEventEncoderDisconnectedEventData
         return this.resultCode;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

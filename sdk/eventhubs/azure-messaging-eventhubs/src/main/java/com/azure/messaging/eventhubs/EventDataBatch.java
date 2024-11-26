@@ -88,6 +88,8 @@ public final class EventDataBatch {
      * <p>This method is not thread-safe; make sure to synchronize the method access when using multiple threads
      * to add events.</p>
      *
+     * <p>When batch was create with partition key, the event data will be updated with this partition key.</p>
+     *
      * @param eventData The {@link EventData} to add to the batch.
      * @return {@code true} if the event could be added to the batch; {@code false} if the event was too large to fit in
      *     the batch, to accommodate the event, the application should obtain a new {@link EventDataBatch} object and
@@ -108,6 +110,12 @@ public final class EventDataBatch {
         }
 
         this.sizeInBytes += size;
+
+        // updating event data only if we're going to add it to the batch
+        if (partitionKey != null) {
+            eventData.setPartitionKeyAnnotation(partitionKey);
+        }
+
         this.events.add(eventData);
         return true;
     }
