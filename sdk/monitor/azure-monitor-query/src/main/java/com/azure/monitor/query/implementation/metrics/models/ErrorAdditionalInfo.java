@@ -50,9 +50,6 @@ public final class ErrorAdditionalInfo implements JsonSerializable<ErrorAddition
         return this.info;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

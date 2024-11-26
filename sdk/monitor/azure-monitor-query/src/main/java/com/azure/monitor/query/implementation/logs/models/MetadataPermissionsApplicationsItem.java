@@ -40,9 +40,6 @@ public final class MetadataPermissionsApplicationsItem
         return this.resourceId;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
