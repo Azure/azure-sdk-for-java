@@ -79,7 +79,7 @@ extends:
               env:
                 ARM_OIDC_TOKEN: $(ARM_OIDC_TOKEN)
               inputs:
-                azureSubscription: ${{ coalesce(cloud.value.ServiceConnection, lower(format('azure-sdk-tests-{0}', cloud.key))) }}
+                azureSubscription: azure-sdk-tests-public
                 addSpnToEnvironment: true
                 scriptLocation: inlineScript
                 scriptType: pscore
