@@ -23,8 +23,7 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the asynchronous DeviceUpdateClient type. */
 @ServiceClient(builder = DeviceManagementClientBuilder.class, isAsync = true)
 public final class DeviceManagementAsyncClient {
-    @Generated
-    private final DeviceManagementsImpl serviceClient;
+    @Generated private final DeviceManagementsImpl serviceClient;
 
     /**
      * Initializes an instance of DeviceManagementAsyncClient class.
@@ -191,8 +190,8 @@ public final class DeviceManagementAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> updateDeviceClassWithResponse(String deviceClassId, BinaryData deviceClassPatch,
-        RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> updateDeviceClassWithResponse(
+            String deviceClassId, BinaryData deviceClassPatch, RequestOptions requestOptions) {
         return this.serviceClient.updateDeviceClassWithResponseAsync(deviceClassId, deviceClassPatch, requestOptions);
     }
 
@@ -249,8 +248,8 @@ public final class DeviceManagementAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listInstallableUpdatesForDeviceClass(String deviceClassId,
-        RequestOptions requestOptions) {
+    public PagedFlux<BinaryData> listInstallableUpdatesForDeviceClass(
+            String deviceClassId, RequestOptions requestOptions) {
         return this.serviceClient.listInstallableUpdatesForDeviceClassAsync(deviceClassId, requestOptions);
     }
 
@@ -457,8 +456,8 @@ public final class DeviceManagementAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getDeviceModuleWithResponse(String deviceId, String moduleId,
-        RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getDeviceModuleWithResponse(
+            String deviceId, String moduleId, RequestOptions requestOptions) {
         return this.serviceClient.getDeviceModuleWithResponseAsync(deviceId, moduleId, requestOptions);
     }
 
@@ -621,8 +620,8 @@ public final class DeviceManagementAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getUpdateComplianceForGroupWithResponse(String groupId,
-        RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getUpdateComplianceForGroupWithResponse(
+            String groupId, RequestOptions requestOptions) {
         return this.serviceClient.getUpdateComplianceForGroupWithResponseAsync(groupId, requestOptions);
     }
 
@@ -778,8 +777,8 @@ public final class DeviceManagementAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getDeploymentWithResponse(String groupId, String deploymentId,
-        RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getDeploymentWithResponse(
+            String groupId, String deploymentId, RequestOptions requestOptions) {
         return this.serviceClient.getDeploymentWithResponseAsync(groupId, deploymentId, requestOptions);
     }
 
@@ -862,10 +861,10 @@ public final class DeviceManagementAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateDeploymentWithResponse(String groupId, String deploymentId,
-        BinaryData deployment, RequestOptions requestOptions) {
-        return this.serviceClient.createOrUpdateDeploymentWithResponseAsync(groupId, deploymentId, deployment,
-            requestOptions);
+    public Mono<Response<BinaryData>> createOrUpdateDeploymentWithResponse(
+            String groupId, String deploymentId, BinaryData deployment, RequestOptions requestOptions) {
+        return this.serviceClient.createOrUpdateDeploymentWithResponseAsync(
+                groupId, deploymentId, deployment, requestOptions);
     }
 
     /**
@@ -882,8 +881,8 @@ public final class DeviceManagementAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteDeploymentWithResponse(String groupId, String deploymentId,
-        RequestOptions requestOptions) {
+    public Mono<Response<Void>> deleteDeploymentWithResponse(
+            String groupId, String deploymentId, RequestOptions requestOptions) {
         return this.serviceClient.deleteDeploymentWithResponseAsync(groupId, deploymentId, requestOptions);
     }
 
@@ -940,8 +939,8 @@ public final class DeviceManagementAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getDeploymentStatusWithResponse(String groupId, String deploymentId,
-        RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getDeploymentStatusWithResponse(
+            String groupId, String deploymentId, RequestOptions requestOptions) {
         return this.serviceClient.getDeploymentStatusWithResponseAsync(groupId, deploymentId, requestOptions);
     }
 
@@ -1017,8 +1016,8 @@ public final class DeviceManagementAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getDeviceClassSubgroupWithResponse(String groupId, String deviceClassId,
-        RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getDeviceClassSubgroupWithResponse(
+            String groupId, String deviceClassId, RequestOptions requestOptions) {
         return this.serviceClient.getDeviceClassSubgroupWithResponseAsync(groupId, deviceClassId, requestOptions);
     }
 
@@ -1040,8 +1039,8 @@ public final class DeviceManagementAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteDeviceClassSubgroupWithResponse(String groupId, String deviceClassId,
-        RequestOptions requestOptions) {
+    public Mono<Response<Void>> deleteDeviceClassSubgroupWithResponse(
+            String groupId, String deviceClassId, RequestOptions requestOptions) {
         return this.serviceClient.deleteDeviceClassSubgroupWithResponseAsync(groupId, deviceClassId, requestOptions);
     }
 
@@ -1073,10 +1072,10 @@ public final class DeviceManagementAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getDeviceClassSubgroupUpdateComplianceWithResponse(String groupId,
-        String deviceClassId, RequestOptions requestOptions) {
-        return this.serviceClient.getDeviceClassSubgroupUpdateComplianceWithResponseAsync(groupId, deviceClassId,
-            requestOptions);
+    public Mono<Response<BinaryData>> getDeviceClassSubgroupUpdateComplianceWithResponse(
+            String groupId, String deviceClassId, RequestOptions requestOptions) {
+        return this.serviceClient.getDeviceClassSubgroupUpdateComplianceWithResponseAsync(
+                groupId, deviceClassId, requestOptions);
     }
 
     /**
@@ -1113,10 +1112,10 @@ public final class DeviceManagementAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getBestUpdatesForDeviceClassSubgroupWithResponse(String groupId,
-        String deviceClassId, RequestOptions requestOptions) {
-        return this.serviceClient.getBestUpdatesForDeviceClassSubgroupWithResponseAsync(groupId, deviceClassId,
-            requestOptions);
+    public Mono<Response<BinaryData>> getBestUpdatesForDeviceClassSubgroupWithResponse(
+            String groupId, String deviceClassId, RequestOptions requestOptions) {
+        return this.serviceClient.getBestUpdatesForDeviceClassSubgroupWithResponseAsync(
+                groupId, deviceClassId, requestOptions);
     }
 
     /**
@@ -1180,8 +1179,8 @@ public final class DeviceManagementAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listDeploymentsForDeviceClassSubgroup(String groupId, String deviceClassId,
-        RequestOptions requestOptions) {
+    public PagedFlux<BinaryData> listDeploymentsForDeviceClassSubgroup(
+            String groupId, String deviceClassId, RequestOptions requestOptions) {
         return this.serviceClient.listDeploymentsForDeviceClassSubgroupAsync(groupId, deviceClassId, requestOptions);
     }
 
@@ -1232,10 +1231,10 @@ public final class DeviceManagementAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getDeploymentForDeviceClassSubgroupWithResponse(String groupId,
-        String deviceClassId, String deploymentId, RequestOptions requestOptions) {
-        return this.serviceClient.getDeploymentForDeviceClassSubgroupWithResponseAsync(groupId, deviceClassId,
-            deploymentId, requestOptions);
+    public Mono<Response<BinaryData>> getDeploymentForDeviceClassSubgroupWithResponse(
+            String groupId, String deviceClassId, String deploymentId, RequestOptions requestOptions) {
+        return this.serviceClient.getDeploymentForDeviceClassSubgroupWithResponseAsync(
+                groupId, deviceClassId, deploymentId, requestOptions);
     }
 
     /**
@@ -1253,10 +1252,10 @@ public final class DeviceManagementAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteDeploymentForDeviceClassSubgroupWithResponse(String groupId, String deviceClassId,
-        String deploymentId, RequestOptions requestOptions) {
-        return this.serviceClient.deleteDeploymentForDeviceClassSubgroupWithResponseAsync(groupId, deviceClassId,
-            deploymentId, requestOptions);
+    public Mono<Response<Void>> deleteDeploymentForDeviceClassSubgroupWithResponse(
+            String groupId, String deviceClassId, String deploymentId, RequestOptions requestOptions) {
+        return this.serviceClient.deleteDeploymentForDeviceClassSubgroupWithResponseAsync(
+                groupId, deviceClassId, deploymentId, requestOptions);
     }
 
     /**
@@ -1306,8 +1305,8 @@ public final class DeviceManagementAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> stopDeploymentWithResponse(String groupId, String deviceClassId,
-        String deploymentId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> stopDeploymentWithResponse(
+            String groupId, String deviceClassId, String deploymentId, RequestOptions requestOptions) {
         return this.serviceClient.stopDeploymentWithResponseAsync(groupId, deviceClassId, deploymentId, requestOptions);
     }
 
@@ -1358,10 +1357,10 @@ public final class DeviceManagementAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> retryDeploymentWithResponse(String groupId, String deviceClassId,
-        String deploymentId, RequestOptions requestOptions) {
-        return this.serviceClient.retryDeploymentWithResponseAsync(groupId, deviceClassId, deploymentId,
-            requestOptions);
+    public Mono<Response<BinaryData>> retryDeploymentWithResponse(
+            String groupId, String deviceClassId, String deploymentId, RequestOptions requestOptions) {
+        return this.serviceClient.retryDeploymentWithResponseAsync(
+                groupId, deviceClassId, deploymentId, requestOptions);
     }
 
     /**
@@ -1411,10 +1410,10 @@ public final class DeviceManagementAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getDeviceClassSubgroupDeploymentStatusWithResponse(String groupId,
-        String deviceClassId, String deploymentId, RequestOptions requestOptions) {
-        return this.serviceClient.getDeviceClassSubgroupDeploymentStatusWithResponseAsync(groupId, deviceClassId,
-            deploymentId, requestOptions);
+    public Mono<Response<BinaryData>> getDeviceClassSubgroupDeploymentStatusWithResponse(
+            String groupId, String deviceClassId, String deploymentId, RequestOptions requestOptions) {
+        return this.serviceClient.getDeviceClassSubgroupDeploymentStatusWithResponseAsync(
+                groupId, deviceClassId, deploymentId, requestOptions);
     }
 
     /**
@@ -1459,10 +1458,10 @@ public final class DeviceManagementAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listDeviceStatesForDeviceClassSubgroupDeployment(String groupId, String deviceClassId,
-        String deploymentId, RequestOptions requestOptions) {
-        return this.serviceClient.listDeviceStatesForDeviceClassSubgroupDeploymentAsync(groupId, deviceClassId,
-            deploymentId, requestOptions);
+    public PagedFlux<BinaryData> listDeviceStatesForDeviceClassSubgroupDeployment(
+            String groupId, String deviceClassId, String deploymentId, RequestOptions requestOptions) {
+        return this.serviceClient.listDeviceStatesForDeviceClassSubgroupDeploymentAsync(
+                groupId, deviceClassId, deploymentId, requestOptions);
     }
 
     /**
@@ -1516,8 +1515,8 @@ public final class DeviceManagementAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getOperationStatusWithResponse(String operationId,
-        RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getOperationStatusWithResponse(
+            String operationId, RequestOptions requestOptions) {
         return this.serviceClient.getOperationStatusWithResponseAsync(operationId, requestOptions);
     }
 
@@ -1631,8 +1630,8 @@ public final class DeviceManagementAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> startLogCollectionWithResponse(String logCollectionId, BinaryData logCollection,
-        RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> startLogCollectionWithResponse(
+            String logCollectionId, BinaryData logCollection, RequestOptions requestOptions) {
         return this.serviceClient.startLogCollectionWithResponseAsync(logCollectionId, logCollection, requestOptions);
     }
 
@@ -1668,8 +1667,8 @@ public final class DeviceManagementAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getLogCollectionWithResponse(String logCollectionId,
-        RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getLogCollectionWithResponse(
+            String logCollectionId, RequestOptions requestOptions) {
         return this.serviceClient.getLogCollectionWithResponseAsync(logCollectionId, requestOptions);
     }
 
@@ -1747,8 +1746,8 @@ public final class DeviceManagementAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getLogCollectionDetailedStatusWithResponse(String logCollectionId,
-        RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getLogCollectionDetailedStatusWithResponse(
+            String logCollectionId, RequestOptions requestOptions) {
         return this.serviceClient.getLogCollectionDetailedStatusWithResponseAsync(logCollectionId, requestOptions);
     }
 
