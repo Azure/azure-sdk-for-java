@@ -35,6 +35,15 @@ public final class ReasonCode extends ExpandableStringEnum<ReasonCode> {
         public static final ReasonCode SPEECH_NOT_RECOGNIZED = fromReasonCode(8563);
         /** Recognize with choice cognitive service connection error. */
         public static final ReasonCode SPEECH_COGNITIVE_SERVICE_CONNECTION_ERROR = fromReasonCode(8564);
+
+        /**
+         * Creates an instance of {@link Recognize} with no string value.
+         *
+         * @deprecated Please use constants instead.
+         */
+        @Deprecated
+        public Recognize() {
+        }
     }
 
     /** Reason code names for the Play operation */
@@ -49,12 +58,30 @@ public final class ReasonCode extends ExpandableStringEnum<ReasonCode> {
         public static final ReasonCode TEXT_OR_SSML_SOURCE_EMPTY = fromReasonCode(8582);
         /** Action failed, cognitive services error. */
         public static final ReasonCode COGNITIVE_SERVICES_ERROR = fromReasonCode(8565);
+
+        /**
+         * Creates an instance of {@link Play} with no string value.
+         *
+         * @deprecated Please use constants instead.
+         */
+        @Deprecated
+        public Play() {
+        }
     }
 
     /** Action completed successfully. */
     public static final ReasonCode COMPLETED_SUCCESSFULLY = fromReasonCode(0);
     /** Unknown internal server error. */
     public static final ReasonCode UNSPECIFIED_ERROR = fromReasonCode(9999);
+
+    /**
+     * Creates an instance of {@link ReasonCode} with no string value.
+     *
+     * @deprecated Please use {@link #fromString(String)} to create an instance of ReasonCode.
+     */
+    @Deprecated
+    public ReasonCode() {
+    }
 
     /**
      * Creates or finds a ReasonCode from its string representation.

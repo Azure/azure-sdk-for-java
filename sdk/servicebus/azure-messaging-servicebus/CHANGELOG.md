@@ -4,14 +4,25 @@
 
 ### Features Added
 
-- Enabled RequestResponseChannelCache (CBS, Management channel cache) and ReactorSessionCache by default. ([42641](https://github.com/Azure/azure-sdk-for-java/pull/42641))
-- Improves the synchronous `acceptNextSession` and `acceptSession` APIs of `ServiceBusSessionReceiverClient` to reduce the chances of the broker holding session lock for some time when client-side timeout occurs. ([42838](https://github.com/Azure/azure-sdk-for-java/pull/42838))
-
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 7.17.6 (2024-11-12)
+
+### Features Added
+
+- Enabled RequestResponseChannelCache (CBS, Management channel cache) and ReactorSessionCache by default. ([42641](https://github.com/Azure/azure-sdk-for-java/pull/42641))
+- Improves the synchronous `acceptNextSession` and `acceptSession` APIs of `ServiceBusSessionReceiverClient` to reduce the chances of the broker holding session lock for some time when client-side timeout occurs. ([42838](https://github.com/Azure/azure-sdk-for-java/pull/42838))
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.53.0` to `1.54.0`.
+- Upgraded `azure-core-amqp` from `2.9.10` to `2.9.11`.
+- Upgraded `azure-identity` from `1.14.0` to `1.14.1`.
 
 ## 7.17.5 (2024-10-16)
 
@@ -80,12 +91,6 @@
 - Upgraded `azure-core` from `1.49.0` to `1.49.1`.
 - Upgraded `azure-core-amqp` from `2.9.4` to `2.9.6`.
 - Upgraded `azure-identity` from `1.12.1` to `1.13.0`.
-
-## 7.18.0-beta.1 (2024-05-15)
-
-### Features Added
-
-- Added the support for batch-delete APIs in Receiver client.
 
 ## 7.17.0 (2024-05-06)
 

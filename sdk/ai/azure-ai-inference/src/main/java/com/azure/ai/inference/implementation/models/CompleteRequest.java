@@ -521,16 +521,19 @@ public final class CompleteRequest implements JsonSerializable<CompleteRequest> 
         jsonWriter.writeArrayField("stop", this.stop, (writer, element) -> writer.writeString(element));
         jsonWriter.writeArrayField("tools", this.tools, (writer, element) -> writer.writeJson(element));
         if (this.toolChoice != null) {
-            jsonWriter.writeUntypedField("tool_choice", this.toolChoice.toObject(Object.class));
+            jsonWriter.writeFieldName("tool_choice");
+            this.toolChoice.writeTo(jsonWriter);
         }
         jsonWriter.writeNumberField("seed", this.seed);
         jsonWriter.writeStringField("model", this.model);
         if (additionalProperties != null) {
             for (Map.Entry<String, BinaryData> additionalProperty : additionalProperties.entrySet()) {
-                jsonWriter.writeUntypedField(additionalProperty.getKey(),
-                    additionalProperty.getValue() == null
-                        ? null
-                        : additionalProperty.getValue().toObject(Object.class));
+                jsonWriter.writeFieldName(additionalProperty.getKey());
+                if (additionalProperty.getValue() == null) {
+                    jsonWriter.writeNull();
+                } else {
+                    additionalProperty.getValue().writeTo(jsonWriter);
+                }
             }
         }
         return jsonWriter.writeEndObject();

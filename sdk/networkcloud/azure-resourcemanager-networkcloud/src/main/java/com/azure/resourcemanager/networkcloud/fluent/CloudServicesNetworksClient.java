@@ -12,74 +12,77 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.networkcloud.fluent.models.CloudServicesNetworkInner;
+import com.azure.resourcemanager.networkcloud.fluent.models.OperationStatusResultInner;
 import com.azure.resourcemanager.networkcloud.models.CloudServicesNetworkPatchParameters;
 
-/** An instance of this class provides access to all the operations defined in CloudServicesNetworksClient. */
+/**
+ * An instance of this class provides access to all the operations defined in CloudServicesNetworksClient.
+ */
 public interface CloudServicesNetworksClient {
     /**
      * List cloud services networks in the subscription.
-     *
-     * <p>Get a list of cloud services networks in the provided subscription.
-     *
+     * 
+     * Get a list of cloud services networks in the provided subscription.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of cloud services networks in the provided subscription as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of cloud services networks in the provided subscription as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<CloudServicesNetworkInner> list();
 
     /**
      * List cloud services networks in the subscription.
-     *
-     * <p>Get a list of cloud services networks in the provided subscription.
-     *
+     * 
+     * Get a list of cloud services networks in the provided subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of cloud services networks in the provided subscription as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of cloud services networks in the provided subscription as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<CloudServicesNetworkInner> list(Context context);
 
     /**
      * List cloud services networks in the resource group.
-     *
-     * <p>Get a list of cloud services networks in the provided resource group.
-     *
+     * 
+     * Get a list of cloud services networks in the provided resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of cloud services networks in the provided resource group as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of cloud services networks in the provided resource group as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<CloudServicesNetworkInner> listByResourceGroup(String resourceGroupName);
 
     /**
      * List cloud services networks in the resource group.
-     *
-     * <p>Get a list of cloud services networks in the provided resource group.
-     *
+     * 
+     * Get a list of cloud services networks in the provided resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of cloud services networks in the provided resource group as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of cloud services networks in the provided resource group as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<CloudServicesNetworkInner> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
      * Retrieve the cloud services network.
-     *
-     * <p>Get properties of the provided cloud services network.
-     *
+     * 
+     * Get properties of the provided cloud services network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudServicesNetworkName The name of the cloud services network.
      * @param context The context to associate with this operation.
@@ -94,9 +97,9 @@ public interface CloudServicesNetworksClient {
 
     /**
      * Retrieve the cloud services network.
-     *
-     * <p>Get properties of the provided cloud services network.
-     *
+     * 
+     * Get properties of the provided cloud services network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudServicesNetworkName The name of the cloud services network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -109,9 +112,9 @@ public interface CloudServicesNetworksClient {
 
     /**
      * Create or update the cloud services network.
-     *
-     * <p>Create a new cloud services network or update the properties of the existing cloud services network.
-     *
+     * 
+     * Create a new cloud services network or update the properties of the existing cloud services network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudServicesNetworkName The name of the cloud services network.
      * @param cloudServicesNetworkParameters The request body.
@@ -119,7 +122,7 @@ public interface CloudServicesNetworksClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of cloudServicesNetwork represents additional egress information that
-     *     will be used by associated virtual machines or hybrid AKS clusters.
+     * will be used by associated virtual machines or hybrid AKS clusters.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CloudServicesNetworkInner>, CloudServicesNetworkInner> beginCreateOrUpdate(
@@ -128,9 +131,9 @@ public interface CloudServicesNetworksClient {
 
     /**
      * Create or update the cloud services network.
-     *
-     * <p>Create a new cloud services network or update the properties of the existing cloud services network.
-     *
+     * 
+     * Create a new cloud services network or update the properties of the existing cloud services network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudServicesNetworkName The name of the cloud services network.
      * @param cloudServicesNetworkParameters The request body.
@@ -139,7 +142,7 @@ public interface CloudServicesNetworksClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of cloudServicesNetwork represents additional egress information that
-     *     will be used by associated virtual machines or hybrid AKS clusters.
+     * will be used by associated virtual machines or hybrid AKS clusters.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CloudServicesNetworkInner>, CloudServicesNetworkInner> beginCreateOrUpdate(
@@ -148,9 +151,9 @@ public interface CloudServicesNetworksClient {
 
     /**
      * Create or update the cloud services network.
-     *
-     * <p>Create a new cloud services network or update the properties of the existing cloud services network.
-     *
+     * 
+     * Create a new cloud services network or update the properties of the existing cloud services network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudServicesNetworkName The name of the cloud services network.
      * @param cloudServicesNetworkParameters The request body.
@@ -158,7 +161,7 @@ public interface CloudServicesNetworksClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return cloudServicesNetwork represents additional egress information that will be used by associated virtual
-     *     machines or hybrid AKS clusters.
+     * machines or hybrid AKS clusters.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     CloudServicesNetworkInner createOrUpdate(String resourceGroupName, String cloudServicesNetworkName,
@@ -166,9 +169,9 @@ public interface CloudServicesNetworksClient {
 
     /**
      * Create or update the cloud services network.
-     *
-     * <p>Create a new cloud services network or update the properties of the existing cloud services network.
-     *
+     * 
+     * Create a new cloud services network or update the properties of the existing cloud services network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudServicesNetworkName The name of the cloud services network.
      * @param cloudServicesNetworkParameters The request body.
@@ -177,7 +180,7 @@ public interface CloudServicesNetworksClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return cloudServicesNetwork represents additional egress information that will be used by associated virtual
-     *     machines or hybrid AKS clusters.
+     * machines or hybrid AKS clusters.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     CloudServicesNetworkInner createOrUpdate(String resourceGroupName, String cloudServicesNetworkName,
@@ -185,78 +188,81 @@ public interface CloudServicesNetworksClient {
 
     /**
      * Delete the cloud services network.
-     *
-     * <p>Delete the provided cloud services network.
-     *
+     * 
+     * Delete the provided cloud services network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudServicesNetworkName The name of the cloud services network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String cloudServicesNetworkName);
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginDelete(String resourceGroupName,
+        String cloudServicesNetworkName);
 
     /**
      * Delete the cloud services network.
-     *
-     * <p>Delete the provided cloud services network.
-     *
+     * 
+     * Delete the provided cloud services network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudServicesNetworkName The name of the cloud services network.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String cloudServicesNetworkName,
-        Context context);
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginDelete(String resourceGroupName,
+        String cloudServicesNetworkName, Context context);
 
     /**
      * Delete the cloud services network.
-     *
-     * <p>Delete the provided cloud services network.
-     *
+     * 
+     * Delete the provided cloud services network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudServicesNetworkName The name of the cloud services network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String cloudServicesNetworkName);
+    OperationStatusResultInner delete(String resourceGroupName, String cloudServicesNetworkName);
 
     /**
      * Delete the cloud services network.
-     *
-     * <p>Delete the provided cloud services network.
-     *
+     * 
+     * Delete the provided cloud services network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudServicesNetworkName The name of the cloud services network.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String cloudServicesNetworkName, Context context);
+    OperationStatusResultInner delete(String resourceGroupName, String cloudServicesNetworkName, Context context);
 
     /**
      * Patch the cloud services network.
-     *
-     * <p>Update properties of the provided cloud services network, or update the tags associated with it. Properties
-     * and tag updates can be done independently.
-     *
+     * 
+     * Update properties of the provided cloud services network, or update the tags associated with it. Properties and
+     * tag updates can be done independently.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudServicesNetworkName The name of the cloud services network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of cloudServicesNetwork represents additional egress information that
-     *     will be used by associated virtual machines or hybrid AKS clusters.
+     * will be used by associated virtual machines or hybrid AKS clusters.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CloudServicesNetworkInner>, CloudServicesNetworkInner> beginUpdate(String resourceGroupName,
@@ -264,10 +270,10 @@ public interface CloudServicesNetworksClient {
 
     /**
      * Patch the cloud services network.
-     *
-     * <p>Update properties of the provided cloud services network, or update the tags associated with it. Properties
-     * and tag updates can be done independently.
-     *
+     * 
+     * Update properties of the provided cloud services network, or update the tags associated with it. Properties and
+     * tag updates can be done independently.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudServicesNetworkName The name of the cloud services network.
      * @param cloudServicesNetworkUpdateParameters The request body.
@@ -276,7 +282,7 @@ public interface CloudServicesNetworksClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of cloudServicesNetwork represents additional egress information that
-     *     will be used by associated virtual machines or hybrid AKS clusters.
+     * will be used by associated virtual machines or hybrid AKS clusters.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CloudServicesNetworkInner>, CloudServicesNetworkInner> beginUpdate(String resourceGroupName,
@@ -285,27 +291,27 @@ public interface CloudServicesNetworksClient {
 
     /**
      * Patch the cloud services network.
-     *
-     * <p>Update properties of the provided cloud services network, or update the tags associated with it. Properties
-     * and tag updates can be done independently.
-     *
+     * 
+     * Update properties of the provided cloud services network, or update the tags associated with it. Properties and
+     * tag updates can be done independently.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudServicesNetworkName The name of the cloud services network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return cloudServicesNetwork represents additional egress information that will be used by associated virtual
-     *     machines or hybrid AKS clusters.
+     * machines or hybrid AKS clusters.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     CloudServicesNetworkInner update(String resourceGroupName, String cloudServicesNetworkName);
 
     /**
      * Patch the cloud services network.
-     *
-     * <p>Update properties of the provided cloud services network, or update the tags associated with it. Properties
-     * and tag updates can be done independently.
-     *
+     * 
+     * Update properties of the provided cloud services network, or update the tags associated with it. Properties and
+     * tag updates can be done independently.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudServicesNetworkName The name of the cloud services network.
      * @param cloudServicesNetworkUpdateParameters The request body.
@@ -314,7 +320,7 @@ public interface CloudServicesNetworksClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return cloudServicesNetwork represents additional egress information that will be used by associated virtual
-     *     machines or hybrid AKS clusters.
+     * machines or hybrid AKS clusters.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     CloudServicesNetworkInner update(String resourceGroupName, String cloudServicesNetworkName,

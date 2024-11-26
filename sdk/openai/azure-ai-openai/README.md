@@ -97,11 +97,10 @@ OpenAIAsyncClient client = new OpenAIClientBuilder()
     .buildAsyncClient();
 ```
 
-#### Create an Azure OpenAI client with Azure Active Directory credential
-Azure SDK for Java supports an Azure Identity package, making it easy to get credentials from Microsoft identity
-platform.
+#### Create an Azure OpenAI client with Azure Entra ID credential
+Azure SDK for Java supports an Azure Identity package, making it easy to get credentials from Microsoft identity platform.
 
-Authentication with AAD requires some initial setup:
+Authentication with Entra ID requires some initial setup:
 * Add the Azure Identity package
 
 [//]: # ({x-version-update-start;com.azure:azure-identity;dependency})
@@ -109,21 +108,21 @@ Authentication with AAD requires some initial setup:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.13.3</version>
+    <version>1.14.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
 
 After setup, you can choose which type of [credential][azure_identity_credential_type] from azure.identity to use.
 As an example, [DefaultAzureCredential][wiki_identity] can be used to authenticate the client:
-Set the values of the client ID, tenant ID, and client secret of the AAD application as environment variables:
+Set the values of the client ID, tenant ID, and client secret of the Azure EntraID application as environment variables:
 `AZURE_CLIENT_ID`, `AZURE_TENANT_ID`, `AZURE_CLIENT_SECRET`.
 
 Authorization is easiest using [DefaultAzureCredential][wiki_identity]. It finds the best credential to use in its
-running environment. For more information about using Azure Active Directory authorization with OpenAI service, please
-refer to [the associated documentation][aad_authorization].
+running environment. For more information about using Azure Entra ID authorization with OpenAI service, please
+refer to [the associated documentation][entra_id_authorization].
 
-```java readme-sample-createOpenAIClientWithAAD
+```java readme-sample-createOpenAIClientWithEntraID
 TokenCredential defaultCredential = new DefaultAzureCredentialBuilder().build();
 OpenAIClient client = new OpenAIClientBuilder()
     .credential(defaultCredential)
@@ -196,10 +195,6 @@ IterableStream<Completions> completionsStream = client
 
 completionsStream
     .stream()
-    // Remove .skip(1) when using Non-Azure OpenAI API
-    // Note: the first chat completions can be ignored when using Azure OpenAI service which is a known service bug.
-    // TODO: remove .skip(1) when service fix the issue.
-    .skip(1)
     .forEach(completions -> System.out.print(completions.getChoices().get(0).getText()));
 ```
 
@@ -542,7 +537,7 @@ For details on contributing to this repository, see the [contributing guide](htt
 1. Create new Pull Request
 
 <!-- LINKS -->
-[aad_authorization]: https://docs.microsoft.com/azure/cognitive-services/authentication#authenticate-with-azure-active-directory
+[entra_id_authorization]: https://learn.microsoft.com/azure/ai-services/authentication#authenticate-with-microsoft-entra-id
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity
 [azure_identity_credential_type]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity#credentials
 [azure_openai_access]: https://learn.microsoft.com/azure/cognitive-services/openai/overview#how-do-i-get-access-to-azure-openai

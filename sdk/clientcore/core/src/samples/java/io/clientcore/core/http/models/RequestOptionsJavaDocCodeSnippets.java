@@ -3,11 +3,9 @@
 
 package io.clientcore.core.http.models;
 
+import io.clientcore.core.json.models.JsonArray;
+import io.clientcore.core.json.models.JsonObject;
 import io.clientcore.core.util.binarydata.BinaryData;
-
-import javax.json.Json;
-import javax.json.JsonArray;
-import javax.json.JsonObject;
 
 /**
  * JavaDoc code snippets for {@link RequestOptions}.
@@ -33,32 +31,27 @@ public class RequestOptionsJavaDocCodeSnippets {
      */
     public RequestOptions setJsonRequestBodyInRequestOptions() {
         // BEGIN: io.clientcore.core.http.rest.requestoptions.createjsonrequest
-        JsonArray photoUris = Json.createArrayBuilder()
-            .add("https://imgur.com/pet1")
-            .add("https://imgur.com/pet2")
-            .build();
+        JsonArray photoUris = new JsonArray()
+            .addElement("https://imgur.com/pet1")
+            .addElement("https://imgur.com/pet2");
 
-        JsonArray tags = Json.createArrayBuilder()
-            .add(Json.createObjectBuilder()
-                .add("id", 0)
-                .add("name", "Labrador")
-                .build())
-            .add(Json.createObjectBuilder()
-                .add("id", 1)
-                .add("name", "2021")
-                .build())
-            .build();
+        JsonArray tags = new JsonArray()
+            .addElement(new JsonObject()
+                .setProperty("id", 0)
+                .setProperty("name", "Labrador"))
+            .addElement(new JsonObject()
+                .setProperty("id", 1)
+                .setProperty("name", "2021"));
 
-        JsonObject requestBody = Json.createObjectBuilder()
-            .add("id", 0)
-            .add("name", "foo")
-            .add("status", "available")
-            .add("category", Json.createObjectBuilder().add("id", 0).add("name", "dog"))
-            .add("photoUris", photoUris)
-            .add("tags", tags)
-            .build();
+        JsonObject requestBody = new JsonObject()
+            .setProperty("id", 0)
+            .setProperty("name", "foo")
+            .setProperty("status", "available")
+            .setProperty("category", new JsonObject().setProperty("id", 0).setProperty("name", "dog"))
+            .setProperty("photoUris", photoUris)
+            .setProperty("tags", tags);
 
-        String requestBodyStr = requestBody.toString();
+        BinaryData requestBodyData = BinaryData.fromObject(requestBody);
         // END: io.clientcore.core.http.rest.requestoptions.createjsonrequest
 
         // BEGIN: io.clientcore.core.http.rest.requestoptions.postrequest
@@ -67,7 +60,7 @@ public class RequestOptionsJavaDocCodeSnippets {
                 // may already be set if request is created from a client
                 .setUri("https://petstore.example.com/pet")
                 .setHttpMethod(HttpMethod.POST)
-                .setBody(BinaryData.fromString(requestBodyStr))
+                .setBody(BinaryData.fromString(requestBodyData))
                 .getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json"));
         // END: io.clientcore.core.http.rest.requestoptions.postrequest
         return options;

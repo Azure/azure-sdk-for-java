@@ -12,6 +12,12 @@ public class DeleteBatchJobScheduleOptions extends BatchBaseOptions {
     private RequestConditions requestConditions;
 
     /**
+     * Creates an instance of {@link DeleteBatchJobScheduleOptions}.
+     */
+    public DeleteBatchJobScheduleOptions() {
+    }
+
+    /**
      * Gets the value indicating whether to force the deletion of the Batch job schedule.
      *
      * <p>If true, the server will delete the job schedule even if the corresponding nodes have not fully processed

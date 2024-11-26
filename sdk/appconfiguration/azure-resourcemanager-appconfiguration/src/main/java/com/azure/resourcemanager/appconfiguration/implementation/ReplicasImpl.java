@@ -30,14 +30,14 @@ public final class ReplicasImpl implements Replicas {
     public PagedIterable<Replica> listByConfigurationStore(String resourceGroupName, String configStoreName) {
         PagedIterable<ReplicaInner> inner
             = this.serviceClient().listByConfigurationStore(resourceGroupName, configStoreName);
-        return Utils.mapPage(inner, inner1 -> new ReplicaImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ReplicaImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Replica> listByConfigurationStore(String resourceGroupName, String configStoreName,
         String skipToken, Context context) {
         PagedIterable<ReplicaInner> inner
             = this.serviceClient().listByConfigurationStore(resourceGroupName, configStoreName, skipToken, context);
-        return Utils.mapPage(inner, inner1 -> new ReplicaImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ReplicaImpl(inner1, this.manager()));
     }
 
     public Response<Replica> getWithResponse(String resourceGroupName, String configStoreName, String replicaName,
@@ -70,17 +70,17 @@ public final class ReplicasImpl implements Replicas {
     }
 
     public Replica getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String configStoreName = Utils.getValueFromIdByName(id, "configurationStores");
+        String configStoreName = ResourceManagerUtils.getValueFromIdByName(id, "configurationStores");
         if (configStoreName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'configurationStores'.", id)));
         }
-        String replicaName = Utils.getValueFromIdByName(id, "replicas");
+        String replicaName = ResourceManagerUtils.getValueFromIdByName(id, "replicas");
         if (replicaName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'replicas'.", id)));
@@ -89,17 +89,17 @@ public final class ReplicasImpl implements Replicas {
     }
 
     public Response<Replica> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String configStoreName = Utils.getValueFromIdByName(id, "configurationStores");
+        String configStoreName = ResourceManagerUtils.getValueFromIdByName(id, "configurationStores");
         if (configStoreName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'configurationStores'.", id)));
         }
-        String replicaName = Utils.getValueFromIdByName(id, "replicas");
+        String replicaName = ResourceManagerUtils.getValueFromIdByName(id, "replicas");
         if (replicaName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'replicas'.", id)));
@@ -108,17 +108,17 @@ public final class ReplicasImpl implements Replicas {
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String configStoreName = Utils.getValueFromIdByName(id, "configurationStores");
+        String configStoreName = ResourceManagerUtils.getValueFromIdByName(id, "configurationStores");
         if (configStoreName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'configurationStores'.", id)));
         }
-        String replicaName = Utils.getValueFromIdByName(id, "replicas");
+        String replicaName = ResourceManagerUtils.getValueFromIdByName(id, "replicas");
         if (replicaName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'replicas'.", id)));
@@ -127,17 +127,17 @@ public final class ReplicasImpl implements Replicas {
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String configStoreName = Utils.getValueFromIdByName(id, "configurationStores");
+        String configStoreName = ResourceManagerUtils.getValueFromIdByName(id, "configurationStores");
         if (configStoreName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'configurationStores'.", id)));
         }
-        String replicaName = Utils.getValueFromIdByName(id, "replicas");
+        String replicaName = ResourceManagerUtils.getValueFromIdByName(id, "replicas");
         if (replicaName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'replicas'.", id)));

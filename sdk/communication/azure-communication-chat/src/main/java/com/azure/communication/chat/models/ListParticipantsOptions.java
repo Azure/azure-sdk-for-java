@@ -14,6 +14,12 @@ public final class ListParticipantsOptions {
     private Integer skip;
 
     /**
+     * Creates an instance of {@link ListParticipantsOptions}.
+     */
+    public ListParticipantsOptions() {
+    }
+
+    /**
      * Gets the maximum page size. It represents the number of participants being requested.
      *
      * @return The maximum page size.

@@ -11,17 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class NetworkSecurityPerimeterConfigurationReconcileResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NetworkSecurityPerimeterConfigurationReconcileResultInner model
-            = BinaryData.fromString("{\"location\":\"dnhfuk\"}")
-                .toObject(NetworkSecurityPerimeterConfigurationReconcileResultInner.class);
-        Assertions.assertEquals("dnhfuk", model.location());
+        NetworkSecurityPerimeterConfigurationReconcileResultInner model = BinaryData.fromString("{\"location\":\"q\"}")
+            .toObject(NetworkSecurityPerimeterConfigurationReconcileResultInner.class);
+        Assertions.assertEquals("q", model.location());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         NetworkSecurityPerimeterConfigurationReconcileResultInner model
-            = new NetworkSecurityPerimeterConfigurationReconcileResultInner().withLocation("dnhfuk");
+            = new NetworkSecurityPerimeterConfigurationReconcileResultInner().withLocation("q");
         model = BinaryData.fromObject(model).toObject(NetworkSecurityPerimeterConfigurationReconcileResultInner.class);
-        Assertions.assertEquals("dnhfuk", model.location());
+        Assertions.assertEquals("q", model.location());
     }
 }

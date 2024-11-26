@@ -27,6 +27,8 @@ public final class PhoneNumberIdentifier extends CommunicationIdentifier {
     }
 
     /**
+     * Gets the string identifier representing the object identity
+     *
      * @return the string identifier representing the object identity
      */
     public String getPhoneNumber() {

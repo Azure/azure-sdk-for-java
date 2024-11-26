@@ -4,11 +4,7 @@
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Supported `capacityReservationGroupId` and `withCapacityReservationGroup` methods for `VirtualMachine`.
 
 ## 2.44.0 (2024-10-25)
 

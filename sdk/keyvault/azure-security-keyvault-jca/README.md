@@ -282,6 +282,7 @@ For Spring Boot applications see our [Spring Boot starter][spring_boot_starter].
 
 ### References
 1. [Java Cryptography Architecture (JCA) Reference Guide][jca_reference_guide]
+2. [Creating a Shaded Jar Wiki](https://github.com/Azure/azure-sdk-for-java/wiki/Creating-a-Shaded-Jar)
 
 ### Additional documentation
 For more extensive documentation on Azure Key Vault, see the [API reference documentation].

@@ -203,7 +203,11 @@ def sdk_automation_autorest(config: dict) -> List[dict]:
                     "apiViewArtifact": next(iter(glob.glob("{0}/target/*-sources.jar".format(output_folder))), None),
                     "language": "Java",
                     "result": "succeeded" if succeeded else "failed",
-                    "changelog": {"content": changelog, "hasBreakingChange": breaking, "breakingChangeItems": breaking_change_items},
+                    "changelog": {
+                        "content": changelog,
+                        "hasBreakingChange": breaking,
+                        "breakingChangeItems": breaking_change_items,
+                    },
                 }
             )
 
@@ -294,7 +298,11 @@ def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
             "apiViewArtifact": next(iter(glob.glob("{0}/target/*-sources.jar".format(sdk_folder))), None),
             "language": "Java",
             "result": result,
-            "changelog": {"content": changelog, "hasBreakingChange": breaking, "breakingChangeItems": breaking_change_items},
+            "changelog": {
+                "content": changelog,
+                "hasBreakingChange": breaking,
+                "breakingChangeItems": breaking_change_items,
+            },
         }
     else:
         # no info about package, abort with result=failed

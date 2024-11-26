@@ -27,12 +27,21 @@ import com.azure.resourcemanager.cognitiveservices.fluent.AccountsClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.CognitiveServicesManagementClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.CommitmentPlansClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.CommitmentTiersClient;
+import com.azure.resourcemanager.cognitiveservices.fluent.DefenderForAISettingsClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.DeletedAccountsClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.DeploymentsClient;
+import com.azure.resourcemanager.cognitiveservices.fluent.EncryptionScopesClient;
+import com.azure.resourcemanager.cognitiveservices.fluent.LocationBasedModelCapacitiesClient;
+import com.azure.resourcemanager.cognitiveservices.fluent.ModelCapacitiesClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.ModelsClient;
+import com.azure.resourcemanager.cognitiveservices.fluent.NetworkSecurityPerimeterConfigurationsClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.OperationsClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.PrivateEndpointConnectionsClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.PrivateLinkResourcesClient;
+import com.azure.resourcemanager.cognitiveservices.fluent.RaiBlocklistItemsClient;
+import com.azure.resourcemanager.cognitiveservices.fluent.RaiBlocklistsClient;
+import com.azure.resourcemanager.cognitiveservices.fluent.RaiContentFiltersClient;
+import com.azure.resourcemanager.cognitiveservices.fluent.RaiPoliciesClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.ResourceProvidersClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.ResourceSkusClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.UsagesClient;
@@ -247,6 +256,34 @@ public final class CognitiveServicesManagementClientImpl implements CognitiveSer
     }
 
     /**
+     * The LocationBasedModelCapacitiesClient object to access its operations.
+     */
+    private final LocationBasedModelCapacitiesClient locationBasedModelCapacities;
+
+    /**
+     * Gets the LocationBasedModelCapacitiesClient object to access its operations.
+     * 
+     * @return the LocationBasedModelCapacitiesClient object.
+     */
+    public LocationBasedModelCapacitiesClient getLocationBasedModelCapacities() {
+        return this.locationBasedModelCapacities;
+    }
+
+    /**
+     * The ModelCapacitiesClient object to access its operations.
+     */
+    private final ModelCapacitiesClient modelCapacities;
+
+    /**
+     * Gets the ModelCapacitiesClient object to access its operations.
+     * 
+     * @return the ModelCapacitiesClient object.
+     */
+    public ModelCapacitiesClient getModelCapacities() {
+        return this.modelCapacities;
+    }
+
+    /**
      * The PrivateEndpointConnectionsClient object to access its operations.
      */
     private final PrivateEndpointConnectionsClient privateEndpointConnections;
@@ -303,6 +340,104 @@ public final class CognitiveServicesManagementClientImpl implements CognitiveSer
     }
 
     /**
+     * The EncryptionScopesClient object to access its operations.
+     */
+    private final EncryptionScopesClient encryptionScopes;
+
+    /**
+     * Gets the EncryptionScopesClient object to access its operations.
+     * 
+     * @return the EncryptionScopesClient object.
+     */
+    public EncryptionScopesClient getEncryptionScopes() {
+        return this.encryptionScopes;
+    }
+
+    /**
+     * The RaiPoliciesClient object to access its operations.
+     */
+    private final RaiPoliciesClient raiPolicies;
+
+    /**
+     * Gets the RaiPoliciesClient object to access its operations.
+     * 
+     * @return the RaiPoliciesClient object.
+     */
+    public RaiPoliciesClient getRaiPolicies() {
+        return this.raiPolicies;
+    }
+
+    /**
+     * The RaiBlocklistsClient object to access its operations.
+     */
+    private final RaiBlocklistsClient raiBlocklists;
+
+    /**
+     * Gets the RaiBlocklistsClient object to access its operations.
+     * 
+     * @return the RaiBlocklistsClient object.
+     */
+    public RaiBlocklistsClient getRaiBlocklists() {
+        return this.raiBlocklists;
+    }
+
+    /**
+     * The RaiBlocklistItemsClient object to access its operations.
+     */
+    private final RaiBlocklistItemsClient raiBlocklistItems;
+
+    /**
+     * Gets the RaiBlocklistItemsClient object to access its operations.
+     * 
+     * @return the RaiBlocklistItemsClient object.
+     */
+    public RaiBlocklistItemsClient getRaiBlocklistItems() {
+        return this.raiBlocklistItems;
+    }
+
+    /**
+     * The RaiContentFiltersClient object to access its operations.
+     */
+    private final RaiContentFiltersClient raiContentFilters;
+
+    /**
+     * Gets the RaiContentFiltersClient object to access its operations.
+     * 
+     * @return the RaiContentFiltersClient object.
+     */
+    public RaiContentFiltersClient getRaiContentFilters() {
+        return this.raiContentFilters;
+    }
+
+    /**
+     * The NetworkSecurityPerimeterConfigurationsClient object to access its operations.
+     */
+    private final NetworkSecurityPerimeterConfigurationsClient networkSecurityPerimeterConfigurations;
+
+    /**
+     * Gets the NetworkSecurityPerimeterConfigurationsClient object to access its operations.
+     * 
+     * @return the NetworkSecurityPerimeterConfigurationsClient object.
+     */
+    public NetworkSecurityPerimeterConfigurationsClient getNetworkSecurityPerimeterConfigurations() {
+        return this.networkSecurityPerimeterConfigurations;
+    }
+
+    /**
+     * The DefenderForAISettingsClient object to access its operations.
+     */
+    private final DefenderForAISettingsClient defenderForAISettings;
+
+    /**
+     * Gets the DefenderForAISettingsClient object to access its operations.
+     * 
+     * @return the DefenderForAISettingsClient object.
+     */
+    public DefenderForAISettingsClient getDefenderForAISettings() {
+        return this.defenderForAISettings;
+    }
+
+    /**
      * Initializes an instance of CognitiveServicesManagementClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
@@ -319,7 +454,7 @@ public final class CognitiveServicesManagementClientImpl implements CognitiveSer
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2023-05-01";
+        this.apiVersion = "2024-10-01";
         this.accounts = new AccountsClientImpl(this);
         this.deletedAccounts = new DeletedAccountsClientImpl(this);
         this.resourceSkus = new ResourceSkusClientImpl(this);
@@ -328,10 +463,19 @@ public final class CognitiveServicesManagementClientImpl implements CognitiveSer
         this.resourceProviders = new ResourceProvidersClientImpl(this);
         this.commitmentTiers = new CommitmentTiersClientImpl(this);
         this.models = new ModelsClientImpl(this);
+        this.locationBasedModelCapacities = new LocationBasedModelCapacitiesClientImpl(this);
+        this.modelCapacities = new ModelCapacitiesClientImpl(this);
         this.privateEndpointConnections = new PrivateEndpointConnectionsClientImpl(this);
         this.privateLinkResources = new PrivateLinkResourcesClientImpl(this);
         this.deployments = new DeploymentsClientImpl(this);
         this.commitmentPlans = new CommitmentPlansClientImpl(this);
+        this.encryptionScopes = new EncryptionScopesClientImpl(this);
+        this.raiPolicies = new RaiPoliciesClientImpl(this);
+        this.raiBlocklists = new RaiBlocklistsClientImpl(this);
+        this.raiBlocklistItems = new RaiBlocklistItemsClientImpl(this);
+        this.raiContentFilters = new RaiContentFiltersClientImpl(this);
+        this.networkSecurityPerimeterConfigurations = new NetworkSecurityPerimeterConfigurationsClientImpl(this);
+        this.defenderForAISettings = new DefenderForAISettingsClientImpl(this);
     }
 
     /**

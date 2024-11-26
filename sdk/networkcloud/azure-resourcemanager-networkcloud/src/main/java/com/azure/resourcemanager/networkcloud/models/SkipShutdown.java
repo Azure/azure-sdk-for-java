@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.networkcloud.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The indicator of whether to skip the graceful OS shutdown and power off the virtual machine immediately. */
+/**
+ * The indicator of whether to skip the graceful OS shutdown and power off the virtual machine immediately.
+ */
 public final class SkipShutdown extends ExpandableStringEnum<SkipShutdown> {
-    /** Static value True for SkipShutdown. */
+    /**
+     * Static value True for SkipShutdown.
+     */
     public static final SkipShutdown TRUE = fromString("True");
 
-    /** Static value False for SkipShutdown. */
+    /**
+     * Static value False for SkipShutdown.
+     */
     public static final SkipShutdown FALSE = fromString("False");
 
     /**
      * Creates a new instance of SkipShutdown value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class SkipShutdown extends ExpandableStringEnum<SkipShutdown> {
 
     /**
      * Creates or finds a SkipShutdown from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SkipShutdown.
      */
-    @JsonCreator
     public static SkipShutdown fromString(String name) {
         return fromString(name, SkipShutdown.class);
     }
 
     /**
      * Gets known SkipShutdown values.
-     *
+     * 
      * @return known SkipShutdown values.
      */
     public static Collection<SkipShutdown> values() {
