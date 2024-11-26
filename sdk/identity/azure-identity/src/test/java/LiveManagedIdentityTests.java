@@ -160,6 +160,10 @@ public class LiveManagedIdentityTests extends TestProxyTestBase {
         String multiClientId = "4fc2b07b-9d91-4a4a-86e0-96d5b9145075";
         String multiClientSecret = configuration.get("AZURE_IDENTITY_MULTI_TENANT_CLIENT_SECRET");
 
+        System.out.println("Multi Tenant ID:" + multiTenantId);
+        System.out.println("Multi Client  ID:" + multiClientId);
+        System.out.println("Multi Client Secret:" + multiClientSecret);
+
         ClientSecretCredential credential = new ClientSecretCredentialBuilder().tenantId(multiTenantId)
             .clientId(multiClientId)
             .clientSecret(multiClientSecret)
@@ -167,6 +171,9 @@ public class LiveManagedIdentityTests extends TestProxyTestBase {
 
         AccessToken accessToken
             = credential.getTokenSync(new TokenRequestContext().addScopes("https://graph.microsoft.com/.default"));
+
+        System.out.println("Fetched Token:" + accessToken.getToken());
+
 
         assertTrue(accessToken != null, "Failed to get access token");
     }
