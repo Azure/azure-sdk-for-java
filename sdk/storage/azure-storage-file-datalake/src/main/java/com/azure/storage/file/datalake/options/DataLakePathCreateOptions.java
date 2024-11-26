@@ -16,7 +16,6 @@ import java.util.Map;
  */
 @Fluent
 public class DataLakePathCreateOptions {
-
     private String permissions;
     private String umask;
     private List<PathAccessControlEntry> accessControlEntryList;
@@ -38,6 +37,10 @@ public class DataLakePathCreateOptions {
     }
 
     /**
+     * Gets the POSIX access permissions for the file owner, the file owning group, and others. Each class may be
+     * granted read, write, or execute permission. The sticky bit is also supported. Both symbolic (rwxrw-rw-) and
+     * 4-digit octal notation (e.g. 0766) are supported.
+     *
      * @return the permissions
      */
     public String getPermissions() {
@@ -58,6 +61,11 @@ public class DataLakePathCreateOptions {
     }
 
     /**
+     * Gets the umask restricts the permissions of the file or directory to be created. The resulting permission is
+     * given by p bitwise-and ^u, where p is the permission and u is the umask. For example, if p is 0777 and u is 0057,
+     * then the resulting permission is 0720. The default permission is 0777 for a directory and 0666 for a file. The
+     * default umask is 0027. The umask must be specified in 4-digit octal notation (e.g. 0766).
+     *
      * @return the umask.
      */
     public String getUmask() {
@@ -65,12 +73,11 @@ public class DataLakePathCreateOptions {
     }
 
     /**
-     * When creating a file or directory and the parent folder does not have a default ACL,
-     * the umask restricts the permissions of the file or directory to be created. The resulting
-     * permission is given by p bitwise-and ^u, where p is the permission and u is the umask. For example,
-     * if p is 0777 and u is 0057, then the resulting permission is 0720. The default permission is
-     * 0777 for a directory and 0666 for a file. The default umask is 0027. The umask must be specified
-     * in 4-digit octal notation (e.g. 0766).
+     * When creating a file or directory and the parent folder does not have a default ACL, the umask restricts the
+     * permissions of the file or directory to be created. The resulting permission is given by p bitwise-and ^u, where
+     * p is the permission and u is the umask. For example, if p is 0777 and u is 0057, then the resulting permission is
+     * 0720. The default permission is 0777 for a directory and 0666 for a file. The default umask is 0027. The umask
+     * must be specified in 4-digit octal notation (e.g. 0766).
      *
      * @param umask The umask.
      * @return the updated options.
@@ -81,6 +88,8 @@ public class DataLakePathCreateOptions {
     }
 
     /**
+     * Gets the POSIX access control list for the file/directory.
+     *
      * @return the POSIX access control list for the file/directory.
      */
     public List<PathAccessControlEntry> getAccessControlList() {
@@ -99,6 +108,8 @@ public class DataLakePathCreateOptions {
     }
 
     /**
+     * Gets the name of owner of the file/directory.
+     *
      * @return the name of owner of the file/directory.
      */
     public String getOwner() {
@@ -116,6 +127,8 @@ public class DataLakePathCreateOptions {
     }
 
     /**
+     * Gets the name of owning group of the file/directory.
+     *
      * @return the name of owning group of the file/directory.
      */
     public String getGroup() {
@@ -133,6 +146,8 @@ public class DataLakePathCreateOptions {
     }
 
     /**
+     * Gets the {@link DataLakePathScheduleDeletionOptions} set on the path.
+     *
      * @return the {@link DataLakePathScheduleDeletionOptions} set on the path.
      */
     public DataLakePathScheduleDeletionOptions getScheduleDeletionOptions() {
@@ -170,6 +185,8 @@ public class DataLakePathCreateOptions {
     }
 
     /**
+     * Gets the metadata associated with the datalake path.
+     *
      * @return Metadata associated with the datalake path.
      */
     public Map<String, String> getMetadata() {
@@ -210,6 +227,8 @@ public class DataLakePathCreateOptions {
     }
 
     /**
+     * Gets the source lease ID.
+     *
      * @return the source lease ID
      */
     public String getSourceLeaseId() {
@@ -227,6 +246,8 @@ public class DataLakePathCreateOptions {
     }
 
     /**
+     * Gets the proposed lease ID.
+     *
      * @return the proposed lease ID.
      */
     public String getProposedLeaseId() {
@@ -246,6 +267,8 @@ public class DataLakePathCreateOptions {
     }
 
     /**
+     * Gets the lease duration in seconds.
+     *
      * @return the lease duration in seconds.
      */
     public Integer getLeaseDuration() {
