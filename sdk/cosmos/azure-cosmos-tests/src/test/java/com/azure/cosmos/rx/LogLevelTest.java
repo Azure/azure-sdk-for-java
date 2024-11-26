@@ -6,6 +6,7 @@ package com.azure.cosmos.rx;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.implementation.http.ReactorNettyClient;
@@ -35,6 +36,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class LogLevelTest extends TestSuiteBase {
     public final static String COSMOS_DB_LOGGING_CATEGORY = "com.azure.cosmos";
     public final static String NETWORK_LOGGING_CATEGORY = "com.azure.cosmos.netty-network";
+    public final static String LOG_PATTERN_HTTP_1_1 = "HTTP/1.1 201";
+    public final static String LOG_PATTERN_HTTP_2 = "HTTP/2";
     public final static String LOG_PATTERN_1 = "|  0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f |";
     public final static String LOG_PATTERN_2 = "USER_EVENT: SslHandshakeCompletionEvent(SUCCESS)";
     public final static String LOG_PATTERN_3 = "CONNECT: ";
@@ -88,6 +91,7 @@ public class LogLevelTest extends TestSuiteBase {
         assertThat(consoleWriter.toString()).contains(LOG_PATTERN_1);
         assertThat(consoleWriter.toString()).contains(LOG_PATTERN_2);
         assertThat(consoleWriter.toString()).contains(LOG_PATTERN_3);
+        validateHttpProtocol(consoleWriter);
     }
 
     /**
@@ -112,6 +116,7 @@ public class LogLevelTest extends TestSuiteBase {
         assertThat(consoleWriter.toString()).contains(LOG_PATTERN_1);
         assertThat(consoleWriter.toString()).contains(LOG_PATTERN_2);
         assertThat(consoleWriter.toString()).contains(LOG_PATTERN_3);
+        validateHttpProtocol(consoleWriter);
     }
 
     /**
@@ -137,6 +142,7 @@ public class LogLevelTest extends TestSuiteBase {
         assertThat(consoleWriter.toString()).contains(LOG_PATTERN_1);
         assertThat(consoleWriter.toString()).contains(LOG_PATTERN_2);
         assertThat(consoleWriter.toString()).contains(LOG_PATTERN_3);
+        validateHttpProtocol(consoleWriter);
     }
 
     @Test(groups = { "fast" }, timeOut = TIMEOUT, enabled = false)
@@ -157,6 +163,7 @@ public class LogLevelTest extends TestSuiteBase {
         assertThat(consoleWriter.toString()).contains(LOG_PATTERN_1);
         assertThat(consoleWriter.toString()).contains(LOG_PATTERN_2);
         assertThat(consoleWriter.toString()).contains(LOG_PATTERN_3);
+        validateHttpProtocol(consoleWriter);
     }
 
     @Test(groups = { "fast" }, timeOut = TIMEOUT, enabled = false)
@@ -177,6 +184,7 @@ public class LogLevelTest extends TestSuiteBase {
         assertThat(consoleWriter.toString()).contains(LOG_PATTERN_1);
         assertThat(consoleWriter.toString()).contains(LOG_PATTERN_2);
         assertThat(consoleWriter.toString()).contains(LOG_PATTERN_3);
+        validateHttpProtocol(consoleWriter);
     }
 
     /**
@@ -201,6 +209,7 @@ public class LogLevelTest extends TestSuiteBase {
         assertThat(consoleWriter.toString()).contains(LOG_PATTERN_1);
         assertThat(consoleWriter.toString()).contains(LOG_PATTERN_2);
         assertThat(consoleWriter.toString()).contains(LOG_PATTERN_3);
+        validateHttpProtocol(consoleWriter);
     }
 
     /**
@@ -225,6 +234,16 @@ public class LogLevelTest extends TestSuiteBase {
         assertThat(consoleWriter.toString()).contains(LOG_PATTERN_1);
         assertThat(consoleWriter.toString()).contains(LOG_PATTERN_2);
         assertThat(consoleWriter.toString()).contains(LOG_PATTERN_3);
+        validateHttpProtocol(consoleWriter);
+    }
+
+    private void validateHttpProtocol(StringWriter consoleWriter) {
+        boolean isHttp2Enabled = Configs.isHttp2Enabled();
+        if (isHttp2Enabled) {
+            assertThat(consoleWriter.toString()).contains(LOG_PATTERN_HTTP_2);
+        } else {
+            assertThat(consoleWriter.toString()).contains(LOG_PATTERN_HTTP_1_1);
+        }
     }
 
     private InternalObjectNode getDocumentDefinition() {

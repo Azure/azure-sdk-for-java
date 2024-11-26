@@ -104,4 +104,44 @@ public class ConfigsTests {
 
         System.clearProperty("COSMOS.EMULATOR_HOST");
     }
+
+    @Test(groups = { "emulator" })
+    public void http2Enabled() {
+        assertThat(Configs.isHttp2Enabled()).isFalse();
+
+        System.setProperty("COSMOS.HTTP2_ENABLED", "true");
+        assertThat(Configs.isHttp2Enabled()).isTrue();
+
+        System.clearProperty("COSMOS.HTTP2_ENABLED");
+    }
+
+    @Test(groups = { "unit" })
+    public void http2MaxConnectionPoolSize() {
+        assertThat(Configs.getHttp2MaxConnectionPoolSize()).isEqualTo(1000);
+
+        System.setProperty("COSMOS.HTTP2_MAX_CONNECTION_POOL_SIZE", "10");
+        assertThat(Configs.getHttp2MaxConnectionPoolSize()).isEqualTo(10);
+
+        System.clearProperty("COSMOS.HTTP2_MAX_CONNECTION_POOL_SIZE");
+    }
+
+    @Test(groups = { "unit" })
+    public void http2MinConnectionPoolSize() {
+        assertThat(Configs.getHttp2MinConnectionPoolSize()).isEqualTo(1);
+
+        System.setProperty("COSMOS.HTTP2_MIN_CONNECTION_POOL_SIZE", "10");
+        assertThat(Configs.getHttp2MinConnectionPoolSize()).isEqualTo(10);
+
+        System.clearProperty("COSMOS.HTTP2_MIN_CONNECTION_POOL_SIZE");
+    }
+
+    @Test(groups = { "unit" })
+    public void http2MaxConcurrentStreams() {
+        assertThat(Configs.getHttp2MaxConcurrentStreams()).isEqualTo(30);
+
+        System.setProperty("COSMOS.HTTP2_MAX_CONCURRENT_STREAMS", "10");
+        assertThat(Configs.getHttp2MaxConcurrentStreams()).isEqualTo(10);
+
+        System.clearProperty("COSMOS.HTTP2_MAX_CONCURRENT_STREAMS");
+    }
 }
