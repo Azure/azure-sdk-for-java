@@ -10,7 +10,6 @@ public final class CertificateIssuerHelper {
 
     public interface CertificateIssuerAccessor {
         CertificateIssuer createCertificateIssuer(IssuerBundle impl);
-
         IssuerBundle getImpl(CertificateIssuer certificateIssuer);
     }
 

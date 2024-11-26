@@ -99,9 +99,11 @@ import java.util.Map;
  * @see CertificateAsyncClient
  * @see CertificateClient
  */
-@ServiceClientBuilder(serviceClients = { CertificateClient.class, CertificateAsyncClient.class })
-public final class CertificateClientBuilder implements TokenCredentialTrait<CertificateClientBuilder>,
-    HttpTrait<CertificateClientBuilder>, ConfigurationTrait<CertificateClientBuilder> {
+@ServiceClientBuilder(serviceClients = {CertificateClient.class, CertificateAsyncClient.class})
+public final class CertificateClientBuilder implements
+    TokenCredentialTrait<CertificateClientBuilder>,
+    HttpTrait<CertificateClientBuilder>,
+    ConfigurationTrait<CertificateClientBuilder> {
     private static final ClientLogger LOGGER = new ClientLogger(CertificateClientBuilder.class);
 
     private static final String CLIENT_NAME;
@@ -187,14 +189,14 @@ public final class CertificateClientBuilder implements TokenCredentialTrait<Cert
     }
 
     private CertificateClientImpl buildInnerClient() {
-        Configuration buildConfiguration
-            = (configuration != null) ? configuration : Configuration.getGlobalConfiguration().clone();
+        Configuration buildConfiguration = (configuration != null) ? configuration
+            : Configuration.getGlobalConfiguration().clone();
 
         String buildEndpoint = getBuildEndpoint(buildConfiguration);
 
         if (buildEndpoint == null) {
-            throw LOGGER
-                .logExceptionAsError(new IllegalStateException(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED));
+            throw LOGGER.logExceptionAsError(
+                new IllegalStateException(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED));
         }
 
         CertificateServiceVersion serviceVersion = version != null ? version : CertificateServiceVersion.getLatest();
@@ -204,7 +206,8 @@ public final class CertificateClientBuilder implements TokenCredentialTrait<Cert
         }
 
         if (credential == null) {
-            throw LOGGER.logExceptionAsError(new IllegalStateException(KeyVaultErrorCodeStrings.CREDENTIALS_REQUIRED));
+            throw LOGGER.logExceptionAsError(
+                new IllegalStateException(KeyVaultErrorCodeStrings.CREDENTIALS_REQUIRED));
         }
 
         // Closest to API goes first, closest to wire goes last.
@@ -240,7 +243,8 @@ public final class CertificateClientBuilder implements TokenCredentialTrait<Cert
         Tracer tracer = TracerProvider.getDefaultProvider()
             .createTracer(CLIENT_NAME, CLIENT_VERSION, KEYVAULT_TRACING_NAMESPACE_VALUE, tracingOptions);
 
-        HttpPipeline pipeline = new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
             .tracer(tracer)
             .clientOptions(localClientOptions)
@@ -270,8 +274,7 @@ public final class CertificateClientBuilder implements TokenCredentialTrait<Cert
             URL url = new URL(vaultUrl);
             this.vaultUrl = url.toString();
         } catch (MalformedURLException e) {
-            throw LOGGER
-                .logExceptionAsError(new IllegalArgumentException("The Azure Key Vault endpoint url is malformed.", e));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("The Azure Key Vault endpoint url is malformed.", e));
         }
 
         return this;

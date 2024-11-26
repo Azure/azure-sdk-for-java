@@ -29,6 +29,5 @@ public final class CertificatePropertiesHelper {
         CertificatePropertiesHelper.accessor = accessor;
     }
 
-    private CertificatePropertiesHelper() {
-    }
+    private CertificatePropertiesHelper() { }
 }
