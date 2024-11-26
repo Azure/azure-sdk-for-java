@@ -1007,31 +1007,32 @@ public class ShareFileAsyncClient {
             this::channelCleanUp);
     }
 
-        private Mono<Response<ShareFileProperties>> downloadResponseInChunk(Response<ShareFileProperties> response,
-            AsynchronousFileChannel channel, ShareFileRange range, ShareRequestConditions requestConditions,
-            Context context) {
-            return Mono.justOrEmpty(range)
-                .switchIfEmpty(Mono.defer(() -> Mono.just(new ShareFileRange(0, response.getValue().getContentLength()))))
-                .map(currentRange -> {
-                    List<ShareFileRange> chunks = new ArrayList<>();
-                    for (long pos = currentRange.getStart(); pos < currentRange.getEnd();
-                        pos += ModelHelper.FILE_DEFAULT_BLOCK_SIZE) {
-                        long count = ModelHelper.FILE_DEFAULT_BLOCK_SIZE;
-                        if (pos + count > currentRange.getEnd()) {
-                            count = currentRange.getEnd() - pos;
-                        }
-                        chunks.add(new ShareFileRange(pos, pos + count - 1));
+    private Mono<Response<ShareFileProperties>> downloadResponseInChunk(Response<ShareFileProperties> response,
+        AsynchronousFileChannel channel, ShareFileRange range, ShareRequestConditions requestConditions,
+        Context context) {
+        return Mono.justOrEmpty(range)
+            .switchIfEmpty(Mono.defer(() -> Mono.just(new ShareFileRange(0, response.getValue().getContentLength()))))
+            .map(currentRange -> {
+                List<ShareFileRange> chunks = new ArrayList<>();
+                for (long pos = currentRange.getStart(); pos < currentRange.getEnd();
+                    pos += ModelHelper.FILE_DEFAULT_BLOCK_SIZE) {
+                    long count = ModelHelper.FILE_DEFAULT_BLOCK_SIZE;
+                    if (pos + count > currentRange.getEnd()) {
+                        count = currentRange.getEnd() - pos;
                     }
-                    return chunks;
-                })
-                .flatMapMany(Flux::fromIterable)
-                .flatMap(chunk -> downloadWithResponse(new ShareFileDownloadOptions().setRange(chunk)
-                    .setRangeContentMd5Requested(false)
-                    .setRequestConditions(requestConditions), context).map(ShareFileDownloadAsyncResponse::getValue)
-                        .flatMap(fbb -> FluxUtil.writeFile(fbb, channel,
-                            chunk.getStart() - (range == null ? 0 : range.getStart()))))
-                .then(Mono.just(response));
-        }
+                    chunks.add(new ShareFileRange(pos, pos + count - 1));
+                }
+                return chunks;
+            })
+            .flatMapMany(Flux::fromIterable)
+            .flatMap(chunk -> downloadWithResponse(new ShareFileDownloadOptions().setRange(chunk)
+                .setRangeContentMd5Requested(false)
+                .setRequestConditions(requestConditions), context)
+                    .map(ShareFileDownloadAsyncResponse::getValue)
+                    .flatMap(fbb -> FluxUtil.writeFile(fbb, channel,
+                        chunk.getStart() - (range == null ? 0 : range.getStart()))))
+            .then(Mono.just(response));
+    }
 
     private AsynchronousFileChannel channelSetup(String filePath, OpenOption... options) {
         try {
