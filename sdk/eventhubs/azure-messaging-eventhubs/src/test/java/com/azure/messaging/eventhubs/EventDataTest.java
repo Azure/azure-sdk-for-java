@@ -141,7 +141,8 @@ public class EventDataTest {
         final String correlationId = "my-correlation";
 
         // Act
-        final EventData eventData = new EventData(binaryData).setContentType(contentType)
+        final EventData eventData = new EventData(binaryData)
+            .setContentType(contentType)
             .setCorrelationId(correlationId)
             .setMessageId(messageId);
 

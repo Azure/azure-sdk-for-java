@@ -19,8 +19,7 @@ import static org.mockito.Mockito.when;
 
 public class EventDataBatchTest {
     private static final String PARTITION_KEY = "PartitionIDCopyFromProducerOption";
-    private static final EventHubsProducerInstrumentation DEFAULT_INSTRUMENTATION
-        = new EventHubsProducerInstrumentation(null, null, "fqdn", "entity");
+    private static final EventHubsProducerInstrumentation DEFAULT_INSTRUMENTATION = new EventHubsProducerInstrumentation(null, null, "fqdn", "entity");
     @Mock
     private ErrorContextProvider errorContextProvider;
 
@@ -44,8 +43,8 @@ public class EventDataBatchTest {
     public void payloadExceededException() {
         when(errorContextProvider.getErrorContext()).thenReturn(new AmqpErrorContext("test-namespace"));
 
-        final EventDataBatch batch
-            = new EventDataBatch(1024, null, PARTITION_KEY, errorContextProvider, DEFAULT_INSTRUMENTATION);
+        final EventDataBatch batch = new EventDataBatch(1024, null, PARTITION_KEY, errorContextProvider,
+            DEFAULT_INSTRUMENTATION);
         final EventData tooBig = new EventData(new byte[1024 * 1024 * 2]);
         try {
             batch.tryAdd(tooBig);

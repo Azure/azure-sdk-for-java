@@ -47,8 +47,8 @@ class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
      *
      * @param source the {@link Publisher} to decorate
      */
-    EventDataAggregator(Flux<? extends EventData> source, Supplier<EventDataBatch> batchSupplier, String namespace,
-        BufferedProducerClientOptions options, String partitionId) {
+    EventDataAggregator(Flux<? extends EventData> source, Supplier<EventDataBatch> batchSupplier,
+        String namespace, BufferedProducerClientOptions options, String partitionId) {
         super(source);
 
         this.partitionId = partitionId;
@@ -65,11 +65,12 @@ class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
      */
     @Override
     public void subscribe(CoreSubscriber<? super EventDataBatch> actual) {
-        final EventDataAggregatorMain subscription
-            = new EventDataAggregatorMain(actual, namespace, options, batchSupplier, partitionId, LOGGER);
+        final EventDataAggregatorMain subscription = new EventDataAggregatorMain(actual, namespace, options,
+            batchSupplier, partitionId, LOGGER);
 
         if (!downstreamSubscription.compareAndSet(null, subscription)) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException("Cannot resubscribe to multiple upstreams."));
+            throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                "Cannot resubscribe to multiple upstreams."));
         }
 
         source.subscribe(subscription);
@@ -83,8 +84,8 @@ class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
          * The number of requested EventDataBatches.
          */
         private volatile long requested;
-        private static final AtomicLongFieldUpdater<EventDataAggregatorMain> REQUESTED
-            = AtomicLongFieldUpdater.newUpdater(EventDataAggregatorMain.class, "requested");
+        private static final AtomicLongFieldUpdater<EventDataAggregatorMain> REQUESTED =
+            AtomicLongFieldUpdater.newUpdater(EventDataAggregatorMain.class, "requested");
 
         private final Sinks.Many<Long> eventSink;
         private final Disposable disposable;
@@ -114,9 +115,8 @@ class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
             this.currentBatch = batchSupplier.get();
 
             this.eventSink = Sinks.many().unicast().onBackpressureError();
-            this.disposable = Flux
-                .switchOnNext(eventSink.asFlux()
-                    .map(e -> Flux.interval(options.getMaxWaitTime()).takeUntil(index -> isCompleted.get())))
+            this.disposable = Flux.switchOnNext(eventSink.asFlux().map(e -> Flux.interval(options.getMaxWaitTime())
+                    .takeUntil(index -> isCompleted.get())))
                 .subscribe(index -> {
                     logger.atVerbose()
                         .addKeyValue(PARTITION_ID_KEY, partitionId)
@@ -150,7 +150,9 @@ class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
             }
 
             // Do not keep requesting more events upstream
-            logger.atVerbose().addKeyValue(PARTITION_ID_KEY, partitionId).log("Disposing of aggregator.");
+            logger.atVerbose()
+                .addKeyValue(PARTITION_ID_KEY, partitionId)
+                .log("Disposing of aggregator.");
             subscription.cancel();
 
             updateOrPublishBatch(null, true);
@@ -284,8 +286,8 @@ class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
                 if (this.lastError != null) {
                     logger.info("Exception has been set already, terminating EventDataAggregator.");
 
-                    final Throwable error
-                        = Operators.onNextError(previous, exception, downstream.currentContext(), subscription);
+                    final Throwable error = Operators.onNextError(previous, exception, downstream.currentContext(),
+                        subscription);
 
                     if (error != null) {
                         onError(error);
