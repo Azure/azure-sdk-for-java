@@ -3,6 +3,7 @@
 
 package io.clientcore.core.util.binarydata;
 
+import io.clientcore.core.json.JsonWriter;
 import io.clientcore.core.util.serializer.ObjectSerializer;
 
 import java.io.ByteArrayInputStream;
@@ -62,6 +63,13 @@ public final class StringBinaryData extends BinaryData {
     @Override
     public ByteBuffer toByteBuffer() {
         return ByteBuffer.wrap(toBytes()).asReadOnlyBuffer();
+    }
+
+    @Override
+    public void writeTo(JsonWriter jsonWriter) throws IOException {
+        Objects.requireNonNull(jsonWriter, "'jsonWriter' cannot be null");
+
+        jsonWriter.writeString(toString());
     }
 
     @Override

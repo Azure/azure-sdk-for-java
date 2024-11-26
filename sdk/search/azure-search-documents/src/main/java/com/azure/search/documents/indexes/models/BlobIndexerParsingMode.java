@@ -44,6 +44,11 @@ public final class BlobIndexerParsingMode extends ExpandableStringEnum<BlobIndex
     public static final BlobIndexerParsingMode JSON_LINES = fromString("jsonLines");
 
     /**
+     * Set to markdown to extract content from markdown files.
+     */
+    public static final BlobIndexerParsingMode MARKDOWN = fromString("markdown");
+
+    /**
      * Creates a new instance of BlobIndexerParsingMode value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

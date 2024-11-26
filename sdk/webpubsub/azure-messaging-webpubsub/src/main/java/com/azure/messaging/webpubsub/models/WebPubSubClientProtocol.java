@@ -20,6 +20,15 @@ public final class WebPubSubClientProtocol extends ExpandableStringEnum<WebPubSu
     public static final WebPubSubClientProtocol SOCKETIO = fromString("socketio");
 
     /**
+     * Creates an instance of {@link WebPubSubClientProtocol} with no string value.
+     *
+     * @deprecated Please use {@link #fromString(String)} instead.
+     */
+    @Deprecated
+    public WebPubSubClientProtocol() {
+    }
+
+    /**
      * Creates or finds a WebPubSubClientProtocol from its string representation.
      *
      * @param name a name to look for.

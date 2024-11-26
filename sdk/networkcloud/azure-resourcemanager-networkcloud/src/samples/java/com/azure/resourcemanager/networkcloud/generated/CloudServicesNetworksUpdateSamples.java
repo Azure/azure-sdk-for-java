@@ -12,37 +12,30 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for CloudServicesNetworks Update. */
+/**
+ * Samples for CloudServicesNetworks Update.
+ */
 public final class CloudServicesNetworksUpdateSamples {
     /*
-     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2023-07-01/examples/CloudServicesNetworks_Patch.json
+     * x-ms-original-file:
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-06-01-preview/examples/
+     * CloudServicesNetworks_Patch.json
      */
     /**
      * Sample code: Patch cloud services network.
-     *
+     * 
      * @param manager Entry point to NetworkCloudManager.
      */
     public static void patchCloudServicesNetwork(com.azure.resourcemanager.networkcloud.NetworkCloudManager manager) {
-        CloudServicesNetwork resource =
-            manager
-                .cloudServicesNetworks()
-                .getByResourceGroupWithResponse(
-                    "resourceGroupName", "cloudServicesNetworkName", com.azure.core.util.Context.NONE)
-                .getValue();
-        resource
-            .update()
+        CloudServicesNetwork resource = manager.cloudServicesNetworks()
+            .getByResourceGroupWithResponse("resourceGroupName", "cloudServicesNetworkName",
+                com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
             .withTags(mapOf("key1", "fakeTokenPlaceholder", "key2", "fakeTokenPlaceholder"))
-            .withAdditionalEgressEndpoints(
-                Arrays
-                    .asList(
-                        new EgressEndpoint()
-                            .withCategory("azure-resource-management")
-                            .withEndpoints(
-                                Arrays
-                                    .asList(
-                                        new EndpointDependency()
-                                            .withDomainName("https://storageaccountex.blob.core.windows.net")
-                                            .withPort(443L)))))
+            .withAdditionalEgressEndpoints(Arrays.asList(new EgressEndpoint().withCategory("azure-resource-management")
+                .withEndpoints(Arrays.asList(
+                    new EndpointDependency().withDomainName("storageaccountex.blob.core.windows.net").withPort(443L)))))
             .withEnableDefaultEgressEndpoints(CloudServicesNetworkEnableDefaultEgressEndpoints.FALSE)
             .apply();
     }

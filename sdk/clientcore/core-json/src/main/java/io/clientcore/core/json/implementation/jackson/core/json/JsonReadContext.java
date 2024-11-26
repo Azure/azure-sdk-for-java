@@ -1,7 +1,12 @@
 // Original file from https://github.com/FasterXML/jackson-core under Apache-2.0 license.
 package io.clientcore.core.json.implementation.jackson.core.json;
 
-import io.clientcore.core.json.implementation.jackson.core.*;
+import io.clientcore.core.json.implementation.jackson.core.JsonLocation;
+import io.clientcore.core.json.implementation.jackson.core.JsonParseException;
+import io.clientcore.core.json.implementation.jackson.core.JsonParser;
+import io.clientcore.core.json.implementation.jackson.core.JsonProcessingException;
+import io.clientcore.core.json.implementation.jackson.core.JsonStreamContext;
+import io.clientcore.core.json.implementation.jackson.core.JsonToken;
 import io.clientcore.core.json.implementation.jackson.core.io.ContentReference;
 
 /**
@@ -15,42 +20,42 @@ public final class JsonReadContext extends JsonStreamContext {
     /**
      * Parent context for this context; null for root context.
      */
-    protected final JsonReadContext _parent;
+    private final JsonReadContext _parent;
 
     // // // Optional duplicate detection
 
-    protected DupDetector _dups;
+    private DupDetector _dups;
 
     /*
-    /**********************************************************
-    /* Simple instance reuse slots; speeds up things a bit (10-15%)
-    /* for docs with lots of small arrays/objects (for which
-    /* allocation was visible in profile stack frames)
-    /**********************************************************
+     * /**********************************************************
+     * /* Simple instance reuse slots; speeds up things a bit (10-15%)
+     * /* for docs with lots of small arrays/objects (for which
+     * /* allocation was visible in profile stack frames)
+     * /**********************************************************
      */
 
-    protected JsonReadContext _child;
+    private JsonReadContext _child;
 
     /*
-    /**********************************************************
-    /* Location/state information (minus source reference)
-    /**********************************************************
+     * /**********************************************************
+     * /* Location/state information (minus source reference)
+     * /**********************************************************
      */
 
-    protected String _currentName;
+    private String _currentName;
 
     /**
      * @since 2.5
      */
-    protected Object _currentValue;
+    private Object _currentValue;
 
-    protected int _lineNr;
-    protected int _columnNr;
+    private int _lineNr;
+    private int _columnNr;
 
     /*
-    /**********************************************************
-    /* Instance construction, config, reuse
-    /**********************************************************
+     * /**********************************************************
+     * /* Instance construction, config, reuse
+     * /**********************************************************
      */
 
     public JsonReadContext(JsonReadContext parent, DupDetector dups, int type, int lineNr, int colNr) {
@@ -89,10 +94,10 @@ public final class JsonReadContext extends JsonStreamContext {
     }
 
     /*
-    public void trackDups(JsonParser p) {
-        _dups = DupDetector.rootDetector(p);
-    }
-    */
+     * public void trackDups(JsonParser p) {
+     * _dups = DupDetector.rootDetector(p);
+     * }
+     */
 
     public JsonReadContext withDupDetector(DupDetector dups) {
         _dups = dups;
@@ -110,14 +115,10 @@ public final class JsonReadContext extends JsonStreamContext {
     }
 
     /*
-    /**********************************************************
-    /* Factory methods
-    /**********************************************************
+     * /**********************************************************
+     * /* Factory methods
+     * /**********************************************************
      */
-
-    public static JsonReadContext createRootContext(int lineNr, int colNr, DupDetector dups) {
-        return new JsonReadContext(null, dups, TYPE_ROOT, lineNr, colNr);
-    }
 
     public static JsonReadContext createRootContext(DupDetector dups) {
         return new JsonReadContext(null, dups, TYPE_ROOT, 1, 0);
@@ -146,20 +147,14 @@ public final class JsonReadContext extends JsonStreamContext {
     }
 
     /*
-    /**********************************************************
-    /* Abstract method implementations, overrides
-    /**********************************************************
+     * /**********************************************************
+     * /* Abstract method implementations, overrides
+     * /**********************************************************
      */
 
     @Override
     public String getCurrentName() {
         return _currentName;
-    }
-
-    // @since 2.9
-    @Override
-    public boolean hasCurrentName() {
-        return _currentName != null;
     }
 
     @Override
@@ -181,9 +176,9 @@ public final class JsonReadContext extends JsonStreamContext {
     }
 
     /*
-    /**********************************************************
-    /* Extended API
-    /**********************************************************
+     * /**********************************************************
+     * /* Extended API
+     * /**********************************************************
      */
 
     /**
@@ -209,13 +204,14 @@ public final class JsonReadContext extends JsonStreamContext {
     }
 
     /*
-    /**********************************************************
-    /* State changes
-    /**********************************************************
+     * /**********************************************************
+     * /* State changes
+     * /**********************************************************
      */
 
     public boolean expectComma() {
-        /* Assumption here is that we will be getting a value (at least
+        /*
+         * Assumption here is that we will be getting a value (at least
          * before calling this method again), and
          * so will auto-increment index to avoid having to do another call
          */

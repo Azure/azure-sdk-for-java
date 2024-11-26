@@ -45,22 +45,8 @@
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
-      <artifactId>spring-integration-azure-core</artifactId>
-      <version>5.19.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-integration-azure-core;current} -->
-      <type>test-jar</type>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.azure.spring</groupId>
       <artifactId>spring-messaging-azure-servicebus</artifactId>
       <version>5.19.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-messaging-azure-servicebus;current} -->
-    </dependency>
-    <dependency>
-      <groupId>com.azure.spring</groupId>
-      <artifactId>spring-messaging-azure-servicebus</artifactId>
-      <version>5.19.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-messaging-azure-servicebus;current} -->
-      <type>test-jar</type>
-      <scope>test</scope>
     </dependency>
     <!-- Added this dependency to include necessary annotations used by reactor core.
       Without this dependency, javadoc throws a warning as it cannot find enum When.MAYBE
@@ -74,7 +60,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-serializer-json-jackson</artifactId>
-      <version>1.5.3</version> <!-- {x-version-update;com.azure:azure-core-serializer-json-jackson;dependency} -->
+      <version>1.5.4</version> <!-- {x-version-update;com.azure:azure-core-serializer-json-jackson;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -165,4 +151,46 @@
     </plugins>
   </build>
 
+  <profiles>
+    <!-- Library cannot build for Java 16 and below -->
+    <profile>
+      <id>below-java-17</id>
+      <activation>
+        <jdk>[,17)</jdk>
+      </activation>
+      <properties>
+        <jacoco.skip>true</jacoco.skip>
+        <skipCompile>true</skipCompile>
+        <skipTestCompile>true</skipTestCompile>
+        <codesnippet.skip>true</codesnippet.skip>
+        <checkstyle.skip>true</checkstyle.skip>
+        <spotbugs.skip>true</spotbugs.skip>
+        <revapi.skip>true</revapi.skip>
+        <maven.test.skip>true</maven.test.skip>
+        <maven.javadoc.skip>true</maven.javadoc.skip>
+      </properties>
+    </profile>
+    <profile>
+      <id>java-17-plus</id>
+      <activation>
+        <jdk>[17,)</jdk>
+      </activation>
+      <dependencies>
+        <dependency>
+          <groupId>com.azure.spring</groupId>
+          <artifactId>spring-integration-azure-core</artifactId>
+          <version>5.19.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-integration-azure-core;current} -->
+          <type>test-jar</type>
+          <scope>test</scope>
+        </dependency>
+        <dependency>
+          <groupId>com.azure.spring</groupId>
+          <artifactId>spring-messaging-azure-servicebus</artifactId>
+          <version>5.19.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-messaging-azure-servicebus;current} -->
+          <type>test-jar</type>
+          <scope>test</scope>
+        </dependency>
+      </dependencies>
+    </profile>
+  </profiles>
 </project>

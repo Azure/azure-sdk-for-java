@@ -19,6 +19,12 @@ public final class PlayOptions {
     private String operationContext;
 
     /**
+     * Creates a new instance of {@link PlayOptions}.
+     */
+    public PlayOptions() {
+    }
+
+    /**
      * Get the loop property: The option to play the provided audio source in loop when set to true.
      *
      * @return the loop value.

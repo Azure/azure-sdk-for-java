@@ -13,7 +13,7 @@ import java.util.Arrays;
 /**
  * Helper class used to implement more optimized parsing of {@link BigDecimal} for REALLY
  * big values (over 500 characters)
- *<p>
+ * <p>
  * Based on ideas from this
  * <a href="https://github.com/eobermuhlner/big-math/commit/7a5419aac8b2adba2aa700ccf00197f97b2ad89f">this
  * git commit</a>.

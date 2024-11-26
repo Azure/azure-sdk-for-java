@@ -34,23 +34,30 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.networkcloud.fluent.CloudServicesNetworksClient;
 import com.azure.resourcemanager.networkcloud.fluent.models.CloudServicesNetworkInner;
+import com.azure.resourcemanager.networkcloud.fluent.models.OperationStatusResultInner;
 import com.azure.resourcemanager.networkcloud.models.CloudServicesNetworkList;
 import com.azure.resourcemanager.networkcloud.models.CloudServicesNetworkPatchParameters;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in CloudServicesNetworksClient. */
+/**
+ * An instance of this class provides access to all the operations defined in CloudServicesNetworksClient.
+ */
 public final class CloudServicesNetworksClientImpl implements CloudServicesNetworksClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final CloudServicesNetworksService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final NetworkCloudImpl client;
 
     /**
      * Initializes an instance of CloudServicesNetworksClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     CloudServicesNetworksClientImpl(NetworkCloudImpl client) {
@@ -144,13 +151,13 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
 
     /**
      * List cloud services networks in the subscription.
-     *
-     * <p>Get a list of cloud services networks in the provided subscription.
-     *
+     * 
+     * Get a list of cloud services networks in the provided subscription.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of cloud services networks in the provided subscription along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CloudServicesNetworkInner>> listSinglePageAsync() {
@@ -173,15 +180,15 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
 
     /**
      * List cloud services networks in the subscription.
-     *
-     * <p>Get a list of cloud services networks in the provided subscription.
-     *
+     * 
+     * Get a list of cloud services networks in the provided subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of cloud services networks in the provided subscription along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CloudServicesNetworkInner>> listSinglePageAsync(Context context) {
@@ -204,13 +211,13 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
 
     /**
      * List cloud services networks in the subscription.
-     *
-     * <p>Get a list of cloud services networks in the provided subscription.
-     *
+     * 
+     * Get a list of cloud services networks in the provided subscription.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of cloud services networks in the provided subscription as paginated response with {@link
-     *     PagedFlux}.
+     * @return a list of cloud services networks in the provided subscription as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<CloudServicesNetworkInner> listAsync() {
@@ -220,15 +227,15 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
 
     /**
      * List cloud services networks in the subscription.
-     *
-     * <p>Get a list of cloud services networks in the provided subscription.
-     *
+     * 
+     * Get a list of cloud services networks in the provided subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of cloud services networks in the provided subscription as paginated response with {@link
-     *     PagedFlux}.
+     * @return a list of cloud services networks in the provided subscription as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<CloudServicesNetworkInner> listAsync(Context context) {
@@ -238,13 +245,13 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
 
     /**
      * List cloud services networks in the subscription.
-     *
-     * <p>Get a list of cloud services networks in the provided subscription.
-     *
+     * 
+     * Get a list of cloud services networks in the provided subscription.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of cloud services networks in the provided subscription as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of cloud services networks in the provided subscription as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CloudServicesNetworkInner> list() {
@@ -253,15 +260,15 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
 
     /**
      * List cloud services networks in the subscription.
-     *
-     * <p>Get a list of cloud services networks in the provided subscription.
-     *
+     * 
+     * Get a list of cloud services networks in the provided subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of cloud services networks in the provided subscription as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of cloud services networks in the provided subscription as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CloudServicesNetworkInner> list(Context context) {
@@ -270,15 +277,15 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
 
     /**
      * List cloud services networks in the resource group.
-     *
-     * <p>Get a list of cloud services networks in the provided resource group.
-     *
+     * 
+     * Get a list of cloud services networks in the provided resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of cloud services networks in the provided resource group along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CloudServicesNetworkInner>>
@@ -306,16 +313,16 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
 
     /**
      * List cloud services networks in the resource group.
-     *
-     * <p>Get a list of cloud services networks in the provided resource group.
-     *
+     * 
+     * Get a list of cloud services networks in the provided resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of cloud services networks in the provided resource group along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CloudServicesNetworkInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
@@ -343,15 +350,15 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
 
     /**
      * List cloud services networks in the resource group.
-     *
-     * <p>Get a list of cloud services networks in the provided resource group.
-     *
+     * 
+     * Get a list of cloud services networks in the provided resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of cloud services networks in the provided resource group as paginated response with {@link
-     *     PagedFlux}.
+     * @return a list of cloud services networks in the provided resource group as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<CloudServicesNetworkInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -361,16 +368,16 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
 
     /**
      * List cloud services networks in the resource group.
-     *
-     * <p>Get a list of cloud services networks in the provided resource group.
-     *
+     * 
+     * Get a list of cloud services networks in the provided resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of cloud services networks in the provided resource group as paginated response with {@link
-     *     PagedFlux}.
+     * @return a list of cloud services networks in the provided resource group as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<CloudServicesNetworkInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
@@ -380,15 +387,15 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
 
     /**
      * List cloud services networks in the resource group.
-     *
-     * <p>Get a list of cloud services networks in the provided resource group.
-     *
+     * 
+     * Get a list of cloud services networks in the provided resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of cloud services networks in the provided resource group as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of cloud services networks in the provided resource group as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CloudServicesNetworkInner> listByResourceGroup(String resourceGroupName) {
@@ -397,16 +404,16 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
 
     /**
      * List cloud services networks in the resource group.
-     *
-     * <p>Get a list of cloud services networks in the provided resource group.
-     *
+     * 
+     * Get a list of cloud services networks in the provided resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of cloud services networks in the provided resource group as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of cloud services networks in the provided resource group as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CloudServicesNetworkInner> listByResourceGroup(String resourceGroupName, Context context) {
@@ -415,16 +422,16 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
 
     /**
      * Retrieve the cloud services network.
-     *
-     * <p>Get properties of the provided cloud services network.
-     *
+     * 
+     * Get properties of the provided cloud services network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudServicesNetworkName The name of the cloud services network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return properties of the provided cloud services network along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CloudServicesNetworkInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
@@ -454,9 +461,9 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
 
     /**
      * Retrieve the cloud services network.
-     *
-     * <p>Get properties of the provided cloud services network.
-     *
+     * 
+     * Get properties of the provided cloud services network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudServicesNetworkName The name of the cloud services network.
      * @param context The context to associate with this operation.
@@ -464,7 +471,7 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return properties of the provided cloud services network along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CloudServicesNetworkInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
@@ -493,9 +500,9 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
 
     /**
      * Retrieve the cloud services network.
-     *
-     * <p>Get properties of the provided cloud services network.
-     *
+     * 
+     * Get properties of the provided cloud services network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudServicesNetworkName The name of the cloud services network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -512,9 +519,9 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
 
     /**
      * Retrieve the cloud services network.
-     *
-     * <p>Get properties of the provided cloud services network.
-     *
+     * 
+     * Get properties of the provided cloud services network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudServicesNetworkName The name of the cloud services network.
      * @param context The context to associate with this operation.
@@ -531,9 +538,9 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
 
     /**
      * Retrieve the cloud services network.
-     *
-     * <p>Get properties of the provided cloud services network.
-     *
+     * 
+     * Get properties of the provided cloud services network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudServicesNetworkName The name of the cloud services network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -548,9 +555,9 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
 
     /**
      * Create or update the cloud services network.
-     *
-     * <p>Create a new cloud services network or update the properties of the existing cloud services network.
-     *
+     * 
+     * Create a new cloud services network or update the properties of the existing cloud services network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudServicesNetworkName The name of the cloud services network.
      * @param cloudServicesNetworkParameters The request body.
@@ -558,7 +565,7 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return cloudServicesNetwork represents additional egress information that will be used by associated virtual
-     *     machines or hybrid AKS clusters along with {@link Response} on successful completion of {@link Mono}.
+     * machines or hybrid AKS clusters along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
@@ -595,9 +602,9 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
 
     /**
      * Create or update the cloud services network.
-     *
-     * <p>Create a new cloud services network or update the properties of the existing cloud services network.
-     *
+     * 
+     * Create a new cloud services network or update the properties of the existing cloud services network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudServicesNetworkName The name of the cloud services network.
      * @param cloudServicesNetworkParameters The request body.
@@ -606,7 +613,7 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return cloudServicesNetwork represents additional egress information that will be used by associated virtual
-     *     machines or hybrid AKS clusters along with {@link Response} on successful completion of {@link Mono}.
+     * machines or hybrid AKS clusters along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
@@ -642,9 +649,9 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
 
     /**
      * Create or update the cloud services network.
-     *
-     * <p>Create a new cloud services network or update the properties of the existing cloud services network.
-     *
+     * 
+     * Create a new cloud services network or update the properties of the existing cloud services network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudServicesNetworkName The name of the cloud services network.
      * @param cloudServicesNetworkParameters The request body.
@@ -652,7 +659,7 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of cloudServicesNetwork represents additional egress information that
-     *     will be used by associated virtual machines or hybrid AKS clusters.
+     * will be used by associated virtual machines or hybrid AKS clusters.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<CloudServicesNetworkInner>, CloudServicesNetworkInner> beginCreateOrUpdateAsync(
@@ -667,9 +674,9 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
 
     /**
      * Create or update the cloud services network.
-     *
-     * <p>Create a new cloud services network or update the properties of the existing cloud services network.
-     *
+     * 
+     * Create a new cloud services network or update the properties of the existing cloud services network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudServicesNetworkName The name of the cloud services network.
      * @param cloudServicesNetworkParameters The request body.
@@ -678,7 +685,7 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of cloudServicesNetwork represents additional egress information that
-     *     will be used by associated virtual machines or hybrid AKS clusters.
+     * will be used by associated virtual machines or hybrid AKS clusters.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<CloudServicesNetworkInner>, CloudServicesNetworkInner> beginCreateOrUpdateAsync(
@@ -693,9 +700,9 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
 
     /**
      * Create or update the cloud services network.
-     *
-     * <p>Create a new cloud services network or update the properties of the existing cloud services network.
-     *
+     * 
+     * Create a new cloud services network or update the properties of the existing cloud services network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudServicesNetworkName The name of the cloud services network.
      * @param cloudServicesNetworkParameters The request body.
@@ -703,7 +710,7 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of cloudServicesNetwork represents additional egress information that
-     *     will be used by associated virtual machines or hybrid AKS clusters.
+     * will be used by associated virtual machines or hybrid AKS clusters.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CloudServicesNetworkInner>, CloudServicesNetworkInner> beginCreateOrUpdate(
@@ -716,9 +723,9 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
 
     /**
      * Create or update the cloud services network.
-     *
-     * <p>Create a new cloud services network or update the properties of the existing cloud services network.
-     *
+     * 
+     * Create a new cloud services network or update the properties of the existing cloud services network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudServicesNetworkName The name of the cloud services network.
      * @param cloudServicesNetworkParameters The request body.
@@ -727,7 +734,7 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of cloudServicesNetwork represents additional egress information that
-     *     will be used by associated virtual machines or hybrid AKS clusters.
+     * will be used by associated virtual machines or hybrid AKS clusters.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CloudServicesNetworkInner>, CloudServicesNetworkInner> beginCreateOrUpdate(
@@ -741,9 +748,9 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
 
     /**
      * Create or update the cloud services network.
-     *
-     * <p>Create a new cloud services network or update the properties of the existing cloud services network.
-     *
+     * 
+     * Create a new cloud services network or update the properties of the existing cloud services network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudServicesNetworkName The name of the cloud services network.
      * @param cloudServicesNetworkParameters The request body.
@@ -751,7 +758,7 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return cloudServicesNetwork represents additional egress information that will be used by associated virtual
-     *     machines or hybrid AKS clusters on successful completion of {@link Mono}.
+     * machines or hybrid AKS clusters on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CloudServicesNetworkInner> createOrUpdateAsync(String resourceGroupName,
@@ -763,9 +770,9 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
 
     /**
      * Create or update the cloud services network.
-     *
-     * <p>Create a new cloud services network or update the properties of the existing cloud services network.
-     *
+     * 
+     * Create a new cloud services network or update the properties of the existing cloud services network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudServicesNetworkName The name of the cloud services network.
      * @param cloudServicesNetworkParameters The request body.
@@ -774,7 +781,7 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return cloudServicesNetwork represents additional egress information that will be used by associated virtual
-     *     machines or hybrid AKS clusters on successful completion of {@link Mono}.
+     * machines or hybrid AKS clusters on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CloudServicesNetworkInner> createOrUpdateAsync(String resourceGroupName,
@@ -785,9 +792,9 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
 
     /**
      * Create or update the cloud services network.
-     *
-     * <p>Create a new cloud services network or update the properties of the existing cloud services network.
-     *
+     * 
+     * Create a new cloud services network or update the properties of the existing cloud services network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudServicesNetworkName The name of the cloud services network.
      * @param cloudServicesNetworkParameters The request body.
@@ -795,7 +802,7 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return cloudServicesNetwork represents additional egress information that will be used by associated virtual
-     *     machines or hybrid AKS clusters.
+     * machines or hybrid AKS clusters.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CloudServicesNetworkInner createOrUpdate(String resourceGroupName, String cloudServicesNetworkName,
@@ -805,9 +812,9 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
 
     /**
      * Create or update the cloud services network.
-     *
-     * <p>Create a new cloud services network or update the properties of the existing cloud services network.
-     *
+     * 
+     * Create a new cloud services network or update the properties of the existing cloud services network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudServicesNetworkName The name of the cloud services network.
      * @param cloudServicesNetworkParameters The request body.
@@ -816,7 +823,7 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return cloudServicesNetwork represents additional egress information that will be used by associated virtual
-     *     machines or hybrid AKS clusters.
+     * machines or hybrid AKS clusters.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CloudServicesNetworkInner createOrUpdate(String resourceGroupName, String cloudServicesNetworkName,
@@ -827,15 +834,16 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
 
     /**
      * Delete the cloud services network.
-     *
-     * <p>Delete the provided cloud services network.
-     *
+     * 
+     * Delete the provided cloud services network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudServicesNetworkName The name of the cloud services network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
@@ -865,16 +873,17 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
 
     /**
      * Delete the cloud services network.
-     *
-     * <p>Delete the provided cloud services network.
-     *
+     * 
+     * Delete the provided cloud services network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudServicesNetworkName The name of the cloud services network.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
@@ -903,159 +912,165 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
 
     /**
      * Delete the cloud services network.
-     *
-     * <p>Delete the provided cloud services network.
-     *
+     * 
+     * Delete the provided cloud services network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudServicesNetworkName The name of the cloud services network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName,
-        String cloudServicesNetworkName) {
+    private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginDeleteAsync(String resourceGroupName, String cloudServicesNetworkName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, cloudServicesNetworkName);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+        return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(mono,
+            this.client.getHttpPipeline(), OperationStatusResultInner.class, OperationStatusResultInner.class,
             this.client.getContext());
     }
 
     /**
      * Delete the cloud services network.
-     *
-     * <p>Delete the provided cloud services network.
-     *
+     * 
+     * Delete the provided cloud services network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudServicesNetworkName The name of the cloud services network.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName,
-        String cloudServicesNetworkName, Context context) {
+    private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginDeleteAsync(String resourceGroupName, String cloudServicesNetworkName, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono
             = deleteWithResponseAsync(resourceGroupName, cloudServicesNetworkName, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
+        return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(mono,
+            this.client.getHttpPipeline(), OperationStatusResultInner.class, OperationStatusResultInner.class, context);
     }
 
     /**
      * Delete the cloud services network.
-     *
-     * <p>Delete the provided cloud services network.
-     *
+     * 
+     * Delete the provided cloud services network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudServicesNetworkName The name of the cloud services network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String cloudServicesNetworkName) {
+    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginDelete(String resourceGroupName, String cloudServicesNetworkName) {
         return this.beginDeleteAsync(resourceGroupName, cloudServicesNetworkName).getSyncPoller();
     }
 
     /**
      * Delete the cloud services network.
-     *
-     * <p>Delete the provided cloud services network.
-     *
+     * 
+     * Delete the provided cloud services network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudServicesNetworkName The name of the cloud services network.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String cloudServicesNetworkName,
-        Context context) {
+    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginDelete(String resourceGroupName, String cloudServicesNetworkName, Context context) {
         return this.beginDeleteAsync(resourceGroupName, cloudServicesNetworkName, context).getSyncPoller();
     }
 
     /**
      * Delete the cloud services network.
-     *
-     * <p>Delete the provided cloud services network.
-     *
+     * 
+     * Delete the provided cloud services network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudServicesNetworkName The name of the cloud services network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the current status of an async operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String cloudServicesNetworkName) {
+    private Mono<OperationStatusResultInner> deleteAsync(String resourceGroupName, String cloudServicesNetworkName) {
         return beginDeleteAsync(resourceGroupName, cloudServicesNetworkName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete the cloud services network.
-     *
-     * <p>Delete the provided cloud services network.
-     *
+     * 
+     * Delete the provided cloud services network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudServicesNetworkName The name of the cloud services network.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the current status of an async operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String cloudServicesNetworkName, Context context) {
+    private Mono<OperationStatusResultInner> deleteAsync(String resourceGroupName, String cloudServicesNetworkName,
+        Context context) {
         return beginDeleteAsync(resourceGroupName, cloudServicesNetworkName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete the cloud services network.
-     *
-     * <p>Delete the provided cloud services network.
-     *
+     * 
+     * Delete the provided cloud services network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudServicesNetworkName The name of the cloud services network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String cloudServicesNetworkName) {
-        deleteAsync(resourceGroupName, cloudServicesNetworkName).block();
+    public OperationStatusResultInner delete(String resourceGroupName, String cloudServicesNetworkName) {
+        return deleteAsync(resourceGroupName, cloudServicesNetworkName).block();
     }
 
     /**
      * Delete the cloud services network.
-     *
-     * <p>Delete the provided cloud services network.
-     *
+     * 
+     * Delete the provided cloud services network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudServicesNetworkName The name of the cloud services network.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String cloudServicesNetworkName, Context context) {
-        deleteAsync(resourceGroupName, cloudServicesNetworkName, context).block();
+    public OperationStatusResultInner delete(String resourceGroupName, String cloudServicesNetworkName,
+        Context context) {
+        return deleteAsync(resourceGroupName, cloudServicesNetworkName, context).block();
     }
 
     /**
      * Patch the cloud services network.
-     *
-     * <p>Update properties of the provided cloud services network, or update the tags associated with it. Properties
-     * and tag updates can be done independently.
-     *
+     * 
+     * Update properties of the provided cloud services network, or update the tags associated with it. Properties and
+     * tag updates can be done independently.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudServicesNetworkName The name of the cloud services network.
      * @param cloudServicesNetworkUpdateParameters The request body.
@@ -1063,7 +1078,7 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return cloudServicesNetwork represents additional egress information that will be used by associated virtual
-     *     machines or hybrid AKS clusters along with {@link Response} on successful completion of {@link Mono}.
+     * machines or hybrid AKS clusters along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName,
@@ -1097,10 +1112,10 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
 
     /**
      * Patch the cloud services network.
-     *
-     * <p>Update properties of the provided cloud services network, or update the tags associated with it. Properties
-     * and tag updates can be done independently.
-     *
+     * 
+     * Update properties of the provided cloud services network, or update the tags associated with it. Properties and
+     * tag updates can be done independently.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudServicesNetworkName The name of the cloud services network.
      * @param cloudServicesNetworkUpdateParameters The request body.
@@ -1109,7 +1124,7 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return cloudServicesNetwork represents additional egress information that will be used by associated virtual
-     *     machines or hybrid AKS clusters along with {@link Response} on successful completion of {@link Mono}.
+     * machines or hybrid AKS clusters along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName,
@@ -1142,10 +1157,10 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
 
     /**
      * Patch the cloud services network.
-     *
-     * <p>Update properties of the provided cloud services network, or update the tags associated with it. Properties
-     * and tag updates can be done independently.
-     *
+     * 
+     * Update properties of the provided cloud services network, or update the tags associated with it. Properties and
+     * tag updates can be done independently.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudServicesNetworkName The name of the cloud services network.
      * @param cloudServicesNetworkUpdateParameters The request body.
@@ -1153,7 +1168,7 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of cloudServicesNetwork represents additional egress information that
-     *     will be used by associated virtual machines or hybrid AKS clusters.
+     * will be used by associated virtual machines or hybrid AKS clusters.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<CloudServicesNetworkInner>, CloudServicesNetworkInner> beginUpdateAsync(
@@ -1168,17 +1183,17 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
 
     /**
      * Patch the cloud services network.
-     *
-     * <p>Update properties of the provided cloud services network, or update the tags associated with it. Properties
-     * and tag updates can be done independently.
-     *
+     * 
+     * Update properties of the provided cloud services network, or update the tags associated with it. Properties and
+     * tag updates can be done independently.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudServicesNetworkName The name of the cloud services network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of cloudServicesNetwork represents additional egress information that
-     *     will be used by associated virtual machines or hybrid AKS clusters.
+     * will be used by associated virtual machines or hybrid AKS clusters.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<CloudServicesNetworkInner>, CloudServicesNetworkInner>
@@ -1193,10 +1208,10 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
 
     /**
      * Patch the cloud services network.
-     *
-     * <p>Update properties of the provided cloud services network, or update the tags associated with it. Properties
-     * and tag updates can be done independently.
-     *
+     * 
+     * Update properties of the provided cloud services network, or update the tags associated with it. Properties and
+     * tag updates can be done independently.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudServicesNetworkName The name of the cloud services network.
      * @param cloudServicesNetworkUpdateParameters The request body.
@@ -1205,7 +1220,7 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of cloudServicesNetwork represents additional egress information that
-     *     will be used by associated virtual machines or hybrid AKS clusters.
+     * will be used by associated virtual machines or hybrid AKS clusters.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<CloudServicesNetworkInner>, CloudServicesNetworkInner> beginUpdateAsync(
@@ -1220,17 +1235,17 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
 
     /**
      * Patch the cloud services network.
-     *
-     * <p>Update properties of the provided cloud services network, or update the tags associated with it. Properties
-     * and tag updates can be done independently.
-     *
+     * 
+     * Update properties of the provided cloud services network, or update the tags associated with it. Properties and
+     * tag updates can be done independently.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudServicesNetworkName The name of the cloud services network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of cloudServicesNetwork represents additional egress information that
-     *     will be used by associated virtual machines or hybrid AKS clusters.
+     * will be used by associated virtual machines or hybrid AKS clusters.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CloudServicesNetworkInner>, CloudServicesNetworkInner>
@@ -1242,10 +1257,10 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
 
     /**
      * Patch the cloud services network.
-     *
-     * <p>Update properties of the provided cloud services network, or update the tags associated with it. Properties
-     * and tag updates can be done independently.
-     *
+     * 
+     * Update properties of the provided cloud services network, or update the tags associated with it. Properties and
+     * tag updates can be done independently.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudServicesNetworkName The name of the cloud services network.
      * @param cloudServicesNetworkUpdateParameters The request body.
@@ -1254,7 +1269,7 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of cloudServicesNetwork represents additional egress information that
-     *     will be used by associated virtual machines or hybrid AKS clusters.
+     * will be used by associated virtual machines or hybrid AKS clusters.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CloudServicesNetworkInner>, CloudServicesNetworkInner> beginUpdate(
@@ -1268,10 +1283,10 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
 
     /**
      * Patch the cloud services network.
-     *
-     * <p>Update properties of the provided cloud services network, or update the tags associated with it. Properties
-     * and tag updates can be done independently.
-     *
+     * 
+     * Update properties of the provided cloud services network, or update the tags associated with it. Properties and
+     * tag updates can be done independently.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudServicesNetworkName The name of the cloud services network.
      * @param cloudServicesNetworkUpdateParameters The request body.
@@ -1279,7 +1294,7 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return cloudServicesNetwork represents additional egress information that will be used by associated virtual
-     *     machines or hybrid AKS clusters on successful completion of {@link Mono}.
+     * machines or hybrid AKS clusters on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CloudServicesNetworkInner> updateAsync(String resourceGroupName, String cloudServicesNetworkName,
@@ -1291,17 +1306,17 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
 
     /**
      * Patch the cloud services network.
-     *
-     * <p>Update properties of the provided cloud services network, or update the tags associated with it. Properties
-     * and tag updates can be done independently.
-     *
+     * 
+     * Update properties of the provided cloud services network, or update the tags associated with it. Properties and
+     * tag updates can be done independently.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudServicesNetworkName The name of the cloud services network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return cloudServicesNetwork represents additional egress information that will be used by associated virtual
-     *     machines or hybrid AKS clusters on successful completion of {@link Mono}.
+     * machines or hybrid AKS clusters on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CloudServicesNetworkInner> updateAsync(String resourceGroupName, String cloudServicesNetworkName) {
@@ -1313,10 +1328,10 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
 
     /**
      * Patch the cloud services network.
-     *
-     * <p>Update properties of the provided cloud services network, or update the tags associated with it. Properties
-     * and tag updates can be done independently.
-     *
+     * 
+     * Update properties of the provided cloud services network, or update the tags associated with it. Properties and
+     * tag updates can be done independently.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudServicesNetworkName The name of the cloud services network.
      * @param cloudServicesNetworkUpdateParameters The request body.
@@ -1325,7 +1340,7 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return cloudServicesNetwork represents additional egress information that will be used by associated virtual
-     *     machines or hybrid AKS clusters on successful completion of {@link Mono}.
+     * machines or hybrid AKS clusters on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CloudServicesNetworkInner> updateAsync(String resourceGroupName, String cloudServicesNetworkName,
@@ -1336,17 +1351,17 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
 
     /**
      * Patch the cloud services network.
-     *
-     * <p>Update properties of the provided cloud services network, or update the tags associated with it. Properties
-     * and tag updates can be done independently.
-     *
+     * 
+     * Update properties of the provided cloud services network, or update the tags associated with it. Properties and
+     * tag updates can be done independently.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudServicesNetworkName The name of the cloud services network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return cloudServicesNetwork represents additional egress information that will be used by associated virtual
-     *     machines or hybrid AKS clusters.
+     * machines or hybrid AKS clusters.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CloudServicesNetworkInner update(String resourceGroupName, String cloudServicesNetworkName) {
@@ -1356,10 +1371,10 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
 
     /**
      * Patch the cloud services network.
-     *
-     * <p>Update properties of the provided cloud services network, or update the tags associated with it. Properties
-     * and tag updates can be done independently.
-     *
+     * 
+     * Update properties of the provided cloud services network, or update the tags associated with it. Properties and
+     * tag updates can be done independently.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudServicesNetworkName The name of the cloud services network.
      * @param cloudServicesNetworkUpdateParameters The request body.
@@ -1368,7 +1383,7 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return cloudServicesNetwork represents additional egress information that will be used by associated virtual
-     *     machines or hybrid AKS clusters.
+     * machines or hybrid AKS clusters.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CloudServicesNetworkInner update(String resourceGroupName, String cloudServicesNetworkName,
@@ -1379,14 +1394,13 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return cloudServicesNetworkList represents a list of cloud services networks along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CloudServicesNetworkInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
@@ -1408,15 +1422,14 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return cloudServicesNetworkList represents a list of cloud services networks along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CloudServicesNetworkInner>> listBySubscriptionNextSinglePageAsync(String nextLink,
@@ -1437,14 +1450,13 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return cloudServicesNetworkList represents a list of cloud services networks along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CloudServicesNetworkInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -1466,15 +1478,14 @@ public final class CloudServicesNetworksClientImpl implements CloudServicesNetwo
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return cloudServicesNetworkList represents a list of cloud services networks along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CloudServicesNetworkInner>> listByResourceGroupNextSinglePageAsync(String nextLink,

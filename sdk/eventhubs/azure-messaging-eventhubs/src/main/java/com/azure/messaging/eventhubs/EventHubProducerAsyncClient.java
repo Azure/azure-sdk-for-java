@@ -6,7 +6,6 @@ package com.azure.messaging.eventhubs;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpException;
-import com.azure.core.amqp.implementation.AmqpConstants;
 import com.azure.core.amqp.implementation.AmqpSendLink;
 import com.azure.core.amqp.implementation.ErrorContextProvider;
 import com.azure.core.amqp.implementation.MessageSerializer;
@@ -18,7 +17,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.EventHubManagementNode;
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import com.azure.messaging.eventhubs.models.SendOptions;
-import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
 import org.apache.qpid.proton.message.Message;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -27,7 +25,6 @@ import reactor.core.scheduler.Scheduler;
 import java.io.Closeable;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -38,6 +35,7 @@ import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import static com.azure.core.amqp.implementation.RetryUtil.withRetry;
 import static com.azure.core.util.FluxUtil.monoError;
@@ -582,22 +580,8 @@ public class EventHubProducerAsyncClient implements Closeable {
                 .log("Sending batch to be distributed round-robin in service.");
         }
 
-        final String partitionKey = batch.getPartitionKey();
-        final List<Message> messages = new ArrayList<>();
-
-        for (int i = 0; i < batch.getEvents().size(); i++) {
-            final EventData event = batch.getEvents().get(i);
-            final Message message = messageSerializer.serialize(event);
-
-            if (!CoreUtils.isNullOrEmpty(partitionKey)) {
-                final MessageAnnotations messageAnnotations = message.getMessageAnnotations() == null
-                    ? new MessageAnnotations(new HashMap<>())
-                    : message.getMessageAnnotations();
-                messageAnnotations.getValue().put(AmqpConstants.PARTITION_KEY, partitionKey);
-                message.setMessageAnnotations(messageAnnotations);
-            }
-            messages.add(message);
-        }
+        final List<Message> messages
+            = batch.getEvents().stream().map(messageSerializer::serialize).collect(Collectors.toList());
 
         final Mono<Void> sendMessage = getSendLink(batch.getPartitionId())
             .flatMap(link -> messages.size() == 1 ? link.send(messages.get(0)) : link.send(messages));

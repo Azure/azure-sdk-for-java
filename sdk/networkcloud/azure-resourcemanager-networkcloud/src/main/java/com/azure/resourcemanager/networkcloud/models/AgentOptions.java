@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.networkcloud.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** AgentOptions are configurations that will be applied to each agent in an agent pool. */
+/**
+ * AgentOptions are configurations that will be applied to each agent in an agent pool.
+ */
 @Fluent
-public final class AgentOptions {
+public final class AgentOptions implements JsonSerializable<AgentOptions> {
     /*
      * The number of hugepages to allocate.
      */
-    @JsonProperty(value = "hugepagesCount", required = true)
     private long hugepagesCount;
 
     /*
      * The size of the hugepages to allocate.
      */
-    @JsonProperty(value = "hugepagesSize")
     private HugepagesSize hugepagesSize;
 
-    /** Creates an instance of AgentOptions class. */
+    /**
+     * Creates an instance of AgentOptions class.
+     */
     public AgentOptions() {
     }
 
     /**
      * Get the hugepagesCount property: The number of hugepages to allocate.
-     *
+     * 
      * @return the hugepagesCount value.
      */
     public long hugepagesCount() {
@@ -37,7 +43,7 @@ public final class AgentOptions {
 
     /**
      * Set the hugepagesCount property: The number of hugepages to allocate.
-     *
+     * 
      * @param hugepagesCount the hugepagesCount value to set.
      * @return the AgentOptions object itself.
      */
@@ -48,7 +54,7 @@ public final class AgentOptions {
 
     /**
      * Get the hugepagesSize property: The size of the hugepages to allocate.
-     *
+     * 
      * @return the hugepagesSize value.
      */
     public HugepagesSize hugepagesSize() {
@@ -57,7 +63,7 @@ public final class AgentOptions {
 
     /**
      * Set the hugepagesSize property: The size of the hugepages to allocate.
-     *
+     * 
      * @param hugepagesSize the hugepagesSize value to set.
      * @return the AgentOptions object itself.
      */
@@ -68,9 +74,49 @@ public final class AgentOptions {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeLongField("hugepagesCount", this.hugepagesCount);
+        jsonWriter.writeStringField("hugepagesSize", this.hugepagesSize == null ? null : this.hugepagesSize.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AgentOptions from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AgentOptions if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AgentOptions.
+     */
+    public static AgentOptions fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AgentOptions deserializedAgentOptions = new AgentOptions();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("hugepagesCount".equals(fieldName)) {
+                    deserializedAgentOptions.hugepagesCount = reader.getLong();
+                } else if ("hugepagesSize".equals(fieldName)) {
+                    deserializedAgentOptions.hugepagesSize = HugepagesSize.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAgentOptions;
+        });
     }
 }

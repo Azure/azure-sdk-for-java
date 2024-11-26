@@ -15,9 +15,9 @@ import io.clientcore.core.json.implementation.jackson.core.util.TextBuffer;
  */
 public class IOContext {
     /*
-    /**********************************************************************
-    /* Configuration
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Configuration
+     * /**********************************************************************
      */
 
     /**
@@ -50,9 +50,9 @@ public class IOContext {
     protected final boolean _managedResource;
 
     /*
-    /**********************************************************************
-    /* Buffer handling, recycling
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Buffer handling, recycling
+     * /**********************************************************************
      */
 
     /**
@@ -101,9 +101,9 @@ public class IOContext {
     protected char[] _nameCopyBuffer;
 
     /*
-    /**********************************************************************
-    /* Life-cycle
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Life-cycle
+     * /**********************************************************************
      */
 
     /**
@@ -131,15 +131,10 @@ public class IOContext {
         _encoding = enc;
     }
 
-    public IOContext withEncoding(JsonEncoding enc) {
-        _encoding = enc;
-        return this;
-    }
-
     /*
-    /**********************************************************************
-    /* Public API, accessors
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Public API, accessors
+     * /**********************************************************************
      */
 
     public JsonEncoding getEncoding() {
@@ -172,9 +167,9 @@ public class IOContext {
     }
 
     /*
-    /**********************************************************************
-    /* Public API, buffer management
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Public API, buffer management
+     * /**********************************************************************
      */
 
     public TextBuffer constructTextBuffer() {
@@ -195,21 +190,6 @@ public class IOContext {
     }
 
     /**
-     * Variant of {@link #allocReadIOBuffer()} that specifies smallest acceptable
-     * buffer size.
-     *
-     * @param minSize Minimum size of the buffer to recycle or allocate
-     *
-     * @return Allocated or recycled byte buffer
-     *
-     * @since 2.4
-     */
-    public byte[] allocReadIOBuffer(int minSize) {
-        _verifyAlloc(_readIOBuffer);
-        return (_readIOBuffer = _bufferRecycler.allocByteBuffer(BufferRecycler.BYTE_READ_IO_BUFFER, minSize));
-    }
-
-    /**
      * Method for recycling or allocation byte buffer of "write encoding" type.
      *<p>
      * Note: the method can only be called once during its life cycle.
@@ -223,22 +203,6 @@ public class IOContext {
     }
 
     /**
-     * Variant of {@link #allocWriteEncodingBuffer()} that specifies smallest acceptable
-     * buffer size.
-     *
-     * @param minSize Minimum size of the buffer to recycle or allocate
-     *
-     * @return Allocated or recycled byte buffer
-     *
-     * @since 2.4
-     */
-    public byte[] allocWriteEncodingBuffer(int minSize) {
-        _verifyAlloc(_writeEncodingBuffer);
-        return (_writeEncodingBuffer
-            = _bufferRecycler.allocByteBuffer(BufferRecycler.BYTE_WRITE_ENCODING_BUFFER, minSize));
-    }
-
-    /**
      * Method for recycling or allocation byte buffer of "base 64 encode/decode" type.
      *<p>
      * Note: the method can only be called once during its life cycle.
@@ -249,21 +213,6 @@ public class IOContext {
     public byte[] allocBase64Buffer() {
         _verifyAlloc(_base64Buffer);
         return (_base64Buffer = _bufferRecycler.allocByteBuffer(BufferRecycler.BYTE_BASE64_CODEC_BUFFER));
-    }
-
-    /**
-     * Variant of {@link #allocBase64Buffer()} that specifies smallest acceptable
-     * buffer size.
-     *
-     * @param minSize Minimum size of the buffer to recycle or allocate
-     *
-     * @return Allocated or recycled byte buffer
-     *
-     * @since 2.9
-     */
-    public byte[] allocBase64Buffer(int minSize) {
-        _verifyAlloc(_base64Buffer);
-        return (_base64Buffer = _bufferRecycler.allocByteBuffer(BufferRecycler.BYTE_BASE64_CODEC_BUFFER, minSize));
     }
 
     public char[] allocTokenBuffer() {
@@ -348,9 +297,9 @@ public class IOContext {
     }
 
     /*
-    /**********************************************************************
-    /* Internal helpers
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Internal helpers
+     * /**********************************************************************
      */
 
     protected final void _verifyAlloc(Object buffer) {

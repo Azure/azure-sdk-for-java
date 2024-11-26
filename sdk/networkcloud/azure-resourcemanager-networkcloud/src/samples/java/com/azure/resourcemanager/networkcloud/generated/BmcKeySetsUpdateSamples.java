@@ -12,38 +12,37 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for BmcKeySets Update. */
+/**
+ * Samples for BmcKeySets Update.
+ */
 public final class BmcKeySetsUpdateSamples {
     /*
-     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2023-07-01/examples/BmcKeySets_Patch.json
+     * x-ms-original-file:
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-06-01-preview/examples/
+     * BmcKeySets_Patch.json
      */
     /**
      * Sample code: Patch baseboard management controller key set of cluster.
-     *
+     * 
      * @param manager Entry point to NetworkCloudManager.
      */
     public static void patchBaseboardManagementControllerKeySetOfCluster(
         com.azure.resourcemanager.networkcloud.NetworkCloudManager manager) {
-        BmcKeySet resource =
-            manager
-                .bmcKeySets()
-                .getWithResponse("resourceGroupName", "clusterName", "bmcKeySetName", com.azure.core.util.Context.NONE)
-                .getValue();
-        resource
-            .update()
+        BmcKeySet resource = manager.bmcKeySets()
+            .getWithResponse("resourceGroupName", "clusterName", "bmcKeySetName", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
             .withTags(mapOf("key1", "fakeTokenPlaceholder", "key2", "fakeTokenPlaceholder"))
             .withExpiration(OffsetDateTime.parse("2022-12-31T23:59:59.008Z"))
-            .withUserList(
-                Arrays
-                    .asList(
-                        new KeySetUser()
-                            .withAzureUsername("userABC")
-                            .withDescription("Needs access for troubleshooting as a part of the support team")
-                            .withSshPublicKey(new SshPublicKey().withKeyData("fakeTokenPlaceholder")),
-                        new KeySetUser()
-                            .withAzureUsername("userXYZ")
-                            .withDescription("Needs access for troubleshooting as a part of the support team")
-                            .withSshPublicKey(new SshPublicKey().withKeyData("fakeTokenPlaceholder"))))
+            .withUserList(Arrays.asList(
+                new KeySetUser().withAzureUsername("userABC")
+                    .withDescription("Needs access for troubleshooting as a part of the support team")
+                    .withSshPublicKey(new SshPublicKey().withKeyData("fakeTokenPlaceholder"))
+                    .withUserPrincipalName("userABC@contoso.com"),
+                new KeySetUser().withAzureUsername("userXYZ")
+                    .withDescription("Needs access for troubleshooting as a part of the support team")
+                    .withSshPublicKey(new SshPublicKey().withKeyData("fakeTokenPlaceholder"))
+                    .withUserPrincipalName("userABC@contoso.com")))
             .apply();
     }
 

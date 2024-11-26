@@ -116,7 +116,11 @@ def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
             "apiViewArtifact": next(iter(glob.glob("{0}/target/*-sources.jar".format(sdk_folder))), None),
             "language": "Java",
             "result": result,
-            "changelog": {"content": changelog, "hasBreakingChange": breaking, "breakingChangeItems": breaking_change_items},
+            "changelog": {
+                "content": changelog,
+                "hasBreakingChange": breaking,
+                "breakingChangeItems": breaking_change_items,
+            },
         }
     else:
         # no info about package, abort with result=failed
@@ -286,7 +290,11 @@ def sdk_automation_readme(readme_file_abspath: str, packages: List[dict], sdk_ro
                 "apiViewArtifact": next(iter(glob.glob("{0}/target/*-sources.jar".format(generated_folder))), None),
                 "language": "Java",
                 "result": result,
-                "changelog": {"content": changelog, "hasBreakingChange": breaking, "breakingChangeItems": breaking_change_items},
+                "changelog": {
+                    "content": changelog,
+                    "hasBreakingChange": breaking,
+                    "breakingChangeItems": breaking_change_items,
+                },
             }
         )
 

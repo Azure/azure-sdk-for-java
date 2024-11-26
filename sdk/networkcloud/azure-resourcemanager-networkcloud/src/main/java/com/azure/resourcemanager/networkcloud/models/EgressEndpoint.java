@@ -6,7 +6,11 @@ package com.azure.resourcemanager.networkcloud.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -14,22 +18,22 @@ import java.util.List;
  * purpose.
  */
 @Fluent
-public final class EgressEndpoint {
+public final class EgressEndpoint implements JsonSerializable<EgressEndpoint> {
     /*
      * The descriptive category name of endpoints accessible by the AKS agent node. For example,
      * azure-resource-management, API server, etc. The platform egress endpoints provided by default will use the
      * category 'default'.
      */
-    @JsonProperty(value = "category", required = true)
     private String category;
 
     /*
      * The list of endpoint dependencies.
      */
-    @JsonProperty(value = "endpoints", required = true)
     private List<EndpointDependency> endpoints;
 
-    /** Creates an instance of EgressEndpoint class. */
+    /**
+     * Creates an instance of EgressEndpoint class.
+     */
     public EgressEndpoint() {
     }
 
@@ -37,7 +41,7 @@ public final class EgressEndpoint {
      * Get the category property: The descriptive category name of endpoints accessible by the AKS agent node. For
      * example, azure-resource-management, API server, etc. The platform egress endpoints provided by default will use
      * the category 'default'.
-     *
+     * 
      * @return the category value.
      */
     public String category() {
@@ -48,7 +52,7 @@ public final class EgressEndpoint {
      * Set the category property: The descriptive category name of endpoints accessible by the AKS agent node. For
      * example, azure-resource-management, API server, etc. The platform egress endpoints provided by default will use
      * the category 'default'.
-     *
+     * 
      * @param category the category value to set.
      * @return the EgressEndpoint object itself.
      */
@@ -59,7 +63,7 @@ public final class EgressEndpoint {
 
     /**
      * Get the endpoints property: The list of endpoint dependencies.
-     *
+     * 
      * @return the endpoints value.
      */
     public List<EndpointDependency> endpoints() {
@@ -68,7 +72,7 @@ public final class EgressEndpoint {
 
     /**
      * Set the endpoints property: The list of endpoint dependencies.
-     *
+     * 
      * @param endpoints the endpoints value to set.
      * @return the EgressEndpoint object itself.
      */
@@ -79,21 +83,63 @@ public final class EgressEndpoint {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (category() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property category in model EgressEndpoint"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property category in model EgressEndpoint"));
         }
         if (endpoints() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property endpoints in model EgressEndpoint"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property endpoints in model EgressEndpoint"));
         } else {
             endpoints().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(EgressEndpoint.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("category", this.category);
+        jsonWriter.writeArrayField("endpoints", this.endpoints, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EgressEndpoint from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EgressEndpoint if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the EgressEndpoint.
+     */
+    public static EgressEndpoint fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EgressEndpoint deserializedEgressEndpoint = new EgressEndpoint();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("category".equals(fieldName)) {
+                    deserializedEgressEndpoint.category = reader.getString();
+                } else if ("endpoints".equals(fieldName)) {
+                    List<EndpointDependency> endpoints
+                        = reader.readArray(reader1 -> EndpointDependency.fromJson(reader1));
+                    deserializedEgressEndpoint.endpoints = endpoints;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEgressEndpoint;
+        });
+    }
 }

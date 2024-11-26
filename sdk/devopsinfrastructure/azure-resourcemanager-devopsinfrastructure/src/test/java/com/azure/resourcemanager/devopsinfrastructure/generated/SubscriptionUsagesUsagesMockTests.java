@@ -22,7 +22,7 @@ public final class SubscriptionUsagesUsagesMockTests {
     @Test
     public void testUsages() throws Exception {
         String responseStr
-            = "{\"value\":[{\"id\":\"aw\",\"unit\":\"aldsy\",\"currentValue\":2537026666959704329,\"limit\":4613349711608649524}]}";
+            = "{\"value\":[{\"name\":{\"value\":\"pqvujzraehtwdwrf\",\"localizedValue\":\"wib\"},\"id\":\"rcdlbhshfwpr\",\"unit\":\"cstwity\",\"currentValue\":8379172457270737030,\"limit\":8273553934247347579}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,11 +31,12 @@ public final class SubscriptionUsagesUsagesMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<Quota> response = manager.subscriptionUsages().usages("tlmngu", com.azure.core.util.Context.NONE);
+        PagedIterable<Quota> response
+            = manager.subscriptionUsages().usages("xgfpelolppv", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("aw", response.iterator().next().id());
-        Assertions.assertEquals("aldsy", response.iterator().next().unit());
-        Assertions.assertEquals(2537026666959704329L, response.iterator().next().currentValue());
-        Assertions.assertEquals(4613349711608649524L, response.iterator().next().limit());
+        Assertions.assertEquals("rcdlbhshfwpr", response.iterator().next().id());
+        Assertions.assertEquals("cstwity", response.iterator().next().unit());
+        Assertions.assertEquals(8379172457270737030L, response.iterator().next().currentValue());
+        Assertions.assertEquals(8273553934247347579L, response.iterator().next().limit());
     }
 }

@@ -573,9 +573,11 @@ public class Transforms {
                 DocumentFieldHelper.setValue(documentField, null);
             } else {
                 CurrencyValue currencyValue = new CurrencyValue();
-                CurrencyValueHelper.setAmount(currencyValue, innerDocumentField.getValueCurrency().getAmount());
-                CurrencyValueHelper.setCurrencySymbol(currencyValue,
-                    innerDocumentField.getValueCurrency().getCurrencySymbol());
+                com.azure.ai.formrecognizer.documentanalysis.implementation.models.CurrencyValue innerCurrencyValue
+                    = innerDocumentField.getValueCurrency();
+                CurrencyValueHelper.setAmount(currencyValue, innerCurrencyValue.getAmount());
+                CurrencyValueHelper.setCurrencySymbol(currencyValue, innerCurrencyValue.getCurrencySymbol());
+                CurrencyValueHelper.setCode(currencyValue, innerCurrencyValue.getCurrencyCode());
                 DocumentFieldHelper.setValue(documentField, currencyValue);
             }
         } else if (com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentFieldType.ADDRESS

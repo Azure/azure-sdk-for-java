@@ -14,20 +14,20 @@ public final class ReplicaListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ReplicaListResult model = BinaryData.fromString(
-            "{\"value\":[{\"location\":\"odebfqkkrbmpu\",\"properties\":{\"endpoint\":\"wflzlfbxzpuzy\",\"provisioningState\":\"Deleting\"},\"id\":\"pnq\",\"name\":\"ahmgkbrp\",\"type\":\"y\"},{\"location\":\"ibnuqqkpik\",\"properties\":{\"endpoint\":\"vtq\",\"provisioningState\":\"Canceled\"},\"id\":\"buynhijggm\",\"name\":\"bfs\",\"type\":\"arbu\"},{\"location\":\"cvpnazzmhjrunmpx\",\"properties\":{\"endpoint\":\"hrbnlankxmyskpbh\",\"provisioningState\":\"Canceled\"},\"id\":\"tkcxywnytnrsy\",\"name\":\"lqidyby\",\"type\":\"czfc\"},{\"location\":\"aaxdbabphlwrq\",\"properties\":{\"endpoint\":\"sthsu\",\"provisioningState\":\"Canceled\"},\"id\":\"mnyyazt\",\"name\":\"bt\",\"type\":\"wrqpue\"}],\"nextLink\":\"kzywbiex\"}")
+            "{\"value\":[{\"location\":\"sxyawjoyaqcs\",\"properties\":{\"endpoint\":\"kiidzyex\",\"provisioningState\":\"Creating\"},\"id\":\"lixhnrztfol\",\"name\":\"bnxknalaulppg\",\"type\":\"dtpnapnyiropuhp\"},{\"location\":\"vpgylgqgitxmed\",\"properties\":{\"endpoint\":\"lynqwwncwzzh\",\"provisioningState\":\"Succeeded\"},\"id\":\"trmgucnapkte\",\"name\":\"ellwptfdy\",\"type\":\"pfqbuaceopzf\"},{\"location\":\"hhuao\",\"properties\":{\"endpoint\":\"qeqxo\",\"provisioningState\":\"Deleting\"},\"id\":\"ahzxctobgbk\",\"name\":\"moizpos\",\"type\":\"mgrcfbu\"},{\"location\":\"mfqjhhkxbp\",\"properties\":{\"endpoint\":\"jhxxjyn\",\"provisioningState\":\"Succeeded\"},\"id\":\"ivkrtsw\",\"name\":\"xqzvszjfa\",\"type\":\"vjfdx\"}],\"nextLink\":\"vetvt\"}")
             .toObject(ReplicaListResult.class);
-        Assertions.assertEquals("odebfqkkrbmpu", model.value().get(0).location());
-        Assertions.assertEquals("kzywbiex", model.nextLink());
+        Assertions.assertEquals("sxyawjoyaqcs", model.value().get(0).location());
+        Assertions.assertEquals("vetvt", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ReplicaListResult model
-            = new ReplicaListResult().withValue(Arrays.asList(new ReplicaInner().withLocation("odebfqkkrbmpu"),
-                new ReplicaInner().withLocation("ibnuqqkpik"), new ReplicaInner().withLocation("cvpnazzmhjrunmpx"),
-                new ReplicaInner().withLocation("aaxdbabphlwrq"))).withNextLink("kzywbiex");
+            = new ReplicaListResult().withValue(Arrays.asList(new ReplicaInner().withLocation("sxyawjoyaqcs"),
+                new ReplicaInner().withLocation("vpgylgqgitxmed"), new ReplicaInner().withLocation("hhuao"),
+                new ReplicaInner().withLocation("mfqjhhkxbp"))).withNextLink("vetvt");
         model = BinaryData.fromObject(model).toObject(ReplicaListResult.class);
-        Assertions.assertEquals("odebfqkkrbmpu", model.value().get(0).location());
-        Assertions.assertEquals("kzywbiex", model.nextLink());
+        Assertions.assertEquals("sxyawjoyaqcs", model.value().get(0).location());
+        Assertions.assertEquals("vetvt", model.nextLink());
     }
 }

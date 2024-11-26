@@ -153,16 +153,28 @@ class PartitionProcessorImpl implements PartitionProcessor {
 
                             if (cancellationToken.isCancellationRequested()) throw new TaskCancelledException();
                         });
-                }
-                this.options =
-                    CosmosChangeFeedRequestOptions
-                        .createForProcessingFromContinuation(continuationToken);
+                } else {
+                    // still need to checkpoint with the new continuation token
+                    return this.checkpointer.checkpointPartition(continuationState)
+                        .doOnError(throwable -> {
+                            logger.debug(
+                                "Failed to checkpoint partition {} from thread {}",
+                                this.lease.getLeaseToken(),
+                                Thread.currentThread().getId(),
+                                throwable);
+                        })
+                        .flatMap(lease -> {
+                            this.options =
+                                CosmosChangeFeedRequestOptions
+                                    .createForProcessingFromContinuation(continuationToken);
 
-                if (cancellationToken.isCancellationRequested()) {
-                    return Flux.error(new TaskCancelledException());
-                }
+                            if (cancellationToken.isCancellationRequested()) {
+                                return Mono.error(new TaskCancelledException());
+                            }
 
-                return Flux.empty();
+                            return Mono.empty();
+                        });
+                }
             })
             .doOnComplete(() -> {
                 if (this.options.getMaxItemCount() != this.settings.getMaxItemCount()) {

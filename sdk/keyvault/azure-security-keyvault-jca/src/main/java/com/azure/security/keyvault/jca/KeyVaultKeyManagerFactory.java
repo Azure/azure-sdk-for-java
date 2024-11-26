@@ -29,6 +29,12 @@ public final class KeyVaultKeyManagerFactory extends KeyManagerFactorySpi {
     private final List<KeyManager> keyManagers = new ArrayList<>();
 
     /**
+     * Creates a new instance of {@link KeyVaultKeyManagerFactory}.
+     */
+    public KeyVaultKeyManagerFactory() {
+    }
+
+    /**
      * Engine init.
      *
      * @param keystore the keystore

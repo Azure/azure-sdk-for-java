@@ -20,10 +20,6 @@ public enum StreamReadCapability implements JacksonFeature {
      * This is usually not enabled, except for formats like {@code xml} that
      * have content model that does not map cleanly to JSON-based token stream.
      *<p>
-     * Capability may be used for allowing secondary mapping of such duplicates
-     * in case of using Tree Model (see {@link TreeNode}), or "untyped" databinding
-     * (mapping content as generic {@link java.lang.Object}).
-     *<p>
      * Capability is currently only enabled for XML format backend.
      */
     DUPLICATE_PROPERTIES(false),
@@ -55,7 +51,7 @@ public enum StreamReadCapability implements JacksonFeature {
 
     private final int _mask;
 
-    private StreamReadCapability(boolean defaultState) {
+    StreamReadCapability(boolean defaultState) {
         _defaultState = defaultState;
         _mask = (1 << ordinal());
     }

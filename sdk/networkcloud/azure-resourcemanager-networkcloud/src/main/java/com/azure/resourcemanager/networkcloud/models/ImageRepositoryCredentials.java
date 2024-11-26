@@ -6,36 +6,41 @@ package com.azure.resourcemanager.networkcloud.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** ImageRepositoryCredentials represents the credentials used to login to the image repository. */
+/**
+ * ImageRepositoryCredentials represents the credentials used to login to the image repository.
+ */
 @Fluent
-public final class ImageRepositoryCredentials {
+public final class ImageRepositoryCredentials implements JsonSerializable<ImageRepositoryCredentials> {
     /*
      * The password or token used to access an image in the target repository.
      */
-    @JsonProperty(value = "password")
     private String password;
 
     /*
      * The URL of the authentication server used to validate the repository credentials.
      */
-    @JsonProperty(value = "registryUrl", required = true)
     private String registryUrl;
 
     /*
      * The username used to access an image in the target repository.
      */
-    @JsonProperty(value = "username", required = true)
     private String username;
 
-    /** Creates an instance of ImageRepositoryCredentials class. */
+    /**
+     * Creates an instance of ImageRepositoryCredentials class.
+     */
     public ImageRepositoryCredentials() {
     }
 
     /**
      * Get the password property: The password or token used to access an image in the target repository.
-     *
+     * 
      * @return the password value.
      */
     public String password() {
@@ -44,7 +49,7 @@ public final class ImageRepositoryCredentials {
 
     /**
      * Set the password property: The password or token used to access an image in the target repository.
-     *
+     * 
      * @param password the password value to set.
      * @return the ImageRepositoryCredentials object itself.
      */
@@ -55,7 +60,7 @@ public final class ImageRepositoryCredentials {
 
     /**
      * Get the registryUrl property: The URL of the authentication server used to validate the repository credentials.
-     *
+     * 
      * @return the registryUrl value.
      */
     public String registryUrl() {
@@ -64,7 +69,7 @@ public final class ImageRepositoryCredentials {
 
     /**
      * Set the registryUrl property: The URL of the authentication server used to validate the repository credentials.
-     *
+     * 
      * @param registryUrl the registryUrl value to set.
      * @return the ImageRepositoryCredentials object itself.
      */
@@ -75,7 +80,7 @@ public final class ImageRepositoryCredentials {
 
     /**
      * Get the username property: The username used to access an image in the target repository.
-     *
+     * 
      * @return the username value.
      */
     public String username() {
@@ -84,7 +89,7 @@ public final class ImageRepositoryCredentials {
 
     /**
      * Set the username property: The username used to access an image in the target repository.
-     *
+     * 
      * @param username the username value to set.
      * @return the ImageRepositoryCredentials object itself.
      */
@@ -95,23 +100,69 @@ public final class ImageRepositoryCredentials {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (password() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property password in model ImageRepositoryCredentials"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property password in model ImageRepositoryCredentials"));
         }
         if (registryUrl() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property registryUrl in model ImageRepositoryCredentials"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property registryUrl in model ImageRepositoryCredentials"));
         }
         if (username() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property username in model ImageRepositoryCredentials"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property username in model ImageRepositoryCredentials"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ImageRepositoryCredentials.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("password", this.password);
+        jsonWriter.writeStringField("registryUrl", this.registryUrl);
+        jsonWriter.writeStringField("username", this.username);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ImageRepositoryCredentials from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ImageRepositoryCredentials if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ImageRepositoryCredentials.
+     */
+    public static ImageRepositoryCredentials fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ImageRepositoryCredentials deserializedImageRepositoryCredentials = new ImageRepositoryCredentials();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("password".equals(fieldName)) {
+                    deserializedImageRepositoryCredentials.password = reader.getString();
+                } else if ("registryUrl".equals(fieldName)) {
+                    deserializedImageRepositoryCredentials.registryUrl = reader.getString();
+                } else if ("username".equals(fieldName)) {
+                    deserializedImageRepositoryCredentials.username = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedImageRepositoryCredentials;
+        });
+    }
 }

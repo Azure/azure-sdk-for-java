@@ -6,7 +6,11 @@ package com.azure.resourcemanager.networkcloud.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -14,45 +18,38 @@ import java.util.List;
  * Kubernetes cluster.
  */
 @Fluent
-public final class ControlPlaneNodeConfiguration {
+public final class ControlPlaneNodeConfiguration implements JsonSerializable<ControlPlaneNodeConfiguration> {
     /*
-     * AdministratorConfiguration represents the administrative credentials that will be applied to the control plane
-     * and agent pool nodes in Kubernetes clusters.
-     *
      * The administrator credentials to be used for the nodes in the control plane.
      */
-    @JsonProperty(value = "administratorConfiguration")
     private AdministratorConfiguration administratorConfiguration;
 
     /*
      * The list of availability zones of the Network Cloud cluster to be used for the provisioning of nodes in the
      * control plane. If not specified, all availability zones will be used.
      */
-    @JsonProperty(value = "availabilityZones")
     private List<String> availabilityZones;
 
     /*
      * The number of virtual machines that use this configuration.
      */
-    @JsonProperty(value = "count", required = true)
     private long count;
 
     /*
      * The name of the VM SKU supplied during creation.
      */
-    @JsonProperty(value = "vmSkuName", required = true)
     private String vmSkuName;
 
-    /** Creates an instance of ControlPlaneNodeConfiguration class. */
+    /**
+     * Creates an instance of ControlPlaneNodeConfiguration class.
+     */
     public ControlPlaneNodeConfiguration() {
     }
 
     /**
-     * Get the administratorConfiguration property: AdministratorConfiguration represents the administrative credentials
-     * that will be applied to the control plane and agent pool nodes in Kubernetes clusters.
-     *
-     * <p>The administrator credentials to be used for the nodes in the control plane.
-     *
+     * Get the administratorConfiguration property: The administrator credentials to be used for the nodes in the
+     * control plane.
+     * 
      * @return the administratorConfiguration value.
      */
     public AdministratorConfiguration administratorConfiguration() {
@@ -60,11 +57,9 @@ public final class ControlPlaneNodeConfiguration {
     }
 
     /**
-     * Set the administratorConfiguration property: AdministratorConfiguration represents the administrative credentials
-     * that will be applied to the control plane and agent pool nodes in Kubernetes clusters.
-     *
-     * <p>The administrator credentials to be used for the nodes in the control plane.
-     *
+     * Set the administratorConfiguration property: The administrator credentials to be used for the nodes in the
+     * control plane.
+     * 
      * @param administratorConfiguration the administratorConfiguration value to set.
      * @return the ControlPlaneNodeConfiguration object itself.
      */
@@ -77,7 +72,7 @@ public final class ControlPlaneNodeConfiguration {
     /**
      * Get the availabilityZones property: The list of availability zones of the Network Cloud cluster to be used for
      * the provisioning of nodes in the control plane. If not specified, all availability zones will be used.
-     *
+     * 
      * @return the availabilityZones value.
      */
     public List<String> availabilityZones() {
@@ -87,7 +82,7 @@ public final class ControlPlaneNodeConfiguration {
     /**
      * Set the availabilityZones property: The list of availability zones of the Network Cloud cluster to be used for
      * the provisioning of nodes in the control plane. If not specified, all availability zones will be used.
-     *
+     * 
      * @param availabilityZones the availabilityZones value to set.
      * @return the ControlPlaneNodeConfiguration object itself.
      */
@@ -98,7 +93,7 @@ public final class ControlPlaneNodeConfiguration {
 
     /**
      * Get the count property: The number of virtual machines that use this configuration.
-     *
+     * 
      * @return the count value.
      */
     public long count() {
@@ -107,7 +102,7 @@ public final class ControlPlaneNodeConfiguration {
 
     /**
      * Set the count property: The number of virtual machines that use this configuration.
-     *
+     * 
      * @param count the count value to set.
      * @return the ControlPlaneNodeConfiguration object itself.
      */
@@ -118,7 +113,7 @@ public final class ControlPlaneNodeConfiguration {
 
     /**
      * Get the vmSkuName property: The name of the VM SKU supplied during creation.
-     *
+     * 
      * @return the vmSkuName value.
      */
     public String vmSkuName() {
@@ -127,7 +122,7 @@ public final class ControlPlaneNodeConfiguration {
 
     /**
      * Set the vmSkuName property: The name of the VM SKU supplied during creation.
-     *
+     * 
      * @param vmSkuName the vmSkuName value to set.
      * @return the ControlPlaneNodeConfiguration object itself.
      */
@@ -138,7 +133,7 @@ public final class ControlPlaneNodeConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -146,10 +141,61 @@ public final class ControlPlaneNodeConfiguration {
             administratorConfiguration().validate();
         }
         if (vmSkuName() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property vmSkuName in model ControlPlaneNodeConfiguration"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property vmSkuName in model ControlPlaneNodeConfiguration"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ControlPlaneNodeConfiguration.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeLongField("count", this.count);
+        jsonWriter.writeStringField("vmSkuName", this.vmSkuName);
+        jsonWriter.writeJsonField("administratorConfiguration", this.administratorConfiguration);
+        jsonWriter.writeArrayField("availabilityZones", this.availabilityZones,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ControlPlaneNodeConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ControlPlaneNodeConfiguration if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ControlPlaneNodeConfiguration.
+     */
+    public static ControlPlaneNodeConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ControlPlaneNodeConfiguration deserializedControlPlaneNodeConfiguration
+                = new ControlPlaneNodeConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("count".equals(fieldName)) {
+                    deserializedControlPlaneNodeConfiguration.count = reader.getLong();
+                } else if ("vmSkuName".equals(fieldName)) {
+                    deserializedControlPlaneNodeConfiguration.vmSkuName = reader.getString();
+                } else if ("administratorConfiguration".equals(fieldName)) {
+                    deserializedControlPlaneNodeConfiguration.administratorConfiguration
+                        = AdministratorConfiguration.fromJson(reader);
+                } else if ("availabilityZones".equals(fieldName)) {
+                    List<String> availabilityZones = reader.readArray(reader1 -> reader1.getString());
+                    deserializedControlPlaneNodeConfiguration.availabilityZones = availabilityZones;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedControlPlaneNodeConfiguration;
+        });
+    }
 }

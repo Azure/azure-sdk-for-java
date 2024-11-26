@@ -11,15 +11,23 @@ import org.junit.jupiter.api.Assertions;
 public final class AgentPoolUpgradeSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AgentPoolUpgradeSettings model
-            = BinaryData.fromString("{\"maxSurge\":\"gvpgy\"}").toObject(AgentPoolUpgradeSettings.class);
-        Assertions.assertEquals("gvpgy", model.maxSurge());
+        AgentPoolUpgradeSettings model = BinaryData
+            .fromString(
+                "{\"drainTimeout\":6269428665110751573,\"maxSurge\":\"moadsuvarmy\",\"maxUnavailable\":\"mjsjqb\"}")
+            .toObject(AgentPoolUpgradeSettings.class);
+        Assertions.assertEquals(6269428665110751573L, model.drainTimeout());
+        Assertions.assertEquals("moadsuvarmy", model.maxSurge());
+        Assertions.assertEquals("mjsjqb", model.maxUnavailable());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AgentPoolUpgradeSettings model = new AgentPoolUpgradeSettings().withMaxSurge("gvpgy");
+        AgentPoolUpgradeSettings model = new AgentPoolUpgradeSettings().withDrainTimeout(6269428665110751573L)
+            .withMaxSurge("moadsuvarmy")
+            .withMaxUnavailable("mjsjqb");
         model = BinaryData.fromObject(model).toObject(AgentPoolUpgradeSettings.class);
-        Assertions.assertEquals("gvpgy", model.maxSurge());
+        Assertions.assertEquals(6269428665110751573L, model.drainTimeout());
+        Assertions.assertEquals("moadsuvarmy", model.maxSurge());
+        Assertions.assertEquals("mjsjqb", model.maxUnavailable());
     }
 }

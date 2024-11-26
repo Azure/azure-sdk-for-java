@@ -11,7 +11,7 @@ public final class ClusterAvailableUpgradeVersionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ClusterAvailableUpgradeVersion model = BinaryData.fromString(
-            "{\"controlImpact\":\"True\",\"expectedDuration\":\"adm\",\"impactDescription\":\"rcrgvx\",\"supportExpiryDate\":\"gomz\",\"targetClusterVersion\":\"misgwbnb\",\"workloadImpact\":\"False\"}")
+            "{\"controlImpact\":\"False\",\"expectedDuration\":\"qiiobyuqer\",\"impactDescription\":\"lp\",\"supportExpiryDate\":\"cciuqgbdbutau\",\"targetClusterVersion\":\"btkuwhh\",\"workloadImpact\":\"False\"}")
             .toObject(ClusterAvailableUpgradeVersion.class);
     }
 

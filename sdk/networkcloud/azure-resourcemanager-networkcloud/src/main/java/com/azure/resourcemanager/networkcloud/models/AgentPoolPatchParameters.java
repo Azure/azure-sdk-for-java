@@ -5,39 +5,38 @@
 package com.azure.resourcemanager.networkcloud.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.networkcloud.fluent.models.AgentPoolPatchProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** AgentPoolPatchParameters represents the body of the request to patch the Kubernetes cluster agent pool. */
+/**
+ * AgentPoolPatchParameters represents the body of the request to patch the Kubernetes cluster agent pool.
+ */
 @Fluent
-public final class AgentPoolPatchParameters {
+public final class AgentPoolPatchParameters implements JsonSerializable<AgentPoolPatchParameters> {
     /*
-     * AgentPoolPatchProperties represents the properties of an agent pool that can be modified.
-     *
      * The list of the resource properties.
      */
-    @JsonProperty(value = "properties")
     private AgentPoolPatchProperties innerProperties;
 
     /*
      * The Azure resource tags that will replace the existing ones.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
-    /** Creates an instance of AgentPoolPatchParameters class. */
+    /**
+     * Creates an instance of AgentPoolPatchParameters class.
+     */
     public AgentPoolPatchParameters() {
     }
 
     /**
-     * Get the innerProperties property: AgentPoolPatchProperties represents the properties of an agent pool that can be
-     * modified.
-     *
-     * <p>The list of the resource properties.
-     *
+     * Get the innerProperties property: The list of the resource properties.
+     * 
      * @return the innerProperties value.
      */
     private AgentPoolPatchProperties innerProperties() {
@@ -46,7 +45,7 @@ public final class AgentPoolPatchParameters {
 
     /**
      * Get the tags property: The Azure resource tags that will replace the existing ones.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -55,7 +54,7 @@ public final class AgentPoolPatchParameters {
 
     /**
      * Set the tags property: The Azure resource tags that will replace the existing ones.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the AgentPoolPatchParameters object itself.
      */
@@ -65,8 +64,34 @@ public final class AgentPoolPatchParameters {
     }
 
     /**
+     * Get the administratorConfiguration property: The configuration of administrator credentials for the control plane
+     * nodes.
+     * 
+     * @return the administratorConfiguration value.
+     */
+    public NodePoolAdministratorConfigurationPatch administratorConfiguration() {
+        return this.innerProperties() == null ? null : this.innerProperties().administratorConfiguration();
+    }
+
+    /**
+     * Set the administratorConfiguration property: The configuration of administrator credentials for the control plane
+     * nodes.
+     * 
+     * @param administratorConfiguration the administratorConfiguration value to set.
+     * @return the AgentPoolPatchParameters object itself.
+     */
+    public AgentPoolPatchParameters
+        withAdministratorConfiguration(NodePoolAdministratorConfigurationPatch administratorConfiguration) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AgentPoolPatchProperties();
+        }
+        this.innerProperties().withAdministratorConfiguration(administratorConfiguration);
+        return this;
+    }
+
+    /**
      * Get the count property: The number of virtual machines that use this configuration.
-     *
+     * 
      * @return the count value.
      */
     public Long count() {
@@ -75,7 +100,7 @@ public final class AgentPoolPatchParameters {
 
     /**
      * Set the count property: The number of virtual machines that use this configuration.
-     *
+     * 
      * @param count the count value to set.
      * @return the AgentPoolPatchParameters object itself.
      */
@@ -88,10 +113,8 @@ public final class AgentPoolPatchParameters {
     }
 
     /**
-     * Get the upgradeSettings property: AgentPoolUpgradeSettings specifies the upgrade settings for an agent pool.
-     *
-     * <p>The configuration of the agent pool.
-     *
+     * Get the upgradeSettings property: The configuration of the agent pool.
+     * 
      * @return the upgradeSettings value.
      */
     public AgentPoolUpgradeSettings upgradeSettings() {
@@ -99,10 +122,8 @@ public final class AgentPoolPatchParameters {
     }
 
     /**
-     * Set the upgradeSettings property: AgentPoolUpgradeSettings specifies the upgrade settings for an agent pool.
-     *
-     * <p>The configuration of the agent pool.
-     *
+     * Set the upgradeSettings property: The configuration of the agent pool.
+     * 
      * @param upgradeSettings the upgradeSettings value to set.
      * @return the AgentPoolPatchParameters object itself.
      */
@@ -116,12 +137,52 @@ public final class AgentPoolPatchParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AgentPoolPatchParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AgentPoolPatchParameters if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AgentPoolPatchParameters.
+     */
+    public static AgentPoolPatchParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AgentPoolPatchParameters deserializedAgentPoolPatchParameters = new AgentPoolPatchParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedAgentPoolPatchParameters.innerProperties = AgentPoolPatchProperties.fromJson(reader);
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedAgentPoolPatchParameters.tags = tags;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAgentPoolPatchParameters;
+        });
     }
 }

@@ -24,7 +24,7 @@
     },
     "blobStorageAccount": {
       "type": "string",
-      "defaultValue": "azuresdktrainingdata"
+      "defaultValue": "azuresdktrainingdatatme"
     },
     "trainingDataContainerV3": {
       "type": "string",
@@ -48,7 +48,7 @@
     },
     "blobResourceId": {
       "type": "string",
-      "defaultValue": "[resourceId(subscription().subscriptionId, 'TrainingData', 'Microsoft.Storage/storageAccounts', parameters('blobStorageAccount'))]"
+      "defaultValue": "[resourceId('4d042dc6-fe17-4698-a23f-ec6a8d1e98f4', 'static-test-resources', 'Microsoft.Storage/storageAccounts', parameters('blobStorageAccount'))]"
     },
     "trainingDataSasPropertiesV3": {
       "type": "object",

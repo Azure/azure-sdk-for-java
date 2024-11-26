@@ -4,6 +4,7 @@
 package com.azure.communication.callautomation.models.events;
 
 import com.azure.core.util.ExpandableStringEnum;
+
 import java.util.Collection;
 
 /** Defines values for MediaStreamingStatusDetails. */
@@ -59,6 +60,15 @@ public final class MediaStreamingStatusDetails extends ExpandableStringEnum<Medi
         = fromString("initialWebSocketConnectionFailed");
 
     /**
+     * Creates an instance of {@link MediaStreamingStatusDetails} with no string value.
+     *
+     * @deprecated Please use {@link #fromString(String)} to create an instance of MediaStreamingStatusDetails.
+     */
+    @Deprecated
+    public MediaStreamingStatusDetails() {
+    }
+
+    /**
      * Creates or finds a MediaStreamingStatusDetails from its string representation.
      *
      * @param name a name to look for.
@@ -68,7 +78,10 @@ public final class MediaStreamingStatusDetails extends ExpandableStringEnum<Medi
         return fromString(name, MediaStreamingStatusDetails.class);
     }
 
-    /** @return known MediaStreamingStatusDetails values. */
+    /**
+     * Get the collection of MediaStreamingStatusDetails values.
+     * @return known MediaStreamingStatusDetails values.
+     */
     public static Collection<MediaStreamingStatusDetails> values() {
         return values(MediaStreamingStatusDetails.class);
     }
