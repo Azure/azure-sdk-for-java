@@ -47,9 +47,6 @@ public final class UpdateSettingRequest implements JsonSerializable<UpdateSettin
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

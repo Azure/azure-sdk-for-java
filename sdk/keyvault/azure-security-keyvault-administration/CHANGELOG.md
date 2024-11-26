@@ -1,17 +1,5 @@
 # Release History
 
-## 4.7.0-beta.1 (Unreleased)
-
-### Features Added
-- Added support for pre-backup and pre-restore operations in `KeyVaultBackupClient` and `KeyVaultBackupAsyncClient`. These are long-running operations that check whether it is possible to perform a full key backup or a full key restore from a backup.
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
-
-
 ## 4.6.0 (2024-10-15)
 
 ## Features Added

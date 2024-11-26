@@ -23,6 +23,8 @@ public final class FullRestoreOperationHeaders {
      */
     private String azureAsyncOperation;
 
+    private static final HttpHeaderName AZURE_ASYNC_OPERATION = HttpHeaderName.fromString("Azure-AsyncOperation");
+
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of FullRestoreOperationHeaders class.
@@ -34,7 +36,7 @@ public final class FullRestoreOperationHeaders {
         if (retryAfter != null) {
             this.retryAfter = Integer.parseInt(retryAfter);
         }
-        this.azureAsyncOperation = rawHeaders.getValue(HttpHeaderName.AZURE_ASYNCOPERATION);
+        this.azureAsyncOperation = rawHeaders.getValue(AZURE_ASYNC_OPERATION);
     }
 
     /**

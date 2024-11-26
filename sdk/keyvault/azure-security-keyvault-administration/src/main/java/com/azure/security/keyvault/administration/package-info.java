@@ -137,14 +137,12 @@
  * java.lang.String) KeyVaultAccessControlClient.setRoleDefinition(KeyVaultRoleScope, String)} API.
  * <!-- src_embed
  * com.azure.security.keyvault.administration.KeyVaultAccessControlClient.setRoleDefinition#KeyVaultRoleScope -->
- *
  * <pre>
  * KeyVaultRoleDefinition roleDefinition = keyVaultAccessControlClient.setRoleDefinition&#40;KeyVaultRoleScope.GLOBAL&#41;;
  *
  * System.out.printf&#40;&quot;Created role definition with randomly generated name '%s' and role name '%s'.%n&quot;,
  *     roleDefinition.getName&#40;&#41;, roleDefinition.getRoleName&#40;&#41;&#41;;
  * </pre>
- *
  * <!-- end com.azure.security.keyvault.administration.KeyVaultAccessControlClient.setRoleDefinition#KeyVaultRoleScope
  * -->
  *
@@ -168,16 +166,14 @@
  * java.lang.String) KeyVaultAccessControlClient.getRoleDefinition(KeyVaultRoleScope, String)} API.
  * <!-- src_embed
  * com.azure.security.keyvault.administration.KeyVaultAccessControlClient.getRoleDefinition#KeyVaultRoleScope-String -->
- *
  * <pre>
  * String roleDefinitionName = &quot;de8df120-987e-4477-b9cc-570fd219a62c&quot;;
- * KeyVaultRoleDefinition roleDefinition
- *     = keyVaultAccessControlClient.getRoleDefinition&#40;KeyVaultRoleScope.GLOBAL, roleDefinitionName&#41;;
+ * KeyVaultRoleDefinition roleDefinition =
+ *     keyVaultAccessControlClient.getRoleDefinition&#40;KeyVaultRoleScope.GLOBAL, roleDefinitionName&#41;;
  *
  * System.out.printf&#40;&quot;Retrieved role definition with name '%s' and role name '%s'.%n&quot;, roleDefinition.getName&#40;&#41;,
  *     roleDefinition.getRoleName&#40;&#41;&#41;;
  * </pre>
- *
  * <!-- end
  * com.azure.security.keyvault.administration.KeyVaultAccessControlClient.getRoleDefinition#KeyVaultRoleScope-String -->
  *
@@ -202,7 +198,6 @@
  * <!-- src_embed
  * com.azure.security.keyvault.administration.KeyVaultAccessControlClient.deleteRoleDefinition#KeyVaultRoleScope-String
  * -->
- *
  * <pre>
  * String roleDefinitionName = &quot;6a709e6e-8964-4012-a99b-6b0131e8ce40&quot;;
  *
@@ -210,7 +205,6 @@
  *
  * System.out.printf&#40;&quot;Deleted role definition with name '%s'.%n&quot;, roleDefinitionName&#41;;
  * </pre>
- *
  * <!-- end
  * com.azure.security.keyvault.administration.KeyVaultAccessControlClient.deleteRoleDefinition#KeyVaultRoleScope-String
  * -->
@@ -237,17 +231,16 @@
  * <!-- src_embed
  * com.azure.security.keyvault.administration.KeyVaultAccessControlClient.createRoleAssignment#KeyVaultRoleScope-String-String
  * -->
- *
  * <pre>
  * String roleDefinitionId = &quot;b0b43a39-920c-475b-b34c-32ecc2bbb0ea&quot;;
  * String servicePrincipalId = &quot;169d6a86-61b3-4615-ac7e-2da09edfeed4&quot;;
- * KeyVaultRoleAssignment roleAssignment = keyVaultAccessControlClient.createRoleAssignment&#40;KeyVaultRoleScope.GLOBAL,
- *     roleDefinitionId, servicePrincipalId&#41;;
+ * KeyVaultRoleAssignment roleAssignment =
+ *     keyVaultAccessControlClient.createRoleAssignment&#40;KeyVaultRoleScope.GLOBAL, roleDefinitionId,
+ *         servicePrincipalId&#41;;
  *
  * System.out.printf&#40;&quot;Created role assignment with randomly generated name '%s' for principal with id '%s'.%n&quot;,
  *     roleAssignment.getName&#40;&#41;, roleAssignment.getProperties&#40;&#41;.getPrincipalId&#40;&#41;&#41;;
  * </pre>
- *
  * <!-- end
  * com.azure.security.keyvault.administration.KeyVaultAccessControlClient.createRoleAssignment#KeyVaultRoleScope-String-String
  * -->
@@ -272,15 +265,13 @@
  * java.lang.String) KeyVaultAccessControlClient.getRoleDefinition(KeyVaultRoleScope, String)} API.
  * <!-- src_embed
  * com.azure.security.keyvault.administration.KeyVaultAccessControlClient.getRoleAssignment#KeyVaultRoleScope-String -->
- *
  * <pre>
  * String roleAssignmentName = &quot;06d1ae8b-0791-4f02-b976-f631251f5a95&quot;;
- * KeyVaultRoleAssignment roleAssignment
- *     = keyVaultAccessControlClient.getRoleAssignment&#40;KeyVaultRoleScope.GLOBAL, roleAssignmentName&#41;;
+ * KeyVaultRoleAssignment roleAssignment =
+ *     keyVaultAccessControlClient.getRoleAssignment&#40;KeyVaultRoleScope.GLOBAL, roleAssignmentName&#41;;
  *
  * System.out.printf&#40;&quot;Retrieved role assignment with name '%s'.%n&quot;, roleAssignment.getName&#40;&#41;&#41;;
  * </pre>
- *
  * <!-- end
  * com.azure.security.keyvault.administration.KeyVaultAccessControlClient.getRoleAssignment#KeyVaultRoleScope-String -->
  *
@@ -305,7 +296,6 @@
  * <!-- src_embed
  * com.azure.security.keyvault.administration.KeyVaultAccessControlClient.deleteRoleAssignment#KeyVaultRoleScope-String
  * -->
- *
  * <pre>
  * String roleAssignmentName = &quot;c3ed874a-64a9-4a87-8581-2a1ad84b9ddb&quot;;
  *
@@ -313,7 +303,6 @@
  *
  * System.out.printf&#40;&quot;Deleted role assignment with name '%s'.%n&quot;, roleAssignmentName&#41;;
  * </pre>
- *
  * <!-- end
  * com.azure.security.keyvault.administration.KeyVaultAccessControlClient.deleteRoleAssignment#KeyVaultRoleScope-String
  * -->
@@ -321,45 +310,6 @@
  * <p>
  * <strong>Note:</strong> For the asynchronous sample, refer to {@link
  * com.azure.security.keyvault.administration.KeyVaultAccessControlAsyncClient}. <br>
- * <hr/>
- *
- * <h2>Run Pre-Backup Check for a Collection of Keys</h2>
- *
- * The {@link com.azure.security.keyvault.administration.KeyVaultBackupClient} can be used to check if it is possible to
- * back up the entire collection of keys from a key vault.
- *
- * <p>
- * <strong>Code Sample:</strong>
- *
- * <p>
- * The following code sample demonstrates how to synchronously check if it is possible to back up an entire collection
- * of keys, using the
- * {@link com.azure.security.keyvault.administration.KeyVaultBackupClient#beginPreBackup(String, String)} API.
- * <!-- src_embed com.azure.security.keyvault.administration.KeyVaultBackupClient.beginPreBackup#String-String -->
- * <pre>
- * String blobStorageUrl = &quot;https:&#47;&#47;myaccount.blob.core.windows.net&#47;myContainer&quot;;
- * String sasToken = &quot;&lt;sas-token&gt;&quot;;
- *
- * SyncPoller&lt;KeyVaultBackupOperation, String&gt; preBackupPoller = client.beginPreBackup&#40;blobStorageUrl, sasToken&#41;;
- * PollResponse&lt;KeyVaultBackupOperation&gt; pollResponse = preBackupPoller.poll&#40;&#41;;
- *
- * System.out.printf&#40;&quot;The current status of the operation is: %s.%n&quot;, pollResponse.getStatus&#40;&#41;&#41;;
- *
- * PollResponse&lt;KeyVaultBackupOperation&gt; finalPollResponse = preBackupPoller.waitForCompletion&#40;&#41;;
- *
- * if &#40;finalPollResponse.getStatus&#40;&#41; == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED&#41; &#123;
- *     System.out.printf&#40;&quot;Pre-backup check completed successfully.%n&quot;&#41;;
- * &#125; else &#123;
- *     KeyVaultBackupOperation operation = preBackupPoller.poll&#40;&#41;.getValue&#40;&#41;;
- *
- *     System.out.printf&#40;&quot;Pre-backup check failed with error: %s.%n&quot;, operation.getError&#40;&#41;.getMessage&#40;&#41;&#41;;
- * &#125;
- * </pre>
- * <!-- end com.azure.security.keyvault.administration.KeyVaultBackupClient.beginPreBackup#String-String -->
- *
- * <p>
- * <strong>Note:</strong> For the asynchronous sample, refer to {@link
- * com.azure.security.keyvault.administration.KeyVaultBackupAsyncClient}. <br>
  * <hr/>
  *
  * <h2>Back Up a Collection of Keys</h2>
@@ -396,46 +346,6 @@
  * &#125;
  * </pre>
  * <!-- end com.azure.security.keyvault.administration.KeyVaultBackupClient.beginBackup#String-String -->
- *
- * <p>
- * <strong>Note:</strong> For the asynchronous sample, refer to {@link
- * com.azure.security.keyvault.administration.KeyVaultBackupAsyncClient}. <br>
- * <hr/>
- *
- * <h2>Run Pre-Restore Check for a Collection of Keys</h2>
- *
- * The {@link com.azure.security.keyvault.administration.KeyVaultBackupClient} can be used to check if it is possible to
- * restore an entire collection of keys from a backup.
- *
- * <p>
- * <strong>Code Sample:</strong>
- *
- * <p>
- * The following code sample demonstrates how to synchronously check if it is possible to restore an entire collection
- * of keys from a backup, using the
- * {@link com.azure.security.keyvault.administration.KeyVaultBackupClient#beginPreRestore(String, String)} API.
- * <!-- src_embed com.azure.security.keyvault.administration.KeyVaultBackupClient.beginPreRestore#String-String -->
- * <pre>
- * String folderUrl = &quot;https:&#47;&#47;myaccount.blob.core.windows.net&#47;myContainer&#47;mhsm-myaccount-2020090117323313&quot;;
- * String sasToken = &quot;&lt;sas-token&gt;&quot;;
- *
- * SyncPoller&lt;KeyVaultRestoreOperation, KeyVaultRestoreResult&gt; preRestorePoller =
- *     client.beginPreRestore&#40;folderUrl, sasToken&#41;;
- * PollResponse&lt;KeyVaultRestoreOperation&gt; pollResponse = preRestorePoller.poll&#40;&#41;;
- *
- * System.out.printf&#40;&quot;The current status of the operation is: %s.%n&quot;, pollResponse.getStatus&#40;&#41;&#41;;
- *
- * PollResponse&lt;KeyVaultRestoreOperation&gt; finalPollResponse = preRestorePoller.waitForCompletion&#40;&#41;;
- *
- * if &#40;finalPollResponse.getStatus&#40;&#41; == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED&#41; &#123;
- *     System.out.printf&#40;&quot;Pre-restore check completed successfully.%n&quot;&#41;;
- * &#125; else &#123;
- *     KeyVaultRestoreOperation operation = preRestorePoller.poll&#40;&#41;.getValue&#40;&#41;;
- *
- *     System.out.printf&#40;&quot;Pre-restore check failed with error: %s.%n&quot;, operation.getError&#40;&#41;.getMessage&#40;&#41;&#41;;
- * &#125;
- * </pre>
- * <!-- end com.azure.security.keyvault.administration.KeyVaultBackupClient.beginPreRestore#String-String -->
  *
  * <p>
  * <strong>Note:</strong> For the asynchronous sample, refer to {@link
@@ -495,7 +405,6 @@
  * API.
  * <!-- src_embed
  * com.azure.security.keyvault.administration.KeyVaultBackupClient.beginSelectiveKeyRestore#String-String-String -->
- *
  * <pre>
  * String folderUrl = &quot;https:&#47;&#47;myaccount.blob.core.windows.net&#47;myContainer&#47;mhsm-myaccount-2020090117323313&quot;;
  * String sasToken = &quot;sv=2020-02-10&amp;ss=b&amp;srt=o&amp;sp=rwdlactfx&amp;se=2021-06-17T07:13:07Z&amp;st=2021-06-16T23:13:07Z&quot;
@@ -519,7 +428,6 @@
  *     System.out.printf&#40;&quot;Key restore failed with error: %s.%n&quot;, operation.getError&#40;&#41;.getMessage&#40;&#41;&#41;;
  * &#125;
  * </pre>
- *
  * <!-- end
  * com.azure.security.keyvault.administration.KeyVaultBackupClient.beginSelectiveKeyRestore#String-String-String -->
  *

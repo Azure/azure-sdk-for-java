@@ -112,14 +112,8 @@ The Key Vault Backup Client provides both synchronous and asynchronous operation
 
 > NOTE: The backing store for key backups is a blob storage container using Shared Access Signature authentication. For more details on creating a SAS token using the `BlobServiceClient`, see the [Azure Storage Blobs client README][storage_readme_sas_token]. Alternatively, it is possible to [generate a SAS token in Storage Explorer][portal_sas_token].
 
-### Pre-Backup Operation
-A pre-backup operation represents a long-running operation that checks if it is possible to perform a full key backup.
-
 ### Backup Operation
 A backup operation represents a long-running operation for a full key backup.
-
-### Pre-Restore Operation
-A pre-restore operation represents a long-running operation that checks if it is possible to perform a full key restore from a backup.
 
 ### Restore Operation
 A restore operation represents a long-running operation for both a full key and selective key restore.
@@ -347,37 +341,9 @@ keyVaultAccessControlAsyncClient.deleteRoleAssignment(KeyVaultRoleScope.GLOBAL, 
 ### Examples
 #### Sync API
 The following sections provide several code snippets covering some of the most common Azure Key Vault Backup client tasks, including:
-- [Pre-backup check for a Key Vault](#run-pre-backup-check-for-a-collection-of-keys)
 - [Backup a Key Vault](#backup-a-collection-of-keys)
-- [Pre-restore check for a Key Vault](#run-pre-restore-check-for-a-collection-of-keys)
 - [Restore a Key Vault](#restore-a-collection-of-keys)
 - [Restore a key](#selectively-restore-a-key)
-
-##### Run pre-backup check for a collection of keys
-Check if an entire collection of keys can be backed up by using `beginPreBackup()`.
-
-```java readme-sample-beginPreBackup
-String blobStorageUrl = "https://myaccount.blob.core.windows.net/myContainer";
-String sasToken = "<sas-token>";
-
-SyncPoller<KeyVaultBackupOperation, String> preBackupPoller =
-    keyVaultBackupClient.beginPreBackup(blobStorageUrl, sasToken);
-PollResponse<KeyVaultBackupOperation> pollResponse = preBackupPoller.poll();
-
-System.out.printf("The current status of the operation is: %s.%n", pollResponse.getStatus());
-
-PollResponse<KeyVaultBackupOperation> finalPollResponse = preBackupPoller.waitForCompletion();
-
-if (finalPollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
-    String folderUrl = preBackupPoller.getFinalResult();
-
-    System.out.printf("Pre-backup check completed successfully.%n");
-} else {
-    KeyVaultBackupOperation operation = preBackupPoller.poll().getValue();
-
-    System.out.printf("Pre-backup check failed with error: %s.%n", operation.getError().getMessage());
-}
-```
 
 ##### Backup a collection of keys
 Back up an entire collection of keys using `beginBackup()`.
@@ -402,30 +368,6 @@ if (finalPollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COM
     KeyVaultBackupOperation operation = backupPoller.poll().getValue();
 
     System.out.printf("Backup failed with error: %s.%n", operation.getError().getMessage());
-}
-```
-
-##### Run pre-restore check for a collection of keys
-Check if an entire collection of keys can be restored from a backup by using `beginPreRestore()`.
-
-```java readme-sample-beginPreRestore
-String folderUrl = "https://myaccount.blob.core.windows.net/myContainer/mhsm-myaccount-2020090117323313";
-String sasToken = "<sas-token>";
-
-SyncPoller<KeyVaultRestoreOperation, KeyVaultRestoreResult> preRestorePoller =
-    keyVaultBackupClient.beginPreRestore(folderUrl, sasToken);
-PollResponse<KeyVaultRestoreOperation> pollResponse = preRestorePoller.poll();
-
-System.out.printf("The current status of the operation is: %s.%n", pollResponse.getStatus());
-
-PollResponse<KeyVaultRestoreOperation> finalPollResponse = preRestorePoller.waitForCompletion();
-
-if (finalPollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
-    System.out.printf("Pre-restore check completed successfully.%n");
-} else {
-    KeyVaultRestoreOperation operation = preRestorePoller.poll().getValue();
-
-    System.out.printf("Pre-restore check failed with error: %s.%n", operation.getError().getMessage());
 }
 ```
 
@@ -480,31 +422,11 @@ if (finalPollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COM
 
 #### Async API
 The following sections provide several code snippets covering some of the most common asynchronous Azure Key Vault Backup client tasks, including:
-- [Run pre-backup check for a collection of keys asynchronously](#run-pre-backup-check-for-a-collection-of-keys-asynchronously)
 - [Backup a Key Vault asynchronously](#backup-a-collection-of-keys-asynchronously)
-- [Run pre-restore check for a collection of keys asynchronously](#run-pre-restore-check-for-a-collection-of-keys-asynchronously)
 - [Restore a Key Vault asynchronously](#restore-a-collection-of-keys-asynchronously)
 - [Restore a key asynchronously](#selectively-restore-a-key-asynchronously)
 
 > Note : You should add `System.in.read()` or `Thread.sleep()` after the function calls in the main class/thread to allow async functions/operations to execute and finish before the main application/thread exits.
-
-##### Run pre-backup check for a collection of keys asynchronously
-Check if an entire collection of keys can be backed up by using `beginPreBackup()`.
-
-```java readme-sample-beginPreBackupAsync
-String blobStorageUrl = "https://myaccount.blob.core.windows.net/myContainer";
-String sasToken = "<sas-token>";
-
-keyVaultBackupAsyncClient.beginPreBackup(blobStorageUrl, sasToken)
-    .setPollInterval(Duration.ofSeconds(1)) // You can set a custom polling interval.
-    .doOnError(e -> System.out.printf("Pre-backup check failed with error: %s.%n", e.getMessage()))
-    .doOnNext(pollResponse ->
-        System.out.printf("The current status of the operation is: %s.%n", pollResponse.getStatus()))
-    .filter(pollResponse -> pollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
-    .flatMap(AsyncPollResponse::getFinalResult)
-    .subscribe(folderUrl ->
-        System.out.printf("Pre-backup check completed successfully.%n"));
-```
 
 ##### Backup a collection of keys asynchronously
 Back up an entire collection of keys using `beginBackup()`.
@@ -522,23 +444,6 @@ keyVaultBackupAsyncClient.beginBackup(blobStorageUrl, sasToken)
     .flatMap(AsyncPollResponse::getFinalResult)
     .subscribe(folderUrl ->
         System.out.printf("Backup completed. The storage location of this backup is: %s.%n", folderUrl));
-```
-
-##### Run pre-restore check for a collection of keys asynchronously
-Check if an entire collection of keys can be restored from a backup by using `beginPreRestore()`.
-
-```java readme-sample-beginPreRestoreAsync
-String folderUrl = "https://myaccount.blob.core.windows.net/myContainer/mhsm-myaccount-2020090117323313";
-String sasToken = "<sas-token>";
-
-keyVaultBackupAsyncClient.beginPreRestore(folderUrl, sasToken)
-    .setPollInterval(Duration.ofSeconds(1)) // You can set a custom polling interval.
-    .doOnError(e -> System.out.printf("Pre-restore check failed with error: %s.%n", e.getMessage()))
-    .doOnNext(pollResponse ->
-        System.out.printf("The current status of the operation is: %s.%n", pollResponse.getStatus()))
-    .filter(pollResponse -> pollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
-    .flatMap(AsyncPollResponse::getFinalResult)
-    .subscribe(unused -> System.out.printf("Pre-restore check completed successfully.%n"));
 ```
 
 ##### Restore a collection of keys asynchronously

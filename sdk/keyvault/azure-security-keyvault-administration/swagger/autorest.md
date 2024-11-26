@@ -40,7 +40,7 @@ autorest --tag=settings
 
 ## Configuration
 ```yaml
-use: '@autorest/java@4.1.39'
+use: '@autorest/java@4.1.24'
 output-folder: ../
 java: true
 namespace: com.azure.security.keyvault.administration
@@ -65,7 +65,7 @@ partial-update: true
 These settings apply only when `--tag=rbac` is specified on the command line.
 
 ``` yaml $(tag) == 'rbac'
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/8af9817c15d688c941cda106758045b5deb9a069/specification/keyvault/data-plane/Microsoft.KeyVault/preview/7.6-preview.1/rbac.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/7452e1cc7db72fbc6cd9539b390d8b8e5c2a1864/specification/keyvault/data-plane/Microsoft.KeyVault/stable/7.5/rbac.json
 title: KeyVaultAccessControlClient
 custom-types: KeyVaultDataAction,KeyVaultRoleDefinitionType,KeyVaultRoleScope,KeyVaultRoleType
 customization-class: src/main/java/RbacCustomizations.java
@@ -87,7 +87,7 @@ directive:
 These settings apply only when `--tag=backuprestore` is specified on the command line.
 
 ``` yaml $(tag) == 'backuprestore'
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/8af9817c15d688c941cda106758045b5deb9a069/specification/keyvault/data-plane/Microsoft.KeyVault/preview/7.6-preview.1/backuprestore.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/7452e1cc7db72fbc6cd9539b390d8b8e5c2a1864/specification/keyvault/data-plane/Microsoft.KeyVault/stable/7.5/backuprestore.json
 title: KeyVaultBackupClient
 customization-class: src/main/java/BackupRestoreCustomizations.java
 ```
@@ -96,7 +96,7 @@ customization-class: src/main/java/BackupRestoreCustomizations.java
 These settings apply only when `--tag=settings` is specified on the command line.
 
 ``` yaml $(tag) == 'settings'
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/8af9817c15d688c941cda106758045b5deb9a069/specification/keyvault/data-plane/Microsoft.KeyVault/preview/7.6-preview.1/settings.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/7452e1cc7db72fbc6cd9539b390d8b8e5c2a1864/specification/keyvault/data-plane/Microsoft.KeyVault/stable/7.5/settings.json
 title: KeyVaultSettingsClient
 custom-types: KeyVaultSettingType
 customization-class: src/main/java/SettingsCustomizations.java
