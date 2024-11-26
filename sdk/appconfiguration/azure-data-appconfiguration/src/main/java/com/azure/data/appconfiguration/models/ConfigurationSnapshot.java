@@ -4,17 +4,18 @@
 
 package com.azure.data.appconfiguration.models;
 
+import java.time.Duration;
+
+import java.io.IOException;
+import java.time.OffsetDateTime;
+import java.util.List;
+import java.util.Map;
+
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import java.io.IOException;
-import java.time.Duration;
-import java.time.OffsetDateTime;
-import java.util.List;
-import java.util.Map;
 
 /**
  * The ConfigurationSnapshot model.
@@ -37,9 +38,7 @@ public final class ConfigurationSnapshot implements JsonSerializable<Configurati
     private final List<ConfigurationSettingsFilter> filters;
 
     /*
-     * The composition type describes how the key-values within the snapshot are composed. The 'key' composition type
-     * ensures there are no two key-values containing the same key. The 'key_label' composition type ensures there are
-     * no two key-values containing the same key and label.
+     * The composition type describes how the key-values within the snapshot are composed. The 'key' composition type ensures there are no two key-values containing the same key. The 'key_label' composition type ensures there are no two key-values containing the same key and label.
      */
     private SnapshotComposition snapshotComposition;
 
@@ -54,9 +53,7 @@ public final class ConfigurationSnapshot implements JsonSerializable<Configurati
     private OffsetDateTime expiresAt;
 
     /*
-     * The amount of time, in seconds, that a snapshot will remain in the archived state before expiring. This property
-     * is only writable during the creation of a snapshot. If not specified, the default lifetime of key-value revisions
-     * will be used.
+     * The amount of time, in seconds, that a snapshot will remain in the archived state before expiring. This property is only writable during the creation of a snapshot. If not specified, the default lifetime of key-value revisions will be used.
      */
     private Long retentionPeriod;
 
@@ -283,11 +280,9 @@ public final class ConfigurationSnapshot implements JsonSerializable<Configurati
                 } else if ("composition_type".equals(fieldName)) {
                     snapshotComposition = SnapshotComposition.fromString(reader.getString());
                 } else if ("created".equals(fieldName)) {
-                    createdAt = reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                    createdAt = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
                 } else if ("expires".equals(fieldName)) {
-                    expiresAt = reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                    expiresAt = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
                 } else if ("retention_period".equals(fieldName)) {
                     retentionPeriod = reader.getNullable(JsonReader::getLong);
                 } else if ("size".equals(fieldName)) {
