@@ -27,10 +27,11 @@ public class HttpClientConfig {
     private ProxyOptions proxy;
     private boolean connectionKeepAlive = true;
     private boolean serverCertValidationDisabled = false;
-    private boolean http2Enabled;
+    private Http2ConnectionConfig http2ConnectionConfig;
 
     public HttpClientConfig(Configs configs) {
         this.configs = configs;
+        this.http2ConnectionConfig = new Http2ConnectionConfig();
     }
 
     public HttpClientConfig withMaxHeaderSize(int maxHeaderSize) {
@@ -98,8 +99,8 @@ public class HttpClientConfig {
         return this;
     }
 
-    public HttpClientConfig withHttp2Enabled(boolean http2Enabled) {
-        this.http2Enabled = http2Enabled;
+    public HttpClientConfig withHttp2Config(Http2ConnectionConfig http2ConnectionConfig) {
+        this.http2ConnectionConfig = http2ConnectionConfig;
         return this;
     }
 
@@ -159,8 +160,8 @@ public class HttpClientConfig {
         return serverCertValidationDisabled;
     }
 
-    public boolean isHttp2Enabled() {
-        return http2Enabled;
+    public Http2ConnectionConfig getHttp2Config() {
+        return http2ConnectionConfig;
     }
 
     public String toDiagnosticsString() {

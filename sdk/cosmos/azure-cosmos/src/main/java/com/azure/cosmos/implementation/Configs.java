@@ -282,19 +282,22 @@ public class Configs {
     private static final String EMULATOR_HOST = "COSMOS.EMULATOR_HOST";
     private static final String EMULATOR_HOST_VARIABLE = "COSMOS_EMULATOR_HOST";
 
-    // Flag to indicate whether enabled http2 for gateway, Please do not use it, only for internal testing purpose
+    // Flag to indicate whether enabled http2 for gateway
     private static final boolean DEFAULT_HTTP2_ENABLED = false;
     private static final String HTTP2_ENABLED = "COSMOS.HTTP2_ENABLED";
     private static final String HTTP2_ENABLED_VARIABLE = "COSMOS_HTTP2_ENABLED";
 
+    // Config to indicate the maximum number of live connections to keep in the pool for http2
     private static final int DEFAULT_HTTP2_MAX_CONNECTION_POOL_SIZE = 1000;
     private static final String HTTP2_MAX_CONNECTION_POOL_SIZE = "COSMOS.HTTP2_MAX_CONNECTION_POOL_SIZE";
     private static final String HTTP2_MAX_CONNECTION_POOL_SIZE_VARIABLE = "COSMOS_HTTP2_MAX_CONNECTION_POOL_SIZE";
 
+    // Config to indicate the minimum number of live connections to keep in the pool for http2
     private static final int DEFAULT_HTTP2_MIN_CONNECTION_POOL_SIZE = 1;
     private static final String HTTP2_MIN_CONNECTION_POOL_SIZE = "COSMOS.HTTP2_MIN_CONNECTION_POOL_SIZE";
     private static final String HTTP2_MIN_CONNECTION_POOL_SIZE_VARIABLE = "COSMOS_HTTP2_MIN_CONNECTION_POOL_SIZE";
 
+    // Config to indicate the maximum number of the concurrent streams that can be opened to the remote peer for http2
     private static final int DEFAULT_HTTP2_MAX_CONCURRENT_STREAMS = 30;
     private static final String HTTP2_MAX_CONCURRENT_STREAMS = "COSMOS.HTTP2_MAX_CONCURRENT_STREAMS";
     private static final String HTTP2_MAX_CONCURRENT_STREAMS_VARIABLE = "COSMOS_HTTP2_MAX_CONCURRENT_STREAMS";

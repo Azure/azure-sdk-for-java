@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.http;
 
-import com.azure.cosmos.implementation.Configs;
 import reactor.core.publisher.Mono;
 import reactor.netty.http.client.Http2AllocationStrategy;
 import reactor.netty.resources.ConnectionProvider;
@@ -47,12 +46,12 @@ public interface HttpClient {
         fixedConnectionProviderBuilder.pendingAcquireTimeout(httpClientConfig.getConnectionAcquireTimeout());
         fixedConnectionProviderBuilder.maxIdleTime(httpClientConfig.getMaxIdleConnectionTimeout());
 
-        if (httpClientConfig.isHttp2Enabled()) {
+        if (httpClientConfig.getHttp2Config().isEnabled()) {
             fixedConnectionProviderBuilder.allocationStrategy(
                 Http2AllocationStrategy.builder()
-                    .maxConnections(Configs.getHttp2MaxConnectionPoolSize())
-                    .minConnections(Configs.getHttp2MinConnectionPoolSize())
-                    .maxConcurrentStreams(Configs.getHttp2MaxConcurrentStreams())
+                    .maxConnections(httpClientConfig.getHttp2Config().getMaxConnectionPoolSize())
+                    .minConnections(httpClientConfig.getHttp2Config().getMinConnectionPoolSize())
+                    .maxConcurrentStreams(httpClientConfig.getHttp2Config().getMaxConcurrentStreams())
                     .build()
             );
         }

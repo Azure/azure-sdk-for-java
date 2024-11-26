@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.http;
 
+import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
@@ -25,13 +26,17 @@ public class Http2ResponseHeaderCleanerHandler extends ChannelInboundHandlerAdap
                 CharSequence key = entry.getKey();
                 CharSequence value = entry.getValue();
 
-                // Check for leading whitespace or other prohibited characters
-                if (StringUtils.isNotEmpty(value) && (value.charAt(0) == ' ' || value.charAt(value.length() - 1) == ' ')) {
-                    // Clean up the header value by trimming or handling as needed
-                    logger.trace("There are extra white space for key {} with value {}", key, value);
+                // Based on the tests, only 'x-ms-serviceversion' header has extra value,
+                // so only check this specific header here
+                if (StringUtils.equalsIgnoreCase(key, HttpConstants.HttpHeaders.SERVER_VERSION)) {
+                    // Check for leading whitespace or other prohibited characters
+                    if (StringUtils.isNotEmpty(value) && (value.charAt(0) == ' ' || value.charAt(value.length() - 1) == ' ')) {
+                        // Clean up the header value by trimming or handling as needed
+                        logger.trace("There are extra white space for key {} with value {}", key, value);
 
-                    // TODO[Http2]: for now just trim the spaces, explore other options for example escape the whitespace
-                    headers.set(key, value.toString().trim());
+                        // TODO[Http2]: for now just trim the spaces, explore other options for example escape the whitespace
+                        headers.set(key, value.toString().trim());
+                    }
                 }
             });
         }
