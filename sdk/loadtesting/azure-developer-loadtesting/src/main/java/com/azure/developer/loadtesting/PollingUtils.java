@@ -29,7 +29,6 @@ final class PollingUtils {
             Map<String, Object> jsonTree = jsonReader.readMap(JsonReader::readUntyped);
 
             validationStatus = jsonTree.get("validationStatus").toString();
-            fileType = jsonTree.get("fileType").toString();
         } catch (IOException e) {
             throw new RuntimeException("Encountered exception while retrieving validation status", e);
         }
