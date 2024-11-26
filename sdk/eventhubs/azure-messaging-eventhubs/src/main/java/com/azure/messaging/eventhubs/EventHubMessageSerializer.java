@@ -223,25 +223,21 @@ class EventHubMessageSerializer implements MessageSerializer {
             ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue());
 
         final String partitionKey = (String) messageAnnotations.get(PARTITION_KEY_ANNOTATION_NAME.getValue());
-        final long offset = getAsLong(messageAnnotations, OFFSET_ANNOTATION_NAME.getValue());
+        final String offsetString = (String) messageAnnotations.get(OFFSET_ANNOTATION_NAME.getValue());
         final long sequenceNumber = getAsLong(messageAnnotations, SEQUENCE_NUMBER_ANNOTATION_NAME.getValue());
 
         // It is an optional value. Possible that there is no replication segment.
         final Integer replicationSegment = (Integer) messageAnnotations.get(REPLICATION_SEGMENT_ANNOTATION_NAME.getValue());
 
         // Put the properly converted time back into the dictionary.
-        messageAnnotations.put(OFFSET_ANNOTATION_NAME.getValue(), offset);
+        messageAnnotations.put(OFFSET_ANNOTATION_NAME.getValue(), offsetString);
         messageAnnotations.put(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue(), enqueuedTime);
         messageAnnotations.put(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(), sequenceNumber);
 
         messageAnnotations.put(REPLICATION_SEGMENT_ANNOTATION_NAME.getValue(), replicationSegment);
 
-        LOGGER.atInfo()
-            .addKeyValue("replicationSegment", replicationSegment)
-            .log("Adding to messageAnnotations: " + REPLICATION_SEGMENT_ANNOTATION_NAME.getValue());
-
-        final SystemProperties systemProperties = new SystemProperties(amqpAnnotatedMessage, offset, enqueuedTime,
-            sequenceNumber, partitionKey, replicationSegment);
+        final SystemProperties systemProperties = new SystemProperties(amqpAnnotatedMessage, offsetString,
+            enqueuedTime, sequenceNumber, partitionKey, replicationSegment);
         final EventData eventData = new EventData(amqpAnnotatedMessage, systemProperties, Context.NONE);
 
         message.clear();
