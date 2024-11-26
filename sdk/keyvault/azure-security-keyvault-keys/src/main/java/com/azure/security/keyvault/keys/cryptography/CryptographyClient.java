@@ -139,9 +139,8 @@ import static com.azure.security.keyvault.keys.cryptography.implementation.Crypt
  * @see com.azure.security.keyvault.keys.cryptography
  * @see CryptographyClientBuilder
  */
-@ServiceClient(
-    builder = CryptographyClientBuilder.class,
-    serviceInterfaces = { KeyClientImpl.KeyClientService.class, SecretMinClientImpl.SecretMinClientService.class })
+@ServiceClient(builder = CryptographyClientBuilder.class, serviceInterfaces = {KeyClientImpl.KeyClientService.class,
+    SecretMinClientImpl.SecretMinClientService.class})
 public class CryptographyClient {
     private static final ClientLogger LOGGER = new ClientLogger(CryptographyClient.class);
 
@@ -161,7 +160,7 @@ public class CryptographyClient {
      * deferred to the service.
      */
     CryptographyClient(String keyId, HttpPipeline pipeline, CryptographyServiceVersion version,
-        boolean disableKeyCaching) {
+                       boolean disableKeyCaching) {
         this.implClient = new CryptographyClientImpl(keyId, pipeline, version);
         this.keyId = keyId;
         this.skipLocalClientCreation = disableKeyCaching;
@@ -194,8 +193,8 @@ public class CryptographyClient {
         try {
             this.localKeyCryptographyClient = createLocalClient(jsonWebKey, null);
         } catch (RuntimeException e) {
-            throw LOGGER
-                .logExceptionAsError(new RuntimeException("Could not initialize local cryptography client.", e));
+            throw LOGGER.logExceptionAsError(
+                new RuntimeException("Could not initialize local cryptography client.", e));
         }
     }
 

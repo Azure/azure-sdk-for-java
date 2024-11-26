@@ -9,12 +9,11 @@ public final class KeyRotationPolicyHelper {
 
     public interface KeyRotationPolicyAccessor {
         KeyRotationPolicy createPolicy(com.azure.security.keyvault.keys.implementation.models.KeyRotationPolicy impl);
-
         com.azure.security.keyvault.keys.implementation.models.KeyRotationPolicy getImpl(KeyRotationPolicy policy);
     }
 
-    public static KeyRotationPolicy
-        createPolicy(com.azure.security.keyvault.keys.implementation.models.KeyRotationPolicy impl) {
+    public static KeyRotationPolicy createPolicy(
+        com.azure.security.keyvault.keys.implementation.models.KeyRotationPolicy impl) {
         // If the class hasn't been loaded yet the accessor won't be set. Attempt to load the class before using the
         // accessor.
         if (accessor == null) {
@@ -25,8 +24,8 @@ public final class KeyRotationPolicyHelper {
         return accessor.createPolicy(impl);
     }
 
-    public static com.azure.security.keyvault.keys.implementation.models.KeyRotationPolicy
-        getImpl(KeyRotationPolicy policy) {
+    public static com.azure.security.keyvault.keys.implementation.models.KeyRotationPolicy getImpl(
+        KeyRotationPolicy policy) {
         return accessor.getImpl(policy);
     }
 
@@ -34,6 +33,5 @@ public final class KeyRotationPolicyHelper {
         KeyRotationPolicyHelper.accessor = accessor;
     }
 
-    private KeyRotationPolicyHelper() {
-    }
+    private KeyRotationPolicyHelper() { }
 }
