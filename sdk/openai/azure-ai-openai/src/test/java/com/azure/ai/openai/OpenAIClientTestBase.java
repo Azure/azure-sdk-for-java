@@ -44,6 +44,7 @@ import com.azure.ai.openai.models.CompletionsFinishReason;
 import com.azure.ai.openai.models.CompletionsOptions;
 import com.azure.ai.openai.models.CompletionsUsage;
 import com.azure.ai.openai.models.ContentFilterCitedDetectionResult;
+import com.azure.ai.openai.models.ContentFilterCompletionTextSpanResult;
 import com.azure.ai.openai.models.ContentFilterDetailedResults;
 import com.azure.ai.openai.models.ContentFilterDetectionResult;
 import com.azure.ai.openai.models.ContentFilterResult;
@@ -939,6 +940,12 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         if (protectedMaterialCode != null) {
             assertFalse(protectedMaterialCode.isFiltered());
             assertFalse(protectedMaterialCode.isDetected());
+        }
+
+        ContentFilterCompletionTextSpanResult ungroundedMaterial = contentFilterResults.getUngroundedMaterial();
+        if (ungroundedMaterial != null) {
+            assertFalse(ungroundedMaterial.isFiltered());
+            assertFalse(ungroundedMaterial.isDetected());
         }
     }
 

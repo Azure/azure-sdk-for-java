@@ -250,7 +250,8 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
     @Disabled("promps and completion tokens are null in Azure")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
-    public void testGetChatCompletionsStreamUsageTokenDetails(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    public void testGetChatCompletionsStreamUsageTokenDetails(HttpClient httpClient,
+        OpenAIServiceVersion serviceVersion) {
         client = getOpenAIClient(httpClient, serviceVersion);
         getChatCompletionsStreamUsageRunner((deploymentId, chatCompletionsOptions) -> {
             IterableStream<ChatCompletions> resultChatCompletions

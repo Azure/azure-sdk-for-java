@@ -982,7 +982,7 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
                         assertEquals(1, toolCalls.size());
                         ChatCompletionsFunctionToolCall toolCall = (ChatCompletionsFunctionToolCall) toolCalls.get(0);
                         FunctionCall functionCall = toolCall.getFunction();
-                        if (i == 0) {
+                        if (i == 1) {
                             content = chatChoice.getDelta().getContent();
                             functionName = functionCall.getName();
                             toolCallId = toolCall.getId();

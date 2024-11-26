@@ -204,7 +204,7 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testGetCompletionsTokenCutoff(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIAsyncClient(httpClient, serviceVersion);
-        getCompletionsRunnerForNonAzure((modelId, prompt) -> {
+        getCompletionsRunner((modelId, prompt) -> {
             CompletionsOptions completionsOptions = new CompletionsOptions(prompt).setMaxTokens(3);
             StepVerifier.create(client.getCompletions(modelId, completionsOptions)).assertNext(resultCompletions -> {
                 assertCompletions(1, resultCompletions);
@@ -234,7 +234,7 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testGetChatCompletionsTokenCutoff(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIAsyncClient(httpClient, serviceVersion);
-        getChatCompletionsRunnerForNonAzure((modelId, chatMessages) -> {
+        getChatCompletionsRunner((modelId, chatMessages) -> {
             StepVerifier
                 .create(client.getChatCompletions(modelId,
                     new ChatCompletionsOptions(chatMessages).setMaxCompletionTokens(10)))
@@ -277,14 +277,15 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
     @Disabled("promps and completion tokens are null in Azure")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
-    public void testGetChatCompletionsStreamUsageTokenDetails(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    public void testGetChatCompletionsStreamUsageTokenDetails(HttpClient httpClient,
+        OpenAIServiceVersion serviceVersion) {
         client = getOpenAIAsyncClient(httpClient, serviceVersion);
         getChatCompletionsStreamUsageRunner((deploymentId, chatCompletionsOptions) -> {
             StepVerifier.create(client.getChatCompletionsStream(deploymentId, chatCompletionsOptions))
                 .recordWith(ArrayList::new)
                 .thenConsumeWhile(chatCompletions -> true)
-                .consumeRecordedWith(
-                    resultChatCompletions -> assertChatCompletionStreamUsageTokenDetails(new ArrayList<>(resultChatCompletions)))
+                .consumeRecordedWith(resultChatCompletions -> assertChatCompletionStreamUsageTokenDetails(
+                    new ArrayList<>(resultChatCompletions)))
                 .verifyComplete();
         });
     }
@@ -1852,15 +1853,14 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
                     return client.deleteFile(uploadedFile.getId()).zipWith(Mono.just(uploadedFile));
                 }))
                 // File deletion
-                // TODO: delete a batch file returns 204 empty body
-                //                .assertNext(tuple -> {
-                //                    FileDeletionStatus deletionStatus = tuple.getT1();
-                //                    OpenAIFile file = tuple.getT2();
-                //                    assertNotNull(deletionStatus);
-                //                    assertNotNull(deletionStatus.getId());
-                //                    assertTrue(deletionStatus.isDeleted());
-                //                    assertEquals(file.getId(), deletionStatus.getId());
-                //                })
+                .assertNext(tuple -> {
+                    FileDeletionStatus deletionStatus = tuple.getT1();
+                    OpenAIFile file = tuple.getT2();
+                    assertNotNull(deletionStatus);
+                    assertNotNull(deletionStatus.getId());
+                    assertTrue(deletionStatus.isDeleted());
+                    assertEquals(file.getId(), deletionStatus.getId());
+                })
                 .verifyComplete();
         }));
     }

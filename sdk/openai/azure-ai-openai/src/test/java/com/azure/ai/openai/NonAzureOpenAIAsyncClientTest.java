@@ -275,14 +275,15 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
-    public void testGetChatCompletionsStreamUsageTokenDetails(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    public void testGetChatCompletionsStreamUsageTokenDetails(HttpClient httpClient,
+        OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAIAsyncClient(httpClient);
         getChatCompletionsStreamUsageRunner((deploymentId, chatCompletionsOptions) -> {
             StepVerifier.create(client.getChatCompletionsStream(deploymentId, chatCompletionsOptions))
                 .recordWith(ArrayList::new)
                 .thenConsumeWhile(chatCompletions -> true)
-                .consumeRecordedWith(
-                    resultChatCompletions -> assertChatCompletionStreamUsageTokenDetails(new ArrayList<>(resultChatCompletions)))
+                .consumeRecordedWith(resultChatCompletions -> assertChatCompletionStreamUsageTokenDetails(
+                    new ArrayList<>(resultChatCompletions)))
                 .verifyComplete();
         });
     }
@@ -1107,7 +1108,7 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
                                 ChatCompletionsFunctionToolCall toolCall
                                     = (ChatCompletionsFunctionToolCall) toolCalls.get(0);
                                 FunctionCall functionCall = toolCall.getFunction();
-                                if (i == 0) {
+                                if (i == 1) {
                                     content = chatChoice.getDelta().getContent();
                                     functionName = functionCall.getName();
                                     toolCallId = toolCall.getId();

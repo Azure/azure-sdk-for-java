@@ -3,8 +3,9 @@
 ## 1.0.0-beta.13 (Unreleased)
 
 ### Features Added
+
 - Added support for service API versions `2024-09-01-preview` and `2024-10-01-preview`.
-- Added support for `max_completion_tokens`, `stream_options` and `parallel_tool_calls` in `ChatCompletionsOptions` class. 
+- Added support for `max_completion_tokens`, `stream_options`, and `parallel_tool_calls` in `ChatCompletionsOptions` class. 
   New class `ChatCompletionStreamOptions` introduced.
 - Added support for `stream_options` in `CompletionsOptions` class.
 - Added support for `prompt_tokens_details` and `completion_tokens_details` in `CompletionsUsage` class. 
@@ -17,6 +18,12 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` to version `1.54.1`.
+- Upgraded `azure-core-http-netty` to version `1.15.7`.
+
 
 ## 1.0.0-beta.12 (2024-10-22)
 
