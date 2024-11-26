@@ -1,5 +1,15 @@
 # Release History
 
+## 12.14.1 (2024-11-26)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.54.0` to version `1.54.1`.
+- Upgraded `azure-storage-common` from `12.28.0` to version `12.28.1`.
+
+
 ## 12.14.0 (2024-11-13)
 
 ### Features Added
