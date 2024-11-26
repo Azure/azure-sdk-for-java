@@ -2676,8 +2676,8 @@ public class CosmosAsyncContainer {
     }
 
     /**
-     * Attempts to split a feedrange into {@lparamtargetedCountAfterAplit} sub ranges. This is a best
-     * effort - it is possible that the list of feed ranges returned has less than {@lparamtargetedCountAfterAplit}
+     * Attempts to split a feedrange into {@lparamtargetedCountAfterSplit} sub ranges. This is a best
+     * effort - it is possible that the list of feed ranges returned has less than {@lparamtargetedCountAfterSplit}
      * sub ranges
      * @param feedRange
      * @param targetedCountAfterSplit

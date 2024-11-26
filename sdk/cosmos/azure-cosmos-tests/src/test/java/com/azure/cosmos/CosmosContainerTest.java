@@ -668,7 +668,6 @@ public class CosmosContainerTest extends TestSuiteBase {
     public void getFeedRanges_withMultiplePartitions() throws Exception {
         String collectionName = UUID.randomUUID().toString();
         CosmosContainerProperties containerProperties = getCollectionDefinition(collectionName);
-        CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
         CosmosContainerResponse containerResponse = createdDatabase.createContainer(
             containerProperties,
             ThroughputProperties.createManualThroughput(18000));
@@ -697,11 +696,6 @@ public class CosmosContainerTest extends TestSuiteBase {
             .isNotNull()
             .hasSize(3);
 
-        String leftMin = getEffectiveRange(syncContainer, feedRangesAfterSplit.get(0)).getMin();
-        String rightMin = firstEpkRange.getMin();
-        String leftMax = getEffectiveRange(syncContainer, feedRangesAfterSplit.get(0)).getMax();
-        String rightMax = firstEpkRange.getMax();
-
         assertThat(getEffectiveRange(syncContainer, feedRangesAfterSplit.get(0)).equals(firstEpkRange))
             .isTrue();
 
@@ -716,7 +710,6 @@ public class CosmosContainerTest extends TestSuiteBase {
     public void getFeedRanges_withMultiplePartitions_HashV2() throws Exception {
         String collectionName = UUID.randomUUID().toString();
         CosmosContainerProperties containerProperties = getCollectionDefinitionForHashV2(collectionName);
-        CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
         CosmosContainerResponse containerResponse = createdDatabase.createContainer(
             containerProperties,
             ThroughputProperties.createManualThroughput(18000));
@@ -752,11 +745,6 @@ public class CosmosContainerTest extends TestSuiteBase {
             .isNotNull()
             .hasSize(3);
 
-        String leftMin = getEffectiveRange(syncContainer, feedRangesAfterSplit.get(0)).getMin();
-        String rightMin = firstEpkRange.getMin();
-        String leftMax = getEffectiveRange(syncContainer, feedRangesAfterSplit.get(0)).getMax();
-        String rightMax = firstEpkRange.getMax();
-
         assertThat(getEffectiveRange(syncContainer, feedRangesAfterSplit.get(0)).equals(firstEpkRange))
             .isTrue();
 
@@ -765,6 +753,92 @@ public class CosmosContainerTest extends TestSuiteBase {
 
         assertThat(getEffectiveRange(syncContainer, feedRangesAfterSplit.get(2)).equals(thirdEpkRange))
             .isTrue();
+    }
+
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    public void getFeedRanges_withMultiplePartitions_HashV2_HPK() {
+        String collectionName = UUID.randomUUID().toString();
+        CosmosContainerProperties containerProperties = getCollectionDefinitionForHashV2WithHpk(collectionName);
+        createdDatabase.createContainer(
+                containerProperties,
+                ThroughputProperties.createManualThroughput(11000));
+        this.createdContainer = createdDatabase.getContainer(collectionName);
+
+        CosmosContainer syncContainer = createdDatabase.getContainer(collectionName);
+
+        List<FeedRange> feedRanges = syncContainer.getFeedRanges();
+        assertThat(feedRanges)
+                .isNotNull()
+                .hasSize(2);
+
+        assertFeedRange(
+                feedRanges.get(0),
+                "{\"Range\":{\"min\":\"\",\"max\":\"1FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF\"}}");
+        assertFeedRange(
+                feedRanges.get(1),
+                "{\"Range\":{\"min\":\"1FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF\"," +
+                        "\"max\":\"FF\"}}");
+
+        Range<String> firstEpkRange = getEffectiveRange(syncContainer, feedRanges.get(0));
+        Range<String> secondEpkRange = getEffectiveRange(syncContainer, feedRanges.get(1));
+
+        List<FeedRangeEpkImpl> feedRangesAfterSplit = syncContainer
+                .asyncContainer
+                .trySplitFeedRange(FeedRange.forFullRange(), 2)
+                .block();
+        assertThat(feedRangesAfterSplit)
+                .isNotNull()
+                .hasSize(2);
+
+        assertThat(getEffectiveRange(syncContainer, feedRangesAfterSplit.get(0)).equals(firstEpkRange))
+                .isTrue();
+
+        assertThat(getEffectiveRange(syncContainer, feedRangesAfterSplit.get(1)).equals(secondEpkRange))
+                .isTrue();
+
+    }
+
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    public void getFeedRanges_withMultiplePartitions_HashV1_HPK() {
+        String collectionName = UUID.randomUUID().toString();
+        CosmosContainerProperties containerProperties = getCollectionDefinitionForHashV2WithHpk(collectionName);
+        createdDatabase.createContainer(
+                containerProperties,
+                ThroughputProperties.createManualThroughput(11000));
+        this.createdContainer = createdDatabase.getContainer(collectionName);
+
+        CosmosContainer syncContainer = createdDatabase.getContainer(collectionName);
+
+        List<FeedRange> feedRanges = syncContainer.getFeedRanges();
+        assertThat(feedRanges)
+                .isNotNull()
+                .hasSize(2);
+
+        assertFeedRange(
+                feedRanges.get(0),
+                "{\"Range\":{\"min\":\"\",\"max\":\"1FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF\"}}");
+        assertFeedRange(
+                feedRanges.get(1),
+                "{\"Range\":{\"min\":\"1FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF\"," +
+                        "\"max\":\"FF\"}}");
+
+        Range<String> firstEpkRange = getEffectiveRange(syncContainer, feedRanges.get(0));
+        Range<String> secondEpkRange = getEffectiveRange(syncContainer, feedRanges.get(1));
+
+        List<FeedRangeEpkImpl> feedRangesAfterSplit = syncContainer
+                .asyncContainer
+                .trySplitFeedRange(FeedRange.forFullRange(), 2)
+                .block();
+        assertThat(feedRangesAfterSplit)
+                .isNotNull()
+                .hasSize(2);
+
+        assertThat(getEffectiveRange(syncContainer, feedRangesAfterSplit.get(0)).equals(firstEpkRange))
+                .isTrue();
+
+        assertThat(getEffectiveRange(syncContainer, feedRangesAfterSplit.get(1)).equals(secondEpkRange))
+                .isTrue();
+
     }
 
     private static Range<String> getEffectiveRange(CosmosContainer container, FeedRange feedRange) {

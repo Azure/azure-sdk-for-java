@@ -9,12 +9,13 @@ import com.azure.cosmos.implementation.guava25.base.MoreObjects.firstNonNull
 import com.azure.cosmos.implementation.guava25.base.Strings.emptyToNull
 import com.azure.cosmos.implementation.query.CompositeContinuationToken
 import com.azure.cosmos.implementation.routing.Range
-import com.azure.cosmos.models.{FeedRange, PartitionKey, PartitionKeyBuilder, PartitionKeyDefinition, SparkModelBridgeInternal}
+import com.azure.cosmos.models.{FeedRange, PartitionKey, PartitionKeyBuilder, PartitionKeyDefinition, PartitionKind, SparkModelBridgeInternal}
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.azure.cosmos.spark.{ChangeFeedOffset, CosmosConstants, NormalizedRange}
 import com.azure.cosmos.{CosmosAsyncClient, CosmosClientBuilder, DirectConnectionConfig, SparkBridgeInternal}
 import com.fasterxml.jackson.databind.ObjectMapper
 
+import scala.collection.convert.ImplicitConversions.`list asScalaBuffer`
 import scala.collection.mutable
 
 // scalastyle:off underscore.import
@@ -189,6 +190,11 @@ private[cosmos] object SparkBridgeImplementationInternal extends BasicLoggingTra
     new Range[String](range.min, range.max, true, false)
   }
 
+  private[cosmos] def toCosmosRange(range: String): Range[String] = {
+    val parts = range.split("-")
+    new Range[String](parts(0), parts(1), true, false)
+  }
+
   def doRangesOverlap(left: NormalizedRange, right: NormalizedRange): Boolean = {
     Range.checkOverlapping(toCosmosRange(left), toCosmosRange(right))
   }
@@ -242,6 +248,57 @@ private[cosmos] object SparkBridgeImplementationInternal extends BasicLoggingTra
       val pkDefinition = SparkModelBridgeInternal.createPartitionKeyDefinitionFromJson(partitionKeyDefinitionJson)
       val effectiveRange = feedRange.getEffectiveRange(pkDefinition)
       rangeToNormalizedRange(effectiveRange)
+  }
+
+  private[cosmos] def trySplitFeedRanges
+  (
+   partitionKeyDefinitionJson: String,
+   feedRange: FeedRangeEpkImpl,
+   bucketCount: Int
+  ): Array[String] = {
+
+    val pkDefinition = SparkModelBridgeInternal.createPartitionKeyDefinitionFromJson(partitionKeyDefinitionJson)
+    val feedRanges = FeedRangeInternal.trySplitCore(pkDefinition, feedRange.getRange, bucketCount)
+    val normalizedRanges = new Array[String](feedRanges.size())
+    for (i <- feedRanges.indices) {
+      val normalizedRange = rangeToNormalizedRange(feedRanges(i).getRange)
+      normalizedRanges(i) = s"${normalizedRange.min}-${normalizedRange.max}"
+    }
+    normalizedRanges
+  }
+
+  def findBucket(feedRanges: Array[String], pkValue: Object, pkDefinition: PartitionKeyDefinition):Int = {
+    val partitionKey = new PartitionKeyBuilder()
+    var pk: PartitionKey = null
+    // refactor this
+    if (pkDefinition.getKind == PartitionKind.MULTI_HASH) {
+      val objectMapper = new ObjectMapper()
+      val json = pkValue.toString
+      try {
+        val partitionKeyValues = objectMapper.readValue(json, classOf[Array[String]])
+        for (value <- partitionKeyValues) {
+          partitionKey.add(value.trim)
+        }
+        pk = partitionKey.build()
+      } catch {
+        case e: Exception =>
+          logInfo("Invalid partition key paths: " + json, e)
+      }
+    } else if (pkDefinition.getKind == PartitionKind.HASH) {
+      pk = new PartitionKey(pkValue)
+    }
+    val feedRangeFromPk = FeedRange.forLogicalPartition(pk).asInstanceOf[FeedRangePartitionKeyImpl]
+    val effectiveRangeFromPk = feedRangeFromPk.getEffectiveRange(pkDefinition)
+
+    for (i <- feedRanges.indices) {
+      val range = SparkBridgeImplementationInternal.toCosmosRange(feedRanges(i))
+      if (range.contains(effectiveRangeFromPk.getMin)) {
+        return i
+      }
+
+    }
+    -1
+
   }
 
   def setIoThreadCountPerCoreFactor
