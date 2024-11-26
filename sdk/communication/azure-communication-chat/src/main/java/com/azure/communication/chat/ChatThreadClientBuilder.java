@@ -38,9 +38,11 @@ import java.util.Objects;
 /**
  * Builder for creating clients of Azure Communication Service Chat Threads
  */
-@ServiceClientBuilder(serviceClients = { ChatThreadAsyncClient.class, ChatThreadClient.class })
-public final class ChatThreadClientBuilder implements ConfigurationTrait<ChatThreadClientBuilder>,
-    EndpointTrait<ChatThreadClientBuilder>, HttpTrait<ChatThreadClientBuilder> {
+@ServiceClientBuilder(serviceClients = {ChatThreadAsyncClient.class, ChatThreadClient.class})
+public final class ChatThreadClientBuilder implements
+    ConfigurationTrait<ChatThreadClientBuilder>,
+    EndpointTrait<ChatThreadClientBuilder>,
+    HttpTrait<ChatThreadClientBuilder> {
 
     private String chatThreadId;
     private String endpoint;
@@ -57,12 +59,6 @@ public final class ChatThreadClientBuilder implements ConfigurationTrait<ChatThr
     private static final String APP_CONFIG_PROPERTIES = "azure-communication-chat.properties";
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
-
-    /**
-     * Creates a new instance of {@link ChatThreadClientBuilder}.
-     */
-    public ChatThreadClientBuilder() {
-    }
 
     /**
      * Set endpoint of the service
@@ -102,8 +98,8 @@ public final class ChatThreadClientBuilder implements ConfigurationTrait<ChatThr
      * @return the updated ChatThreadClientBuilder object
      */
     public ChatThreadClientBuilder credential(CommunicationTokenCredential communicationTokenCredential) {
-        this.communicationTokenCredential
-            = Objects.requireNonNull(communicationTokenCredential, "'communicationTokenCredential' cannot be null.");
+        this.communicationTokenCredential = Objects.requireNonNull(
+            communicationTokenCredential, "'communicationTokenCredential' cannot be null.");
         return this;
     }
 
@@ -307,21 +303,24 @@ public final class ChatThreadClientBuilder implements ConfigurationTrait<ChatThr
         } else {
             Objects.requireNonNull(communicationTokenCredential);
             Objects.requireNonNull(httpClient);
-            CommunicationBearerTokenCredential tokenCredential
-                = new CommunicationBearerTokenCredential(communicationTokenCredential);
+            CommunicationBearerTokenCredential tokenCredential =
+                new CommunicationBearerTokenCredential(communicationTokenCredential);
 
-            pipeline = createHttpPipeline(httpClient, new BearerTokenAuthenticationPolicy(tokenCredential, ""),
+            pipeline = createHttpPipeline(httpClient,
+                new BearerTokenAuthenticationPolicy(tokenCredential, ""),
                 customPolicies);
         }
 
-        AzureCommunicationChatServiceImplBuilder clientBuilder
-            = new AzureCommunicationChatServiceImplBuilder().endpoint(endpoint).pipeline(pipeline);
+        AzureCommunicationChatServiceImplBuilder clientBuilder = new AzureCommunicationChatServiceImplBuilder()
+            .endpoint(endpoint)
+            .pipeline(pipeline);
 
         return clientBuilder.buildClient();
     }
 
-    private HttpPipeline createHttpPipeline(HttpClient httpClient, HttpPipelinePolicy authorizationPolicy,
-        List<HttpPipelinePolicy> additionalPolicies) {
+    private HttpPipeline createHttpPipeline(HttpClient httpClient,
+                                            HttpPipelinePolicy authorizationPolicy,
+                                            List<HttpPipelinePolicy> additionalPolicies) {
 
         List<HttpPipelinePolicy> policies = new ArrayList<HttpPipelinePolicy>();
         policies.add(getUserAgentPolicy());
@@ -336,10 +335,12 @@ public final class ChatThreadClientBuilder implements ConfigurationTrait<ChatThr
             policies.addAll(additionalPolicies);
         }
 
-        return new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
+        return new HttpPipelineBuilder()
+            .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
             .build();
     }
+
 
     /*
      * Creates a {@link UserAgentPolicy} using the default chat service module name and version.
