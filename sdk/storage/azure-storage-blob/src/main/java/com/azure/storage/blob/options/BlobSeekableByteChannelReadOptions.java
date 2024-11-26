@@ -14,11 +14,16 @@ import java.nio.channels.SeekableByteChannel;
  */
 @Fluent
 public final class BlobSeekableByteChannelReadOptions {
-
     private Long initialPosition;
     private BlobRequestConditions requestConditions;
     private Integer readSizeInBytes;
     private ConsistentReadControl consistentReadControl;
+
+    /**
+     * Creates a new instance of {@link BlobSeekableByteChannelReadOptions}.
+     */
+    public BlobSeekableByteChannelReadOptions() {
+    }
 
     /**
      * Gets the starting position of the resulting {@link SeekableByteChannel}. The channel will come with a prefetched
@@ -41,6 +46,8 @@ public final class BlobSeekableByteChannelReadOptions {
     }
 
     /**
+     * Gets the {@link BlobRequestConditions}.
+     *
      * @return {@link BlobRequestConditions}
      */
     public BlobRequestConditions getRequestConditions() {
@@ -48,6 +55,8 @@ public final class BlobSeekableByteChannelReadOptions {
     }
 
     /**
+     * Sets the {@link BlobRequestConditions}.
+     *
      * @param requestConditions {@link BlobRequestConditions}
      * @return The updated options.
      */
@@ -57,18 +66,22 @@ public final class BlobSeekableByteChannelReadOptions {
     }
 
     /**
-     * @return The size of each data read from the service. If read size is large, the channel will make
-     * fewer network calls, but each individual call will be larger.
-     * The default value is 4 MB.
+     * Gets the size of each data read from the service. If read size is large, the channel will make fewer network
+     * calls, but each individual call will be larger. The default value is 4 MB.
+     *
+     * @return The size of each data read from the service. If read size is large, the channel will make fewer network
+     * calls, but each individual call will be larger. The default value is 4 MB.
      */
     public Integer getReadSizeInBytes() {
         return readSizeInBytes;
     }
 
     /**
+     * Sets the size of each data read from the service. If read size is large, the channel will make fewer network
+     * calls, but each individual call will be larger. The default value is 4 MB.
+     *
      * @param readSizeInBytes The size of each data read from the service. If read size is large, the channel will make
-     * fewer network calls, but each individual call will be larger.
-     * The default value is 4 MB.
+     * fewer network calls, but each individual call will be larger. The default value is 4 MB.
      * @return The updated options.
      */
     public BlobSeekableByteChannelReadOptions setReadSizeInBytes(Integer readSizeInBytes) {
@@ -77,6 +90,8 @@ public final class BlobSeekableByteChannelReadOptions {
     }
 
     /**
+     * Gets the {@link ConsistentReadControl} Default is E-Tag.
+     *
      * @return {@link ConsistentReadControl} Default is E-Tag.
      */
     public ConsistentReadControl getConsistentReadControl() {
@@ -84,6 +99,8 @@ public final class BlobSeekableByteChannelReadOptions {
     }
 
     /**
+     * Sets the {@link ConsistentReadControl} Default is E-Tag.
+     *
      * @param consistentReadControl {@link ConsistentReadControl} Default is E-Tag.
      * @return The updated options.
      */

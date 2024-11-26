@@ -13,6 +13,14 @@ public final class ShareFileSeekableByteChannelReadOptions {
     private Long chunkSizeInBytes;
 
     /**
+     * Creates a new instance of {@link ShareFileSeekableByteChannelReadOptions}.
+     */
+    public ShareFileSeekableByteChannelReadOptions() {
+    }
+
+    /**
+     * Gets the size of individual writes to the service.
+     *
      * @return The size of individual writes to the service.
      */
     public Long getChunkSizeInBytes() {
@@ -20,6 +28,8 @@ public final class ShareFileSeekableByteChannelReadOptions {
     }
 
     /**
+     * Sets the size of individual writes to the service.
+     *
      * @param chunkSizeInBytes The size of individual writes to the service.
      * @return The updated instance.
      */
@@ -29,6 +39,8 @@ public final class ShareFileSeekableByteChannelReadOptions {
     }
 
     /**
+     * Gets the request conditions to be used by the resulting channel.
+     *
      * @return Request conditions to be used by the resulting channel.
      */
     public ShareRequestConditions getRequestConditions() {
@@ -36,6 +48,8 @@ public final class ShareFileSeekableByteChannelReadOptions {
     }
 
     /**
+     * Sets the request conditions to be used by the resulting channel.
+     *
      * @param requestConditions Request conditions to be used by the resulting channel.
      * @return The updated instance.
      */
