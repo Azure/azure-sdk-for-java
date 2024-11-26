@@ -187,8 +187,6 @@ public class PathProperties {
     }
 
     /**
-     * Gets the time when the path was created.
-     *
      * @return the time when the path was created
      */
     public OffsetDateTime getCreationTime() {
@@ -196,8 +194,6 @@ public class PathProperties {
     }
 
     /**
-     * Gets the time when the path was last modified.
-     *
      * @return the time when the path was last modified
      */
     public OffsetDateTime getLastModified() {
@@ -205,8 +201,6 @@ public class PathProperties {
     }
 
     /**
-     * Gets the eTag of the path.
-     *
      * @return the eTag of the path
      */
     public String getETag() {
@@ -214,8 +208,6 @@ public class PathProperties {
     }
 
     /**
-     * Gets the size of the path in bytes.
-     *
      * @return the size of the path in bytes
      */
     public long getFileSize() {
@@ -223,8 +215,6 @@ public class PathProperties {
     }
 
     /**
-     * Gets the content type of the path.
-     *
      * @return the content type of the path
      */
     public String getContentType() {
@@ -232,8 +222,6 @@ public class PathProperties {
     }
 
     /**
-     * Gets the MD5 of the path's content.
-     *
      * @return the MD5 of the path's content
      */
     public byte[] getContentMd5() {
@@ -241,8 +229,6 @@ public class PathProperties {
     }
 
     /**
-     * Gets the content encoding of the path.
-     *
      * @return the content encoding of the path
      */
     public String getContentEncoding() {
@@ -250,8 +236,6 @@ public class PathProperties {
     }
 
     /**
-     * Gets the content disposition of the path.
-     *
      * @return the content disposition of the path
      */
     public String getContentDisposition() {
@@ -259,8 +243,6 @@ public class PathProperties {
     }
 
     /**
-     * Gets the content language of the path.
-     *
      * @return the content language of the path
      */
     public String getContentLanguage() {
@@ -268,8 +250,6 @@ public class PathProperties {
     }
 
     /**
-     * Gets the cache control of the path.
-     *
      * @return the cache control of the path
      */
     public String getCacheControl() {
@@ -277,8 +257,6 @@ public class PathProperties {
     }
 
     /**
-     * Gets the lease status of the path.
-     *
      * @return the lease status of the path
      */
     public LeaseStatusType getLeaseStatus() {
@@ -286,8 +264,6 @@ public class PathProperties {
     }
 
     /**
-     * Gets the lease state of the path.
-     *
      * @return the lease state of the path
      */
     public LeaseStateType getLeaseState() {
@@ -295,8 +271,6 @@ public class PathProperties {
     }
 
     /**
-     * Gets the lease duration if the path is leased.
-     *
      * @return the lease duration if the path is leased
      */
     public LeaseDurationType getLeaseDuration() {
@@ -304,8 +278,6 @@ public class PathProperties {
     }
 
     /**
-     * Gets the identifier of the last copy operation.
-     *
      * @return the identifier of the last copy operation. If this path hasn't been the target of a copy operation or has
      * been modified since this won't be set.
      */
@@ -314,8 +286,6 @@ public class PathProperties {
     }
 
     /**
-     * Gets the status of the last copy operation.
-     *
      * @return the status of the last copy operation. If this path hasn't been the target of a copy operation or has
      * been modified since this won't be set.
      */
@@ -324,8 +294,6 @@ public class PathProperties {
     }
 
     /**
-     * Gets the source path URL from the last copy operation.
-     *
      * @return the source path URL from the last copy operation. If this path hasn't been the target of a copy operation
      * or has been modified since this won't be set.
      */
@@ -334,8 +302,6 @@ public class PathProperties {
     }
 
     /**
-     * Gets the number of bytes copied and total bytes in the source from the last copy operation.
-     *
      * @return the number of bytes copied and total bytes in the source from the last copy operation (bytes copied/total
      * bytes). If this path hasn't been the target of a copy operation or has been modified since this won't be set.
      */
@@ -344,8 +310,6 @@ public class PathProperties {
     }
 
     /**
-     * Gets the completion time of the last copy operation.
-     *
      * @return the completion time of the last copy operation. If this path hasn't been the target of a copy operation
      * or has been modified since this won't be set.
      */
@@ -354,8 +318,6 @@ public class PathProperties {
     }
 
     /**
-     * Gets the description of the last copy failure.
-     *
      * @return the description of the last copy failure, this is set when the {@link #getCopyStatus() getCopyStatus} is
      * {@link CopyStatusType#FAILED failed} or {@link CopyStatusType#ABORTED aborted}. If this path hasn't been the
      * target of a copy operation or has been modified since this won't be set.
@@ -365,8 +327,6 @@ public class PathProperties {
     }
 
     /**
-     * Gets the status of the path being encrypted on the server.
-     *
      * @return the status of the path being encrypted on the server
      */
     public Boolean isServerEncrypted() {
@@ -374,8 +334,6 @@ public class PathProperties {
     }
 
     /**
-     * Gets the status of the path being an incremental copy file.
-     *
      * @return the status of the path being an incremental copy file
      */
     public Boolean isIncrementalCopy() {
@@ -383,8 +341,6 @@ public class PathProperties {
     }
 
     /**
-     * Gets the tier of the path.
-     *
      * @return the tier of the path.
      */
     public AccessTier getAccessTier() {
@@ -392,8 +348,6 @@ public class PathProperties {
     }
 
     /**
-     * Gets the archive status of the path.
-     *
      * @return the archive status of the path.
      */
     public ArchiveStatus getArchiveStatus() {
@@ -401,8 +355,6 @@ public class PathProperties {
     }
 
     /**
-     * Gets the SHA256 of the encryption key used to encrypt the path.
-     *
      * @return the key used to encrypt the path
      */
     public String getEncryptionKeySha256() {
@@ -410,8 +362,6 @@ public class PathProperties {
     }
 
     /**
-     * Gets the time when the access tier for the path was last changed.
-     *
      * @return the time when the access tier for the path was last changed
      */
     public OffsetDateTime getAccessTierChangeTime() {
@@ -419,8 +369,6 @@ public class PathProperties {
     }
 
     /**
-     * Gets the metadata associated to this path.
-     *
      * @return the metadata associated to this path
      */
     public Map<String, String> getMetadata() {
@@ -428,17 +376,13 @@ public class PathProperties {
     }
 
     /**
-     * Gets whether this path represents a directory.
-     *
-     * @return whether this path represents a directory
+     * @return whether or not this path represents a directory
      */
     public Boolean isDirectory() {
         return isDirectory;
     }
 
     /**
-     * Gets the time when the path is going to expire.
-     *
      * @return the time when the path is going to expire.
      */
     public OffsetDateTime getExpiresOn() {
@@ -446,8 +390,6 @@ public class PathProperties {
     }
 
     /**
-     * Gets the path's encryption scope.
-     *
      * @return the path's encryption scope.
      */
     public String getEncryptionScope() {
@@ -455,8 +397,6 @@ public class PathProperties {
     }
 
     /**
-     * Gets the encryption context for this path. Only applicable for files.
-     *
      * @return the encryption context for this path. Only applicable for files.
      */
     public String getEncryptionContext() {

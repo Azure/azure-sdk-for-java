@@ -13,6 +13,7 @@ import java.util.Map;
  * Defines headers for Read operation.
  */
 public final class FileQueryHeaders {
+
     private DateTimeRfc1123 lastModified;
     private Map<String, String> metadata;
     private Long contentLength;
@@ -45,15 +46,10 @@ public final class FileQueryHeaders {
     private String errorCode;
 
     /**
-     * Creates a new instance of {@link FileQueryHeaders}.
-     */
-    public FileQueryHeaders() {
-    }
-
-    /**
-     * Get the lastModified property: Returns the date and time the container was last modified. Any operation that
-     * modifies the file, including an update of the file's metadata or properties, changes the last-modified time of
-     * the file.
+     * Get the lastModified property: Returns the date and time the container
+     * was last modified. Any operation that modifies the file, including an
+     * update of the file's metadata or properties, changes the last-modified
+     * time of the file.
      *
      * @return the lastModified value.
      */
@@ -65,9 +61,10 @@ public final class FileQueryHeaders {
     }
 
     /**
-     * Set the lastModified property: Returns the date and time the container was last modified. Any operation that
-     * modifies the file, including an update of the file's metadata or properties, changes the last-modified time of
-     * the file.
+     * Set the lastModified property: Returns the date and time the container
+     * was last modified. Any operation that modifies the file, including an
+     * update of the file's metadata or properties, changes the last-modified
+     * time of the file.
      *
      * @param lastModified the lastModified value to set.
      * @return the FileQueryHeaders object itself.
@@ -102,7 +99,8 @@ public final class FileQueryHeaders {
     }
 
     /**
-     * Get the contentLength property: The number of bytes present in the response body.
+     * Get the contentLength property: The number of bytes present in the
+     * response body.
      *
      * @return the contentLength value.
      */
@@ -111,7 +109,8 @@ public final class FileQueryHeaders {
     }
 
     /**
-     * Set the contentLength property: The number of bytes present in the response body.
+     * Set the contentLength property: The number of bytes present in the
+     * response body.
      *
      * @param contentLength the contentLength value to set.
      * @return the FileQueryHeaders object itself.
@@ -122,8 +121,8 @@ public final class FileQueryHeaders {
     }
 
     /**
-     * Get the contentType property: The media type of the body of the response. For Download Blob this is
-     * 'application/octet-stream'.
+     * Get the contentType property: The media type of the body of the
+     * response. For Download Blob this is 'application/octet-stream'.
      *
      * @return the contentType value.
      */
@@ -132,8 +131,8 @@ public final class FileQueryHeaders {
     }
 
     /**
-     * Set the contentType property: The media type of the body of the response. For Download Blob this is
-     * 'application/octet-stream'.
+     * Set the contentType property: The media type of the body of the
+     * response. For Download Blob this is 'application/octet-stream'.
      *
      * @param contentType the contentType value to set.
      * @return the FileQueryHeaders object itself.
@@ -144,8 +143,9 @@ public final class FileQueryHeaders {
     }
 
     /**
-     * Get the contentRange property: Indicates the range of bytes returned in the event that the client requested a
-     * subset of the file by setting the 'Range' request header.
+     * Get the contentRange property: Indicates the range of bytes returned in
+     * the event that the client requested a subset of the file by setting the
+     * 'Range' request header.
      *
      * @return the contentRange value.
      */
@@ -154,8 +154,9 @@ public final class FileQueryHeaders {
     }
 
     /**
-     * Set the contentRange property: Indicates the range of bytes returned in the event that the client requested a
-     * subset of the file by setting the 'Range' request header.
+     * Set the contentRange property: Indicates the range of bytes returned in
+     * the event that the client requested a subset of the file by setting the
+     * 'Range' request header.
      *
      * @param contentRange the contentRange value to set.
      * @return the FileQueryHeaders object itself.
@@ -166,8 +167,9 @@ public final class FileQueryHeaders {
     }
 
     /**
-     * Get the eTag property: The ETag contains a value that you can use to perform operations conditionally. If the
-     * request version is 2011-08-18 or newer, the ETag value will be in quotes.
+     * Get the eTag property: The ETag contains a value that you can use to
+     * perform operations conditionally. If the request version is 2011-08-18
+     * or newer, the ETag value will be in quotes.
      *
      * @return the eTag value.
      */
@@ -176,8 +178,9 @@ public final class FileQueryHeaders {
     }
 
     /**
-     * Set the eTag property: The ETag contains a value that you can use to perform operations conditionally. If the
-     * request version is 2011-08-18 or newer, the ETag value will be in quotes.
+     * Set the eTag property: The ETag contains a value that you can use to
+     * perform operations conditionally. If the request version is 2011-08-18
+     * or newer, the ETag value will be in quotes.
      *
      * @param eTag the eTag value to set.
      * @return the FileQueryHeaders object itself.
@@ -188,8 +191,9 @@ public final class FileQueryHeaders {
     }
 
     /**
-     * Get the contentMd5 property: If the file has an MD5 hash and this operation is to read the full file, this
-     * response header is returned so that the client can check for message content integrity.
+     * Get the contentMd5 property: If the file has an MD5 hash and this
+     * operation is to read the full file, this response header is returned so
+     * that the client can check for message content integrity.
      *
      * @return the contentMd5 value.
      */
@@ -198,8 +202,9 @@ public final class FileQueryHeaders {
     }
 
     /**
-     * Set the contentMd5 property: If the file has an MD5 hash and this operation is to read the full file, this
-     * response header is returned so that the client can check for message content integrity.
+     * Set the contentMd5 property: If the file has an MD5 hash and this
+     * operation is to read the full file, this response header is returned so
+     * that the client can check for message content integrity.
      *
      * @param contentMd5 the contentMd5 value to set.
      * @return the FileQueryHeaders object itself.
@@ -210,8 +215,8 @@ public final class FileQueryHeaders {
     }
 
     /**
-     * Get the contentEncoding property: This header returns the value that was specified for the Content-Encoding
-     * request header.
+     * Get the contentEncoding property: This header returns the value that was
+     * specified for the Content-Encoding request header.
      *
      * @return the contentEncoding value.
      */
@@ -220,8 +225,8 @@ public final class FileQueryHeaders {
     }
 
     /**
-     * Set the contentEncoding property: This header returns the value that was specified for the Content-Encoding
-     * request header.
+     * Set the contentEncoding property: This header returns the value that was
+     * specified for the Content-Encoding request header.
      *
      * @param contentEncoding the contentEncoding value to set.
      * @return the FileQueryHeaders object itself.
@@ -232,7 +237,8 @@ public final class FileQueryHeaders {
     }
 
     /**
-     * Get the cacheControl property: This header is returned if it was previously specified for the file.
+     * Get the cacheControl property: This header is returned if it was
+     * previously specified for the file.
      *
      * @return the cacheControl value.
      */
@@ -241,7 +247,8 @@ public final class FileQueryHeaders {
     }
 
     /**
-     * Set the cacheControl property: This header is returned if it was previously specified for the file.
+     * Set the cacheControl property: This header is returned if it was
+     * previously specified for the file.
      *
      * @param cacheControl the cacheControl value to set.
      * @return the FileQueryHeaders object itself.
@@ -252,11 +259,14 @@ public final class FileQueryHeaders {
     }
 
     /**
-     * Get the contentDisposition property: This header returns the value that was specified for the
-     * 'x-ms-blob-content-disposition' header. The Content-Disposition response header field conveys additional
-     * information about how to process the response payload, and also can be used to attach additional metadata. For
-     * example, if set to attachment, it indicates that the user-agent should not display the response, but instead show
-     * a Save As dialog with a filename other than the file name specified.
+     * Get the contentDisposition property: This header returns the value that
+     * was specified for the 'x-ms-blob-content-disposition' header. The
+     * Content-Disposition response header field conveys additional information
+     * about how to process the response payload, and also can be used to
+     * attach additional metadata. For example, if set to attachment, it
+     * indicates that the user-agent should not display the response, but
+     * instead show a Save As dialog with a filename other than the file name
+     * specified.
      *
      * @return the contentDisposition value.
      */
@@ -265,11 +275,14 @@ public final class FileQueryHeaders {
     }
 
     /**
-     * Set the contentDisposition property: This header returns the value that was specified for the
-     * 'x-ms-blob-content-disposition' header. The Content-Disposition response header field conveys additional
-     * information about how to process the response payload, and also can be used to attach additional metadata. For
-     * example, if set to attachment, it indicates that the user-agent should not display the response, but instead show
-     * a Save As dialog with a filename other than the file name specified.
+     * Set the contentDisposition property: This header returns the value that
+     * was specified for the 'x-ms-blob-content-disposition' header. The
+     * Content-Disposition response header field conveys additional information
+     * about how to process the response payload, and also can be used to
+     * attach additional metadata. For example, if set to attachment, it
+     * indicates that the user-agent should not display the response, but
+     * instead show a Save As dialog with a filename other than the file name
+     * specified.
      *
      * @param contentDisposition the contentDisposition value to set.
      * @return the FileQueryHeaders object itself.
@@ -280,8 +293,8 @@ public final class FileQueryHeaders {
     }
 
     /**
-     * Get the contentLanguage property: This header returns the value that was specified for the Content-Language
-     * request header.
+     * Get the contentLanguage property: This header returns the value that was
+     * specified for the Content-Language request header.
      *
      * @return the contentLanguage value.
      */
@@ -290,8 +303,8 @@ public final class FileQueryHeaders {
     }
 
     /**
-     * Set the contentLanguage property: This header returns the value that was specified for the Content-Language
-     * request header.
+     * Set the contentLanguage property: This header returns the value that was
+     * specified for the Content-Language request header.
      *
      * @param contentLanguage the contentLanguage value to set.
      * @return the FileQueryHeaders object itself.
@@ -302,11 +315,13 @@ public final class FileQueryHeaders {
     }
 
     /**
-     * Get the copyCompletionTime property: Conclusion time of the last attempted Copy Blob operation where this file
-     * was the destination file. This value can specify the time of a completed, aborted, or failed copy attempt. This
-     * header does not appear if a copy is pending, if this file has never been the destination in a Copy Blob
-     * operation, or if this file has been modified after a concluded Copy Blob operation using Set Blob Properties, Put
-     * Blob, or Put Block List.
+     * Get the copyCompletionTime property: Conclusion time of the last
+     * attempted Copy Blob operation where this file was the destination file.
+     * This value can specify the time of a completed, aborted, or failed copy
+     * attempt. This header does not appear if a copy is pending, if this file
+     * has never been the destination in a Copy Blob operation, or if this file
+     * has been modified after a concluded Copy Blob operation using Set Blob
+     * Properties, Put Blob, or Put Block List.
      *
      * @return the copyCompletionTime value.
      */
@@ -318,11 +333,13 @@ public final class FileQueryHeaders {
     }
 
     /**
-     * Set the copyCompletionTime property: Conclusion time of the last attempted Copy Blob operation where this file
-     * was the destination file. This value can specify the time of a completed, aborted, or failed copy attempt. This
-     * header does not appear if a copy is pending, if this file has never been the destination in a Copy Blob
-     * operation, or if this file has been modified after a concluded Copy Blob operation using Set Blob Properties, Put
-     * Blob, or Put Block List.
+     * Set the copyCompletionTime property: Conclusion time of the last
+     * attempted Copy Blob operation where this file was the destination file.
+     * This value can specify the time of a completed, aborted, or failed copy
+     * attempt. This header does not appear if a copy is pending, if this file
+     * has never been the destination in a Copy Blob operation, or if this file
+     * has been modified after a concluded Copy Blob operation using Set Blob
+     * Properties, Put Blob, or Put Block List.
      *
      * @param copyCompletionTime the copyCompletionTime value to set.
      * @return the FileQueryHeaders object itself.
@@ -337,10 +354,12 @@ public final class FileQueryHeaders {
     }
 
     /**
-     * Get the copyStatusDescription property: Only appears when x-ms-copy-status is failed or pending. Describes the
-     * cause of the last fatal or non-fatal copy operation failure. This header does not appear if this file has never
-     * been the destination in a Copy Blob operation, or if this file has been modified after a concluded Copy Blob
-     * operation using Set Blob Properties, Put Blob, or Put Block List.
+     * Get the copyStatusDescription property: Only appears when
+     * x-ms-copy-status is failed or pending. Describes the cause of the last
+     * fatal or non-fatal copy operation failure. This header does not appear
+     * if this file has never been the destination in a Copy Blob operation, or
+     * if this file has been modified after a concluded Copy Blob operation
+     * using Set Blob Properties, Put Blob, or Put Block List.
      *
      * @return the copyStatusDescription value.
      */
@@ -349,10 +368,12 @@ public final class FileQueryHeaders {
     }
 
     /**
-     * Set the copyStatusDescription property: Only appears when x-ms-copy-status is failed or pending. Describes the
-     * cause of the last fatal or non-fatal copy operation failure. This header does not appear if this file has never
-     * been the destination in a Copy Blob operation, or if this file has been modified after a concluded Copy Blob
-     * operation using Set Blob Properties, Put Blob, or Put Block List.
+     * Set the copyStatusDescription property: Only appears when
+     * x-ms-copy-status is failed or pending. Describes the cause of the last
+     * fatal or non-fatal copy operation failure. This header does not appear
+     * if this file has never been the destination in a Copy Blob operation, or
+     * if this file has been modified after a concluded Copy Blob operation
+     * using Set Blob Properties, Put Blob, or Put Block List.
      *
      * @param copyStatusDescription the copyStatusDescription value to set.
      * @return the FileQueryHeaders object itself.
@@ -363,8 +384,9 @@ public final class FileQueryHeaders {
     }
 
     /**
-     * Get the copyId property: String identifier for this copy operation. Use with Get Blob Properties to check the
-     * status of this copy operation, or pass to Abort Copy Blob to abort a pending copy.
+     * Get the copyId property: String identifier for this copy operation. Use
+     * with Get Blob Properties to check the status of this copy operation, or
+     * pass to Abort Copy Blob to abort a pending copy.
      *
      * @return the copyId value.
      */
@@ -373,8 +395,9 @@ public final class FileQueryHeaders {
     }
 
     /**
-     * Set the copyId property: String identifier for this copy operation. Use with Get Blob Properties to check the
-     * status of this copy operation, or pass to Abort Copy Blob to abort a pending copy.
+     * Set the copyId property: String identifier for this copy operation. Use
+     * with Get Blob Properties to check the status of this copy operation, or
+     * pass to Abort Copy Blob to abort a pending copy.
      *
      * @param copyId the copyId value to set.
      * @return the FileQueryHeaders object itself.
@@ -385,11 +408,13 @@ public final class FileQueryHeaders {
     }
 
     /**
-     * Get the copyProgress property: Contains the number of bytes copied and the total bytes in the source in the last
-     * attempted Copy Blob operation where this file was the destination file. Can show between 0 and Content-Length
-     * bytes copied. This header does not appear if this file has never been the destination in a Copy Blob operation,
-     * or if this file has been modified after a concluded Copy Blob operation using Set Blob Properties, Put Blob, or
-     * Put Block List.
+     * Get the copyProgress property: Contains the number of bytes copied and
+     * the total bytes in the source in the last attempted Copy Blob operation
+     * where this file was the destination file. Can show between 0 and
+     * Content-Length bytes copied. This header does not appear if this file
+     * has never been the destination in a Copy Blob operation, or if this file
+     * has been modified after a concluded Copy Blob operation using Set Blob
+     * Properties, Put Blob, or Put Block List.
      *
      * @return the copyProgress value.
      */
@@ -398,11 +423,13 @@ public final class FileQueryHeaders {
     }
 
     /**
-     * Set the copyProgress property: Contains the number of bytes copied and the total bytes in the source in the last
-     * attempted Copy Blob operation where this file was the destination file. Can show between 0 and Content-Length
-     * bytes copied. This header does not appear if this file has never been the destination in a Copy Blob operation,
-     * or if this file has been modified after a concluded Copy Blob operation using Set Blob Properties, Put Blob, or
-     * Put Block List.
+     * Set the copyProgress property: Contains the number of bytes copied and
+     * the total bytes in the source in the last attempted Copy Blob operation
+     * where this file was the destination file. Can show between 0 and
+     * Content-Length bytes copied. This header does not appear if this file
+     * has never been the destination in a Copy Blob operation, or if this file
+     * has been modified after a concluded Copy Blob operation using Set Blob
+     * Properties, Put Blob, or Put Block List.
      *
      * @param copyProgress the copyProgress value to set.
      * @return the FileQueryHeaders object itself.
@@ -413,10 +440,12 @@ public final class FileQueryHeaders {
     }
 
     /**
-     * Get the copySource property: URL up to 2 KB in length that specifies the source file or file used in the last
-     * attempted Copy Blob operation where this file was the destination file. This header does not appear if this file
-     * has never been the destination in a Copy Blob operation, or if this file has been modified after a concluded Copy
-     * Blob operation using Set Blob Properties, Put Blob, or Put Block List.
+     * Get the copySource property: URL up to 2 KB in length that specifies the
+     * source file or file used in the last attempted Copy Blob operation where
+     * this file was the destination file. This header does not appear if this
+     * file has never been the destination in a Copy Blob operation, or if this
+     * file has been modified after a concluded Copy Blob operation using Set
+     * Blob Properties, Put Blob, or Put Block List.
      *
      * @return the copySource value.
      */
@@ -425,10 +454,12 @@ public final class FileQueryHeaders {
     }
 
     /**
-     * Set the copySource property: URL up to 2 KB in length that specifies the source file or file used in the last
-     * attempted Copy Blob operation where this file was the destination file. This header does not appear if this file
-     * has never been the destination in a Copy Blob operation, or if this file has been modified after a concluded Copy
-     * Blob operation using Set Blob Properties, Put Blob, or Put Block List.
+     * Set the copySource property: URL up to 2 KB in length that specifies the
+     * source file or file used in the last attempted Copy Blob operation where
+     * this file was the destination file. This header does not appear if this
+     * file has never been the destination in a Copy Blob operation, or if this
+     * file has been modified after a concluded Copy Blob operation using Set
+     * Blob Properties, Put Blob, or Put Block List.
      *
      * @param copySource the copySource value to set.
      * @return the FileQueryHeaders object itself.
@@ -439,8 +470,9 @@ public final class FileQueryHeaders {
     }
 
     /**
-     * Get the copyStatus property: State of the copy operation identified by x-ms-copy-id. Possible values include:
-     * 'pending', 'success', 'aborted', 'failed'.
+     * Get the copyStatus property: State of the copy operation identified by
+     * x-ms-copy-id. Possible values include: 'pending', 'success', 'aborted',
+     * 'failed'.
      *
      * @return the copyStatus value.
      */
@@ -449,8 +481,9 @@ public final class FileQueryHeaders {
     }
 
     /**
-     * Set the copyStatus property: State of the copy operation identified by x-ms-copy-id. Possible values include:
-     * 'pending', 'success', 'aborted', 'failed'.
+     * Set the copyStatus property: State of the copy operation identified by
+     * x-ms-copy-id. Possible values include: 'pending', 'success', 'aborted',
+     * 'failed'.
      *
      * @param copyStatus the copyStatus value to set.
      * @return the FileQueryHeaders object itself.
@@ -461,8 +494,9 @@ public final class FileQueryHeaders {
     }
 
     /**
-     * Get the leaseDuration property: When a file is leased, specifies whether the lease is of infinite or fixed
-     * duration. Possible values include: 'infinite', 'fixed'.
+     * Get the leaseDuration property: When a file is leased, specifies whether
+     * the lease is of infinite or fixed duration. Possible values include:
+     * 'infinite', 'fixed'.
      *
      * @return the leaseDuration value.
      */
@@ -471,8 +505,9 @@ public final class FileQueryHeaders {
     }
 
     /**
-     * Set the leaseDuration property: When a file is leased, specifies whether the lease is of infinite or fixed
-     * duration. Possible values include: 'infinite', 'fixed'.
+     * Set the leaseDuration property: When a file is leased, specifies whether
+     * the lease is of infinite or fixed duration. Possible values include:
+     * 'infinite', 'fixed'.
      *
      * @param leaseDuration the leaseDuration value to set.
      * @return the FileQueryHeaders object itself.
@@ -483,8 +518,8 @@ public final class FileQueryHeaders {
     }
 
     /**
-     * Get the leaseState property: Lease state of the file. Possible values include: 'available', 'leased', 'expired',
-     * 'breaking', 'broken'.
+     * Get the leaseState property: Lease state of the file. Possible values
+     * include: 'available', 'leased', 'expired', 'breaking', 'broken'.
      *
      * @return the leaseState value.
      */
@@ -493,8 +528,8 @@ public final class FileQueryHeaders {
     }
 
     /**
-     * Set the leaseState property: Lease state of the file. Possible values include: 'available', 'leased', 'expired',
-     * 'breaking', 'broken'.
+     * Set the leaseState property: Lease state of the file. Possible values
+     * include: 'available', 'leased', 'expired', 'breaking', 'broken'.
      *
      * @param leaseState the leaseState value to set.
      * @return the FileQueryHeaders object itself.
@@ -505,8 +540,8 @@ public final class FileQueryHeaders {
     }
 
     /**
-     * Get the leaseStatus property: The current lease status of the file. Possible values include: 'locked',
-     * 'unlocked'.
+     * Get the leaseStatus property: The current lease status of the file.
+     * Possible values include: 'locked', 'unlocked'.
      *
      * @return the leaseStatus value.
      */
@@ -515,8 +550,8 @@ public final class FileQueryHeaders {
     }
 
     /**
-     * Set the leaseStatus property: The current lease status of the file. Possible values include: 'locked',
-     * 'unlocked'.
+     * Set the leaseStatus property: The current lease status of the file.
+     * Possible values include: 'locked', 'unlocked'.
      *
      * @param leaseStatus the leaseStatus value to set.
      * @return the FileQueryHeaders object itself.
@@ -527,8 +562,9 @@ public final class FileQueryHeaders {
     }
 
     /**
-     * Get the clientRequestId property: If a client request id header is sent in the request, this header will be
-     * present in the response with the same value.
+     * Get the clientRequestId property: If a client request id header is sent
+     * in the request, this header will be present in the response with the
+     * same value.
      *
      * @return the clientRequestId value.
      */
@@ -537,8 +573,9 @@ public final class FileQueryHeaders {
     }
 
     /**
-     * Set the clientRequestId property: If a client request id header is sent in the request, this header will be
-     * present in the response with the same value.
+     * Set the clientRequestId property: If a client request id header is sent
+     * in the request, this header will be present in the response with the
+     * same value.
      *
      * @param clientRequestId the clientRequestId value to set.
      * @return the FileQueryHeaders object itself.
@@ -549,8 +586,8 @@ public final class FileQueryHeaders {
     }
 
     /**
-     * Get the requestId property: This header uniquely identifies the request that was made and can be used for
-     * troubleshooting the request.
+     * Get the requestId property: This header uniquely identifies the request
+     * that was made and can be used for troubleshooting the request.
      *
      * @return the requestId value.
      */
@@ -559,8 +596,8 @@ public final class FileQueryHeaders {
     }
 
     /**
-     * Set the requestId property: This header uniquely identifies the request that was made and can be used for
-     * troubleshooting the request.
+     * Set the requestId property: This header uniquely identifies the request
+     * that was made and can be used for troubleshooting the request.
      *
      * @param requestId the requestId value to set.
      * @return the FileQueryHeaders object itself.
@@ -571,8 +608,9 @@ public final class FileQueryHeaders {
     }
 
     /**
-     * Get the version property: Indicates the version of the Blob service used to execute the request. This header is
-     * returned for requests made against version 2009-09-19 and above.
+     * Get the version property: Indicates the version of the Blob service used
+     * to execute the request. This header is returned for requests made
+     * against version 2009-09-19 and above.
      *
      * @return the version value.
      */
@@ -581,8 +619,9 @@ public final class FileQueryHeaders {
     }
 
     /**
-     * Set the version property: Indicates the version of the Blob service used to execute the request. This header is
-     * returned for requests made against version 2009-09-19 and above.
+     * Set the version property: Indicates the version of the Blob service used
+     * to execute the request. This header is returned for requests made
+     * against version 2009-09-19 and above.
      *
      * @param version the version value to set.
      * @return the FileQueryHeaders object itself.
@@ -593,7 +632,8 @@ public final class FileQueryHeaders {
     }
 
     /**
-     * Get the acceptRanges property: Indicates that the service supports requests for partial file content.
+     * Get the acceptRanges property: Indicates that the service supports
+     * requests for partial file content.
      *
      * @return the acceptRanges value.
      */
@@ -602,7 +642,8 @@ public final class FileQueryHeaders {
     }
 
     /**
-     * Set the acceptRanges property: Indicates that the service supports requests for partial file content.
+     * Set the acceptRanges property: Indicates that the service supports
+     * requests for partial file content.
      *
      * @param acceptRanges the acceptRanges value to set.
      * @return the FileQueryHeaders object itself.
@@ -613,8 +654,8 @@ public final class FileQueryHeaders {
     }
 
     /**
-     * Get the dateProperty property: UTC date/time value generated by the service that indicates the time at which the
-     * response was initiated.
+     * Get the dateProperty property: UTC date/time value generated by the
+     * service that indicates the time at which the response was initiated.
      *
      * @return the dateProperty value.
      */
@@ -626,8 +667,8 @@ public final class FileQueryHeaders {
     }
 
     /**
-     * Set the dateProperty property: UTC date/time value generated by the service that indicates the time at which the
-     * response was initiated.
+     * Set the dateProperty property: UTC date/time value generated by the
+     * service that indicates the time at which the response was initiated.
      *
      * @param dateProperty the dateProperty value to set.
      * @return the FileQueryHeaders object itself.
@@ -642,9 +683,11 @@ public final class FileQueryHeaders {
     }
 
     /**
-     * Get the isServerEncrypted property: The value of this header is set to true if the file data and application
-     * metadata are completely encrypted using the specified algorithm. Otherwise, the value is set to false (when the
-     * file is unencrypted, or if only parts of the file/application metadata are encrypted).
+     * Get the isServerEncrypted property: The value of this header is set to
+     * true if the file data and application metadata are completely encrypted
+     * using the specified algorithm. Otherwise, the value is set to false
+     * (when the file is unencrypted, or if only parts of the file/application
+     * metadata are encrypted).
      *
      * @return the isServerEncrypted value.
      */
@@ -653,9 +696,11 @@ public final class FileQueryHeaders {
     }
 
     /**
-     * Set the isServerEncrypted property: The value of this header is set to true if the file data and application
-     * metadata are completely encrypted using the specified algorithm. Otherwise, the value is set to false (when the
-     * file is unencrypted, or if only parts of the file/application metadata are encrypted).
+     * Set the isServerEncrypted property: The value of this header is set to
+     * true if the file data and application metadata are completely encrypted
+     * using the specified algorithm. Otherwise, the value is set to false
+     * (when the file is unencrypted, or if only parts of the file/application
+     * metadata are encrypted).
      *
      * @param serverEncrypted the isServerEncrypted value to set.
      * @return the FileQueryHeaders object itself.
@@ -666,8 +711,9 @@ public final class FileQueryHeaders {
     }
 
     /**
-     * Get the encryptionKeySha256 property: The SHA-256 hash of the encryption key used to encrypt the file. This
-     * header is only returned when the file was encrypted with a customer-provided key.
+     * Get the encryptionKeySha256 property: The SHA-256 hash of the encryption
+     * key used to encrypt the file. This header is only returned when the file
+     * was encrypted with a customer-provided key.
      *
      * @return the encryptionKeySha256 value.
      */
@@ -676,8 +722,9 @@ public final class FileQueryHeaders {
     }
 
     /**
-     * Set the encryptionKeySha256 property: The SHA-256 hash of the encryption key used to encrypt the file. This
-     * header is only returned when the file was encrypted with a customer-provided key.
+     * Set the encryptionKeySha256 property: The SHA-256 hash of the encryption
+     * key used to encrypt the file. This header is only returned when the file
+     * was encrypted with a customer-provided key.
      *
      * @param encryptionKeySha256 the encryptionKeySha256 value to set.
      * @return the FileQueryHeaders object itself.
@@ -688,10 +735,11 @@ public final class FileQueryHeaders {
     }
 
     /**
-     * Get the fileContentMD5 property: If the file has a MD5 hash, and if request contains range header
-     * (Range or x-ms-range), this response header is returned with the value of the whole file's MD5 value. This value
-     * may or may not be equal to the value returned in Content-MD5 header, with the latter calculated from the
-     * requested range.
+     * Get the fileContentMD5 property: If the file has a MD5 hash, and if
+     * request contains range header (Range or x-ms-range), this response
+     * header is returned with the value of the whole file's MD5 value. This
+     * value may or may not be equal to the value returned in Content-MD5
+     * header, with the latter calculated from the requested range.
      *
      * @return the fileContentMD5 value.
      */
@@ -700,10 +748,11 @@ public final class FileQueryHeaders {
     }
 
     /**
-     * Set the fileContentMD5 property: If the file has a MD5 hash, and if request contains range header
-     * (Range or x-ms-range), this response header is returned with the value of the whole file's MD5 value. This value
-     * may or may not be equal to the value returned in Content-MD5 header, with the latter calculated from the
-     * requested range.
+     * Set the fileContentMD5 property: If the file has a MD5 hash, and if
+     * request contains range header (Range or x-ms-range), this response
+     * header is returned with the value of the whole file's MD5 value. This
+     * value may or may not be equal to the value returned in Content-MD5
+     * header, with the latter calculated from the requested range.
      *
      * @param fileContentMd5 the fileContentMD5 value to set.
      * @return the FileQueryHeaders object itself.
@@ -714,10 +763,12 @@ public final class FileQueryHeaders {
     }
 
     /**
-     * Get the contentCrc64 property: If the request is to read a specified range and the x-ms-range-get-content-crc64
-     * is set to true, then the request returns a crc64 for the range, as long as the range size is less than or equal
-     * to 4 MB. If both x-ms-range-get-content-crc64 &amp; x-ms-range-get-content-md5 is specified in the same request,
-     * it will fail with 400(Bad Request).
+     * Get the contentCrc64 property: If the request is to read a specified
+     * range and the x-ms-range-get-content-crc64 is set to true, then the
+     * request returns a crc64 for the range, as long as the range size is less
+     * than or equal to 4 MB. If both x-ms-range-get-content-crc64 &amp;
+     * x-ms-range-get-content-md5 is specified in the same request, it will
+     * fail with 400(Bad Request).
      *
      * @return the contentCrc64 value.
      */
@@ -726,10 +777,12 @@ public final class FileQueryHeaders {
     }
 
     /**
-     * Set the contentCrc64 property: If the request is to read a specified range and the x-ms-range-get-content-crc64
-     * is set to true, then the request returns a crc64 for the range, as long as the range size is less than or equal
-     * to 4 MB. If both x-ms-range-get-content-crc64 &amp; x-ms-range-get-content-md5 is specified in the same request,
-     * it will fail with 400(Bad Request).
+     * Set the contentCrc64 property: If the request is to read a specified
+     * range and the x-ms-range-get-content-crc64 is set to true, then the
+     * request returns a crc64 for the range, as long as the range size is less
+     * than or equal to 4 MB. If both x-ms-range-get-content-crc64 &amp;
+     * x-ms-range-get-content-md5 is specified in the same request, it will
+     * fail with 400(Bad Request).
      *
      * @param contentCrc64 the contentCrc64 value to set.
      * @return the FileQueryHeaders object itself.

@@ -11,6 +11,7 @@ import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
  */
 @Fluent
 public class DataLakePathDeleteOptions {
+
     private boolean isRecursive;
     private DataLakeRequestConditions requestConditions;
 
@@ -21,8 +22,6 @@ public class DataLakePathDeleteOptions {
     }
 
     /**
-     * Gets whether everything under the resource should be deleted recursively.
-     *
      * @return whether everything under the resource should be deleted recursively
      */
     public boolean getIsRecursive() {
