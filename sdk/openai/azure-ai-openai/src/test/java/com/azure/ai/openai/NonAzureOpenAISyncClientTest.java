@@ -189,7 +189,7 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
         client = getNonAzureOpenAISyncClient(httpClient);
         getCompletionsRunnerForNonAzure((modelId, prompt) -> {
             CompletionsOptions completionsOptions = new CompletionsOptions(prompt);
-            completionsOptions.setMaxTokens(2);
+            completionsOptions.setMaxTokens(3);
             Completions resultCompletions = client.getCompletions(modelId, completionsOptions);
             assertCompletions(1, resultCompletions);
             CompletionsUsage usage = resultCompletions.getUsage();
@@ -251,6 +251,18 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
             IterableStream<ChatCompletions> resultChatCompletions
                 = client.getChatCompletionsStream(deploymentId, chatCompletionsOptions);
             assertChatCompletionStreamTokenCutoff(resultChatCompletions.stream().collect(Collectors.toList()));
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testGetChatCompletionsStreamUsageTokenDetails(HttpClient httpClient,
+        OpenAIServiceVersion serviceVersion) {
+        client = getNonAzureOpenAISyncClient(httpClient);
+        getChatCompletionsStreamUsageRunner((deploymentId, chatCompletionsOptions) -> {
+            IterableStream<ChatCompletions> resultChatCompletions
+                = client.getChatCompletionsStream(deploymentId, chatCompletionsOptions);
+            assertChatCompletionStreamUsageTokenDetails(resultChatCompletions.stream().collect(Collectors.toList()));
         });
     }
 

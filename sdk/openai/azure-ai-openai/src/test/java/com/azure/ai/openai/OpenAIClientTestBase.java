@@ -205,6 +205,9 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
     public abstract void testGetCompletionsStreamUsage(HttpClient httpClient, OpenAIServiceVersion serviceVersion);
 
     @Test
+    public abstract void testGetCompletionsTokenCutoff(HttpClient httpClient, OpenAIServiceVersion serviceVersion);
+
+    @Test
     public abstract void testGetCompletionsStreamTokenCutoff(HttpClient httpClient,
         OpenAIServiceVersion serviceVersion);
 
@@ -222,6 +225,10 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
 
     @Test
     public abstract void testGetChatCompletionsStreamTokenCutoff(HttpClient httpClient,
+        OpenAIServiceVersion serviceVersion);
+
+    @Test
+    public abstract void testGetChatCompletionsStreamUsageTokenDetails(HttpClient httpClient,
         OpenAIServiceVersion serviceVersion);
 
     @Test
