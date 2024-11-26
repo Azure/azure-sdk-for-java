@@ -3,33 +3,14 @@
 
 package com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering;
 
-import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-public abstract class TelemetryColumns {
-    private Map<String, String> customDimensions;
+public interface TelemetryColumns {
+    <T> T getFieldValue(String fieldName, Class<T> type);
 
-    public TelemetryColumns() {
-        this.customDimensions = new HashMap<String, String>();
-    }
+    List<String> getAllFieldValuesAsString();
 
-    public void setCustomDimensions(Map<String, String> customDimensions, Map<String, Double> customMeasurements) {
-        Map<String, String> resultMap = new HashMap<>();
-        if (customDimensions != null) {
-            resultMap.putAll(customDimensions);
-        }
-        if (customMeasurements != null) {
-            for (Map.Entry<String, Double> cmEntry : customMeasurements.entrySet()) {
-                resultMap.put(cmEntry.getKey(), cmEntry.getValue().toString());
-            }
-        }
-        this.customDimensions = resultMap;
-    }
-
-    public Map<String, String> getCustomDimensions() {
-        return this.customDimensions;
-    }
-
-    public abstract Object getFieldValue(String fieldName);
+    Map<String, String> getCustomDimensions();
 
 }

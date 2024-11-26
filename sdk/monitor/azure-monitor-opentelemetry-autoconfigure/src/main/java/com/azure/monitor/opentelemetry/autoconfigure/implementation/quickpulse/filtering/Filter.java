@@ -8,7 +8,7 @@ import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.s
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.FilterInfo;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.PredicateType;
 
-import java.lang.reflect.Field;
+import java.util.List;
 import java.util.Map;
 
 public class Filter {
@@ -51,13 +51,10 @@ public class Filter {
         } else if (filter.getFieldName().startsWith(CUSTOM_DIM_FIELDNAME_PREFIX)) {
             return checkCustomDimFilter(filter, data);
         } else {
-            Object fieldValue = data.getFieldValue(filter.getFieldName());
+            String fieldName = filter.getFieldName();
 
             if (filter.getFieldName().equals(KnownRequestColumns.SUCCESS)) {
-                if (fieldValue == null) { // this should never happen, but just in case
-                    return false;
-                }
-                boolean fieldValueBoolean = (Boolean) fieldValue;
+                boolean fieldValueBoolean = data.getFieldValue(filter.getFieldName(), Boolean.class);
                 boolean comparand = Boolean.parseBoolean(filter.getComparand().toLowerCase());
                 if (filter.getPredicate().equals(PredicateType.EQUAL)) {
                     return fieldValueBoolean == comparand;
@@ -65,46 +62,37 @@ public class Filter {
                     return fieldValueBoolean != comparand;
                 }
             } else if (filter.getFieldName().equals(KnownDependencyColumns.DURATION)) {
-                if (fieldValue == null) { // this should never happen, but just in case
-                    return false;
-                }
                 long comparand = getMicroSecondsFromFilterTimestampString(filter.getComparand());
-                return numericCompare((Long) fieldValue, comparand, filter.getPredicate());
+                long fieldValueLong = data.getFieldValue(KnownRequestColumns.DURATION, Long.class);
+                return numericCompare(fieldValueLong, comparand, filter.getPredicate());
             } else if (filter.getFieldName().equals(KnownDependencyColumns.RESULT_CODE)
                 || filter.getFieldName().equals(KnownRequestColumns.RESPONSE_CODE)) {
-                if (fieldValue == null) { // this should never happen, but just in case
-                    return false;
-                }
                 int comparand = Integer.parseInt(filter.getComparand());
                 PredicateType predicate = filter.getPredicate();
-                return numericCompare((Integer) fieldValue, comparand, predicate);
+                int fieldValueInt = data.getFieldValue(fieldName, Integer.class);
+                return numericCompare(fieldValueInt, comparand, predicate);
             } else {
                 // string fields
-                return stringCompare((String) fieldValue, filter.getComparand(), filter.getPredicate());
+                String fieldValueString = data.getFieldValue(fieldName, String.class);
+                return stringCompare(fieldValueString, filter.getComparand(), filter.getPredicate());
             }
         }
         return false;
     }
 
     private static boolean checkAnyFieldFilter(FilterInfo filter, TelemetryColumns data) {
-        try {
-            Field[] fields = data.getClass().getDeclaredFields();
-            for (Field field : fields) {
-                field.setAccessible(true);
-                String value = String.valueOf(field.get(data));
-                if (stringCompare(value, filter.getComparand(), filter.getPredicate())) {
-                    return true;
-                }
+
+        List<String> values = data.getAllFieldValuesAsString();
+        for (String value : values) {
+            if (stringCompare(value, filter.getComparand(), filter.getPredicate())) {
+                return true;
             }
-            Map<String, String> customDimensions = data.getCustomDimensions();
-            for (String value : customDimensions.values()) {
-                if (stringCompare(value, filter.getComparand(), filter.getPredicate())) {
-                    return true;
-                }
+        }
+        Map<String, String> customDimensions = data.getCustomDimensions();
+        for (String value : customDimensions.values()) {
+            if (stringCompare(value, filter.getComparand(), filter.getPredicate())) {
+                return true;
             }
-        } catch (IllegalAccessException e) {
-            // we should never get here as we are looping through fields that we know exist.
-            return false;
         }
         return false;
     }
