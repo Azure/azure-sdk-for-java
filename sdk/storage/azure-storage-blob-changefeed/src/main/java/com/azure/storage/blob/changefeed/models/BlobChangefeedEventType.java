@@ -23,6 +23,15 @@ public final class BlobChangefeedEventType extends ExpandableStringEnum<BlobChan
     public static final BlobChangefeedEventType BLOB_DELETED = fromString("BlobDeleted");
 
     /**
+     * Creates a new instance of {@link BlobChangefeedEventType} with no string value.
+     *
+     * @deprecated Please use {@link #fromString(String)} to create an instance of BlobChangefeedEventType.
+     */
+    @Deprecated
+    public BlobChangefeedEventType() {
+    }
+
+    /**
      * Creates or finds a BlobChangefeedEventType from its string representation.
      *
      * @param name a name to look for.
@@ -33,6 +42,8 @@ public final class BlobChangefeedEventType extends ExpandableStringEnum<BlobChan
     }
 
     /**
+     * Gets known BlobChangefeedEventType values.
+     *
      * @return known BlobChangefeedEventType values.
      */
     public static Collection<BlobChangefeedEventType> values() {
