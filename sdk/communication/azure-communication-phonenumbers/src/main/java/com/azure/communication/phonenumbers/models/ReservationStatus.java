@@ -5,11 +5,11 @@
 package com.azure.communication.phonenumbers.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * @deprecated Defines values for ReservationStatus.
+ * @deprecated Defines values for ReservationStatus. 
  */
 @Deprecated
 public final class ReservationStatus extends ExpandableStringEnum<ReservationStatus> {
@@ -53,29 +53,17 @@ public final class ReservationStatus extends ExpandableStringEnum<ReservationSta
     public static final ReservationStatus PURCHASE_PENDING = fromString("PurchasePending");
 
     /**
-     * Creates an instance of {@link ReservationStatus} with no string value.
-     *
-     * @deprecated Use {@link #fromString(String)} to create or get an instance of {@link ReservationStatus} instead.
-     */
-    @Deprecated
-    public ReservationStatus() {
-    }
-
-    /**
      * Creates or finds a ReservationStatus from its string representation.
      *
      * @param name a name to look for.
      * @return the corresponding ReservationStatus.
      */
+    @JsonCreator
     public static ReservationStatus fromString(String name) {
         return fromString(name, ReservationStatus.class);
     }
 
-    /**
-     * Gives a Collection of ReservationStatus values.
-     *
-     * @return known ReservationStatus values.
-     */
+    /** @return known ReservationStatus values. */
     public static Collection<ReservationStatus> values() {
         return values(ReservationStatus.class);
     }

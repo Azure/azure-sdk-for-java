@@ -6,37 +6,27 @@ package com.azure.communication.phonenumbers.implementation.models;
 
 import com.azure.communication.phonenumbers.models.PhoneNumberAreaCode;
 import com.azure.core.annotation.Immutable;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The list of available area codes.
- */
+/** The PhoneNumberAreaCodes model. */
 @Immutable
-public final class PhoneNumberAreaCodes implements JsonSerializable<PhoneNumberAreaCodes> {
+public final class PhoneNumberAreaCodes {
     /*
      * Represents a list of available toll-free area codes.
      */
+    @JsonProperty(value = "areaCodes", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private List<PhoneNumberAreaCode> areaCodes;
 
     /*
      * Represents the URL link to the next page.
      */
+    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
     /**
-     * Creates an instance of PhoneNumberAreaCodes class.
-     */
-    public PhoneNumberAreaCodes() {
-    }
-
-    /**
      * Get the areaCodes property: Represents a list of available toll-free area codes.
-     * 
+     *
      * @return the areaCodes value.
      */
     public List<PhoneNumberAreaCode> getAreaCodes() {
@@ -45,50 +35,10 @@ public final class PhoneNumberAreaCodes implements JsonSerializable<PhoneNumberA
 
     /**
      * Get the nextLink property: Represents the URL link to the next page.
-     * 
+     *
      * @return the nextLink value.
      */
     public String getNextLink() {
         return this.nextLink;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of PhoneNumberAreaCodes from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of PhoneNumberAreaCodes if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the PhoneNumberAreaCodes.
-     */
-    public static PhoneNumberAreaCodes fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            PhoneNumberAreaCodes deserializedPhoneNumberAreaCodes = new PhoneNumberAreaCodes();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("areaCodes".equals(fieldName)) {
-                    List<PhoneNumberAreaCode> areaCodes
-                        = reader.readArray(reader1 -> PhoneNumberAreaCode.fromJson(reader1));
-                    deserializedPhoneNumberAreaCodes.areaCodes = areaCodes;
-                } else if ("nextLink".equals(fieldName)) {
-                    deserializedPhoneNumberAreaCodes.nextLink = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedPhoneNumberAreaCodes;
-        });
     }
 }

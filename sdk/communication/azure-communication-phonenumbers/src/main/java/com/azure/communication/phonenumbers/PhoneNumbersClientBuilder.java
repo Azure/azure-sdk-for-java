@@ -70,12 +70,15 @@ import java.util.Objects;
  * <!-- end com.azure.communication.phonenumbers.client.instantiation -->
  */
 @ServiceClientBuilder(serviceClients = { PhoneNumbersClient.class, PhoneNumbersAsyncClient.class })
-public final class PhoneNumbersClientBuilder
-    implements AzureKeyCredentialTrait<PhoneNumbersClientBuilder>, ConfigurationTrait<PhoneNumbersClientBuilder>,
-    ConnectionStringTrait<PhoneNumbersClientBuilder>, EndpointTrait<PhoneNumbersClientBuilder>,
-    HttpTrait<PhoneNumbersClientBuilder>, TokenCredentialTrait<PhoneNumbersClientBuilder> {
-    private static final Map<String, String> PROPERTIES
-        = CoreUtils.getProperties("azure-communication-phonenumbers.properties");
+public final class PhoneNumbersClientBuilder implements
+        AzureKeyCredentialTrait<PhoneNumbersClientBuilder>,
+        ConfigurationTrait<PhoneNumbersClientBuilder>,
+        ConnectionStringTrait<PhoneNumbersClientBuilder>,
+        EndpointTrait<PhoneNumbersClientBuilder>,
+        HttpTrait<PhoneNumbersClientBuilder>,
+        TokenCredentialTrait<PhoneNumbersClientBuilder> {
+    private static final Map<String, String> PROPERTIES = CoreUtils
+            .getProperties("azure-communication-phonenumbers.properties");
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
 
@@ -94,12 +97,6 @@ public final class PhoneNumbersClientBuilder
     private RetryOptions retryOptions;
     private final List<HttpPipelinePolicy> additionalPolicies = new ArrayList<>();
     private String acceptLanguage;
-
-    /**
-     * Creates a new instance of {@link PhoneNumbersClientBuilder}.
-     */
-    public PhoneNumbersClientBuilder() {
-    }
 
     /**
      * Set endpoint of the service
@@ -252,7 +249,9 @@ public final class PhoneNumbersClientBuilder
         CommunicationConnectionString connectionStringObject = new CommunicationConnectionString(connectionString);
         String endpoint = connectionStringObject.getEndpoint();
         String accessKey = connectionStringObject.getAccessKey();
-        this.endpoint(endpoint).credential(new AzureKeyCredential(accessKey));
+        this
+                .endpoint(endpoint)
+                .credential(new AzureKeyCredential(accessKey));
         return this;
     }
 
@@ -459,28 +458,29 @@ public final class PhoneNumbersClientBuilder
     }
 
     PhoneNumbersAsyncClient createPhoneNumberAsyncClient(PhoneNumberAdminClientImpl phoneNumberAdminClient,
-        String acceptLanguage) {
+            String acceptLanguage) {
         return new PhoneNumbersAsyncClient(phoneNumberAdminClient, acceptLanguage);
     }
 
     HttpPipelinePolicy createAuthenticationPolicy() {
         if (this.tokenCredential != null && this.azureKeyCredential != null) {
             throw logger.logExceptionAsError(
-                new IllegalArgumentException("Both 'credential' and 'keyCredential' are set. Just one may be used."));
+                    new IllegalArgumentException(
+                            "Both 'credential' and 'keyCredential' are set. Just one may be used."));
         }
         if (this.tokenCredential != null) {
-            return new BearerTokenAuthenticationPolicy(this.tokenCredential,
-                "https://communication.azure.com//.default");
+            return new BearerTokenAuthenticationPolicy(
+                    this.tokenCredential, "https://communication.azure.com//.default");
         } else if (this.azureKeyCredential != null) {
             return new HmacAuthenticationPolicy(this.azureKeyCredential);
         } else {
             throw logger.logExceptionAsError(
-                new NullPointerException("Missing credential information while building a client."));
+                    new NullPointerException("Missing credential information while building a client."));
         }
     }
 
-    UserAgentPolicy createUserAgentPolicy(String applicationId, String sdkName, String sdkVersion,
-        Configuration configuration) {
+    UserAgentPolicy createUserAgentPolicy(
+            String applicationId, String sdkName, String sdkVersion, Configuration configuration) {
         return new UserAgentPolicy(applicationId, sdkName, sdkVersion, configuration);
     }
 
@@ -506,7 +506,10 @@ public final class PhoneNumbersClientBuilder
 
     private PhoneNumberAdminClientImpl createPhoneNumberAdminClient() {
         PhoneNumberAdminClientImplBuilder clientBuilder = new PhoneNumberAdminClientImplBuilder();
-        return clientBuilder.endpoint(this.endpoint).pipeline(this.createHttpPipeline()).buildClient();
+        return clientBuilder
+                .endpoint(this.endpoint)
+                .pipeline(this.createHttpPipeline())
+                .buildClient();
     }
 
     private HttpPipeline createHttpPipeline() {
@@ -527,8 +530,11 @@ public final class PhoneNumbersClientBuilder
         }
 
         // Add required policies
-        policyList.add(this.createUserAgentPolicy(applicationId, PROPERTIES.get(SDK_NAME), PROPERTIES.get(SDK_VERSION),
-            this.configuration));
+        policyList.add(this.createUserAgentPolicy(
+                applicationId,
+                PROPERTIES.get(SDK_NAME),
+                PROPERTIES.get(SDK_VERSION),
+                this.configuration));
         policyList.add(this.createRequestIdPolicy());
         policyList.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions));
         // auth policy is per request, should be after retry
@@ -543,10 +549,11 @@ public final class PhoneNumbersClientBuilder
         // Add logging policy
         policyList.add(this.createHttpLoggingPolicy(this.getHttpLogOptions()));
 
-        return new HttpPipelineBuilder().policies(policyList.toArray(new HttpPipelinePolicy[0]))
-            .httpClient(this.httpClient)
-            .clientOptions(clientOptions)
-            .build();
+        return new HttpPipelineBuilder()
+                .policies(policyList.toArray(new HttpPipelinePolicy[0]))
+                .httpClient(this.httpClient)
+                .clientOptions(clientOptions)
+                .build();
     }
 
     private HttpLogOptions getHttpLogOptions() {
