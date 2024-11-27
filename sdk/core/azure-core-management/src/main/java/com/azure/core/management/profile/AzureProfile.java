@@ -63,6 +63,8 @@ public final class AzureProfile {
     }
 
     /**
+     * <p>Note: Only use this constructor for custom Azure cloud/endpoints.
+     * Use {@link AzureProfile#AzureProfile(String, String, AzureCloud)} for global environment.</p>
      * Creates AzureProfile instance with Azure environment. The global environment is {@link AzureEnvironment#AZURE}.
      * The tenant ID and subscription ID can be set via environment variables. The environment variables are expected
      * as below:
@@ -70,8 +72,6 @@ public final class AzureProfile {
      *     <li>{@link Configuration#PROPERTY_AZURE_TENANT_ID AZURE_TENANT_ID}</li>
      *     <li>{@link Configuration#PROPERTY_AZURE_SUBSCRIPTION_ID AZURE_SUBSCRIPTION_ID}</li>
      * </ul>
-     * <p>Note: Only use this constructor for custom Azure cloud/endpoints.
-     * Use {@link AzureProfile#AzureProfile(String, String, AzureCloud)} for global environment.</p>
      *
      * @param environment the Azure environment
      * @see AzureProfile#AzureProfile(AzureCloud)
@@ -85,10 +85,10 @@ public final class AzureProfile {
     }
 
     /**
-     * Creates AzureProfile instance with tenant ID, subscription ID and Azure environment.
-     * The global environment is {@link AzureEnvironment#AZURE}.
      * <p>Note: Only use this constructor for custom Azure cloud/endpoints.
      * Use {@link AzureProfile#AzureProfile(String, String, AzureCloud)} for global environment.</p>
+     * Creates AzureProfile instance with tenant ID, subscription ID and Azure environment.
+     * The global environment is {@link AzureEnvironment#AZURE}.
      *
      * @param tenantId the tenant ID required for Graph Rbac
      * @param subscriptionId the subscription ID required for resource management
