@@ -26,6 +26,7 @@ import java.util.stream.Collectors;
 final class SystemProperties implements Map<String, Object> {
     private static final ClientLogger LOGGER = new ClientLogger(SystemProperties.class);
     private final Long offset;
+    private final String offsetString;
     private final String partitionKey;
     private final Instant enqueuedTime;
     private final Long sequenceNumber;
@@ -38,20 +39,41 @@ final class SystemProperties implements Map<String, Object> {
     SystemProperties() {
         this.message = null;
         this.offset = null;
+        this.offsetString = null;
         this.enqueuedTime = null;
         this.partitionKey = null;
         this.sequenceNumber = null;
         this.replicationSegment = null;
     }
 
-    SystemProperties(final AmqpAnnotatedMessage message, long offset, Instant enqueuedTime, long sequenceNumber,
+    SystemProperties(final AmqpAnnotatedMessage message, String offsetString, Instant enqueuedTime, long sequenceNumber,
         String partitionKey, Integer replicationSegment) {
         this.message = Objects.requireNonNull(message, "'message' cannot be null.");
-        this.offset = offset;
         this.enqueuedTime = enqueuedTime;
         this.sequenceNumber = sequenceNumber;
         this.partitionKey = partitionKey;
         this.replicationSegment = replicationSegment;
+        this.offsetString = offsetString;
+
+        Long parsed;
+        try {
+            parsed = Long.valueOf(offsetString);
+        } catch (Exception e) {
+            parsed = null;
+        }
+
+        this.offset = parsed;
+    }
+
+    /**
+     * Gets the offset within the Event Hubs stream.
+     *
+     * @return The offset within the Event Hubs stream.
+     * @deprecated This method is obsolete and should no longer be used. Please use {@link #getOffsetString()}.
+     */
+    @Deprecated
+    Long getOffset() {
+        return offset;
     }
 
     /**
@@ -59,9 +81,7 @@ final class SystemProperties implements Map<String, Object> {
      *
      * @return The offset within the Event Hubs stream.
      */
-    Long getOffset() {
-        return offset;
-    }
+    String getOffsetString() { return offsetString; }
 
     /**
      * Gets a partition key used for message partitioning. If it exists, this value was used to compute a hash to select
