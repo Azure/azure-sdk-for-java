@@ -17,7 +17,8 @@ public final class CommunicationErrorResponse {
     private CommunicationError error;
 
     /** Creates an instance of CommunicationErrorResponse class. */
-    public CommunicationErrorResponse() {}
+    public CommunicationErrorResponse() {
+    }
 
     /**
      * Get the error property: The Communication Services error.

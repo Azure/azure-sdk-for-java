@@ -42,19 +42,22 @@ import java.util.Map;
 import java.util.Objects;
 
 /** A builder for creating a new instance of the AzureCommunicationRoomService type. */
-@ServiceClientBuilder(serviceClients = {AzureCommunicationRoomServiceImpl.class})
-public final class AzureCommunicationRoomServiceImplBuilder
-        implements HttpTrait<AzureCommunicationRoomServiceImplBuilder>,
-                ConfigurationTrait<AzureCommunicationRoomServiceImplBuilder>,
-                AzureKeyCredentialTrait<AzureCommunicationRoomServiceImplBuilder>,
-                EndpointTrait<AzureCommunicationRoomServiceImplBuilder> {
-    @Generated private static final String SDK_NAME = "name";
+@ServiceClientBuilder(serviceClients = { AzureCommunicationRoomServiceImpl.class })
+public final class AzureCommunicationRoomServiceImplBuilder implements
+    HttpTrait<AzureCommunicationRoomServiceImplBuilder>, ConfigurationTrait<AzureCommunicationRoomServiceImplBuilder>,
+    AzureKeyCredentialTrait<AzureCommunicationRoomServiceImplBuilder>,
+    EndpointTrait<AzureCommunicationRoomServiceImplBuilder> {
+    @Generated
+    private static final String SDK_NAME = "name";
 
-    @Generated private static final String SDK_VERSION = "version";
+    @Generated
+    private static final String SDK_VERSION = "version";
 
-    @Generated private static final Map<String, String> PROPERTIES = new HashMap<>();
+    @Generated
+    private static final Map<String, String> PROPERTIES = new HashMap<>();
 
-    @Generated private final List<HttpPipelinePolicy> pipelinePolicies;
+    @Generated
+    private final List<HttpPipelinePolicy> pipelinePolicies;
 
     /** Create an instance of the AzureCommunicationRoomServiceImplBuilder. */
     @Generated
@@ -65,7 +68,8 @@ public final class AzureCommunicationRoomServiceImplBuilder
     /*
      * The HTTP pipeline to send requests through.
      */
-    @Generated private HttpPipeline pipeline;
+    @Generated
+    private HttpPipeline pipeline;
 
     /** {@inheritDoc}. */
     @Generated
@@ -78,7 +82,8 @@ public final class AzureCommunicationRoomServiceImplBuilder
     /*
      * The HTTP client used to send the request.
      */
-    @Generated private HttpClient httpClient;
+    @Generated
+    private HttpClient httpClient;
 
     /** {@inheritDoc}. */
     @Generated
@@ -91,7 +96,8 @@ public final class AzureCommunicationRoomServiceImplBuilder
     /*
      * The logging configuration for HTTP requests and responses.
      */
-    @Generated private HttpLogOptions httpLogOptions;
+    @Generated
+    private HttpLogOptions httpLogOptions;
 
     /** {@inheritDoc}. */
     @Generated
@@ -104,7 +110,8 @@ public final class AzureCommunicationRoomServiceImplBuilder
     /*
      * The client options such as application ID and custom headers to set on a request.
      */
-    @Generated private ClientOptions clientOptions;
+    @Generated
+    private ClientOptions clientOptions;
 
     /** {@inheritDoc}. */
     @Generated
@@ -117,7 +124,8 @@ public final class AzureCommunicationRoomServiceImplBuilder
     /*
      * The retry options to configure retry policy for failed requests.
      */
-    @Generated private RetryOptions retryOptions;
+    @Generated
+    private RetryOptions retryOptions;
 
     /** {@inheritDoc}. */
     @Generated
@@ -139,7 +147,8 @@ public final class AzureCommunicationRoomServiceImplBuilder
     /*
      * The configuration store that is used during construction of the service client.
      */
-    @Generated private Configuration configuration;
+    @Generated
+    private Configuration configuration;
 
     /** {@inheritDoc}. */
     @Generated
@@ -152,7 +161,8 @@ public final class AzureCommunicationRoomServiceImplBuilder
     /*
      * The AzureKeyCredential used for authentication.
      */
-    @Generated private AzureKeyCredential azureKeyCredential;
+    @Generated
+    private AzureKeyCredential azureKeyCredential;
 
     /** {@inheritDoc}. */
     @Generated
@@ -165,7 +175,8 @@ public final class AzureCommunicationRoomServiceImplBuilder
     /*
      * The service endpoint
      */
-    @Generated private String endpoint;
+    @Generated
+    private String endpoint;
 
     /** {@inheritDoc}. */
     @Generated
@@ -178,7 +189,8 @@ public final class AzureCommunicationRoomServiceImplBuilder
     /*
      * Api Version
      */
-    @Generated private String apiVersion;
+    @Generated
+    private String apiVersion;
 
     /**
      * Sets Api Version.
@@ -195,7 +207,8 @@ public final class AzureCommunicationRoomServiceImplBuilder
     /*
      * The serializer to serialize an object into a string
      */
-    @Generated private SerializerAdapter serializerAdapter;
+    @Generated
+    private SerializerAdapter serializerAdapter;
 
     /**
      * Sets The serializer to serialize an object into a string.
@@ -212,7 +225,8 @@ public final class AzureCommunicationRoomServiceImplBuilder
     /*
      * The retry policy that will attempt to retry failed requests, if applicable.
      */
-    @Generated private RetryPolicy retryPolicy;
+    @Generated
+    private RetryPolicy retryPolicy;
 
     /**
      * Sets The retry policy that will attempt to retry failed requests, if applicable.
@@ -235,17 +249,17 @@ public final class AzureCommunicationRoomServiceImplBuilder
     public AzureCommunicationRoomServiceImpl buildClient() {
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
         String localApiVersion = (apiVersion != null) ? apiVersion : "2024-04-15";
-        SerializerAdapter localSerializerAdapter =
-                (serializerAdapter != null) ? serializerAdapter : JacksonAdapter.createDefaultSerializerAdapter();
-        AzureCommunicationRoomServiceImpl client =
-                new AzureCommunicationRoomServiceImpl(localPipeline, localSerializerAdapter, endpoint, localApiVersion);
+        SerializerAdapter localSerializerAdapter
+            = (serializerAdapter != null) ? serializerAdapter : JacksonAdapter.createDefaultSerializerAdapter();
+        AzureCommunicationRoomServiceImpl client
+            = new AzureCommunicationRoomServiceImpl(localPipeline, localSerializerAdapter, endpoint, localApiVersion);
         return client;
     }
 
     @Generated
     private HttpPipeline createHttpPipeline() {
-        Configuration buildConfiguration =
-                (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
+        Configuration buildConfiguration
+            = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
         HttpLogOptions localHttpLogOptions = this.httpLogOptions == null ? new HttpLogOptions() : this.httpLogOptions;
         ClientOptions localClientOptions = this.clientOptions == null ? new ClientOptions() : this.clientOptions;
         List<HttpPipelinePolicy> policies = new ArrayList<>();
@@ -261,8 +275,8 @@ public final class AzureCommunicationRoomServiceImplBuilder
             policies.add(new AddHeadersPolicy(headers));
         }
         this.pipelinePolicies.stream()
-                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
-                .forEach(p -> policies.add(p));
+            .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+            .forEach(p -> policies.add(p));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions, new RetryPolicy()));
         policies.add(new AddDatePolicy());
@@ -271,16 +285,14 @@ public final class AzureCommunicationRoomServiceImplBuilder
             policies.add(new AzureKeyCredentialPolicy("Authorization", azureKeyCredential));
         }
         this.pipelinePolicies.stream()
-                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
-                .forEach(p -> policies.add(p));
+            .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+            .forEach(p -> policies.add(p));
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(httpLogOptions));
-        HttpPipeline httpPipeline =
-                new HttpPipelineBuilder()
-                        .policies(policies.toArray(new HttpPipelinePolicy[0]))
-                        .httpClient(httpClient)
-                        .clientOptions(localClientOptions)
-                        .build();
+        HttpPipeline httpPipeline = new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
+            .httpClient(httpClient)
+            .clientOptions(localClientOptions)
+            .build();
         return httpPipeline;
     }
 }

@@ -46,7 +46,8 @@ public final class RoomModel {
     private boolean pstnDialOutEnabled;
 
     /** Creates an instance of RoomModel class. */
-    public RoomModel() {}
+    public RoomModel() {
+    }
 
     /**
      * Get the id property: Unique identifier of a room. This id is server generated.

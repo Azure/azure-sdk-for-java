@@ -63,126 +63,86 @@ public final class RoomsImpl {
     @ServiceInterface(name = "AzureCommunicationRo")
     public interface RoomsService {
         @Post("/rooms")
-        @ExpectedResponses({201})
+        @ExpectedResponses({ 201 })
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<RoomModel>> create(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") CreateRoomRequest createRoomRequest,
-                @HeaderParam("Accept") String accept,
-                @HeaderParam("repeatability-request-id") String repeatabilityRequestId,
-                @HeaderParam("repeatability-first-sent") String repeatabilityFirstSent,
-                Context context);
+        Mono<Response<RoomModel>> create(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") CreateRoomRequest createRoomRequest, @HeaderParam("Accept") String accept,
+            @HeaderParam("repeatability-request-id") String repeatabilityRequestId,
+            @HeaderParam("repeatability-first-sent") String repeatabilityFirstSent, Context context);
 
         @Post("/rooms")
-        @ExpectedResponses({201})
+        @ExpectedResponses({ 201 })
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Response<RoomModel> createSync(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") CreateRoomRequest createRoomRequest,
-                @HeaderParam("Accept") String accept,
-                @HeaderParam("repeatability-request-id") String repeatabilityRequestId,
-                @HeaderParam("repeatability-first-sent") String repeatabilityFirstSent,
-                Context context);
+        Response<RoomModel> createSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") CreateRoomRequest createRoomRequest, @HeaderParam("Accept") String accept,
+            @HeaderParam("repeatability-request-id") String repeatabilityRequestId,
+            @HeaderParam("repeatability-first-sent") String repeatabilityFirstSent, Context context);
 
         @Get("/rooms")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<RoomsCollection>> list(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<RoomsCollection>> list(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Get("/rooms")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Response<RoomsCollection> listSync(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Response<RoomsCollection> listSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Get("/rooms/{roomId}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<RoomModel>> get(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("roomId") String roomId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<RoomModel>> get(@HostParam("endpoint") String endpoint, @PathParam("roomId") String roomId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Get("/rooms/{roomId}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Response<RoomModel> getSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("roomId") String roomId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Response<RoomModel> getSync(@HostParam("endpoint") String endpoint, @PathParam("roomId") String roomId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Patch("/rooms/{roomId}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<RoomModel>> update(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("roomId") String roomId,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/merge-patch+json") UpdateRoomRequest updateRoomRequest,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<RoomModel>> update(@HostParam("endpoint") String endpoint, @PathParam("roomId") String roomId,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/merge-patch+json") UpdateRoomRequest updateRoomRequest,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Patch("/rooms/{roomId}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Response<RoomModel> updateSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("roomId") String roomId,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/merge-patch+json") UpdateRoomRequest updateRoomRequest,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Response<RoomModel> updateSync(@HostParam("endpoint") String endpoint, @PathParam("roomId") String roomId,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/merge-patch+json") UpdateRoomRequest updateRoomRequest,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Delete("/rooms/{roomId}")
-        @ExpectedResponses({204})
+        @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<Void>> delete(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("roomId") String roomId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<Void>> delete(@HostParam("endpoint") String endpoint, @PathParam("roomId") String roomId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Delete("/rooms/{roomId}")
-        @ExpectedResponses({204})
+        @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Response<Void> deleteSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("roomId") String roomId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Response<Void> deleteSync(@HostParam("endpoint") String endpoint, @PathParam("roomId") String roomId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<RoomsCollection>> listNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<RoomsCollection>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Response<RoomsCollection> listNextSync(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Response<RoomsCollection> listNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -199,16 +159,8 @@ public final class RoomsImpl {
         final String accept = "application/json";
         String repeatabilityRequestId = UUID.randomUUID().toString();
         String repeatabilityFirstSent = DateTimeRfc1123.toRfc1123String(OffsetDateTime.now());
-        return FluxUtil.withContext(
-                context ->
-                        service.create(
-                                this.client.getEndpoint(),
-                                this.client.getApiVersion(),
-                                createRoomRequest,
-                                accept,
-                                repeatabilityRequestId,
-                                repeatabilityFirstSent,
-                                context));
+        return FluxUtil.withContext(context -> service.create(this.client.getEndpoint(), this.client.getApiVersion(),
+            createRoomRequest, accept, repeatabilityRequestId, repeatabilityFirstSent, context));
     }
 
     /**
@@ -226,14 +178,8 @@ public final class RoomsImpl {
         final String accept = "application/json";
         String repeatabilityRequestId = UUID.randomUUID().toString();
         String repeatabilityFirstSent = DateTimeRfc1123.toRfc1123String(OffsetDateTime.now());
-        return service.create(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                createRoomRequest,
-                accept,
-                repeatabilityRequestId,
-                repeatabilityFirstSent,
-                context);
+        return service.create(this.client.getEndpoint(), this.client.getApiVersion(), createRoomRequest, accept,
+            repeatabilityRequestId, repeatabilityFirstSent, context);
     }
 
     /**
@@ -280,14 +226,8 @@ public final class RoomsImpl {
         final String accept = "application/json";
         String repeatabilityRequestId = UUID.randomUUID().toString();
         String repeatabilityFirstSent = DateTimeRfc1123.toRfc1123String(OffsetDateTime.now());
-        return service.createSync(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                createRoomRequest,
-                accept,
-                repeatabilityRequestId,
-                repeatabilityFirstSent,
-                context);
+        return service.createSync(this.client.getEndpoint(), this.client.getApiVersion(), createRoomRequest, accept,
+            repeatabilityRequestId, repeatabilityFirstSent, context);
     }
 
     /**
@@ -314,18 +254,11 @@ public final class RoomsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<RoomModel>> listSinglePageAsync() {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                        context ->
-                                service.list(this.client.getEndpoint(), this.client.getApiVersion(), accept, context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getValue(),
-                                        res.getValue().getNextLink(),
-                                        null));
+        return FluxUtil
+            .withContext(
+                context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(), accept, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getValue(), res.getValue().getNextLink(), null));
     }
 
     /**
@@ -341,15 +274,8 @@ public final class RoomsImpl {
     public Mono<PagedResponse<RoomModel>> listSinglePageAsync(Context context) {
         final String accept = "application/json";
         return service.list(this.client.getEndpoint(), this.client.getApiVersion(), accept, context)
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getValue(),
-                                        res.getValue().getNextLink(),
-                                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getValue(), res.getValue().getNextLink(), null));
     }
 
     /**
@@ -375,8 +301,8 @@ public final class RoomsImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RoomModel> listAsync(Context context) {
-        return new PagedFlux<>(
-                () -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink, context));
+        return new PagedFlux<>(() -> listSinglePageAsync(context),
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -389,15 +315,10 @@ public final class RoomsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<RoomModel> listSinglePage() {
         final String accept = "application/json";
-        Response<RoomsCollection> res =
-                service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), accept, Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null);
+        Response<RoomsCollection> res
+            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            res.getValue().getValue(), res.getValue().getNextLink(), null);
     }
 
     /**
@@ -412,15 +333,10 @@ public final class RoomsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<RoomModel> listSinglePage(Context context) {
         final String accept = "application/json";
-        Response<RoomsCollection> res =
-                service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), accept, context);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null);
+        Response<RoomsCollection> res
+            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            res.getValue().getValue(), res.getValue().getNextLink(), null);
     }
 
     /**
@@ -462,8 +378,7 @@ public final class RoomsImpl {
     public Mono<Response<RoomModel>> getWithResponseAsync(String roomId) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context ->
-                        service.get(this.client.getEndpoint(), roomId, this.client.getApiVersion(), accept, context));
+            context -> service.get(this.client.getEndpoint(), roomId, this.client.getApiVersion(), accept, context));
     }
 
     /**
@@ -554,15 +469,8 @@ public final class RoomsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RoomModel>> updateWithResponseAsync(String roomId, UpdateRoomRequest updateRoomRequest) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.update(
-                                this.client.getEndpoint(),
-                                roomId,
-                                this.client.getApiVersion(),
-                                updateRoomRequest,
-                                accept,
-                                context));
+        return FluxUtil.withContext(context -> service.update(this.client.getEndpoint(), roomId,
+            this.client.getApiVersion(), updateRoomRequest, accept, context));
     }
 
     /**
@@ -577,11 +485,11 @@ public final class RoomsImpl {
      * @return the meeting room along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RoomModel>> updateWithResponseAsync(
-            String roomId, UpdateRoomRequest updateRoomRequest, Context context) {
+    public Mono<Response<RoomModel>> updateWithResponseAsync(String roomId, UpdateRoomRequest updateRoomRequest,
+        Context context) {
         final String accept = "application/json";
-        return service.update(
-                this.client.getEndpoint(), roomId, this.client.getApiVersion(), updateRoomRequest, accept, context);
+        return service.update(this.client.getEndpoint(), roomId, this.client.getApiVersion(), updateRoomRequest, accept,
+            context);
     }
 
     /**
@@ -613,7 +521,7 @@ public final class RoomsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RoomModel> updateAsync(String roomId, UpdateRoomRequest updateRoomRequest, Context context) {
         return updateWithResponseAsync(roomId, updateRoomRequest, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -630,8 +538,8 @@ public final class RoomsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RoomModel> updateWithResponse(String roomId, UpdateRoomRequest updateRoomRequest, Context context) {
         final String accept = "application/json";
-        return service.updateSync(
-                this.client.getEndpoint(), roomId, this.client.getApiVersion(), updateRoomRequest, accept, context);
+        return service.updateSync(this.client.getEndpoint(), roomId, this.client.getApiVersion(), updateRoomRequest,
+            accept, context);
     }
 
     /**
@@ -662,9 +570,7 @@ public final class RoomsImpl {
     public Mono<Response<Void>> deleteWithResponseAsync(String roomId) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context ->
-                        service.delete(
-                                this.client.getEndpoint(), roomId, this.client.getApiVersion(), accept, context));
+            context -> service.delete(this.client.getEndpoint(), roomId, this.client.getApiVersion(), accept, context));
     }
 
     /**
@@ -755,15 +661,8 @@ public final class RoomsImpl {
     public Mono<PagedResponse<RoomModel>> listNextSinglePageAsync(String nextLink) {
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getValue(),
-                                        res.getValue().getNextLink(),
-                                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getValue(), res.getValue().getNextLink(), null));
     }
 
     /**
@@ -781,15 +680,8 @@ public final class RoomsImpl {
     public Mono<PagedResponse<RoomModel>> listNextSinglePageAsync(String nextLink, Context context) {
         final String accept = "application/json";
         return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getValue(),
-                                        res.getValue().getNextLink(),
-                                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getValue(), res.getValue().getNextLink(), null));
     }
 
     /**
@@ -806,13 +698,8 @@ public final class RoomsImpl {
     public PagedResponse<RoomModel> listNextSinglePage(String nextLink) {
         final String accept = "application/json";
         Response<RoomsCollection> res = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            res.getValue().getValue(), res.getValue().getNextLink(), null);
     }
 
     /**
@@ -830,12 +717,7 @@ public final class RoomsImpl {
     public PagedResponse<RoomModel> listNextSinglePage(String nextLink, Context context) {
         final String accept = "application/json";
         Response<RoomsCollection> res = service.listNextSync(nextLink, this.client.getEndpoint(), accept, context);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            res.getValue().getValue(), res.getValue().getNextLink(), null);
     }
 }

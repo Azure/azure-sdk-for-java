@@ -25,7 +25,8 @@ public final class RoomParticipant {
     private ParticipantRole role;
 
     /** Creates an instance of RoomParticipant class. */
-    public RoomParticipant() {}
+    public RoomParticipant() {
+    }
 
     /**
      * Get the rawId property: Raw ID representation of the communication identifier. Please refer to the following

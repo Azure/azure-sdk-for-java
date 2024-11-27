@@ -25,7 +25,8 @@ public final class ParticipantRole extends ExpandableStringEnum<ParticipantRole>
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public ParticipantRole() {}
+    public ParticipantRole() {
+    }
 
     /**
      * Creates or finds a ParticipantRole from its string representation.

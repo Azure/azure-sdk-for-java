@@ -23,8 +23,9 @@ import reactor.core.publisher.Mono;
 public class RoomsBuilderTests {
     static final String MOCK_URL = "https://REDACTED.communication.azure.com";
     static final String MOCK_ACCESS_KEY = "P2tP5RwZVFcJa3sfJvHEmGaKbemSAw2e";
-    static final String MOCK_CONNECTION_STRING = "endpoint=https://REDACTED.communication.azure.com/;accesskey=P2tP5RwZVFcJa3sfJvHEmGaKbemSAw2e";
-    
+    static final String MOCK_CONNECTION_STRING
+        = "endpoint=https://REDACTED.communication.azure.com/;accesskey=P2tP5RwZVFcJa3sfJvHEmGaKbemSAw2e";
+
     static class NoOpHttpClient implements HttpClient {
         @Override
         public Mono<HttpResponse> send(HttpRequest request) {
@@ -36,7 +37,7 @@ public class RoomsBuilderTests {
 
     @Test
     public void missingTokenCredentialTest()
-            throws NullPointerException, MalformedURLException, InvalidKeyException, NoSuchAlgorithmException {
+        throws NullPointerException, MalformedURLException, InvalidKeyException, NoSuchAlgorithmException {
         builder.endpoint(MOCK_URL).httpClient(new NoOpHttpClient());
         assertThrows(Exception.class, () -> {
             builder.buildAsyncClient();
@@ -88,8 +89,10 @@ public class RoomsBuilderTests {
 
     @Test
     public void buildPiplineForClient() {
-        RoomsAsyncClient roomsClient = builder.connectionString(MOCK_CONNECTION_STRING).httpClient(new NoOpHttpClient())
-                .pipeline(new HttpPipelineBuilder().build()).buildAsyncClient();
+        RoomsAsyncClient roomsClient = builder.connectionString(MOCK_CONNECTION_STRING)
+            .httpClient(new NoOpHttpClient())
+            .pipeline(new HttpPipelineBuilder().build())
+            .buildAsyncClient();
         assertNotNull(roomsClient);
     }
 }

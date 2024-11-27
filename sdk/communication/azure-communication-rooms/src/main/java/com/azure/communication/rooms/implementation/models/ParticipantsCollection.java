@@ -24,7 +24,8 @@ public final class ParticipantsCollection {
     private String nextLink;
 
     /** Creates an instance of ParticipantsCollection class. */
-    public ParticipantsCollection() {}
+    public ParticipantsCollection() {
+    }
 
     /**
      * Get the value property: A collection of participants.

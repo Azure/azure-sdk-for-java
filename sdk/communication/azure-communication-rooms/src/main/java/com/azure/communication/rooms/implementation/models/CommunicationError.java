@@ -42,7 +42,8 @@ public final class CommunicationError {
     private CommunicationError innerError;
 
     /** Creates an instance of CommunicationError class. */
-    public CommunicationError() {}
+    public CommunicationError() {
+    }
 
     /**
      * Get the code property: The error code.

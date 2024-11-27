@@ -24,7 +24,8 @@ public final class RoomsCollection {
     private String nextLink;
 
     /** Creates an instance of RoomsCollection class. */
-    public RoomsCollection() {}
+    public RoomsCollection() {
+    }
 
     /**
      * Get the value property: A collection of rooms.

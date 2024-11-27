@@ -18,7 +18,8 @@ public final class UpdateParticipantsRequest {
     private Map<String, ParticipantProperties> participants;
 
     /** Creates an instance of UpdateParticipantsRequest class. */
-    public UpdateParticipantsRequest() {}
+    public UpdateParticipantsRequest() {
+    }
 
     /**
      * Get the participants property: Participants to be updated.

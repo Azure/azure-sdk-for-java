@@ -17,7 +17,8 @@ public final class ParticipantProperties {
     private ParticipantRole role;
 
     /** Creates an instance of ParticipantProperties class. */
-    public ParticipantProperties() {}
+    public ParticipantProperties() {
+    }
 
     /**
      * Get the role property: The role of a room participant. The default value is Attendee.

@@ -40,7 +40,8 @@ public final class CreateRoomRequest {
     private Map<String, ParticipantProperties> participants;
 
     /** Creates an instance of CreateRoomRequest class. */
-    public CreateRoomRequest() {}
+    public CreateRoomRequest() {
+    }
 
     /**
      * Get the validFrom property: The timestamp from when the room is open for joining. The timestamp is in RFC3339

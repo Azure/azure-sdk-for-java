@@ -33,7 +33,8 @@ public final class UpdateRoomRequest {
     private Boolean pstnDialOutEnabled;
 
     /** Creates an instance of UpdateRoomRequest class. */
-    public UpdateRoomRequest() {}
+    public UpdateRoomRequest() {
+    }
 
     /**
      * Get the validFrom property: (Optional) The timestamp from when the room is open for joining. The timestamp is in

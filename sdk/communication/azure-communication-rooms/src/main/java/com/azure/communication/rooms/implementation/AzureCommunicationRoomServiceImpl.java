@@ -93,13 +93,8 @@ public final class AzureCommunicationRoomServiceImpl {
      * @param apiVersion Api Version.
      */
     AzureCommunicationRoomServiceImpl(String endpoint, String apiVersion) {
-        this(
-                new HttpPipelineBuilder()
-                        .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
-                        .build(),
-                JacksonAdapter.createDefaultSerializerAdapter(),
-                endpoint,
-                apiVersion);
+        this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build(),
+            JacksonAdapter.createDefaultSerializerAdapter(), endpoint, apiVersion);
     }
 
     /**
@@ -121,8 +116,8 @@ public final class AzureCommunicationRoomServiceImpl {
      * @param endpoint The endpoint of the Azure Communication resource.
      * @param apiVersion Api Version.
      */
-    AzureCommunicationRoomServiceImpl(
-            HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint, String apiVersion) {
+    AzureCommunicationRoomServiceImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint,
+        String apiVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;
