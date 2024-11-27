@@ -154,6 +154,8 @@ public final class GatewayConnectionConfig {
      */
     @Beta(value = Beta.SinceVersion.V4_66_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public GatewayConnectionConfig setHttp2ConnectionConfig(Http2ConnectionConfig http2ConnectionConfig) {
+        checkNotNull(http2ConnectionConfig, "Argument 'http2ConnectionConfig' can not be null");
+
         this.http2ConnectionConfig = http2ConnectionConfig;
         return this;
     }
@@ -169,7 +171,7 @@ public final class GatewayConnectionConfig {
             ", networkRequestTimeout=" + networkRequestTimeout +
             ", proxyType=" + proxyType +
             ", inetSocketProxyAddress=" + proxyAddress +
-            ", http2ConnectionConfig=" + http2ConnectionConfig.toString() +
+            ", http2ConnectionConfig=" + http2ConnectionConfig.toDiagnosticsString() +
             '}';
     }
 }

@@ -17,6 +17,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.Supplier;
 
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
+
 /**
  * Represents the Connection policy associated with a Cosmos client in the Azure Cosmos DB service.
  */
@@ -653,6 +655,8 @@ public final class ConnectionPolicy {
      * @return the current {@link ConnectionPolicy}.
      */
     public ConnectionPolicy setHttp2ConnectionConfig(Http2ConnectionConfig http2ConnectionConfig) {
+        checkNotNull(http2ConnectionConfig, "Argument 'http2ConnectionConfig' can not be null");
+
         this.http2ConnectionConfig = http2ConnectionConfig;
         return this;
     }
@@ -685,7 +689,7 @@ public final class ConnectionPolicy {
             ", minConnectionPoolSizePerEndpoint=" + minConnectionPoolSizePerEndpoint +
             ", openConnectionsConcurrency=" + openConnectionsConcurrency +
             ", aggressiveWarmupConcurrency=" + aggressiveWarmupConcurrency +
-            ", http2ConnectionConfig=" + this.http2ConnectionConfig.toString() +
+            ", http2ConnectionConfig=" + this.http2ConnectionConfig.toDiagnosticsString() +
             '}';
     }
 }

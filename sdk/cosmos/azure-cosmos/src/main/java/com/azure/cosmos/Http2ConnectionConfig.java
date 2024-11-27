@@ -30,7 +30,7 @@ public class Http2ConnectionConfig {
      * @return the configured max number of live connections to keep in the pool.
      */
     @Beta(value = Beta.SinceVersion.V4_66_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public Integer getMaxConnectionPoolSize() {
+    public int getMaxConnectionPoolSize() {
         return maxConnectionPoolSize;
     }
 
@@ -111,13 +111,11 @@ public class Http2ConnectionConfig {
     }
 
     @Beta(value = Beta.SinceVersion.V4_66_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    @Override
-    public String toString() {
-        return "Http2ConnectionConfig{" +
-            "isEnabled=" + enabled +
-            ", maxConnectionPoolSize=" + maxConnectionPoolSize +
-            ", minConnectionPoolSize=" + minConnectionPoolSize +
-            ", maxConcurrentStreams=" + maxConcurrentStreams +
-            '}';
+    public String toDiagnosticsString() {
+        return String.format("(enabled:%s, maxc:%s, minc:%s, maxs:%s)",
+            isEnabled(),
+            maxConnectionPoolSize,
+            minConnectionPoolSize,
+            maxConcurrentStreams);
     }
 }
