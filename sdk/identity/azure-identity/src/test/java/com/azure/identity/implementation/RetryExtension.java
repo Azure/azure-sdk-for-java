@@ -6,53 +6,81 @@ package com.azure.identity.implementation;
 import org.junit.jupiter.api.extension.BeforeTestExecutionCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.TestExecutionExceptionHandler;
-import org.opentest4j.TestAbortedException;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Supplier;
 
 /**
+ * RetryExtension: The extension to retry tests upon failure.
  * TODO: @g2vinay, move this to azure-core-test.
  */
 public class RetryExtension implements TestExecutionExceptionHandler, BeforeTestExecutionCallback {
-
     private static final int DEFAULT_MAX_RETRIES = 3;
 
     @Override
-    public void handleTestExecutionException(ExtensionContext context, Throwable throwable) throws Throwable {
-        // Fetch or initialize retry counter
-        AtomicInteger retries = getRetries(context);
+    public void handleTestExecutionException(ExtensionContext context, Throwable throwable) {
         int maxRetries = getMaxRetries(context);
 
-        if (retries.incrementAndGet() <= maxRetries) {
-            System.out.println("Retrying test: " + context.getDisplayName() + " (Attempt " + retries.get() + ")");
-            throw new TestAbortedException("Retrying test...");
-        } else {
-            System.out.println("Exceeded retries for test: " + context.getDisplayName());
-            throw throwable; // No more retries; propagate the original exception
-        }
-    }
+        executeWithRetries(() -> {
+            try {
+                return context.getTestMethod()
+                        .get()
+                        .invoke(context.getRequiredTestInstance());
+            } catch (IllegalAccessException | InvocationTargetException e) {
+                throw new RuntimeException(e);
+            }
+        }, maxRetries, 1000, 2);
 
+    }
     @Override
-    public void beforeTestExecution(ExtensionContext context) throws Exception {
-        // Reset the retry counter before a new test execution
-        context.getStore(ExtensionContext.Namespace.GLOBAL).put(getTestKey(context), new AtomicInteger(0));
-    }
-
-    private AtomicInteger getRetries(ExtensionContext context) {
-        return context.getStore(ExtensionContext.Namespace.GLOBAL)
-            .getOrComputeIfAbsent(getTestKey(context), key -> new AtomicInteger(0), AtomicInteger.class);
+    public void beforeTestExecution(ExtensionContext context) {
+        // Initialize the retry counter before a test execution starts
+        getStore(context).put(getTestKey(context), new AtomicInteger(0));
     }
 
     private int getMaxRetries(ExtensionContext context) {
         return context.getTestMethod()
-            .flatMap(method -> method.getAnnotation(Retry.class) != null
-                ? Optional.of(method.getAnnotation(Retry.class).maxRetries())
-                : Optional.empty())
+            .flatMap(method -> Optional.ofNullable(method.getAnnotation(Retry.class))
+                .map(Retry::maxRetries))
             .orElse(DEFAULT_MAX_RETRIES);
     }
 
+    private ExtensionContext.Store getStore(ExtensionContext context) {
+        return context.getStore(ExtensionContext.Namespace.create(getClass(), context.getUniqueId()));
+    }
+
     private String getTestKey(ExtensionContext context) {
-        return context.getUniqueId();
+        return "retries-" + context.getUniqueId();
+    }
+
+
+    private static <T> T executeWithRetries(Supplier<T> logic, int maxRetries, long initialDelayMillis, double backoffFactor) {
+        int attempt = 0;
+        long delay = initialDelayMillis;
+        Exception lastException = null;
+
+        while (attempt < maxRetries) {
+            try {
+                return logic.get();
+            } catch (Exception e) {
+                lastException = e;
+                attempt++;
+                if (attempt >= maxRetries) {
+                    break;
+                }
+                System.out.printf("Attempt %d failed. Retrying in %d ms...%n", attempt, delay);
+                try {
+                    TimeUnit.MILLISECONDS.sleep(delay);
+                } catch (InterruptedException ex) {
+                    throw new RuntimeException(ex);
+                }
+                delay *= backoffFactor;
+            }
+        }
+
+        throw new RuntimeException(lastException);
     }
 }

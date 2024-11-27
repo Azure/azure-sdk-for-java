@@ -7,7 +7,6 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
@@ -29,7 +28,7 @@ import java.util.concurrent.TimeUnit;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-public class LiveManagedIdentityTests extends TestProxyTestBase {
+public class LiveManagedIdentityTests {
 
     @Test
     @EnabledIfEnvironmentVariable(named = "AZURE_TEST_MODE", matches = "LIVE")
@@ -74,23 +73,10 @@ public class LiveManagedIdentityTests extends TestProxyTestBase {
         //Setup Env
         Configuration configuration = Configuration.getGlobalConfiguration().clone();
 
-        String spClientId = configuration.get("AZURESUBSCRIPTION_CLIENT_ID");
-        String oidc = configuration.get("AZ_OIDC_TOKEN");
-        String tenantId = configuration.get("AZURESUBSCRIPTION_TENANT_ID");
-        String resourceGroup = configuration.get("IDENTITY_RESOURCE_GROUP");
-        String aksCluster = configuration.get("IDENTITY_AKS_CLUSTER_NAME");
-        String subscriptionId = configuration.get("IDENTITY_SUBSCRIPTION_ID");
         String podName = configuration.get("IDENTITY_AKS_POD_NAME");
         String pathCommand = os.contains("Windows") ? "where" : "which";
 
-        String azPath = runCommand(pathCommand, "az").trim();
         String kubectlPath = runCommand(pathCommand, "kubectl").trim();
-
-//        runCommand(azPath, "login", "--federated-token", oidc, "--service-principal", "-u", spClientId, "--tenant",
-//            tenantId);
-//        runCommand(azPath, "account", "set", "--subscription", subscriptionId);
-//        runCommand(azPath, "aks", "get-credentials", "--resource-group", resourceGroup, "--name", aksCluster,
-//            "--overwrite-existing");
 
         String podOutput = runCommand(kubectlPath, "get", "pods", "-o", "jsonpath='{.items[0].metadata.name}'");
         assertTrue(podOutput.contains(podName), "Pod name not found in the output");
@@ -154,6 +140,7 @@ public class LiveManagedIdentityTests extends TestProxyTestBase {
     @EnabledIfEnvironmentVariable(named = "AZURE_TEST_MODE", matches = "LIVE")
     @Retry(maxRetries = 3)
     public void callGraphWithClientSecret() {
+
         Configuration configuration = Configuration.getGlobalConfiguration().clone();
 
         String multiTenantId = "54826b22-38d6-4fb2-bad9-b7b93a3e9c5a";
@@ -174,8 +161,33 @@ public class LiveManagedIdentityTests extends TestProxyTestBase {
 
         System.out.println("Fetched Token:" + accessToken.getToken());
 
+        assertTrue(accessToken != null, "Failed to get access token");
+
+    }
+
+    private boolean callGraphWithClientSecretInternal() {
+        Configuration configuration = Configuration.getGlobalConfiguration().clone();
+
+        String multiTenantId = "54826b22-38d6-4fb2-bad9-b7b93a3e9c5a";
+        String multiClientId = "4fc2b07b-9d91-4a4a-86e0-96d5b9145075";
+        String multiClientSecret = configuration.get("AZURE_IDENTITY_MULTI_TENANT_CLIENT_SECRET");
+
+        System.out.println("Multi Tenant ID:" + multiTenantId);
+        System.out.println("Multi Client  ID:" + multiClientId);
+        System.out.println("Multi Client Secret:" + multiClientSecret);
+
+        ClientSecretCredential credential = new ClientSecretCredentialBuilder().tenantId(multiTenantId)
+            .clientId(multiClientId)
+            .clientSecret(multiClientSecret)
+            .build();
+
+        AccessToken accessToken
+            = credential.getTokenSync(new TokenRequestContext().addScopes("https://graph.microsoft.com/.default"));
+
+        System.out.println("Fetched Token:" + accessToken.getToken());
 
         assertTrue(accessToken != null, "Failed to get access token");
+        return true;
     }
 
     private String runCommand(String... args) {

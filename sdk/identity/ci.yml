@@ -92,6 +92,7 @@ extends:
           SupportedClouds: 'Public,UsGov,China'
           EnvVars:
             AZ_OIDC_TOKEN: $(ARM_OIDC_TOKEN)
+            AZURE_IDENTITY_MULTI_TENANT_CLIENT-SECRET: $(AZURE-IDENTITY-MULTI-TENANT-CLIENT-SECRET)
           CloudConfig:
             Public:
               SubscriptionConfigurations:
