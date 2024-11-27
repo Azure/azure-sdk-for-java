@@ -94,4 +94,12 @@ public class KafkaCosmosExceptionsHelper {
             && cosmosException.getStatusCode() == HttpConstants.StatusCodes.NOTFOUND
             && cosmosException.getSubStatusCode() == HttpConstants.SubStatusCodes.OWNER_RESOURCE_NOT_EXISTS;
     }
+
+    public static boolean isBadRequestException(Throwable throwable) {
+        if (throwable instanceof CosmosException) {
+            return ((CosmosException) throwable).getStatusCode() == HttpConstants.StatusCodes.BADREQUEST;
+        }
+
+        return false;
+    }
 }

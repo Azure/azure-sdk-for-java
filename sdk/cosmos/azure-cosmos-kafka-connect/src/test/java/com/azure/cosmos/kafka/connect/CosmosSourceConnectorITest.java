@@ -50,8 +50,8 @@ public class CosmosSourceConnectorITest extends KafkaCosmosIntegrationTestSuiteB
     @BeforeClass(groups = { "kafka-integration" })
     public void before_CosmosSourceConnectorITest() {
         this.client = new CosmosClientBuilder()
-            .key(TestConfigurations.MASTER_KEY)
-            .endpoint(TestConfigurations.HOST)
+            .key(KafkaCosmosTestConfigurations.MASTER_KEY)
+            .endpoint(KafkaCosmosTestConfigurations.HOST)
             .endpointDiscoveryEnabled(true)
             .buildAsyncClient();
     }
