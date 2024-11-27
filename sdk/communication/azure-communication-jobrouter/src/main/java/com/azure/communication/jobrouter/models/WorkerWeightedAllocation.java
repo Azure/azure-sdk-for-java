@@ -36,9 +36,8 @@ public final class WorkerWeightedAllocation {
      */
     @Generated
     @JsonCreator
-    public WorkerWeightedAllocation(
-            @JsonProperty(value = "weight") double weight,
-            @JsonProperty(value = "workerSelectors") List<RouterWorkerSelector> workerSelectors) {
+    public WorkerWeightedAllocation(@JsonProperty(value = "weight") double weight,
+        @JsonProperty(value = "workerSelectors") List<RouterWorkerSelector> workerSelectors) {
         this.weight = weight;
         this.workerSelectors = workerSelectors;
     }

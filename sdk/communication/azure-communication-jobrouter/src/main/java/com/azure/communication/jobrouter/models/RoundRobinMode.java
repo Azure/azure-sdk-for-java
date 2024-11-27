@@ -18,7 +18,8 @@ public final class RoundRobinMode extends DistributionMode {
 
     /** Creates an instance of RoundRobinMode class. */
     @Generated
-    public RoundRobinMode() {}
+    public RoundRobinMode() {
+    }
 
     /** {@inheritDoc} */
     @Generated

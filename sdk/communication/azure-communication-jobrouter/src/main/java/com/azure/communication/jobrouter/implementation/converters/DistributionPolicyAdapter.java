@@ -24,9 +24,9 @@ public class DistributionPolicyAdapter {
      * @param createDistributionPolicyOptions Container with options to create a DistributionPolicy.
      * @return distribution policy.
      */
-    public static DistributionPolicyInternal convertCreateOptionsToDistributionPolicy(CreateDistributionPolicyOptions createDistributionPolicyOptions) {
-        return new DistributionPolicyInternal()
-            .setId(createDistributionPolicyOptions.getDistributionPolicyId())
+    public static DistributionPolicyInternal
+        convertCreateOptionsToDistributionPolicy(CreateDistributionPolicyOptions createDistributionPolicyOptions) {
+        return new DistributionPolicyInternal().setId(createDistributionPolicyOptions.getDistributionPolicyId())
             .setMode(convertDistributionModeToInternal(createDistributionPolicyOptions.getMode()))
             .setOfferExpiresAfterSeconds((double) createDistributionPolicyOptions.getOfferExpiresAfter().getSeconds())
             .setName(createDistributionPolicyOptions.getName());
@@ -35,22 +35,19 @@ public class DistributionPolicyAdapter {
     public static DistributionModeInternal convertDistributionModeToInternal(DistributionMode mode) {
         if (mode instanceof BestWorkerMode) {
             BestWorkerMode bestWorker = (BestWorkerMode) mode;
-            return new BestWorkerModeInternal()
-                .setMinConcurrentOffers(bestWorker.getMinConcurrentOffers())
+            return new BestWorkerModeInternal().setMinConcurrentOffers(bestWorker.getMinConcurrentOffers())
                 .setMaxConcurrentOffers(bestWorker.getMaxConcurrentOffers())
                 .setBypassSelectors(bestWorker.isBypassSelectors())
                 .setScoringRule(RouterRuleAdapter.convertRouterRuleToInternal(bestWorker.getScoringRule()))
                 .setScoringRuleOptions(bestWorker.getScoringRuleOptions());
         } else if (mode instanceof RoundRobinMode) {
             RoundRobinMode roundRobin = (RoundRobinMode) mode;
-            return new RoundRobinModeInternal()
-                .setMinConcurrentOffers(roundRobin.getMinConcurrentOffers())
+            return new RoundRobinModeInternal().setMinConcurrentOffers(roundRobin.getMinConcurrentOffers())
                 .setMaxConcurrentOffers(roundRobin.getMaxConcurrentOffers())
                 .setBypassSelectors(roundRobin.isBypassSelectors());
         } else if (mode instanceof LongestIdleMode) {
             LongestIdleMode longestIdle = (LongestIdleMode) mode;
-            return new LongestIdleModeInternal()
-                .setMinConcurrentOffers(longestIdle.getMinConcurrentOffers())
+            return new LongestIdleModeInternal().setMinConcurrentOffers(longestIdle.getMinConcurrentOffers())
                 .setMaxConcurrentOffers(longestIdle.getMaxConcurrentOffers())
                 .setBypassSelectors(longestIdle.isBypassSelectors());
         }
@@ -61,22 +58,19 @@ public class DistributionPolicyAdapter {
     public static DistributionMode convertDistributionModeToPublic(DistributionModeInternal mode) {
         if (mode instanceof BestWorkerModeInternal) {
             BestWorkerModeInternal bestWorker = (BestWorkerModeInternal) mode;
-            return new BestWorkerMode()
-                .setMinConcurrentOffers(bestWorker.getMinConcurrentOffers())
+            return new BestWorkerMode().setMinConcurrentOffers(bestWorker.getMinConcurrentOffers())
                 .setMaxConcurrentOffers(bestWorker.getMaxConcurrentOffers())
                 .setBypassSelectors(bestWorker.isBypassSelectors())
                 .setScoringRule(RouterRuleAdapter.convertRouterRuleToPublic(bestWorker.getScoringRule()))
                 .setScoringRuleOptions(bestWorker.getScoringRuleOptions());
         } else if (mode instanceof RoundRobinModeInternal) {
             RoundRobinModeInternal roundRobin = (RoundRobinModeInternal) mode;
-            return new RoundRobinMode()
-                .setMinConcurrentOffers(roundRobin.getMinConcurrentOffers())
+            return new RoundRobinMode().setMinConcurrentOffers(roundRobin.getMinConcurrentOffers())
                 .setMaxConcurrentOffers(roundRobin.getMaxConcurrentOffers())
                 .setBypassSelectors(roundRobin.isBypassSelectors());
         } else if (mode instanceof LongestIdleModeInternal) {
             LongestIdleModeInternal longestIdle = (LongestIdleModeInternal) mode;
-            return new LongestIdleMode()
-                .setMinConcurrentOffers(longestIdle.getMinConcurrentOffers())
+            return new LongestIdleMode().setMinConcurrentOffers(longestIdle.getMinConcurrentOffers())
                 .setMaxConcurrentOffers(longestIdle.getMaxConcurrentOffers())
                 .setBypassSelectors(longestIdle.isBypassSelectors());
         }
@@ -84,9 +78,9 @@ public class DistributionPolicyAdapter {
         return null;
     }
 
-    public static DistributionPolicyInternal convertDistributionPolicyToInternal(DistributionPolicy distributionPolicy) {
-        return new DistributionPolicyInternal()
-            .setEtag(distributionPolicy.getEtag())
+    public static DistributionPolicyInternal
+        convertDistributionPolicyToInternal(DistributionPolicy distributionPolicy) {
+        return new DistributionPolicyInternal().setEtag(distributionPolicy.getEtag())
             .setId(distributionPolicy.getId())
             .setName(distributionPolicy.getName())
             .setMode(convertDistributionModeToInternal(distributionPolicy.getMode()))

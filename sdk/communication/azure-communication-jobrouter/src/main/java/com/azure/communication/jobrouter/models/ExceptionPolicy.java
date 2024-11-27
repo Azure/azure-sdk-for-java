@@ -39,7 +39,8 @@ public final class ExceptionPolicy {
 
     /** Creates an instance of ExceptionPolicy class. */
     @Generated
-    public ExceptionPolicy() {}
+    public ExceptionPolicy() {
+    }
 
     /**
      * Get the id property: The Id of the exception policy.

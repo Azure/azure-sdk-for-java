@@ -12,16 +12,15 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /** Abstract base class for defining a distribution mode. */
 @JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "kind",
-        defaultImpl = DistributionMode.class)
+    use = JsonTypeInfo.Id.NAME,
+    include = JsonTypeInfo.As.PROPERTY,
+    property = "kind",
+    defaultImpl = DistributionMode.class)
 @JsonTypeName("DistributionMode")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "bestWorker", value = BestWorkerMode.class),
     @JsonSubTypes.Type(name = "longestIdle", value = LongestIdleMode.class),
-    @JsonSubTypes.Type(name = "roundRobin", value = RoundRobinMode.class)
-})
+    @JsonSubTypes.Type(name = "roundRobin", value = RoundRobinMode.class) })
 @Fluent
 public abstract class DistributionMode {
 
@@ -56,7 +55,8 @@ public abstract class DistributionMode {
 
     /** Creates an instance of DistributionMode class. */
     @Generated
-    public DistributionMode() {}
+    public DistributionMode() {
+    }
 
     /**
      * Get the minConcurrentOffers property: Governs the minimum desired number of active concurrent offers a job can

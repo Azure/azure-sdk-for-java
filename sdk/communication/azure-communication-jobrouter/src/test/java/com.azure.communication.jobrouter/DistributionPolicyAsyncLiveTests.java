@@ -18,27 +18,24 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class DistributionPolicyAsyncLiveTests extends JobRouterTestBase {
     private JobRouterAdministrationAsyncClient administrationAsyncClient;
 
-
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     @LiveOnly // Remove after azure-core-test 1.26.0-beta.1 is released.
     public void createDistributionPolicyBestWorkerDefaultScoringRule(HttpClient httpClient) {
         // Setup
         administrationAsyncClient = getRouterAdministrationAsyncClient(httpClient);
-        String bestWorkerModeDistributionPolicyId = String.format("%s-BestWorkerDefaultScoringRule-DistributionPolicy", JAVA_LIVE_TESTS);
+        String bestWorkerModeDistributionPolicyId
+            = String.format("%s-BestWorkerDefaultScoringRule-DistributionPolicy", JAVA_LIVE_TESTS);
         String bestWorkerModeDistributionPolicyName = String.format("%s-Name", bestWorkerModeDistributionPolicyId);
 
-        CreateDistributionPolicyOptions createDistributionPolicyOptions = new CreateDistributionPolicyOptions(
-            bestWorkerModeDistributionPolicyId,
-            Duration.ofSeconds(10),
-            new BestWorkerMode()
-                .setMinConcurrentOffers(1)
-                .setMaxConcurrentOffers(10)
-        )
-            .setName(bestWorkerModeDistributionPolicyName);
+        CreateDistributionPolicyOptions createDistributionPolicyOptions
+            = new CreateDistributionPolicyOptions(bestWorkerModeDistributionPolicyId, Duration.ofSeconds(10),
+                new BestWorkerMode().setMinConcurrentOffers(1).setMaxConcurrentOffers(10))
+                    .setName(bestWorkerModeDistributionPolicyName);
 
         // Action
-        DistributionPolicy result = administrationAsyncClient.createDistributionPolicy(createDistributionPolicyOptions).block();
+        DistributionPolicy result
+            = administrationAsyncClient.createDistributionPolicy(createDistributionPolicyOptions).block();
 
         // Verify
         assertEquals(bestWorkerModeDistributionPolicyId, result.getId());

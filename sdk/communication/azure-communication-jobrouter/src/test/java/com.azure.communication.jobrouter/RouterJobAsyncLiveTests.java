@@ -39,7 +39,7 @@ public class RouterJobAsyncLiveTests extends JobRouterTestBase {
 
     private JobRouterAdministrationAsyncClient administrationAsyncClient;
 
-//    @ParameterizedTest
+    //    @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void unassignJob(HttpClient httpClient) {
         // Setup
@@ -52,15 +52,12 @@ public class RouterJobAsyncLiveTests extends JobRouterTestBase {
         String distributionPolicyId = String.format("%s-%s-DistributionPolicy", JAVA_LIVE_TESTS, testName);
         String distributionPolicyName = String.format("%s-Name", distributionPolicyId);
 
-        CreateDistributionPolicyOptions createDistributionPolicyOptions = new CreateDistributionPolicyOptions(
-            distributionPolicyId,
-            Duration.ofSeconds(10),
-            new LongestIdleMode()
-                .setMinConcurrentOffers(1)
-                .setMaxConcurrentOffers(10)
-        )
-            .setName(distributionPolicyName);
-        DistributionPolicy distributionPolicy = administrationAsyncClient.createDistributionPolicy(createDistributionPolicyOptions).block();
+        CreateDistributionPolicyOptions createDistributionPolicyOptions
+            = new CreateDistributionPolicyOptions(distributionPolicyId, Duration.ofSeconds(10),
+                new LongestIdleMode().setMinConcurrentOffers(1).setMaxConcurrentOffers(10))
+                    .setName(distributionPolicyName);
+        DistributionPolicy distributionPolicy
+            = administrationAsyncClient.createDistributionPolicy(createDistributionPolicyOptions).block();
 
         String queueId = String.format("%s-%s-Queue", JAVA_LIVE_TESTS, testName);
         String queueName = String.format("%s-Name", queueId);
@@ -70,9 +67,8 @@ public class RouterJobAsyncLiveTests extends JobRouterTestBase {
             }
         };
 
-        CreateQueueOptions createQueueOptions = new CreateQueueOptions(queueId, distributionPolicyId)
-            .setLabels(queueLabels)
-            .setName(queueName);
+        CreateQueueOptions createQueueOptions
+            = new CreateQueueOptions(queueId, distributionPolicyId).setLabels(queueLabels).setName(queueName);
         RouterQueue jobQueue = administrationAsyncClient.createQueue(createQueueOptions).block();
 
         /**
@@ -104,8 +100,7 @@ public class RouterJobAsyncLiveTests extends JobRouterTestBase {
         };
 
         String workerId = String.format("%s-%s-Worker", JAVA_LIVE_TESTS, testName);
-        CreateWorkerOptions createWorkerOptions = new CreateWorkerOptions(workerId, 10)
-            .setLabels(labels)
+        CreateWorkerOptions createWorkerOptions = new CreateWorkerOptions(workerId, 10).setLabels(labels)
             .setTags(tags)
             .setAvailableForOffers(true)
             .setChannels(channels)
@@ -116,14 +111,13 @@ public class RouterJobAsyncLiveTests extends JobRouterTestBase {
         String jobId = String.format("%s-%s-Job", JAVA_LIVE_TESTS, testName);
         List<RouterWorkerSelector> requestedWorkerSelectors = new ArrayList<RouterWorkerSelector>() {
             {
-                add(new RouterWorkerSelector("Label", LabelOperator.EQUAL)
-                    .setValue(new RouterValue("Value")));
+                add(new RouterWorkerSelector("Label", LabelOperator.EQUAL).setValue(new RouterValue("Value")));
             }
         };
-        CreateJobOptions createJobOptions = new CreateJobOptions(jobId, channel.getChannelId(), queueId)
-            .setLabels(labels)
-            .setTags(tags)
-            .setRequestedWorkerSelectors(requestedWorkerSelectors);
+        CreateJobOptions createJobOptions
+            = new CreateJobOptions(jobId, channel.getChannelId(), queueId).setLabels(labels)
+                .setTags(tags)
+                .setRequestedWorkerSelectors(requestedWorkerSelectors);
 
         RouterJob routerJob = jobRouterAsyncClient.createJob(createJobOptions).block();
 
@@ -141,7 +135,8 @@ public class RouterJobAsyncLiveTests extends JobRouterTestBase {
 
         RouterJobOffer offer = jobOffers.get(0);
 
-        AcceptJobOfferResult acceptJobOfferResult = jobRouterAsyncClient.acceptJobOffer(workerId, offer.getOfferId()).block();
+        AcceptJobOfferResult acceptJobOfferResult
+            = jobRouterAsyncClient.acceptJobOffer(workerId, offer.getOfferId()).block();
 
         String assignmentId = acceptJobOfferResult.getAssignmentId();
 
@@ -152,9 +147,8 @@ public class RouterJobAsyncLiveTests extends JobRouterTestBase {
         assertEquals(1, unassignJobResult.getUnassignmentCount());
 
         RequestOptions requestOptions = new RequestOptions();
-        CancelJobOptions cancelJobOptions = new CancelJobOptions()
-            .setDispositionCode("dispositionCode")
-            .setNote("note");
+        CancelJobOptions cancelJobOptions
+            = new CancelJobOptions().setDispositionCode("dispositionCode").setNote("note");
         requestOptions.setBody(BinaryData.fromObject(cancelJobOptions));
         // Cleanup
         jobRouterAsyncClient.cancelJob(jobId, requestOptions).block();

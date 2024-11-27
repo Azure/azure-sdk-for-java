@@ -39,7 +39,8 @@ public final class ManualReclassifyExceptionAction extends ExceptionAction {
 
     /** Creates an instance of ManualReclassifyExceptionAction class. */
     @Generated
-    public ManualReclassifyExceptionAction() {}
+    public ManualReclassifyExceptionAction() {
+    }
 
     /**
      * Get the queueId property: Updated QueueId.

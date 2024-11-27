@@ -37,47 +37,60 @@ public class JobAdapter {
      */
     public static RouterJobInternal convertCreateJobOptionsToRouterJob(CreateJobOptions createJobOptions) {
         Map<String, RouterValue> labelValueMap = createJobOptions.getLabels();
-        Map<String, Object> labels = labelValueMap != null ? labelValueMap.entrySet().stream()
-            .collect(Collectors.toMap(entry -> entry.getKey(), entry -> getValue(entry.getValue()))) : null;
+        Map<String, Object> labels = labelValueMap != null
+            ? labelValueMap.entrySet()
+                .stream()
+                .collect(Collectors.toMap(entry -> entry.getKey(), entry -> getValue(entry.getValue())))
+            : null;
         Map<String, RouterValue> tagValueMap = createJobOptions.getLabels();
-        Map<String, Object> tags = tagValueMap != null ? tagValueMap.entrySet().stream()
-            .collect(Collectors.toMap(entry -> entry.getKey(), entry -> getValue(entry.getValue()))) : null;
+        Map<String, Object> tags = tagValueMap != null
+            ? tagValueMap.entrySet()
+                .stream()
+                .collect(Collectors.toMap(entry -> entry.getKey(), entry -> getValue(entry.getValue())))
+            : null;
         List<RouterJobNote> jobNotes = createJobOptions.getNotes();
         List<RouterWorkerSelectorInternal> workerSelectors;
-        workerSelectors = createJobOptions.getRequestedWorkerSelectors() != null ? createJobOptions.getRequestedWorkerSelectors()
-            .stream()
-            .map(workerSelector ->
-                new RouterWorkerSelectorInternal(workerSelector.getKey(), workerSelector.getLabelOperator())
-                    .setValue(getValue(workerSelector.getValue()))
-                    .setExpedite(workerSelector.isExpedite())
-                    .setExpiresAt(workerSelector.getExpiresAt())
-                    .setExpiresAfterSeconds(workerSelector.getExpiresAfter() != null ? Double.valueOf(workerSelector.getExpiresAfter().getSeconds()) : null)
-                    .setStatus(workerSelector.getStatus())
-            )
-            .collect(Collectors.toList()) : null;
+        workerSelectors = createJobOptions.getRequestedWorkerSelectors() != null
+            ? createJobOptions.getRequestedWorkerSelectors()
+                .stream()
+                .map(workerSelector -> new RouterWorkerSelectorInternal(workerSelector.getKey(),
+                    workerSelector.getLabelOperator()).setValue(getValue(workerSelector.getValue()))
+                        .setExpedite(workerSelector.isExpedite())
+                        .setExpiresAt(workerSelector.getExpiresAt())
+                        .setExpiresAfterSeconds(workerSelector.getExpiresAfter() != null
+                            ? Double.valueOf(workerSelector.getExpiresAfter().getSeconds())
+                            : null)
+                        .setStatus(workerSelector.getStatus()))
+                .collect(Collectors.toList())
+            : null;
         String jobMatchingModeKind;
-        jobMatchingModeKind = createJobOptions.getMatchingMode() != null ? createJobOptions.getMatchingMode().getKind() : null;
+        jobMatchingModeKind
+            = createJobOptions.getMatchingMode() != null ? createJobOptions.getMatchingMode().getKind() : null;
         JobMatchingModeInternal jobMatchingModeInternal = null;
 
         if (jobMatchingModeKind != null) {
             switch (jobMatchingModeKind) {
                 case "scheduleAndSuspend":
-                    ScheduleAndSuspendMode scheduleAndSuspendMode = (ScheduleAndSuspendMode) createJobOptions.getMatchingMode();
-                    jobMatchingModeInternal = new ScheduleAndSuspendModeInternal(scheduleAndSuspendMode.getScheduleAt());
+                    ScheduleAndSuspendMode scheduleAndSuspendMode
+                        = (ScheduleAndSuspendMode) createJobOptions.getMatchingMode();
+                    jobMatchingModeInternal
+                        = new ScheduleAndSuspendModeInternal(scheduleAndSuspendMode.getScheduleAt());
                     break;
+
                 case "queueAndMatch":
                     jobMatchingModeInternal = new QueueAndMatchModeInternal();
                     break;
+
                 case "suspend":
                     jobMatchingModeInternal = new SuspendModeInternal();
                     break;
+
                 default:
                     throw new IllegalStateException("Unknown kind for JobMatchingMode.");
             }
         }
 
-        return new RouterJobInternal()
-            .setChannelId(createJobOptions.getChannelId())
+        return new RouterJobInternal().setChannelId(createJobOptions.getChannelId())
             .setChannelReference(createJobOptions.getChannelReference())
             .setQueueId(createJobOptions.getQueueId())
             .setLabels(labels)
@@ -96,20 +109,20 @@ public class JobAdapter {
      */
     public static JobMatchingMode convertJobMatchingModeToPublic(JobMatchingModeInternal jobMatchingModeInternal) {
         if (jobMatchingModeInternal.getClass() == ScheduleAndSuspendModeInternal.class) {
-            ScheduleAndSuspendModeInternal scheduleAndSuspendModeInternal =
-                (ScheduleAndSuspendModeInternal) jobMatchingModeInternal;
+            ScheduleAndSuspendModeInternal scheduleAndSuspendModeInternal
+                = (ScheduleAndSuspendModeInternal) jobMatchingModeInternal;
             return new ScheduleAndSuspendMode(scheduleAndSuspendModeInternal.getScheduleAt());
         } else if (jobMatchingModeInternal.getClass() == QueueAndMatchModeInternal.class) {
             return new QueueAndMatchMode();
         } else if (jobMatchingModeInternal.getClass() == SuspendModeInternal.class) {
             return new SuspendMode();
         }
-        throw new IllegalStateException(String.format("Unknown type of jobMatchingMode %s", jobMatchingModeInternal.getClass().getTypeName()));
+        throw new IllegalStateException(
+            String.format("Unknown type of jobMatchingMode %s", jobMatchingModeInternal.getClass().getTypeName()));
     }
 
     public static RouterJobInternal convertRouterJobToInternal(RouterJob routerJob) {
-        return new RouterJobInternal()
-            .setEtag(routerJob.getEtag())
+        return new RouterJobInternal().setEtag(routerJob.getEtag())
             .setId(routerJob.getId())
             .setEnqueuedAt(routerJob.getEnqueuedAt())
             .setStatus(routerJob.getStatus())
@@ -119,18 +132,14 @@ public class JobAdapter {
             .setChannelReference(routerJob.getChannelReference())
             .setLabels(convertRouterValueLabelsToInternal(routerJob.getLabels()))
             .setTags(convertRouterValueLabelsToInternal(routerJob.getTags()))
-            .setAttachedWorkerSelectors(
-                routerJob.getAttachedWorkerSelectors()
-                    .stream()
-                    .map(ws ->  LabelSelectorAdapter.convertWorkerSelectorToInternal(ws))
-                    .collect(Collectors.toList())
-            )
-            .setRequestedWorkerSelectors(
-                routerJob.getRequestedWorkerSelectors()
-                    .stream()
-                    .map(ws -> LabelSelectorAdapter.convertWorkerSelectorToInternal(ws))
-                    .collect(Collectors.toList())
-            )
+            .setAttachedWorkerSelectors(routerJob.getAttachedWorkerSelectors()
+                .stream()
+                .map(ws -> LabelSelectorAdapter.convertWorkerSelectorToInternal(ws))
+                .collect(Collectors.toList()))
+            .setRequestedWorkerSelectors(routerJob.getRequestedWorkerSelectors()
+                .stream()
+                .map(ws -> LabelSelectorAdapter.convertWorkerSelectorToInternal(ws))
+                .collect(Collectors.toList()))
             .setScheduledAt(routerJob.getScheduledAt())
             .setAssignments(routerJob.getAssignments())
             .setPriority(routerJob.getPriority())

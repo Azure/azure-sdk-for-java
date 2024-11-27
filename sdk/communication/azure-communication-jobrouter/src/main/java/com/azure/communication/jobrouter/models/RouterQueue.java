@@ -69,14 +69,17 @@ public final class RouterQueue {
         setName(internal.getName());
         setDistributionPolicyId(internal.getDistributionPolicyId());
         setExceptionPolicyId(internal.getExceptionPolicyId());
-        setLabels(internal.getLabels().entrySet().stream()
-            .collect(Collectors.toMap(entry -> entry.getKey(), entry -> RouterValueConstructorProxy.create(entry.getValue()))));
+        setLabels(internal.getLabels()
+            .entrySet()
+            .stream()
+            .collect(Collectors.toMap(entry -> entry.getKey(),
+                entry -> RouterValueConstructorProxy.create(entry.getValue()))));
     }
-
 
     /** Creates an instance of RouterQueue class. */
     @Generated
-    public RouterQueue() {}
+    public RouterQueue() {
+    }
 
     /**
      * Get the id property: The Id of this queue.

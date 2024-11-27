@@ -13,7 +13,8 @@ public final class DistributionPolicyConstructorProxy {
 
     private static DistributionPolicyConstructorAccessor accessor;
 
-    private DistributionPolicyConstructorProxy() { }
+    private DistributionPolicyConstructorProxy() {
+    }
 
     /**
      * Type defining the methods to set the non-public properties of a {@link DistributionPolicyConstructorAccessor}

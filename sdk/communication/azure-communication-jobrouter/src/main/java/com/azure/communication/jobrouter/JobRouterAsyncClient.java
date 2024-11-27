@@ -1502,9 +1502,9 @@ public final class JobRouterAsyncClient {
         RouterWorkerInternal routerWorker = WorkerAdapter.convertCreateWorkerOptionsToRouterWorker(createWorkerOptions);
         return upsertWorkerWithResponse(createWorkerOptions.getWorkerId(), BinaryData.fromObject(routerWorker),
             requestOptions)
-            .map(response -> new SimpleResponse<RouterWorker>(response.getRequest(), response.getStatusCode(),
-                response.getHeaders(),
-                RouterWorkerConstructorProxy.create(response.getValue().toObject(RouterWorkerInternal.class))));
+                .map(response -> new SimpleResponse<RouterWorker>(response.getRequest(), response.getStatusCode(),
+                    response.getHeaders(),
+                    RouterWorkerConstructorProxy.create(response.getValue().toObject(RouterWorkerInternal.class))));
     }
 
     /**
@@ -1814,11 +1814,13 @@ public final class JobRouterAsyncClient {
         }
         PagedFlux<BinaryData> pagedFluxResponse = listJobs(requestOptions);
         return PagedFlux.create(() -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null) ? pagedFluxResponse.byPage().take(1)
+            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null)
+                ? pagedFluxResponse.byPage().take(1)
                 : pagedFluxResponse.byPage(continuationToken).take(1);
             return flux.map(pagedResponse -> new PagedResponseBase<Void, RouterJob>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                pagedResponse.getValue().stream()
+                pagedResponse.getValue()
+                    .stream()
                     .map(protocolMethodData -> protocolMethodData.toObject(RouterJob.class))
                     .collect(Collectors.toList()),
                 pagedResponse.getContinuationToken(), null));
@@ -1841,11 +1843,13 @@ public final class JobRouterAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listJobs(requestOptions);
         return PagedFlux.create(() -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null) ? pagedFluxResponse.byPage().take(1)
+            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null)
+                ? pagedFluxResponse.byPage().take(1)
                 : pagedFluxResponse.byPage(continuationToken).take(1);
             return flux.map(pagedResponse -> new PagedResponseBase<Void, RouterJob>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                pagedResponse.getValue().stream()
+                pagedResponse.getValue()
+                    .stream()
                     .map(protocolMethodData -> protocolMethodData.toObject(RouterJob.class))
                     .collect(Collectors.toList()),
                 pagedResponse.getContinuationToken(), null));
@@ -2036,11 +2040,13 @@ public final class JobRouterAsyncClient {
         }
         PagedFlux<BinaryData> pagedFluxResponse = listWorkers(requestOptions);
         return PagedFlux.create(() -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null) ? pagedFluxResponse.byPage().take(1)
+            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null)
+                ? pagedFluxResponse.byPage().take(1)
                 : pagedFluxResponse.byPage(continuationToken).take(1);
             return flux.map(pagedResponse -> new PagedResponseBase<Void, RouterWorker>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                pagedResponse.getValue().stream()
+                pagedResponse.getValue()
+                    .stream()
                     .map(protocolMethodData -> protocolMethodData.toObject(RouterWorker.class))
                     .collect(Collectors.toList()),
                 pagedResponse.getContinuationToken(), null));
@@ -2063,11 +2069,13 @@ public final class JobRouterAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listWorkers(requestOptions);
         return PagedFlux.create(() -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null) ? pagedFluxResponse.byPage().take(1)
+            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null)
+                ? pagedFluxResponse.byPage().take(1)
                 : pagedFluxResponse.byPage(continuationToken).take(1);
             return flux.map(pagedResponse -> new PagedResponseBase<Void, RouterWorker>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                pagedResponse.getValue().stream()
+                pagedResponse.getValue()
+                    .stream()
                     .map(protocolMethodData -> protocolMethodData.toObject(RouterWorker.class))
                     .collect(Collectors.toList()),
                 pagedResponse.getContinuationToken(), null));

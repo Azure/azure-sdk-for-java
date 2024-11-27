@@ -44,8 +44,8 @@ public class RouterRuleAdapter {
                 .setCredential(functionRouterRule.getCredential());
         } else if (routerRule.getClass() == StaticRouterRule.class) {
             StaticRouterRule staticRouterRule = (StaticRouterRule) routerRule;
-            prioritizationRuleInternal = new StaticRouterRuleInternal()
-                .setValue(RouterValueAdapter.getValue(staticRouterRule.getValue()));
+            prioritizationRuleInternal
+                = new StaticRouterRuleInternal().setValue(RouterValueAdapter.getValue(staticRouterRule.getValue()));
         } else if (routerRule.getClass() == WebhookRouterRule.class) {
             WebhookRouterRule webhookRouterRule = (WebhookRouterRule) routerRule;
             prioritizationRuleInternal = new WebhookRouterRuleInternal()
@@ -63,9 +63,8 @@ public class RouterRuleAdapter {
             return new ExpressionRouterRule(((ExpressionRouterRuleInternal) rule).getExpression());
         } else if (rule instanceof FunctionRouterRuleInternal) {
             FunctionRouterRuleInternal functionRouterRule = (FunctionRouterRuleInternal) rule;
-            return new FunctionRouterRule(functionRouterRule.getFunctionUri())
-                    .setCredential(new FunctionRouterRuleCredential()
-                    .setFunctionKey(functionRouterRule.getCredential().getFunctionKey())
+            return new FunctionRouterRule(functionRouterRule.getFunctionUri()).setCredential(
+                new FunctionRouterRuleCredential().setFunctionKey(functionRouterRule.getCredential().getFunctionKey())
                     .setAppKey(functionRouterRule.getCredential().getAppKey())
                     .setClientId(functionRouterRule.getCredential().getClientId()));
         } else if (rule instanceof StaticRouterRuleInternal) {
@@ -73,12 +72,11 @@ public class RouterRuleAdapter {
                 .setValue(RouterValueConstructorProxy.create(((StaticRouterRuleInternal) rule).getValue()));
         } else if (rule instanceof WebhookRouterRuleInternal) {
             WebhookRouterRuleInternal webhookRouterRule = (WebhookRouterRuleInternal) rule;
-            return new WebhookRouterRule()
-                .setWebhookUri(webhookRouterRule.getWebhookUri())
+            return new WebhookRouterRule().setWebhookUri(webhookRouterRule.getWebhookUri())
                 .setClientCredential(new OAuth2WebhookClientCredential()
-                        .setClientId(webhookRouterRule.getClientCredential().getClientId())
-                        .setClientSecret(webhookRouterRule.getClientCredential().getClientSecret()))
-                        .setAuthorizationServerUri(webhookRouterRule.getAuthorizationServerUri());
+                    .setClientId(webhookRouterRule.getClientCredential().getClientId())
+                    .setClientSecret(webhookRouterRule.getClientCredential().getClientSecret()))
+                .setAuthorizationServerUri(webhookRouterRule.getAuthorizationServerUri());
         }
 
         return null;
@@ -92,13 +90,13 @@ public class RouterRuleAdapter {
                 .setLanguage(ExpressionRouterRuleLanguage.POWER_FX);
         } else if (rule instanceof FunctionRouterRule) {
             FunctionRouterRule functionRouterRule = (FunctionRouterRule) rule;
-            return new FunctionRouterRuleInternal(functionRouterRule.getFunctionUri())
-                    .setCredential(new FunctionRouterRuleCredential()
-                    .setFunctionKey(functionRouterRule.getCredential().getFunctionKey())
+            return new FunctionRouterRuleInternal(functionRouterRule.getFunctionUri()).setCredential(
+                new FunctionRouterRuleCredential().setFunctionKey(functionRouterRule.getCredential().getFunctionKey())
                     .setAppKey(functionRouterRule.getCredential().getAppKey())
                     .setClientId(functionRouterRule.getCredential().getClientId()));
         } else if (rule instanceof StaticRouterRule) {
-            return new StaticRouterRuleInternal().setValue(RouterValueAdapter.getValue(((StaticRouterRule) rule).getValue()));
+            return new StaticRouterRuleInternal()
+                .setValue(RouterValueAdapter.getValue(((StaticRouterRule) rule).getValue()));
         } else if (rule instanceof WebhookRouterRule) {
             WebhookRouterRule webhookRouterRule = (WebhookRouterRule) rule;
             return new WebhookRouterRuleInternal().setWebhookUri(webhookRouterRule.getWebhookUri())

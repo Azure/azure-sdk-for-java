@@ -17,18 +17,17 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  * WebhookRule: A rule providing a binding to a webserver following OAuth2.0 authentication protocol.
  */
 @JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "kind",
-        defaultImpl = RouterRule.class)
+    use = JsonTypeInfo.Id.NAME,
+    include = JsonTypeInfo.As.PROPERTY,
+    property = "kind",
+    defaultImpl = RouterRule.class)
 @JsonTypeName("RouterRule")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "directMap", value = DirectMapRouterRule.class),
     @JsonSubTypes.Type(name = "expression", value = ExpressionRouterRule.class),
     @JsonSubTypes.Type(name = "function", value = FunctionRouterRule.class),
     @JsonSubTypes.Type(name = "static", value = StaticRouterRule.class),
-    @JsonSubTypes.Type(name = "webhook", value = WebhookRouterRule.class)
-})
+    @JsonSubTypes.Type(name = "webhook", value = WebhookRouterRule.class) })
 @Immutable
 public abstract class RouterRule {
 
@@ -40,7 +39,8 @@ public abstract class RouterRule {
 
     /** Creates an instance of RouterRule class. */
     @Generated
-    public RouterRule() {}
+    public RouterRule() {
+    }
 
     /**
      * Returns kind discriminator.

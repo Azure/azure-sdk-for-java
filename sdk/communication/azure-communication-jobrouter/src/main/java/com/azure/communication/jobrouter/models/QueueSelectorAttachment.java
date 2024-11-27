@@ -12,10 +12,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /** An attachment of queue selectors to resolve a queue to a job from a classification policy. */
 @JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "kind",
-        defaultImpl = QueueSelectorAttachment.class)
+    use = JsonTypeInfo.Id.NAME,
+    include = JsonTypeInfo.As.PROPERTY,
+    property = "kind",
+    defaultImpl = QueueSelectorAttachment.class)
 @JsonTypeName("QueueSelectorAttachment")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "conditional", value = ConditionalQueueSelectorAttachment.class),
@@ -23,9 +23,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "rule-engine", value = RuleEngineQueueSelectorAttachment.class),
     @JsonSubTypes.Type(name = "static", value = StaticQueueSelectorAttachment.class),
     @JsonSubTypes.Type(
-            name = "weighted-allocation-queue-selector",
-            value = WeightedAllocationQueueSelectorAttachment.class)
-})
+        name = "weighted-allocation-queue-selector",
+        value = WeightedAllocationQueueSelectorAttachment.class) })
 @Immutable
 public abstract class QueueSelectorAttachment {
     /**
@@ -36,7 +35,8 @@ public abstract class QueueSelectorAttachment {
 
     /** Creates an instance of QueueSelectorAttachment class. */
     @Generated
-    public QueueSelectorAttachment() {}
+    public QueueSelectorAttachment() {
+    }
 
     /**
      * Returns kind discriminator.

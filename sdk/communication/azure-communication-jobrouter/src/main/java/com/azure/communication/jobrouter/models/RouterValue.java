@@ -54,9 +54,8 @@ public final class RouterValue {
      */
     @JsonCreator
     RouterValue(@JsonProperty(value = "stringValue") String stringValue,
-                       @JsonProperty(value = "intValue") Integer intValue,
-                       @JsonProperty(value = "doubleValue") Double doubleValue,
-                       @JsonProperty(value = "boolValue") Boolean boolValue) {
+        @JsonProperty(value = "intValue") Integer intValue, @JsonProperty(value = "doubleValue") Double doubleValue,
+        @JsonProperty(value = "boolValue") Boolean boolValue) {
         this.stringValue = stringValue;
         this.intValue = intValue;
         this.doubleValue = doubleValue;

@@ -71,9 +71,8 @@ public final class RouterWorkerSelector {
      */
     @Generated
     @JsonCreator
-    public RouterWorkerSelector(
-            @JsonProperty(value = "key") String key,
-            @JsonProperty(value = "labelOperator") LabelOperator labelOperator) {
+    public RouterWorkerSelector(@JsonProperty(value = "key") String key,
+        @JsonProperty(value = "labelOperator") LabelOperator labelOperator) {
         this.key = key;
         this.labelOperator = labelOperator;
     }

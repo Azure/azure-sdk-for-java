@@ -19,19 +19,19 @@ public class WorkerAdapter {
      * @param createWorkerOptions Container with options to create {@link RouterWorker}
      * @return RouterWorker
      */
-    public static RouterWorkerInternal convertCreateWorkerOptionsToRouterWorker(CreateWorkerOptions createWorkerOptions) {
-        Map<String, Object> labels = createWorkerOptions.getLabels().entrySet()
+    public static RouterWorkerInternal
+        convertCreateWorkerOptionsToRouterWorker(CreateWorkerOptions createWorkerOptions) {
+        Map<String, Object> labels = createWorkerOptions.getLabels()
+            .entrySet()
             .stream()
-            .collect(Collectors.toMap(entry -> entry.getKey(),
-                entry -> RouterValueAdapter.getValue(entry.getValue())));
+            .collect(Collectors.toMap(entry -> entry.getKey(), entry -> RouterValueAdapter.getValue(entry.getValue())));
 
-        Map<String, Object> tags = createWorkerOptions.getTags().entrySet()
+        Map<String, Object> tags = createWorkerOptions.getTags()
+            .entrySet()
             .stream()
-            .collect(Collectors.toMap(entry -> entry.getKey(),
-                entry -> RouterValueAdapter.getValue(entry.getValue())));
+            .collect(Collectors.toMap(entry -> entry.getKey(), entry -> RouterValueAdapter.getValue(entry.getValue())));
 
-        return new RouterWorkerInternal()
-            .setLabels(labels)
+        return new RouterWorkerInternal().setLabels(labels)
             .setTags(tags)
             .setAvailableForOffers(createWorkerOptions.isAvailableForOffers())
             .setChannels(createWorkerOptions.getChannels())

@@ -12,16 +12,15 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /** The action to take when the exception is triggered. */
 @JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "kind",
-        defaultImpl = ExceptionAction.class)
+    use = JsonTypeInfo.Id.NAME,
+    include = JsonTypeInfo.As.PROPERTY,
+    property = "kind",
+    defaultImpl = ExceptionAction.class)
 @JsonTypeName("ExceptionAction")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "cancel", value = CancelExceptionAction.class),
     @JsonSubTypes.Type(name = "manual-reclassify", value = ManualReclassifyExceptionAction.class),
-    @JsonSubTypes.Type(name = "reclassify", value = ReclassifyExceptionAction.class)
-})
+    @JsonSubTypes.Type(name = "reclassify", value = ReclassifyExceptionAction.class) })
 @Immutable
 public abstract class ExceptionAction {
     /**
@@ -32,7 +31,8 @@ public abstract class ExceptionAction {
 
     /** Creates an instance of ExceptionAction class. */
     @Generated
-    public ExceptionAction() {}
+    public ExceptionAction() {
+    }
 
     /*
      * Unique Id of the exception action

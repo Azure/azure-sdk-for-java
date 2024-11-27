@@ -32,7 +32,7 @@ public final class WeightedAllocationWorkerSelectorAttachment extends WorkerSele
     @Generated
     @JsonCreator
     public WeightedAllocationWorkerSelectorAttachment(
-            @JsonProperty(value = "allocations") List<WorkerWeightedAllocation> allocations) {
+        @JsonProperty(value = "allocations") List<WorkerWeightedAllocation> allocations) {
         this.allocations = allocations;
     }
 

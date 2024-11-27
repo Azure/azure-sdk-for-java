@@ -38,9 +38,8 @@ public final class PassThroughQueueSelectorAttachment extends QueueSelectorAttac
      */
     @Generated
     @JsonCreator
-    public PassThroughQueueSelectorAttachment(
-            @JsonProperty(value = "key") String key,
-            @JsonProperty(value = "labelOperator") LabelOperator labelOperator) {
+    public PassThroughQueueSelectorAttachment(@JsonProperty(value = "key") String key,
+        @JsonProperty(value = "labelOperator") LabelOperator labelOperator) {
         this.key = key;
         this.labelOperator = labelOperator;
     }

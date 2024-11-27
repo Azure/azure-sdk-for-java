@@ -12,7 +12,8 @@ public final class RouterValueConstructorProxy {
 
     private static RouterValueConstructorAccessor accessor;
 
-    private RouterValueConstructorProxy() { }
+    private RouterValueConstructorProxy() {
+    }
 
     /**
      * Type defining the methods to set the non-public properties of a {@link RouterValueConstructorAccessor}

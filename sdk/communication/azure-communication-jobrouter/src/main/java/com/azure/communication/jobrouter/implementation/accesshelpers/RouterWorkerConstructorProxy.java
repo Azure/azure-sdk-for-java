@@ -13,7 +13,8 @@ public final class RouterWorkerConstructorProxy {
 
     private static RouterWorkerConstructorAccessor accessor;
 
-    private RouterWorkerConstructorProxy() { }
+    private RouterWorkerConstructorProxy() {
+    }
 
     /**
      * Type defining the methods to set the non-public properties of a {@link RouterWorkerConstructorAccessor}

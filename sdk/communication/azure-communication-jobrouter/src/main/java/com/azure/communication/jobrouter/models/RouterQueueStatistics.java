@@ -51,8 +51,8 @@ public final class RouterQueueStatistics {
      */
     @Generated
     @JsonCreator
-    private RouterQueueStatistics(
-            @JsonProperty(value = "queueId") String queueId, @JsonProperty(value = "length") int length) {
+    private RouterQueueStatistics(@JsonProperty(value = "queueId") String queueId,
+        @JsonProperty(value = "length") int length) {
         this.queueId = queueId;
         this.length = length;
     }

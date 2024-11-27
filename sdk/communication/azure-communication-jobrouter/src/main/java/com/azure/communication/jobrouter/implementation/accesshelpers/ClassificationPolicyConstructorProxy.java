@@ -13,7 +13,8 @@ public final class ClassificationPolicyConstructorProxy {
 
     private static ClassificationPolicyConstructorAccessor accessor;
 
-    private ClassificationPolicyConstructorProxy() { }
+    private ClassificationPolicyConstructorProxy() {
+    }
 
     /**
      * Type defining the methods to set the non-public properties of a {@link ClassificationPolicyConstructorAccessor}

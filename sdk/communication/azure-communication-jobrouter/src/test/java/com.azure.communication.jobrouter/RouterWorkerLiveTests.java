@@ -72,8 +72,7 @@ public class RouterWorkerLiveTests extends JobRouterTestBase {
             }
         };
 
-        CreateWorkerOptions createWorkerOptions = new CreateWorkerOptions(workerId, 10)
-            .setLabels(labels)
+        CreateWorkerOptions createWorkerOptions = new CreateWorkerOptions(workerId, 10).setLabels(labels)
             .setTags(tags)
             .setAvailableForOffers(false)
             .setChannels(channels)

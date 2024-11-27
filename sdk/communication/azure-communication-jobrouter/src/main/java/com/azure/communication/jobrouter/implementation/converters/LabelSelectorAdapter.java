@@ -51,28 +51,24 @@ import static com.azure.communication.jobrouter.implementation.converters.Router
 public class LabelSelectorAdapter {
 
     public static RouterWorkerSelectorInternal convertWorkerSelectorToInternal(RouterWorkerSelector ws) {
-        RouterWorkerSelectorInternal workerSelector = new RouterWorkerSelectorInternal(
-            ws.getKey(),
-            ws.getLabelOperator()
-        )
-            .setValue(RouterValueAdapter.getValue(ws.getValue()))
-            .setExpedite(ws.isExpedite())
-            .setExpiresAfterSeconds(
-                ws.getExpiresAfter() != null ? (double) ws.getExpiresAfter().getSeconds() : null);
+        RouterWorkerSelectorInternal workerSelector
+            = new RouterWorkerSelectorInternal(ws.getKey(), ws.getLabelOperator())
+                .setValue(RouterValueAdapter.getValue(ws.getValue()))
+                .setExpedite(ws.isExpedite())
+                .setExpiresAfterSeconds(
+                    ws.getExpiresAfter() != null ? (double) ws.getExpiresAfter().getSeconds() : null);
         return workerSelector;
     }
 
     public static RouterQueueSelectorInternal convertQueueSelectorToInternal(RouterQueueSelector qs) {
-        RouterQueueSelectorInternal queueSelector = new RouterQueueSelectorInternal(
-            qs.getKey(),
-            qs.getLabelOperator()
-        )
+        RouterQueueSelectorInternal queueSelector = new RouterQueueSelectorInternal(qs.getKey(), qs.getLabelOperator())
             .setValue(RouterValueAdapter.getValue(qs.getValue()));
 
         return queueSelector;
     }
 
-    public static QueueSelectorAttachmentInternal convertQueueSelectorAttachmentToInternal(QueueSelectorAttachment attachment) {
+    public static QueueSelectorAttachmentInternal
+        convertQueueSelectorAttachmentToInternal(QueueSelectorAttachment attachment) {
         if (attachment instanceof StaticQueueSelectorAttachment) {
             StaticQueueSelectorAttachment staticAttach = (StaticQueueSelectorAttachment) attachment;
             return new StaticQueueSelectorAttachmentInternal(
@@ -80,72 +76,75 @@ public class LabelSelectorAdapter {
         } else if (attachment instanceof ConditionalQueueSelectorAttachment) {
             ConditionalQueueSelectorAttachment conditional = (ConditionalQueueSelectorAttachment) attachment;
             return new ConditionalQueueSelectorAttachmentInternal(getRouterRuleInternal(conditional.getCondition()),
-                conditional.getQueueSelectors().stream()
-                    .map(LabelSelectorAdapter::convertQueueSelectorToInternal).collect(Collectors.toList()));
+                conditional.getQueueSelectors()
+                    .stream()
+                    .map(LabelSelectorAdapter::convertQueueSelectorToInternal)
+                    .collect(Collectors.toList()));
         } else if (attachment instanceof PassThroughQueueSelectorAttachment) {
             PassThroughQueueSelectorAttachment passThrough = (PassThroughQueueSelectorAttachment) attachment;
-            return new PassThroughQueueSelectorAttachmentInternal(passThrough.getKey(),
-                passThrough.getLabelOperator());
+            return new PassThroughQueueSelectorAttachmentInternal(passThrough.getKey(), passThrough.getLabelOperator());
         } else if (attachment instanceof RuleEngineQueueSelectorAttachment) {
             RuleEngineQueueSelectorAttachment rule = (RuleEngineQueueSelectorAttachment) attachment;
             return new RuleEngineQueueSelectorAttachmentInternal(getRouterRuleInternal(rule.getRule()));
         } else if (attachment instanceof WeightedAllocationQueueSelectorAttachment) {
             WeightedAllocationQueueSelectorAttachment weighted = (WeightedAllocationQueueSelectorAttachment) attachment;
-            return new WeightedAllocationQueueSelectorAttachmentInternal(
-                weighted.getAllocations().stream()
-                    .map(a -> new QueueWeightedAllocationInternal(a.getWeight(),
-                        a.getQueueSelectors().stream()
-                            .map(qs -> LabelSelectorAdapter.convertQueueSelectorToInternal(qs))
-                            .collect(Collectors.toList())))
-                    .collect(Collectors.toList()));
+            return new WeightedAllocationQueueSelectorAttachmentInternal(weighted.getAllocations()
+                .stream()
+                .map(a -> new QueueWeightedAllocationInternal(a.getWeight(),
+                    a.getQueueSelectors()
+                        .stream()
+                        .map(qs -> LabelSelectorAdapter.convertQueueSelectorToInternal(qs))
+                        .collect(Collectors.toList())))
+                .collect(Collectors.toList()));
         }
 
         return null;
     }
 
-    public static WorkerSelectorAttachmentInternal convertWorkerSelectorAttachmentToInternal(WorkerSelectorAttachment attachment) {
+    public static WorkerSelectorAttachmentInternal
+        convertWorkerSelectorAttachmentToInternal(WorkerSelectorAttachment attachment) {
         if (attachment instanceof StaticWorkerSelectorAttachment) {
             StaticWorkerSelectorAttachment staticAttach = (StaticWorkerSelectorAttachment) attachment;
             return new StaticWorkerSelectorAttachmentInternal(
                 LabelSelectorAdapter.convertWorkerSelectorToInternal(staticAttach.getWorkerSelector()));
         } else if (attachment instanceof ConditionalWorkerSelectorAttachment) {
             ConditionalWorkerSelectorAttachment conditional = (ConditionalWorkerSelectorAttachment) attachment;
-            return new ConditionalWorkerSelectorAttachmentInternal(
-                getRouterRuleInternal(conditional.getCondition()),
-                conditional.getWorkerSelectors().stream()
-                    .map(LabelSelectorAdapter::convertWorkerSelectorToInternal).collect(Collectors.toList()));
+            return new ConditionalWorkerSelectorAttachmentInternal(getRouterRuleInternal(conditional.getCondition()),
+                conditional.getWorkerSelectors()
+                    .stream()
+                    .map(LabelSelectorAdapter::convertWorkerSelectorToInternal)
+                    .collect(Collectors.toList()));
         } else if (attachment instanceof PassThroughWorkerSelectorAttachment) {
             PassThroughWorkerSelectorAttachment passThrough = (PassThroughWorkerSelectorAttachment) attachment;
-            return new PassThroughWorkerSelectorAttachmentInternal(
-                passThrough.getKey(),
-                passThrough.getLabelOperator()
-            )
+            return new PassThroughWorkerSelectorAttachmentInternal(passThrough.getKey(), passThrough.getLabelOperator())
                 .setExpiresAfterSeconds((double) passThrough.getExpiresAfter().getSeconds());
         } else if (attachment instanceof RuleEngineWorkerSelectorAttachment) {
             RuleEngineWorkerSelectorAttachment rule = (RuleEngineWorkerSelectorAttachment) attachment;
             return new RuleEngineWorkerSelectorAttachmentInternal(getRouterRuleInternal(rule.getRule()));
         } else if (attachment instanceof WeightedAllocationWorkerSelectorAttachment) {
-            WeightedAllocationWorkerSelectorAttachment weighted = (WeightedAllocationWorkerSelectorAttachment) attachment;
-            return new WeightedAllocationWorkerSelectorAttachmentInternal(
-                weighted.getAllocations().stream()
-                    .map(a -> new WorkerWeightedAllocationInternal(
-                        a.getWeight(),
-                        a.getWorkerSelectors().stream()
-                            .map(qs -> LabelSelectorAdapter.convertWorkerSelectorToInternal(qs))
-                            .collect(Collectors.toList())))
-                    .collect(Collectors.toList()));
+            WeightedAllocationWorkerSelectorAttachment weighted
+                = (WeightedAllocationWorkerSelectorAttachment) attachment;
+            return new WeightedAllocationWorkerSelectorAttachmentInternal(weighted.getAllocations()
+                .stream()
+                .map(a -> new WorkerWeightedAllocationInternal(a.getWeight(),
+                    a.getWorkerSelectors()
+                        .stream()
+                        .map(qs -> LabelSelectorAdapter.convertWorkerSelectorToInternal(qs))
+                        .collect(Collectors.toList())))
+                .collect(Collectors.toList()));
         }
 
         return null;
     }
 
     public static RouterWorkerSelector convertWorkerSelectorToPublic(RouterWorkerSelectorInternal ws) {
-        RouterWorkerSelector workerSelector = new RouterWorkerSelector(ws.getKey(),
-            LabelOperator.fromString(ws.getLabelOperator().toString()))
-            .setValue(RouterValueConstructorProxy.create(ws))
-            .setExpedite(ws.isExpedite())
-            .setExpiresAfter(ws.getExpiresAfterSeconds() != null
-                ? Duration.ofSeconds(ws.getExpiresAfterSeconds().longValue()) : null);
+        RouterWorkerSelector workerSelector
+            = new RouterWorkerSelector(ws.getKey(), LabelOperator.fromString(ws.getLabelOperator().toString()))
+                .setValue(RouterValueConstructorProxy.create(ws))
+                .setExpedite(ws.isExpedite())
+                .setExpiresAfter(ws.getExpiresAfterSeconds() != null
+                    ? Duration.ofSeconds(ws.getExpiresAfterSeconds().longValue())
+                    : null);
 
         return workerSelector;
     }
@@ -155,56 +154,79 @@ public class LabelSelectorAdapter {
             .setValue(RouterValueConstructorProxy.create(qs.getValue()));
     }
 
-    public static QueueSelectorAttachment convertQueueSelectorAttachmentToPublic(QueueSelectorAttachmentInternal attachment) {
+    public static QueueSelectorAttachment
+        convertQueueSelectorAttachmentToPublic(QueueSelectorAttachmentInternal attachment) {
         if (attachment instanceof StaticQueueSelectorAttachmentInternal) {
             StaticQueueSelectorAttachmentInternal staticAttach = (StaticQueueSelectorAttachmentInternal) attachment;
-            return new StaticQueueSelectorAttachment(LabelSelectorAdapter.convertQueueSelectorToPublic(staticAttach.getQueueSelector()));
+            return new StaticQueueSelectorAttachment(
+                LabelSelectorAdapter.convertQueueSelectorToPublic(staticAttach.getQueueSelector()));
         } else if (attachment instanceof ConditionalQueueSelectorAttachmentInternal) {
-            ConditionalQueueSelectorAttachmentInternal conditional = (ConditionalQueueSelectorAttachmentInternal) attachment;
-            return new ConditionalQueueSelectorAttachment(RouterRuleAdapter.convertRouterRuleToPublic(conditional.getCondition()),
-                conditional.getQueueSelectors().stream()
-                    .map(LabelSelectorAdapter::convertQueueSelectorToPublic).collect(Collectors.toList()));
+            ConditionalQueueSelectorAttachmentInternal conditional
+                = (ConditionalQueueSelectorAttachmentInternal) attachment;
+            return new ConditionalQueueSelectorAttachment(
+                RouterRuleAdapter.convertRouterRuleToPublic(conditional.getCondition()),
+                conditional.getQueueSelectors()
+                    .stream()
+                    .map(LabelSelectorAdapter::convertQueueSelectorToPublic)
+                    .collect(Collectors.toList()));
         } else if (attachment instanceof PassThroughQueueSelectorAttachmentInternal) {
-            PassThroughQueueSelectorAttachmentInternal passThrough = (PassThroughQueueSelectorAttachmentInternal) attachment;
+            PassThroughQueueSelectorAttachmentInternal passThrough
+                = (PassThroughQueueSelectorAttachmentInternal) attachment;
             return new PassThroughQueueSelectorAttachment(passThrough.getKey(),
                 LabelOperator.fromString(passThrough.getLabelOperator().toString()));
         } else if (attachment instanceof RuleEngineQueueSelectorAttachmentInternal) {
             RuleEngineQueueSelectorAttachmentInternal rule = (RuleEngineQueueSelectorAttachmentInternal) attachment;
             return new RuleEngineQueueSelectorAttachment(RouterRuleAdapter.convertRouterRuleToPublic(rule.getRule()));
         } else if (attachment instanceof WeightedAllocationQueueSelectorAttachmentInternal) {
-            WeightedAllocationQueueSelectorAttachmentInternal weighted = (WeightedAllocationQueueSelectorAttachmentInternal) attachment;
-            return new WeightedAllocationQueueSelectorAttachment(weighted.getAllocations().stream()
-                .map(a -> new QueueWeightedAllocation(a.getWeight(), a.getQueueSelectors().stream()
-                    .map(qs -> LabelSelectorAdapter.convertQueueSelectorToPublic(qs))
-                    .collect(Collectors.toList())))
+            WeightedAllocationQueueSelectorAttachmentInternal weighted
+                = (WeightedAllocationQueueSelectorAttachmentInternal) attachment;
+            return new WeightedAllocationQueueSelectorAttachment(weighted.getAllocations()
+                .stream()
+                .map(a -> new QueueWeightedAllocation(a.getWeight(),
+                    a.getQueueSelectors()
+                        .stream()
+                        .map(qs -> LabelSelectorAdapter.convertQueueSelectorToPublic(qs))
+                        .collect(Collectors.toList())))
                 .collect(Collectors.toList()));
         }
 
         return null;
     }
 
-    public static WorkerSelectorAttachment convertWorkerSelectorAttachmentToPublic(WorkerSelectorAttachmentInternal attachment) {
+    public static WorkerSelectorAttachment
+        convertWorkerSelectorAttachmentToPublic(WorkerSelectorAttachmentInternal attachment) {
         if (attachment instanceof StaticWorkerSelectorAttachmentInternal) {
             StaticWorkerSelectorAttachmentInternal staticAttach = (StaticWorkerSelectorAttachmentInternal) attachment;
-            return new StaticWorkerSelectorAttachment(LabelSelectorAdapter.convertWorkerSelectorToPublic(staticAttach.getWorkerSelector()));
+            return new StaticWorkerSelectorAttachment(
+                LabelSelectorAdapter.convertWorkerSelectorToPublic(staticAttach.getWorkerSelector()));
         } else if (attachment instanceof ConditionalWorkerSelectorAttachmentInternal) {
-            ConditionalWorkerSelectorAttachmentInternal conditional = (ConditionalWorkerSelectorAttachmentInternal) attachment;
-            return new ConditionalWorkerSelectorAttachment(RouterRuleAdapter.convertRouterRuleToPublic(conditional.getCondition()),
-                conditional.getWorkerSelectors().stream()
-                    .map(LabelSelectorAdapter::convertWorkerSelectorToPublic).collect(Collectors.toList()));
+            ConditionalWorkerSelectorAttachmentInternal conditional
+                = (ConditionalWorkerSelectorAttachmentInternal) attachment;
+            return new ConditionalWorkerSelectorAttachment(
+                RouterRuleAdapter.convertRouterRuleToPublic(conditional.getCondition()),
+                conditional.getWorkerSelectors()
+                    .stream()
+                    .map(LabelSelectorAdapter::convertWorkerSelectorToPublic)
+                    .collect(Collectors.toList()));
         } else if (attachment instanceof PassThroughWorkerSelectorAttachmentInternal) {
-            PassThroughWorkerSelectorAttachmentInternal passThrough = (PassThroughWorkerSelectorAttachmentInternal) attachment;
-            return new PassThroughWorkerSelectorAttachment(passThrough.getKey(), LabelOperator.fromString(passThrough.getLabelOperator().toString()))
-                .setExpiresAfter(Duration.ofSeconds(passThrough.getExpiresAfterSeconds().longValue()));
+            PassThroughWorkerSelectorAttachmentInternal passThrough
+                = (PassThroughWorkerSelectorAttachmentInternal) attachment;
+            return new PassThroughWorkerSelectorAttachment(passThrough.getKey(),
+                LabelOperator.fromString(passThrough.getLabelOperator().toString()))
+                    .setExpiresAfter(Duration.ofSeconds(passThrough.getExpiresAfterSeconds().longValue()));
         } else if (attachment instanceof RuleEngineWorkerSelectorAttachmentInternal) {
             RuleEngineWorkerSelectorAttachmentInternal rule = (RuleEngineWorkerSelectorAttachmentInternal) attachment;
             return new RuleEngineWorkerSelectorAttachment(RouterRuleAdapter.convertRouterRuleToPublic(rule.getRule()));
         } else if (attachment instanceof WeightedAllocationWorkerSelectorAttachmentInternal) {
-            WeightedAllocationWorkerSelectorAttachmentInternal weighted = (WeightedAllocationWorkerSelectorAttachmentInternal) attachment;
-            return new WeightedAllocationWorkerSelectorAttachment(weighted.getAllocations().stream()
-                .map(a -> new WorkerWeightedAllocation(a.getWeight(), a.getWorkerSelectors().stream()
-                    .map(qs -> LabelSelectorAdapter.convertWorkerSelectorToPublic(qs))
-                    .collect(Collectors.toList())))
+            WeightedAllocationWorkerSelectorAttachmentInternal weighted
+                = (WeightedAllocationWorkerSelectorAttachmentInternal) attachment;
+            return new WeightedAllocationWorkerSelectorAttachment(weighted.getAllocations()
+                .stream()
+                .map(a -> new WorkerWeightedAllocation(a.getWeight(),
+                    a.getWorkerSelectors()
+                        .stream()
+                        .map(qs -> LabelSelectorAdapter.convertWorkerSelectorToPublic(qs))
+                        .collect(Collectors.toList())))
                 .collect(Collectors.toList()));
         }
 

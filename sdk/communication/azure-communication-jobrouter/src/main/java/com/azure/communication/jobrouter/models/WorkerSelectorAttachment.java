@@ -12,10 +12,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /** An attachment which attaches worker selectors to a job. */
 @JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "kind",
-        defaultImpl = WorkerSelectorAttachment.class)
+    use = JsonTypeInfo.Id.NAME,
+    include = JsonTypeInfo.As.PROPERTY,
+    property = "kind",
+    defaultImpl = WorkerSelectorAttachment.class)
 @JsonTypeName("WorkerSelectorAttachment")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "conditional", value = ConditionalWorkerSelectorAttachment.class),
@@ -23,9 +23,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "rule-engine", value = RuleEngineWorkerSelectorAttachment.class),
     @JsonSubTypes.Type(name = "static", value = StaticWorkerSelectorAttachment.class),
     @JsonSubTypes.Type(
-            name = "weighted-allocation-worker-selector",
-            value = WeightedAllocationWorkerSelectorAttachment.class)
-})
+        name = "weighted-allocation-worker-selector",
+        value = WeightedAllocationWorkerSelectorAttachment.class) })
 @Immutable
 public abstract class WorkerSelectorAttachment {
     /**
@@ -36,7 +35,8 @@ public abstract class WorkerSelectorAttachment {
 
     /** Creates an instance of WorkerSelectorAttachment class. */
     @Generated
-    public WorkerSelectorAttachment() {}
+    public WorkerSelectorAttachment() {
+    }
 
     /**
      * Returns kind discriminator.

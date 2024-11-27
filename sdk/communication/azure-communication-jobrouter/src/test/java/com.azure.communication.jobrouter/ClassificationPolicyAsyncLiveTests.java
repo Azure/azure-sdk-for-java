@@ -45,16 +45,13 @@ public class ClassificationPolicyAsyncLiveTests extends JobRouterTestBase {
 
         String distributionPolicyName = String.format("%s-Name", distributionPolicyId);
 
-        CreateDistributionPolicyOptions createDistributionPolicyOptions = new CreateDistributionPolicyOptions(
-            distributionPolicyId,
-            Duration.ofSeconds(10),
-            new LongestIdleMode()
-                .setMinConcurrentOffers(1)
-                .setMaxConcurrentOffers(10)
-        )
-            .setName(distributionPolicyName);
+        CreateDistributionPolicyOptions createDistributionPolicyOptions
+            = new CreateDistributionPolicyOptions(distributionPolicyId, Duration.ofSeconds(10),
+                new LongestIdleMode().setMinConcurrentOffers(1).setMaxConcurrentOffers(10))
+                    .setName(distributionPolicyName);
 
-        DistributionPolicy distributionPolicy = administrationAsyncClient.createDistributionPolicy(createDistributionPolicyOptions).block();
+        DistributionPolicy distributionPolicy
+            = administrationAsyncClient.createDistributionPolicy(createDistributionPolicyOptions).block();
 
         String queueId = String.format("%s-Queue", JAVA_LIVE_TESTS);
 
@@ -65,9 +62,8 @@ public class ClassificationPolicyAsyncLiveTests extends JobRouterTestBase {
             }
         };
 
-        CreateQueueOptions createQueueOptions = new CreateQueueOptions(queueId, distributionPolicyId)
-            .setLabels(queueLabels)
-            .setName(queueName);
+        CreateQueueOptions createQueueOptions
+            = new CreateQueueOptions(queueId, distributionPolicyId).setLabels(queueLabels).setName(queueName);
 
         RouterQueue jobQueue = administrationAsyncClient.createQueue(createQueueOptions).block();
 
@@ -78,8 +74,7 @@ public class ClassificationPolicyAsyncLiveTests extends JobRouterTestBase {
          * Create queue selectors.
          */
         StaticQueueSelectorAttachment staticQueueSelector = new StaticQueueSelectorAttachment(
-            new RouterQueueSelector("queueId", LabelOperator.EQUAL)
-                .setValue(new RouterValue(queueId)));
+            new RouterQueueSelector("queueId", LabelOperator.EQUAL).setValue(new RouterValue(queueId)));
 
         List<QueueSelectorAttachment> queueSelectors = new ArrayList<QueueSelectorAttachment>() {
             {
@@ -87,13 +82,11 @@ public class ClassificationPolicyAsyncLiveTests extends JobRouterTestBase {
             }
         };
 
-
         /**
          * Create worker selectors.
          */
         StaticWorkerSelectorAttachment staticWorkerSelector = new StaticWorkerSelectorAttachment(
-            new RouterWorkerSelector("key", LabelOperator.EQUAL)
-                .setValue(new RouterValue("value")));
+            new RouterWorkerSelector("key", LabelOperator.EQUAL).setValue(new RouterValue("value")));
 
         List<WorkerSelectorAttachment> workerSelectors = new ArrayList<WorkerSelectorAttachment>() {
             {
@@ -104,16 +97,16 @@ public class ClassificationPolicyAsyncLiveTests extends JobRouterTestBase {
         /**
          * Create classification policy
          */
-        CreateClassificationPolicyOptions createClassificationPolicyOptions = new CreateClassificationPolicyOptions(
-            classificationPolicyId)
-            .setName(classificationPolicyName)
-            .setPrioritizationRule(new StaticRouterRule().setValue(new RouterValue(1)))
-            .setWorkerSelectors(workerSelectors)
-            .setQueueSelectors(queueSelectors)
-            .setFallbackQueueId(jobQueue.getId());
+        CreateClassificationPolicyOptions createClassificationPolicyOptions
+            = new CreateClassificationPolicyOptions(classificationPolicyId).setName(classificationPolicyName)
+                .setPrioritizationRule(new StaticRouterRule().setValue(new RouterValue(1)))
+                .setWorkerSelectors(workerSelectors)
+                .setQueueSelectors(queueSelectors)
+                .setFallbackQueueId(jobQueue.getId());
 
         // Action
-        ClassificationPolicy result = administrationAsyncClient.createClassificationPolicy(createClassificationPolicyOptions).block();
+        ClassificationPolicy result
+            = administrationAsyncClient.createClassificationPolicy(createClassificationPolicyOptions).block();
 
         // Verify
         assertEquals(classificationPolicyId, result.getId());

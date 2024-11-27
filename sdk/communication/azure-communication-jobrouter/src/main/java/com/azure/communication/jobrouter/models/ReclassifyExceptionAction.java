@@ -33,7 +33,8 @@ public final class ReclassifyExceptionAction extends ExceptionAction {
 
     /** Creates an instance of ReclassifyExceptionAction class. */
     @Generated
-    public ReclassifyExceptionAction() {}
+    public ReclassifyExceptionAction() {
+    }
 
     /**
      * Get the classificationPolicyId property: (optional) The new classification policy that will determine queue,

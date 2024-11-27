@@ -314,9 +314,9 @@ public final class JobRouterAdministrationAsyncClient {
             = DistributionPolicyAdapter.convertCreateOptionsToDistributionPolicy(createDistributionPolicyOptions);
         return upsertDistributionPolicyWithResponse(createDistributionPolicyOptions.getDistributionPolicyId(),
             BinaryData.fromObject(distributionPolicy), requestOptions)
-            .map(response -> new SimpleResponse<DistributionPolicy>(response.getRequest(), response.getStatusCode(),
-                response.getHeaders(), DistributionPolicyConstructorProxy
-                    .create(response.getValue().toObject(DistributionPolicyInternal.class))));
+                .map(response -> new SimpleResponse<DistributionPolicy>(response.getRequest(), response.getStatusCode(),
+                    response.getHeaders(), DistributionPolicyConstructorProxy
+                        .create(response.getValue().toObject(DistributionPolicyInternal.class))));
     }
 
     /**
@@ -717,9 +717,9 @@ public final class JobRouterAdministrationAsyncClient {
             .convertCreateOptionsToClassificationPolicyInternal(createClassificationPolicyOptions);
         return upsertClassificationPolicyWithResponse(createClassificationPolicyOptions.getClassificationPolicyId(),
             BinaryData.fromObject(classificationPolicy), requestOptions)
-            .map(response -> new SimpleResponse<ClassificationPolicy>(response.getRequest(), response.getStatusCode(),
-                response.getHeaders(), ClassificationPolicyConstructorProxy
-                    .create(response.getValue().toObject(ClassificationPolicyInternal.class))));
+                .map(response -> new SimpleResponse<ClassificationPolicy>(response.getRequest(),
+                    response.getStatusCode(), response.getHeaders(), ClassificationPolicyConstructorProxy
+                        .create(response.getValue().toObject(ClassificationPolicyInternal.class))));
     }
 
     /**
@@ -1129,9 +1129,9 @@ public final class JobRouterAdministrationAsyncClient {
             = ExceptionPolicyAdapter.convertCreateOptionsToExceptionPolicy(createExceptionPolicyOptions);
         return upsertExceptionPolicyWithResponse(createExceptionPolicyOptions.getExceptionPolicyId(),
             BinaryData.fromObject(exceptionPolicy), requestOptions)
-            .map(response -> new SimpleResponse<ExceptionPolicy>(response.getRequest(), response.getStatusCode(),
-                response.getHeaders(),
-                ExceptionPolicyConstructorProxy.create(response.getValue().toObject(ExceptionPolicyInternal.class))));
+                .map(response -> new SimpleResponse<ExceptionPolicy>(response.getRequest(), response.getStatusCode(),
+                    response.getHeaders(), ExceptionPolicyConstructorProxy
+                        .create(response.getValue().toObject(ExceptionPolicyInternal.class))));
     }
 
     /**
@@ -1656,11 +1656,13 @@ public final class JobRouterAdministrationAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listDistributionPolicies(requestOptions);
         return PagedFlux.create(() -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null) ? pagedFluxResponse.byPage().take(1)
+            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null)
+                ? pagedFluxResponse.byPage().take(1)
                 : pagedFluxResponse.byPage(continuationToken).take(1);
             return flux.map(pagedResponse -> new PagedResponseBase<Void, DistributionPolicy>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                pagedResponse.getValue().stream()
+                pagedResponse.getValue()
+                    .stream()
                     .map(protocolMethodData -> protocolMethodData.toObject(DistributionPolicy.class))
                     .collect(Collectors.toList()),
                 pagedResponse.getContinuationToken(), null));
@@ -1723,12 +1725,14 @@ public final class JobRouterAdministrationAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listClassificationPolicies(requestOptions);
         return PagedFlux.create(() -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null) ? pagedFluxResponse.byPage().take(1)
+            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null)
+                ? pagedFluxResponse.byPage().take(1)
                 : pagedFluxResponse.byPage(continuationToken).take(1);
             return flux
                 .map(pagedResponse -> new PagedResponseBase<Void, ClassificationPolicy>(pagedResponse.getRequest(),
                     pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                    pagedResponse.getValue().stream()
+                    pagedResponse.getValue()
+                        .stream()
                         .map(protocolMethodData -> protocolMethodData.toObject(ClassificationPolicy.class))
                         .collect(Collectors.toList()),
                     pagedResponse.getContinuationToken(), null));
@@ -1792,11 +1796,13 @@ public final class JobRouterAdministrationAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listExceptionPolicies(requestOptions);
         return PagedFlux.create(() -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null) ? pagedFluxResponse.byPage().take(1)
+            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null)
+                ? pagedFluxResponse.byPage().take(1)
                 : pagedFluxResponse.byPage(continuationToken).take(1);
             return flux.map(pagedResponse -> new PagedResponseBase<Void, ExceptionPolicy>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                pagedResponse.getValue().stream()
+                pagedResponse.getValue()
+                    .stream()
                     .map(protocolMethodData -> protocolMethodData.toObject(ExceptionPolicy.class))
                     .collect(Collectors.toList()),
                 pagedResponse.getContinuationToken(), null));
@@ -1859,11 +1865,13 @@ public final class JobRouterAdministrationAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listQueues(requestOptions);
         return PagedFlux.create(() -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null) ? pagedFluxResponse.byPage().take(1)
+            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null)
+                ? pagedFluxResponse.byPage().take(1)
                 : pagedFluxResponse.byPage(continuationToken).take(1);
             return flux.map(pagedResponse -> new PagedResponseBase<Void, RouterQueue>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                pagedResponse.getValue().stream()
+                pagedResponse.getValue()
+                    .stream()
                     .map(protocolMethodData -> protocolMethodData.toObject(RouterQueue.class))
                     .collect(Collectors.toList()),
                 pagedResponse.getContinuationToken(), null));

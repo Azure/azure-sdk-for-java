@@ -31,9 +31,9 @@ public class ExceptionPolicyAsyncLiveTests extends JobRouterTestBase {
         String exceptionPolicyId = String.format("%s-CreateExceptionPolicy-ExceptionPolicy", JAVA_LIVE_TESTS);
         String exceptionPolicyName = String.format("%s-Name", exceptionPolicyId);
 
-        CancelExceptionAction exceptionAction = new CancelExceptionAction()
-            .setDispositionCode("CancelledDueToMaxQueueLengthReached")
-            .setNote("Job Cancelled as maximum queue length is reached.");
+        CancelExceptionAction exceptionAction
+            = new CancelExceptionAction().setDispositionCode("CancelledDueToMaxQueueLengthReached")
+                .setNote("Job Cancelled as maximum queue length is reached.");
 
         List<ExceptionAction> exceptionActions = new ArrayList<ExceptionAction>() {
             {
@@ -41,7 +41,8 @@ public class ExceptionPolicyAsyncLiveTests extends JobRouterTestBase {
             }
         };
 
-        ExceptionRule exceptionRule = new ExceptionRule("CancelledDueToMaxQueueLengthReached", new QueueLengthExceptionTrigger(1), exceptionActions);
+        ExceptionRule exceptionRule = new ExceptionRule("CancelledDueToMaxQueueLengthReached",
+            new QueueLengthExceptionTrigger(1), exceptionActions);
 
         List<ExceptionRule> exceptionRules = new ArrayList<ExceptionRule>() {
             {
@@ -49,9 +50,8 @@ public class ExceptionPolicyAsyncLiveTests extends JobRouterTestBase {
             }
         };
 
-        CreateExceptionPolicyOptions createExceptionPolicyOptions = new CreateExceptionPolicyOptions(
-            exceptionPolicyId, exceptionRules)
-            .setName(exceptionPolicyName);
+        CreateExceptionPolicyOptions createExceptionPolicyOptions
+            = new CreateExceptionPolicyOptions(exceptionPolicyId, exceptionRules).setName(exceptionPolicyName);
 
         // Action
         ExceptionPolicy result = administrationAsyncClient.createExceptionPolicy(createExceptionPolicyOptions).block();

@@ -155,7 +155,8 @@ public final class RouterJob {
 
     /** Creates an instance of RouterJob class. */
     @Generated
-    public RouterJob() {}
+    public RouterJob() {
+    }
 
     /**
      * Package-private constructor of the class, used internally.
@@ -164,13 +165,17 @@ public final class RouterJob {
      */
     RouterJob(RouterJobInternal internal) {
         id = internal.getId();
-        requestedWorkerSelectors = internal.getRequestedWorkerSelectors().stream()
+        requestedWorkerSelectors = internal.getRequestedWorkerSelectors()
+            .stream()
             .map(ws -> LabelSelectorAdapter.convertWorkerSelectorToPublic(ws))
             .collect(Collectors.toList());
-        attachedWorkerSelectors = internal.getAttachedWorkerSelectors().stream()
+        attachedWorkerSelectors = internal.getAttachedWorkerSelectors()
+            .stream()
             .map(ws -> LabelSelectorAdapter.convertWorkerSelectorToPublic(ws))
             .collect(Collectors.toList());
-        assignments = internal.getAssignments().entrySet().stream()
+        assignments = internal.getAssignments()
+            .entrySet()
+            .stream()
             .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue()));
         status = RouterJobStatus.fromString(internal.getStatus().toString());
         enqueuedAt = internal.getEnqueuedAt();
@@ -179,22 +184,27 @@ public final class RouterJob {
         setChannelId(internal.getChannelId());
         setChannelReference(internal.getChannelReference());
         setQueueId(internal.getQueueId());
-        setLabels(internal.getLabels().entrySet().stream()
-            .collect(Collectors.toMap(Map.Entry::getKey, entry -> RouterValueConstructorProxy.create(entry.getValue()))));
+        setLabels(internal.getLabels()
+            .entrySet()
+            .stream()
+            .collect(
+                Collectors.toMap(Map.Entry::getKey, entry -> RouterValueConstructorProxy.create(entry.getValue()))));
         setNotes(internal.getNotes());
         setPriority(internal.getPriority());
         setClassificationPolicyId(internal.getClassificationPolicyId());
         setDispositionCode(internal.getDispositionCode());
         setClassificationPolicyId(internal.getClassificationPolicyId());
-        setTags(internal.getTags().entrySet().stream()
-            .collect(Collectors.toMap(Map.Entry::getKey, entry -> RouterValueConstructorProxy.create(entry.getValue()))));
+        setTags(internal.getTags()
+            .entrySet()
+            .stream()
+            .collect(
+                Collectors.toMap(Map.Entry::getKey, entry -> RouterValueConstructorProxy.create(entry.getValue()))));
         setMatchingMode(JobAdapter.convertJobMatchingModeToPublic(internal.getMatchingMode()));
     }
 
     static {
         RouterJobConstructorProxy.setAccessor(internal -> new RouterJob(internal));
     }
-
 
     /**
      * Get the id property: The id of the job.

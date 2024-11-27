@@ -28,17 +28,14 @@ public class DistributionPolicyLiveTests extends JobRouterTestBase {
     public void createDistributionPolicyBestWorkerDefaultScoringRule(HttpClient httpClient) {
         // Setup
         routerAdminClient = getRouterAdministrationClient(httpClient);
-        String bestWorkerModeDistributionPolicyId = String.format("%s-BestWorkerDefaultScoringRule-DistributionPolicy", JAVA_LIVE_TESTS);
+        String bestWorkerModeDistributionPolicyId
+            = String.format("%s-BestWorkerDefaultScoringRule-DistributionPolicy", JAVA_LIVE_TESTS);
         String bestWorkerModeDistributionPolicyName = String.format("%s-Name", bestWorkerModeDistributionPolicyId);
 
-        CreateDistributionPolicyOptions createDistributionPolicyOptions = new CreateDistributionPolicyOptions(
-            bestWorkerModeDistributionPolicyId,
-            Duration.ofSeconds(10),
-            new BestWorkerMode()
-                .setMinConcurrentOffers(1)
-                .setMaxConcurrentOffers(10)
-        )
-            .setName(bestWorkerModeDistributionPolicyName);
+        CreateDistributionPolicyOptions createDistributionPolicyOptions
+            = new CreateDistributionPolicyOptions(bestWorkerModeDistributionPolicyId, Duration.ofSeconds(10),
+                new BestWorkerMode().setMinConcurrentOffers(1).setMaxConcurrentOffers(10))
+                    .setName(bestWorkerModeDistributionPolicyName);
 
         // Action
         DistributionPolicy result = routerAdminClient.createDistributionPolicy(createDistributionPolicyOptions);
@@ -56,23 +53,18 @@ public class DistributionPolicyLiveTests extends JobRouterTestBase {
     public void createDistributionPolicyBestWorkerAzureFunctionRule(HttpClient httpClient) {
         // Setup
         routerAdminClient = getRouterAdministrationClient(httpClient);
-        String bestWorkerModeDistributionPolicyId = String.format("%s-BestWorkerAzureFunctionRule-DistributionPolicy", JAVA_LIVE_TESTS);
+        String bestWorkerModeDistributionPolicyId
+            = String.format("%s-BestWorkerAzureFunctionRule-DistributionPolicy", JAVA_LIVE_TESTS);
         String bestWorkerModeDistributionPolicyName = String.format("%s-Name", bestWorkerModeDistributionPolicyId);
 
-        FunctionRouterRule azureFunctionRule = new FunctionRouterRule("https://my.function.app/api/myfunction?code=Kg==")
-            .setCredential(new FunctionRouterRuleCredential()
-                .setAppKey("MyAppKey")
-                .setClientId("MyClientId"));
+        FunctionRouterRule azureFunctionRule
+            = new FunctionRouterRule("https://my.function.app/api/myfunction?code=Kg==")
+                .setCredential(new FunctionRouterRuleCredential().setAppKey("MyAppKey").setClientId("MyClientId"));
 
         CreateDistributionPolicyOptions createDistributionPolicyOptions = new CreateDistributionPolicyOptions(
-            bestWorkerModeDistributionPolicyId,
-            Duration.ofSeconds(10),
-            new BestWorkerMode()
-                .setScoringRule(azureFunctionRule)
-                .setMinConcurrentOffers(1)
-                .setMaxConcurrentOffers(10)
-        )
-            .setName(bestWorkerModeDistributionPolicyName);
+            bestWorkerModeDistributionPolicyId, Duration.ofSeconds(10),
+            new BestWorkerMode().setScoringRule(azureFunctionRule).setMinConcurrentOffers(1).setMaxConcurrentOffers(10))
+                .setName(bestWorkerModeDistributionPolicyName);
 
         // Action
         DistributionPolicy result = routerAdminClient.createDistributionPolicy(createDistributionPolicyOptions);
@@ -90,17 +82,14 @@ public class DistributionPolicyLiveTests extends JobRouterTestBase {
     public void createDistributionPolicyLongestIdle(HttpClient httpClient) {
         // Setup
         routerAdminClient = getRouterAdministrationClient(httpClient);
-        String longestIdleModeDistributionPolicyId = String.format("%s-LongestIdle-DistributionPolicy", JAVA_LIVE_TESTS);
+        String longestIdleModeDistributionPolicyId
+            = String.format("%s-LongestIdle-DistributionPolicy", JAVA_LIVE_TESTS);
         String longestIdleModeDistributionPolicyName = String.format("%s-Name", longestIdleModeDistributionPolicyId);
 
-        CreateDistributionPolicyOptions createDistributionPolicyOptions = new CreateDistributionPolicyOptions(
-            longestIdleModeDistributionPolicyId,
-            Duration.ofSeconds(10),
-            new LongestIdleMode()
-                .setMinConcurrentOffers(1)
-                .setMaxConcurrentOffers(10)
-            )
-            .setName(longestIdleModeDistributionPolicyName);
+        CreateDistributionPolicyOptions createDistributionPolicyOptions
+            = new CreateDistributionPolicyOptions(longestIdleModeDistributionPolicyId, Duration.ofSeconds(10),
+                new LongestIdleMode().setMinConcurrentOffers(1).setMaxConcurrentOffers(10))
+                    .setName(longestIdleModeDistributionPolicyName);
 
         // Action
         DistributionPolicy result = routerAdminClient.createDistributionPolicy(createDistributionPolicyOptions);
@@ -121,14 +110,10 @@ public class DistributionPolicyLiveTests extends JobRouterTestBase {
         String roundRobinModeDistributionPolicyId = String.format("%s-RoundRobin-DistributionPolicy", JAVA_LIVE_TESTS);
         String roundRobinModeDistributionPolicyName = String.format("%s-Name", roundRobinModeDistributionPolicyId);
 
-        CreateDistributionPolicyOptions createDistributionPolicyOptions = new CreateDistributionPolicyOptions(
-            roundRobinModeDistributionPolicyId,
-            Duration.ofSeconds(10),
-            new RoundRobinMode()
-                .setMinConcurrentOffers(1)
-                .setMaxConcurrentOffers(10)
-        )
-            .setName(roundRobinModeDistributionPolicyName);
+        CreateDistributionPolicyOptions createDistributionPolicyOptions
+            = new CreateDistributionPolicyOptions(roundRobinModeDistributionPolicyId, Duration.ofSeconds(10),
+                new RoundRobinMode().setMinConcurrentOffers(1).setMaxConcurrentOffers(10))
+                    .setName(roundRobinModeDistributionPolicyName);
 
         // Action
         DistributionPolicy result = routerAdminClient.createDistributionPolicy(createDistributionPolicyOptions);

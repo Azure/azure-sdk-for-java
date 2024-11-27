@@ -63,10 +63,9 @@ public final class ExceptionRule {
      */
     @Generated
     @JsonCreator
-    public ExceptionRule(
-            @JsonProperty(value = "id") String id,
-            @JsonProperty(value = "trigger") ExceptionTrigger trigger,
-            @JsonProperty(value = "actions") List<ExceptionAction> actions) {
+    public ExceptionRule(@JsonProperty(value = "id") String id,
+        @JsonProperty(value = "trigger") ExceptionTrigger trigger,
+        @JsonProperty(value = "actions") List<ExceptionAction> actions) {
         this.id = id;
         this.trigger = trigger;
         this.actions = actions;

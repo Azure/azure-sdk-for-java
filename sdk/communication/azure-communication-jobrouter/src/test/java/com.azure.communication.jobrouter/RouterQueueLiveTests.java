@@ -63,7 +63,8 @@ public class RouterQueueLiveTests extends JobRouterTestBase {
         String queueId = String.format("%s-CreateQueue-Queue", JAVA_LIVE_TESTS);
         RouterQueue queue = createQueue(routerAdminClient, queueId, distributionPolicy.getId());
 
-        String updatedRouterQueue = "{\"name\":\"JAVA_LIVE_TEST-CreateQueue-Queue\",\"distributionPolicyId\":\"JAVA_LIVE_TEST-CreateQueue-DistributionPolicy\",\"labels\":{\"Label_1\":\"UpdatedValue\"}}";
+        String updatedRouterQueue
+            = "{\"name\":\"JAVA_LIVE_TEST-CreateQueue-Queue\",\"distributionPolicyId\":\"JAVA_LIVE_TEST-CreateQueue-DistributionPolicy\",\"labels\":{\"Label_1\":\"UpdatedValue\"}}";
 
         Map<String, RouterValue> updatedQueueLabels = new HashMap<String, RouterValue>() {
             {
@@ -71,7 +72,8 @@ public class RouterQueueLiveTests extends JobRouterTestBase {
             }
         };
         // Action
-        BinaryData updatedQueue = routerAdminClient.updateQueueWithResponse(queueId, BinaryData.fromString(updatedRouterQueue), new RequestOptions())
+        BinaryData updatedQueue = routerAdminClient
+            .updateQueueWithResponse(queueId, BinaryData.fromString(updatedRouterQueue), new RequestOptions())
             .getValue();
         LOGGER.info(updatedQueue.toString());
 

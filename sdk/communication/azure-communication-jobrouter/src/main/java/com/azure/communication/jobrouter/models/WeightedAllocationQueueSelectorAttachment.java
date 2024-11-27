@@ -32,7 +32,7 @@ public final class WeightedAllocationQueueSelectorAttachment extends QueueSelect
     @Generated
     @JsonCreator
     public WeightedAllocationQueueSelectorAttachment(
-            @JsonProperty(value = "allocations") List<QueueWeightedAllocation> allocations) {
+        @JsonProperty(value = "allocations") List<QueueWeightedAllocation> allocations) {
         this.allocations = allocations;
     }
 

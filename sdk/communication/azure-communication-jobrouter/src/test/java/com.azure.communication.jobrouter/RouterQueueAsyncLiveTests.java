@@ -35,15 +35,12 @@ public class RouterQueueAsyncLiveTests extends JobRouterTestBase {
         String distributionPolicyId = String.format("%s-CreateQueue-DistributionPolicy", JAVA_LIVE_TESTS);
         String distributionPolicyName = String.format("%s-Name", distributionPolicyId);
 
-        CreateDistributionPolicyOptions createDistributionPolicyOptions = new CreateDistributionPolicyOptions(
-            distributionPolicyId,
-            Duration.ofSeconds(10),
-            new LongestIdleMode()
-                .setMinConcurrentOffers(1)
-                .setMaxConcurrentOffers(10)
-        )
-            .setName(distributionPolicyName);
-        DistributionPolicy distributionPolicy = administrationAsyncClient.createDistributionPolicy(createDistributionPolicyOptions).block();
+        CreateDistributionPolicyOptions createDistributionPolicyOptions
+            = new CreateDistributionPolicyOptions(distributionPolicyId, Duration.ofSeconds(10),
+                new LongestIdleMode().setMinConcurrentOffers(1).setMaxConcurrentOffers(10))
+                    .setName(distributionPolicyName);
+        DistributionPolicy distributionPolicy
+            = administrationAsyncClient.createDistributionPolicy(createDistributionPolicyOptions).block();
 
         String queueId = String.format("%s-CreateQueue-Queue", JAVA_LIVE_TESTS);
 
@@ -55,9 +52,8 @@ public class RouterQueueAsyncLiveTests extends JobRouterTestBase {
             }
         };
 
-        CreateQueueOptions createQueueOptions = new CreateQueueOptions(queueId, distributionPolicyId)
-            .setLabels(queueLabels)
-            .setName(queueName);
+        CreateQueueOptions createQueueOptions
+            = new CreateQueueOptions(queueId, distributionPolicyId).setLabels(queueLabels).setName(queueName);
         RouterQueue jobQueue = administrationAsyncClient.createQueue(createQueueOptions).block();
 
         // Verify

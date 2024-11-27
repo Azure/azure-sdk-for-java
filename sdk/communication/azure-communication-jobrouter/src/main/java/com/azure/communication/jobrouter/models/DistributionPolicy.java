@@ -45,7 +45,8 @@ public final class DistributionPolicy {
 
     /** Creates an instance of DistributionPolicy class. */
     @Generated
-    public DistributionPolicy() {}
+    public DistributionPolicy() {
+    }
 
     /**
      * Package-private constructor of the class, used internally.

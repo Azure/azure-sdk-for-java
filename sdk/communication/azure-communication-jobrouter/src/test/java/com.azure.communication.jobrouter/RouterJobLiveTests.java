@@ -38,7 +38,7 @@ public class RouterJobLiveTests extends JobRouterTestBase {
 
     private JobRouterAdministrationClient routerAdminClient;
 
-//    @ParameterizedTest
+    //    @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void unassignJob(HttpClient httpClient) {
         // Setup
@@ -83,8 +83,7 @@ public class RouterJobLiveTests extends JobRouterTestBase {
         };
 
         String workerId = String.format("%s-%s-Worker", JAVA_LIVE_TESTS, testName);
-        CreateWorkerOptions createWorkerOptions = new CreateWorkerOptions(workerId, 10)
-            .setLabels(labels)
+        CreateWorkerOptions createWorkerOptions = new CreateWorkerOptions(workerId, 10).setLabels(labels)
             .setTags(tags)
             .setAvailableForOffers(true)
             .setChannels(channels)
@@ -122,9 +121,8 @@ public class RouterJobLiveTests extends JobRouterTestBase {
         assertEquals(1, unassignJobResult.getUnassignmentCount());
 
         RequestOptions requestOptions = new RequestOptions();
-        CancelJobOptions cancelJobOptions = new CancelJobOptions()
-            .setDispositionCode("dispositionCode")
-            .setNote("note");
+        CancelJobOptions cancelJobOptions
+            = new CancelJobOptions().setDispositionCode("dispositionCode").setNote("note");
         requestOptions.setBody(BinaryData.fromObject(cancelJobOptions));
         // Cleanup
         jobRouterClient.cancelJob(jobId, requestOptions);
@@ -134,7 +132,7 @@ public class RouterJobLiveTests extends JobRouterTestBase {
         routerAdminClient.deleteDistributionPolicy(distributionPolicyId);
     }
 
-//    @ParameterizedTest
+    //    @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void jobScheduling(HttpClient httpClient) {
         // Setup
@@ -152,13 +150,14 @@ public class RouterJobLiveTests extends JobRouterTestBase {
         String jobId = String.format("%s-%s-Job", JAVA_LIVE_TESTS, testName);
 
         RouterJob job = jobRouterClient.createJob(new CreateJobOptions(jobId, testName, queue.getId())
-            .setMatchingMode(new ScheduleAndSuspendMode(
-                OffsetDateTime.of(2040, 1, 1, 1, 1, 1, 1, ZoneOffset.UTC))));
+            .setMatchingMode(new ScheduleAndSuspendMode(OffsetDateTime.of(2040, 1, 1, 1, 1, 1, 1, ZoneOffset.UTC))));
 
         // Action
-        RouterJob job2 = jobRouterClient.updateJobWithResponse(jobId,
-            BinaryData.fromObject(new RouterJob().setMatchingMode(new QueueAndMatchMode())),
-            new RequestOptions()).getValue().toObject(RouterJob.class);
+        RouterJob job2 = jobRouterClient
+            .updateJobWithResponse(jobId,
+                BinaryData.fromObject(new RouterJob().setMatchingMode(new QueueAndMatchMode())), new RequestOptions())
+            .getValue()
+            .toObject(RouterJob.class);
 
         // Verify
         assertEquals(job.getStatus(), RouterJobStatus.PENDING_SCHEDULE);

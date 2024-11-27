@@ -33,7 +33,8 @@ public final class CancelExceptionAction extends ExceptionAction {
 
     /** Creates an instance of CancelExceptionAction class. */
     @Generated
-    public CancelExceptionAction() {}
+    public CancelExceptionAction() {
+    }
 
     /**
      * Get the note property: (Optional) A note that will be appended to the jobs' Notes collection with the current

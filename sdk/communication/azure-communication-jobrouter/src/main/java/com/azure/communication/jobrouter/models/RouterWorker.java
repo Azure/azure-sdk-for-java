@@ -76,7 +76,8 @@ public final class RouterWorker {
 
     /** Creates an instance of RouterWorker class. */
     @Generated
-    public RouterWorker() {}
+    public RouterWorker() {
+    }
 
     /**
      * Package-private constructor of the class, used internally.
@@ -90,10 +91,16 @@ public final class RouterWorker {
         assignedJobs = internal.getAssignedJobs();
         loadRatio = internal.getLoadRatio();
 
-        setLabels(internal.getLabels().entrySet().stream()
-            .collect(Collectors.toMap(Map.Entry::getKey, entry -> RouterValueConstructorProxy.create(entry.getValue()))));
-        setTags(internal.getTags().entrySet().stream()
-            .collect(Collectors.toMap(Map.Entry::getKey, entry -> RouterValueConstructorProxy.create(entry.getValue()))));
+        setLabels(internal.getLabels()
+            .entrySet()
+            .stream()
+            .collect(
+                Collectors.toMap(Map.Entry::getKey, entry -> RouterValueConstructorProxy.create(entry.getValue()))));
+        setTags(internal.getTags()
+            .entrySet()
+            .stream()
+            .collect(
+                Collectors.toMap(Map.Entry::getKey, entry -> RouterValueConstructorProxy.create(entry.getValue()))));
         setQueues(internal.getQueues());
         setAvailableForOffers(internal.isAvailableForOffers());
         setChannels(internal.getChannels());
@@ -103,7 +110,6 @@ public final class RouterWorker {
     static {
         RouterWorkerConstructorProxy.setAccessor(internal -> new RouterWorker(internal));
     }
-
 
     /**
      * Get the id property: Id of the worker.

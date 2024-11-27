@@ -51,9 +51,8 @@ public final class ConditionalQueueSelectorAttachment extends QueueSelectorAttac
      */
     @Generated
     @JsonCreator
-    public ConditionalQueueSelectorAttachment(
-            @JsonProperty(value = "condition") RouterRule condition,
-            @JsonProperty(value = "queueSelectors") List<RouterQueueSelector> queueSelectors) {
+    public ConditionalQueueSelectorAttachment(@JsonProperty(value = "condition") RouterRule condition,
+        @JsonProperty(value = "queueSelectors") List<RouterQueueSelector> queueSelectors) {
         this.condition = condition;
         this.queueSelectors = queueSelectors;
     }

@@ -12,15 +12,14 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /** The trigger for this exception rule. */
 @JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "kind",
-        defaultImpl = ExceptionTrigger.class)
+    use = JsonTypeInfo.Id.NAME,
+    include = JsonTypeInfo.As.PROPERTY,
+    property = "kind",
+    defaultImpl = ExceptionTrigger.class)
 @JsonTypeName("ExceptionTrigger")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "queueLength", value = QueueLengthExceptionTrigger.class),
-    @JsonSubTypes.Type(name = "waitTime", value = WaitTimeExceptionTrigger.class)
-})
+    @JsonSubTypes.Type(name = "waitTime", value = WaitTimeExceptionTrigger.class) })
 @Immutable
 public abstract class ExceptionTrigger {
     /**
@@ -31,7 +30,8 @@ public abstract class ExceptionTrigger {
 
     /** Creates an instance of ExceptionTrigger class. */
     @Generated
-    public ExceptionTrigger() {}
+    public ExceptionTrigger() {
+    }
 
     /**
      * Returns kind discriminator.

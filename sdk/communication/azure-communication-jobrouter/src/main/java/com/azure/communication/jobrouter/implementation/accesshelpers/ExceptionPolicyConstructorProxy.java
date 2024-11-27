@@ -13,7 +13,8 @@ public final class ExceptionPolicyConstructorProxy {
 
     private static ExceptionPolicyConstructorAccessor accessor;
 
-    private ExceptionPolicyConstructorProxy() { }
+    private ExceptionPolicyConstructorProxy() {
+    }
 
     /**
      * Type defining the methods to set the non-public properties of a {@link ExceptionPolicyConstructorAccessor}

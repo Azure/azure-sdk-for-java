@@ -51,9 +51,8 @@ public final class ConditionalWorkerSelectorAttachment extends WorkerSelectorAtt
      */
     @Generated
     @JsonCreator
-    public ConditionalWorkerSelectorAttachment(
-            @JsonProperty(value = "condition") RouterRule condition,
-            @JsonProperty(value = "workerSelectors") List<RouterWorkerSelector> workerSelectors) {
+    public ConditionalWorkerSelectorAttachment(@JsonProperty(value = "condition") RouterRule condition,
+        @JsonProperty(value = "workerSelectors") List<RouterWorkerSelector> workerSelectors) {
         this.condition = condition;
         this.workerSelectors = workerSelectors;
     }

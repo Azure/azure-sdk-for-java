@@ -46,9 +46,8 @@ public final class PassThroughWorkerSelectorAttachment extends WorkerSelectorAtt
      */
     @Generated
     @JsonCreator
-    public PassThroughWorkerSelectorAttachment(
-            @JsonProperty(value = "key") String key,
-            @JsonProperty(value = "labelOperator") LabelOperator labelOperator) {
+    public PassThroughWorkerSelectorAttachment(@JsonProperty(value = "key") String key,
+        @JsonProperty(value = "labelOperator") LabelOperator labelOperator) {
         this.key = key;
         this.labelOperator = labelOperator;
     }

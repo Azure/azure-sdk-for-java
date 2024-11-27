@@ -39,7 +39,8 @@ public final class WebhookRouterRule extends RouterRule {
 
     /** Creates an instance of WebhookRouterRule class. */
     @Generated
-    public WebhookRouterRule() {}
+    public WebhookRouterRule() {
+    }
 
     /**
      * Get the authorizationServerUri property: Uri for Authorization Server.

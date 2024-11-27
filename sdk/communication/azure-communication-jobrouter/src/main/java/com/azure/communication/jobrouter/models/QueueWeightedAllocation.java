@@ -36,9 +36,8 @@ public final class QueueWeightedAllocation {
      */
     @Generated
     @JsonCreator
-    public QueueWeightedAllocation(
-            @JsonProperty(value = "weight") double weight,
-            @JsonProperty(value = "queueSelectors") List<RouterQueueSelector> queueSelectors) {
+    public QueueWeightedAllocation(@JsonProperty(value = "weight") double weight,
+        @JsonProperty(value = "queueSelectors") List<RouterQueueSelector> queueSelectors) {
         this.weight = weight;
         this.queueSelectors = queueSelectors;
     }

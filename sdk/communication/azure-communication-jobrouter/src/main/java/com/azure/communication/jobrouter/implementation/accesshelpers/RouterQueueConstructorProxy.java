@@ -13,7 +13,8 @@ public final class RouterQueueConstructorProxy {
 
     private static RouterQueueConstructorAccessor accessor;
 
-    private RouterQueueConstructorProxy() { }
+    private RouterQueueConstructorProxy() {
+    }
 
     /**
      * Type defining the methods to set the non-public properties of a {@link RouterQueueConstructorAccessor}

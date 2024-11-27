@@ -20,25 +20,33 @@ public class QueueAdapter {
      * @param createQueueOptions Container with options to create {@link RouterQueue}
      * @return JobQueue
      */
-    public static RouterQueueInternal convertCreateQueueOptionsToRouterQueueInternal(CreateQueueOptions createQueueOptions) {
-        Map<String, Object> labels = createQueueOptions.getLabels() != null ? createQueueOptions.getLabels().entrySet()
-            .stream()
-            .collect(Collectors.toMap(entry -> entry.getKey(),
-                entry -> RouterValueAdapter.getValue(entry.getValue()))) : null;
+    public static RouterQueueInternal
+        convertCreateQueueOptionsToRouterQueueInternal(CreateQueueOptions createQueueOptions) {
+        Map<String, Object> labels
+            = createQueueOptions.getLabels() != null
+                ? createQueueOptions.getLabels()
+                    .entrySet()
+                    .stream()
+                    .collect(Collectors.toMap(entry -> entry.getKey(),
+                        entry -> RouterValueAdapter.getValue(entry.getValue())))
+                : null;
 
-        return new RouterQueueInternal()
-            .setName(createQueueOptions.getName())
+        return new RouterQueueInternal().setName(createQueueOptions.getName())
             .setLabels(labels)
             .setDistributionPolicyId(createQueueOptions.getDistributionPolicyId())
             .setExceptionPolicyId(createQueueOptions.getExceptionPolicyId());
     }
 
     public static RouterQueueInternal convertRouterQueueToRouterQueueInternal(RouterQueue routerQueue) {
-        Map<String, Object> labels = routerQueue.getLabels() != null ? routerQueue.getLabels()
-            .entrySet().stream()
-            .collect(Collectors.toMap(entry -> entry.getKey(), entry -> RouterValueAdapter.getValue(entry.getValue()))) : null;
-        return new RouterQueueInternal()
-            .setEtag(routerQueue.getEtag())
+        Map<String, Object> labels
+            = routerQueue.getLabels() != null
+                ? routerQueue.getLabels()
+                    .entrySet()
+                    .stream()
+                    .collect(Collectors.toMap(entry -> entry.getKey(),
+                        entry -> RouterValueAdapter.getValue(entry.getValue())))
+                : null;
+        return new RouterQueueInternal().setEtag(routerQueue.getEtag())
             .setId(routerQueue.getId())
             .setName(routerQueue.getName())
             .setLabels(labels)

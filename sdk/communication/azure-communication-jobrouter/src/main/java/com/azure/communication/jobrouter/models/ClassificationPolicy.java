@@ -59,10 +59,14 @@ public final class ClassificationPolicy {
         setName(internal.getName());
         setPrioritizationRule(RouterRuleAdapter.convertRouterRuleToPublic(internal.getPrioritizationRule()));
         setFallbackQueueId(internal.getFallbackQueueId());
-        setQueueSelectorAttachments(internal.getQueueSelectorAttachments().stream()
-            .map(LabelSelectorAdapter::convertQueueSelectorAttachmentToPublic).collect(Collectors.toList()));
-        setWorkerSelectorAttachments(internal.getWorkerSelectorAttachments().stream()
-            .map(LabelSelectorAdapter::convertWorkerSelectorAttachmentToPublic).collect(Collectors.toList()));
+        setQueueSelectorAttachments(internal.getQueueSelectorAttachments()
+            .stream()
+            .map(LabelSelectorAdapter::convertQueueSelectorAttachmentToPublic)
+            .collect(Collectors.toList()));
+        setWorkerSelectorAttachments(internal.getWorkerSelectorAttachments()
+            .stream()
+            .map(LabelSelectorAdapter::convertWorkerSelectorAttachmentToPublic)
+            .collect(Collectors.toList()));
     }
 
     static {
@@ -171,8 +175,7 @@ public final class ClassificationPolicy {
      * @param queueSelectorAttachments the queueSelectorAttachments value to set.
      * @return the ClassificationPolicy object itself.
      */
-    public ClassificationPolicy
-        setQueueSelectorAttachments(List<QueueSelectorAttachment> queueSelectorAttachments) {
+    public ClassificationPolicy setQueueSelectorAttachments(List<QueueSelectorAttachment> queueSelectorAttachments) {
         this.queueSelectorAttachments = queueSelectorAttachments;
         return this;
     }
@@ -194,8 +197,7 @@ public final class ClassificationPolicy {
      * @param workerSelectorAttachments the workerSelectorAttachments value to set.
      * @return the ClassificationPolicy object itself.
      */
-    public ClassificationPolicy
-        setWorkerSelectorAttachments(List<WorkerSelectorAttachment> workerSelectorAttachments) {
+    public ClassificationPolicy setWorkerSelectorAttachments(List<WorkerSelectorAttachment> workerSelectorAttachments) {
         this.workerSelectorAttachments = workerSelectorAttachments;
         return this;
     }
