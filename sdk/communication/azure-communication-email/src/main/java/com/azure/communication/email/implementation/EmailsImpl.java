@@ -58,26 +58,19 @@ public final class EmailsImpl {
     @ServiceInterface(name = "AzureCommunicationEm")
     public interface EmailsService {
         @Get("/emails/operations/{operationId}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<EmailsGetSendResultResponse> getSendResult(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("operationId") String operationId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<EmailsGetSendResultResponse> getSendResult(@HostParam("endpoint") String endpoint,
+            @PathParam("operationId") String operationId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Post("/emails:send")
-        @ExpectedResponses({202})
+        @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<EmailsSendResponse> send(
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("Operation-Id") UUID operationId,
-                @HeaderParam("x-ms-client-request-id") UUID clientRequestId,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") EmailMessage message,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<EmailsSendResponse> send(@HostParam("endpoint") String endpoint,
+            @HeaderParam("Operation-Id") UUID operationId, @HeaderParam("x-ms-client-request-id") UUID clientRequestId,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") EmailMessage message,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -92,10 +85,8 @@ public final class EmailsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<EmailsGetSendResultResponse> getSendResultWithResponseAsync(String operationId) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.getSendResult(
-                                this.client.getEndpoint(), operationId, this.client.getApiVersion(), accept, context));
+        return FluxUtil.withContext(context -> service.getSendResult(this.client.getEndpoint(), operationId,
+            this.client.getApiVersion(), accept, context));
     }
 
     /**
@@ -111,8 +102,8 @@ public final class EmailsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<EmailsGetSendResultResponse> getSendResultWithResponseAsync(String operationId, Context context) {
         final String accept = "application/json";
-        return service.getSendResult(
-                this.client.getEndpoint(), operationId, this.client.getApiVersion(), accept, context);
+        return service.getSendResult(this.client.getEndpoint(), operationId, this.client.getApiVersion(), accept,
+            context);
     }
 
     /**
@@ -157,19 +148,11 @@ public final class EmailsImpl {
      * @return status of the long running operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<EmailsSendResponse> sendWithResponseAsync(
-            EmailMessage message, UUID operationId, UUID clientRequestId) {
+    public Mono<EmailsSendResponse> sendWithResponseAsync(EmailMessage message, UUID operationId,
+        UUID clientRequestId) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.send(
-                                this.client.getEndpoint(),
-                                operationId,
-                                clientRequestId,
-                                this.client.getApiVersion(),
-                                message,
-                                accept,
-                                context));
+        return FluxUtil.withContext(context -> service.send(this.client.getEndpoint(), operationId, clientRequestId,
+            this.client.getApiVersion(), message, accept, context));
     }
 
     /**
@@ -186,17 +169,11 @@ public final class EmailsImpl {
      * @return status of the long running operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<EmailsSendResponse> sendWithResponseAsync(
-            EmailMessage message, UUID operationId, UUID clientRequestId, Context context) {
+    public Mono<EmailsSendResponse> sendWithResponseAsync(EmailMessage message, UUID operationId, UUID clientRequestId,
+        Context context) {
         final String accept = "application/json";
-        return service.send(
-                this.client.getEndpoint(),
-                operationId,
-                clientRequestId,
-                this.client.getApiVersion(),
-                message,
-                accept,
-                context);
+        return service.send(this.client.getEndpoint(), operationId, clientRequestId, this.client.getApiVersion(),
+            message, accept, context);
     }
 
     /**
@@ -212,18 +189,13 @@ public final class EmailsImpl {
      * @return the {@link PollerFlux} for polling of status of the long running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<EmailSendResult, EmailSendResult> beginSendAsync(
-            EmailMessage message, UUID operationId, UUID clientRequestId) {
-        return PollerFlux.create(
-                Duration.ofSeconds(1),
-                () -> this.sendWithResponseAsync(message, operationId, clientRequestId),
-                new DefaultPollingStrategy<>(
-                        this.client.getHttpPipeline(),
-                        "{endpoint}".replace("{endpoint}", this.client.getEndpoint()),
-                        null,
-                        Context.NONE),
-                TypeReference.createInstance(EmailSendResult.class),
-                TypeReference.createInstance(EmailSendResult.class));
+    public PollerFlux<EmailSendResult, EmailSendResult> beginSendAsync(EmailMessage message, UUID operationId,
+        UUID clientRequestId) {
+        return PollerFlux.create(Duration.ofSeconds(1),
+            () -> this.sendWithResponseAsync(message, operationId, clientRequestId),
+            new DefaultPollingStrategy<>(this.client.getHttpPipeline(),
+                "{endpoint}".replace("{endpoint}", this.client.getEndpoint()), null, Context.NONE),
+            TypeReference.createInstance(EmailSendResult.class), TypeReference.createInstance(EmailSendResult.class));
     }
 
     /**
@@ -240,17 +212,12 @@ public final class EmailsImpl {
      * @return the {@link PollerFlux} for polling of status of the long running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<EmailSendResult, EmailSendResult> beginSendAsync(
-            EmailMessage message, UUID operationId, UUID clientRequestId, Context context) {
-        return PollerFlux.create(
-                Duration.ofSeconds(1),
-                () -> this.sendWithResponseAsync(message, operationId, clientRequestId, context),
-                new DefaultPollingStrategy<>(
-                        this.client.getHttpPipeline(),
-                        "{endpoint}".replace("{endpoint}", this.client.getEndpoint()),
-                        null,
-                        context),
-                TypeReference.createInstance(EmailSendResult.class),
-                TypeReference.createInstance(EmailSendResult.class));
+    public PollerFlux<EmailSendResult, EmailSendResult> beginSendAsync(EmailMessage message, UUID operationId,
+        UUID clientRequestId, Context context) {
+        return PollerFlux.create(Duration.ofSeconds(1),
+            () -> this.sendWithResponseAsync(message, operationId, clientRequestId, context),
+            new DefaultPollingStrategy<>(this.client.getHttpPipeline(),
+                "{endpoint}".replace("{endpoint}", this.client.getEndpoint()), null, context),
+            TypeReference.createInstance(EmailSendResult.class), TypeReference.createInstance(EmailSendResult.class));
     }
 }

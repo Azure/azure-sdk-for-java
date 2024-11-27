@@ -15,22 +15,21 @@ import java.util.List;
 import java.util.Locale;
 import java.util.stream.Stream;
 
-
 public class EmailTestBase extends TestBase {
     protected static final TestMode TEST_MODE = initializeTestMode();
 
-
     protected static final String CONNECTION_STRING = Configuration.getGlobalConfiguration()
-        .get("COMMUNICATION_CONNECTION_STRING_EMAIL", "endpoint=https://REDACTED.communication.azure.com/;accesskey=QWNjZXNzS2V5");
+        .get("COMMUNICATION_CONNECTION_STRING_EMAIL",
+            "endpoint=https://REDACTED.communication.azure.com/;accesskey=QWNjZXNzS2V5");
 
-    protected static final String RECIPIENT_ADDRESS = Configuration.getGlobalConfiguration()
-        .get("RECIPIENT_ADDRESS", "customer@contoso.com");
+    protected static final String RECIPIENT_ADDRESS
+        = Configuration.getGlobalConfiguration().get("RECIPIENT_ADDRESS", "customer@contoso.com");
 
-    protected static final String SECOND_RECIPIENT_ADDRESS = Configuration.getGlobalConfiguration()
-        .get("SECOND_RECIPIENT_ADDRESS", "customer2@contoso.com");
+    protected static final String SECOND_RECIPIENT_ADDRESS
+        = Configuration.getGlobalConfiguration().get("SECOND_RECIPIENT_ADDRESS", "customer2@contoso.com");
 
-    protected static final String SENDER_ADDRESS = Configuration.getGlobalConfiguration()
-        .get("SENDER_ADDRESS", "sender@domain.com");
+    protected static final String SENDER_ADDRESS
+        = Configuration.getGlobalConfiguration().get("SENDER_ADDRESS", "sender@domain.com");
 
     protected EmailClient getEmailClient(HttpClient httpClient) {
         return getEmailClientBuilder(httpClient).buildClient();
@@ -41,8 +40,7 @@ public class EmailTestBase extends TestBase {
     }
 
     private EmailClientBuilder getEmailClientBuilder(HttpClient httpClient) {
-        EmailClientBuilder emailClientBuilder = new EmailClientBuilder()
-            .connectionString(CONNECTION_STRING)
+        EmailClientBuilder emailClientBuilder = new EmailClientBuilder().connectionString(CONNECTION_STRING)
             .httpClient(getHttpClientOrUsePlayback(httpClient));
 
         if (getTestMode() == TestMode.RECORD) {
@@ -72,8 +70,7 @@ public class EmailTestBase extends TestBase {
         // arguments - https://github.com/junit-team/junit5/issues/1427
         List<Arguments> argumentsList = new ArrayList<>();
 
-        getHttpClients()
-            .forEach(httpClient -> argumentsList.add(Arguments.of(httpClient)));
+        getHttpClients().forEach(httpClient -> argumentsList.add(Arguments.of(httpClient)));
 
         return argumentsList.stream();
     }

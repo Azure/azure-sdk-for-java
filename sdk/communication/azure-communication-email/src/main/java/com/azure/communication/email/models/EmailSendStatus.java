@@ -31,7 +31,8 @@ public final class EmailSendStatus extends ExpandableStringEnum<EmailSendStatus>
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public EmailSendStatus() {}
+    public EmailSendStatus() {
+    }
 
     /**
      * Creates or finds a EmailSendStatus from its string representation.

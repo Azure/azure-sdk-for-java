@@ -42,7 +42,8 @@ public final class ErrorDetail {
     private List<ErrorAdditionalInfo> additionalInfo;
 
     /** Creates an instance of ErrorDetail class. */
-    public ErrorDetail() {}
+    public ErrorDetail() {
+    }
 
     /**
      * Get the code property: The error code.

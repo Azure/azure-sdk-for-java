@@ -81,13 +81,8 @@ public final class AzureCommunicationEmailServiceImpl {
      * @param apiVersion Api Version.
      */
     AzureCommunicationEmailServiceImpl(String endpoint, String apiVersion) {
-        this(
-                new HttpPipelineBuilder()
-                        .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
-                        .build(),
-                JacksonAdapter.createDefaultSerializerAdapter(),
-                endpoint,
-                apiVersion);
+        this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build(),
+            JacksonAdapter.createDefaultSerializerAdapter(), endpoint, apiVersion);
     }
 
     /**
@@ -109,8 +104,8 @@ public final class AzureCommunicationEmailServiceImpl {
      * @param endpoint The communication resource, for example https://my-resource.communication.azure.com.
      * @param apiVersion Api Version.
      */
-    AzureCommunicationEmailServiceImpl(
-            HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint, String apiVersion) {
+    AzureCommunicationEmailServiceImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint,
+        String apiVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;

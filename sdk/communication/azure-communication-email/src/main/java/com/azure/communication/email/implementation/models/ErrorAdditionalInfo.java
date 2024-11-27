@@ -23,7 +23,8 @@ public final class ErrorAdditionalInfo {
     private Object info;
 
     /** Creates an instance of ErrorAdditionalInfo class. */
-    public ErrorAdditionalInfo() {}
+    public ErrorAdditionalInfo() {
+    }
 
     /**
      * Get the type property: The additional info type.

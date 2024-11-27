@@ -19,12 +19,8 @@ public final class EmailsSendResponse extends ResponseBase<EmailsSendHeaders, Em
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public EmailsSendResponse(
-            HttpRequest request,
-            int statusCode,
-            HttpHeaders rawHeaders,
-            EmailSendResult value,
-            EmailsSendHeaders headers) {
+    public EmailsSendResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, EmailSendResult value,
+        EmailsSendHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 

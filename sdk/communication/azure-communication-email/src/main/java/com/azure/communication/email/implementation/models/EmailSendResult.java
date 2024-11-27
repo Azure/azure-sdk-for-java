@@ -37,9 +37,8 @@ public final class EmailSendResult {
      * @param status the status value to set.
      */
     @JsonCreator
-    public EmailSendResult(
-            @JsonProperty(value = "id", required = true) String id,
-            @JsonProperty(value = "status", required = true) EmailSendStatus status) {
+    public EmailSendResult(@JsonProperty(value = "id", required = true) String id,
+        @JsonProperty(value = "status", required = true) EmailSendStatus status) {
         this.id = id;
         this.status = status;
     }

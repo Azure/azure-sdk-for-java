@@ -66,10 +66,9 @@ public final class EmailMessage {
      * @param recipients the recipients value to set.
      */
     @JsonCreator
-    public EmailMessage(
-            @JsonProperty(value = "senderAddress", required = true) String senderAddress,
-            @JsonProperty(value = "content", required = true) EmailContent content,
-            @JsonProperty(value = "recipients", required = true) EmailRecipients recipients) {
+    public EmailMessage(@JsonProperty(value = "senderAddress", required = true) String senderAddress,
+        @JsonProperty(value = "content", required = true) EmailContent content,
+        @JsonProperty(value = "recipients", required = true) EmailRecipients recipients) {
         this.senderAddress = senderAddress;
         this.content = content;
         this.recipients = recipients;

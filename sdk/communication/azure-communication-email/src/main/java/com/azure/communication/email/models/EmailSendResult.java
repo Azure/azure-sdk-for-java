@@ -37,8 +37,7 @@ public final class EmailSendResult {
      * @param error the error value to set.
      */
     @JsonCreator
-    public EmailSendResult(
-        @JsonProperty(value = "id", required = true) String id,
+    public EmailSendResult(@JsonProperty(value = "id", required = true) String id,
         @JsonProperty(value = "status", required = true) EmailSendStatus status,
         @JsonProperty(value = "error") ResponseError error) {
         this.id = id;

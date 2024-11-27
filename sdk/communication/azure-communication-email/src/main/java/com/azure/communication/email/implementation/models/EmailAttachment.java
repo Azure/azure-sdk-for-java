@@ -37,10 +37,9 @@ public final class EmailAttachment {
      * @param contentInBase64 the contentInBase64 value to set.
      */
     @JsonCreator
-    public EmailAttachment(
-            @JsonProperty(value = "name", required = true) String name,
-            @JsonProperty(value = "contentType", required = true) String contentType,
-            @JsonProperty(value = "contentInBase64", required = true) String contentInBase64) {
+    public EmailAttachment(@JsonProperty(value = "name", required = true) String name,
+        @JsonProperty(value = "contentType", required = true) String contentType,
+        @JsonProperty(value = "contentInBase64", required = true) String contentInBase64) {
         this.name = name;
         this.contentType = contentType;
         this.contentInBase64 = contentInBase64;

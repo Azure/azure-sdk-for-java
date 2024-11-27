@@ -31,7 +31,8 @@ public final class EmailRecipients {
     private List<EmailAddress> bCC;
 
     /** Creates an instance of EmailRecipients class. */
-    public EmailRecipients() {}
+    public EmailRecipients() {
+    }
 
     /**
      * Get the to property: Email To recipients.
