@@ -11,7 +11,7 @@ import com.azure.core.http.rest.ResponseBase;
 
 /** Contains all response data for the updateCapabilities operation. */
 public final class PhoneNumbersUpdateCapabilitiesResponse
-        extends ResponseBase<PhoneNumbersUpdateCapabilitiesHeaders, PurchasedPhoneNumber> {
+    extends ResponseBase<PhoneNumbersUpdateCapabilitiesHeaders, PurchasedPhoneNumber> {
     /**
      * Creates an instance of PhoneNumbersUpdateCapabilitiesResponse.
      *
@@ -21,12 +21,8 @@ public final class PhoneNumbersUpdateCapabilitiesResponse
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public PhoneNumbersUpdateCapabilitiesResponse(
-            HttpRequest request,
-            int statusCode,
-            HttpHeaders rawHeaders,
-            PurchasedPhoneNumber value,
-            PhoneNumbersUpdateCapabilitiesHeaders headers) {
+    public PhoneNumbersUpdateCapabilitiesResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders,
+        PurchasedPhoneNumber value, PhoneNumbersUpdateCapabilitiesHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 

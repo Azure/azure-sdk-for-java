@@ -66,8 +66,8 @@ public final class PhoneNumbersImpl {
      * @param client the instance of the service client containing this operation class.
      */
     PhoneNumbersImpl(PhoneNumberAdminClientImpl client) {
-        this.service =
-                RestProxy.create(PhoneNumbersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(PhoneNumbersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -79,172 +79,139 @@ public final class PhoneNumbersImpl {
     @ServiceInterface(name = "PhoneNumberAdminClie")
     public interface PhoneNumbersService {
         @Get("/availablePhoneNumbers/countries/{countryCode}/areaCodes")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<PhoneNumberAreaCodes>> listAreaCodes(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("countryCode") String countryCode,
-                @QueryParam("phoneNumberType") PhoneNumberType phoneNumberType,
-                @QueryParam("skip") Integer skip,
-                @QueryParam("maxPageSize") Integer maxPageSize,
-                @QueryParam("assignmentType") PhoneNumberAssignmentType assignmentType,
-                @QueryParam("locality") String locality,
-                @QueryParam("administrativeDivision") String administrativeDivision,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("accept-language") String acceptLanguage,
-                Context context);
+        Mono<Response<PhoneNumberAreaCodes>> listAreaCodes(@HostParam("endpoint") String endpoint,
+            @PathParam("countryCode") String countryCode,
+            @QueryParam("phoneNumberType") PhoneNumberType phoneNumberType, @QueryParam("skip") Integer skip,
+            @QueryParam("maxPageSize") Integer maxPageSize,
+            @QueryParam("assignmentType") PhoneNumberAssignmentType assignmentType,
+            @QueryParam("locality") String locality,
+            @QueryParam("administrativeDivision") String administrativeDivision,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("accept-language") String acceptLanguage,
+            Context context);
 
         @Get("/availablePhoneNumbers/countries")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<PhoneNumberCountries>> listAvailableCountries(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("skip") Integer skip,
-                @QueryParam("maxPageSize") Integer maxPageSize,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("accept-language") String acceptLanguage,
-                Context context);
+        Mono<Response<PhoneNumberCountries>> listAvailableCountries(@HostParam("endpoint") String endpoint,
+            @QueryParam("skip") Integer skip, @QueryParam("maxPageSize") Integer maxPageSize,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("accept-language") String acceptLanguage,
+            Context context);
 
         @Get("/availablePhoneNumbers/countries/{countryCode}/localities")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<PhoneNumberLocalities>> listAvailableLocalities(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("countryCode") String countryCode,
-                @QueryParam("skip") Integer skip,
-                @QueryParam("maxPageSize") Integer maxPageSize,
-                @QueryParam("administrativeDivision") String administrativeDivision,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("accept-language") String acceptLanguage,
-                Context context);
+        Mono<Response<PhoneNumberLocalities>> listAvailableLocalities(@HostParam("endpoint") String endpoint,
+            @PathParam("countryCode") String countryCode, @QueryParam("skip") Integer skip,
+            @QueryParam("maxPageSize") Integer maxPageSize,
+            @QueryParam("administrativeDivision") String administrativeDivision,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("accept-language") String acceptLanguage,
+            Context context);
 
         @Get("/availablePhoneNumbers/countries/{countryCode}/offerings")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<OfferingsResponse>> listOfferings(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("countryCode") String countryCode,
-                @QueryParam("skip") Integer skip,
-                @QueryParam("maxPageSize") Integer maxPageSize,
-                @QueryParam("phoneNumberType") PhoneNumberType phoneNumberType,
-                @QueryParam("assignmentType") PhoneNumberAssignmentType assignmentType,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("accept-language") String acceptLanguage,
-                Context context);
+        Mono<Response<OfferingsResponse>> listOfferings(@HostParam("endpoint") String endpoint,
+            @PathParam("countryCode") String countryCode, @QueryParam("skip") Integer skip,
+            @QueryParam("maxPageSize") Integer maxPageSize,
+            @QueryParam("phoneNumberType") PhoneNumberType phoneNumberType,
+            @QueryParam("assignmentType") PhoneNumberAssignmentType assignmentType,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("accept-language") String acceptLanguage,
+            Context context);
 
         @Post("/availablePhoneNumbers/countries/{countryCode}/:search")
-        @ExpectedResponses({202})
+        @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<PhoneNumbersSearchAvailablePhoneNumbersResponse> searchAvailablePhoneNumbers(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("countryCode") String countryCode,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") PhoneNumberSearchRequest body,
-                Context context);
+            @HostParam("endpoint") String endpoint, @PathParam("countryCode") String countryCode,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") PhoneNumberSearchRequest body,
+            Context context);
 
         @Get("/availablePhoneNumbers/searchResults/{searchId}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<PhoneNumberSearchResult>> getSearchResult(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("searchId") String searchId,
-                @QueryParam("api-version") String apiVersion,
-                Context context);
+        Mono<Response<PhoneNumberSearchResult>> getSearchResult(@HostParam("endpoint") String endpoint,
+            @PathParam("searchId") String searchId, @QueryParam("api-version") String apiVersion, Context context);
 
         @Post("/availablePhoneNumbers/:purchase")
-        @ExpectedResponses({202})
+        @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<PhoneNumbersPurchasePhoneNumbersResponse> purchasePhoneNumbers(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") PhoneNumberPurchaseRequest body,
-                Context context);
+        Mono<PhoneNumbersPurchasePhoneNumbersResponse> purchasePhoneNumbers(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") PhoneNumberPurchaseRequest body, Context context);
 
         @Get("/phoneNumbers/operations/{operationId}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<PhoneNumbersGetOperationResponse> getOperation(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("operationId") String operationId,
-                @QueryParam("api-version") String apiVersion,
-                Context context);
+        Mono<PhoneNumbersGetOperationResponse> getOperation(@HostParam("endpoint") String endpoint,
+            @PathParam("operationId") String operationId, @QueryParam("api-version") String apiVersion,
+            Context context);
 
         @Delete("/phoneNumbers/operations/{operationId}")
-        @ExpectedResponses({204})
+        @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<Void>> cancelOperation(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("operationId") String operationId,
-                @QueryParam("api-version") String apiVersion,
-                Context context);
+        Mono<Response<Void>> cancelOperation(@HostParam("endpoint") String endpoint,
+            @PathParam("operationId") String operationId, @QueryParam("api-version") String apiVersion,
+            Context context);
 
         @Patch("/phoneNumbers/{phoneNumber}/capabilities")
-        @ExpectedResponses({202})
+        @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<PhoneNumbersUpdateCapabilitiesResponse> updateCapabilities(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("phoneNumber") String phoneNumber,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/merge-patch+json") PhoneNumberCapabilitiesRequest body,
-                Context context);
+        Mono<PhoneNumbersUpdateCapabilitiesResponse> updateCapabilities(@HostParam("endpoint") String endpoint,
+            @PathParam("phoneNumber") String phoneNumber, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/merge-patch+json") PhoneNumberCapabilitiesRequest body, Context context);
 
         @Get("/phoneNumbers/{phoneNumber}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<PurchasedPhoneNumber>> getByNumber(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("phoneNumber") String phoneNumber,
-                @QueryParam("api-version") String apiVersion,
-                Context context);
+        Mono<Response<PurchasedPhoneNumber>> getByNumber(@HostParam("endpoint") String endpoint,
+            @PathParam("phoneNumber") String phoneNumber, @QueryParam("api-version") String apiVersion,
+            Context context);
 
         @Delete("/phoneNumbers/{phoneNumber}")
-        @ExpectedResponses({202})
+        @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<PhoneNumbersReleasePhoneNumberResponse> releasePhoneNumber(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("phoneNumber") String phoneNumber,
-                @QueryParam("api-version") String apiVersion,
-                Context context);
+        Mono<PhoneNumbersReleasePhoneNumberResponse> releasePhoneNumber(@HostParam("endpoint") String endpoint,
+            @PathParam("phoneNumber") String phoneNumber, @QueryParam("api-version") String apiVersion,
+            Context context);
 
         @Get("/phoneNumbers")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<PurchasedPhoneNumbers>> listPhoneNumbers(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("skip") Integer skip,
-                @QueryParam("top") Integer top,
-                @QueryParam("api-version") String apiVersion,
-                Context context);
+        Mono<Response<PurchasedPhoneNumbers>> listPhoneNumbers(@HostParam("endpoint") String endpoint,
+            @QueryParam("skip") Integer skip, @QueryParam("top") Integer top,
+            @QueryParam("api-version") String apiVersion, Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<PhoneNumberAreaCodes>> listAreaCodesNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+        Mono<Response<PhoneNumberAreaCodes>>
+            listAreaCodesNext(@PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<PhoneNumberCountries>> listAvailableCountriesNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+        Mono<Response<PhoneNumberCountries>>
+            listAvailableCountriesNext(@PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<PhoneNumberLocalities>> listAvailableLocalitiesNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<OfferingsResponse>> listOfferingsNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+        Mono<Response<OfferingsResponse>>
+            listOfferingsNext(@PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<PurchasedPhoneNumbers>> listPhoneNumbersNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+        Mono<Response<PurchasedPhoneNumbers>>
+            listPhoneNumbersNext(@PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
     /**
@@ -266,38 +233,15 @@ public final class PhoneNumbersImpl {
      * @return the list of available area codes.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<PhoneNumberAreaCode>> listAreaCodesSinglePageAsync(
-            String countryCode,
-            PhoneNumberType phoneNumberType,
-            Integer skip,
-            Integer maxPageSize,
-            PhoneNumberAssignmentType assignmentType,
-            String locality,
-            String administrativeDivision,
-            String acceptLanguage) {
-        return FluxUtil.withContext(
-                        context ->
-                                service.listAreaCodes(
-                                        this.client.getEndpoint(),
-                                        countryCode,
-                                        phoneNumberType,
-                                        skip,
-                                        maxPageSize,
-                                        assignmentType,
-                                        locality,
-                                        administrativeDivision,
-                                        this.client.getApiVersion(),
-                                        acceptLanguage,
-                                        context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getAreaCodes(),
-                                        res.getValue().getNextLink(),
-                                        null));
+    public Mono<PagedResponse<PhoneNumberAreaCode>> listAreaCodesSinglePageAsync(String countryCode,
+        PhoneNumberType phoneNumberType, Integer skip, Integer maxPageSize, PhoneNumberAssignmentType assignmentType,
+        String locality, String administrativeDivision, String acceptLanguage) {
+        return FluxUtil
+            .withContext(context -> service.listAreaCodes(this.client.getEndpoint(), countryCode, phoneNumberType, skip,
+                maxPageSize, assignmentType, locality, administrativeDivision, this.client.getApiVersion(),
+                acceptLanguage, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getAreaCodes(), res.getValue().getNextLink(), null));
     }
 
     /**
@@ -320,37 +264,14 @@ public final class PhoneNumbersImpl {
      * @return the list of available area codes.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<PhoneNumberAreaCode>> listAreaCodesSinglePageAsync(
-            String countryCode,
-            PhoneNumberType phoneNumberType,
-            Integer skip,
-            Integer maxPageSize,
-            PhoneNumberAssignmentType assignmentType,
-            String locality,
-            String administrativeDivision,
-            String acceptLanguage,
-            Context context) {
-        return service.listAreaCodes(
-                        this.client.getEndpoint(),
-                        countryCode,
-                        phoneNumberType,
-                        skip,
-                        maxPageSize,
-                        assignmentType,
-                        locality,
-                        administrativeDivision,
-                        this.client.getApiVersion(),
-                        acceptLanguage,
-                        context)
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getAreaCodes(),
-                                        res.getValue().getNextLink(),
-                                        null));
+    public Mono<PagedResponse<PhoneNumberAreaCode>> listAreaCodesSinglePageAsync(String countryCode,
+        PhoneNumberType phoneNumberType, Integer skip, Integer maxPageSize, PhoneNumberAssignmentType assignmentType,
+        String locality, String administrativeDivision, String acceptLanguage, Context context) {
+        return service
+            .listAreaCodes(this.client.getEndpoint(), countryCode, phoneNumberType, skip, maxPageSize, assignmentType,
+                locality, administrativeDivision, this.client.getApiVersion(), acceptLanguage, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getAreaCodes(), res.getValue().getNextLink(), null));
     }
 
     /**
@@ -372,27 +293,13 @@ public final class PhoneNumbersImpl {
      * @return the list of available area codes.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<PhoneNumberAreaCode> listAreaCodesAsync(
-            String countryCode,
-            PhoneNumberType phoneNumberType,
-            Integer skip,
-            Integer maxPageSize,
-            PhoneNumberAssignmentType assignmentType,
-            String locality,
-            String administrativeDivision,
-            String acceptLanguage) {
+    public PagedFlux<PhoneNumberAreaCode> listAreaCodesAsync(String countryCode, PhoneNumberType phoneNumberType,
+        Integer skip, Integer maxPageSize, PhoneNumberAssignmentType assignmentType, String locality,
+        String administrativeDivision, String acceptLanguage) {
         return new PagedFlux<>(
-                () ->
-                        listAreaCodesSinglePageAsync(
-                                countryCode,
-                                phoneNumberType,
-                                skip,
-                                maxPageSize,
-                                assignmentType,
-                                locality,
-                                administrativeDivision,
-                                acceptLanguage),
-                nextLink -> listAreaCodesNextSinglePageAsync(nextLink));
+            () -> listAreaCodesSinglePageAsync(countryCode, phoneNumberType, skip, maxPageSize, assignmentType,
+                locality, administrativeDivision, acceptLanguage),
+            nextLink -> listAreaCodesNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -415,29 +322,13 @@ public final class PhoneNumbersImpl {
      * @return the list of available area codes.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<PhoneNumberAreaCode> listAreaCodesAsync(
-            String countryCode,
-            PhoneNumberType phoneNumberType,
-            Integer skip,
-            Integer maxPageSize,
-            PhoneNumberAssignmentType assignmentType,
-            String locality,
-            String administrativeDivision,
-            String acceptLanguage,
-            Context context) {
+    public PagedFlux<PhoneNumberAreaCode> listAreaCodesAsync(String countryCode, PhoneNumberType phoneNumberType,
+        Integer skip, Integer maxPageSize, PhoneNumberAssignmentType assignmentType, String locality,
+        String administrativeDivision, String acceptLanguage, Context context) {
         return new PagedFlux<>(
-                () ->
-                        listAreaCodesSinglePageAsync(
-                                countryCode,
-                                phoneNumberType,
-                                skip,
-                                maxPageSize,
-                                assignmentType,
-                                locality,
-                                administrativeDivision,
-                                acceptLanguage,
-                                context),
-                nextLink -> listAreaCodesNextSinglePageAsync(nextLink, context));
+            () -> listAreaCodesSinglePageAsync(countryCode, phoneNumberType, skip, maxPageSize, assignmentType,
+                locality, administrativeDivision, acceptLanguage, context),
+            nextLink -> listAreaCodesNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -459,25 +350,11 @@ public final class PhoneNumbersImpl {
      * @return the list of available area codes.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PhoneNumberAreaCode> listAreaCodes(
-            String countryCode,
-            PhoneNumberType phoneNumberType,
-            Integer skip,
-            Integer maxPageSize,
-            PhoneNumberAssignmentType assignmentType,
-            String locality,
-            String administrativeDivision,
-            String acceptLanguage) {
-        return new PagedIterable<>(
-                listAreaCodesAsync(
-                        countryCode,
-                        phoneNumberType,
-                        skip,
-                        maxPageSize,
-                        assignmentType,
-                        locality,
-                        administrativeDivision,
-                        acceptLanguage));
+    public PagedIterable<PhoneNumberAreaCode> listAreaCodes(String countryCode, PhoneNumberType phoneNumberType,
+        Integer skip, Integer maxPageSize, PhoneNumberAssignmentType assignmentType, String locality,
+        String administrativeDivision, String acceptLanguage) {
+        return new PagedIterable<>(listAreaCodesAsync(countryCode, phoneNumberType, skip, maxPageSize, assignmentType,
+            locality, administrativeDivision, acceptLanguage));
     }
 
     /**
@@ -500,27 +377,11 @@ public final class PhoneNumbersImpl {
      * @return the list of available area codes.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PhoneNumberAreaCode> listAreaCodes(
-            String countryCode,
-            PhoneNumberType phoneNumberType,
-            Integer skip,
-            Integer maxPageSize,
-            PhoneNumberAssignmentType assignmentType,
-            String locality,
-            String administrativeDivision,
-            String acceptLanguage,
-            Context context) {
-        return new PagedIterable<>(
-                listAreaCodesAsync(
-                        countryCode,
-                        phoneNumberType,
-                        skip,
-                        maxPageSize,
-                        assignmentType,
-                        locality,
-                        administrativeDivision,
-                        acceptLanguage,
-                        context));
+    public PagedIterable<PhoneNumberAreaCode> listAreaCodes(String countryCode, PhoneNumberType phoneNumberType,
+        Integer skip, Integer maxPageSize, PhoneNumberAssignmentType assignmentType, String locality,
+        String administrativeDivision, String acceptLanguage, Context context) {
+        return new PagedIterable<>(listAreaCodesAsync(countryCode, phoneNumberType, skip, maxPageSize, assignmentType,
+            locality, administrativeDivision, acceptLanguage, context));
     }
 
     /**
@@ -536,26 +397,13 @@ public final class PhoneNumbersImpl {
      * @return the list of supported countries.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<PhoneNumberCountry>> listAvailableCountriesSinglePageAsync(
-            Integer skip, Integer maxPageSize, String acceptLanguage) {
-        return FluxUtil.withContext(
-                        context ->
-                                service.listAvailableCountries(
-                                        this.client.getEndpoint(),
-                                        skip,
-                                        maxPageSize,
-                                        this.client.getApiVersion(),
-                                        acceptLanguage,
-                                        context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getCountries(),
-                                        res.getValue().getNextLink(),
-                                        null));
+    public Mono<PagedResponse<PhoneNumberCountry>> listAvailableCountriesSinglePageAsync(Integer skip,
+        Integer maxPageSize, String acceptLanguage) {
+        return FluxUtil
+            .withContext(context -> service.listAvailableCountries(this.client.getEndpoint(), skip, maxPageSize,
+                this.client.getApiVersion(), acceptLanguage, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getCountries(), res.getValue().getNextLink(), null));
     }
 
     /**
@@ -572,24 +420,13 @@ public final class PhoneNumbersImpl {
      * @return the list of supported countries.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<PhoneNumberCountry>> listAvailableCountriesSinglePageAsync(
-            Integer skip, Integer maxPageSize, String acceptLanguage, Context context) {
-        return service.listAvailableCountries(
-                        this.client.getEndpoint(),
-                        skip,
-                        maxPageSize,
-                        this.client.getApiVersion(),
-                        acceptLanguage,
-                        context)
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getCountries(),
-                                        res.getValue().getNextLink(),
-                                        null));
+    public Mono<PagedResponse<PhoneNumberCountry>> listAvailableCountriesSinglePageAsync(Integer skip,
+        Integer maxPageSize, String acceptLanguage, Context context) {
+        return service
+            .listAvailableCountries(this.client.getEndpoint(), skip, maxPageSize, this.client.getApiVersion(),
+                acceptLanguage, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getCountries(), res.getValue().getNextLink(), null));
     }
 
     /**
@@ -605,11 +442,10 @@ public final class PhoneNumbersImpl {
      * @return the list of supported countries.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<PhoneNumberCountry> listAvailableCountriesAsync(
-            Integer skip, Integer maxPageSize, String acceptLanguage) {
-        return new PagedFlux<>(
-                () -> listAvailableCountriesSinglePageAsync(skip, maxPageSize, acceptLanguage),
-                nextLink -> listAvailableCountriesNextSinglePageAsync(nextLink));
+    public PagedFlux<PhoneNumberCountry> listAvailableCountriesAsync(Integer skip, Integer maxPageSize,
+        String acceptLanguage) {
+        return new PagedFlux<>(() -> listAvailableCountriesSinglePageAsync(skip, maxPageSize, acceptLanguage),
+            nextLink -> listAvailableCountriesNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -626,11 +462,10 @@ public final class PhoneNumbersImpl {
      * @return the list of supported countries.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<PhoneNumberCountry> listAvailableCountriesAsync(
-            Integer skip, Integer maxPageSize, String acceptLanguage, Context context) {
-        return new PagedFlux<>(
-                () -> listAvailableCountriesSinglePageAsync(skip, maxPageSize, acceptLanguage, context),
-                nextLink -> listAvailableCountriesNextSinglePageAsync(nextLink, context));
+    public PagedFlux<PhoneNumberCountry> listAvailableCountriesAsync(Integer skip, Integer maxPageSize,
+        String acceptLanguage, Context context) {
+        return new PagedFlux<>(() -> listAvailableCountriesSinglePageAsync(skip, maxPageSize, acceptLanguage, context),
+            nextLink -> listAvailableCountriesNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -646,8 +481,8 @@ public final class PhoneNumbersImpl {
      * @return the list of supported countries.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PhoneNumberCountry> listAvailableCountries(
-            Integer skip, Integer maxPageSize, String acceptLanguage) {
+    public PagedIterable<PhoneNumberCountry> listAvailableCountries(Integer skip, Integer maxPageSize,
+        String acceptLanguage) {
         return new PagedIterable<>(listAvailableCountriesAsync(skip, maxPageSize, acceptLanguage));
     }
 
@@ -665,8 +500,8 @@ public final class PhoneNumbersImpl {
      * @return the list of supported countries.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PhoneNumberCountry> listAvailableCountries(
-            Integer skip, Integer maxPageSize, String acceptLanguage, Context context) {
+    public PagedIterable<PhoneNumberCountry> listAvailableCountries(Integer skip, Integer maxPageSize,
+        String acceptLanguage, Context context) {
         return new PagedIterable<>(listAvailableCountriesAsync(skip, maxPageSize, acceptLanguage, context));
     }
 
@@ -686,32 +521,13 @@ public final class PhoneNumbersImpl {
      * @return the list of cities or towns with available phone numbers.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<PhoneNumberLocality>> listAvailableLocalitiesSinglePageAsync(
-            String countryCode,
-            Integer skip,
-            Integer maxPageSize,
-            String administrativeDivision,
-            String acceptLanguage) {
-        return FluxUtil.withContext(
-                        context ->
-                                service.listAvailableLocalities(
-                                        this.client.getEndpoint(),
-                                        countryCode,
-                                        skip,
-                                        maxPageSize,
-                                        administrativeDivision,
-                                        this.client.getApiVersion(),
-                                        acceptLanguage,
-                                        context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getPhoneNumberLocalities(),
-                                        res.getValue().getNextLink(),
-                                        null));
+    public Mono<PagedResponse<PhoneNumberLocality>> listAvailableLocalitiesSinglePageAsync(String countryCode,
+        Integer skip, Integer maxPageSize, String administrativeDivision, String acceptLanguage) {
+        return FluxUtil
+            .withContext(context -> service.listAvailableLocalities(this.client.getEndpoint(), countryCode, skip,
+                maxPageSize, administrativeDivision, this.client.getApiVersion(), acceptLanguage, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getPhoneNumberLocalities(), res.getValue().getNextLink(), null));
     }
 
     /**
@@ -731,31 +547,13 @@ public final class PhoneNumbersImpl {
      * @return the list of cities or towns with available phone numbers.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<PhoneNumberLocality>> listAvailableLocalitiesSinglePageAsync(
-            String countryCode,
-            Integer skip,
-            Integer maxPageSize,
-            String administrativeDivision,
-            String acceptLanguage,
-            Context context) {
-        return service.listAvailableLocalities(
-                        this.client.getEndpoint(),
-                        countryCode,
-                        skip,
-                        maxPageSize,
-                        administrativeDivision,
-                        this.client.getApiVersion(),
-                        acceptLanguage,
-                        context)
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getPhoneNumberLocalities(),
-                                        res.getValue().getNextLink(),
-                                        null));
+    public Mono<PagedResponse<PhoneNumberLocality>> listAvailableLocalitiesSinglePageAsync(String countryCode,
+        Integer skip, Integer maxPageSize, String administrativeDivision, String acceptLanguage, Context context) {
+        return service
+            .listAvailableLocalities(this.client.getEndpoint(), countryCode, skip, maxPageSize, administrativeDivision,
+                this.client.getApiVersion(), acceptLanguage, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getPhoneNumberLocalities(), res.getValue().getNextLink(), null));
     }
 
     /**
@@ -774,17 +572,10 @@ public final class PhoneNumbersImpl {
      * @return the list of cities or towns with available phone numbers.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<PhoneNumberLocality> listAvailableLocalitiesAsync(
-            String countryCode,
-            Integer skip,
-            Integer maxPageSize,
-            String administrativeDivision,
-            String acceptLanguage) {
-        return new PagedFlux<>(
-                () ->
-                        listAvailableLocalitiesSinglePageAsync(
-                                countryCode, skip, maxPageSize, administrativeDivision, acceptLanguage),
-                nextLink -> listAvailableLocalitiesNextSinglePageAsync(nextLink));
+    public PagedFlux<PhoneNumberLocality> listAvailableLocalitiesAsync(String countryCode, Integer skip,
+        Integer maxPageSize, String administrativeDivision, String acceptLanguage) {
+        return new PagedFlux<>(() -> listAvailableLocalitiesSinglePageAsync(countryCode, skip, maxPageSize,
+            administrativeDivision, acceptLanguage), nextLink -> listAvailableLocalitiesNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -804,18 +595,11 @@ public final class PhoneNumbersImpl {
      * @return the list of cities or towns with available phone numbers.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<PhoneNumberLocality> listAvailableLocalitiesAsync(
-            String countryCode,
-            Integer skip,
-            Integer maxPageSize,
-            String administrativeDivision,
-            String acceptLanguage,
-            Context context) {
-        return new PagedFlux<>(
-                () ->
-                        listAvailableLocalitiesSinglePageAsync(
-                                countryCode, skip, maxPageSize, administrativeDivision, acceptLanguage, context),
-                nextLink -> listAvailableLocalitiesNextSinglePageAsync(nextLink, context));
+    public PagedFlux<PhoneNumberLocality> listAvailableLocalitiesAsync(String countryCode, Integer skip,
+        Integer maxPageSize, String administrativeDivision, String acceptLanguage, Context context) {
+        return new PagedFlux<>(() -> listAvailableLocalitiesSinglePageAsync(countryCode, skip, maxPageSize,
+            administrativeDivision, acceptLanguage, context),
+            nextLink -> listAvailableLocalitiesNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -834,14 +618,10 @@ public final class PhoneNumbersImpl {
      * @return the list of cities or towns with available phone numbers.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PhoneNumberLocality> listAvailableLocalities(
-            String countryCode,
-            Integer skip,
-            Integer maxPageSize,
-            String administrativeDivision,
-            String acceptLanguage) {
+    public PagedIterable<PhoneNumberLocality> listAvailableLocalities(String countryCode, Integer skip,
+        Integer maxPageSize, String administrativeDivision, String acceptLanguage) {
         return new PagedIterable<>(
-                listAvailableLocalitiesAsync(countryCode, skip, maxPageSize, administrativeDivision, acceptLanguage));
+            listAvailableLocalitiesAsync(countryCode, skip, maxPageSize, administrativeDivision, acceptLanguage));
     }
 
     /**
@@ -861,16 +641,10 @@ public final class PhoneNumbersImpl {
      * @return the list of cities or towns with available phone numbers.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PhoneNumberLocality> listAvailableLocalities(
-            String countryCode,
-            Integer skip,
-            Integer maxPageSize,
-            String administrativeDivision,
-            String acceptLanguage,
-            Context context) {
-        return new PagedIterable<>(
-                listAvailableLocalitiesAsync(
-                        countryCode, skip, maxPageSize, administrativeDivision, acceptLanguage, context));
+    public PagedIterable<PhoneNumberLocality> listAvailableLocalities(String countryCode, Integer skip,
+        Integer maxPageSize, String administrativeDivision, String acceptLanguage, Context context) {
+        return new PagedIterable<>(listAvailableLocalitiesAsync(countryCode, skip, maxPageSize, administrativeDivision,
+            acceptLanguage, context));
     }
 
     /**
@@ -889,34 +663,14 @@ public final class PhoneNumbersImpl {
      * @return represents a wrapper around a list of offerings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<PhoneNumberOffering>> listOfferingsSinglePageAsync(
-            String countryCode,
-            Integer skip,
-            Integer maxPageSize,
-            PhoneNumberType phoneNumberType,
-            PhoneNumberAssignmentType assignmentType,
-            String acceptLanguage) {
-        return FluxUtil.withContext(
-                        context ->
-                                service.listOfferings(
-                                        this.client.getEndpoint(),
-                                        countryCode,
-                                        skip,
-                                        maxPageSize,
-                                        phoneNumberType,
-                                        assignmentType,
-                                        this.client.getApiVersion(),
-                                        acceptLanguage,
-                                        context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getPhoneNumberOfferings(),
-                                        res.getValue().getNextLink(),
-                                        null));
+    public Mono<PagedResponse<PhoneNumberOffering>> listOfferingsSinglePageAsync(String countryCode, Integer skip,
+        Integer maxPageSize, PhoneNumberType phoneNumberType, PhoneNumberAssignmentType assignmentType,
+        String acceptLanguage) {
+        return FluxUtil
+            .withContext(context -> service.listOfferings(this.client.getEndpoint(), countryCode, skip, maxPageSize,
+                phoneNumberType, assignmentType, this.client.getApiVersion(), acceptLanguage, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getPhoneNumberOfferings(), res.getValue().getNextLink(), null));
     }
 
     /**
@@ -936,33 +690,14 @@ public final class PhoneNumbersImpl {
      * @return represents a wrapper around a list of offerings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<PhoneNumberOffering>> listOfferingsSinglePageAsync(
-            String countryCode,
-            Integer skip,
-            Integer maxPageSize,
-            PhoneNumberType phoneNumberType,
-            PhoneNumberAssignmentType assignmentType,
-            String acceptLanguage,
-            Context context) {
-        return service.listOfferings(
-                        this.client.getEndpoint(),
-                        countryCode,
-                        skip,
-                        maxPageSize,
-                        phoneNumberType,
-                        assignmentType,
-                        this.client.getApiVersion(),
-                        acceptLanguage,
-                        context)
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getPhoneNumberOfferings(),
-                                        res.getValue().getNextLink(),
-                                        null));
+    public Mono<PagedResponse<PhoneNumberOffering>> listOfferingsSinglePageAsync(String countryCode, Integer skip,
+        Integer maxPageSize, PhoneNumberType phoneNumberType, PhoneNumberAssignmentType assignmentType,
+        String acceptLanguage, Context context) {
+        return service
+            .listOfferings(this.client.getEndpoint(), countryCode, skip, maxPageSize, phoneNumberType, assignmentType,
+                this.client.getApiVersion(), acceptLanguage, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getPhoneNumberOfferings(), res.getValue().getNextLink(), null));
     }
 
     /**
@@ -981,18 +716,10 @@ public final class PhoneNumbersImpl {
      * @return represents a wrapper around a list of offerings.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<PhoneNumberOffering> listOfferingsAsync(
-            String countryCode,
-            Integer skip,
-            Integer maxPageSize,
-            PhoneNumberType phoneNumberType,
-            PhoneNumberAssignmentType assignmentType,
-            String acceptLanguage) {
-        return new PagedFlux<>(
-                () ->
-                        listOfferingsSinglePageAsync(
-                                countryCode, skip, maxPageSize, phoneNumberType, assignmentType, acceptLanguage),
-                nextLink -> listOfferingsNextSinglePageAsync(nextLink));
+    public PagedFlux<PhoneNumberOffering> listOfferingsAsync(String countryCode, Integer skip, Integer maxPageSize,
+        PhoneNumberType phoneNumberType, PhoneNumberAssignmentType assignmentType, String acceptLanguage) {
+        return new PagedFlux<>(() -> listOfferingsSinglePageAsync(countryCode, skip, maxPageSize, phoneNumberType,
+            assignmentType, acceptLanguage), nextLink -> listOfferingsNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -1012,25 +739,11 @@ public final class PhoneNumbersImpl {
      * @return represents a wrapper around a list of offerings.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<PhoneNumberOffering> listOfferingsAsync(
-            String countryCode,
-            Integer skip,
-            Integer maxPageSize,
-            PhoneNumberType phoneNumberType,
-            PhoneNumberAssignmentType assignmentType,
-            String acceptLanguage,
-            Context context) {
-        return new PagedFlux<>(
-                () ->
-                        listOfferingsSinglePageAsync(
-                                countryCode,
-                                skip,
-                                maxPageSize,
-                                phoneNumberType,
-                                assignmentType,
-                                acceptLanguage,
-                                context),
-                nextLink -> listOfferingsNextSinglePageAsync(nextLink, context));
+    public PagedFlux<PhoneNumberOffering> listOfferingsAsync(String countryCode, Integer skip, Integer maxPageSize,
+        PhoneNumberType phoneNumberType, PhoneNumberAssignmentType assignmentType, String acceptLanguage,
+        Context context) {
+        return new PagedFlux<>(() -> listOfferingsSinglePageAsync(countryCode, skip, maxPageSize, phoneNumberType,
+            assignmentType, acceptLanguage, context), nextLink -> listOfferingsNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1049,15 +762,10 @@ public final class PhoneNumbersImpl {
      * @return represents a wrapper around a list of offerings.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PhoneNumberOffering> listOfferings(
-            String countryCode,
-            Integer skip,
-            Integer maxPageSize,
-            PhoneNumberType phoneNumberType,
-            PhoneNumberAssignmentType assignmentType,
-            String acceptLanguage) {
+    public PagedIterable<PhoneNumberOffering> listOfferings(String countryCode, Integer skip, Integer maxPageSize,
+        PhoneNumberType phoneNumberType, PhoneNumberAssignmentType assignmentType, String acceptLanguage) {
         return new PagedIterable<>(
-                listOfferingsAsync(countryCode, skip, maxPageSize, phoneNumberType, assignmentType, acceptLanguage));
+            listOfferingsAsync(countryCode, skip, maxPageSize, phoneNumberType, assignmentType, acceptLanguage));
     }
 
     /**
@@ -1077,17 +785,11 @@ public final class PhoneNumbersImpl {
      * @return represents a wrapper around a list of offerings.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PhoneNumberOffering> listOfferings(
-            String countryCode,
-            Integer skip,
-            Integer maxPageSize,
-            PhoneNumberType phoneNumberType,
-            PhoneNumberAssignmentType assignmentType,
-            String acceptLanguage,
-            Context context) {
-        return new PagedIterable<>(
-                listOfferingsAsync(
-                        countryCode, skip, maxPageSize, phoneNumberType, assignmentType, acceptLanguage, context));
+    public PagedIterable<PhoneNumberOffering> listOfferings(String countryCode, Integer skip, Integer maxPageSize,
+        PhoneNumberType phoneNumberType, PhoneNumberAssignmentType assignmentType, String acceptLanguage,
+        Context context) {
+        return new PagedIterable<>(listOfferingsAsync(countryCode, skip, maxPageSize, phoneNumberType, assignmentType,
+            acceptLanguage, context));
     }
 
     /**
@@ -1102,12 +804,10 @@ public final class PhoneNumbersImpl {
      * @return the result of a phone number search operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PhoneNumbersSearchAvailablePhoneNumbersResponse> searchAvailablePhoneNumbersWithResponseAsync(
-            String countryCode, PhoneNumberSearchRequest body) {
-        return FluxUtil.withContext(
-                context ->
-                        service.searchAvailablePhoneNumbers(
-                                this.client.getEndpoint(), countryCode, this.client.getApiVersion(), body, context));
+    public Mono<PhoneNumbersSearchAvailablePhoneNumbersResponse>
+        searchAvailablePhoneNumbersWithResponseAsync(String countryCode, PhoneNumberSearchRequest body) {
+        return FluxUtil.withContext(context -> service.searchAvailablePhoneNumbers(this.client.getEndpoint(),
+            countryCode, this.client.getApiVersion(), body, context));
     }
 
     /**
@@ -1124,9 +824,9 @@ public final class PhoneNumbersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PhoneNumbersSearchAvailablePhoneNumbersResponse> searchAvailablePhoneNumbersWithResponseAsync(
-            String countryCode, PhoneNumberSearchRequest body, Context context) {
-        return service.searchAvailablePhoneNumbers(
-                this.client.getEndpoint(), countryCode, this.client.getApiVersion(), body, context);
+        String countryCode, PhoneNumberSearchRequest body, Context context) {
+        return service.searchAvailablePhoneNumbers(this.client.getEndpoint(), countryCode, this.client.getApiVersion(),
+            body, context);
     }
 
     /**
@@ -1141,17 +841,16 @@ public final class PhoneNumbersImpl {
      * @return the result of a phone number search operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PhoneNumberSearchResult> searchAvailablePhoneNumbersAsync(
-            String countryCode, PhoneNumberSearchRequest body) {
+    public Mono<PhoneNumberSearchResult> searchAvailablePhoneNumbersAsync(String countryCode,
+        PhoneNumberSearchRequest body) {
         return searchAvailablePhoneNumbersWithResponseAsync(countryCode, body)
-                .flatMap(
-                        (PhoneNumbersSearchAvailablePhoneNumbersResponse res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+            .flatMap((PhoneNumbersSearchAvailablePhoneNumbersResponse res) -> {
+                if (res.getValue() != null) {
+                    return Mono.just(res.getValue());
+                } else {
+                    return Mono.empty();
+                }
+            });
     }
 
     /**
@@ -1167,17 +866,16 @@ public final class PhoneNumbersImpl {
      * @return the result of a phone number search operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PhoneNumberSearchResult> searchAvailablePhoneNumbersAsync(
-            String countryCode, PhoneNumberSearchRequest body, Context context) {
+    public Mono<PhoneNumberSearchResult> searchAvailablePhoneNumbersAsync(String countryCode,
+        PhoneNumberSearchRequest body, Context context) {
         return searchAvailablePhoneNumbersWithResponseAsync(countryCode, body, context)
-                .flatMap(
-                        (PhoneNumbersSearchAvailablePhoneNumbersResponse res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+            .flatMap((PhoneNumbersSearchAvailablePhoneNumbersResponse res) -> {
+                if (res.getValue() != null) {
+                    return Mono.just(res.getValue());
+                } else {
+                    return Mono.empty();
+                }
+            });
     }
 
     /**
@@ -1209,8 +907,8 @@ public final class PhoneNumbersImpl {
      * @return the result of a phone number search operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PhoneNumberSearchResult searchAvailablePhoneNumbers(
-            String countryCode, PhoneNumberSearchRequest body, Context context) {
+    public PhoneNumberSearchResult searchAvailablePhoneNumbers(String countryCode, PhoneNumberSearchRequest body,
+        Context context) {
         return searchAvailablePhoneNumbersAsync(countryCode, body, context).block();
     }
 
@@ -1225,10 +923,8 @@ public final class PhoneNumbersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PhoneNumberSearchResult>> getSearchResultWithResponseAsync(String searchId) {
-        return FluxUtil.withContext(
-                context ->
-                        service.getSearchResult(
-                                this.client.getEndpoint(), searchId, this.client.getApiVersion(), context));
+        return FluxUtil.withContext(context -> service.getSearchResult(this.client.getEndpoint(), searchId,
+            this.client.getApiVersion(), context));
     }
 
     /**
@@ -1257,15 +953,13 @@ public final class PhoneNumbersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PhoneNumberSearchResult> getSearchResultAsync(String searchId) {
-        return getSearchResultWithResponseAsync(searchId)
-                .flatMap(
-                        (Response<PhoneNumberSearchResult> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return getSearchResultWithResponseAsync(searchId).flatMap((Response<PhoneNumberSearchResult> res) -> {
+            if (res.getValue() != null) {
+                return Mono.just(res.getValue());
+            } else {
+                return Mono.empty();
+            }
+        });
     }
 
     /**
@@ -1280,15 +974,13 @@ public final class PhoneNumbersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PhoneNumberSearchResult> getSearchResultAsync(String searchId, Context context) {
-        return getSearchResultWithResponseAsync(searchId, context)
-                .flatMap(
-                        (Response<PhoneNumberSearchResult> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return getSearchResultWithResponseAsync(searchId, context).flatMap((Response<PhoneNumberSearchResult> res) -> {
+            if (res.getValue() != null) {
+                return Mono.just(res.getValue());
+            } else {
+                return Mono.empty();
+            }
+        });
     }
 
     /**
@@ -1330,12 +1022,10 @@ public final class PhoneNumbersImpl {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PhoneNumbersPurchasePhoneNumbersResponse> purchasePhoneNumbersWithResponseAsync(
-            PhoneNumberPurchaseRequest body) {
-        return FluxUtil.withContext(
-                context ->
-                        service.purchasePhoneNumbers(
-                                this.client.getEndpoint(), this.client.getApiVersion(), body, context));
+    public Mono<PhoneNumbersPurchasePhoneNumbersResponse>
+        purchasePhoneNumbersWithResponseAsync(PhoneNumberPurchaseRequest body) {
+        return FluxUtil.withContext(context -> service.purchasePhoneNumbers(this.client.getEndpoint(),
+            this.client.getApiVersion(), body, context));
     }
 
     /**
@@ -1349,8 +1039,8 @@ public final class PhoneNumbersImpl {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PhoneNumbersPurchasePhoneNumbersResponse> purchasePhoneNumbersWithResponseAsync(
-            PhoneNumberPurchaseRequest body, Context context) {
+    public Mono<PhoneNumbersPurchasePhoneNumbersResponse>
+        purchasePhoneNumbersWithResponseAsync(PhoneNumberPurchaseRequest body, Context context) {
         return service.purchasePhoneNumbers(this.client.getEndpoint(), this.client.getApiVersion(), body, context);
     }
 
@@ -1366,7 +1056,7 @@ public final class PhoneNumbersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> purchasePhoneNumbersAsync(PhoneNumberPurchaseRequest body) {
         return purchasePhoneNumbersWithResponseAsync(body)
-                .flatMap((PhoneNumbersPurchasePhoneNumbersResponse res) -> Mono.empty());
+            .flatMap((PhoneNumbersPurchasePhoneNumbersResponse res) -> Mono.empty());
     }
 
     /**
@@ -1382,7 +1072,7 @@ public final class PhoneNumbersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> purchasePhoneNumbersAsync(PhoneNumberPurchaseRequest body, Context context) {
         return purchasePhoneNumbersWithResponseAsync(body, context)
-                .flatMap((PhoneNumbersPurchasePhoneNumbersResponse res) -> Mono.empty());
+            .flatMap((PhoneNumbersPurchasePhoneNumbersResponse res) -> Mono.empty());
     }
 
     /**
@@ -1423,10 +1113,8 @@ public final class PhoneNumbersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PhoneNumbersGetOperationResponse> getOperationWithResponseAsync(String operationId) {
-        return FluxUtil.withContext(
-                context ->
-                        service.getOperation(
-                                this.client.getEndpoint(), operationId, this.client.getApiVersion(), context));
+        return FluxUtil.withContext(context -> service.getOperation(this.client.getEndpoint(), operationId,
+            this.client.getApiVersion(), context));
     }
 
     /**
@@ -1455,15 +1143,13 @@ public final class PhoneNumbersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PhoneNumberRawOperation> getOperationAsync(String operationId) {
-        return getOperationWithResponseAsync(operationId)
-                .flatMap(
-                        (PhoneNumbersGetOperationResponse res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return getOperationWithResponseAsync(operationId).flatMap((PhoneNumbersGetOperationResponse res) -> {
+            if (res.getValue() != null) {
+                return Mono.just(res.getValue());
+            } else {
+                return Mono.empty();
+            }
+        });
     }
 
     /**
@@ -1478,15 +1164,13 @@ public final class PhoneNumbersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PhoneNumberRawOperation> getOperationAsync(String operationId, Context context) {
-        return getOperationWithResponseAsync(operationId, context)
-                .flatMap(
-                        (PhoneNumbersGetOperationResponse res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return getOperationWithResponseAsync(operationId, context).flatMap((PhoneNumbersGetOperationResponse res) -> {
+            if (res.getValue() != null) {
+                return Mono.just(res.getValue());
+            } else {
+                return Mono.empty();
+            }
+        });
     }
 
     /**
@@ -1529,10 +1213,8 @@ public final class PhoneNumbersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> cancelOperationWithResponseAsync(String operationId) {
-        return FluxUtil.withContext(
-                context ->
-                        service.cancelOperation(
-                                this.client.getEndpoint(), operationId, this.client.getApiVersion(), context));
+        return FluxUtil.withContext(context -> service.cancelOperation(this.client.getEndpoint(), operationId,
+            this.client.getApiVersion(), context));
     }
 
     /**
@@ -1618,12 +1300,10 @@ public final class PhoneNumbersImpl {
      * @return represents a purchased phone number.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PhoneNumbersUpdateCapabilitiesResponse> updateCapabilitiesWithResponseAsync(
-            String phoneNumber, PhoneNumberCapabilitiesRequest body) {
-        return FluxUtil.withContext(
-                context ->
-                        service.updateCapabilities(
-                                this.client.getEndpoint(), phoneNumber, this.client.getApiVersion(), body, context));
+    public Mono<PhoneNumbersUpdateCapabilitiesResponse> updateCapabilitiesWithResponseAsync(String phoneNumber,
+        PhoneNumberCapabilitiesRequest body) {
+        return FluxUtil.withContext(context -> service.updateCapabilities(this.client.getEndpoint(), phoneNumber,
+            this.client.getApiVersion(), body, context));
     }
 
     /**
@@ -1639,10 +1319,10 @@ public final class PhoneNumbersImpl {
      * @return represents a purchased phone number.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PhoneNumbersUpdateCapabilitiesResponse> updateCapabilitiesWithResponseAsync(
-            String phoneNumber, PhoneNumberCapabilitiesRequest body, Context context) {
-        return service.updateCapabilities(
-                this.client.getEndpoint(), phoneNumber, this.client.getApiVersion(), body, context);
+    public Mono<PhoneNumbersUpdateCapabilitiesResponse> updateCapabilitiesWithResponseAsync(String phoneNumber,
+        PhoneNumberCapabilitiesRequest body, Context context) {
+        return service.updateCapabilities(this.client.getEndpoint(), phoneNumber, this.client.getApiVersion(), body,
+            context);
     }
 
     /**
@@ -1659,14 +1339,13 @@ public final class PhoneNumbersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PurchasedPhoneNumber> updateCapabilitiesAsync(String phoneNumber, PhoneNumberCapabilitiesRequest body) {
         return updateCapabilitiesWithResponseAsync(phoneNumber, body)
-                .flatMap(
-                        (PhoneNumbersUpdateCapabilitiesResponse res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+            .flatMap((PhoneNumbersUpdateCapabilitiesResponse res) -> {
+                if (res.getValue() != null) {
+                    return Mono.just(res.getValue());
+                } else {
+                    return Mono.empty();
+                }
+            });
     }
 
     /**
@@ -1682,17 +1361,16 @@ public final class PhoneNumbersImpl {
      * @return represents a purchased phone number.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PurchasedPhoneNumber> updateCapabilitiesAsync(
-            String phoneNumber, PhoneNumberCapabilitiesRequest body, Context context) {
+    public Mono<PurchasedPhoneNumber> updateCapabilitiesAsync(String phoneNumber, PhoneNumberCapabilitiesRequest body,
+        Context context) {
         return updateCapabilitiesWithResponseAsync(phoneNumber, body, context)
-                .flatMap(
-                        (PhoneNumbersUpdateCapabilitiesResponse res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+            .flatMap((PhoneNumbersUpdateCapabilitiesResponse res) -> {
+                if (res.getValue() != null) {
+                    return Mono.just(res.getValue());
+                } else {
+                    return Mono.empty();
+                }
+            });
     }
 
     /**
@@ -1724,8 +1402,8 @@ public final class PhoneNumbersImpl {
      * @return represents a purchased phone number.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PurchasedPhoneNumber updateCapabilities(
-            String phoneNumber, PhoneNumberCapabilitiesRequest body, Context context) {
+    public PurchasedPhoneNumber updateCapabilities(String phoneNumber, PhoneNumberCapabilitiesRequest body,
+        Context context) {
         return updateCapabilitiesAsync(phoneNumber, body, context).block();
     }
 
@@ -1740,10 +1418,8 @@ public final class PhoneNumbersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PurchasedPhoneNumber>> getByNumberWithResponseAsync(String phoneNumber) {
-        return FluxUtil.withContext(
-                context ->
-                        service.getByNumber(
-                                this.client.getEndpoint(), phoneNumber, this.client.getApiVersion(), context));
+        return FluxUtil.withContext(context -> service.getByNumber(this.client.getEndpoint(), phoneNumber,
+            this.client.getApiVersion(), context));
     }
 
     /**
@@ -1772,15 +1448,13 @@ public final class PhoneNumbersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PurchasedPhoneNumber> getByNumberAsync(String phoneNumber) {
-        return getByNumberWithResponseAsync(phoneNumber)
-                .flatMap(
-                        (Response<PurchasedPhoneNumber> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return getByNumberWithResponseAsync(phoneNumber).flatMap((Response<PurchasedPhoneNumber> res) -> {
+            if (res.getValue() != null) {
+                return Mono.just(res.getValue());
+            } else {
+                return Mono.empty();
+            }
+        });
     }
 
     /**
@@ -1795,15 +1469,13 @@ public final class PhoneNumbersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PurchasedPhoneNumber> getByNumberAsync(String phoneNumber, Context context) {
-        return getByNumberWithResponseAsync(phoneNumber, context)
-                .flatMap(
-                        (Response<PurchasedPhoneNumber> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return getByNumberWithResponseAsync(phoneNumber, context).flatMap((Response<PurchasedPhoneNumber> res) -> {
+            if (res.getValue() != null) {
+                return Mono.just(res.getValue());
+            } else {
+                return Mono.empty();
+            }
+        });
     }
 
     /**
@@ -1846,10 +1518,8 @@ public final class PhoneNumbersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PhoneNumbersReleasePhoneNumberResponse> releasePhoneNumberWithResponseAsync(String phoneNumber) {
-        return FluxUtil.withContext(
-                context ->
-                        service.releasePhoneNumber(
-                                this.client.getEndpoint(), phoneNumber, this.client.getApiVersion(), context));
+        return FluxUtil.withContext(context -> service.releasePhoneNumber(this.client.getEndpoint(), phoneNumber,
+            this.client.getApiVersion(), context));
     }
 
     /**
@@ -1863,8 +1533,8 @@ public final class PhoneNumbersImpl {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PhoneNumbersReleasePhoneNumberResponse> releasePhoneNumberWithResponseAsync(
-            String phoneNumber, Context context) {
+    public Mono<PhoneNumbersReleasePhoneNumberResponse> releasePhoneNumberWithResponseAsync(String phoneNumber,
+        Context context) {
         return service.releasePhoneNumber(this.client.getEndpoint(), phoneNumber, this.client.getApiVersion(), context);
     }
 
@@ -1880,7 +1550,7 @@ public final class PhoneNumbersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> releasePhoneNumberAsync(String phoneNumber) {
         return releasePhoneNumberWithResponseAsync(phoneNumber)
-                .flatMap((PhoneNumbersReleasePhoneNumberResponse res) -> Mono.empty());
+            .flatMap((PhoneNumbersReleasePhoneNumberResponse res) -> Mono.empty());
     }
 
     /**
@@ -1896,7 +1566,7 @@ public final class PhoneNumbersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> releasePhoneNumberAsync(String phoneNumber, Context context) {
         return releasePhoneNumberWithResponseAsync(phoneNumber, context)
-                .flatMap((PhoneNumbersReleasePhoneNumberResponse res) -> Mono.empty());
+            .flatMap((PhoneNumbersReleasePhoneNumberResponse res) -> Mono.empty());
     }
 
     /**
@@ -1939,19 +1609,11 @@ public final class PhoneNumbersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<PurchasedPhoneNumber>> listPhoneNumbersSinglePageAsync(Integer skip, Integer top) {
-        return FluxUtil.withContext(
-                        context ->
-                                service.listPhoneNumbers(
-                                        this.client.getEndpoint(), skip, top, this.client.getApiVersion(), context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getPhoneNumbers(),
-                                        res.getValue().getNextLink(),
-                                        null));
+        return FluxUtil
+            .withContext(context -> service.listPhoneNumbers(this.client.getEndpoint(), skip, top,
+                this.client.getApiVersion(), context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getPhoneNumbers(), res.getValue().getNextLink(), null));
     }
 
     /**
@@ -1967,18 +1629,11 @@ public final class PhoneNumbersImpl {
      * @return the list of all purchased phone numbers.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<PurchasedPhoneNumber>> listPhoneNumbersSinglePageAsync(
-            Integer skip, Integer top, Context context) {
+    public Mono<PagedResponse<PurchasedPhoneNumber>> listPhoneNumbersSinglePageAsync(Integer skip, Integer top,
+        Context context) {
         return service.listPhoneNumbers(this.client.getEndpoint(), skip, top, this.client.getApiVersion(), context)
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getPhoneNumbers(),
-                                        res.getValue().getNextLink(),
-                                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getPhoneNumbers(), res.getValue().getNextLink(), null));
     }
 
     /**
@@ -1994,9 +1649,8 @@ public final class PhoneNumbersImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PurchasedPhoneNumber> listPhoneNumbersAsync(Integer skip, Integer top) {
-        return new PagedFlux<>(
-                () -> listPhoneNumbersSinglePageAsync(skip, top),
-                nextLink -> listPhoneNumbersNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listPhoneNumbersSinglePageAsync(skip, top),
+            nextLink -> listPhoneNumbersNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -2013,9 +1667,8 @@ public final class PhoneNumbersImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PurchasedPhoneNumber> listPhoneNumbersAsync(Integer skip, Integer top, Context context) {
-        return new PagedFlux<>(
-                () -> listPhoneNumbersSinglePageAsync(skip, top, context),
-                nextLink -> listPhoneNumbersNextSinglePageAsync(nextLink, context));
+        return new PagedFlux<>(() -> listPhoneNumbersSinglePageAsync(skip, top, context),
+            nextLink -> listPhoneNumbersNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -2063,15 +1716,8 @@ public final class PhoneNumbersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<PhoneNumberAreaCode>> listAreaCodesNextSinglePageAsync(String nextLink) {
         return FluxUtil.withContext(context -> service.listAreaCodesNext(nextLink, context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getAreaCodes(),
-                                        res.getValue().getNextLink(),
-                                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getAreaCodes(), res.getValue().getNextLink(), null));
     }
 
     /**
@@ -2087,15 +1733,8 @@ public final class PhoneNumbersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<PhoneNumberAreaCode>> listAreaCodesNextSinglePageAsync(String nextLink, Context context) {
         return service.listAreaCodesNext(nextLink, context)
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getAreaCodes(),
-                                        res.getValue().getNextLink(),
-                                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getAreaCodes(), res.getValue().getNextLink(), null));
     }
 
     /**
@@ -2110,15 +1749,8 @@ public final class PhoneNumbersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<PhoneNumberCountry>> listAvailableCountriesNextSinglePageAsync(String nextLink) {
         return FluxUtil.withContext(context -> service.listAvailableCountriesNext(nextLink, context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getCountries(),
-                                        res.getValue().getNextLink(),
-                                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getCountries(), res.getValue().getNextLink(), null));
     }
 
     /**
@@ -2132,18 +1764,11 @@ public final class PhoneNumbersImpl {
      * @return represents a wrapper around a list of countries.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<PhoneNumberCountry>> listAvailableCountriesNextSinglePageAsync(
-            String nextLink, Context context) {
+    public Mono<PagedResponse<PhoneNumberCountry>> listAvailableCountriesNextSinglePageAsync(String nextLink,
+        Context context) {
         return service.listAvailableCountriesNext(nextLink, context)
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getCountries(),
-                                        res.getValue().getNextLink(),
-                                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getCountries(), res.getValue().getNextLink(), null));
     }
 
     /**
@@ -2158,15 +1783,8 @@ public final class PhoneNumbersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<PhoneNumberLocality>> listAvailableLocalitiesNextSinglePageAsync(String nextLink) {
         return FluxUtil.withContext(context -> service.listAvailableLocalitiesNext(nextLink, context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getPhoneNumberLocalities(),
-                                        res.getValue().getNextLink(),
-                                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getPhoneNumberLocalities(), res.getValue().getNextLink(), null));
     }
 
     /**
@@ -2180,18 +1798,11 @@ public final class PhoneNumbersImpl {
      * @return represents a wrapper around a list of cities or towns.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<PhoneNumberLocality>> listAvailableLocalitiesNextSinglePageAsync(
-            String nextLink, Context context) {
+    public Mono<PagedResponse<PhoneNumberLocality>> listAvailableLocalitiesNextSinglePageAsync(String nextLink,
+        Context context) {
         return service.listAvailableLocalitiesNext(nextLink, context)
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getPhoneNumberLocalities(),
-                                        res.getValue().getNextLink(),
-                                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getPhoneNumberLocalities(), res.getValue().getNextLink(), null));
     }
 
     /**
@@ -2206,15 +1817,8 @@ public final class PhoneNumbersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<PhoneNumberOffering>> listOfferingsNextSinglePageAsync(String nextLink) {
         return FluxUtil.withContext(context -> service.listOfferingsNext(nextLink, context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getPhoneNumberOfferings(),
-                                        res.getValue().getNextLink(),
-                                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getPhoneNumberOfferings(), res.getValue().getNextLink(), null));
     }
 
     /**
@@ -2230,15 +1834,8 @@ public final class PhoneNumbersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<PhoneNumberOffering>> listOfferingsNextSinglePageAsync(String nextLink, Context context) {
         return service.listOfferingsNext(nextLink, context)
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getPhoneNumberOfferings(),
-                                        res.getValue().getNextLink(),
-                                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getPhoneNumberOfferings(), res.getValue().getNextLink(), null));
     }
 
     /**
@@ -2253,15 +1850,8 @@ public final class PhoneNumbersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<PurchasedPhoneNumber>> listPhoneNumbersNextSinglePageAsync(String nextLink) {
         return FluxUtil.withContext(context -> service.listPhoneNumbersNext(nextLink, context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getPhoneNumbers(),
-                                        res.getValue().getNextLink(),
-                                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getPhoneNumbers(), res.getValue().getNextLink(), null));
     }
 
     /**
@@ -2275,17 +1865,10 @@ public final class PhoneNumbersImpl {
      * @return the list of purchased phone numbers.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<PurchasedPhoneNumber>> listPhoneNumbersNextSinglePageAsync(
-            String nextLink, Context context) {
+    public Mono<PagedResponse<PurchasedPhoneNumber>> listPhoneNumbersNextSinglePageAsync(String nextLink,
+        Context context) {
         return service.listPhoneNumbersNext(nextLink, context)
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getPhoneNumbers(),
-                                        res.getValue().getNextLink(),
-                                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getPhoneNumbers(), res.getValue().getNextLink(), null));
     }
 }

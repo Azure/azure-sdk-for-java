@@ -81,13 +81,8 @@ public final class SipRoutingAdminClientImpl {
      * @param apiVersion Api Version.
      */
     SipRoutingAdminClientImpl(String endpoint, String apiVersion) {
-        this(
-                new HttpPipelineBuilder()
-                        .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
-                        .build(),
-                JacksonAdapter.createDefaultSerializerAdapter(),
-                endpoint,
-                apiVersion);
+        this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build(),
+            JacksonAdapter.createDefaultSerializerAdapter(), endpoint, apiVersion);
     }
 
     /**
@@ -109,8 +104,8 @@ public final class SipRoutingAdminClientImpl {
      * @param endpoint The communication resource, for example https://resourcename.communication.azure.com.
      * @param apiVersion Api Version.
      */
-    SipRoutingAdminClientImpl(
-            HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint, String apiVersion) {
+    SipRoutingAdminClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint,
+        String apiVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;

@@ -10,7 +10,7 @@ import com.azure.core.http.rest.ResponseBase;
 
 /** Contains all response data for the purchasePhoneNumbers operation. */
 public final class PhoneNumbersPurchasePhoneNumbersResponse
-        extends ResponseBase<PhoneNumbersPurchasePhoneNumbersHeaders, Void> {
+    extends ResponseBase<PhoneNumbersPurchasePhoneNumbersHeaders, Void> {
     /**
      * Creates an instance of PhoneNumbersPurchasePhoneNumbersResponse.
      *
@@ -20,12 +20,8 @@ public final class PhoneNumbersPurchasePhoneNumbersResponse
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public PhoneNumbersPurchasePhoneNumbersResponse(
-            HttpRequest request,
-            int statusCode,
-            HttpHeaders rawHeaders,
-            Void value,
-            PhoneNumbersPurchasePhoneNumbersHeaders headers) {
+    public PhoneNumbersPurchasePhoneNumbersResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders,
+        Void value, PhoneNumbersPurchasePhoneNumbersHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 }

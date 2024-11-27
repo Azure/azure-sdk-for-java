@@ -26,8 +26,8 @@ public final class CommunicationErrorResponseException extends HttpResponseExcep
      * @param response the HTTP response.
      * @param value the deserialized response value.
      */
-    public CommunicationErrorResponseException(
-            String message, HttpResponse response, CommunicationErrorResponse value) {
+    public CommunicationErrorResponseException(String message, HttpResponse response,
+        CommunicationErrorResponse value) {
         super(message, response, value);
     }
 

@@ -14,7 +14,7 @@ import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 
 /** A builder for creating a new instance of the PhoneNumberAdminClient type. */
-@ServiceClientBuilder(serviceClients = {PhoneNumberAdminClientImpl.class})
+@ServiceClientBuilder(serviceClients = { PhoneNumberAdminClientImpl.class })
 public final class PhoneNumberAdminClientImplBuilder {
     /*
      * The communication resource, for example
@@ -72,10 +72,9 @@ public final class PhoneNumberAdminClientImplBuilder {
      */
     public PhoneNumberAdminClientImpl buildClient() {
         if (pipeline == null) {
-            this.pipeline =
-                    new HttpPipelineBuilder()
-                            .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
-                            .build();
+            this.pipeline
+                = new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
+                    .build();
         }
         if (serializerAdapter == null) {
             this.serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();

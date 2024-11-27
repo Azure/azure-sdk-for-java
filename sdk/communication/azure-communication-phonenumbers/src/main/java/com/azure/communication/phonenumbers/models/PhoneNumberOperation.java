@@ -56,8 +56,9 @@ public final class PhoneNumberOperation {
      * @param operationType The operationType property: The type of operation, e.g. Search.
      * @param lastActionDateTime The lastActionDateTime property: The most recent date that the operation was changed.
      */
-    public PhoneNumberOperation(PhoneNumberOperationStatus status, String resourceLocation, OffsetDateTime createdDateTime, String id,
-        PhoneNumberOperationType operationType, OffsetDateTime lastActionDateTime) {
+    public PhoneNumberOperation(PhoneNumberOperationStatus status, String resourceLocation,
+        OffsetDateTime createdDateTime, String id, PhoneNumberOperationType operationType,
+        OffsetDateTime lastActionDateTime) {
         this.status = status;
         this.resourceLocation = resourceLocation;
         this.createdDateTime = createdDateTime;

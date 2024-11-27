@@ -76,12 +76,8 @@ public final class PhoneNumberAdminClientImpl {
 
     /** Initializes an instance of PhoneNumberAdminClient client. */
     PhoneNumberAdminClientImpl(String endpoint) {
-        this(
-                new HttpPipelineBuilder()
-                        .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
-                        .build(),
-                JacksonAdapter.createDefaultSerializerAdapter(),
-                endpoint);
+        this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build(),
+            JacksonAdapter.createDefaultSerializerAdapter(), endpoint);
     }
 
     /**

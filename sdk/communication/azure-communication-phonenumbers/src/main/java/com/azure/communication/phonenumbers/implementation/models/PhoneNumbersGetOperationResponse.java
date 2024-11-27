@@ -10,7 +10,7 @@ import com.azure.core.http.rest.ResponseBase;
 
 /** Contains all response data for the getOperation operation. */
 public final class PhoneNumbersGetOperationResponse
-        extends ResponseBase<PhoneNumbersGetOperationHeaders, PhoneNumberRawOperation> {
+    extends ResponseBase<PhoneNumbersGetOperationHeaders, PhoneNumberRawOperation> {
     /**
      * Creates an instance of PhoneNumbersGetOperationResponse.
      *
@@ -20,12 +20,8 @@ public final class PhoneNumbersGetOperationResponse
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public PhoneNumbersGetOperationResponse(
-            HttpRequest request,
-            int statusCode,
-            HttpHeaders rawHeaders,
-            PhoneNumberRawOperation value,
-            PhoneNumbersGetOperationHeaders headers) {
+    public PhoneNumbersGetOperationResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders,
+        PhoneNumberRawOperation value, PhoneNumbersGetOperationHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 
