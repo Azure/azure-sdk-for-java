@@ -52,9 +52,8 @@ public final class LoadTestAdministrationsImpl {
      * @param client the instance of the service client containing this operation class.
      */
     LoadTestAdministrationsImpl(LoadTestingClientImpl client) {
-        this.service =
-                RestProxy.create(
-                        LoadTestAdministrationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(LoadTestAdministrationsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -66,288 +65,149 @@ public final class LoadTestAdministrationsImpl {
     @ServiceInterface(name = "LoadTestingClientLoa")
     private interface LoadTestAdministrationsService {
         @Patch("/tests/{testId}")
-        @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> createOrUpdateTest(
-                @HostParam("Endpoint") String endpoint,
-                @PathParam("testId") String testId,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/merge-patch+json") BinaryData body,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> createOrUpdateTest(@HostParam("Endpoint") String endpoint,
+            @PathParam("testId") String testId, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/merge-patch+json") BinaryData body, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Delete("/tests/{testId}")
-        @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> deleteTest(
-                @HostParam("Endpoint") String endpoint,
-                @PathParam("testId") String testId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<Void>> deleteTest(@HostParam("Endpoint") String endpoint, @PathParam("testId") String testId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("/tests/{testId}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getTest(
-                @HostParam("Endpoint") String endpoint,
-                @PathParam("testId") String testId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> getTest(@HostParam("Endpoint") String endpoint, @PathParam("testId") String testId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("/tests")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listTests(
-                @HostParam("Endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> listTests(@HostParam("Endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Put("/tests/{testId}/files/{fileName}")
-        @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 201 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> uploadTestFile(
-                @HostParam("Endpoint") String endpoint,
-                @PathParam("testId") String testId,
-                @PathParam("fileName") String fileName,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/octet-stream") BinaryData body,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> uploadTestFile(@HostParam("Endpoint") String endpoint,
+            @PathParam("testId") String testId, @PathParam("fileName") String fileName,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/octet-stream") BinaryData body,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/tests/{testId}/files/{fileName}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getTestFile(
-                @HostParam("Endpoint") String endpoint,
-                @PathParam("testId") String testId,
-                @PathParam("fileName") String fileName,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> getTestFile(@HostParam("Endpoint") String endpoint,
+            @PathParam("testId") String testId, @PathParam("fileName") String fileName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Delete("/tests/{testId}/files/{fileName}")
-        @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> deleteTestFile(
-                @HostParam("Endpoint") String endpoint,
-                @PathParam("testId") String testId,
-                @PathParam("fileName") String fileName,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<Void>> deleteTestFile(@HostParam("Endpoint") String endpoint, @PathParam("testId") String testId,
+            @PathParam("fileName") String fileName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/tests/{testId}/files")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listTestFiles(
-                @HostParam("Endpoint") String endpoint,
-                @PathParam("testId") String testId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> listTestFiles(@HostParam("Endpoint") String endpoint,
+            @PathParam("testId") String testId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Patch("/tests/{testId}/app-components")
-        @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> createOrUpdateAppComponents(
-                @HostParam("Endpoint") String endpoint,
-                @PathParam("testId") String testId,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/merge-patch+json") BinaryData body,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> createOrUpdateAppComponents(@HostParam("Endpoint") String endpoint,
+            @PathParam("testId") String testId, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/merge-patch+json") BinaryData body, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("/tests/{testId}/app-components")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getAppComponents(
-                @HostParam("Endpoint") String endpoint,
-                @PathParam("testId") String testId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> getAppComponents(@HostParam("Endpoint") String endpoint,
+            @PathParam("testId") String testId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Patch("/tests/{testId}/server-metrics-config")
-        @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> createOrUpdateServerMetricsConfig(
-                @HostParam("Endpoint") String endpoint,
-                @PathParam("testId") String testId,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/merge-patch+json") BinaryData body,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> createOrUpdateServerMetricsConfig(@HostParam("Endpoint") String endpoint,
+            @PathParam("testId") String testId, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/merge-patch+json") BinaryData body, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("/tests/{testId}/server-metrics-config")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getServerMetricsConfig(
-                @HostParam("Endpoint") String endpoint,
-                @PathParam("testId") String testId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> getServerMetricsConfig(@HostParam("Endpoint") String endpoint,
+            @PathParam("testId") String testId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listTestsNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("Endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> listTestsNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("Endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listTestFilesNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("Endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> listTestFilesNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("Endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            Context context);
     }
 
     /**
@@ -508,19 +368,11 @@ public final class LoadTestAdministrationsImpl {
      * @return load test model along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateTestWithResponseAsync(
-            String testId, BinaryData body, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> createOrUpdateTestWithResponseAsync(String testId, BinaryData body,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.createOrUpdateTest(
-                                this.client.getEndpoint(),
-                                testId,
-                                this.client.getServiceVersion().getVersion(),
-                                body,
-                                accept,
-                                requestOptions,
-                                context));
+        return FluxUtil.withContext(context -> service.createOrUpdateTest(this.client.getEndpoint(), testId,
+            this.client.getServiceVersion().getVersion(), body, accept, requestOptions, context));
     }
 
     /**
@@ -682,17 +534,11 @@ public final class LoadTestAdministrationsImpl {
      * @return load test model along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateTestWithResponseAsync(
-            String testId, BinaryData body, RequestOptions requestOptions, Context context) {
+    public Mono<Response<BinaryData>> createOrUpdateTestWithResponseAsync(String testId, BinaryData body,
+        RequestOptions requestOptions, Context context) {
         final String accept = "application/json";
-        return service.createOrUpdateTest(
-                this.client.getEndpoint(),
-                testId,
-                this.client.getServiceVersion().getVersion(),
-                body,
-                accept,
-                requestOptions,
-                context);
+        return service.createOrUpdateTest(this.client.getEndpoint(), testId,
+            this.client.getServiceVersion().getVersion(), body, accept, requestOptions, context);
     }
 
     /**
@@ -853,8 +699,8 @@ public final class LoadTestAdministrationsImpl {
      * @return load test model along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrUpdateTestWithResponse(
-            String testId, BinaryData body, RequestOptions requestOptions) {
+    public Response<BinaryData> createOrUpdateTestWithResponse(String testId, BinaryData body,
+        RequestOptions requestOptions) {
         return createOrUpdateTestWithResponseAsync(testId, body, requestOptions).block();
     }
 
@@ -873,15 +719,8 @@ public final class LoadTestAdministrationsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteTestWithResponseAsync(String testId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.deleteTest(
-                                this.client.getEndpoint(),
-                                testId,
-                                this.client.getServiceVersion().getVersion(),
-                                accept,
-                                requestOptions,
-                                context));
+        return FluxUtil.withContext(context -> service.deleteTest(this.client.getEndpoint(), testId,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -898,16 +737,11 @@ public final class LoadTestAdministrationsImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteTestWithResponseAsync(
-            String testId, RequestOptions requestOptions, Context context) {
+    public Mono<Response<Void>> deleteTestWithResponseAsync(String testId, RequestOptions requestOptions,
+        Context context) {
         final String accept = "application/json";
-        return service.deleteTest(
-                this.client.getEndpoint(),
-                testId,
-                this.client.getServiceVersion().getVersion(),
-                accept,
-                requestOptions,
-                context);
+        return service.deleteTest(this.client.getEndpoint(), testId, this.client.getServiceVersion().getVersion(),
+            accept, requestOptions, context);
     }
 
     /**
@@ -1014,15 +848,8 @@ public final class LoadTestAdministrationsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getTestWithResponseAsync(String testId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.getTest(
-                                this.client.getEndpoint(),
-                                testId,
-                                this.client.getServiceVersion().getVersion(),
-                                accept,
-                                requestOptions,
-                                context));
+        return FluxUtil.withContext(context -> service.getTest(this.client.getEndpoint(), testId,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -1111,16 +938,11 @@ public final class LoadTestAdministrationsImpl {
      * @return load test details by test name along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getTestWithResponseAsync(
-            String testId, RequestOptions requestOptions, Context context) {
+    public Mono<Response<BinaryData>> getTestWithResponseAsync(String testId, RequestOptions requestOptions,
+        Context context) {
         final String accept = "application/json";
-        return service.getTest(
-                this.client.getEndpoint(),
-                testId,
-                this.client.getServiceVersion().getVersion(),
-                accept,
-                requestOptions,
-                context);
+        return service.getTest(this.client.getEndpoint(), testId, this.client.getServiceVersion().getVersion(), accept,
+            requestOptions, context);
     }
 
     /**
@@ -1319,23 +1141,11 @@ public final class LoadTestAdministrationsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listTestsSinglePageAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                        context ->
-                                service.listTests(
-                                        this.client.getEndpoint(),
-                                        this.client.getServiceVersion().getVersion(),
-                                        accept,
-                                        requestOptions,
-                                        context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "value"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
+        return FluxUtil
+            .withContext(context -> service.listTests(this.client.getEndpoint(),
+                this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
 
     /**
@@ -1446,21 +1256,11 @@ public final class LoadTestAdministrationsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listTestsSinglePageAsync(RequestOptions requestOptions, Context context) {
         final String accept = "application/json";
-        return service.listTests(
-                        this.client.getEndpoint(),
-                        this.client.getServiceVersion().getVersion(),
-                        accept,
-                        requestOptions,
-                        context)
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "value"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
+        return service
+            .listTests(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), accept, requestOptions,
+                context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
 
     /**
@@ -1571,12 +1371,9 @@ public final class LoadTestAdministrationsImpl {
     public PagedFlux<BinaryData> listTestsAsync(RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
-                requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE);
-        return new PagedFlux<>(
-                () -> listTestsSinglePageAsync(requestOptions),
-                nextLink -> listTestsNextSinglePageAsync(nextLink, requestOptionsForNextPage));
+            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
+        return new PagedFlux<>(() -> listTestsSinglePageAsync(requestOptions),
+            nextLink -> listTestsNextSinglePageAsync(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -1688,12 +1485,9 @@ public final class LoadTestAdministrationsImpl {
     public PagedFlux<BinaryData> listTestsAsync(RequestOptions requestOptions, Context context) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
-                requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE);
-        return new PagedFlux<>(
-                () -> listTestsSinglePageAsync(requestOptions, context),
-                nextLink -> listTestsNextSinglePageAsync(nextLink, requestOptionsForNextPage, context));
+            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
+        return new PagedFlux<>(() -> listTestsSinglePageAsync(requestOptions, context),
+            nextLink -> listTestsNextSinglePageAsync(nextLink, requestOptionsForNextPage, context));
     }
 
     /**
@@ -1850,20 +1644,11 @@ public final class LoadTestAdministrationsImpl {
      * @return file info along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> uploadTestFileWithResponseAsync(
-            String testId, String fileName, BinaryData body, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> uploadTestFileWithResponseAsync(String testId, String fileName, BinaryData body,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.uploadTestFile(
-                                this.client.getEndpoint(),
-                                testId,
-                                fileName,
-                                this.client.getServiceVersion().getVersion(),
-                                body,
-                                accept,
-                                requestOptions,
-                                context));
+        return FluxUtil.withContext(context -> service.uploadTestFile(this.client.getEndpoint(), testId, fileName,
+            this.client.getServiceVersion().getVersion(), body, accept, requestOptions, context));
     }
 
     /**
@@ -1912,18 +1697,11 @@ public final class LoadTestAdministrationsImpl {
      * @return file info along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> uploadTestFileWithResponseAsync(
-            String testId, String fileName, BinaryData body, RequestOptions requestOptions, Context context) {
+    public Mono<Response<BinaryData>> uploadTestFileWithResponseAsync(String testId, String fileName, BinaryData body,
+        RequestOptions requestOptions, Context context) {
         final String accept = "application/json";
-        return service.uploadTestFile(
-                this.client.getEndpoint(),
-                testId,
-                fileName,
-                this.client.getServiceVersion().getVersion(),
-                body,
-                accept,
-                requestOptions,
-                context);
+        return service.uploadTestFile(this.client.getEndpoint(), testId, fileName,
+            this.client.getServiceVersion().getVersion(), body, accept, requestOptions, context);
     }
 
     /**
@@ -1971,8 +1749,8 @@ public final class LoadTestAdministrationsImpl {
      * @return file info along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> uploadTestFileWithResponse(
-            String testId, String fileName, BinaryData body, RequestOptions requestOptions) {
+    public Response<BinaryData> uploadTestFileWithResponse(String testId, String fileName, BinaryData body,
+        RequestOptions requestOptions) {
         return uploadTestFileWithResponseAsync(testId, fileName, body, requestOptions).block();
     }
 
@@ -2003,19 +1781,11 @@ public final class LoadTestAdministrationsImpl {
      * @return test file by the file name along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getTestFileWithResponseAsync(
-            String testId, String fileName, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getTestFileWithResponseAsync(String testId, String fileName,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.getTestFile(
-                                this.client.getEndpoint(),
-                                testId,
-                                fileName,
-                                this.client.getServiceVersion().getVersion(),
-                                accept,
-                                requestOptions,
-                                context));
+        return FluxUtil.withContext(context -> service.getTestFile(this.client.getEndpoint(), testId, fileName,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -2046,17 +1816,11 @@ public final class LoadTestAdministrationsImpl {
      * @return test file by the file name along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getTestFileWithResponseAsync(
-            String testId, String fileName, RequestOptions requestOptions, Context context) {
+    public Mono<Response<BinaryData>> getTestFileWithResponseAsync(String testId, String fileName,
+        RequestOptions requestOptions, Context context) {
         final String accept = "application/json";
-        return service.getTestFile(
-                this.client.getEndpoint(),
-                testId,
-                fileName,
-                this.client.getServiceVersion().getVersion(),
-                accept,
-                requestOptions,
-                context);
+        return service.getTestFile(this.client.getEndpoint(), testId, fileName,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, context);
     }
 
     /**
@@ -2104,19 +1868,11 @@ public final class LoadTestAdministrationsImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteTestFileWithResponseAsync(
-            String testId, String fileName, RequestOptions requestOptions) {
+    public Mono<Response<Void>> deleteTestFileWithResponseAsync(String testId, String fileName,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.deleteTestFile(
-                                this.client.getEndpoint(),
-                                testId,
-                                fileName,
-                                this.client.getServiceVersion().getVersion(),
-                                accept,
-                                requestOptions,
-                                context));
+        return FluxUtil.withContext(context -> service.deleteTestFile(this.client.getEndpoint(), testId, fileName,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -2134,17 +1890,11 @@ public final class LoadTestAdministrationsImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteTestFileWithResponseAsync(
-            String testId, String fileName, RequestOptions requestOptions, Context context) {
+    public Mono<Response<Void>> deleteTestFileWithResponseAsync(String testId, String fileName,
+        RequestOptions requestOptions, Context context) {
         final String accept = "application/json";
-        return service.deleteTestFile(
-                this.client.getEndpoint(),
-                testId,
-                fileName,
-                this.client.getServiceVersion().getVersion(),
-                accept,
-                requestOptions,
-                context);
+        return service.deleteTestFile(this.client.getEndpoint(), testId, fileName,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, context);
     }
 
     /**
@@ -2198,24 +1948,11 @@ public final class LoadTestAdministrationsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listTestFilesSinglePageAsync(String testId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                        context ->
-                                service.listTestFiles(
-                                        this.client.getEndpoint(),
-                                        testId,
-                                        this.client.getServiceVersion().getVersion(),
-                                        accept,
-                                        requestOptions,
-                                        context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "value"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
+        return FluxUtil
+            .withContext(context -> service.listTestFiles(this.client.getEndpoint(), testId,
+                this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
 
     /**
@@ -2250,25 +1987,14 @@ public final class LoadTestAdministrationsImpl {
      * @return all test files along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listTestFilesSinglePageAsync(
-            String testId, RequestOptions requestOptions, Context context) {
+    public Mono<PagedResponse<BinaryData>> listTestFilesSinglePageAsync(String testId, RequestOptions requestOptions,
+        Context context) {
         final String accept = "application/json";
-        return service.listTestFiles(
-                        this.client.getEndpoint(),
-                        testId,
-                        this.client.getServiceVersion().getVersion(),
-                        accept,
-                        requestOptions,
-                        context)
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "value"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
+        return service
+            .listTestFiles(this.client.getEndpoint(), testId, this.client.getServiceVersion().getVersion(), accept,
+                requestOptions, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
 
     /**
@@ -2305,12 +2031,9 @@ public final class LoadTestAdministrationsImpl {
     public PagedFlux<BinaryData> listTestFilesAsync(String testId, RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
-                requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE);
-        return new PagedFlux<>(
-                () -> listTestFilesSinglePageAsync(testId, requestOptions),
-                nextLink -> listTestFilesNextSinglePageAsync(nextLink, requestOptionsForNextPage));
+            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
+        return new PagedFlux<>(() -> listTestFilesSinglePageAsync(testId, requestOptions),
+            nextLink -> listTestFilesNextSinglePageAsync(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -2348,12 +2071,9 @@ public final class LoadTestAdministrationsImpl {
     public PagedFlux<BinaryData> listTestFilesAsync(String testId, RequestOptions requestOptions, Context context) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
-                requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE);
-        return new PagedFlux<>(
-                () -> listTestFilesSinglePageAsync(testId, requestOptions, context),
-                nextLink -> listTestFilesNextSinglePageAsync(nextLink, requestOptionsForNextPage, context));
+            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
+        return new PagedFlux<>(() -> listTestFilesSinglePageAsync(testId, requestOptions, context),
+            nextLink -> listTestFilesNextSinglePageAsync(nextLink, requestOptionsForNextPage, context));
     }
 
     /**
@@ -2451,19 +2171,11 @@ public final class LoadTestAdministrationsImpl {
      * @return test app component along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateAppComponentsWithResponseAsync(
-            String testId, BinaryData body, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> createOrUpdateAppComponentsWithResponseAsync(String testId, BinaryData body,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.createOrUpdateAppComponents(
-                                this.client.getEndpoint(),
-                                testId,
-                                this.client.getServiceVersion().getVersion(),
-                                body,
-                                accept,
-                                requestOptions,
-                                context));
+        return FluxUtil.withContext(context -> service.createOrUpdateAppComponents(this.client.getEndpoint(), testId,
+            this.client.getServiceVersion().getVersion(), body, accept, requestOptions, context));
     }
 
     /**
@@ -2527,17 +2239,11 @@ public final class LoadTestAdministrationsImpl {
      * @return test app component along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateAppComponentsWithResponseAsync(
-            String testId, BinaryData body, RequestOptions requestOptions, Context context) {
+    public Mono<Response<BinaryData>> createOrUpdateAppComponentsWithResponseAsync(String testId, BinaryData body,
+        RequestOptions requestOptions, Context context) {
         final String accept = "application/json";
-        return service.createOrUpdateAppComponents(
-                this.client.getEndpoint(),
-                testId,
-                this.client.getServiceVersion().getVersion(),
-                body,
-                accept,
-                requestOptions,
-                context);
+        return service.createOrUpdateAppComponents(this.client.getEndpoint(), testId,
+            this.client.getServiceVersion().getVersion(), body, accept, requestOptions, context);
     }
 
     /**
@@ -2600,8 +2306,8 @@ public final class LoadTestAdministrationsImpl {
      * @return test app component along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrUpdateAppComponentsWithResponse(
-            String testId, BinaryData body, RequestOptions requestOptions) {
+    public Response<BinaryData> createOrUpdateAppComponentsWithResponse(String testId, BinaryData body,
+        RequestOptions requestOptions) {
         return createOrUpdateAppComponentsWithResponseAsync(testId, body, requestOptions).block();
     }
 
@@ -2644,15 +2350,8 @@ public final class LoadTestAdministrationsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getAppComponentsWithResponseAsync(String testId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.getAppComponents(
-                                this.client.getEndpoint(),
-                                testId,
-                                this.client.getServiceVersion().getVersion(),
-                                accept,
-                                requestOptions,
-                                context));
+        return FluxUtil.withContext(context -> service.getAppComponents(this.client.getEndpoint(), testId,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -2693,16 +2392,11 @@ public final class LoadTestAdministrationsImpl {
      *     on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getAppComponentsWithResponseAsync(
-            String testId, RequestOptions requestOptions, Context context) {
+    public Mono<Response<BinaryData>> getAppComponentsWithResponseAsync(String testId, RequestOptions requestOptions,
+        Context context) {
         final String accept = "application/json";
-        return service.getAppComponents(
-                this.client.getEndpoint(),
-                testId,
-                this.client.getServiceVersion().getVersion(),
-                accept,
-                requestOptions,
-                context);
+        return service.getAppComponents(this.client.getEndpoint(), testId, this.client.getServiceVersion().getVersion(),
+            accept, requestOptions, context);
     }
 
     /**
@@ -2807,19 +2501,11 @@ public final class LoadTestAdministrationsImpl {
      * @return test server metrics configuration along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateServerMetricsConfigWithResponseAsync(
-            String testId, BinaryData body, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> createOrUpdateServerMetricsConfigWithResponseAsync(String testId, BinaryData body,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.createOrUpdateServerMetricsConfig(
-                                this.client.getEndpoint(),
-                                testId,
-                                this.client.getServiceVersion().getVersion(),
-                                body,
-                                accept,
-                                requestOptions,
-                                context));
+        return FluxUtil.withContext(context -> service.createOrUpdateServerMetricsConfig(this.client.getEndpoint(),
+            testId, this.client.getServiceVersion().getVersion(), body, accept, requestOptions, context));
     }
 
     /**
@@ -2885,17 +2571,11 @@ public final class LoadTestAdministrationsImpl {
      * @return test server metrics configuration along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateServerMetricsConfigWithResponseAsync(
-            String testId, BinaryData body, RequestOptions requestOptions, Context context) {
+    public Mono<Response<BinaryData>> createOrUpdateServerMetricsConfigWithResponseAsync(String testId, BinaryData body,
+        RequestOptions requestOptions, Context context) {
         final String accept = "application/json";
-        return service.createOrUpdateServerMetricsConfig(
-                this.client.getEndpoint(),
-                testId,
-                this.client.getServiceVersion().getVersion(),
-                body,
-                accept,
-                requestOptions,
-                context);
+        return service.createOrUpdateServerMetricsConfig(this.client.getEndpoint(), testId,
+            this.client.getServiceVersion().getVersion(), body, accept, requestOptions, context);
     }
 
     /**
@@ -2960,8 +2640,8 @@ public final class LoadTestAdministrationsImpl {
      * @return test server metrics configuration along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrUpdateServerMetricsConfigWithResponse(
-            String testId, BinaryData body, RequestOptions requestOptions) {
+    public Response<BinaryData> createOrUpdateServerMetricsConfigWithResponse(String testId, BinaryData body,
+        RequestOptions requestOptions) {
         return createOrUpdateServerMetricsConfigWithResponseAsync(testId, body, requestOptions).block();
     }
 
@@ -3002,18 +2682,11 @@ public final class LoadTestAdministrationsImpl {
      * @return test server metrics configuration along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getServerMetricsConfigWithResponseAsync(
-            String testId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getServerMetricsConfigWithResponseAsync(String testId,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.getServerMetricsConfig(
-                                this.client.getEndpoint(),
-                                testId,
-                                this.client.getServiceVersion().getVersion(),
-                                accept,
-                                requestOptions,
-                                context));
+        return FluxUtil.withContext(context -> service.getServerMetricsConfig(this.client.getEndpoint(), testId,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -3054,16 +2727,11 @@ public final class LoadTestAdministrationsImpl {
      * @return test server metrics configuration along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getServerMetricsConfigWithResponseAsync(
-            String testId, RequestOptions requestOptions, Context context) {
+    public Mono<Response<BinaryData>> getServerMetricsConfigWithResponseAsync(String testId,
+        RequestOptions requestOptions, Context context) {
         final String accept = "application/json";
-        return service.getServerMetricsConfig(
-                this.client.getEndpoint(),
-                testId,
-                this.client.getServiceVersion().getVersion(),
-                accept,
-                requestOptions,
-                context);
+        return service.getServerMetricsConfig(this.client.getEndpoint(), testId,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, context);
     }
 
     /**
@@ -3196,22 +2864,14 @@ public final class LoadTestAdministrationsImpl {
      * @return collection of tests along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listTestsNextSinglePageAsync(
-            String nextLink, RequestOptions requestOptions) {
+    public Mono<PagedResponse<BinaryData>> listTestsNextSinglePageAsync(String nextLink,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                        context ->
-                                service.listTestsNext(
-                                        nextLink, this.client.getEndpoint(), accept, requestOptions, context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "value"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
+        return FluxUtil
+            .withContext(
+                context -> service.listTestsNext(nextLink, this.client.getEndpoint(), accept, requestOptions, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
 
     /**
@@ -3304,19 +2964,12 @@ public final class LoadTestAdministrationsImpl {
      * @return collection of tests along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listTestsNextSinglePageAsync(
-            String nextLink, RequestOptions requestOptions, Context context) {
+    public Mono<PagedResponse<BinaryData>> listTestsNextSinglePageAsync(String nextLink, RequestOptions requestOptions,
+        Context context) {
         final String accept = "application/json";
         return service.listTestsNext(nextLink, this.client.getEndpoint(), accept, requestOptions, context)
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "value"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
 
     /**
@@ -3349,22 +3002,13 @@ public final class LoadTestAdministrationsImpl {
      * @return collection of files along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listTestFilesNextSinglePageAsync(
-            String nextLink, RequestOptions requestOptions) {
+    public Mono<PagedResponse<BinaryData>> listTestFilesNextSinglePageAsync(String nextLink,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                        context ->
-                                service.listTestFilesNext(
-                                        nextLink, this.client.getEndpoint(), accept, requestOptions, context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "value"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
+            context -> service.listTestFilesNext(nextLink, this.client.getEndpoint(), accept, requestOptions, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
 
     /**
@@ -3398,19 +3042,12 @@ public final class LoadTestAdministrationsImpl {
      * @return collection of files along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listTestFilesNextSinglePageAsync(
-            String nextLink, RequestOptions requestOptions, Context context) {
+    public Mono<PagedResponse<BinaryData>> listTestFilesNextSinglePageAsync(String nextLink,
+        RequestOptions requestOptions, Context context) {
         final String accept = "application/json";
         return service.listTestFilesNext(nextLink, this.client.getEndpoint(), accept, requestOptions, context)
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "value"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
 
     private List<BinaryData> getValues(BinaryData binaryData, String path) {

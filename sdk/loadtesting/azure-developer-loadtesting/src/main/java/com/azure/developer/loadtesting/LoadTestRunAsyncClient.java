@@ -32,7 +32,8 @@ public final class LoadTestRunAsyncClient {
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
-    @Generated private final LoadTestRunsImpl serviceClient;
+    @Generated
+    private final LoadTestRunsImpl serviceClient;
 
     /**
      * Initializes an instance of LoadTestRunAsyncClient class.
@@ -108,8 +109,8 @@ public final class LoadTestRunAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateServerMetricsConfigWithResponse(
-            String testRunId, BinaryData body, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> createOrUpdateServerMetricsConfigWithResponse(String testRunId, BinaryData body,
+        RequestOptions requestOptions) {
         return this.serviceClient.createOrUpdateServerMetricsConfigWithResponseAsync(testRunId, body, requestOptions);
     }
 
@@ -125,59 +126,55 @@ public final class LoadTestRunAsyncClient {
      *     status(ACCEPTED/NOTSTARTED/PROVISIONING/PROVISIONED/CONFIGURING/CONFIGURED/EXECUTING/EXECUTED/DEPROVISIONING/DEPROVISIONED/DONE/CANCELLING/CANCELLED/FAILED/VALIDATION_SUCCESS/VALIDATION_FAILURE).
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginTestRun(
-            String testRunId, BinaryData body, RequestOptions testRunRequestOptions) {
+    public PollerFlux<BinaryData, BinaryData> beginTestRun(String testRunId, BinaryData body,
+        RequestOptions testRunRequestOptions) {
         RequestOptions defaultRequestOptions = new RequestOptions();
         if (testRunRequestOptions != null) {
             defaultRequestOptions.setContext(testRunRequestOptions.getContext());
         }
-        return new PollerFlux<>(
-                Duration.ofSeconds(5),
-                (context) -> {
-                    Mono<BinaryData> testRunMono =
-                            createOrUpdateTestRunWithResponse(testRunId, body, testRunRequestOptions)
-                                    .flatMap(FluxUtil::toMono);
-                    return testRunMono;
-                },
-                (context) -> {
-                    Mono<BinaryData> testRunMono =
-                            getTestRunWithResponse(testRunId, defaultRequestOptions).flatMap(FluxUtil::toMono);
-                    return testRunMono.flatMap(
-                            testRunBinary -> {
-                                String status;
-                                JsonNode testRun;
-                                try {
-                                    testRun = OBJECT_MAPPER.readTree(testRunBinary.toString());
-                                    status = testRun.get("status").asText();
-                                } catch (JsonProcessingException e) {
-                                    return Mono.error(
-                                            new RuntimeException(
-                                                    "Encountered exception while retriving test run status"));
-                                }
-                                LongRunningOperationStatus lroStatus;
-                                switch (status) {
-                                    case "NOTSTARTED":
-                                        lroStatus = LongRunningOperationStatus.NOT_STARTED;
-                                        break;
-                                    case "DONE":
-                                        lroStatus = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
-                                        break;
-                                    case "FAILED":
-                                        lroStatus = LongRunningOperationStatus.FAILED;
-                                        break;
-                                    case "CANCELLED":
-                                        lroStatus = LongRunningOperationStatus.USER_CANCELLED;
-                                        break;
-                                    default:
-                                        lroStatus = LongRunningOperationStatus.IN_PROGRESS;
-                                        break;
-                                }
-                                return Mono.just(new PollResponse<>(lroStatus, testRunBinary));
-                            });
-                },
-                (activationResponse, context) ->
-                        stopTestRunWithResponse(testRunId, defaultRequestOptions).flatMap(FluxUtil::toMono),
-                (context) -> getTestRunWithResponse(testRunId, defaultRequestOptions).flatMap(FluxUtil::toMono));
+        return new PollerFlux<>(Duration.ofSeconds(5), (context) -> {
+            Mono<BinaryData> testRunMono
+                = createOrUpdateTestRunWithResponse(testRunId, body, testRunRequestOptions).flatMap(FluxUtil::toMono);
+            return testRunMono;
+        }, (context) -> {
+            Mono<BinaryData> testRunMono
+                = getTestRunWithResponse(testRunId, defaultRequestOptions).flatMap(FluxUtil::toMono);
+            return testRunMono.flatMap(testRunBinary -> {
+                String status;
+                JsonNode testRun;
+                try {
+                    testRun = OBJECT_MAPPER.readTree(testRunBinary.toString());
+                    status = testRun.get("status").asText();
+                } catch (JsonProcessingException e) {
+                    return Mono.error(new RuntimeException("Encountered exception while retriving test run status"));
+                }
+                LongRunningOperationStatus lroStatus;
+                switch (status) {
+                    case "NOTSTARTED":
+                        lroStatus = LongRunningOperationStatus.NOT_STARTED;
+                        break;
+
+                    case "DONE":
+                        lroStatus = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
+                        break;
+
+                    case "FAILED":
+                        lroStatus = LongRunningOperationStatus.FAILED;
+                        break;
+
+                    case "CANCELLED":
+                        lroStatus = LongRunningOperationStatus.USER_CANCELLED;
+                        break;
+
+                    default:
+                        lroStatus = LongRunningOperationStatus.IN_PROGRESS;
+                        break;
+                }
+                return Mono.just(new PollResponse<>(lroStatus, testRunBinary));
+            });
+        }, (activationResponse, context) -> stopTestRunWithResponse(testRunId, defaultRequestOptions)
+            .flatMap(FluxUtil::toMono),
+            (context) -> getTestRunWithResponse(testRunId, defaultRequestOptions).flatMap(FluxUtil::toMono));
     }
 
     /**
@@ -241,8 +238,8 @@ public final class LoadTestRunAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateAppComponentsWithResponse(
-            String testRunId, BinaryData body, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> createOrUpdateAppComponentsWithResponse(String testRunId, BinaryData body,
+        RequestOptions requestOptions) {
         return this.serviceClient.createOrUpdateAppComponentsWithResponseAsync(testRunId, body, requestOptions);
     }
 
@@ -313,12 +310,8 @@ public final class LoadTestRunAsyncClient {
      * @return the response to a metrics query as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listMetrics(
-            String testRunId,
-            String metricName,
-            String metricNamespace,
-            String timespan,
-            RequestOptions requestOptions) {
+    public PagedFlux<BinaryData> listMetrics(String testRunId, String metricName, String metricNamespace,
+        String timespan, RequestOptions requestOptions) {
         if (requestOptions == null) {
             requestOptions = new RequestOptions();
         }
@@ -367,15 +360,10 @@ public final class LoadTestRunAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listMetricDimensionValues(
-            String testRunId,
-            String name,
-            String metricName,
-            String metricNamespace,
-            String timespan,
-            RequestOptions requestOptions) {
-        return this.serviceClient.listMetricDimensionValuesAsync(
-                testRunId, name, metricName, metricNamespace, timespan, requestOptions);
+    public PagedFlux<BinaryData> listMetricDimensionValues(String testRunId, String name, String metricName,
+        String metricNamespace, String timespan, RequestOptions requestOptions) {
+        return this.serviceClient.listMetricDimensionValuesAsync(testRunId, name, metricName, metricNamespace, timespan,
+            requestOptions);
     }
 
     /**
@@ -459,8 +447,8 @@ public final class LoadTestRunAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getServerMetricsConfigWithResponse(
-            String testRunId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getServerMetricsConfigWithResponse(String testRunId,
+        RequestOptions requestOptions) {
         return this.serviceClient.getServerMetricsConfigWithResponseAsync(testRunId, requestOptions);
     }
 
@@ -704,8 +692,8 @@ public final class LoadTestRunAsyncClient {
      * @return load test run model along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> createOrUpdateTestRunWithResponse(
-            String testRunId, BinaryData body, RequestOptions requestOptions) {
+    Mono<Response<BinaryData>> createOrUpdateTestRunWithResponse(String testRunId, BinaryData body,
+        RequestOptions requestOptions) {
         return this.serviceClient.createOrUpdateTestRunWithResponseAsync(testRunId, body, requestOptions);
     }
 
@@ -881,8 +869,8 @@ public final class LoadTestRunAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getTestRunFileWithResponse(
-            String testRunId, String fileName, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getTestRunFileWithResponse(String testRunId, String fileName,
+        RequestOptions requestOptions) {
         return this.serviceClient.getTestRunFileWithResponseAsync(testRunId, fileName, requestOptions);
     }
 
@@ -1235,8 +1223,8 @@ public final class LoadTestRunAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getMetricDefinitionsWithResponse(
-            String testRunId, String metricNamespace, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getMetricDefinitionsWithResponse(String testRunId, String metricNamespace,
+        RequestOptions requestOptions) {
         return this.serviceClient.getMetricDefinitionsWithResponseAsync(testRunId, metricNamespace, requestOptions);
     }
 }

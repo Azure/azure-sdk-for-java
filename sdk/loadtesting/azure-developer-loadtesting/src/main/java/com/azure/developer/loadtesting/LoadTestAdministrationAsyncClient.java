@@ -32,7 +32,8 @@ public final class LoadTestAdministrationAsyncClient {
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
-    @Generated private final LoadTestAdministrationsImpl serviceClient;
+    @Generated
+    private final LoadTestAdministrationsImpl serviceClient;
 
     /**
      * Initializes an instance of LoadTestAdministrationAsyncClient class.
@@ -107,8 +108,8 @@ public final class LoadTestAdministrationAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateServerMetricsConfigWithResponse(
-            String testId, BinaryData body, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> createOrUpdateServerMetricsConfigWithResponse(String testId, BinaryData body,
+        RequestOptions requestOptions) {
         return this.serviceClient.createOrUpdateServerMetricsConfigWithResponseAsync(testId, body, requestOptions);
     }
 
@@ -128,12 +129,15 @@ public final class LoadTestAdministrationAsyncClient {
             case "VALIDATION_SUCCESS":
                 lroStatus = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
                 break;
+
             case "VALIDATION_FAILURE":
                 lroStatus = LongRunningOperationStatus.FAILED;
                 break;
+
             case "VALIDATION_INITIATED":
                 lroStatus = LongRunningOperationStatus.IN_PROGRESS;
                 break;
+
             case "NOT_VALIDATED":
                 if ("JMX_FILE".equalsIgnoreCase(fileType)) {
                     lroStatus = LongRunningOperationStatus.NOT_STARTED;
@@ -141,6 +145,7 @@ public final class LoadTestAdministrationAsyncClient {
                     lroStatus = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
                 }
                 break;
+
             default:
                 lroStatus = LongRunningOperationStatus.NOT_STARTED;
                 break;
@@ -160,31 +165,25 @@ public final class LoadTestAdministrationAsyncClient {
      * @return A {@link PollerFlux} to poll on and retrieve the file info with validation status.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginUploadTestFile(
-            String testId, String fileName, BinaryData body, RequestOptions fileUploadRequestOptions) {
+    public PollerFlux<BinaryData, BinaryData> beginUploadTestFile(String testId, String fileName, BinaryData body,
+        RequestOptions fileUploadRequestOptions) {
         RequestOptions defaultRequestOptions = new RequestOptions();
         if (fileUploadRequestOptions != null) {
             defaultRequestOptions.setContext(fileUploadRequestOptions.getContext());
         }
-        return new PollerFlux<>(
-                Duration.ofSeconds(2),
-                (context) -> {
-                    Mono<BinaryData> fileMono =
-                            uploadTestFileWithResponse(testId, fileName, body, fileUploadRequestOptions)
-                                    .flatMap(FluxUtil::toMono);
-                    Mono<PollResponse<BinaryData>> fileValidationPollRespMono =
-                            fileMono.flatMap(fileBinaryData -> getValidationStatus(fileBinaryData));
-                    return fileValidationPollRespMono.flatMap(
-                            fileValidationPollResp -> Mono.just(fileValidationPollResp.getValue()));
-                },
-                (context) -> {
-                    Mono<BinaryData> fileMono =
-                            getTestFileWithResponse(testId, fileName, defaultRequestOptions).flatMap(FluxUtil::toMono);
-                    return fileMono.flatMap(fileBinaryData -> getValidationStatus(fileBinaryData));
-                },
-                (activationResponse, context) -> Mono.error(new RuntimeException("Cancellation is not supported")),
-                (context) ->
-                        getTestFileWithResponse(testId, fileName, defaultRequestOptions).flatMap(FluxUtil::toMono));
+        return new PollerFlux<>(Duration.ofSeconds(2), (context) -> {
+            Mono<BinaryData> fileMono = uploadTestFileWithResponse(testId, fileName, body, fileUploadRequestOptions)
+                .flatMap(FluxUtil::toMono);
+            Mono<PollResponse<BinaryData>> fileValidationPollRespMono
+                = fileMono.flatMap(fileBinaryData -> getValidationStatus(fileBinaryData));
+            return fileValidationPollRespMono
+                .flatMap(fileValidationPollResp -> Mono.just(fileValidationPollResp.getValue()));
+        }, (context) -> {
+            Mono<BinaryData> fileMono
+                = getTestFileWithResponse(testId, fileName, defaultRequestOptions).flatMap(FluxUtil::toMono);
+            return fileMono.flatMap(fileBinaryData -> getValidationStatus(fileBinaryData));
+        }, (activationResponse, context) -> Mono.error(new RuntimeException("Cancellation is not supported")),
+            (context) -> getTestFileWithResponse(testId, fileName, defaultRequestOptions).flatMap(FluxUtil::toMono));
     }
 
     /**
@@ -382,8 +381,8 @@ public final class LoadTestAdministrationAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateTestWithResponse(
-            String testId, BinaryData body, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> createOrUpdateTestWithResponse(String testId, BinaryData body,
+        RequestOptions requestOptions) {
         return this.serviceClient.createOrUpdateTestWithResponseAsync(testId, body, requestOptions);
     }
 
@@ -650,8 +649,8 @@ public final class LoadTestAdministrationAsyncClient {
      * @return file info along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> uploadTestFileWithResponse(
-            String testId, String fileName, BinaryData body, RequestOptions requestOptions) {
+    Mono<Response<BinaryData>> uploadTestFileWithResponse(String testId, String fileName, BinaryData body,
+        RequestOptions requestOptions) {
         return this.serviceClient.uploadTestFileWithResponseAsync(testId, fileName, body, requestOptions);
     }
 
@@ -683,8 +682,8 @@ public final class LoadTestAdministrationAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getTestFileWithResponse(
-            String testId, String fileName, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getTestFileWithResponse(String testId, String fileName,
+        RequestOptions requestOptions) {
         return this.serviceClient.getTestFileWithResponseAsync(testId, fileName, requestOptions);
     }
 
@@ -703,8 +702,8 @@ public final class LoadTestAdministrationAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteTestFileWithResponse(
-            String testId, String fileName, RequestOptions requestOptions) {
+    public Mono<Response<Void>> deleteTestFileWithResponse(String testId, String fileName,
+        RequestOptions requestOptions) {
         return this.serviceClient.deleteTestFileWithResponseAsync(testId, fileName, requestOptions);
     }
 
@@ -769,8 +768,8 @@ public final class LoadTestAdministrationAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateAppComponentsWithResponse(
-            String testId, BinaryData body, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> createOrUpdateAppComponentsWithResponse(String testId, BinaryData body,
+        RequestOptions requestOptions) {
         return this.serviceClient.createOrUpdateAppComponentsWithResponseAsync(testId, body, requestOptions);
     }
 

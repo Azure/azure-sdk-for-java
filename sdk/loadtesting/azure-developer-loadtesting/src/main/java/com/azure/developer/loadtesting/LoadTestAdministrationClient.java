@@ -22,7 +22,8 @@ import com.azure.core.util.polling.SyncPoller;
 @ServiceClient(builder = LoadTestAdministrationClientBuilder.class)
 public final class LoadTestAdministrationClient {
 
-    @Generated private final LoadTestAdministrationAsyncClient client;
+    @Generated
+    private final LoadTestAdministrationAsyncClient client;
 
     /**
      * Initializes an instance of LoadTestAdministrationClient class.
@@ -97,8 +98,8 @@ public final class LoadTestAdministrationClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrUpdateServerMetricsConfigWithResponse(
-            String testId, BinaryData body, RequestOptions requestOptions) {
+    public Response<BinaryData> createOrUpdateServerMetricsConfigWithResponse(String testId, BinaryData body,
+        RequestOptions requestOptions) {
         return this.client.createOrUpdateServerMetricsConfigWithResponse(testId, body, requestOptions).block();
     }
 
@@ -114,10 +115,10 @@ public final class LoadTestAdministrationClient {
      * @return A {@link SyncPoller} to poll on and retrieve the file info with validation status.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginUploadTestFile(
-            String testId, String fileName, BinaryData body, RequestOptions fileUploadRequestOptions) {
-        PollerFlux<BinaryData, BinaryData> asyncPoller =
-                this.client.beginUploadTestFile(testId, fileName, body, fileUploadRequestOptions);
+    public SyncPoller<BinaryData, BinaryData> beginUploadTestFile(String testId, String fileName, BinaryData body,
+        RequestOptions fileUploadRequestOptions) {
+        PollerFlux<BinaryData, BinaryData> asyncPoller
+            = this.client.beginUploadTestFile(testId, fileName, body, fileUploadRequestOptions);
         return asyncPoller.getSyncPoller();
     }
 
@@ -316,8 +317,8 @@ public final class LoadTestAdministrationClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrUpdateTestWithResponse(
-            String testId, BinaryData body, RequestOptions requestOptions) {
+    public Response<BinaryData> createOrUpdateTestWithResponse(String testId, BinaryData body,
+        RequestOptions requestOptions) {
         return this.client.createOrUpdateTestWithResponse(testId, body, requestOptions).block();
     }
 
@@ -584,8 +585,8 @@ public final class LoadTestAdministrationClient {
      * @return file info along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> uploadTestFileWithResponse(
-            String testId, String fileName, BinaryData body, RequestOptions requestOptions) {
+    Response<BinaryData> uploadTestFileWithResponse(String testId, String fileName, BinaryData body,
+        RequestOptions requestOptions) {
         return this.client.uploadTestFileWithResponse(testId, fileName, body, requestOptions).block();
     }
 
@@ -701,8 +702,8 @@ public final class LoadTestAdministrationClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrUpdateAppComponentsWithResponse(
-            String testId, BinaryData body, RequestOptions requestOptions) {
+    public Response<BinaryData> createOrUpdateAppComponentsWithResponse(String testId, BinaryData body,
+        RequestOptions requestOptions) {
         return this.client.createOrUpdateAppComponentsWithResponse(testId, body, requestOptions).block();
     }
 

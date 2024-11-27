@@ -22,7 +22,8 @@ import com.azure.core.util.polling.SyncPoller;
 @ServiceClient(builder = LoadTestRunClientBuilder.class)
 public final class LoadTestRunClient {
 
-    @Generated private final LoadTestRunAsyncClient client;
+    @Generated
+    private final LoadTestRunAsyncClient client;
 
     /**
      * Initializes an instance of LoadTestRunClient class.
@@ -97,8 +98,8 @@ public final class LoadTestRunClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrUpdateServerMetricsConfigWithResponse(
-            String testRunId, BinaryData body, RequestOptions requestOptions) {
+    public Response<BinaryData> createOrUpdateServerMetricsConfigWithResponse(String testRunId, BinaryData body,
+        RequestOptions requestOptions) {
         return this.client.createOrUpdateServerMetricsConfigWithResponse(testRunId, body, requestOptions).block();
     }
 
@@ -114,10 +115,10 @@ public final class LoadTestRunClient {
      *     status(ACCEPTED/NOTSTARTED/PROVISIONING/PROVISIONED/CONFIGURING/CONFIGURED/EXECUTING/EXECUTED/DEPROVISIONING/DEPROVISIONED/DONE/CANCELLING/CANCELLED/FAILED/VALIDATION_SUCCESS/VALIDATION_FAILURE).
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginTestRun(
-            String testRunId, BinaryData body, RequestOptions testRunRequestOptions) {
-        PollerFlux<BinaryData, BinaryData> asyncPoller =
-                this.client.beginTestRun(testRunId, body, testRunRequestOptions);
+    public SyncPoller<BinaryData, BinaryData> beginTestRun(String testRunId, BinaryData body,
+        RequestOptions testRunRequestOptions) {
+        PollerFlux<BinaryData, BinaryData> asyncPoller
+            = this.client.beginTestRun(testRunId, body, testRunRequestOptions);
         return asyncPoller.getSyncPoller();
     }
 
@@ -182,8 +183,8 @@ public final class LoadTestRunClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrUpdateAppComponentsWithResponse(
-            String testRunId, BinaryData body, RequestOptions requestOptions) {
+    public Response<BinaryData> createOrUpdateAppComponentsWithResponse(String testRunId, BinaryData body,
+        RequestOptions requestOptions) {
         return this.client.createOrUpdateAppComponentsWithResponse(testRunId, body, requestOptions).block();
     }
 
@@ -255,14 +256,10 @@ public final class LoadTestRunClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listMetrics(
-            String testRunId,
-            String metricName,
-            String metricNamespace,
-            String timespan,
-            RequestOptions requestOptions) {
+    public PagedIterable<BinaryData> listMetrics(String testRunId, String metricName, String metricNamespace,
+        String timespan, RequestOptions requestOptions) {
         return new PagedIterable<>(
-                this.client.listMetrics(testRunId, metricName, metricNamespace, timespan, requestOptions));
+            this.client.listMetrics(testRunId, metricName, metricNamespace, timespan, requestOptions));
     }
 
     /**
@@ -305,16 +302,10 @@ public final class LoadTestRunClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listMetricDimensionValues(
-            String testRunId,
-            String name,
-            String metricName,
-            String metricNamespace,
-            String timespan,
-            RequestOptions requestOptions) {
-        return new PagedIterable<>(
-                this.client.listMetricDimensionValues(
-                        testRunId, name, metricName, metricNamespace, timespan, requestOptions));
+    public PagedIterable<BinaryData> listMetricDimensionValues(String testRunId, String name, String metricName,
+        String metricNamespace, String timespan, RequestOptions requestOptions) {
+        return new PagedIterable<>(this.client.listMetricDimensionValues(testRunId, name, metricName, metricNamespace,
+            timespan, requestOptions));
     }
 
     /**
@@ -641,8 +632,8 @@ public final class LoadTestRunClient {
      * @return load test run model along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> createOrUpdateTestRunWithResponse(
-            String testRunId, BinaryData body, RequestOptions requestOptions) {
+    Response<BinaryData> createOrUpdateTestRunWithResponse(String testRunId, BinaryData body,
+        RequestOptions requestOptions) {
         return this.client.createOrUpdateTestRunWithResponse(testRunId, body, requestOptions).block();
     }
 
@@ -818,8 +809,8 @@ public final class LoadTestRunClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getTestRunFileWithResponse(
-            String testRunId, String fileName, RequestOptions requestOptions) {
+    public Response<BinaryData> getTestRunFileWithResponse(String testRunId, String fileName,
+        RequestOptions requestOptions) {
         return this.client.getTestRunFileWithResponse(testRunId, fileName, requestOptions).block();
     }
 
@@ -1170,8 +1161,8 @@ public final class LoadTestRunClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getMetricDefinitionsWithResponse(
-            String testRunId, String metricNamespace, RequestOptions requestOptions) {
+    public Response<BinaryData> getMetricDefinitionsWithResponse(String testRunId, String metricNamespace,
+        RequestOptions requestOptions) {
         return this.client.getMetricDefinitionsWithResponse(testRunId, metricNamespace, requestOptions).block();
     }
 }

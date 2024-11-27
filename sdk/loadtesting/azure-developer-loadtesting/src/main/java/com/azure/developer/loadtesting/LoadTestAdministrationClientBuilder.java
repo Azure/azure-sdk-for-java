@@ -40,24 +40,25 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /** A builder for creating a new instance of the LoadTestAdministrationClient type. */
-@ServiceClientBuilder(serviceClients = {LoadTestAdministrationClient.class, LoadTestAdministrationAsyncClient.class})
+@ServiceClientBuilder(serviceClients = { LoadTestAdministrationClient.class, LoadTestAdministrationAsyncClient.class })
 public final class LoadTestAdministrationClientBuilder
-        implements HttpTrait<LoadTestAdministrationClientBuilder>,
-                ConfigurationTrait<LoadTestAdministrationClientBuilder>,
-                TokenCredentialTrait<LoadTestAdministrationClientBuilder>,
-                EndpointTrait<LoadTestAdministrationClientBuilder> {
-
-    @Generated private static final String SDK_NAME = "name";
-
-    @Generated private static final String SDK_VERSION = "version";
+    implements HttpTrait<LoadTestAdministrationClientBuilder>, ConfigurationTrait<LoadTestAdministrationClientBuilder>,
+    TokenCredentialTrait<LoadTestAdministrationClientBuilder>, EndpointTrait<LoadTestAdministrationClientBuilder> {
 
     @Generated
-    private static final String[] DEFAULT_SCOPES = new String[] {"https://cnt-prod.loadtesting.azure.com/.default"};
+    private static final String SDK_NAME = "name";
+
+    @Generated
+    private static final String SDK_VERSION = "version";
+
+    @Generated
+    private static final String[] DEFAULT_SCOPES = new String[] { "https://cnt-prod.loadtesting.azure.com/.default" };
 
     @Generated
     private final Map<String, String> properties = CoreUtils.getProperties("azure-developer-loadtesting.properties");
 
-    @Generated private final List<HttpPipelinePolicy> pipelinePolicies;
+    @Generated
+    private final List<HttpPipelinePolicy> pipelinePolicies;
 
     /** Create an instance of the LoadTestAdministrationClientBuilder. */
     @Generated
@@ -68,7 +69,8 @@ public final class LoadTestAdministrationClientBuilder
     /*
      * The HTTP pipeline to send requests through.
      */
-    @Generated private HttpPipeline pipeline;
+    @Generated
+    private HttpPipeline pipeline;
 
     /** {@inheritDoc}. */
     @Generated
@@ -81,7 +83,8 @@ public final class LoadTestAdministrationClientBuilder
     /*
      * The HTTP client used to send the request.
      */
-    @Generated private HttpClient httpClient;
+    @Generated
+    private HttpClient httpClient;
 
     /** {@inheritDoc}. */
     @Generated
@@ -94,7 +97,8 @@ public final class LoadTestAdministrationClientBuilder
     /*
      * The logging configuration for HTTP requests and responses.
      */
-    @Generated private HttpLogOptions httpLogOptions;
+    @Generated
+    private HttpLogOptions httpLogOptions;
 
     /** {@inheritDoc}. */
     @Generated
@@ -108,7 +112,8 @@ public final class LoadTestAdministrationClientBuilder
      * The client options such as application ID and custom headers to set on a
      * request.
      */
-    @Generated private ClientOptions clientOptions;
+    @Generated
+    private ClientOptions clientOptions;
 
     /** {@inheritDoc}. */
     @Generated
@@ -121,7 +126,8 @@ public final class LoadTestAdministrationClientBuilder
     /*
      * The retry options to configure retry policy for failed requests.
      */
-    @Generated private RetryOptions retryOptions;
+    @Generated
+    private RetryOptions retryOptions;
 
     /** {@inheritDoc}. */
     @Generated
@@ -143,7 +149,8 @@ public final class LoadTestAdministrationClientBuilder
      * The configuration store that is used during construction of the service
      * client.
      */
-    @Generated private Configuration configuration;
+    @Generated
+    private Configuration configuration;
 
     /** {@inheritDoc}. */
     @Generated
@@ -156,7 +163,8 @@ public final class LoadTestAdministrationClientBuilder
     /*
      * The TokenCredential used for authentication.
      */
-    @Generated private TokenCredential tokenCredential;
+    @Generated
+    private TokenCredential tokenCredential;
 
     /** {@inheritDoc}. */
     @Generated
@@ -169,7 +177,8 @@ public final class LoadTestAdministrationClientBuilder
     /*
      * The service endpoint
      */
-    @Generated private String endpoint;
+    @Generated
+    private String endpoint;
 
     /** {@inheritDoc}. */
     @Generated
@@ -182,7 +191,8 @@ public final class LoadTestAdministrationClientBuilder
     /*
      * Service version
      */
-    @Generated private LoadTestingServiceVersion serviceVersion;
+    @Generated
+    private LoadTestingServiceVersion serviceVersion;
 
     /**
      * Sets Service version.
@@ -200,7 +210,8 @@ public final class LoadTestAdministrationClientBuilder
      * The retry policy that will attempt to retry failed requests, if
      * applicable.
      */
-    @Generated private RetryPolicy retryPolicy;
+    @Generated
+    private RetryPolicy retryPolicy;
 
     /**
      * Sets The retry policy that will attempt to retry failed requests, if applicable.
@@ -227,16 +238,15 @@ public final class LoadTestAdministrationClientBuilder
         if (serviceVersion == null) {
             this.serviceVersion = LoadTestingServiceVersion.getLatest();
         }
-        LoadTestingClientImpl client =
-                new LoadTestingClientImpl(
-                        pipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
+        LoadTestingClientImpl client = new LoadTestingClientImpl(pipeline,
+            JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
         return client;
     }
 
     @Generated
     private HttpPipeline createHttpPipeline() {
-        Configuration buildConfiguration =
-                (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
+        Configuration buildConfiguration
+            = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
         if (httpLogOptions == null) {
             httpLogOptions = new HttpLogOptions();
         }
@@ -255,10 +265,9 @@ public final class LoadTestAdministrationClientBuilder
         if (headers.getSize() > 0) {
             policies.add(new AddHeadersPolicy(headers));
         }
-        policies.addAll(
-                this.pipelinePolicies.stream()
-                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
-                        .collect(Collectors.toList()));
+        policies.addAll(this.pipelinePolicies.stream()
+            .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+            .collect(Collectors.toList()));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions, new RetryPolicy()));
         policies.add(new AddDatePolicy());
@@ -266,18 +275,15 @@ public final class LoadTestAdministrationClientBuilder
         if (tokenCredential != null) {
             policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPES));
         }
-        policies.addAll(
-                this.pipelinePolicies.stream()
-                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
-                        .collect(Collectors.toList()));
+        policies.addAll(this.pipelinePolicies.stream()
+            .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+            .collect(Collectors.toList()));
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(httpLogOptions));
-        HttpPipeline httpPipeline =
-                new HttpPipelineBuilder()
-                        .policies(policies.toArray(new HttpPipelinePolicy[0]))
-                        .httpClient(httpClient)
-                        .clientOptions(clientOptions)
-                        .build();
+        HttpPipeline httpPipeline = new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
+            .httpClient(httpClient)
+            .clientOptions(clientOptions)
+            .build();
         return httpPipeline;
     }
 
@@ -299,6 +305,6 @@ public final class LoadTestAdministrationClientBuilder
     @Generated
     public LoadTestAdministrationClient buildClient() {
         return new LoadTestAdministrationClient(
-                new LoadTestAdministrationAsyncClient(buildInnerClient().getLoadTestAdministrations()));
+            new LoadTestAdministrationAsyncClient(buildInnerClient().getLoadTestAdministrations()));
     }
 }

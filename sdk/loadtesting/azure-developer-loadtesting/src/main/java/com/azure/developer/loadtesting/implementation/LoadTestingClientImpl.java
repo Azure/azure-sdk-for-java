@@ -94,13 +94,8 @@ public final class LoadTestingClientImpl {
      * @param serviceVersion Service version.
      */
     public LoadTestingClientImpl(String endpoint, LoadTestingServiceVersion serviceVersion) {
-        this(
-                new HttpPipelineBuilder()
-                        .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
-                        .build(),
-                JacksonAdapter.createDefaultSerializerAdapter(),
-                endpoint,
-                serviceVersion);
+        this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build(),
+            JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
     }
 
     /**
@@ -122,11 +117,8 @@ public final class LoadTestingClientImpl {
      * @param endpoint URL to perform data plane API operations on the resource.
      * @param serviceVersion Service version.
      */
-    public LoadTestingClientImpl(
-            HttpPipeline httpPipeline,
-            SerializerAdapter serializerAdapter,
-            String endpoint,
-            LoadTestingServiceVersion serviceVersion) {
+    public LoadTestingClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint,
+        LoadTestingServiceVersion serviceVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;

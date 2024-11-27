@@ -28,14 +28,24 @@ class LoadTestingClientTestBase extends TestBase {
 
     private final String defaultEndpoint = "REDACTED.eus.cnt-prod.loadtesting.azure.com";
 
-    protected final String existingTestId = Configuration.getGlobalConfiguration().get("EXISTING_TEST_ID", "11111111-1234-1234-1234-123456789012");
-    protected final String newTestId = Configuration.getGlobalConfiguration().get("NEW_TEST_ID", "22222222-1234-1234-1234-123456789012");
-    protected final String newTestRunId = Configuration.getGlobalConfiguration().get("NEW_TEST_RUN_ID", "33333333-1234-1234-1234-123456789012");
-    protected final String newTestRunId2 = Configuration.getGlobalConfiguration().get("NEW_TEST_RUN_ID_2", "44444444-1234-1234-1234-123456789012");
-    protected final String uploadJmxFileName = Configuration.getGlobalConfiguration().get("UPLOAD_JMX_FILE_NAME", "sample-JMX-file.jmx");
-    protected final String uploadCsvFileName = Configuration.getGlobalConfiguration().get("UPLOAD_CSV_FILE_NAME", "additional-data.csv");
-    protected final String defaultAppComponentResourceId = Configuration.getGlobalConfiguration().get("APP_COMPONENT_RESOURCE_ID", "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/samplerg/providers/microsoft.insights/components/appcomponentresource");
-    protected final String defaultServerMetricId = Configuration.getGlobalConfiguration().get("SERVER_METRIC_ID", "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/samplerg/providers/microsoft.insights/components/appcomponentresource/providers/microsoft.insights/metricdefinitions/requests/duration");
+    protected final String existingTestId
+        = Configuration.getGlobalConfiguration().get("EXISTING_TEST_ID", "11111111-1234-1234-1234-123456789012");
+    protected final String newTestId
+        = Configuration.getGlobalConfiguration().get("NEW_TEST_ID", "22222222-1234-1234-1234-123456789012");
+    protected final String newTestRunId
+        = Configuration.getGlobalConfiguration().get("NEW_TEST_RUN_ID", "33333333-1234-1234-1234-123456789012");
+    protected final String newTestRunId2
+        = Configuration.getGlobalConfiguration().get("NEW_TEST_RUN_ID_2", "44444444-1234-1234-1234-123456789012");
+    protected final String uploadJmxFileName
+        = Configuration.getGlobalConfiguration().get("UPLOAD_JMX_FILE_NAME", "sample-JMX-file.jmx");
+    protected final String uploadCsvFileName
+        = Configuration.getGlobalConfiguration().get("UPLOAD_CSV_FILE_NAME", "additional-data.csv");
+    protected final String defaultAppComponentResourceId = Configuration.getGlobalConfiguration()
+        .get("APP_COMPONENT_RESOURCE_ID",
+            "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/samplerg/providers/microsoft.insights/components/appcomponentresource");
+    protected final String defaultServerMetricId = Configuration.getGlobalConfiguration()
+        .get("SERVER_METRIC_ID",
+            "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/samplerg/providers/microsoft.insights/components/appcomponentresource/providers/microsoft.insights/metricdefinitions/requests/duration");
 
     private TokenCredential getTokenCredential() {
         DefaultAzureCredentialBuilder credentialBuilder = new DefaultAzureCredentialBuilder();
@@ -48,30 +58,24 @@ class LoadTestingClientTestBase extends TestBase {
 
     @Override
     protected void beforeTest() {
-        LoadTestAdministrationClientBuilder loadTestAdministrationClientBuilder =
-                new LoadTestAdministrationClientBuilder()
-                        .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", defaultEndpoint))
-                        .httpClient(HttpClient.createDefault())
+        LoadTestAdministrationClientBuilder loadTestAdministrationClientBuilder
+            = new LoadTestAdministrationClientBuilder()
+                .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", defaultEndpoint))
+                .httpClient(HttpClient.createDefault())
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
-        LoadTestRunClientBuilder loadTestRunClientBuilder =
-                new LoadTestRunClientBuilder()
-                        .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", defaultEndpoint))
-                        .httpClient(HttpClient.createDefault())
-                        .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
+        LoadTestRunClientBuilder loadTestRunClientBuilder = new LoadTestRunClientBuilder()
+            .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", defaultEndpoint))
+            .httpClient(HttpClient.createDefault())
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
-            loadTestAdministrationClientBuilder
-                    .httpClient(interceptorManager.getPlaybackClient())
-                    .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
-            loadTestRunClientBuilder
-                    .httpClient(interceptorManager.getPlaybackClient())
-                    .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
+            loadTestAdministrationClientBuilder.httpClient(interceptorManager.getPlaybackClient())
+                .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
+            loadTestRunClientBuilder.httpClient(interceptorManager.getPlaybackClient())
+                .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
         } else if (getTestMode() == TestMode.RECORD) {
-            loadTestAdministrationClientBuilder
-                    .addPolicy(interceptorManager.getRecordPolicy())
-                    .credential(getTokenCredential());
-            loadTestRunClientBuilder
-                    .addPolicy(interceptorManager.getRecordPolicy())
-                    .credential(getTokenCredential());
+            loadTestAdministrationClientBuilder.addPolicy(interceptorManager.getRecordPolicy())
+                .credential(getTokenCredential());
+            loadTestRunClientBuilder.addPolicy(interceptorManager.getRecordPolicy()).credential(getTokenCredential());
         } else if (getTestMode() == TestMode.LIVE) {
             loadTestAdministrationClientBuilder.credential(getTokenCredential());
             loadTestRunClientBuilder.credential(getTokenCredential());
