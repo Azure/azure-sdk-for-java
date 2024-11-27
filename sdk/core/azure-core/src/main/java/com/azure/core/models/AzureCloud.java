@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 /**
  * An expandable enum that describes Azure cloud environment.
  */
-public class AzureCloud extends ExpandableStringEnum<AzureCloud> {
+public final class AzureCloud extends ExpandableStringEnum<AzureCloud> {
     /**
      * Azure public cloud.
      */

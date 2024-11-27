@@ -29,7 +29,7 @@ public final class AzureProfile {
     }
 
     /**
-     * Creates AzureProfile instance with Azure cloud. The global cloud is {@link AzureCloud#AZURE_PUBLIC_CLOUD}.
+     * Creates AzureProfile instance with specific Azure cloud. The global cloud is {@link AzureCloud#AZURE_PUBLIC_CLOUD}.
      * The tenant ID and subscription ID can be set via environment variables. The environment variables are expected
      * as below:
      * <ul>
@@ -48,7 +48,7 @@ public final class AzureProfile {
     }
 
     /**
-     * Creates AzureProfile instance with tenant ID, subscription ID and Azure cloud.
+     * Creates AzureProfile instance with tenant ID, subscription ID and specific Azure cloud.
      * The global cloud is {@link AzureCloud#AZURE_PUBLIC_CLOUD}.
      *
      * @param tenantId the tenant ID required for Graph Rbac
@@ -70,12 +70,12 @@ public final class AzureProfile {
      *     <li>{@link Configuration#PROPERTY_AZURE_TENANT_ID AZURE_TENANT_ID}</li>
      *     <li>{@link Configuration#PROPERTY_AZURE_SUBSCRIPTION_ID AZURE_SUBSCRIPTION_ID}</li>
      * </ul>
+     * <p>Note: Only use this constructor for custom Azure cloud/endpoints.
+     * Use {@link AzureProfile#AzureProfile(String, String, AzureCloud)} for global environment.</p>
      *
      * @param environment the Azure environment
-     * @deprecated use {@link AzureProfile#AzureProfile(AzureCloud)}
      * @see AzureProfile#AzureProfile(AzureCloud)
      */
-    @Deprecated
     public AzureProfile(AzureEnvironment environment) {
         Objects.requireNonNull(environment);
         this.environment = environment;
@@ -87,14 +87,14 @@ public final class AzureProfile {
     /**
      * Creates AzureProfile instance with tenant ID, subscription ID and Azure environment.
      * The global environment is {@link AzureEnvironment#AZURE}.
+     * <p>Note: Only use this constructor for custom Azure cloud/endpoints.
+     * Use {@link AzureProfile#AzureProfile(String, String, AzureCloud)} for global environment.</p>
      *
      * @param tenantId the tenant ID required for Graph Rbac
      * @param subscriptionId the subscription ID required for resource management
      * @param environment the Azure environment
-     * @deprecated use {@link AzureProfile#AzureProfile(String, String, AzureCloud)}
      * @see AzureProfile#AzureProfile(String, String, AzureCloud)
      */
-    @Deprecated
     public AzureProfile(String tenantId, String subscriptionId, AzureEnvironment environment) {
         Objects.requireNonNull(environment);
         this.tenantId = tenantId;

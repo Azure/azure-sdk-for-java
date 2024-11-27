@@ -3,15 +3,14 @@
 
 package com.azure.core.management;
 
-import com.azure.core.models.AzureCloud;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
 
 public class AzureProfileTests {
-    @SuppressWarnings("deprecation")
     @Test
     public void testFromAzureCloud() {
         // normal case
