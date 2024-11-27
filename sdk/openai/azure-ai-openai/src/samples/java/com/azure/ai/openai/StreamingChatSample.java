@@ -51,9 +51,7 @@ public class StreamingChatSample {
         chatMessages.add(new ChatRequestUserMessage("What's the best way to train a parrot?"));
 
         IterableStream<ChatCompletions> chatCompletionsStream = client.getChatCompletionsStream(deploymentOrModelId,
-            new ChatCompletionsOptions(chatMessages)
-                .setStreamOptions(new ChatCompletionStreamOptions().setIncludeUsage(true))
-        );
+            new ChatCompletionsOptions(chatMessages), new ChatCompletionStreamOptions().setIncludeUsage(true));
 
         // The delta is the message content for a streaming response.
         // Subsequence of streaming delta will be like:

@@ -92,6 +92,13 @@
     </Or>
   </Match>
   <Match>
+    <Bug pattern="EI_EXPOSE_STATIC_REP2" />
+    <Or>
+      <Class name="com.azure.ai.openai.implementation.accesshelpers.ChatCompletionsOptionsAccessHelper" />
+      <Class name="com.azure.ai.openai.implementation.accesshelpers.CompletionsOptionsAccessHelper" />
+    </Or>
+  </Match>
+  <Match>
     <Bug pattern="SS_SHOULD_BE_STATIC" />
     <Or>
       <Class name="com.azure.ai.openai.implementation.models.FileListResponse" />

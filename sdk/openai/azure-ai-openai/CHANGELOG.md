@@ -6,12 +6,16 @@
 
 - Added support for service API versions `2024-09-01-preview` and `2024-10-01-preview`.
 - Added support for `max_completion_tokens`, `stream_options`, and `parallel_tool_calls` in `ChatCompletionsOptions` class. 
-  New class `ChatCompletionStreamOptions` introduced.
+  New class `ChatCompletionStreamOptions` introduced. 
+- Added new overload streaming methods `getChatCompletionsStream` and `getCompletionsStream` that take `ChatCompletionStreamOptions streamOptions`.
 - Added support for `stream_options` in `CompletionsOptions` class.
 - Added support for `prompt_tokens_details` and `completion_tokens_details` in `CompletionsUsage` class. 
   New classes `CompletionsUsagePromptTokensDetails` and `CompletionsUsageCompletionTokensDetails` introduced.
 - Added support for `ungrounded_material` in `ContentFilterResultsForChoice` class. 
   New classes `ContentFilterCompletionTextSpanResult`, `ContentFilterCompletionTextSpan` introduced.
+
+### Breaking Changes
+- Removed public method `setStream` in `ChatCompletionsOptions` and `CompletionsOptions` classes.
 
 ### Bugs Fixed
 - Fixed the issue to reduce the log pollution when using Server Sent Event Streaming API. ([#41164](https://github.com/Azure/azure-sdk-for-java/issues/41164))
