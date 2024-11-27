@@ -49,13 +49,11 @@ public final class SmsImpl {
     @ServiceInterface(name = "AzureCommunicationSM")
     public interface SmsService {
         @Post("/sms")
-        @ExpectedResponses({202})
+        @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<SmsSendResponse>> send(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") SendMessageRequest sendMessageRequest,
-                Context context);
+        Mono<Response<SmsSendResponse>> send(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") SendMessageRequest sendMessageRequest, Context context);
     }
 
     /**
@@ -69,10 +67,8 @@ public final class SmsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SmsSendResponse>> sendWithResponseAsync(SendMessageRequest sendMessageRequest) {
-        return FluxUtil.withContext(
-                context ->
-                        service.send(
-                                this.client.getEndpoint(), this.client.getApiVersion(), sendMessageRequest, context));
+        return FluxUtil.withContext(context -> service.send(this.client.getEndpoint(), this.client.getApiVersion(),
+            sendMessageRequest, context));
     }
 
     /**
@@ -86,8 +82,8 @@ public final class SmsImpl {
      * @return response for a successful or multi status send Sms request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SmsSendResponse>> sendWithResponseAsync(
-            SendMessageRequest sendMessageRequest, Context context) {
+    public Mono<Response<SmsSendResponse>> sendWithResponseAsync(SendMessageRequest sendMessageRequest,
+        Context context) {
         return service.send(this.client.getEndpoint(), this.client.getApiVersion(), sendMessageRequest, context);
     }
 
@@ -102,15 +98,13 @@ public final class SmsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SmsSendResponse> sendAsync(SendMessageRequest sendMessageRequest) {
-        return sendWithResponseAsync(sendMessageRequest)
-                .flatMap(
-                        (Response<SmsSendResponse> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return sendWithResponseAsync(sendMessageRequest).flatMap((Response<SmsSendResponse> res) -> {
+            if (res.getValue() != null) {
+                return Mono.just(res.getValue());
+            } else {
+                return Mono.empty();
+            }
+        });
     }
 
     /**
@@ -125,15 +119,13 @@ public final class SmsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SmsSendResponse> sendAsync(SendMessageRequest sendMessageRequest, Context context) {
-        return sendWithResponseAsync(sendMessageRequest, context)
-                .flatMap(
-                        (Response<SmsSendResponse> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return sendWithResponseAsync(sendMessageRequest, context).flatMap((Response<SmsSendResponse> res) -> {
+            if (res.getValue() != null) {
+                return Mono.just(res.getValue());
+            } else {
+                return Mono.empty();
+            }
+        });
     }
 
     /**

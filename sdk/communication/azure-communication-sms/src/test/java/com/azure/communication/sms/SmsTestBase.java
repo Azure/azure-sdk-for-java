@@ -30,32 +30,31 @@ public class SmsTestBase extends TestBase {
     protected static final TestMode TEST_MODE = initializeTestMode();
 
     protected static final String CONNECTION_STRING = Configuration.getGlobalConfiguration()
-        .get("COMMUNICATION_LIVETEST_STATIC_CONNECTION_STRING", "endpoint=https://REDACTED.communication.azure.com/;accesskey=QWNjZXNzS2V5");
+        .get("COMMUNICATION_LIVETEST_STATIC_CONNECTION_STRING",
+            "endpoint=https://REDACTED.communication.azure.com/;accesskey=QWNjZXNzS2V5");
 
-    protected static final String TO_PHONE_NUMBER = Configuration.getGlobalConfiguration()
-        .get("AZURE_PHONE_NUMBER", "+15551234567");
+    protected static final String TO_PHONE_NUMBER
+        = Configuration.getGlobalConfiguration().get("AZURE_PHONE_NUMBER", "+15551234567");
 
-    protected static final String FROM_PHONE_NUMBER = Configuration.getGlobalConfiguration()
-        .get("AZURE_PHONE_NUMBER", "+15551234567");
+    protected static final String FROM_PHONE_NUMBER
+        = Configuration.getGlobalConfiguration().get("AZURE_PHONE_NUMBER", "+15551234567");
 
-    private static final String SKIP_INT_SMS_TEST = Configuration.getGlobalConfiguration()
-        .get("COMMUNICATION_SKIP_INT_SMS_TEST", "False");
+    private static final String SKIP_INT_SMS_TEST
+        = Configuration.getGlobalConfiguration().get("COMMUNICATION_SKIP_INT_SMS_TEST", "False");
 
     protected static final String MESSAGE = "Hello";
 
-    private static final StringJoiner JSON_PROPERTIES_TO_REDACT
-        = new StringJoiner("\":\"|\"", "\"", "\":\"")
-        .add("to");
+    private static final StringJoiner JSON_PROPERTIES_TO_REDACT = new StringJoiner("\":\"|\"", "\"", "\":\"").add("to");
 
-    private static final Pattern JSON_PROPERTY_VALUE_REDACTION_PATTERN
-        = Pattern.compile(String.format("(?:%s)(.*?)(?:\",|\"})", JSON_PROPERTIES_TO_REDACT.toString()),
-        Pattern.CASE_INSENSITIVE);
+    private static final Pattern JSON_PROPERTY_VALUE_REDACTION_PATTERN = Pattern.compile(
+        String.format("(?:%s)(.*?)(?:\",|\"})", JSON_PROPERTIES_TO_REDACT.toString()), Pattern.CASE_INSENSITIVE);
 
     protected SmsClientBuilder getSmsClient(HttpClient httpClient) {
-        CommunicationConnectionString communicationConnectionString = new CommunicationConnectionString(CONNECTION_STRING);
+        CommunicationConnectionString communicationConnectionString
+            = new CommunicationConnectionString(CONNECTION_STRING);
         String communicationEndpoint = communicationConnectionString.getEndpoint();
-        String communicationAccessKey = communicationConnectionString.getAccessKey(); 
-        
+        String communicationAccessKey = communicationConnectionString.getAccessKey();
+
         SmsClientBuilder builder = new SmsClientBuilder();
         builder.endpoint(communicationEndpoint)
             .credential(new AzureKeyCredential(communicationAccessKey))
@@ -87,8 +86,7 @@ public class SmsTestBase extends TestBase {
 
     protected SmsClientBuilder getSmsClientUsingConnectionString(HttpClient httpClient) {
         SmsClientBuilder builder = new SmsClientBuilder();
-        builder
-            .connectionString(CONNECTION_STRING)
+        builder.connectionString(CONNECTION_STRING)
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
 
         if (getTestMode() == TestMode.RECORD) {
@@ -121,15 +119,14 @@ public class SmsTestBase extends TestBase {
     }
 
     private Mono<HttpResponse> logHeaders(String testName, HttpPipelineNextPolicy next) {
-        return next.process()
-            .flatMap(httpResponse -> {
-                final HttpResponse bufferedResponse = httpResponse.buffer();
+        return next.process().flatMap(httpResponse -> {
+            final HttpResponse bufferedResponse = httpResponse.buffer();
 
-                // Should sanitize printed reponse url
-                System.out.println("MS-CV header for " + testName + " request "
-                    + bufferedResponse.getRequest().getUrl() + ": " + bufferedResponse.getHeaderValue("MS-CV"));
-                return Mono.just(bufferedResponse);
-            });
+            // Should sanitize printed reponse url
+            System.out.println("MS-CV header for " + testName + " request " + bufferedResponse.getRequest().getUrl()
+                + ": " + bufferedResponse.getHeaderValue("MS-CV"));
+            return Mono.just(bufferedResponse);
+        });
     }
 
     static class FakeCredentials implements TokenCredential {

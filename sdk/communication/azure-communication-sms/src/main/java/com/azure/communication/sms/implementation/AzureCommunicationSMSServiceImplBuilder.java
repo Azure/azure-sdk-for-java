@@ -12,7 +12,7 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 
 /** A builder for creating a new instance of the AzureCommunicationSMSService type. */
-@ServiceClientBuilder(serviceClients = {AzureCommunicationSMSServiceImpl.class})
+@ServiceClientBuilder(serviceClients = { AzureCommunicationSMSServiceImpl.class })
 public final class AzureCommunicationSMSServiceImplBuilder {
     /*
      * The communication resource, for example
@@ -54,10 +54,9 @@ public final class AzureCommunicationSMSServiceImplBuilder {
      */
     public AzureCommunicationSMSServiceImpl buildClient() {
         if (pipeline == null) {
-            this.pipeline =
-                    new HttpPipelineBuilder()
-                            .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
-                            .build();
+            this.pipeline
+                = new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
+                    .build();
         }
         AzureCommunicationSMSServiceImpl client = new AzureCommunicationSMSServiceImpl(pipeline, endpoint);
         return client;

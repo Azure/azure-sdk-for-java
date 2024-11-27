@@ -10,7 +10,7 @@ import java.util.Collection;
 
 /** Defines values for SmsSendResponseItemRepeatabilityResult. */
 public final class SmsSendResponseItemRepeatabilityResult
-        extends ExpandableStringEnum<SmsSendResponseItemRepeatabilityResult> {
+    extends ExpandableStringEnum<SmsSendResponseItemRepeatabilityResult> {
     /** Static value accepted for SmsSendResponseItemRepeatabilityResult. */
     public static final SmsSendResponseItemRepeatabilityResult ACCEPTED = fromString("accepted");
 

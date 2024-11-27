@@ -24,8 +24,10 @@ import reactor.core.publisher.Mono;
 
 public class SmsBuilderTests {
     static final String MOCK_URL = "https://REDACTED.communication.azure.com";
-    static final String MOCK_ACCESS_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaGfQSflKxwRJSMeKKF2QT4fwpMeJf36POk6yJVadQssw5c";
-    static final String MOCK_CONNECTION_STRING = "endpoint=https://REDACTED.communication.azure.com/;accesskey=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaGfQSflKxwRJSMeKKF2QT4fwpMeJf36POk6yJVadQssw5c";
+    static final String MOCK_ACCESS_KEY
+        = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaGfQSflKxwRJSMeKKF2QT4fwpMeJf36POk6yJVadQssw5c";
+    static final String MOCK_CONNECTION_STRING
+        = "endpoint=https://REDACTED.communication.azure.com/;accesskey=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaGfQSflKxwRJSMeKKF2QT4fwpMeJf36POk6yJVadQssw5c";
 
     static class NoOpHttpClient implements HttpClient {
         @Override
@@ -39,20 +41,15 @@ public class SmsBuilderTests {
     @Test
     public void missingTokenCredentialTest()
         throws NullPointerException, MalformedURLException, InvalidKeyException, NoSuchAlgorithmException {
-        builder
-            .endpoint(MOCK_URL)
-            .httpClient(new NoOpHttpClient());
+        builder.endpoint(MOCK_URL).httpClient(new NoOpHttpClient());
         assertThrows(Exception.class, () -> {
             builder.buildAsyncClient();
         });
     }
 
     @Test
-    public void missingUrlTest()
-        throws NullPointerException, MalformedURLException {
-        builder
-            .credential(new AzureKeyCredential(MOCK_ACCESS_KEY))
-            .httpClient(new NoOpHttpClient());
+    public void missingUrlTest() throws NullPointerException, MalformedURLException {
+        builder.credential(new AzureKeyCredential(MOCK_ACCESS_KEY)).httpClient(new NoOpHttpClient());
         assertThrows(Exception.class, () -> {
             builder.buildAsyncClient();
         });
@@ -61,47 +58,34 @@ public class SmsBuilderTests {
     @Test
     public void nullPipelineTest() {
         assertThrows(NullPointerException.class, () -> {
-            builder
-                .connectionString(MOCK_CONNECTION_STRING)
-                .httpClient(new NoOpHttpClient())
-                .pipeline(null);
+            builder.connectionString(MOCK_CONNECTION_STRING).httpClient(new NoOpHttpClient()).pipeline(null);
         });
     }
 
     @Test
     public void nullCustomPolicyTest() {
         assertThrows(NullPointerException.class, () -> {
-            builder
-                .connectionString(MOCK_CONNECTION_STRING)
-                .httpClient(new NoOpHttpClient())
-                .addPolicy(null);
+            builder.connectionString(MOCK_CONNECTION_STRING).httpClient(new NoOpHttpClient()).addPolicy(null);
         });
     }
 
     @Test
     public void nullConfigurationTest() {
         assertThrows(NullPointerException.class, () -> {
-            builder
-                .connectionString(MOCK_CONNECTION_STRING)
-                .httpClient(new NoOpHttpClient())
-                .configuration(null);
+            builder.connectionString(MOCK_CONNECTION_STRING).httpClient(new NoOpHttpClient()).configuration(null);
         });
     }
 
     @Test
     public void nullHttpLogOptionsTest() {
         assertThrows(NullPointerException.class, () -> {
-            builder
-                .connectionString(MOCK_CONNECTION_STRING)
-                .httpClient(new NoOpHttpClient())
-                .httpLogOptions(null);
+            builder.connectionString(MOCK_CONNECTION_STRING).httpClient(new NoOpHttpClient()).httpLogOptions(null);
         });
     }
 
     @Test
     public void buildPiplineForClient() {
-        SmsAsyncClient smsClient = builder
-            .connectionString(MOCK_CONNECTION_STRING)
+        SmsAsyncClient smsClient = builder.connectionString(MOCK_CONNECTION_STRING)
             .httpClient(new NoOpHttpClient())
             .pipeline(new HttpPipelineBuilder().build())
             .buildAsyncClient();
@@ -110,10 +94,10 @@ public class SmsBuilderTests {
 
     @Test
     public void bothRetryOptionsAndRetryPolicySet() {
-        assertThrows(IllegalStateException.class, () -> builder
-            .connectionString(MOCK_CONNECTION_STRING)
-            .retryOptions(new RetryOptions(new ExponentialBackoffOptions()))
-            .retryPolicy(new RetryPolicy())
-            .buildClient());
+        assertThrows(IllegalStateException.class,
+            () -> builder.connectionString(MOCK_CONNECTION_STRING)
+                .retryOptions(new RetryOptions(new ExponentialBackoffOptions()))
+                .retryPolicy(new RetryPolicy())
+                .buildClient());
     }
 }

@@ -62,11 +62,8 @@ public final class AzureCommunicationSMSServiceImpl {
 
     /** Initializes an instance of AzureCommunicationSMSService client. */
     AzureCommunicationSMSServiceImpl(String endpoint) {
-        this(
-                new HttpPipelineBuilder()
-                        .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
-                        .build(),
-                endpoint);
+        this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build(),
+            endpoint);
     }
 
     /**
