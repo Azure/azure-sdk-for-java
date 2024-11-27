@@ -38,8 +38,8 @@ public class AttestationSignersTest extends AttestationClientTestBase {
 
         AttestationClient attestationClient = getAttestationBuilder(client, clientUri).buildClient();
 
-        Response<AttestationSignerCollection> signers = attestationClient
-            .listAttestationSignersWithResponse(Context.NONE);
+        Response<AttestationSignerCollection> signers
+            = attestationClient.listAttestationSignersWithResponse(Context.NONE);
 
         verifySigningCertificatesResponse(clientUri, signers.getValue());
     }
@@ -51,7 +51,8 @@ public class AttestationSignersTest extends AttestationClientTestBase {
         AttestationAsyncClient attestationClient = getAttestationBuilder(client, clientUri).buildAsyncClient();
 
         StepVerifier.create(attestationClient.listAttestationSigners())
-            .assertNext(signers -> Assertions.assertDoesNotThrow(() -> verifySigningCertificatesResponse(clientUri, signers)))
+            .assertNext(
+                signers -> Assertions.assertDoesNotThrow(() -> verifySigningCertificatesResponse(clientUri, signers)))
             .expectComplete()
             .verify();
     }
@@ -63,11 +64,11 @@ public class AttestationSignersTest extends AttestationClientTestBase {
         AttestationAsyncClient attestationClient = getAttestationBuilder(client, clientUri).buildAsyncClient();
 
         StepVerifier.create(attestationClient.listAttestationSignersWithResponse())
-            .assertNext(signers -> Assertions.assertDoesNotThrow(() -> verifySigningCertificatesResponse(clientUri, signers.getValue())))
+            .assertNext(signers -> Assertions
+                .assertDoesNotThrow(() -> verifySigningCertificatesResponse(clientUri, signers.getValue())))
             .expectComplete()
             .verify();
     }
-
 
     /**
      * Verifies the response to the GetSigningCertificates (/certs) API.
@@ -90,7 +91,9 @@ public class AttestationSignersTest extends AttestationClientTestBase {
                 // with either the Microsoft root CA, the VBS self-signed root, or the instance.
                 if (x5c.getIssuerDN().equals(x5c.getSubjectDN())) {
                     if (x5c.getIssuerDN().toString().contains("Microsoft Root Certificate Authority")) {
-                        assertEquals("CN=Microsoft Root Certificate Authority 2011, O=Microsoft Corporation, L=Redmond, ST=Washington, C=US", x5c.getIssuerDN().getName());
+                        assertEquals(
+                            "CN=Microsoft Root Certificate Authority 2011, O=Microsoft Corporation, L=Redmond, ST=Washington, C=US",
+                            x5c.getIssuerDN().getName());
                     } else if (x5c.getIssuerDN().toString().contains("AttestationService-LocalTest-ReportSigning")) {
                         assertEquals("CN=AttestationService-LocalTest-ReportSigning", x5c.getIssuerDN().getName());
                     } else {
@@ -104,4 +107,3 @@ public class AttestationSignersTest extends AttestationClientTestBase {
         });
     }
 }
-

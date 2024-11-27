@@ -40,8 +40,8 @@ public final class AttestationsImpl {
      * @param client the instance of the service client containing this operation class.
      */
     AttestationsImpl(AttestationClientImpl client) {
-        this.service =
-                RestProxy.create(AttestationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(AttestationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -53,34 +53,27 @@ public final class AttestationsImpl {
     @ServiceInterface(name = "AttestationClientAtt")
     public interface AttestationsService {
         @Post("/attest/OpenEnclave")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(CloudErrorException.class)
-        Mono<Response<AttestationResponse>> attestOpenEnclave(
-                @HostParam("instanceUrl") String instanceUrl,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") AttestOpenEnclaveRequest request,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<AttestationResponse>> attestOpenEnclave(@HostParam("instanceUrl") String instanceUrl,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") AttestOpenEnclaveRequest request, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Post("/attest/SgxEnclave")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(CloudErrorException.class)
-        Mono<Response<AttestationResponse>> attestSgxEnclave(
-                @HostParam("instanceUrl") String instanceUrl,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") AttestSgxEnclaveRequest request,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<AttestationResponse>> attestSgxEnclave(@HostParam("instanceUrl") String instanceUrl,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") AttestSgxEnclaveRequest request, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Post("/attest/Tpm")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(CloudErrorException.class)
-        Mono<Response<TpmAttestationResponse>> attestTpm(
-                @HostParam("instanceUrl") String instanceUrl,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") TpmAttestationRequest request,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<TpmAttestationResponse>> attestTpm(@HostParam("instanceUrl") String instanceUrl,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") TpmAttestationRequest request,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -95,12 +88,11 @@ public final class AttestationsImpl {
      * @return the result of an attestation operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AttestationResponse>> attestOpenEnclaveWithResponseAsync(
-            AttestOpenEnclaveRequest request, Context context) {
+    public Mono<Response<AttestationResponse>> attestOpenEnclaveWithResponseAsync(AttestOpenEnclaveRequest request,
+        Context context) {
         if (this.client.getInstanceUrl() == null) {
             return Mono.error(
-                    new IllegalArgumentException(
-                            "Parameter this.client.getInstanceUrl() is required and cannot be null."));
+                new IllegalArgumentException("Parameter this.client.getInstanceUrl() is required and cannot be null."));
         }
         if (request == null) {
             return Mono.error(new IllegalArgumentException("Parameter request is required and cannot be null."));
@@ -108,8 +100,8 @@ public final class AttestationsImpl {
             request.validate();
         }
         final String accept = "application/json";
-        return service.attestOpenEnclave(
-                this.client.getInstanceUrl(), this.client.getApiVersion(), request, accept, context);
+        return service.attestOpenEnclave(this.client.getInstanceUrl(), this.client.getApiVersion(), request, accept,
+            context);
     }
 
     /**
@@ -124,12 +116,11 @@ public final class AttestationsImpl {
      * @return the result of an attestation operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AttestationResponse>> attestSgxEnclaveWithResponseAsync(
-            AttestSgxEnclaveRequest request, Context context) {
+    public Mono<Response<AttestationResponse>> attestSgxEnclaveWithResponseAsync(AttestSgxEnclaveRequest request,
+        Context context) {
         if (this.client.getInstanceUrl() == null) {
             return Mono.error(
-                    new IllegalArgumentException(
-                            "Parameter this.client.getInstanceUrl() is required and cannot be null."));
+                new IllegalArgumentException("Parameter this.client.getInstanceUrl() is required and cannot be null."));
         }
         if (request == null) {
             return Mono.error(new IllegalArgumentException("Parameter request is required and cannot be null."));
@@ -137,8 +128,8 @@ public final class AttestationsImpl {
             request.validate();
         }
         final String accept = "application/json";
-        return service.attestSgxEnclave(
-                this.client.getInstanceUrl(), this.client.getApiVersion(), request, accept, context);
+        return service.attestSgxEnclave(this.client.getInstanceUrl(), this.client.getApiVersion(), request, accept,
+            context);
     }
 
     /**
@@ -153,12 +144,11 @@ public final class AttestationsImpl {
      * @return attestation response for Trusted Platform Module (TPM) attestation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<TpmAttestationResponse>> attestTpmWithResponseAsync(
-            TpmAttestationRequest request, Context context) {
+    public Mono<Response<TpmAttestationResponse>> attestTpmWithResponseAsync(TpmAttestationRequest request,
+        Context context) {
         if (this.client.getInstanceUrl() == null) {
             return Mono.error(
-                    new IllegalArgumentException(
-                            "Parameter this.client.getInstanceUrl() is required and cannot be null."));
+                new IllegalArgumentException("Parameter this.client.getInstanceUrl() is required and cannot be null."));
         }
         if (request == null) {
             return Mono.error(new IllegalArgumentException("Parameter request is required and cannot be null."));

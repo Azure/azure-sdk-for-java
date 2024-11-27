@@ -71,21 +71,19 @@ public class AttestationClientTestBase extends TestBase {
     protected Tracer tracer;
 
     enum ClientTypes {
-        SHARED,
-        ISOLATED,
-        AAD,
+        SHARED, ISOLATED, AAD,
     }
 
     @BeforeAll
     public static void beforeAll() {
         TestBase.setupClass();
-//        Dotenv.configure().ignoreIfMissing().systemProperties().load();
+        //        Dotenv.configure().ignoreIfMissing().systemProperties().load();
     }
 
     @BeforeEach
     public void setupTest(TestInfo testInfo) {
         GlobalOpenTelemetry.resetForTest();
-//        super.setupTest(testInfo);
+        //        super.setupTest(testInfo);
         String testMethod = testInfo.getTestMethod().isPresent()
             ? testInfo.getTestMethod().get().getName()
             : testInfo.getDisplayName();
@@ -95,7 +93,7 @@ public class AttestationClientTestBase extends TestBase {
     @AfterEach
     public void teardownTest(TestInfo testInfo) {
         GlobalOpenTelemetry.resetForTest();
-//        super.teardownTest(testInfo);
+        //        super.teardownTest(testInfo);
     }
 
     public static Tracer configureLoggingExporter(String testName) {
@@ -109,8 +107,6 @@ public class AttestationClientTestBase extends TestBase {
             .buildAndRegisterGlobal()
             .getTracer(testName);
     }
-
-
 
     /**
      * Determine the Attestation instance type based on the client URI provided.
@@ -140,9 +136,7 @@ public class AttestationClientTestBase extends TestBase {
     AttestationClientBuilder getAuthenticatedAttestationBuilder(HttpClient httpClient, String clientUri) {
         AttestationClientBuilder builder = getAttestationBuilder(httpClient, clientUri);
         if (!interceptorManager.isPlaybackMode()) {
-            builder
-                .credential(new DefaultAzureCredentialBuilder()
-                .httpClient(httpClient).build());
+            builder.credential(new DefaultAzureCredentialBuilder().httpClient(httpClient).build());
         }
         return builder;
     }
@@ -154,46 +148,43 @@ public class AttestationClientTestBase extends TestBase {
      * @return Returns an attestation client builder corresponding to the httpClient and clientUri.
      */
     AttestationClientBuilder getAttestationBuilder(HttpClient httpClient, String clientUri) {
-        AttestationClientBuilder builder = new AttestationClientBuilder()
-            .endpoint(clientUri)
+        AttestationClientBuilder builder = new AttestationClientBuilder().endpoint(clientUri)
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
-//            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+            //            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .addPolicy(interceptorManager.getRecordPolicy());
 
         // In playback mode, we want to disable expiration times, since the tokens in the recordings
         // will almost certainly expire.
         if (interceptorManager.isPlaybackMode()) {
-            builder.tokenValidationOptions(new AttestationTokenValidationOptions()
-                .setValidateExpiresOn(false)
-                .setValidateNotBefore(false)
-            );
+            builder.tokenValidationOptions(
+                new AttestationTokenValidationOptions().setValidateExpiresOn(false).setValidateNotBefore(false));
         }
         return builder;
     }
+
     /**
      * Retrieve an attestationClientBuilder for the specified HTTP client and client URI
      * @param httpClient - HTTP client ot be used for the attestation client.
      * @param clientUri - Client base URI to access the service.
      * @return Returns an attestation client builder corresponding to the httpClient and clientUri.
      */
-    AttestationAdministrationClientBuilder getAttestationAdministrationBuilder(HttpClient httpClient, String clientUri) {
-        AttestationAdministrationClientBuilder builder = new AttestationAdministrationClientBuilder()
-            .endpoint(clientUri)
-            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
-//            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-            .addPolicy(interceptorManager.getRecordPolicy());
+    AttestationAdministrationClientBuilder getAttestationAdministrationBuilder(HttpClient httpClient,
+        String clientUri) {
+        AttestationAdministrationClientBuilder builder
+            = new AttestationAdministrationClientBuilder().endpoint(clientUri)
+                .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
+                //            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+                .addPolicy(interceptorManager.getRecordPolicy());
 
         // In playback mode, we want to disable expiration times, since the tokens in the recordings
         // will almost certainly expire.
         if (interceptorManager.isPlaybackMode()) {
-            builder.tokenValidationOptions(new AttestationTokenValidationOptions()
-                .setValidateExpiresOn(false)
-                .setValidateNotBefore(false)
-            );
+            builder.tokenValidationOptions(
+                new AttestationTokenValidationOptions().setValidateExpiresOn(false).setValidateNotBefore(false));
         } else {
             // Otherwise, add a 10-second slack time to account for clock drift between the client and server.
-            builder.tokenValidationOptions(new AttestationTokenValidationOptions()
-                .setValidationSlack(Duration.ofSeconds(10)));
+            builder.tokenValidationOptions(
+                new AttestationTokenValidationOptions().setValidationSlack(Duration.ofSeconds(10)));
         }
         if (!interceptorManager.isPlaybackMode()) {
             builder.credential(new DefaultAzureCredentialBuilder().httpClient(httpClient).build());
@@ -349,7 +340,8 @@ public class AttestationClientTestBase extends TestBase {
         return keyGen.generateKeyPair();
     }
 
-    protected X509Certificate createSelfSignedCertificate(String subjectName, KeyPair certificateKey) throws CertificateException, NoSuchAlgorithmException, SignatureException, InvalidKeyException {
+    protected X509Certificate createSelfSignedCertificate(String subjectName, KeyPair certificateKey)
+        throws CertificateException, NoSuchAlgorithmException, SignatureException, InvalidKeyException {
         final X509V3CertificateGenerator generator = new X509V3CertificateGenerator();
         generator.setIssuerDN(new X500Principal("CN=" + subjectName));
         generator.setSubjectDN(new X500Principal("CN=" + subjectName));
@@ -362,13 +354,13 @@ public class AttestationClientTestBase extends TestBase {
         generator.setSerialNumber(BigInteger.valueOf(Math.abs(new Random().nextInt())));
         // Valid from now to 1 day from now.
         generator.setNotBefore(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()));
-        generator.setNotAfter(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().plus(1, ChronoUnit.DAYS)));
+        generator.setNotAfter(
+            Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().plus(1, ChronoUnit.DAYS)));
 
         generator.addExtension(Extension.basicConstraints, false, new BasicConstraints(false));
         return generator.generate(certificateKey.getPrivate());
 
     }
-
 
     /**
      * Returns the location in which the tests are running.
@@ -417,8 +409,7 @@ public class AttestationClientTestBase extends TestBase {
         final String regionShortName = getLocationShortName();
         return getHttpClients().flatMap(httpClient -> Stream.of(
             Arguments.of(httpClient, "https://shared" + regionShortName + "." + regionShortName + ".attest.azure.net"),
-            Arguments.of(httpClient, getIsolatedUrl()),
-            Arguments.of(httpClient, getAadUrl())));
+            Arguments.of(httpClient, getIsolatedUrl()), Arguments.of(httpClient, getAadUrl())));
     }
 
     /**

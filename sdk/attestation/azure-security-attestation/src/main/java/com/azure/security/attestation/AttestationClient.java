@@ -173,8 +173,7 @@ public final class AttestationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AttestationOpenIdMetadata getOpenIdMetadata() {
-        return asyncClient.getOpenIdMetadataWithResponse()
-            .map(Response::getValue).block();
+        return asyncClient.getOpenIdMetadataWithResponse().map(Response::getValue).block();
     }
 
     /**
@@ -234,8 +233,7 @@ public final class AttestationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AttestationSignerCollection listAttestationSigners() {
-        return asyncClient.listAttestationSignersWithResponse()
-            .map(Response::getValue).block();
+        return asyncClient.listAttestationSignersWithResponse().map(Response::getValue).block();
     }
 
     /**
@@ -257,8 +255,6 @@ public final class AttestationClient {
     public Response<AttestationSignerCollection> listAttestationSignersWithResponse(Context context) {
         return asyncClient.listAttestationSignersWithResponse(context).block();
     }
-
-
 
     /**
      * Attest an OpenEnclave report.
@@ -345,8 +341,8 @@ public final class AttestationClient {
      * @return the result of an attestation operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AttestationResponse<AttestationResult> attestOpenEnclaveWithResponse(
-        AttestationOptions options, Context context) {
+    public AttestationResponse<AttestationResult> attestOpenEnclaveWithResponse(AttestationOptions options,
+        Context context) {
         return asyncClient.attestOpenEnclaveWithResponse(options, context).block();
     }
 
@@ -433,8 +429,8 @@ public final class AttestationClient {
      * @return the result of an attestation operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AttestationResponse<AttestationResult> attestSgxEnclaveWithResponse(
-        AttestationOptions request, Context context) {
+    public AttestationResponse<AttestationResult> attestSgxEnclaveWithResponse(AttestationOptions request,
+        Context context) {
         return asyncClient.attestSgxEnclaveWithResponse(request, context).block();
     }
 

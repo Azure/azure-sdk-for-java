@@ -27,21 +27,28 @@ public class AttestationOpenIdMetadataImpl implements AttestationOpenIdMetadata 
     @JsonProperty(value = "claims_supported")
     private String[] supportedClaims;
 
-    @Override public String getJsonWebKeySetUrl() {
+    @Override
+    public String getJsonWebKeySetUrl() {
         return jwksUri;
     }
 
-    @Override public String getIssuer() {
+    @Override
+    public String getIssuer() {
         return issuer;
     }
-    @Override public String[] getResponseTypesSupported() {
+
+    @Override
+    public String[] getResponseTypesSupported() {
         return responseTypesSupported.clone();
     }
 
-    @Override public String[] getTokenSigningAlgorithmsSupported() {
+    @Override
+    public String[] getTokenSigningAlgorithmsSupported() {
         return tokenSigningAlgorithmsSupported.clone();
     }
-    @Override public String[] getSupportedClaims() {
+
+    @Override
+    public String[] getSupportedClaims() {
         return supportedClaims.clone();
     }
 
@@ -54,7 +61,8 @@ public class AttestationOpenIdMetadataImpl implements AttestationOpenIdMetadata 
         try {
             @SuppressWarnings("unchecked")
             String generatedString = JSONObjectUtils.toJSONString((LinkedHashMap<String, Object>) generated);
-            metadataImpl = serializerAdapter.deserialize(generatedString, AttestationOpenIdMetadataImpl.class, SerializerEncoding.JSON);
+            metadataImpl = serializerAdapter.deserialize(generatedString, AttestationOpenIdMetadataImpl.class,
+                SerializerEncoding.JSON);
         } catch (IOException e) {
             throw logger.logExceptionAsError(new RuntimeException(e.getMessage()));
         }

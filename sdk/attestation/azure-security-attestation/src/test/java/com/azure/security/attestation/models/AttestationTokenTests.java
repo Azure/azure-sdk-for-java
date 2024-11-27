@@ -43,61 +43,72 @@ final class TestObject {
 
     @JsonProperty(value = "int")
     private int integer;
+
     public TestObject setInteger(int v) {
         integer = v;
         return this;
     }
+
     public int getInteger() {
         return integer;
     }
 
     @JsonProperty(value = "exp")
     private long expiration;
+
     public TestObject setExpiresOn(OffsetDateTime expirationTime) {
         this.expiration = expirationTime.toEpochSecond();
         return this;
     }
+
     public OffsetDateTime getExpiresOn() {
         return OffsetDateTime.ofInstant(Instant.EPOCH.plusSeconds(expiration), ZoneOffset.UTC);
     }
 
     @JsonProperty(value = "iat")
     private long issuedOn;
+
     public TestObject setIssuedOn(OffsetDateTime issuedOn) {
         this.issuedOn = issuedOn.toEpochSecond();
         return this;
     }
+
     public OffsetDateTime getIssuedOn() {
         return OffsetDateTime.ofInstant(Instant.EPOCH.plusSeconds(issuedOn), ZoneOffset.UTC);
     }
 
     @JsonProperty(value = "nbf")
     private long notBefore;
+
     public TestObject setNotBefore(OffsetDateTime notBefore) {
         this.notBefore = notBefore.toEpochSecond();
         return this;
     }
+
     public OffsetDateTime getNotBefore() {
         return OffsetDateTime.ofInstant(Instant.EPOCH.plusSeconds(notBefore), ZoneOffset.UTC);
     }
 
-
     @JsonProperty(value = "intArray")
     private int[] integerArray;
+
     public TestObject setIntegerArray(int[] v) {
         integerArray = v.clone();
         return this;
     }
+
     public int[] getIntegerArray() {
         return integerArray;
     }
 
     @JsonProperty(value = "iss")
     String issuer;
+
     public TestObject setIssuer(String iss) {
         issuer = iss;
         return this;
     }
+
     public String getIssuer() {
         return issuer;
     }
@@ -107,14 +118,13 @@ final class TestObject {
     }
 }
 
-
 /**
  * Test for Attestation Signing Certificates APIs.
  */
 public class AttestationTokenTests extends AttestationClientTestBase {
     private static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
 
-//    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    //    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @Test
     void testCreateSigningKeyRSA() {
         KeyPair rsaKey = assertDoesNotThrow(() -> createKeyPair("RSA"));
@@ -126,20 +136,19 @@ public class AttestationTokenTests extends AttestationClientTestBase {
 
     }
 
-
     /* Commented out until issue https://github.com/Azure/azure-sdk-for-java/issues/21776 is fixed
     @Test
     void testCreateSigningKeyECDS() {
         KeyPair rsaKey = assertDoesNotThrow(() -> createKeyPair("EC"));
         X509Certificate cert = assertDoesNotThrow(() -> createSelfSignedCertificate("Test Certificate", rsaKey));
-
+    
         AttestationSigningKey signingKey = new AttestationSigningKey()
             .setPrivateKey(rsaKey.getPrivate())
             .setCertificate(cert);
-
+    
         assertDoesNotThrow(() -> signingKey.verify());
     }
-*/
+    */
 
     @Test
     void testCreateSigningKeyWrongKey() {
@@ -150,7 +159,7 @@ public class AttestationTokenTests extends AttestationClientTestBase {
         /* https://github.com/Azure/azure-sdk-for-java/issues/21776
         // Wrong key family
         KeyPair ecKeyWrongFamily = assertDoesNotThrow(() -> createKeyPair("EC"));
-*/
+        */
         // Wrong key family
         KeyPair rsaKeyWrongKey = assertDoesNotThrow(() -> createKeyPair("RSA"));
 
@@ -159,14 +168,14 @@ public class AttestationTokenTests extends AttestationClientTestBase {
         AttestationSigningKey signingKey1 = new AttestationSigningKey()
             .setPrivateKey(ecKeyWrongFamily.getPrivate())
             .setCertificate(cert);
-
+        
         // The wrong key family should result in an InvalidKey exception.
         assertThrows(InvalidKeyException.class, () -> signingKey1.verify());
-*/
+        */
 
         // And make sure that the wrong key also throws a reasonable exception.
-        AttestationSigningKey signingKey2 = new AttestationSigningKey(cert, rsaKeyWrongKey.getPrivate())
-                .setWeakKeyAllowed(true);
+        AttestationSigningKey signingKey2
+            = new AttestationSigningKey(cert, rsaKeyWrongKey.getPrivate()).setWeakKeyAllowed(true);
         assertThrows(IllegalArgumentException.class, () -> signingKey2.verify());
     }
 
@@ -192,10 +201,9 @@ public class AttestationTokenTests extends AttestationClientTestBase {
     @Test
     void testCreateUnsecuredAttestationTokenFromObject() {
         JacksonAdapter adapter = new JacksonAdapter();
-        TestObject testObject = new TestObject()
-            .setAlg("Test Algorithm")
+        TestObject testObject = new TestObject().setAlg("Test Algorithm")
             .setInteger(31415926)
-            .setIntegerArray(new int[]{123, 456, 789});
+            .setIntegerArray(new int[] { 123, 456, 789 });
         String objectString = assertDoesNotThrow(() -> adapter.serialize(testObject, SerializerEncoding.JSON));
 
         AttestationToken newToken = AttestationTokenImpl.createUnsecuredToken(objectString);
@@ -205,7 +213,7 @@ public class AttestationTokenTests extends AttestationClientTestBase {
 
         assertEquals("Test Algorithm", object.getAlg());
         assertEquals(31415926, object.getInteger());
-        assertArrayEquals(new int[]{123, 456, 789}, object.getIntegerArray());
+        assertArrayEquals(new int[] { 123, 456, 789 }, object.getIntegerArray());
     }
 
     @Test
@@ -222,10 +230,10 @@ public class AttestationTokenTests extends AttestationClientTestBase {
     @Test
     void testCreateSecuredAttestationToken() {
         KeyPair rsaKey = assertDoesNotThrow(() -> createKeyPair("RSA"));
-        X509Certificate cert = assertDoesNotThrow(() -> createSelfSignedCertificate("Test Certificate Secured", rsaKey));
+        X509Certificate cert
+            = assertDoesNotThrow(() -> createSelfSignedCertificate("Test Certificate Secured", rsaKey));
 
-        AttestationSigningKey signingKey = new AttestationSigningKey(cert, rsaKey.getPrivate())
-            .setWeakKeyAllowed(true);
+        AttestationSigningKey signingKey = new AttestationSigningKey(cert, rsaKey.getPrivate()).setWeakKeyAllowed(true);
 
         String sourceObject = "{\"foo\": \"foo\", \"bar\": 10 }";
 
@@ -235,10 +243,11 @@ public class AttestationTokenTests extends AttestationClientTestBase {
         assertNotEquals("none", newToken.getAlgorithm());
         assertNull(newToken.getKeyId());
         assertNotNull(newToken.getCertificateChain());
-        assertArrayEquals(assertDoesNotThrow(() -> cert.getEncoded()), assertDoesNotThrow(() -> newToken.getCertificateChain().getCertificates().get(0).getEncoded()));
+        assertArrayEquals(assertDoesNotThrow(() -> cert.getEncoded()),
+            assertDoesNotThrow(() -> newToken.getCertificateChain().getCertificates().get(0).getEncoded()));
 
         Object jsonValue = newToken.getBody(Object.class);
-        assertTrue(jsonValue instanceof  LinkedHashMap);
+        assertTrue(jsonValue instanceof LinkedHashMap);
         @SuppressWarnings("unchecked")
         LinkedHashMap<String, Object> jsonMap = assertDoesNotThrow(() -> (LinkedHashMap<String, Object>) jsonValue);
         assertNotNull(jsonMap);
@@ -263,10 +272,10 @@ public class AttestationTokenTests extends AttestationClientTestBase {
         assertNotEquals("none", newToken.getAlgorithm());
         assertNull(newToken.getKeyId());
         assertNotNull(newToken.getCertificateChain());
-        assertArrayEquals(assertDoesNotThrow(() -> cert.getEncoded()), assertDoesNotThrow(() -> newToken.getCertificateChain().getCertificates().get(0).getEncoded()));
+        assertArrayEquals(assertDoesNotThrow(() -> cert.getEncoded()),
+            assertDoesNotThrow(() -> newToken.getCertificateChain().getCertificates().get(0).getEncoded()));
 
     }
-
 
     @Test
     void testVerifySignerWithPredefinedPayloadFail() {
@@ -282,19 +291,17 @@ public class AttestationTokenTests extends AttestationClientTestBase {
     @Test
     void testCreateSecuredAttestationTokenFromObject() {
         KeyPair rsaKey = assertDoesNotThrow(() -> createKeyPair("RSA"));
-        X509Certificate cert = assertDoesNotThrow(() -> createSelfSignedCertificate("Test Certificate Secured 2", rsaKey));
-        AttestationSigningKey signingKey = new AttestationSigningKey(cert, rsaKey.getPrivate())
-            .setWeakKeyAllowed(true);
-
+        X509Certificate cert
+            = assertDoesNotThrow(() -> createSelfSignedCertificate("Test Certificate Secured 2", rsaKey));
+        AttestationSigningKey signingKey = new AttestationSigningKey(cert, rsaKey.getPrivate()).setWeakKeyAllowed(true);
 
         JacksonAdapter adapter = new JacksonAdapter();
         OffsetDateTime timeNow = OffsetDateTime.now();
         timeNow = timeNow.minusNanos(timeNow.getNano());
 
-        TestObject testObject = new TestObject()
-            .setAlg("Test Algorithm")
+        TestObject testObject = new TestObject().setAlg("Test Algorithm")
             .setInteger(31415926)
-            .setIntegerArray(new int[]{123, 456, 789})
+            .setIntegerArray(new int[] { 123, 456, 789 })
             .setIssuedOn(timeNow)
             .setNotBefore(timeNow)
             .setExpiresOn(timeNow.plusSeconds(30))
@@ -308,14 +315,15 @@ public class AttestationTokenTests extends AttestationClientTestBase {
 
         assertEquals("Test Algorithm", object.getAlg());
         assertEquals(31415926, object.getInteger());
-        assertArrayEquals(new int[]{123, 456, 789}, object.getIntegerArray());
+        assertArrayEquals(new int[] { 123, 456, 789 }, object.getIntegerArray());
         // Times in an attestation token
         assertTrue(timeNow.isEqual(newToken.getIssuedAt()));
         assertTrue(timeNow.isEqual(newToken.getNotBefore()));
         assertTrue(timeNow.plusSeconds(30).isEqual(newToken.getExpiresOn()));
         assertEquals("Fred", newToken.getIssuer());
 
-        assertDoesNotThrow(() -> ((AttestationTokenImpl) newToken).validate(null, new AttestationTokenValidationOptions()));
+        assertDoesNotThrow(
+            () -> ((AttestationTokenImpl) newToken).validate(null, new AttestationTokenValidationOptions()));
     }
 
     @Test
@@ -324,10 +332,9 @@ public class AttestationTokenTests extends AttestationClientTestBase {
         OffsetDateTime timeNow = OffsetDateTime.now();
         timeNow = timeNow.minusNanos(timeNow.getNano());
 
-        TestObject testObject = new TestObject()
-            .setAlg("Test Algorithm")
+        TestObject testObject = new TestObject().setAlg("Test Algorithm")
             .setInteger(31415926)
-            .setIntegerArray(new int[]{123, 456, 789})
+            .setIntegerArray(new int[] { 123, 456, 789 })
             .setIssuedOn(timeNow)
             .setNotBefore(timeNow)
             .setExpiresOn(timeNow.plusSeconds(30))
@@ -342,13 +349,11 @@ public class AttestationTokenTests extends AttestationClientTestBase {
 
         assertEquals("Test Algorithm", object.getAlg());
         assertEquals(31415926, object.getInteger());
-        assertArrayEquals(new int[]{123, 456, 789}, object.getIntegerArray());
+        assertArrayEquals(new int[] { 123, 456, 789 }, object.getIntegerArray());
         assertEquals("Fred", newToken.getIssuer());
 
-        RuntimeException ex = assertThrows(RuntimeException.class, () ->
-            ((AttestationTokenImpl) newToken).validate(null,
-                new AttestationTokenValidationOptions()
-                    .setExpectedIssuer("Joe")));
+        RuntimeException ex = assertThrows(RuntimeException.class, () -> ((AttestationTokenImpl) newToken)
+            .validate(null, new AttestationTokenValidationOptions().setExpectedIssuer("Joe")));
         // Both the actual and expected issuers should be in the exception message.
         assertTrue(ex.getMessage().contains("Fred"));
         assertTrue(ex.getMessage().contains("Joe"));
@@ -360,22 +365,21 @@ public class AttestationTokenTests extends AttestationClientTestBase {
         OffsetDateTime timeNow = OffsetDateTime.now();
         timeNow = timeNow.minusNanos(timeNow.getNano());
 
-        TestObject testObjectExpired30SecondsAgo = new TestObject()
-            .setAlg("Test Algorithm")
+        TestObject testObjectExpired30SecondsAgo = new TestObject().setAlg("Test Algorithm")
             .setInteger(31415926)
-            .setIntegerArray(new int[]{123, 456, 789})
+            .setIntegerArray(new int[] { 123, 456, 789 })
             .setIssuedOn(timeNow.minusSeconds(60))
             .setNotBefore(timeNow.minusSeconds(60))
             .setExpiresOn(timeNow.minusSeconds(30))
             .setIssuer("Fred");
 
-        String objectString = assertDoesNotThrow(() -> adapter.serialize(testObjectExpired30SecondsAgo, SerializerEncoding.JSON));
+        String objectString
+            = assertDoesNotThrow(() -> adapter.serialize(testObjectExpired30SecondsAgo, SerializerEncoding.JSON));
 
         AttestationToken newToken = AttestationTokenImpl.createUnsecuredToken(objectString);
 
-        RuntimeException ex = assertThrows(RuntimeException.class, () ->
-            ((AttestationTokenImpl) newToken).validate(null,
-                new AttestationTokenValidationOptions()));
+        RuntimeException ex = assertThrows(RuntimeException.class,
+            () -> ((AttestationTokenImpl) newToken).validate(null, new AttestationTokenValidationOptions()));
         // Both the current time and the expiration time should be in the exception message.
         assertTrue(ex.getMessage().contains("expiration"));
         // Because the TestObject round-trips times through Epoch times, they are in UTC time.
@@ -393,22 +397,21 @@ public class AttestationTokenTests extends AttestationClientTestBase {
         OffsetDateTime timeNow = OffsetDateTime.now();
         timeNow = timeNow.minusNanos(timeNow.getNano());
 
-        TestObject testObjectExpired30SecondsAgo = new TestObject()
-            .setAlg("Test Algorithm")
+        TestObject testObjectExpired30SecondsAgo = new TestObject().setAlg("Test Algorithm")
             .setInteger(31415926)
-            .setIntegerArray(new int[]{123, 456, 789})
+            .setIntegerArray(new int[] { 123, 456, 789 })
             .setIssuedOn(timeNow.plusSeconds(30))
             .setNotBefore(timeNow.plusSeconds(30))
             .setExpiresOn(timeNow.plusSeconds(60))
             .setIssuer("Fred");
 
-        String objectString = assertDoesNotThrow(() -> adapter.serialize(testObjectExpired30SecondsAgo, SerializerEncoding.JSON));
+        String objectString
+            = assertDoesNotThrow(() -> adapter.serialize(testObjectExpired30SecondsAgo, SerializerEncoding.JSON));
 
         AttestationToken newToken = AttestationTokenImpl.createUnsecuredToken(objectString);
 
-        RuntimeException ex = assertThrows(RuntimeException.class, () ->
-            ((AttestationTokenImpl) newToken).validate(null,
-                new AttestationTokenValidationOptions()));
+        RuntimeException ex = assertThrows(RuntimeException.class,
+            () -> ((AttestationTokenImpl) newToken).validate(null, new AttestationTokenValidationOptions()));
         // Both the current time and the expiration time should be in the exception message.
         assertTrue(ex.getMessage().contains("NotBefore"));
 
@@ -427,36 +430,33 @@ public class AttestationTokenTests extends AttestationClientTestBase {
         OffsetDateTime timeNow = OffsetDateTime.now();
         timeNow = timeNow.minusNanos(timeNow.getNano());
 
-        TestObject testObjectExpired30SecondsAgo = new TestObject()
-            .setAlg("Test Algorithm")
+        TestObject testObjectExpired30SecondsAgo = new TestObject().setAlg("Test Algorithm")
             .setInteger(31415926)
-            .setIntegerArray(new int[]{123, 456, 789})
+            .setIntegerArray(new int[] { 123, 456, 789 })
             .setIssuedOn(timeNow)
             .setNotBefore(timeNow)
             .setExpiresOn(timeNow.plusSeconds(60))
             .setIssuer("Fred");
 
-        String objectString = assertDoesNotThrow(() -> adapter.serialize(testObjectExpired30SecondsAgo, SerializerEncoding.JSON));
+        String objectString
+            = assertDoesNotThrow(() -> adapter.serialize(testObjectExpired30SecondsAgo, SerializerEncoding.JSON));
 
         AttestationToken newToken = AttestationTokenImpl.createUnsecuredToken(objectString);
 
-        RuntimeException ex = assertThrows(RuntimeException.class, () ->
-            ((AttestationTokenImpl) newToken).validate(null,
-                new AttestationTokenValidationOptions()
-                    .setValidationCallback((token, signer) -> {
-                        throw new RuntimeException("I was interrupted");
-                    })));
+        RuntimeException ex = assertThrows(RuntimeException.class, () -> ((AttestationTokenImpl) newToken)
+            .validate(null, new AttestationTokenValidationOptions().setValidationCallback((token, signer) -> {
+                throw new RuntimeException("I was interrupted");
+            })));
         // Both the current time and the expiration time should be in the exception message.
         assertTrue(ex.getMessage().contains("I was interrupted"));
     }
 
-
     @Test
     void testCreateSecuredEmptyAttestationToken() {
         KeyPair rsaKey = assertDoesNotThrow(() -> createKeyPair("RSA"));
-        X509Certificate cert = assertDoesNotThrow(() -> createSelfSignedCertificate("Test Certificate Secured 2", rsaKey));
-        AttestationSigningKey signingKey = new AttestationSigningKey(cert, rsaKey.getPrivate())
-            .setWeakKeyAllowed(true);
+        X509Certificate cert
+            = assertDoesNotThrow(() -> createSelfSignedCertificate("Test Certificate Secured 2", rsaKey));
+        AttestationSigningKey signingKey = new AttestationSigningKey(cert, rsaKey.getPrivate()).setWeakKeyAllowed(true);
 
         AttestationToken newToken = AttestationTokenImpl.createSecuredToken(signingKey);
 
@@ -464,7 +464,8 @@ public class AttestationTokenTests extends AttestationClientTestBase {
         assertNotEquals("none", newToken.getAlgorithm());
         assertNull(newToken.getKeyId());
         assertNotNull(newToken.getCertificateChain());
-        assertArrayEquals(assertDoesNotThrow(() -> cert.getEncoded()), assertDoesNotThrow(() -> newToken.getCertificateChain().getCertificates().get(0).getEncoded()));
+        assertArrayEquals(assertDoesNotThrow(() -> cert.getEncoded()),
+            assertDoesNotThrow(() -> newToken.getCertificateChain().getCertificates().get(0).getEncoded()));
 
         Object jsonValue = newToken.getBody(Object.class);
         assertNull(jsonValue);
@@ -556,7 +557,9 @@ public class AttestationTokenTests extends AttestationClientTestBase {
         assertEquals("1.0", generatedAttestResult.getVersion());
         assertEquals("sgx", generatedAttestResult.getVerifierType());
 
-        com.azure.security.attestation.models.AttestationResult result = com.azure.security.attestation.implementation.models.AttestationResultImpl.fromGeneratedAttestationResult(generatedAttestResult);
+        com.azure.security.attestation.models.AttestationResult result
+            = com.azure.security.attestation.implementation.models.AttestationResultImpl
+                .fromGeneratedAttestationResult(generatedAttestResult);
 
         assertEquals("sgx", result.getVerifierType());
         assertEquals("1.0", result.getVersion());
@@ -564,6 +567,4 @@ public class AttestationTokenTests extends AttestationClientTestBase {
 
     }
 
-
 }
-

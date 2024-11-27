@@ -39,11 +39,7 @@ class Utilities {
      * @return Returns a newly created Response type.
      */
     static <T, R> ResponseBase<Void, T> generateResponseFromModelType(Response<R> response, T value) {
-        return new ResponseBase<>(response.getRequest(),
-            response.getStatusCode(),
-            response.getHeaders(),
-            value,
-            null);
+        return new ResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), value, null);
     }
 
     /**
@@ -54,15 +50,11 @@ class Utilities {
      * @param <R> Ignored.
      * @return Returns a newly created Response type.
      */
-    static <T, R> AttestationResponse<T> generateAttestationResponseFromModelType(
-        Response<R> response, AttestationToken token, T value) {
-        return new AttestationResponse<>(response.getRequest(),
-            response.getStatusCode(),
-            response.getHeaders(),
-            value,
+    static <T, R> AttestationResponse<T> generateAttestationResponseFromModelType(Response<R> response,
+        AttestationToken token, T value) {
+        return new AttestationResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), value,
             token);
     }
-
 
     /**
      * Convert a base64 encoded string into a byte stream.
@@ -82,7 +74,6 @@ class Utilities {
     static Throwable mapException(Throwable exception) {
         CloudErrorException cloudErrorException = null;
         ClientLogger logger = new ClientLogger(Utilities.class);
-
 
         if (exception instanceof CloudErrorException) {
             cloudErrorException = ((CloudErrorException) exception);
@@ -127,12 +118,16 @@ class Utilities {
         switch (statusCode) {
             case 401:
                 return new ClientAuthenticationException(errorDetail, cloudErrorException.getResponse(), responseError);
+
             case 404:
                 return new ResourceNotFoundException(errorDetail, cloudErrorException.getResponse(), responseError);
+
             case 409:
                 return new ResourceExistsException(errorDetail, cloudErrorException.getResponse(), responseError);
+
             case 412:
                 return new ResourceModifiedException(errorDetail, cloudErrorException.getResponse(), responseError);
+
             default:
                 return new HttpResponseException(errorDetail, cloudErrorException.getResponse(), responseError);
         }

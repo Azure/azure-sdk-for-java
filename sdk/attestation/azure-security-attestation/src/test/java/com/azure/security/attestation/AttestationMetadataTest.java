@@ -11,7 +11,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
 
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -37,10 +36,10 @@ public class AttestationMetadataTest extends AttestationClientTestBase {
     void getOpenIdMetadataWithResponse(HttpClient client, String clientUri) {
         AttestationClientBuilder attestationBuilder = getAttestationBuilder(client, clientUri);
 
-        Response<AttestationOpenIdMetadata> metadataConfig = attestationBuilder.buildClient().getOpenIdMetadataWithResponse(Context.NONE);
+        Response<AttestationOpenIdMetadata> metadataConfig
+            = attestationBuilder.buildClient().getOpenIdMetadataWithResponse(Context.NONE);
         verifyMetadataConfigurationResponse(clientUri, metadataConfig.getValue());
     }
-
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getAttestationClients")
@@ -49,7 +48,8 @@ public class AttestationMetadataTest extends AttestationClientTestBase {
         AttestationClientBuilder attestationBuilder = getAttestationBuilder(client, clientUri);
 
         StepVerifier.create(attestationBuilder.buildAsyncClient().getOpenIdMetadata())
-            .assertNext(metadataConfigResponse -> verifyMetadataConfigurationResponse(clientUri, metadataConfigResponse))
+            .assertNext(
+                metadataConfigResponse -> verifyMetadataConfigurationResponse(clientUri, metadataConfigResponse))
             .expectComplete()
             .verify();
 
@@ -61,7 +61,8 @@ public class AttestationMetadataTest extends AttestationClientTestBase {
         AttestationClientBuilder attestationBuilder = getAttestationBuilder(client, clientUri);
 
         StepVerifier.create(attestationBuilder.buildAsyncClient().getOpenIdMetadataWithResponse())
-            .assertNext(metadataConfigResponse -> verifyMetadataConfigurationResponse(clientUri, metadataConfigResponse.getValue()))
+            .assertNext(metadataConfigResponse -> verifyMetadataConfigurationResponse(clientUri,
+                metadataConfigResponse.getValue()))
             .expectComplete()
             .verify();
     }
@@ -85,6 +86,4 @@ public class AttestationMetadataTest extends AttestationClientTestBase {
         assertNotNull(metadataConfigResponse.getSupportedClaims());
     }
 
-
 }
-

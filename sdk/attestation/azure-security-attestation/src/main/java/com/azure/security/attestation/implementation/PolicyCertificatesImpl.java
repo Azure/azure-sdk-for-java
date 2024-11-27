@@ -38,9 +38,8 @@ public final class PolicyCertificatesImpl {
      * @param client the instance of the service client containing this operation class.
      */
     PolicyCertificatesImpl(AttestationClientImpl client) {
-        this.service =
-                RestProxy.create(
-                        PolicyCertificatesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(PolicyCertificatesService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -52,33 +51,25 @@ public final class PolicyCertificatesImpl {
     @ServiceInterface(name = "AttestationClientPol")
     public interface PolicyCertificatesService {
         @Get("/certificates")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(CloudErrorException.class)
-        Mono<Response<PolicyCertificatesResponse>> get(
-                @HostParam("instanceUrl") String instanceUrl,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<PolicyCertificatesResponse>> get(@HostParam("instanceUrl") String instanceUrl,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Post("/certificates:add")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(CloudErrorException.class)
-        Mono<Response<PolicyCertificatesModifyResponse>> add(
-                @HostParam("instanceUrl") String instanceUrl,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") String policyCertificateToAdd,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<PolicyCertificatesModifyResponse>> add(@HostParam("instanceUrl") String instanceUrl,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") String policyCertificateToAdd,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Post("/certificates:remove")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(CloudErrorException.class)
-        Mono<Response<PolicyCertificatesModifyResponse>> remove(
-                @HostParam("instanceUrl") String instanceUrl,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") String policyCertificateToRemove,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<PolicyCertificatesModifyResponse>> remove(@HostParam("instanceUrl") String instanceUrl,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") String policyCertificateToRemove, @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
@@ -94,8 +85,7 @@ public final class PolicyCertificatesImpl {
     public Mono<Response<PolicyCertificatesResponse>> getWithResponseAsync(Context context) {
         if (this.client.getInstanceUrl() == null) {
             return Mono.error(
-                    new IllegalArgumentException(
-                            "Parameter this.client.getInstanceUrl() is required and cannot be null."));
+                new IllegalArgumentException("Parameter this.client.getInstanceUrl() is required and cannot be null."));
         }
         final String accept = "application/json";
         return service.get(this.client.getInstanceUrl(), this.client.getApiVersion(), accept, context);
@@ -113,20 +103,19 @@ public final class PolicyCertificatesImpl {
      * @return the response to an attestation policy management API.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PolicyCertificatesModifyResponse>> addWithResponseAsync(
-            String policyCertificateToAdd, Context context) {
+    public Mono<Response<PolicyCertificatesModifyResponse>> addWithResponseAsync(String policyCertificateToAdd,
+        Context context) {
         if (this.client.getInstanceUrl() == null) {
             return Mono.error(
-                    new IllegalArgumentException(
-                            "Parameter this.client.getInstanceUrl() is required and cannot be null."));
+                new IllegalArgumentException("Parameter this.client.getInstanceUrl() is required and cannot be null."));
         }
         if (policyCertificateToAdd == null) {
             return Mono.error(
-                    new IllegalArgumentException("Parameter policyCertificateToAdd is required and cannot be null."));
+                new IllegalArgumentException("Parameter policyCertificateToAdd is required and cannot be null."));
         }
         final String accept = "application/json";
-        return service.add(
-                this.client.getInstanceUrl(), this.client.getApiVersion(), policyCertificateToAdd, accept, context);
+        return service.add(this.client.getInstanceUrl(), this.client.getApiVersion(), policyCertificateToAdd, accept,
+            context);
     }
 
     /**
@@ -142,20 +131,18 @@ public final class PolicyCertificatesImpl {
      * @return the response to an attestation policy management API.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PolicyCertificatesModifyResponse>> removeWithResponseAsync(
-            String policyCertificateToRemove, Context context) {
+    public Mono<Response<PolicyCertificatesModifyResponse>> removeWithResponseAsync(String policyCertificateToRemove,
+        Context context) {
         if (this.client.getInstanceUrl() == null) {
             return Mono.error(
-                    new IllegalArgumentException(
-                            "Parameter this.client.getInstanceUrl() is required and cannot be null."));
+                new IllegalArgumentException("Parameter this.client.getInstanceUrl() is required and cannot be null."));
         }
         if (policyCertificateToRemove == null) {
             return Mono.error(
-                    new IllegalArgumentException(
-                            "Parameter policyCertificateToRemove is required and cannot be null."));
+                new IllegalArgumentException("Parameter policyCertificateToRemove is required and cannot be null."));
         }
         final String accept = "application/json";
-        return service.remove(
-                this.client.getInstanceUrl(), this.client.getApiVersion(), policyCertificateToRemove, accept, context);
+        return service.remove(this.client.getInstanceUrl(), this.client.getApiVersion(), policyCertificateToRemove,
+            accept, context);
     }
 }

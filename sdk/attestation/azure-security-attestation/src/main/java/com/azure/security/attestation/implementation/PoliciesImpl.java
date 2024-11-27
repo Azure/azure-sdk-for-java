@@ -52,36 +52,26 @@ public final class PoliciesImpl {
     @ServiceInterface(name = "AttestationClientPol")
     public interface PoliciesService {
         @Get("/policies/{attestationType}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(CloudErrorException.class)
-        Mono<Response<PolicyResponse>> get(
-                @HostParam("instanceUrl") String instanceUrl,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("attestationType") AttestationType attestationType,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<PolicyResponse>> get(@HostParam("instanceUrl") String instanceUrl,
+            @QueryParam("api-version") String apiVersion, @PathParam("attestationType") AttestationType attestationType,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Put("/policies/{attestationType}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(CloudErrorException.class)
-        Mono<Response<PolicyResponse>> set(
-                @HostParam("instanceUrl") String instanceUrl,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("attestationType") AttestationType attestationType,
-                @BodyParam("text/plain") String newAttestationPolicy,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<PolicyResponse>> set(@HostParam("instanceUrl") String instanceUrl,
+            @QueryParam("api-version") String apiVersion, @PathParam("attestationType") AttestationType attestationType,
+            @BodyParam("text/plain") String newAttestationPolicy, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Post("/policies/{attestationType}:reset")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(CloudErrorException.class)
-        Mono<Response<PolicyResponse>> reset(
-                @HostParam("instanceUrl") String instanceUrl,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("attestationType") AttestationType attestationType,
-                @BodyParam("text/plain") String policyJws,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<PolicyResponse>> reset(@HostParam("instanceUrl") String instanceUrl,
+            @QueryParam("api-version") String apiVersion, @PathParam("attestationType") AttestationType attestationType,
+            @BodyParam("text/plain") String policyJws, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -98,12 +88,11 @@ public final class PoliciesImpl {
     public Mono<Response<PolicyResponse>> getWithResponseAsync(AttestationType attestationType, Context context) {
         if (this.client.getInstanceUrl() == null) {
             return Mono.error(
-                    new IllegalArgumentException(
-                            "Parameter this.client.getInstanceUrl() is required and cannot be null."));
+                new IllegalArgumentException("Parameter this.client.getInstanceUrl() is required and cannot be null."));
         }
         if (attestationType == null) {
-            return Mono.error(
-                    new IllegalArgumentException("Parameter attestationType is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter attestationType is required and cannot be null."));
         }
         final String accept = "application/json";
         return service.get(this.client.getInstanceUrl(), this.client.getApiVersion(), attestationType, accept, context);
@@ -121,29 +110,23 @@ public final class PoliciesImpl {
      * @return the response to an attestation policy operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PolicyResponse>> setWithResponseAsync(
-            AttestationType attestationType, String newAttestationPolicy, Context context) {
+    public Mono<Response<PolicyResponse>> setWithResponseAsync(AttestationType attestationType,
+        String newAttestationPolicy, Context context) {
         if (this.client.getInstanceUrl() == null) {
             return Mono.error(
-                    new IllegalArgumentException(
-                            "Parameter this.client.getInstanceUrl() is required and cannot be null."));
+                new IllegalArgumentException("Parameter this.client.getInstanceUrl() is required and cannot be null."));
         }
         if (attestationType == null) {
-            return Mono.error(
-                    new IllegalArgumentException("Parameter attestationType is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter attestationType is required and cannot be null."));
         }
         if (newAttestationPolicy == null) {
-            return Mono.error(
-                    new IllegalArgumentException("Parameter newAttestationPolicy is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter newAttestationPolicy is required and cannot be null."));
         }
         final String accept = "application/json";
-        return service.set(
-                this.client.getInstanceUrl(),
-                this.client.getApiVersion(),
-                attestationType,
-                newAttestationPolicy,
-                accept,
-                context);
+        return service.set(this.client.getInstanceUrl(), this.client.getApiVersion(), attestationType,
+            newAttestationPolicy, accept, context);
     }
 
     /**
@@ -158,22 +141,21 @@ public final class PoliciesImpl {
      * @return the response to an attestation policy operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PolicyResponse>> resetWithResponseAsync(
-            AttestationType attestationType, String policyJws, Context context) {
+    public Mono<Response<PolicyResponse>> resetWithResponseAsync(AttestationType attestationType, String policyJws,
+        Context context) {
         if (this.client.getInstanceUrl() == null) {
             return Mono.error(
-                    new IllegalArgumentException(
-                            "Parameter this.client.getInstanceUrl() is required and cannot be null."));
+                new IllegalArgumentException("Parameter this.client.getInstanceUrl() is required and cannot be null."));
         }
         if (attestationType == null) {
-            return Mono.error(
-                    new IllegalArgumentException("Parameter attestationType is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter attestationType is required and cannot be null."));
         }
         if (policyJws == null) {
             return Mono.error(new IllegalArgumentException("Parameter policyJws is required and cannot be null."));
         }
         final String accept = "application/json";
-        return service.reset(
-                this.client.getInstanceUrl(), this.client.getApiVersion(), attestationType, policyJws, accept, context);
+        return service.reset(this.client.getInstanceUrl(), this.client.getApiVersion(), attestationType, policyJws,
+            accept, context);
     }
 }

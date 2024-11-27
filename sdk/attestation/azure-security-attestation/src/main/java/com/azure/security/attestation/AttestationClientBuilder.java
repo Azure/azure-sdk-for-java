@@ -82,22 +82,16 @@ import static com.azure.core.util.CoreUtils.getApplicationId;
  * </pre>
  *     <!-- end com.azure.security.attestation.AttestationClientBuilder.buildAsyncClientForTpm -->
  */
-@ServiceClientBuilder(
-        serviceClients = {
-            AttestationClient.class,
-            AttestationAsyncClient.class,
-        })
-public final class AttestationClientBuilder implements
-    ConfigurationTrait<AttestationClientBuilder>,
-    EndpointTrait<AttestationClientBuilder>,
-    HttpTrait<AttestationClientBuilder>,
-    TokenCredentialTrait<AttestationClientBuilder> {
+@ServiceClientBuilder(serviceClients = { AttestationClient.class, AttestationAsyncClient.class, })
+public final class AttestationClientBuilder
+    implements ConfigurationTrait<AttestationClientBuilder>, EndpointTrait<AttestationClientBuilder>,
+    HttpTrait<AttestationClientBuilder>, TokenCredentialTrait<AttestationClientBuilder> {
     private static final String SDK_NAME = "name";
 
     private static final String SDK_VERSION = "version";
     private static final RetryPolicy DEFAULT_RETRY_POLICY = new RetryPolicy("retry-after-ms", ChronoUnit.MILLIS);
 
-    private final String[] dataplaneScope = new String[] {"https://attest.azure.net/.default"};
+    private final String[] dataplaneScope = new String[] { "https://attest.azure.net/.default" };
 
     private final ClientLogger logger = new ClientLogger(AttestationClientBuilder.class);
 
@@ -118,7 +112,6 @@ public final class AttestationClientBuilder implements
     private TokenCredential tokenCredential = null;
     private static final String CLIENT_NAME;
     private static final String CLIENT_VERSION;
-
 
     static {
         Map<String, String> properties = CoreUtils.getProperties("azure-security-attestation.properties");
@@ -203,6 +196,7 @@ public final class AttestationClientBuilder implements
         this.serviceVersion = serviceVersion;
         return this;
     }
+
     /**
      * Sets the {@link TokenCredential} used to authorize requests sent to the service. Refer to the Azure SDK for Java
      * <a href="https://aka.ms/azsdk/java/docs/identity">identity and authentication</a>
@@ -419,16 +413,14 @@ public final class AttestationClientBuilder implements
      */
     private AttestationClientImpl buildInnerClient() {
 
-//        AttestationClientImplBuilder clientImplBuilder = new AttestationClientImplBuilder();
+        //        AttestationClientImplBuilder clientImplBuilder = new AttestationClientImplBuilder();
         // Global Env configuration store
-        Configuration buildConfiguration = (configuration == null)
-            ? Configuration.getGlobalConfiguration()
-            : configuration;
+        Configuration buildConfiguration
+            = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
 
         // Service version
-        AttestationServiceVersion version = serviceVersion != null
-            ? serviceVersion
-            : AttestationServiceVersion.getLatest();
+        AttestationServiceVersion version
+            = serviceVersion != null ? serviceVersion : AttestationServiceVersion.getLatest();
 
         // endpoint cannot be null, which is required in request authentication
         String endpoint = this.endpoint;
@@ -440,8 +432,8 @@ public final class AttestationClientBuilder implements
         if (pipeline == null) {
             // Closest to API goes first, closest to wire goes last.
             final List<HttpPipelinePolicy> policies = new ArrayList<>();
-            policies.add(new UserAgentPolicy(
-                getApplicationId(clientOptions, httpLogOptions), CLIENT_NAME, CLIENT_VERSION, buildConfiguration));
+            policies.add(new UserAgentPolicy(getApplicationId(clientOptions, httpLogOptions), CLIENT_NAME,
+                CLIENT_VERSION, buildConfiguration));
             policies.add(new RequestIdPolicy());
             policies.add(new AddHeadersFromContextPolicy());
 
@@ -461,8 +453,8 @@ public final class AttestationClientBuilder implements
 
             if (clientOptions != null) {
                 List<HttpHeader> httpHeaderList = new ArrayList<>();
-                clientOptions.getHeaders().forEach(
-                    header -> httpHeaderList.add(new HttpHeader(header.getName(), header.getValue())));
+                clientOptions.getHeaders()
+                    .forEach(header -> httpHeaderList.add(new HttpHeader(header.getName(), header.getValue())));
                 policies.add(new AddHeadersPolicy(new HttpHeaders(httpHeaderList)));
             }
 
@@ -470,12 +462,12 @@ public final class AttestationClientBuilder implements
             policies.add(new HttpLoggingPolicy(httpLogOptions));
 
             // customized pipeline
-            pipeline = new HttpPipelineBuilder()
-                .policies(policies.toArray(new HttpPipelinePolicy[0]))
+            pipeline = new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
                 .httpClient(httpClient)
                 .build();
         }
 
-        return new AttestationClientImpl(pipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, version.getVersion());
+        return new AttestationClientImpl(pipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint,
+            version.getVersion());
     }
 }

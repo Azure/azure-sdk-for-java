@@ -108,7 +108,8 @@ public final class AttestationAdministrationAsyncClient {
      *
      * @param clientImpl the service client implementation.
      */
-    AttestationAdministrationAsyncClient(AttestationClientImpl clientImpl, AttestationTokenValidationOptions tokenValidationOptions) {
+    AttestationAdministrationAsyncClient(AttestationClientImpl clientImpl,
+        AttestationTokenValidationOptions tokenValidationOptions) {
         this.signingCertificatesImpl = clientImpl.getSigningCertificates();
         this.policyImpl = clientImpl.getPolicies();
         this.certificatesImpl = clientImpl.getPolicyCertificates();
@@ -152,7 +153,8 @@ public final class AttestationAdministrationAsyncClient {
      * @return the attestation policy expressed as a string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AttestationResponse<String>> getAttestationPolicyWithResponse(AttestationType attestationType, AttestationTokenValidationOptions validationOptions) {
+    public Mono<AttestationResponse<String>> getAttestationPolicyWithResponse(AttestationType attestationType,
+        AttestationTokenValidationOptions validationOptions) {
         return withContext(context -> getAttestationPolicyWithResponse(attestationType, validationOptions, context));
     }
 
@@ -189,8 +191,7 @@ public final class AttestationAdministrationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<String> getAttestationPolicy(AttestationType attestationType) {
-        return getAttestationPolicyWithResponse(attestationType, null)
-            .flatMap(FluxUtil::toMono);
+        return getAttestationPolicyWithResponse(attestationType, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -228,11 +229,10 @@ public final class AttestationAdministrationAsyncClient {
      * @return the response to an attestation policy operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<String> getAttestationPolicy(AttestationType attestationType, AttestationTokenValidationOptions options) {
-        return getAttestationPolicyWithResponse(attestationType, options)
-            .flatMap(FluxUtil::toMono);
+    public Mono<String> getAttestationPolicy(AttestationType attestationType,
+        AttestationTokenValidationOptions options) {
+        return getAttestationPolicyWithResponse(attestationType, options).flatMap(FluxUtil::toMono);
     }
-
 
     /**
      * Retrieves the current policy for an attestation type.
@@ -244,27 +244,31 @@ public final class AttestationAdministrationAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the attestation policy expressed as a string.
      */
-    Mono<AttestationResponse<String>> getAttestationPolicyWithResponse(AttestationType attestationType, AttestationTokenValidationOptions validationOptions, Context context) {
-        final AttestationTokenValidationOptions validationOptionsToUse = (validationOptions != null ? validationOptions : this.tokenValidationOptions);
+    Mono<AttestationResponse<String>> getAttestationPolicyWithResponse(AttestationType attestationType,
+        AttestationTokenValidationOptions validationOptions, Context context) {
+        final AttestationTokenValidationOptions validationOptionsToUse
+            = (validationOptions != null ? validationOptions : this.tokenValidationOptions);
         return this.policyImpl.getWithResponseAsync(attestationType, context)
             .onErrorMap(Utilities::mapException)
             .flatMap(response -> {
-                Response<AttestationTokenImpl> token = Utilities.generateResponseFromModelType(response, new AttestationTokenImpl(response.getValue().getToken()));
-                return getCachedAttestationSigners(context)
-                    .map(signers -> {
-                        token.getValue().validate(signers, validationOptionsToUse);
-                        String policyJwt = token.getValue().getBody(com.azure.security.attestation.implementation.models.PolicyResult.class).getPolicy();
-                        AttestationTokenImpl policyToken = new AttestationTokenImpl(policyJwt);
-                        StoredAttestationPolicy storedPolicy = policyToken.getBody(StoredAttestationPolicy.class);
-                        String policy;
-                        // If there's a stored attestation policy in the token, convert it to a string.
-                        if (storedPolicy != null) {
-                            policy = new String(storedPolicy.getAttestationPolicy(), StandardCharsets.UTF_8);
-                        } else {
-                            policy = null;
-                        }
-                        return Utilities.generateAttestationResponseFromModelType(token, policyToken, policy);
-                    });
+                Response<AttestationTokenImpl> token = Utilities.generateResponseFromModelType(response,
+                    new AttestationTokenImpl(response.getValue().getToken()));
+                return getCachedAttestationSigners(context).map(signers -> {
+                    token.getValue().validate(signers, validationOptionsToUse);
+                    String policyJwt = token.getValue()
+                        .getBody(com.azure.security.attestation.implementation.models.PolicyResult.class)
+                        .getPolicy();
+                    AttestationTokenImpl policyToken = new AttestationTokenImpl(policyJwt);
+                    StoredAttestationPolicy storedPolicy = policyToken.getBody(StoredAttestationPolicy.class);
+                    String policy;
+                    // If there's a stored attestation policy in the token, convert it to a string.
+                    if (storedPolicy != null) {
+                        policy = new String(storedPolicy.getAttestationPolicy(), StandardCharsets.UTF_8);
+                    } else {
+                        policy = null;
+                    }
+                    return Utilities.generateAttestationResponseFromModelType(token, policyToken, policy);
+                });
             });
     }
 
@@ -292,10 +296,9 @@ public final class AttestationAdministrationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PolicyResult> setAttestationPolicy(AttestationType attestationType, String newAttestationPolicy) {
-        AttestationPolicySetOptions options = new AttestationPolicySetOptions()
-            .setAttestationPolicy(newAttestationPolicy);
-        return setAttestationPolicyWithResponse(attestationType, options)
-            .flatMap(FluxUtil::toMono);
+        AttestationPolicySetOptions options
+            = new AttestationPolicySetOptions().setAttestationPolicy(newAttestationPolicy);
+        return setAttestationPolicyWithResponse(attestationType, options).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -332,9 +335,9 @@ public final class AttestationAdministrationAsyncClient {
      * @return the response to an attestation policy operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PolicyResult> setAttestationPolicy(AttestationType attestationType, AttestationPolicySetOptions options) {
-        return setAttestationPolicyWithResponse(attestationType, options)
-            .flatMap(FluxUtil::toMono);
+    public Mono<PolicyResult> setAttestationPolicy(AttestationType attestationType,
+        AttestationPolicySetOptions options) {
+        return setAttestationPolicyWithResponse(attestationType, options).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -373,10 +376,10 @@ public final class AttestationAdministrationAsyncClient {
      * @return the response to an attestation policy operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AttestationResponse<PolicyResult>> setAttestationPolicyWithResponse(AttestationType attestationType, AttestationPolicySetOptions options) {
+    public Mono<AttestationResponse<PolicyResult>> setAttestationPolicyWithResponse(AttestationType attestationType,
+        AttestationPolicySetOptions options) {
         return withContext(context -> setAttestationPolicyWithResponse(attestationType, options, context));
     }
-
 
     /**
      * Sets the current policy for an attestation type.
@@ -389,7 +392,8 @@ public final class AttestationAdministrationAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to an attestation policy operation.
      */
-    Mono<AttestationResponse<PolicyResult>> setAttestationPolicyWithResponse(AttestationType attestationType, AttestationPolicySetOptions options, Context context) {
+    Mono<AttestationResponse<PolicyResult>> setAttestationPolicyWithResponse(AttestationType attestationType,
+        AttestationPolicySetOptions options, Context context) {
         // Ensure that the incoming request makes sense.
         AttestationTokenValidationOptions validationOptions = options.getValidationOptions();
         if (validationOptions == null) {
@@ -400,18 +404,20 @@ public final class AttestationAdministrationAsyncClient {
 
         // Generate an attestation token for that stored attestation policy. We use the common function in
         // PolicyResult which is used in creating the SetPolicy hash.
-        AttestationToken setToken = generatePolicySetToken(options.getAttestationPolicy(), options.getAttestationSigner());
+        AttestationToken setToken
+            = generatePolicySetToken(options.getAttestationPolicy(), options.getAttestationSigner());
 
         return this.policyImpl.setWithResponseAsync(attestationType, setToken.serialize(), context)
             .onErrorMap(Utilities::mapException)
             .flatMap(response -> {
-                Response<AttestationTokenImpl> token = Utilities.generateResponseFromModelType(response, new AttestationTokenImpl(response.getValue().getToken()));
-                return getCachedAttestationSigners(context)
-                    .map(signers -> {
-                        token.getValue().validate(signers, finalOptions);
-                        PolicyResult policyResult = PolicyResultImpl.fromGenerated(token.getValue().getBody(com.azure.security.attestation.implementation.models.PolicyResult.class));
-                        return Utilities.generateAttestationResponseFromModelType(response, token.getValue(), policyResult);
-                    });
+                Response<AttestationTokenImpl> token = Utilities.generateResponseFromModelType(response,
+                    new AttestationTokenImpl(response.getValue().getToken()));
+                return getCachedAttestationSigners(context).map(signers -> {
+                    token.getValue().validate(signers, finalOptions);
+                    PolicyResult policyResult = PolicyResultImpl.fromGenerated(token.getValue()
+                        .getBody(com.azure.security.attestation.implementation.models.PolicyResult.class));
+                    return Utilities.generateAttestationResponseFromModelType(response, token.getValue(), policyResult);
+                });
             });
     }
 
@@ -549,9 +555,9 @@ public final class AttestationAdministrationAsyncClient {
      * @return the response to an attestation policy operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PolicyResult> resetAttestationPolicy(AttestationType attestationType, AttestationPolicySetOptions options) {
-        return resetAttestationPolicyWithResponse(attestationType, options)
-            .flatMap(FluxUtil::toMono);
+    public Mono<PolicyResult> resetAttestationPolicy(AttestationType attestationType,
+        AttestationPolicySetOptions options) {
+        return resetAttestationPolicyWithResponse(attestationType, options).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -581,7 +587,8 @@ public final class AttestationAdministrationAsyncClient {
      * @return the response to an attestation policy operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AttestationResponse<PolicyResult>> resetAttestationPolicyWithResponse(AttestationType attestationType, AttestationPolicySetOptions options) {
+    public Mono<AttestationResponse<PolicyResult>> resetAttestationPolicyWithResponse(AttestationType attestationType,
+        AttestationPolicySetOptions options) {
         return withContext(context -> resetAttestationPolicyWithResponse(attestationType, options, context));
     }
 
@@ -602,9 +609,11 @@ public final class AttestationAdministrationAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to an attestation policy operation.
      */
-    Mono<AttestationResponse<PolicyResult>> resetAttestationPolicyWithResponse(AttestationType attestationType, AttestationPolicySetOptions options, Context context) {
+    Mono<AttestationResponse<PolicyResult>> resetAttestationPolicyWithResponse(AttestationType attestationType,
+        AttestationPolicySetOptions options, Context context) {
         if (options.getAttestationPolicy() != null) {
-            logger.logThrowableAsError(new InvalidParameterException("Attestation policy should not be set in resetAttestationPolicy"));
+            logger.logThrowableAsError(
+                new InvalidParameterException("Attestation policy should not be set in resetAttestationPolicy"));
         }
 
         // Ensure that the incoming request makes sense.
@@ -625,13 +634,14 @@ public final class AttestationAdministrationAsyncClient {
         return this.policyImpl.resetWithResponseAsync(attestationType, setToken.serialize(), context)
             .onErrorMap(Utilities::mapException)
             .flatMap(response -> {
-                Response<AttestationTokenImpl> token = Utilities.generateResponseFromModelType(response, new AttestationTokenImpl(response.getValue().getToken()));
-                return getCachedAttestationSigners(context)
-                    .map(signers -> {
-                        token.getValue().validate(signers, finalOptions);
-                        PolicyResult policyResult = PolicyResultImpl.fromGenerated(token.getValue().getBody(com.azure.security.attestation.implementation.models.PolicyResult.class));
-                        return Utilities.generateAttestationResponseFromModelType(response, token.getValue(), policyResult);
-                    });
+                Response<AttestationTokenImpl> token = Utilities.generateResponseFromModelType(response,
+                    new AttestationTokenImpl(response.getValue().getToken()));
+                return getCachedAttestationSigners(context).map(signers -> {
+                    token.getValue().validate(signers, finalOptions);
+                    PolicyResult policyResult = PolicyResultImpl.fromGenerated(token.getValue()
+                        .getBody(com.azure.security.attestation.implementation.models.PolicyResult.class));
+                    return Utilities.generateAttestationResponseFromModelType(response, token.getValue(), policyResult);
+                });
             });
     }
 
@@ -665,8 +675,7 @@ public final class AttestationAdministrationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AttestationSignerCollection> listPolicyManagementCertificates() {
-        return listPolicyManagementCertificatesWithResponse(null)
-            .flatMap(FluxUtil::toMono);
+        return listPolicyManagementCertificatesWithResponse(null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -700,7 +709,8 @@ public final class AttestationAdministrationAsyncClient {
      * @return the attestation policy expressed as a string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AttestationResponse<AttestationSignerCollection>> listPolicyManagementCertificatesWithResponse(AttestationTokenValidationOptions options) {
+    public Mono<AttestationResponse<AttestationSignerCollection>>
+        listPolicyManagementCertificatesWithResponse(AttestationTokenValidationOptions options) {
         return withContext(context -> listPolicyManagementCertificatesWithResponse(options, context));
     }
 
@@ -725,19 +735,25 @@ public final class AttestationAdministrationAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the attestation policy expressed as a string.
      */
-    Mono<AttestationResponse<AttestationSignerCollection>> listPolicyManagementCertificatesWithResponse(AttestationTokenValidationOptions validationOptions, Context context) {
-        final AttestationTokenValidationOptions optionsToUse = (validationOptions != null ? validationOptions : this.tokenValidationOptions);
+    Mono<AttestationResponse<AttestationSignerCollection>> listPolicyManagementCertificatesWithResponse(
+        AttestationTokenValidationOptions validationOptions, Context context) {
+        final AttestationTokenValidationOptions optionsToUse
+            = (validationOptions != null ? validationOptions : this.tokenValidationOptions);
         return this.certificatesImpl.getWithResponseAsync(context)
             .onErrorMap(Utilities::mapException)
             .flatMap(response -> {
-                Response<AttestationTokenImpl> responseWithToken = Utilities.generateResponseFromModelType(response, new AttestationTokenImpl(response.getValue().getToken()));
-                return getCachedAttestationSigners(context)
-                    .map(signers -> {
-                        responseWithToken.getValue().validate(signers, optionsToUse);
-                        JsonWebKeySet policyJwks = responseWithToken.getValue().getBody(com.azure.security.attestation.implementation.models.PolicyCertificatesResult.class).getPolicyCertificates();
-                        List<AttestationSigner> policySigners = AttestationSignerImpl.attestationSignersFromJwks(policyJwks);
-                        return Utilities.generateAttestationResponseFromModelType(responseWithToken, responseWithToken.getValue(), new AttestationSignerCollectionImpl(policySigners));
-                    });
+                Response<AttestationTokenImpl> responseWithToken = Utilities.generateResponseFromModelType(response,
+                    new AttestationTokenImpl(response.getValue().getToken()));
+                return getCachedAttestationSigners(context).map(signers -> {
+                    responseWithToken.getValue().validate(signers, optionsToUse);
+                    JsonWebKeySet policyJwks = responseWithToken.getValue()
+                        .getBody(com.azure.security.attestation.implementation.models.PolicyCertificatesResult.class)
+                        .getPolicyCertificates();
+                    List<AttestationSigner> policySigners
+                        = AttestationSignerImpl.attestationSignersFromJwks(policyJwks);
+                    return Utilities.generateAttestationResponseFromModelType(responseWithToken,
+                        responseWithToken.getValue(), new AttestationSignerCollectionImpl(policySigners));
+                });
             });
     }
 
@@ -776,9 +792,9 @@ public final class AttestationAdministrationAsyncClient {
      * @return the response to an attestation policy operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PolicyCertificatesModificationResult> addPolicyManagementCertificate(PolicyManagementCertificateOptions options) {
-        return addPolicyManagementCertificateWithResponse(options)
-            .flatMap(FluxUtil::toMono);
+    public Mono<PolicyCertificatesModificationResult>
+        addPolicyManagementCertificate(PolicyManagementCertificateOptions options) {
+        return addPolicyManagementCertificateWithResponse(options).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -815,7 +831,8 @@ public final class AttestationAdministrationAsyncClient {
      * @return the response to an attestation policy operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AttestationResponse<PolicyCertificatesModificationResult>> addPolicyManagementCertificateWithResponse(PolicyManagementCertificateOptions options) {
+    public Mono<AttestationResponse<PolicyCertificatesModificationResult>>
+        addPolicyManagementCertificateWithResponse(PolicyManagementCertificateOptions options) {
         return withContext(context -> addPolicyManagementCertificateWithResponse(options, context));
     }
 
@@ -830,7 +847,8 @@ public final class AttestationAdministrationAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to an attestation policy operation.
      */
-    Mono<AttestationResponse<PolicyCertificatesModificationResult>> addPolicyManagementCertificateWithResponse(PolicyManagementCertificateOptions options, Context context) {
+    Mono<AttestationResponse<PolicyCertificatesModificationResult>>
+        addPolicyManagementCertificateWithResponse(PolicyManagementCertificateOptions options, Context context) {
         Objects.requireNonNull(options.getCertificate());
         Objects.requireNonNull(options.getAttestationSigner());
 
@@ -845,16 +863,16 @@ public final class AttestationAdministrationAsyncClient {
         } catch (CertificateEncodingException e) {
             throw logger.logExceptionAsError(new RuntimeException(e.getMessage()));
         }
-        JsonWebKey jwk = new JsonWebKey(options.getCertificate().getType())
-            .setX5C(new ArrayList<String>());
+        JsonWebKey jwk = new JsonWebKey(options.getCertificate().getType()).setX5C(new ArrayList<String>());
         jwk.getX5C().add(base64Certificate);
 
-        AttestationCertificateManagementBody certificateBody = new AttestationCertificateManagementBody()
-            .setPolicyCertificate(jwk);
+        AttestationCertificateManagementBody certificateBody
+            = new AttestationCertificateManagementBody().setPolicyCertificate(jwk);
 
         AttestationToken addToken;
         try {
-            addToken = AttestationTokenImpl.createSecuredToken(SERIALIZER_ADAPTER.serialize(certificateBody, SerializerEncoding.JSON), options.getAttestationSigner());
+            addToken = AttestationTokenImpl.createSecuredToken(
+                SERIALIZER_ADAPTER.serialize(certificateBody, SerializerEncoding.JSON), options.getAttestationSigner());
         } catch (IOException e) {
             throw logger.logExceptionAsError(new RuntimeException(e.getMessage()));
         }
@@ -862,16 +880,18 @@ public final class AttestationAdministrationAsyncClient {
         return this.certificatesImpl.addWithResponseAsync(addToken.serialize(), context)
             .onErrorMap(Utilities::mapException)
             .flatMap(response -> {
-                Response<AttestationTokenImpl> token = Utilities.generateResponseFromModelType(response, new AttestationTokenImpl(response.getValue().getToken()));
-                return getCachedAttestationSigners(context)
-                    .map(signers -> {
-                        token.getValue().validate(signers, finalOptions);
-                        PolicyCertificatesModificationResult addResult = PolicyCertificatesModificationResultImpl.fromGenerated(token.getValue().getBody(com.azure.security.attestation.implementation.models.PolicyCertificatesModificationResult.class));
-                        return Utilities.generateAttestationResponseFromModelType(response, token.getValue(), addResult);
-                    });
+                Response<AttestationTokenImpl> token = Utilities.generateResponseFromModelType(response,
+                    new AttestationTokenImpl(response.getValue().getToken()));
+                return getCachedAttestationSigners(context).map(signers -> {
+                    token.getValue().validate(signers, finalOptions);
+                    PolicyCertificatesModificationResult addResult
+                        = PolicyCertificatesModificationResultImpl.fromGenerated(token.getValue()
+                            .getBody(
+                                com.azure.security.attestation.implementation.models.PolicyCertificatesModificationResult.class));
+                    return Utilities.generateAttestationResponseFromModelType(response, token.getValue(), addResult);
+                });
             });
     }
-
 
     /**
      * Removes a policy management certificate from the set of policy management certificates.
@@ -911,9 +931,9 @@ public final class AttestationAdministrationAsyncClient {
      * @return the response to an attestation policy operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PolicyCertificatesModificationResult> deletePolicyManagementCertificate(PolicyManagementCertificateOptions options) {
-        return deletePolicyManagementCertificateWithResponse(options)
-            .flatMap(FluxUtil::toMono);
+    public Mono<PolicyCertificatesModificationResult>
+        deletePolicyManagementCertificate(PolicyManagementCertificateOptions options) {
+        return deletePolicyManagementCertificateWithResponse(options).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -954,7 +974,8 @@ public final class AttestationAdministrationAsyncClient {
      * @return the response to an attestation policy operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AttestationResponse<PolicyCertificatesModificationResult>> deletePolicyManagementCertificateWithResponse(PolicyManagementCertificateOptions options) {
+    public Mono<AttestationResponse<PolicyCertificatesModificationResult>>
+        deletePolicyManagementCertificateWithResponse(PolicyManagementCertificateOptions options) {
         return withContext(context -> deletePolicyManagementCertificateWithResponse(options, context));
     }
 
@@ -969,7 +990,8 @@ public final class AttestationAdministrationAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to an attestation policy operation.
      */
-    Mono<AttestationResponse<PolicyCertificatesModificationResult>> deletePolicyManagementCertificateWithResponse(PolicyManagementCertificateOptions options, Context context) {
+    Mono<AttestationResponse<PolicyCertificatesModificationResult>>
+        deletePolicyManagementCertificateWithResponse(PolicyManagementCertificateOptions options, Context context) {
         Objects.requireNonNull(options.getCertificate());
         Objects.requireNonNull(options.getAttestationSigner());
 
@@ -984,16 +1006,16 @@ public final class AttestationAdministrationAsyncClient {
         } catch (CertificateEncodingException e) {
             throw logger.logExceptionAsError(new RuntimeException(e.getMessage()));
         }
-        JsonWebKey jwk = new JsonWebKey(options.getCertificate().getType())
-            .setX5C(new ArrayList<String>());
+        JsonWebKey jwk = new JsonWebKey(options.getCertificate().getType()).setX5C(new ArrayList<String>());
         jwk.getX5C().add(base64Certificate);
 
-        AttestationCertificateManagementBody certificateBody = new AttestationCertificateManagementBody()
-            .setPolicyCertificate(jwk);
+        AttestationCertificateManagementBody certificateBody
+            = new AttestationCertificateManagementBody().setPolicyCertificate(jwk);
 
         AttestationToken addToken;
         try {
-            addToken = AttestationTokenImpl.createSecuredToken(SERIALIZER_ADAPTER.serialize(certificateBody, SerializerEncoding.JSON), options.getAttestationSigner());
+            addToken = AttestationTokenImpl.createSecuredToken(
+                SERIALIZER_ADAPTER.serialize(certificateBody, SerializerEncoding.JSON), options.getAttestationSigner());
         } catch (IOException e) {
             throw logger.logExceptionAsError(new RuntimeException(e.getMessage()));
         }
@@ -1001,17 +1023,18 @@ public final class AttestationAdministrationAsyncClient {
         return this.certificatesImpl.removeWithResponseAsync(addToken.serialize(), context)
             .onErrorMap(Utilities::mapException)
             .flatMap(response -> {
-                Response<AttestationTokenImpl> token = Utilities.generateResponseFromModelType(response, new AttestationTokenImpl(response.getValue().getToken()));
-                return getCachedAttestationSigners(context)
-                    .map(signers -> {
-                        token.getValue().validate(signers, finalOptions);
-                        PolicyCertificatesModificationResult addResult = PolicyCertificatesModificationResultImpl.fromGenerated(token.getValue().getBody(com.azure.security.attestation.implementation.models.PolicyCertificatesModificationResult.class));
-                        return Utilities.generateAttestationResponseFromModelType(response, token.getValue(), addResult);
-                    });
+                Response<AttestationTokenImpl> token = Utilities.generateResponseFromModelType(response,
+                    new AttestationTokenImpl(response.getValue().getToken()));
+                return getCachedAttestationSigners(context).map(signers -> {
+                    token.getValue().validate(signers, finalOptions);
+                    PolicyCertificatesModificationResult addResult
+                        = PolicyCertificatesModificationResultImpl.fromGenerated(token.getValue()
+                            .getBody(
+                                com.azure.security.attestation.implementation.models.PolicyCertificatesModificationResult.class));
+                    return Utilities.generateAttestationResponseFromModelType(response, token.getValue(), addResult);
+                });
             });
     }
-
-
 
     /**
      * Return cached attestation signers, fetching from the internet if needed.

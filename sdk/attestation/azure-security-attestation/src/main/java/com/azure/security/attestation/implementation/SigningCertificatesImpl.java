@@ -34,9 +34,8 @@ public final class SigningCertificatesImpl {
      * @param client the instance of the service client containing this operation class.
      */
     SigningCertificatesImpl(AttestationClientImpl client) {
-        this.service =
-                RestProxy.create(
-                        SigningCertificatesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(SigningCertificatesService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -48,10 +47,10 @@ public final class SigningCertificatesImpl {
     @ServiceInterface(name = "AttestationClientSig")
     public interface SigningCertificatesService {
         @Get("/certs")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(CloudErrorException.class)
-        Mono<Response<JsonWebKeySet>> get(
-                @HostParam("instanceUrl") String instanceUrl, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<JsonWebKeySet>> get(@HostParam("instanceUrl") String instanceUrl,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -67,8 +66,7 @@ public final class SigningCertificatesImpl {
     public Mono<Response<JsonWebKeySet>> getWithResponseAsync(Context context) {
         if (this.client.getInstanceUrl() == null) {
             return Mono.error(
-                    new IllegalArgumentException(
-                            "Parameter this.client.getInstanceUrl() is required and cannot be null."));
+                new IllegalArgumentException("Parameter this.client.getInstanceUrl() is required and cannot be null."));
         }
         final String accept = "application/jwk+json, application/json";
         return service.get(this.client.getInstanceUrl(), accept, context);

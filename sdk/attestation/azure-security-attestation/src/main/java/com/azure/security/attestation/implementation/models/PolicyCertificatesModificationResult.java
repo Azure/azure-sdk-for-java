@@ -61,8 +61,8 @@ public final class PolicyCertificatesModificationResult {
      * @param certificateResolution the certificateResolution value to set.
      * @return the PolicyCertificatesModificationResult object itself.
      */
-    public PolicyCertificatesModificationResult setCertificateResolution(
-            CertificateModification certificateResolution) {
+    public PolicyCertificatesModificationResult
+        setCertificateResolution(CertificateModification certificateResolution) {
         this.certificateResolution = certificateResolution;
         return this;
     }
@@ -72,5 +72,6 @@ public final class PolicyCertificatesModificationResult {
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    public void validate() {}
+    public void validate() {
+    }
 }
