@@ -12,7 +12,8 @@ import com.azure.core.credential.AccessToken;
 public class TokenParserTests {
     @Test
     public void testParsingWithoutExpiry() {
-        String rawToken =  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJza3lwZWlkIjoic3Bvb2w6PG15LXJlc291cmNlLWlkPl9hYmNkZWYtMDEyMzQ1Njc4OSJ9.";
+        String rawToken
+            = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJza3lwZWlkIjoic3Bvb2w6PG15LXJlc291cmNlLWlkPl9hYmNkZWYtMDEyMzQ1Njc4OSJ9.";
         TokenParser parser = new TokenParser();
         assertThrows(IllegalStateException.class, () -> {
             parser.parseJWTToken(rawToken);
