@@ -4,9 +4,8 @@ package com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.
 
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.*;
 
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.security.Key;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -16,32 +15,131 @@ public class FilteringConfiguration {
     private Set<String> seenMetricIds;
 
     // key is the telemetry type
-    private ConcurrentMap<String, DerivedMetricInfo[]> validDerivedMetricInfos;
+    private ConcurrentMap<String, List<DerivedMetricInfo>> validDerivedMetricInfos;
 
     // first key is the telemetry type, second key is the id associated with the document filters
-    private ConcurrentMap<String, Map<String, FilterConjunctionGroupInfo[]>> validDocumentFilterConjunctionGroupInfos;
+    private ConcurrentMap<String, ConcurrentMap<String, List<FilterConjunctionGroupInfo>>> validDocumentFilterConjunctionGroupInfos;
+
+    private List<CollectionConfigurationError> validationErrors;
 
     private volatile String etag;
 
     public FilteringConfiguration() {
-        validDerivedMetricInfos = new ConcurrentHashMap<String, DerivedMetricInfo[]>();
-        validDocumentFilterConjunctionGroupInfos = new ConcurrentHashMap<String, Map<String, FilterConjunctionGroupInfo[]>>();
+        validDerivedMetricInfos = new ConcurrentHashMap<String, List<DerivedMetricInfo>>();
+        validDocumentFilterConjunctionGroupInfos = new ConcurrentHashMap<String, ConcurrentMap<String, List<FilterConjunctionGroupInfo>>>();
         seenMetricIds = new HashSet<String>();
         etag = "";
+        validationErrors = new ArrayList<CollectionConfigurationError>();
     }
 
     public void updateConfiguration(CollectionConfigurationInfo configuration) {
-        this.etag = configuration.getETag();
+        etag = configuration.getETag();
+        validationErrors.clear();
+        seenMetricIds.clear();
         parseDocumentFilterConfiguration(configuration);
         parseMetricFilterConfiguration(configuration);
+        // TODO (harskaur): In a future PR, when we have derived metric values saved in a class, those values will need to be cleared on config update
     }
 
     private void parseDocumentFilterConfiguration(CollectionConfigurationInfo configuration) {
+        ConcurrentMap<String, ConcurrentMap<String, List<FilterConjunctionGroupInfo>>> newValidDocumentsConfig = new ConcurrentHashMap<>();
+        for (DocumentStreamInfo documentStreamInfo : configuration.getDocumentStreams()) {
+            for (DocumentFilterConjunctionGroupInfo documentFilterGroupInfo : documentStreamInfo.getDocumentFilterGroups()) {
+                String telemetryType = documentFilterGroupInfo.getTelemetryType().getValue();
+                try {
+                    Validator.validateTelemetryType(documentFilterGroupInfo.getTelemetryType());
+                    Validator.validateDocumentFilters(documentFilterGroupInfo);
 
+                    if (!newValidDocumentsConfig.containsKey(telemetryType)) {
+                        newValidDocumentsConfig.put(telemetryType, new ConcurrentHashMap<>());
+                    }
+
+                    ConcurrentMap<String, List<FilterConjunctionGroupInfo>>  innerMap = newValidDocumentsConfig.get(telemetryType);
+                    if (innerMap.containsKey(documentStreamInfo.getId())) {
+                        innerMap.get(documentStreamInfo.getId()).add(documentFilterGroupInfo.getFilters());
+                    } else {
+                        List<FilterConjunctionGroupInfo> conjunctionGroupInfos = new ArrayList<>();
+                        conjunctionGroupInfos.add(documentFilterGroupInfo.getFilters());
+                        innerMap.put(documentStreamInfo.getId(), conjunctionGroupInfos);
+                    }
+                } catch (UnexpectedFilterCreateException | TelemetryTypeException e) {
+                    CollectionConfigurationError error = new CollectionConfigurationError();
+                    if (e instanceof TelemetryTypeException) {
+                        error.setCollectionConfigurationErrorType(CollectionConfigurationErrorType.fromString("DocumentTelemetryTypeUnsupported"));
+                    } else {
+                        error.setCollectionConfigurationErrorType(CollectionConfigurationErrorType.FILTER_FAILURE_TO_CREATE_UNEXPECTED);
+                    }
+
+                    error.setMessage(e.getMessage());
+
+                    KeyValuePairString documentStreamInfoId = new KeyValuePairString();
+                    documentStreamInfoId.setKey("DocumentStreamInfoId");
+                    documentStreamInfoId.setValue(documentStreamInfo.getId());
+                    KeyValuePairString etag = new KeyValuePairString();
+                    etag.setKey("Etag");
+                    etag.setValue(configuration.getETag());
+
+                    List<KeyValuePairString> data = new ArrayList<>();
+                    data.add(documentStreamInfoId);
+                    data.add(etag);
+                    error.setData(data);
+
+                    validationErrors.add(error);
+                }
+            }
+        }
+        validDocumentFilterConjunctionGroupInfos = newValidDocumentsConfig;
     }
 
     private void parseMetricFilterConfiguration(CollectionConfigurationInfo configuration) {
+        ConcurrentMap<String, List<DerivedMetricInfo>> newValidConfig = new ConcurrentHashMap<>();
+        for (DerivedMetricInfo derivedMetricInfo : configuration.getMetrics()) {
+            try {
+                if (!seenMetricIds.contains(derivedMetricInfo.getId())) {
+                    seenMetricIds.add(derivedMetricInfo.getId());
+                    Validator.validateTelemetryType(TelemetryType.fromString(derivedMetricInfo.getTelemetryType()));
+                    Validator.checkCustomMetricProjection(derivedMetricInfo);
+                    Validator.validateMetricFilters(derivedMetricInfo);
 
+                    if(newValidConfig.containsKey(derivedMetricInfo.getTelemetryType())) {
+                        newValidConfig.get(derivedMetricInfo.getTelemetryType()).add(derivedMetricInfo);
+                    } else {
+                        List<DerivedMetricInfo> infos = new ArrayList<>();
+                        infos.add(derivedMetricInfo);
+                        newValidConfig.put(derivedMetricInfo.getTelemetryType(), infos);
+                    }
+                } else {
+                    throw new DuplicateMetricIdException("Duplicate Metric Id: " + derivedMetricInfo.getId());
+                }
+                // TODO (harskaur): For future PR, add initialization to projection maps here
+            } catch (UnexpectedFilterCreateException | TelemetryTypeException | DuplicateMetricIdException e) {
+                CollectionConfigurationError error = new CollectionConfigurationError();
+                if (e instanceof TelemetryTypeException) {
+                    error.setCollectionConfigurationErrorType(CollectionConfigurationErrorType.METRIC_TELEMETRY_TYPE_UNSUPPORTED);
+                } else if (e instanceof UnexpectedFilterCreateException) {
+                    error.setCollectionConfigurationErrorType(CollectionConfigurationErrorType.FILTER_FAILURE_TO_CREATE_UNEXPECTED);
+                } else {
+                    error.setCollectionConfigurationErrorType(CollectionConfigurationErrorType.METRIC_DUPLICATE_IDS);
+                }
+
+                error.setMessage(e.getMessage());
+
+                KeyValuePairString metricId = new KeyValuePairString();
+                metricId.setKey("MetricId");
+                metricId.setValue(derivedMetricInfo.getId());
+                KeyValuePairString etag = new KeyValuePairString();
+                etag.setKey("Etag");
+                etag.setValue(configuration.getETag());
+
+                List<KeyValuePairString> data = new ArrayList<>();
+                data.add(metricId);
+                data.add(etag);
+                error.setData(data);
+
+                validationErrors.add(error);
+            }
+        }
+        validDerivedMetricInfos = newValidConfig;
     }
 
     public static class Validator {
@@ -51,12 +149,25 @@ public class FilteringConfiguration {
             KnownDependencyColumns.DATA,
             KnownDependencyColumns.TARGET,
             KnownDependencyColumns.TYPE,
-            "Message",
-            "Exception.Message",
-            "Exception.StackTrace"
+            KnownTraceColumns.MESSAGE,
+            KnownExceptionColumns.MESSAGE,
+            KnownExceptionColumns.STACK
         ));
 
-        public void validateTelemetryType(TelemetryType telemetryType) throws TelemetryTypeException {
+        private static final Set<String> knownNumericColumns = new HashSet<>(asList(
+            KnownRequestColumns.RESPONSE_CODE,
+            KnownRequestColumns.DURATION,
+            KnownDependencyColumns.RESULT_CODE
+        ));
+
+        private static final Set<PredicateType> validStringPredicates = new HashSet<>(asList(
+            PredicateType.CONTAINS,
+            PredicateType.DOES_NOT_CONTAIN,
+            PredicateType.EQUAL,
+            PredicateType.NOT_EQUAL
+        ));
+
+        public static void validateTelemetryType(TelemetryType telemetryType) throws TelemetryTypeException {
             if (telemetryType.equals(TelemetryType.PERFORMANCE_COUNTER)) {
                 throw new TelemetryTypeException("The telemetry type PerformanceCounter was specified, but the distro does not send performance counters other than the default CPU/Mem to quickpulse");
             } else if (telemetryType.equals(TelemetryType.EVENT)) {
@@ -68,41 +179,111 @@ public class FilteringConfiguration {
             }
         }
 
-        public void checkCustomMetricProjection(DerivedMetricInfo derivedMetricInfo) throws UnexpectedFilterCreateException {
+        public static void checkCustomMetricProjection(DerivedMetricInfo derivedMetricInfo) throws UnexpectedFilterCreateException {
             if (derivedMetricInfo.getProjection().startsWith("CustomMetrics.")) {
                 throw new UnexpectedFilterCreateException("The projection of a customMetric property is not supported in this distro.");
             }
         }
 
-        public void validateMetricFilters(DerivedMetricInfo derivedMetricInfo) {
-            derivedMetricInfo.getFilterGroups().forEach(filterGroup -> {
-                filterGroup.getFilters().forEach(filter -> {
+        public static void validateMetricFilters(DerivedMetricInfo derivedMetricInfo) throws UnexpectedFilterCreateException {
+            for (FilterConjunctionGroupInfo conjunctionGroupInfo: derivedMetricInfo.getFilterGroups()) {
+                for (FilterInfo filter: conjunctionGroupInfo.getFilters()) {
                     TelemetryType telemetryType = TelemetryType.fromString(derivedMetricInfo.getTelemetryType());
-                    //validateFieldNames(filter.getFieldName(), telemetryType);
-                    //validatePredicateAndComparand(filter);
-                });
-            });
+                    validateFieldNames(filter.getFieldName(), telemetryType);
+                    validatePredicateAndComparand(filter);
+                }
+            }
         }
 
-        public void validateDocumentFilters(DocumentFilterConjunctionGroupInfo documentFilterConjunctionGroupInfo) {
+        public static void validateDocumentFilters(DocumentFilterConjunctionGroupInfo documentFilterConjunctionGroupInfo) throws UnexpectedFilterCreateException {
             FilterConjunctionGroupInfo conjunctionGroupInfo = documentFilterConjunctionGroupInfo.getFilters();
-            conjunctionGroupInfo.getFilters().forEach(filter -> {
-                //validateFieldNames(filter.getFieldName(), documentFilterConjunctionGroupInfo.getTelemetryType());
-                //validatePredicateAndComparand(filter);
-            });
+            for (FilterInfo filter : conjunctionGroupInfo.getFilters()) {
+                validateFieldNames(filter.getFieldName(), documentFilterConjunctionGroupInfo.getTelemetryType());
+                validatePredicateAndComparand(filter);
+            }
         }
 
-        private boolean isCustomDimOrAnyField(String fieldName) {
+        private static boolean isCustomDimOrAnyField(String fieldName) {
             return fieldName.startsWith("CustomDimensions.") || fieldName.equals("*");
         }
 
-        private void validateFieldNames(String fieldName, TelemetryType telemetryType) throws UnexpectedFilterCreateException {
+        private static void validateFieldNames(String fieldName, TelemetryType telemetryType) throws UnexpectedFilterCreateException {
+            if (fieldName.isEmpty()) {
+                throw new UnexpectedFilterCreateException("A filter must have a field name.");
+            }
+            if (fieldName.startsWith("CustomMetrics.")) {
+                throw new UnexpectedFilterCreateException("Filtering of a customMetric property is not supported in this distro.");
+            }
+
+            // Only writing the following if-else blocks in case the service side experiences some weird bug that sends us a weird
+            // fieldName value. From a UI perspective, it currently isn't possible to select an invalid fieldName from the dropdown menu.
+            // We don't want the Filter/*Columns classes to need to deal with fieldNames that don't exist - validation should weed out buggy
+            // filters.
             if (telemetryType.equals(TelemetryType.REQUEST)) {
-                if(!this.isCustomDimOrAnyField(fieldName) && !KnownRequestColumns.allColumns.contains(fieldName)) {
+                if(!isCustomDimOrAnyField(fieldName) && !KnownRequestColumns.allColumns.contains(fieldName)) {
                     throw new UnexpectedFilterCreateException(fieldName + " is not a valid field name for the telemetry type Request");
                 }
             } else if (telemetryType.equals(TelemetryType.DEPENDENCY)) {
+                if(!isCustomDimOrAnyField(fieldName) && !KnownDependencyColumns.allColumns.contains(fieldName)) {
+                    throw new UnexpectedFilterCreateException(fieldName + " is not a valid field name for the telemetry type Dependency");
+                }
+            } else if (telemetryType.equals(TelemetryType.EXCEPTION)) {
+                if(!isCustomDimOrAnyField(fieldName) && !fieldName.equals(KnownExceptionColumns.MESSAGE) && !fieldName.equals(KnownExceptionColumns.STACK)) {
+                    throw new UnexpectedFilterCreateException(fieldName + " is not a valid field name for the telemetry type Exception");
+                }
+            } else if (telemetryType.equals(TelemetryType.TRACE)) {
+                if(!isCustomDimOrAnyField(fieldName) && !fieldName.equals(KnownTraceColumns.MESSAGE) ) {
+                    throw new UnexpectedFilterCreateException(fieldName + " is not a valid field name for the telemetry type Exception");
+                }
+            } else {
+                throw new UnexpectedFilterCreateException( telemetryType.getValue() + " is not a valid telemetry type");
+            }
+        }
 
+        private static void validatePredicateAndComparand(FilterInfo filter) throws UnexpectedFilterCreateException{
+            if (filter.getComparand().isEmpty()) {
+                // It is possible to not type in a comparand and the service side to send us empty string.
+                throw new UnexpectedFilterCreateException("A filter must have a non-empty comparand. FilterName: " + filter.getFieldName() + " Predicate: " + filter.getPredicate().getValue());
+            } else if (Filter.ANY_FIELD.equals(filter.getFieldName()) &&
+                !(filter.getPredicate().equals(PredicateType.CONTAINS) || filter.getPredicate().equals(PredicateType.DOES_NOT_CONTAIN))) {
+                // While the UI allows != and == for the ANY_FIELD fieldName, .net classic code only allows contains/not contains & the spec follows
+                // .net classic behavior for this particular condition.
+                throw new UnexpectedFilterCreateException("The predicate " + filter.getPredicate().getValue() + " is not supported for the field name *");
+            } else if (knownNumericColumns.contains(filter.getFieldName())) {
+                // Technically the following case isn't possible to hit with current UI; only checking in case service side has a weird bug and sends some weird value.
+                if (filter.getPredicate().equals(PredicateType.CONTAINS) || filter.getPredicate().equals(PredicateType.DOES_NOT_CONTAIN)) {
+                    throw new UnexpectedFilterCreateException("The predicate " + filter.getPredicate().getValue() + "is not supported for the field name " + filter.getFieldName());
+                }
+
+                // Just in case a strange timestamp value is passed from the service side. Not completely sure how robust the service side validation is for user entered durations.
+                if (KnownDependencyColumns.DURATION.equals(filter.getFieldName()) && Filter.getMicroSecondsFromFilterTimestampString(filter.getComparand()) == Long.MIN_VALUE) {
+                    throw new UnexpectedFilterCreateException("The provided duration timestamp can't be converted to microseconds: " + filter.getComparand());
+                } else { // The service side not does not validate entered codes for result code or response code.
+                    try {
+                        Long.parseLong(filter.getComparand());
+                    } catch (NumberFormatException e){
+                        throw new UnexpectedFilterCreateException("Could not convert the provided result/response code to a numeric value: " + filter.getComparand());
+                    }
+                }
+            } else if (knownStringColumns.contains(filter.getFieldName()) || filter.getFieldName().startsWith(Filter.CUSTOM_DIM_FIELDNAME_PREFIX)) {
+                // While the UI allows a user to select any predicate for a custom dimension filter, .net classic treats all custom dimensions like
+                // String values. therefore we validate for predicates applicable to String. This is called out in the spec as well.
+                if (!validStringPredicates.contains(filter.getPredicate())) {
+                    throw new UnexpectedFilterCreateException("The predicate " + filter.getPredicate().getValue() + " is not supported for the field " + filter.getFieldName());
+                }
+            } else if (filter.getFieldName().equals(KnownRequestColumns.SUCCESS)) {
+                // This case shouldn't happen in practice as the UI restricts which predicates can be selected in the dropdown for success. However,
+                // checking this anyway in the service side has a future bug.
+                if(!filter.getPredicate().equals(PredicateType.NOT_EQUAL) && !filter.getPredicate().equals(PredicateType.EQUAL)) {
+                    throw new UnexpectedFilterCreateException("The predicate " + filter.getPredicate().getValue() + " is not supported for the Success field");
+                }
+
+                // This case also shouldn't happen in practice as the UI has dropdown for success values. However, checking this anyway in case the service side has a
+                // future bug.
+                String lowerCaseComparand = filter.getComparand().toLowerCase();
+                if (!lowerCaseComparand.equals("true") && !lowerCaseComparand.equals("false")) {
+                    throw new UnexpectedFilterCreateException("The provided value for the Success comparand " + filter.getComparand() + "is not a valid boolean value");
+                }
             }
         }
     }
