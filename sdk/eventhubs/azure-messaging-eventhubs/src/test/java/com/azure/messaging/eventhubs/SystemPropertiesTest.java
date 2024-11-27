@@ -36,7 +36,8 @@ public class SystemPropertiesTest {
     private final byte[] data = "hello-world".getBytes(StandardCharsets.UTF_8);
     private final String partitionKey = "my-partition-key";
     private final Instant enqueuedTime = Instant.ofEpochSecond(1625810878);
-    private final long offset = 102L;
+    private final Long offset = 102L;
+    private final String offsetString = String.valueOf(offset);
     private final long sequenceNumber = 12345L;
     private final Integer replicationSegment = 110;
 
@@ -108,7 +109,7 @@ public class SystemPropertiesTest {
     @Test
     public void cannotModifyProperties() {
         // Act
-        final SystemProperties properties = new SystemProperties(message, offset, enqueuedTime, sequenceNumber,
+        final SystemProperties properties = new SystemProperties(message, offsetString, enqueuedTime, sequenceNumber,
             partitionKey, replicationSegment);
         final HashMap<String, Object> testMap = new HashMap<>();
         testMap.put("one", 1L);
@@ -117,7 +118,7 @@ public class SystemPropertiesTest {
         // Assert
         assertEquals(enqueuedTime, properties.getEnqueuedTime());
         assertEquals(sequenceNumber, properties.getSequenceNumber());
-        assertEquals(offset, properties.getOffset());
+        assertEquals(offsetString, properties.getOffsetString());
         assertEquals(partitionKey, properties.getPartitionKey());
         assertEquals(replicationSegment, properties.getReplicationSegment());
 
@@ -157,13 +158,13 @@ public class SystemPropertiesTest {
     @Test
     public void queryProperties() {
         // Act
-        final SystemProperties properties = new SystemProperties(message, offset, enqueuedTime, sequenceNumber,
+        final SystemProperties properties = new SystemProperties(message, offsetString, enqueuedTime, sequenceNumber,
             partitionKey, null);
 
         // Assert
         assertEquals(enqueuedTime, properties.getEnqueuedTime());
         assertEquals(sequenceNumber, properties.getSequenceNumber());
-        assertEquals(offset, properties.getOffset());
+        assertEquals(offsetString, properties.getOffsetString());
         assertEquals(partitionKey, properties.getPartitionKey());
 
         assertEquals(message.getProperties().getMessageId().toString(),
