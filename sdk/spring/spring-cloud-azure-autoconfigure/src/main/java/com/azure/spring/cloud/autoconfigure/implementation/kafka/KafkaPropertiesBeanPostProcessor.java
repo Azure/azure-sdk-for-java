@@ -19,7 +19,7 @@ class KafkaPropertiesBeanPostProcessor extends AbstractKafkaPropertiesBeanPostPr
 
     @Override
     protected Map<String, Object> getMergedProducerProperties(KafkaProperties properties) {
-        return properties.buildProducerProperties(null);
+        return invokeBuildKafkaProperties(properties, "buildProducerProperties");
     }
 
     @Override
@@ -29,7 +29,7 @@ class KafkaPropertiesBeanPostProcessor extends AbstractKafkaPropertiesBeanPostPr
 
     @Override
     protected Map<String, Object> getMergedConsumerProperties(KafkaProperties properties) {
-        return properties.buildConsumerProperties(null);
+        return invokeBuildKafkaProperties(properties, "buildConsumerProperties");
     }
 
     @Override
@@ -39,7 +39,7 @@ class KafkaPropertiesBeanPostProcessor extends AbstractKafkaPropertiesBeanPostPr
 
     @Override
     protected Map<String, Object> getMergedAdminProperties(KafkaProperties properties) {
-        return properties.buildAdminProperties(null);
+        return invokeBuildKafkaProperties(properties, "buildAdminProperties");
 
     }
 

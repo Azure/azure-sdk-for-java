@@ -24,6 +24,7 @@ import java.util.Collections;
 import java.util.Map;
 
 import static com.azure.spring.cloud.autoconfigure.implementation.eventhubs.kafka.AzureEventHubsKafkaAutoConfigurationTests.CONNECTION_STRING_FORMAT;
+import static com.azure.spring.cloud.autoconfigure.implementation.util.TestCompatibilityUtils.invokeBuildKafkaProperties;
 import static org.apache.kafka.clients.CommonClientConfigs.SECURITY_PROTOCOL_CONFIG;
 import static org.apache.kafka.clients.consumer.ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG;
 import static org.apache.kafka.common.config.SaslConfigs.SASL_MECHANISM;
@@ -54,7 +55,7 @@ class AzureEventHubsKafkaConfigurationTests {
                     assertThat(context).hasSingleBean(KafkaBinderConfigurationProperties.class);
 
                     KafkaProperties kafkaProperties = context.getBean(KafkaProperties.class);
-                    assertSaslPlainConfigured(kafkaProperties.buildProducerProperties(null));
+                    assertSaslPlainConfigured(invokeBuildKafkaProperties(kafkaProperties, "buildProducerProperties"));
                     DefaultKafkaConsumerFactory<?, ?> consumerFactory = (DefaultKafkaConsumerFactory<?, ?>) context.getBean(ConsumerFactory.class);
                     assertSaslPlainConfigured(consumerFactory.getConfigurationProperties());
                     DefaultKafkaProducerFactory<?, ?> producerFactory = (DefaultKafkaProducerFactory<?, ?>) context.getBean(ProducerFactory.class);
