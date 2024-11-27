@@ -138,6 +138,10 @@ class ChangeFeedQueryImpl<T> {
             headers.put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL, this.client.getConsistencyLevel().toString());
         }
 
+        // always populate the collectionRid header
+        // in case of container has been recreated, this will allow correct error being returned to SDK
+        headers.put(HttpConstants.HttpHeaders.INTENDED_COLLECTION_RID_HEADER, this.changeFeedState.getContainerRid());
+
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(clientContext,
             OperationType.ReadFeed,
             resourceType,

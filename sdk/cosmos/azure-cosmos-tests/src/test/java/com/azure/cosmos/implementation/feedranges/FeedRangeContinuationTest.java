@@ -6,8 +6,11 @@ package com.azure.cosmos.implementation.feedranges;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PartitionKeyRange;
+import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
+import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.query.CompositeContinuationToken;
@@ -192,6 +195,11 @@ public class FeedRangeContinuationTest {
         RxDocumentClientImpl clientMock = Mockito.mock(RxDocumentClientImpl.class);
         RxPartitionKeyRangeCache cacheMock = Mockito.mock(RxPartitionKeyRangeCache.class);
         Mockito.when(clientMock.getPartitionKeyRangeCache()).thenReturn(cacheMock);
+        RxDocumentServiceRequest rxDocumentServiceRequest =
+            RxDocumentServiceRequest.create(
+                null,
+                OperationType.ReadFeed,
+                ResourceType.Document);
 
         List<PartitionKeyRange> childRanges = new ArrayList<>();
         childRanges.add(new PartitionKeyRange("1", "AA", "BB"));
@@ -205,7 +213,7 @@ public class FeedRangeContinuationTest {
                 eq(true),
                 isNull())).thenReturn(Mono.just(new Utils.ValueHolder<>(childRanges)));
 
-        continuation.handleFeedRangeGone(clientMock, goneException).block();
+        continuation.handleFeedRangeGone(clientMock, goneException, rxDocumentServiceRequest).block();
         assertThat(continuation.getCompositeContinuationTokens().size()).isEqualTo(2);
         CompositeContinuationToken token1 = continuation.getCompositeContinuationTokens().poll();
         CompositeContinuationToken token2 = continuation.getCompositeContinuationTokens().poll();
@@ -258,6 +266,11 @@ public class FeedRangeContinuationTest {
 
         List<PartitionKeyRange> parentRanges = new ArrayList<>();
         parentRanges.add(new PartitionKeyRange("3", "AA", "DD"));
+        RxDocumentServiceRequest rxDocumentServiceRequest =
+            RxDocumentServiceRequest.create(
+                null,
+                OperationType.ReadFeed,
+                ResourceType.Document);
 
         Mockito.when(
             cacheMock.tryGetOverlappingRangesAsync(
@@ -267,7 +280,7 @@ public class FeedRangeContinuationTest {
                 eq(true),
                 isNull())).thenReturn(Mono.just(new Utils.ValueHolder<>(parentRanges)));
 
-        continuation.handleFeedRangeGone(clientMock, goneException).block();
+        continuation.handleFeedRangeGone(clientMock, goneException, rxDocumentServiceRequest).block();
         assertThat(continuation.getCompositeContinuationTokens().size()).isEqualTo(2);
         CompositeContinuationToken token1 = continuation.getCompositeContinuationTokens().poll();
         CompositeContinuationToken token2 = continuation.getCompositeContinuationTokens().poll();
