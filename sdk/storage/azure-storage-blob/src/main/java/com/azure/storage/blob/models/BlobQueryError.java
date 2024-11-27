@@ -15,7 +15,7 @@ public class BlobQueryError {
 
     /**
      * Creates a new BlobQueryError object.
-     * @param fatal Whether or not the error is fatal.
+     * @param fatal Whether the error is fatal.
      * @param name The name of the error.
      * @param description A description of the error.
      * @param position The blob offset at which the error occurred.
@@ -28,16 +28,19 @@ public class BlobQueryError {
     }
 
     /**
-     * Whether or not the error is fatal. If true, this error prevents further query processing. More result data may
-     * be returned, but there is no guarantee that all of the original data will be processed. If false, this error
-     * does not prevent further query processing.
-     * @return Whether or not the error is fatal.
+     * Whether the error is fatal. If true, this error prevents further query processing. More result data may be
+     * returned, but there is no guarantee that all the original data will be processed. If false, this error does not
+     * prevent further query processing.
+     *
+     * @return Whether the error is fatal.
      */
     public boolean isFatal() {
         return fatal;
     }
 
     /**
+     * Gets the name of the error.
+     *
      * @return The name of the error.
      */
     public String getName() {
@@ -45,6 +48,7 @@ public class BlobQueryError {
     }
 
     /**
+     * Gets a description of the error.
      *
      * @return A description of the error.
      */
@@ -53,6 +57,8 @@ public class BlobQueryError {
     }
 
     /**
+     * Gets the blob offset at which the error occurred.
+     *
      * @return The blob offset at which the error occurred.
      */
     public long getPosition() {

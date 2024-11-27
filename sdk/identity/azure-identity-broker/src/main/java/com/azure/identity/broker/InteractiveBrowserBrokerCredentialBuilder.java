@@ -39,6 +39,12 @@ import java.util.function.Function;
  */
 public class InteractiveBrowserBrokerCredentialBuilder extends InteractiveBrowserCredentialBuilder {
     /**
+     * Creates a new instance of {@link InteractiveBrowserBrokerCredentialBuilder}.
+     */
+    public InteractiveBrowserBrokerCredentialBuilder() {
+    }
+
+    /**
      * Sets the parent window handle used by the broker. For use on Windows only.
      *
      * @param windowHandle The window handle of the current application, or 0 for a console application.

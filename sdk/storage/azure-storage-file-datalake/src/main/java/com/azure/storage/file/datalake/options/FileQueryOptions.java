@@ -18,7 +18,6 @@ import java.util.function.Consumer;
  */
 @Fluent
 public class FileQueryOptions {
-
     private final String expression;
     private final OutputStream outputStream;
     private FileQuerySerialization inputSerialization;
@@ -30,6 +29,7 @@ public class FileQueryOptions {
     /**
      * Constructs a {@link FileQueryOptions}.
      * @param expression The query expression.
+     * @throws NullPointerException If {@code expression} is null.
      */
     public FileQueryOptions(String expression) {
         StorageImplUtils.assertNotNull("expression", expression);
@@ -41,6 +41,7 @@ public class FileQueryOptions {
      * Constructs a {@link FileQueryOptions}.
      * @param expression The query expression.
      * @param outputStream Gets the OutputStream where the downloaded data will be written.
+     * @throws NullPointerException If {@code expression} or {@code outputStream} is null.
      */
     public FileQueryOptions(String expression, OutputStream outputStream) {
         StorageImplUtils.assertNotNull("expression", expression);
