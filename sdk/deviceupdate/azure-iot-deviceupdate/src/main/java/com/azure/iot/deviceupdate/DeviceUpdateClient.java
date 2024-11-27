@@ -21,7 +21,8 @@ import com.azure.core.util.polling.SyncPoller;
 /** Initializes a new instance of the synchronous DeviceUpdateClient type. */
 @ServiceClient(builder = DeviceUpdateClientBuilder.class)
 public final class DeviceUpdateClient {
-    @Generated private final DeviceUpdateAsyncClient client;
+    @Generated
+    private final DeviceUpdateAsyncClient client;
 
     /**
      * Initializes an instance of DeviceUpdateClient class.
@@ -192,8 +193,8 @@ public final class DeviceUpdateClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginImportUpdate(
-            BinaryData updateToImport, RequestOptions requestOptions) {
+    public SyncPoller<BinaryData, BinaryData> beginImportUpdate(BinaryData updateToImport,
+        RequestOptions requestOptions) {
         return this.client.beginImportUpdate(updateToImport, requestOptions).getSyncPoller();
     }
 
@@ -266,8 +267,8 @@ public final class DeviceUpdateClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getUpdateWithResponse(
-            String provider, String name, String version, RequestOptions requestOptions) {
+    public Response<BinaryData> getUpdateWithResponse(String provider, String name, String version,
+        RequestOptions requestOptions) {
         return this.client.getUpdateWithResponse(provider, name, version, requestOptions).block();
     }
 
@@ -287,8 +288,8 @@ public final class DeviceUpdateClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginDeleteUpdate(
-            String provider, String name, String version, RequestOptions requestOptions) {
+    public SyncPoller<BinaryData, BinaryData> beginDeleteUpdate(String provider, String name, String version,
+        RequestOptions requestOptions) {
         return this.client.beginDeleteUpdate(provider, name, version, requestOptions).getSyncPoller();
     }
 
@@ -416,8 +417,8 @@ public final class DeviceUpdateClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listFiles(
-            String provider, String name, String version, RequestOptions requestOptions) {
+    public PagedIterable<BinaryData> listFiles(String provider, String name, String version,
+        RequestOptions requestOptions) {
         return new PagedIterable<>(this.client.listFiles(provider, name, version, requestOptions));
     }
 
@@ -485,8 +486,8 @@ public final class DeviceUpdateClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getFileWithResponse(
-            String provider, String name, String version, String fileId, RequestOptions requestOptions) {
+    public Response<BinaryData> getFileWithResponse(String provider, String name, String version, String fileId,
+        RequestOptions requestOptions) {
         return this.client.getFileWithResponse(provider, name, version, fileId, requestOptions).block();
     }
 

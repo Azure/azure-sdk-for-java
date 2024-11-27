@@ -28,12 +28,10 @@ import static org.junit.jupiter.api.Assertions.fail;
 public class DeviceUpdateClientTests extends TestBase {
 
     private DeviceUpdateAsyncClient createClient() {
-        DeviceUpdateClientBuilder builder =
-            new DeviceUpdateClientBuilder()
-                .endpoint(TestData.ACCOUNT_ENDPOINT)
-                .instanceId(TestData.INSTANCE_ID)
-                .httpClient(HttpClient.createDefault())
-                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
+        DeviceUpdateClientBuilder builder = new DeviceUpdateClientBuilder().endpoint(TestData.ACCOUNT_ENDPOINT)
+            .instanceId(TestData.INSTANCE_ID)
+            .httpClient(HttpClient.createDefault())
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
         if (getTestMode() == TestMode.PLAYBACK) {
             builder.httpClient(interceptorManager.getPlaybackClient())
                 .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
@@ -102,7 +100,8 @@ public class DeviceUpdateClientTests extends TestBase {
     @Test
     public void testGetUpdate() {
         DeviceUpdateAsyncClient client = createClient();
-        Response<BinaryData> response = client.getUpdateWithResponse(TestData.PROVIDER, TestData.NAME, TestData.VERSION, null).block();
+        Response<BinaryData> response
+            = client.getUpdateWithResponse(TestData.PROVIDER, TestData.NAME, TestData.VERSION, null).block();
         assertNotNull(response.getValue());
     }
 
@@ -144,7 +143,8 @@ public class DeviceUpdateClientTests extends TestBase {
     public void testImportUpdates() {
         DeviceUpdateAsyncClient client = createClient();
 
-        PollerFlux<BinaryData, BinaryData> response = client.beginImportUpdate(BinaryData.fromString("{\"test\":\"test\"}"), null);
+        PollerFlux<BinaryData, BinaryData> response
+            = client.beginImportUpdate(BinaryData.fromString("{\"test\":\"test\"}"), null);
         BinaryData binaryData = response.last().block().getFinalResult().block();
     }
 }

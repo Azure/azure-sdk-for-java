@@ -23,12 +23,10 @@ import static org.junit.jupiter.api.Assertions.*;
 public class DeviceManagementClientTests extends TestBase {
 
     private DeviceManagementAsyncClient createClient() {
-        DeviceManagementClientBuilder builder =
-            new DeviceManagementClientBuilder()
-                .endpoint(TestData.ACCOUNT_ENDPOINT)
-                .instanceId(TestData.INSTANCE_ID)
-                .httpClient(HttpClient.createDefault())
-                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
+        DeviceManagementClientBuilder builder = new DeviceManagementClientBuilder().endpoint(TestData.ACCOUNT_ENDPOINT)
+            .instanceId(TestData.INSTANCE_ID)
+            .httpClient(HttpClient.createDefault())
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
         if (getTestMode() == TestMode.PLAYBACK) {
             builder.httpClient(interceptorManager.getPlaybackClient())
                 .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));

@@ -9,8 +9,8 @@ public class TestData {
 
     public static final String CLIENT_ID = getTestValue("CLIENT_ID", "clientId");
 
-    public static final String ACCOUNT_ENDPOINT = getTestValue("ACCOUNT_ENDPOINT",
-        "contosoprod.api.prod.adu.microsoft.com");
+    public static final String ACCOUNT_ENDPOINT
+        = getTestValue("ACCOUNT_ENDPOINT", "contosoprod.api.prod.adu.microsoft.com");
 
     public static final String INSTANCE_ID = getTestValue("INSTANCE_ID", "sdkinstance");
 
@@ -24,8 +24,7 @@ public class TestData {
 
     private static String getTestValue(String name, String defaultValue) {
         if (Configuration.getGlobalConfiguration().contains(name)) {
-            return Configuration.getGlobalConfiguration()
-                .get(name);
+            return Configuration.getGlobalConfiguration().get(name);
         } else {
             String value = System.getenv("AZURE_" + name);
             if (value == null) {
