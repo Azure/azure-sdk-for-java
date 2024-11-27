@@ -63,10 +63,27 @@ public final class NonAzureOpenAIClientImpl {
         return this.serializerAdapter;
     }
 
+    /** The endpoint to send API requests to. */
+    private final String endpoint;
+
     /**
-     * This is the endpoint that non-azure OpenAI supports. Currently, it has only v1 version.
+     * Gets the endpoint that this client is configured to send requests to.
+     *
+     * @return the endpoint value.
+     */
+    public String getEndpoint() {
+        return this.endpoint;
+    }
+
+    /**
+     * This is the generic endpoint that non-azure OpenAI supports. Currently, it has only v1 version.
      */
     public static final String OPEN_AI_ENDPOINT = "https://api.openai.com/v1";
+
+    /**
+     * This is the EU-based endpoint that non-azure OpenAI supports. Currently, it has only v1 version.
+     */
+    public static final String EU_OPEN_AI_ENDPOINT = "https://eu.api.openai.com/v1";
 
     /**
      * Initializes an instance of OpenAIClient client.
@@ -74,9 +91,10 @@ public final class NonAzureOpenAIClientImpl {
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      */
-    public NonAzureOpenAIClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter) {
+    public NonAzureOpenAIClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
+        this.endpoint = endpoint == null ? OPEN_AI_ENDPOINT : endpoint;
         this.service
             = RestProxy.create(NonAzureOpenAIClientService.class, this.httpPipeline, this.getSerializerAdapter());
     }
