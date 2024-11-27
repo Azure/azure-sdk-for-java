@@ -34,19 +34,16 @@ public class ChatResponseMocker {
         return generateMockResponse(body, request, 200);
     }
 
-    public static HttpResponse createChatThreadInvalidParticipantResponse(HttpRequest request, CreateChatThreadOptions options, CommunicationUserIdentifier invalidUser) {
+    public static HttpResponse createChatThreadInvalidParticipantResponse(HttpRequest request,
+        CreateChatThreadOptions options, CommunicationUserIdentifier invalidUser) {
         List<MockCommunicationError> invalidParticipants = new ArrayList<>();
-        invalidParticipants.add(new MockCommunicationError()
-            .setTarget(invalidUser.getId()));
+        invalidParticipants.add(new MockCommunicationError().setTarget(invalidUser.getId()));
 
-        MockCreateChatThreadResult result = new MockCreateChatThreadResult()
-            .setChatThread(new ChatThreadProperties()
-                .setTopic(options.getTopic())
+        MockCreateChatThreadResult result
+            = new MockCreateChatThreadResult().setChatThread(new ChatThreadProperties().setTopic(options.getTopic())
                 .setCreatedByCommunicationIdentifier(new CommunicationIdentifierModel()
-                    .setCommunicationUser(new CommunicationUserIdentifierModel()
-                        .setId("8:acs:000")))
-                .setId("000"))
-            .setInvalidParticipants(invalidParticipants);
+                    .setCommunicationUser(new CommunicationUserIdentifierModel().setId("8:acs:000")))
+                .setId("000")).setInvalidParticipants(invalidParticipants);
 
         ObjectMapper mapper = new ObjectMapper();
         String body = null;
@@ -59,13 +56,13 @@ public class ChatResponseMocker {
         return generateMockResponse(body, request, 201);
     }
 
-    public static HttpResponse addParticipantsInvalidParticipantResponse(HttpRequest request, CommunicationUserIdentifier invalidUser) {
+    public static HttpResponse addParticipantsInvalidParticipantResponse(HttpRequest request,
+        CommunicationUserIdentifier invalidUser) {
         List<MockCommunicationError> invalidParticipants = new ArrayList<>();
-        invalidParticipants.add(new MockCommunicationError()
-            .setTarget(invalidUser.getId()));
+        invalidParticipants.add(new MockCommunicationError().setTarget(invalidUser.getId()));
 
-        MockAddChatParticipantsResult result = new MockAddChatParticipantsResult()
-            .setInvalidParticipants(invalidParticipants);
+        MockAddChatParticipantsResult result
+            = new MockAddChatParticipantsResult().setInvalidParticipants(invalidParticipants);
 
         ObjectMapper mapper = new ObjectMapper();
         String body = null;

@@ -36,8 +36,8 @@ public final class ChatMessageContent {
      * @param participants The participants
      * @param initiator The initiator
      */
-    public ChatMessageContent(
-            String message, String topic, Iterable<ChatParticipant> participants, CommunicationIdentifier initiator) {
+    public ChatMessageContent(String message, String topic, Iterable<ChatParticipant> participants,
+        CommunicationIdentifier initiator) {
 
         this.message = message;
         this.topic = topic;

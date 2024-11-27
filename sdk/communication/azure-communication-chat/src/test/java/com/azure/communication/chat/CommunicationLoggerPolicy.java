@@ -29,13 +29,12 @@ public class CommunicationLoggerPolicy implements HttpPipelinePolicy {
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        return next.process()
-        .flatMap(httpResponse -> {
+        return next.process().flatMap(httpResponse -> {
             final HttpResponse bufferedResponse = httpResponse.buffer();
 
             // Should sanitize printed reponse url
-            System.out.println("MS-CV header for " + testName + " request "
-                + bufferedResponse.getRequest().getUrl() + ": " + bufferedResponse.getHeaderValue("MS-CV"));
+            System.out.println("MS-CV header for " + testName + " request " + bufferedResponse.getRequest().getUrl()
+                + ": " + bufferedResponse.getHeaderValue("MS-CV"));
             return Mono.just(bufferedResponse);
         });
     }
