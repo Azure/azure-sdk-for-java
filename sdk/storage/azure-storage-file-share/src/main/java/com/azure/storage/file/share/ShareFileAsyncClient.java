@@ -3357,13 +3357,43 @@ public class ShareFileAsyncClient {
             .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), stringToSignHandler, context);
     }
 
-    //todo isbr: javadoc
+    /**
+     * NFS only. Creates a hard link to the file specified by path.
+     * <!-- src_embed com.azure.storage.file.share.ShareFileAsyncClient.createHardLink#String -->
+     * <pre>
+     * sourceClient.create&#40;1024&#41;.block&#40;&#41;;
+     * hardLinkClient.createHardLink&#40;sourceClient.getFilePath&#40;&#41;&#41;
+     *     .subscribe&#40;result -&gt; System.out.printf&#40;&quot;Link count is is %s.&quot;,
+     *         result.getNfsProperties&#40;&#41;.getLinkCount&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.share.ShareFileAsyncClient.createHardLink#String -->
+     *
+     * @param targetFile Path of the file to create the hard link to, not including the share.
+     * @return A {@link Mono} containing a {@link ShareFileInfo} describing the state of the hard link.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ShareFileInfo> createHardLink(String targetFile) {
         return createHardLinkWithResponse(new ShareFileCreateHardLinkOptions(targetFile)).flatMap(FluxUtil::toMono);
     }
 
-    //todo isbr: javadoc
+    /**
+     * NFS only. Creates a hard link to the file specified by path.
+     * <!-- src_embed com.azure.storage.file.share.ShareFileAsyncClient.createHardLink#ShareFileCreateHardLinkOptions -->
+     * <pre>
+     * sourceClient.create&#40;1024&#41;.block&#40;&#41;;
+     *
+     * ShareFileCreateHardLinkOptions options = new ShareFileCreateHardLinkOptions&#40;sourceClient.getFilePath&#40;&#41;&#41;
+     *     .setRequestConditions&#40;new ShareRequestConditions&#40;&#41;&#41;;
+     * hardLinkClient.createHardLinkWithResponse&#40;options&#41;
+     *     .subscribe&#40;result -&gt; System.out.printf&#40;&quot;Link count is is %s.&quot;,
+     *         result.getValue&#40;&#41;.getNfsProperties&#40;&#41;.getLinkCount&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.share.ShareFileAsyncClient.createHardLink#ShareFileCreateHardLinkOptions -->
+     *
+     * @param options {@link ShareFileCreateHardLinkOptions}
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains
+     * {@link ShareFileInfo} describing the state of the hard link.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ShareFileInfo>> createHardLinkWithResponse(ShareFileCreateHardLinkOptions options) {
         try {

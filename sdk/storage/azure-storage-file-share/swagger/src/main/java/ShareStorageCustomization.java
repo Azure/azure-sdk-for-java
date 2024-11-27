@@ -42,6 +42,9 @@ public class ShareStorageCustomization extends Customization {
             customization.getPackage("com.azure.storage.file.share.implementation.models")
                 .getClass("FilesAndDirectoriesListSegment"));
 
+        fixDateTimeConversion(customization.getPackage("com.azure.storage.file.share.implementation.models")
+            .getClass("FilesCreateHardLinkHeaders"));
+
         updateImplToMapInternalException(customization.getPackage("com.azure.storage.file.share.implementation"));
 
         addMissingHashMapImport(customization.getPackage("com.azure.storage.file.share.implementation.models"));
@@ -273,5 +276,55 @@ public class ShareStorageCustomization extends Customization {
         for (String className : Arrays.asList("FilesDownloadHeaders", "FilesGetPropertiesHeaders", "DirectoriesGetPropertiesHeaders", "SharesGetPropertiesHeaders")) {
             implementationModels.getClass(className).addImports("java.util.HashMap");
         }
+    }
+
+    //Fix datetime conversion in FilesCreateHardLinkHeaders
+    private static void fixDateTimeConversion(ClassCustomization classCustomization) {
+        classCustomization.customizeAst(ast -> {
+            ClassOrInterfaceDeclaration clazz = ast.getClassByName(classCustomization.getClassName()).get();
+
+            clazz.getConstructors().get(0)
+                .setBody(StaticJavaParser.parseBlock(String.join("\n",
+                        "{",
+                        "this.xMsGroup = rawHeaders.getValue(X_MS_GROUP);",
+                        "this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);",
+                        "this.xMsFileId = rawHeaders.getValue(X_MS_FILE_ID);",
+                        "String xMsFileCreationTime = rawHeaders.getValue(X_MS_FILE_CREATION_TIME);",
+                        "if (xMsFileCreationTime != null) {",
+                        "   this.xMsFileCreationTime = new DateTimeRfc1123(OffsetDateTime.parse(xMsFileCreationTime));",
+                        "}",
+                        "String xMsFileFileType = rawHeaders.getValue(X_MS_FILE_FILE_TYPE);",
+                        "if (xMsFileFileType != null) {",
+                        "   this.xMsFileFileType = NfsFileType.fromString(xMsFileFileType);",
+                        "}",
+                        "String lastModified = rawHeaders.getValue(HttpHeaderName.LAST_MODIFIED);",
+                        "if (lastModified != null) {",
+                        "   this.lastModified = new DateTimeRfc1123(lastModified);",
+                        "}",
+                        "String date = rawHeaders.getValue(HttpHeaderName.DATE);",
+                        "if (date != null) {",
+                        "   this.date = new DateTimeRfc1123(date);",
+                        "}",
+                        "this.xMsMode = rawHeaders.getValue(X_MS_MODE);",
+                        "this.eTag = rawHeaders.getValue(HttpHeaderName.ETAG);",
+                        "String xMsLinkCount = rawHeaders.getValue(X_MS_LINK_COUNT);",
+                        "if (xMsLinkCount != null) {",
+                        "   this.xMsLinkCount = Long.parseLong(xMsLinkCount);",
+                        "}",
+                        "String xMsFileChangeTime = rawHeaders.getValue(X_MS_FILE_CHANGE_TIME);",
+                        "if (xMsFileChangeTime != null) {",
+                        "   this.xMsFileChangeTime = new DateTimeRfc1123(OffsetDateTime.parse(xMsFileChangeTime));",
+                        "}",
+                        "this.xMsFileParentId = rawHeaders.getValue(X_MS_FILE_PARENT_ID);",
+                        "this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);",
+                        "String xMsFileLastWriteTime = rawHeaders.getValue(X_MS_FILE_LAST_WRITE_TIME);",
+                        "if (xMsFileLastWriteTime != null) {",
+                        "   this.xMsFileLastWriteTime = new DateTimeRfc1123(OffsetDateTime.parse(xMsFileLastWriteTime));",
+                        "}",
+                        "this.xMsClientRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_CLIENT_REQUEST_ID);",
+                        "this.xMsOwner = rawHeaders.getValue(X_MS_OWNER);",
+                        "}"
+                )));
+        });
     }
 }

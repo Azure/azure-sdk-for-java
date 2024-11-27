@@ -12,6 +12,7 @@ import com.azure.storage.file.share.models.FileRange;
 import com.azure.storage.file.share.models.PermissionCopyModeType;
 import com.azure.storage.file.share.models.ShareFileCopyInfo;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
+import com.azure.storage.file.share.models.ShareFileInfo;
 import com.azure.storage.file.share.models.ShareFilePermission;
 import com.azure.storage.file.share.models.ShareFileProperties;
 import com.azure.storage.file.share.models.ShareFileRange;
@@ -20,6 +21,7 @@ import com.azure.storage.file.share.models.ShareFileUploadOptions;
 import com.azure.storage.file.share.models.ShareFileUploadRangeOptions;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 import com.azure.storage.file.share.options.ShareFileCopyOptions;
+import com.azure.storage.file.share.options.ShareFileCreateHardLinkOptions;
 import com.azure.storage.file.share.options.ShareFileCreateOptions;
 import com.azure.storage.file.share.options.ShareFileDownloadOptions;
 import com.azure.storage.file.share.options.ShareFileListRangesDiffOptions;
@@ -1267,5 +1269,30 @@ public class ShareFileAsyncJavaDocCodeSamples {
             }
         });
         // END: com.azure.storage.file.share.ShareFileAsyncClient.deleteIfExistsWithResponse#ShareRequestConditions
+    }
+
+    /**
+     * Generates a code sample for using {@link ShareFileAsyncClient#createHardLink(String)},
+     * {@link ShareFileAsyncClient#createHardLinkWithResponse(ShareFileCreateHardLinkOptions)}
+     */
+    public void createHardLink() {
+        ShareFileAsyncClient sourceClient = createAsyncClientWithSASToken();
+        ShareFileAsyncClient hardLinkClient = createAsyncClientWithSASToken();
+        // BEGIN: com.azure.storage.file.share.ShareFileAsyncClient.createHardLink#String
+        sourceClient.create(1024).block();
+        hardLinkClient.createHardLink(sourceClient.getFilePath())
+            .subscribe(result -> System.out.printf("Link count is is %s.",
+                result.getNfsProperties().getLinkCount()));
+        // END: com.azure.storage.file.share.ShareFileAsyncClient.createHardLink#String
+
+        // BEGIN: com.azure.storage.file.share.ShareFileAsyncClient.createHardLink#ShareFileCreateHardLinkOptions
+        sourceClient.create(1024).block();
+
+        ShareFileCreateHardLinkOptions options = new ShareFileCreateHardLinkOptions(sourceClient.getFilePath())
+            .setRequestConditions(new ShareRequestConditions());
+        hardLinkClient.createHardLinkWithResponse(options)
+            .subscribe(result -> System.out.printf("Link count is is %s.",
+                result.getValue().getNfsProperties().getLinkCount()));
+        // END: com.azure.storage.file.share.ShareFileAsyncClient.createHardLink#ShareFileCreateHardLinkOptions
     }
 }

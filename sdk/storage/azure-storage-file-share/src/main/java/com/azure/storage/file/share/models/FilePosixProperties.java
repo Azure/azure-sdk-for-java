@@ -10,37 +10,37 @@ import com.azure.storage.file.share.implementation.accesshelpers.FilePosixProper
 import com.azure.storage.file.share.implementation.accesshelpers.FileSmbPropertiesHelper;
 import com.azure.storage.file.share.implementation.models.NfsFileType;
 
-/*
+/**
  * NFS properties.
  * Note that these properties only apply to files or directories in premium NFS file accounts.
  */
 public class FilePosixProperties {
-    /*
+    /**
      * Optional. Version TBD and newer. The mode permissions to be set on the file or directory.
      */
     private String fileMode;
 
-    /*
+    /**
      * Optional. The owner user identifier (UID) to be set on the file or directory. The default value is 0 (root).
      */
     private String owner;
 
-    /*
+    /**
      * Optional. The owner group identifier (GID) to be set on the file or directory. The default value is 0 (root group).
      */
     private String group;
 
-    /*
+    /**
      * Optional, only applicable to files. The type of the file. The default value is .
      */
     private NfsFileType fileType;
 
-    /*
+    /**
      * The link count of the file or directory.
      */
     private Long linkCount;
 
-    /*
+    /**
      * Creates an instance of FilePosixProperties class.
      */
     public FilePosixProperties() {
@@ -116,34 +116,12 @@ public class FilePosixProperties {
     }
 
     /**
-     * Sets the file type.
-     *
-     * @param fileType the file type to set.
-     * @return the FilePosixProperties object itself.
-     */
-    public FilePosixProperties setFileType(NfsFileType fileType) {
-        this.fileType = fileType;
-        return this;
-    }
-
-    /**
      * Gets the link count of the file or directory.
      *
      * @return the link count of the file or directory.
      */
     public Long getLinkCount() {
         return linkCount;
-    }
-
-    /**
-     * Sets the link count of the file or directory.
-     *
-     * @param linkCount the link count to set.
-     * @return the FilePosixProperties object itself.
-     */
-    public FilePosixProperties setLinkCount(Long linkCount) {
-        this.linkCount = linkCount;
-        return this;
     }
 
     /**

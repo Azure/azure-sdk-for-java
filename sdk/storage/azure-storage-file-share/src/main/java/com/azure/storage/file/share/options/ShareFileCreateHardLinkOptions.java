@@ -8,7 +8,7 @@ import com.azure.storage.file.share.models.ShareRequestConditions;
 /**
  * Options that may be passed when creating a hard link for a file.
  */
-public class ShareFileCreateHardLinkOptions {
+public final class ShareFileCreateHardLinkOptions {
     private final String targetFile;
     private ShareRequestConditions requestConditions;
 

@@ -3135,13 +3135,45 @@ public class ShareFileClient {
             .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), stringToSignHandler, context);
     }
 
-    //todo isbr: javadoc
+    /**
+     * NFS only. Creates a hard link to the file specified by path.
+     * <!-- src_embed com.azure.storage.file.share.ShareFileClient.createHardLink#String -->
+     * <pre>
+     * sourceClient.create&#40;1024&#41;;
+     * ShareFileInfo response = hardLinkClient.createHardLink&#40;sourceClient.getFilePath&#40;&#41;&#41;;
+     *
+     * System.out.printf&#40;&quot;Link count is is %s.&quot;, response.getNfsProperties&#40;&#41;.getLinkCount&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.share.ShareFileClient.createHardLink#String -->
+     *
+     * @param targetFile Path of the file to create the hard link to, not including the share.
+     * @return A {@link ShareFileInfo} describing the state of the hard link.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ShareFileInfo createHardLink(String targetFile) {
         return createHardLinkWithResponse(targetFile, null, null, null).getValue();
     }
 
-    //todo isbr: javadoc
+    /**
+     * NFS only. Creates a hard link to the file specified by path.
+     * <!-- src_embed com.azure.storage.file.share.ShareFileClient.createHardLink#ShareFileCreateHardLinkOptions-Duration-Context -->
+     * <pre>
+     * sourceClient.create&#40;1024&#41;;
+     *
+     * ShareFileCreateHardLinkOptions options = new ShareFileCreateHardLinkOptions&#40;sourceClient.getFilePath&#40;&#41;&#41;
+     *     .setRequestConditions&#40;new ShareRequestConditions&#40;&#41;&#41;;
+     * ShareFileInfo response2 = hardLinkClient.createHardLinkWithResponse&#40;options, null, null&#41;.getValue&#40;&#41;;
+     *
+     * System.out.printf&#40;&quot;Link count is is %s.&quot;, response2.getNfsProperties&#40;&#41;.getLinkCount&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.share.ShareFileClient.createHardLink#ShareFileCreateHardLinkOptions-Duration-Context -->
+     *
+     * @param options {@link ShareFileCreateHardLinkOptions}
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
+     * concludes a {@link RuntimeException} will be thrown.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains {@link ShareFileInfo} describing the state of the hard link.
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ShareFileInfo> createHardLinkWithResponse(ShareFileCreateHardLinkOptions options, Duration timeout,
         Context context) {

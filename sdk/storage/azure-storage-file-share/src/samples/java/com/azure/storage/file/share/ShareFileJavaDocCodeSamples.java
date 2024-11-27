@@ -7,6 +7,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.file.share.implementation.util.ModelHelper;
 import com.azure.storage.file.share.models.FilePermissionFormat;
 import com.azure.storage.file.share.models.CloseHandlesInfo;
 import com.azure.storage.file.share.models.CopyableFileSmbPropertiesList;
@@ -26,8 +27,11 @@ import com.azure.storage.file.share.models.ShareFileUploadInfo;
 import com.azure.storage.file.share.models.ShareFileUploadRangeFromUrlInfo;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
 import com.azure.storage.file.share.models.ShareFileUploadRangeOptions;
+import com.azure.storage.file.share.models.ShareProtocols;
 import com.azure.storage.file.share.models.ShareRequestConditions;
+import com.azure.storage.file.share.options.ShareCreateOptions;
 import com.azure.storage.file.share.options.ShareFileCopyOptions;
+import com.azure.storage.file.share.options.ShareFileCreateHardLinkOptions;
 import com.azure.storage.file.share.options.ShareFileCreateOptions;
 import com.azure.storage.file.share.options.ShareFileDownloadOptions;
 import com.azure.storage.file.share.options.ShareFileListRangesDiffOptions;
@@ -36,6 +40,7 @@ import com.azure.storage.file.share.options.ShareFileSetPropertiesOptions;
 import com.azure.storage.file.share.options.ShareFileUploadRangeFromUrlOptions;
 import com.azure.storage.file.share.sas.ShareFileSasPermission;
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
+import com.azure.storage.file.share.specialized.ShareLeaseClient;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -51,6 +56,8 @@ import java.time.ZoneOffset;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Contains code snippets when generating javadocs through doclets for {@link ShareFileClient} and {@link ShareFileAsyncClient}.
@@ -1248,5 +1255,30 @@ public class ShareFileJavaDocCodeSamples {
             System.out.printf("Delete completed with status %d%n", response.getStatusCode());
         }
         // END: com.azure.storage.file.share.ShareFileClient.deleteIfExistsWithResponse#ShareRequestConditions-duration-context
+    }
+
+    /**
+     * Generates a code sample for using {@link ShareFileClient#createHardLink(String)},
+     * {@link ShareFileClient#createHardLinkWithResponse(ShareFileCreateHardLinkOptions, Duration, Context)}
+     */
+    public void createHardLink() {
+        ShareFileClient sourceClient = createClientWithSASToken();
+        ShareFileClient hardLinkClient = createClientWithSASToken();
+        // BEGIN: com.azure.storage.file.share.ShareFileClient.createHardLink#String
+        sourceClient.create(1024);
+        ShareFileInfo response = hardLinkClient.createHardLink(sourceClient.getFilePath());
+
+        System.out.printf("Link count is is %s.", response.getNfsProperties().getLinkCount());
+        // END: com.azure.storage.file.share.ShareFileClient.createHardLink#String
+
+        // BEGIN: com.azure.storage.file.share.ShareFileClient.createHardLink#ShareFileCreateHardLinkOptions-Duration-Context
+        sourceClient.create(1024);
+
+        ShareFileCreateHardLinkOptions options = new ShareFileCreateHardLinkOptions(sourceClient.getFilePath())
+            .setRequestConditions(new ShareRequestConditions());
+        ShareFileInfo response2 = hardLinkClient.createHardLinkWithResponse(options, null, null).getValue();
+
+        System.out.printf("Link count is is %s.", response2.getNfsProperties().getLinkCount());
+        // END: com.azure.storage.file.share.ShareFileClient.createHardLink#ShareFileCreateHardLinkOptions-Duration-Context
     }
 }
