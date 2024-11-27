@@ -31,7 +31,8 @@ public final class SecretUpdateParameters implements JsonSerializable<SecretUpda
     private Map<String, String> tags;
 
     /** Creates an instance of SecretUpdateParameters class. */
-    public SecretUpdateParameters() {}
+    public SecretUpdateParameters() {
+    }
 
     /**
      * Get the contentType property: Type of the secret value such as a password.
@@ -111,26 +112,25 @@ public final class SecretUpdateParameters implements JsonSerializable<SecretUpda
      * @throws IOException If an error occurs while reading the SecretUpdateParameters.
      */
     public static SecretUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    SecretUpdateParameters deserializedSecretUpdateParameters = new SecretUpdateParameters();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            SecretUpdateParameters deserializedSecretUpdateParameters = new SecretUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("contentType".equals(fieldName)) {
-                            deserializedSecretUpdateParameters.contentType = reader.getString();
-                        } else if ("attributes".equals(fieldName)) {
-                            deserializedSecretUpdateParameters.secretAttributes = SecretAttributes.fromJson(reader);
-                        } else if ("tags".equals(fieldName)) {
-                            Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
-                            deserializedSecretUpdateParameters.tags = tags;
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("contentType".equals(fieldName)) {
+                    deserializedSecretUpdateParameters.contentType = reader.getString();
+                } else if ("attributes".equals(fieldName)) {
+                    deserializedSecretUpdateParameters.secretAttributes = SecretAttributes.fromJson(reader);
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedSecretUpdateParameters.tags = tags;
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedSecretUpdateParameters;
-                });
+            return deserializedSecretUpdateParameters;
+        });
     }
 }

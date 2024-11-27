@@ -23,7 +23,8 @@ public final class CertificateRestoreParameters implements JsonSerializable<Cert
     private Base64Url certificateBundleBackup;
 
     /** Creates an instance of CertificateRestoreParameters class. */
-    public CertificateRestoreParameters() {}
+    public CertificateRestoreParameters() {
+    }
 
     /**
      * Get the certificateBundleBackup property: The backup blob associated with a certificate bundle.
@@ -69,23 +70,21 @@ public final class CertificateRestoreParameters implements JsonSerializable<Cert
      * @throws IOException If an error occurs while reading the CertificateRestoreParameters.
      */
     public static CertificateRestoreParameters fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    CertificateRestoreParameters deserializedCertificateRestoreParameters =
-                            new CertificateRestoreParameters();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            CertificateRestoreParameters deserializedCertificateRestoreParameters = new CertificateRestoreParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("value".equals(fieldName)) {
-                            deserializedCertificateRestoreParameters.certificateBundleBackup =
-                                    reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("value".equals(fieldName)) {
+                    deserializedCertificateRestoreParameters.certificateBundleBackup
+                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedCertificateRestoreParameters;
-                });
+            return deserializedCertificateRestoreParameters;
+        });
     }
 }

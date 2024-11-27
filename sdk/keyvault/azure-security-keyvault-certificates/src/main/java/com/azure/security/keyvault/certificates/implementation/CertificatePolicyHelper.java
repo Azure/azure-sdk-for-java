@@ -8,14 +8,15 @@ public final class CertificatePolicyHelper {
     private static CertificatePolicyAccessor accessor;
 
     public interface CertificatePolicyAccessor {
-        CertificatePolicy createPolicy(
-            com.azure.security.keyvault.certificates.implementation.models.CertificatePolicy impl);
-        com.azure.security.keyvault.certificates.implementation.models.CertificatePolicy getPolicy(
-            CertificatePolicy policy);
+        CertificatePolicy
+            createPolicy(com.azure.security.keyvault.certificates.implementation.models.CertificatePolicy impl);
+
+        com.azure.security.keyvault.certificates.implementation.models.CertificatePolicy
+            getPolicy(CertificatePolicy policy);
     }
 
-    public static CertificatePolicy createCertificatePolicy(
-        com.azure.security.keyvault.certificates.implementation.models.CertificatePolicy impl) {
+    public static CertificatePolicy
+        createCertificatePolicy(com.azure.security.keyvault.certificates.implementation.models.CertificatePolicy impl) {
         if (accessor == null) {
             new CertificatePolicy("", "");
         }
@@ -24,8 +25,8 @@ public final class CertificatePolicyHelper {
         return accessor.createPolicy(impl);
     }
 
-    public static com.azure.security.keyvault.certificates.implementation.models.CertificatePolicy getImplCertificatePolicy(
-        CertificatePolicy policy) {
+    public static com.azure.security.keyvault.certificates.implementation.models.CertificatePolicy
+        getImplCertificatePolicy(CertificatePolicy policy) {
         if (accessor == null) {
             new CertificatePolicy("", "");
         }
@@ -38,5 +39,6 @@ public final class CertificatePolicyHelper {
         CertificatePolicyHelper.accessor = accessor;
     }
 
-    private CertificatePolicyHelper() { }
+    private CertificatePolicyHelper() {
+    }
 }

@@ -60,7 +60,8 @@ public final class JsonWebKeyEncryptionAlgorithm extends ExpandableStringEnum<Js
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public JsonWebKeyEncryptionAlgorithm() {}
+    public JsonWebKeyEncryptionAlgorithm() {
+    }
 
     /**
      * Creates or finds a JsonWebKeyEncryptionAlgorithm from its string representation.

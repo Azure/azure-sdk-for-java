@@ -21,7 +21,8 @@ public final class KeyVaultError implements JsonSerializable<KeyVaultError> {
     private CertificateOperationError error;
 
     /** Creates an instance of KeyVaultError class. */
-    public KeyVaultError() {}
+    public KeyVaultError() {
+    }
 
     /**
      * Get the error property: The key vault server error.
@@ -47,21 +48,20 @@ public final class KeyVaultError implements JsonSerializable<KeyVaultError> {
      * @throws IOException If an error occurs while reading the KeyVaultError.
      */
     public static KeyVaultError fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    KeyVaultError deserializedKeyVaultError = new KeyVaultError();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            KeyVaultError deserializedKeyVaultError = new KeyVaultError();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("error".equals(fieldName)) {
-                            deserializedKeyVaultError.error = CertificateOperationError.fromJson(reader);
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("error".equals(fieldName)) {
+                    deserializedKeyVaultError.error = CertificateOperationError.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedKeyVaultError;
-                });
+            return deserializedKeyVaultError;
+        });
     }
 }

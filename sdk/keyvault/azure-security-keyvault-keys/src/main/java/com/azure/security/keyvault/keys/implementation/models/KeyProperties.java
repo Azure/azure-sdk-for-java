@@ -44,7 +44,8 @@ public final class KeyProperties implements JsonSerializable<KeyProperties> {
     private KeyCurveName crv;
 
     /** Creates an instance of KeyProperties class. */
-    public KeyProperties() {}
+    public KeyProperties() {
+    }
 
     /**
      * Get the exportable property: Indicates if the private key can be exported. Release policy must be provided when
@@ -170,29 +171,28 @@ public final class KeyProperties implements JsonSerializable<KeyProperties> {
      * @throws IOException If an error occurs while reading the KeyProperties.
      */
     public static KeyProperties fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    KeyProperties deserializedKeyProperties = new KeyProperties();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            KeyProperties deserializedKeyProperties = new KeyProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("exportable".equals(fieldName)) {
-                            deserializedKeyProperties.exportable = reader.getNullable(JsonReader::getBoolean);
-                        } else if ("kty".equals(fieldName)) {
-                            deserializedKeyProperties.kty = KeyType.fromString(reader.getString());
-                        } else if ("key_size".equals(fieldName)) {
-                            deserializedKeyProperties.keySize = reader.getNullable(JsonReader::getInt);
-                        } else if ("reuse_key".equals(fieldName)) {
-                            deserializedKeyProperties.reuseKey = reader.getNullable(JsonReader::getBoolean);
-                        } else if ("crv".equals(fieldName)) {
-                            deserializedKeyProperties.crv = KeyCurveName.fromString(reader.getString());
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("exportable".equals(fieldName)) {
+                    deserializedKeyProperties.exportable = reader.getNullable(JsonReader::getBoolean);
+                } else if ("kty".equals(fieldName)) {
+                    deserializedKeyProperties.kty = KeyType.fromString(reader.getString());
+                } else if ("key_size".equals(fieldName)) {
+                    deserializedKeyProperties.keySize = reader.getNullable(JsonReader::getInt);
+                } else if ("reuse_key".equals(fieldName)) {
+                    deserializedKeyProperties.reuseKey = reader.getNullable(JsonReader::getBoolean);
+                } else if ("crv".equals(fieldName)) {
+                    deserializedKeyProperties.crv = KeyCurveName.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedKeyProperties;
-                });
+            return deserializedKeyProperties;
+        });
     }
 }

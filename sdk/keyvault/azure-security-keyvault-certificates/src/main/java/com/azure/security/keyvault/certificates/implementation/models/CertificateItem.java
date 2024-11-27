@@ -39,7 +39,8 @@ public class CertificateItem implements JsonSerializable<CertificateItem> {
     private Base64Url x509Thumbprint;
 
     /** Creates an instance of CertificateItem class. */
-    public CertificateItem() {}
+    public CertificateItem() {
+    }
 
     /**
      * Get the id property: Certificate identifier.
@@ -147,29 +148,28 @@ public class CertificateItem implements JsonSerializable<CertificateItem> {
      * @throws IOException If an error occurs while reading the CertificateItem.
      */
     public static CertificateItem fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    CertificateItem deserializedCertificateItem = new CertificateItem();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            CertificateItem deserializedCertificateItem = new CertificateItem();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("id".equals(fieldName)) {
-                            deserializedCertificateItem.id = reader.getString();
-                        } else if ("attributes".equals(fieldName)) {
-                            deserializedCertificateItem.attributes = CertificateAttributes.fromJson(reader);
-                        } else if ("tags".equals(fieldName)) {
-                            Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
-                            deserializedCertificateItem.tags = tags;
-                        } else if ("x5t".equals(fieldName)) {
-                            deserializedCertificateItem.x509Thumbprint =
-                                    reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("id".equals(fieldName)) {
+                    deserializedCertificateItem.id = reader.getString();
+                } else if ("attributes".equals(fieldName)) {
+                    deserializedCertificateItem.attributes = CertificateAttributes.fromJson(reader);
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedCertificateItem.tags = tags;
+                } else if ("x5t".equals(fieldName)) {
+                    deserializedCertificateItem.x509Thumbprint
+                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedCertificateItem;
-                });
+            return deserializedCertificateItem;
+        });
     }
 }

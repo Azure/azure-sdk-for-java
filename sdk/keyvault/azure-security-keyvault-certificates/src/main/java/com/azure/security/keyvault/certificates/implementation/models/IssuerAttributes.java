@@ -33,7 +33,8 @@ public final class IssuerAttributes implements JsonSerializable<IssuerAttributes
     private Long updated;
 
     /** Creates an instance of IssuerAttributes class. */
-    public IssuerAttributes() {}
+    public IssuerAttributes() {
+    }
 
     /**
      * Get the enabled property: Determines whether the issuer is enabled.
@@ -95,25 +96,24 @@ public final class IssuerAttributes implements JsonSerializable<IssuerAttributes
      * @throws IOException If an error occurs while reading the IssuerAttributes.
      */
     public static IssuerAttributes fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    IssuerAttributes deserializedIssuerAttributes = new IssuerAttributes();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            IssuerAttributes deserializedIssuerAttributes = new IssuerAttributes();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("enabled".equals(fieldName)) {
-                            deserializedIssuerAttributes.enabled = reader.getNullable(JsonReader::getBoolean);
-                        } else if ("created".equals(fieldName)) {
-                            deserializedIssuerAttributes.created = reader.getNullable(JsonReader::getLong);
-                        } else if ("updated".equals(fieldName)) {
-                            deserializedIssuerAttributes.updated = reader.getNullable(JsonReader::getLong);
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("enabled".equals(fieldName)) {
+                    deserializedIssuerAttributes.enabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("created".equals(fieldName)) {
+                    deserializedIssuerAttributes.created = reader.getNullable(JsonReader::getLong);
+                } else if ("updated".equals(fieldName)) {
+                    deserializedIssuerAttributes.updated = reader.getNullable(JsonReader::getLong);
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedIssuerAttributes;
-                });
+            return deserializedIssuerAttributes;
+        });
     }
 }

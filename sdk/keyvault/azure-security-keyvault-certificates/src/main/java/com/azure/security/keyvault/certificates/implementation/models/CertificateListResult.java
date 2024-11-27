@@ -27,7 +27,8 @@ public final class CertificateListResult implements JsonSerializable<Certificate
     private String nextLink;
 
     /** Creates an instance of CertificateListResult class. */
-    public CertificateListResult() {}
+    public CertificateListResult() {
+    }
 
     /**
      * Get the value property: A response message containing a list of certificates in the key vault along with a link
@@ -63,25 +64,23 @@ public final class CertificateListResult implements JsonSerializable<Certificate
      * @throws IOException If an error occurs while reading the CertificateListResult.
      */
     public static CertificateListResult fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    CertificateListResult deserializedCertificateListResult = new CertificateListResult();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            CertificateListResult deserializedCertificateListResult = new CertificateListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("value".equals(fieldName)) {
-                            List<CertificateItem> value =
-                                    reader.readArray(reader1 -> CertificateItem.fromJson(reader1));
-                            deserializedCertificateListResult.value = value;
-                        } else if ("nextLink".equals(fieldName)) {
-                            deserializedCertificateListResult.nextLink = reader.getString();
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("value".equals(fieldName)) {
+                    List<CertificateItem> value = reader.readArray(reader1 -> CertificateItem.fromJson(reader1));
+                    deserializedCertificateListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedCertificateListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedCertificateListResult;
-                });
+            return deserializedCertificateListResult;
+        });
     }
 }

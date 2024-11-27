@@ -34,7 +34,8 @@ public final class KeyReleasePolicy implements JsonSerializable<KeyReleasePolicy
     private Base64Url encodedPolicy;
 
     /** Creates an instance of KeyReleasePolicy class. */
-    public KeyReleasePolicy() {}
+    public KeyReleasePolicy() {
+    }
 
     /**
      * Get the contentType property: Content type and version of key release policy.
@@ -125,26 +126,25 @@ public final class KeyReleasePolicy implements JsonSerializable<KeyReleasePolicy
      * @throws IOException If an error occurs while reading the KeyReleasePolicy.
      */
     public static KeyReleasePolicy fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    KeyReleasePolicy deserializedKeyReleasePolicy = new KeyReleasePolicy();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            KeyReleasePolicy deserializedKeyReleasePolicy = new KeyReleasePolicy();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("contentType".equals(fieldName)) {
-                            deserializedKeyReleasePolicy.contentType = reader.getString();
-                        } else if ("immutable".equals(fieldName)) {
-                            deserializedKeyReleasePolicy.immutable = reader.getNullable(JsonReader::getBoolean);
-                        } else if ("data".equals(fieldName)) {
-                            deserializedKeyReleasePolicy.encodedPolicy =
-                                    reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("contentType".equals(fieldName)) {
+                    deserializedKeyReleasePolicy.contentType = reader.getString();
+                } else if ("immutable".equals(fieldName)) {
+                    deserializedKeyReleasePolicy.immutable = reader.getNullable(JsonReader::getBoolean);
+                } else if ("data".equals(fieldName)) {
+                    deserializedKeyReleasePolicy.encodedPolicy
+                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedKeyReleasePolicy;
-                });
+            return deserializedKeyReleasePolicy;
+        });
     }
 }

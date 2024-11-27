@@ -35,7 +35,8 @@ public final class AdministratorContact implements JsonSerializable<Administrato
     private String phone;
 
     /** Creates an instance of AdministratorContact class. */
-    public AdministratorContact() {}
+    public AdministratorContact() {
+    }
 
     /**
      * Get the firstName property: First name.
@@ -136,27 +137,26 @@ public final class AdministratorContact implements JsonSerializable<Administrato
      * @throws IOException If an error occurs while reading the AdministratorContact.
      */
     public static AdministratorContact fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    AdministratorContact deserializedAdministratorContact = new AdministratorContact();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            AdministratorContact deserializedAdministratorContact = new AdministratorContact();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("first_name".equals(fieldName)) {
-                            deserializedAdministratorContact.firstName = reader.getString();
-                        } else if ("last_name".equals(fieldName)) {
-                            deserializedAdministratorContact.lastName = reader.getString();
-                        } else if ("email".equals(fieldName)) {
-                            deserializedAdministratorContact.email = reader.getString();
-                        } else if ("phone".equals(fieldName)) {
-                            deserializedAdministratorContact.phone = reader.getString();
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("first_name".equals(fieldName)) {
+                    deserializedAdministratorContact.firstName = reader.getString();
+                } else if ("last_name".equals(fieldName)) {
+                    deserializedAdministratorContact.lastName = reader.getString();
+                } else if ("email".equals(fieldName)) {
+                    deserializedAdministratorContact.email = reader.getString();
+                } else if ("phone".equals(fieldName)) {
+                    deserializedAdministratorContact.phone = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedAdministratorContact;
-                });
+            return deserializedAdministratorContact;
+        });
     }
 }

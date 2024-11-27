@@ -21,7 +21,8 @@ public final class CertificatePolicyAction extends ExpandableStringEnum<Certific
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public CertificatePolicyAction() {}
+    public CertificatePolicyAction() {
+    }
 
     /**
      * Creates or finds a CertificatePolicyAction from its string representation.

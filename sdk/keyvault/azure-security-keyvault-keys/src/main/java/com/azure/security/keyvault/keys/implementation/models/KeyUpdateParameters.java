@@ -39,7 +39,8 @@ public final class KeyUpdateParameters implements JsonSerializable<KeyUpdatePara
     private KeyReleasePolicy releasePolicy;
 
     /** Creates an instance of KeyUpdateParameters class. */
-    public KeyUpdateParameters() {}
+    public KeyUpdateParameters() {
+    }
 
     /**
      * Get the keyOps property: Json web key operations. For more information on possible key operations, see
@@ -126,8 +127,8 @@ public final class KeyUpdateParameters implements JsonSerializable<KeyUpdatePara
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeArrayField(
-                "key_ops", this.keyOps, (writer, element) -> writer.writeString(Objects.toString(element, null)));
+        jsonWriter.writeArrayField("key_ops", this.keyOps,
+            (writer, element) -> writer.writeString(Objects.toString(element, null)));
         jsonWriter.writeJsonField("attributes", this.keyAttributes);
         jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("release_policy", this.releasePolicy);
@@ -143,30 +144,29 @@ public final class KeyUpdateParameters implements JsonSerializable<KeyUpdatePara
      * @throws IOException If an error occurs while reading the KeyUpdateParameters.
      */
     public static KeyUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    KeyUpdateParameters deserializedKeyUpdateParameters = new KeyUpdateParameters();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            KeyUpdateParameters deserializedKeyUpdateParameters = new KeyUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("key_ops".equals(fieldName)) {
-                            List<KeyOperation> keyOps =
-                                    reader.readArray(reader1 -> KeyOperation.fromString(reader1.getString()));
-                            deserializedKeyUpdateParameters.keyOps = keyOps;
-                        } else if ("attributes".equals(fieldName)) {
-                            deserializedKeyUpdateParameters.keyAttributes = KeyAttributes.fromJson(reader);
-                        } else if ("tags".equals(fieldName)) {
-                            Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
-                            deserializedKeyUpdateParameters.tags = tags;
-                        } else if ("release_policy".equals(fieldName)) {
-                            deserializedKeyUpdateParameters.releasePolicy = KeyReleasePolicy.fromJson(reader);
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("key_ops".equals(fieldName)) {
+                    List<KeyOperation> keyOps
+                        = reader.readArray(reader1 -> KeyOperation.fromString(reader1.getString()));
+                    deserializedKeyUpdateParameters.keyOps = keyOps;
+                } else if ("attributes".equals(fieldName)) {
+                    deserializedKeyUpdateParameters.keyAttributes = KeyAttributes.fromJson(reader);
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedKeyUpdateParameters.tags = tags;
+                } else if ("release_policy".equals(fieldName)) {
+                    deserializedKeyUpdateParameters.releasePolicy = KeyReleasePolicy.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedKeyUpdateParameters;
-                });
+            return deserializedKeyUpdateParameters;
+        });
     }
 }

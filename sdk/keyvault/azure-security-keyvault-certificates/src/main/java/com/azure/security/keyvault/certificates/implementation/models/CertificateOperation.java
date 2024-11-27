@@ -62,7 +62,8 @@ public final class CertificateOperation implements JsonSerializable<CertificateO
     private String requestId;
 
     /** Creates an instance of CertificateOperation class. */
-    public CertificateOperation() {}
+    public CertificateOperation() {
+    }
 
     /**
      * Get the id property: The certificate id.
@@ -256,38 +257,36 @@ public final class CertificateOperation implements JsonSerializable<CertificateO
      * @throws IOException If an error occurs while reading the CertificateOperation.
      */
     public static CertificateOperation fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    CertificateOperation deserializedCertificateOperation = new CertificateOperation();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            CertificateOperation deserializedCertificateOperation = new CertificateOperation();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("id".equals(fieldName)) {
-                            deserializedCertificateOperation.id = reader.getString();
-                        } else if ("issuer".equals(fieldName)) {
-                            deserializedCertificateOperation.issuerParameters = IssuerParameters.fromJson(reader);
-                        } else if ("csr".equals(fieldName)) {
-                            deserializedCertificateOperation.csr = reader.getBinary();
-                        } else if ("cancellation_requested".equals(fieldName)) {
-                            deserializedCertificateOperation.cancellationRequested =
-                                    reader.getNullable(JsonReader::getBoolean);
-                        } else if ("status".equals(fieldName)) {
-                            deserializedCertificateOperation.status = reader.getString();
-                        } else if ("status_details".equals(fieldName)) {
-                            deserializedCertificateOperation.statusDetails = reader.getString();
-                        } else if ("error".equals(fieldName)) {
-                            deserializedCertificateOperation.error = CertificateOperationError.fromJson(reader);
-                        } else if ("target".equals(fieldName)) {
-                            deserializedCertificateOperation.target = reader.getString();
-                        } else if ("request_id".equals(fieldName)) {
-                            deserializedCertificateOperation.requestId = reader.getString();
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("id".equals(fieldName)) {
+                    deserializedCertificateOperation.id = reader.getString();
+                } else if ("issuer".equals(fieldName)) {
+                    deserializedCertificateOperation.issuerParameters = IssuerParameters.fromJson(reader);
+                } else if ("csr".equals(fieldName)) {
+                    deserializedCertificateOperation.csr = reader.getBinary();
+                } else if ("cancellation_requested".equals(fieldName)) {
+                    deserializedCertificateOperation.cancellationRequested = reader.getNullable(JsonReader::getBoolean);
+                } else if ("status".equals(fieldName)) {
+                    deserializedCertificateOperation.status = reader.getString();
+                } else if ("status_details".equals(fieldName)) {
+                    deserializedCertificateOperation.statusDetails = reader.getString();
+                } else if ("error".equals(fieldName)) {
+                    deserializedCertificateOperation.error = CertificateOperationError.fromJson(reader);
+                } else if ("target".equals(fieldName)) {
+                    deserializedCertificateOperation.target = reader.getString();
+                } else if ("request_id".equals(fieldName)) {
+                    deserializedCertificateOperation.requestId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedCertificateOperation;
-                });
+            return deserializedCertificateOperation;
+        });
     }
 }

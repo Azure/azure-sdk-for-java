@@ -36,7 +36,8 @@ public final class DeletedSecretBundle extends SecretBundle {
     private Long deletedDate;
 
     /** Creates an instance of DeletedSecretBundle class. */
-    public DeletedSecretBundle() {}
+    public DeletedSecretBundle() {
+    }
 
     /**
      * Get the recoveryId property: The url of the recovery object, used to identify and recover the deleted secret.
@@ -138,41 +139,39 @@ public final class DeletedSecretBundle extends SecretBundle {
      * @throws IOException If an error occurs while reading the DeletedSecretBundle.
      */
     public static DeletedSecretBundle fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    DeletedSecretBundle deserializedDeletedSecretBundle = new DeletedSecretBundle();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            DeletedSecretBundle deserializedDeletedSecretBundle = new DeletedSecretBundle();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("value".equals(fieldName)) {
-                            deserializedDeletedSecretBundle.setValue(reader.getString());
-                        } else if ("id".equals(fieldName)) {
-                            deserializedDeletedSecretBundle.setId(reader.getString());
-                        } else if ("contentType".equals(fieldName)) {
-                            deserializedDeletedSecretBundle.setContentType(reader.getString());
-                        } else if ("attributes".equals(fieldName)) {
-                            deserializedDeletedSecretBundle.setAttributes(SecretAttributes.fromJson(reader));
-                        } else if ("tags".equals(fieldName)) {
-                            Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
-                            deserializedDeletedSecretBundle.setTags(tags);
-                        } else if ("kid".equals(fieldName)) {
-                            deserializedDeletedSecretBundle.setKid(reader.getString());
-                        } else if ("managed".equals(fieldName)) {
-                            deserializedDeletedSecretBundle.setManaged(reader.getNullable(JsonReader::getBoolean));
-                        } else if ("recoveryId".equals(fieldName)) {
-                            deserializedDeletedSecretBundle.recoveryId = reader.getString();
-                        } else if ("scheduledPurgeDate".equals(fieldName)) {
-                            deserializedDeletedSecretBundle.scheduledPurgeDate =
-                                    reader.getNullable(JsonReader::getLong);
-                        } else if ("deletedDate".equals(fieldName)) {
-                            deserializedDeletedSecretBundle.deletedDate = reader.getNullable(JsonReader::getLong);
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("value".equals(fieldName)) {
+                    deserializedDeletedSecretBundle.setValue(reader.getString());
+                } else if ("id".equals(fieldName)) {
+                    deserializedDeletedSecretBundle.setId(reader.getString());
+                } else if ("contentType".equals(fieldName)) {
+                    deserializedDeletedSecretBundle.setContentType(reader.getString());
+                } else if ("attributes".equals(fieldName)) {
+                    deserializedDeletedSecretBundle.setAttributes(SecretAttributes.fromJson(reader));
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedDeletedSecretBundle.setTags(tags);
+                } else if ("kid".equals(fieldName)) {
+                    deserializedDeletedSecretBundle.setKid(reader.getString());
+                } else if ("managed".equals(fieldName)) {
+                    deserializedDeletedSecretBundle.setManaged(reader.getNullable(JsonReader::getBoolean));
+                } else if ("recoveryId".equals(fieldName)) {
+                    deserializedDeletedSecretBundle.recoveryId = reader.getString();
+                } else if ("scheduledPurgeDate".equals(fieldName)) {
+                    deserializedDeletedSecretBundle.scheduledPurgeDate = reader.getNullable(JsonReader::getLong);
+                } else if ("deletedDate".equals(fieldName)) {
+                    deserializedDeletedSecretBundle.deletedDate = reader.getNullable(JsonReader::getLong);
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedDeletedSecretBundle;
-                });
+            return deserializedDeletedSecretBundle;
+        });
     }
 }

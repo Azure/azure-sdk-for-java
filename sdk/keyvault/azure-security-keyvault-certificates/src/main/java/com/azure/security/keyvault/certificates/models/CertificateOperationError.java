@@ -30,7 +30,8 @@ public final class CertificateOperationError implements JsonSerializable<Certifi
     private CertificateOperationError innerError;
 
     /** Creates an instance of CertificateOperationError class. */
-    public CertificateOperationError() {}
+    public CertificateOperationError() {
+    }
 
     /**
      * Get the code property: The error code.
@@ -74,26 +75,24 @@ public final class CertificateOperationError implements JsonSerializable<Certifi
      * @throws IOException If an error occurs while reading the CertificateOperationError.
      */
     public static CertificateOperationError fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    CertificateOperationError deserializedCertificateOperationError = new CertificateOperationError();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            CertificateOperationError deserializedCertificateOperationError = new CertificateOperationError();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("code".equals(fieldName)) {
-                            deserializedCertificateOperationError.code = reader.getString();
-                        } else if ("message".equals(fieldName)) {
-                            deserializedCertificateOperationError.message = reader.getString();
-                        } else if ("innererror".equals(fieldName)) {
-                            deserializedCertificateOperationError.innerError =
-                                    CertificateOperationError.fromJson(reader);
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("code".equals(fieldName)) {
+                    deserializedCertificateOperationError.code = reader.getString();
+                } else if ("message".equals(fieldName)) {
+                    deserializedCertificateOperationError.message = reader.getString();
+                } else if ("innererror".equals(fieldName)) {
+                    deserializedCertificateOperationError.innerError = CertificateOperationError.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedCertificateOperationError;
-                });
+            return deserializedCertificateOperationError;
+        });
     }
 }

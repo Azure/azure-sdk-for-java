@@ -25,7 +25,8 @@ public final class IssuerCredentials implements JsonSerializable<IssuerCredentia
     private String password;
 
     /** Creates an instance of IssuerCredentials class. */
-    public IssuerCredentials() {}
+    public IssuerCredentials() {
+    }
 
     /**
      * Get the accountId property: The user name/account name/account id.
@@ -84,23 +85,22 @@ public final class IssuerCredentials implements JsonSerializable<IssuerCredentia
      * @throws IOException If an error occurs while reading the IssuerCredentials.
      */
     public static IssuerCredentials fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    IssuerCredentials deserializedIssuerCredentials = new IssuerCredentials();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            IssuerCredentials deserializedIssuerCredentials = new IssuerCredentials();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("account_id".equals(fieldName)) {
-                            deserializedIssuerCredentials.accountId = reader.getString();
-                        } else if ("pwd".equals(fieldName)) {
-                            deserializedIssuerCredentials.password = reader.getString();
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("account_id".equals(fieldName)) {
+                    deserializedIssuerCredentials.accountId = reader.getString();
+                } else if ("pwd".equals(fieldName)) {
+                    deserializedIssuerCredentials.password = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedIssuerCredentials;
-                });
+            return deserializedIssuerCredentials;
+        });
     }
 }

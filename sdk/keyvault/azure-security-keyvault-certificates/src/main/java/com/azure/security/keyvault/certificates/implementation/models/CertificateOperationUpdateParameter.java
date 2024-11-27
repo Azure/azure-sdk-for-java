@@ -14,14 +14,15 @@ import java.io.IOException;
 /** The certificate operation update parameters. */
 @Fluent
 public final class CertificateOperationUpdateParameter
-        implements JsonSerializable<CertificateOperationUpdateParameter> {
+    implements JsonSerializable<CertificateOperationUpdateParameter> {
     /*
      * Indicates if cancellation was requested on the certificate operation.
      */
     private boolean cancellationRequested;
 
     /** Creates an instance of CertificateOperationUpdateParameter class. */
-    public CertificateOperationUpdateParameter() {}
+    public CertificateOperationUpdateParameter() {
+    }
 
     /**
      * Get the cancellationRequested property: Indicates if cancellation was requested on the certificate operation.
@@ -60,22 +61,21 @@ public final class CertificateOperationUpdateParameter
      * @throws IOException If an error occurs while reading the CertificateOperationUpdateParameter.
      */
     public static CertificateOperationUpdateParameter fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    CertificateOperationUpdateParameter deserializedCertificateOperationUpdateParameter =
-                            new CertificateOperationUpdateParameter();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            CertificateOperationUpdateParameter deserializedCertificateOperationUpdateParameter
+                = new CertificateOperationUpdateParameter();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("cancellation_requested".equals(fieldName)) {
-                            deserializedCertificateOperationUpdateParameter.cancellationRequested = reader.getBoolean();
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("cancellation_requested".equals(fieldName)) {
+                    deserializedCertificateOperationUpdateParameter.cancellationRequested = reader.getBoolean();
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedCertificateOperationUpdateParameter;
-                });
+            return deserializedCertificateOperationUpdateParameter;
+        });
     }
 }

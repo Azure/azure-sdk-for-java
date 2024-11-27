@@ -31,7 +31,8 @@ public final class SubjectAlternativeNames implements JsonSerializable<SubjectAl
     private List<String> userPrincipalNames;
 
     /** Creates an instance of SubjectAlternativeNames class. */
-    public SubjectAlternativeNames() {}
+    public SubjectAlternativeNames() {
+    }
 
     /**
      * Get the emails property: Email addresses.
@@ -111,28 +112,27 @@ public final class SubjectAlternativeNames implements JsonSerializable<SubjectAl
      * @throws IOException If an error occurs while reading the SubjectAlternativeNames.
      */
     public static SubjectAlternativeNames fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    SubjectAlternativeNames deserializedSubjectAlternativeNames = new SubjectAlternativeNames();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            SubjectAlternativeNames deserializedSubjectAlternativeNames = new SubjectAlternativeNames();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("emails".equals(fieldName)) {
-                            List<String> emails = reader.readArray(reader1 -> reader1.getString());
-                            deserializedSubjectAlternativeNames.emails = emails;
-                        } else if ("dns_names".equals(fieldName)) {
-                            List<String> dnsNames = reader.readArray(reader1 -> reader1.getString());
-                            deserializedSubjectAlternativeNames.dnsNames = dnsNames;
-                        } else if ("upns".equals(fieldName)) {
-                            List<String> userPrincipalNames = reader.readArray(reader1 -> reader1.getString());
-                            deserializedSubjectAlternativeNames.userPrincipalNames = userPrincipalNames;
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("emails".equals(fieldName)) {
+                    List<String> emails = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSubjectAlternativeNames.emails = emails;
+                } else if ("dns_names".equals(fieldName)) {
+                    List<String> dnsNames = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSubjectAlternativeNames.dnsNames = dnsNames;
+                } else if ("upns".equals(fieldName)) {
+                    List<String> userPrincipalNames = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSubjectAlternativeNames.userPrincipalNames = userPrincipalNames;
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedSubjectAlternativeNames;
-                });
+            return deserializedSubjectAlternativeNames;
+        });
     }
 }

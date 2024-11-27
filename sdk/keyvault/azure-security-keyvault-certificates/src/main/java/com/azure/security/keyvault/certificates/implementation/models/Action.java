@@ -22,7 +22,8 @@ public final class Action implements JsonSerializable<Action> {
     private CertificatePolicyAction actionType;
 
     /** Creates an instance of Action class. */
-    public Action() {}
+    public Action() {
+    }
 
     /**
      * Get the actionType property: The type of the action.
@@ -60,21 +61,20 @@ public final class Action implements JsonSerializable<Action> {
      * @throws IOException If an error occurs while reading the Action.
      */
     public static Action fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    Action deserializedAction = new Action();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            Action deserializedAction = new Action();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("action_type".equals(fieldName)) {
-                            deserializedAction.actionType = CertificatePolicyAction.fromString(reader.getString());
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("action_type".equals(fieldName)) {
+                    deserializedAction.actionType = CertificatePolicyAction.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedAction;
-                });
+            return deserializedAction;
+        });
     }
 }

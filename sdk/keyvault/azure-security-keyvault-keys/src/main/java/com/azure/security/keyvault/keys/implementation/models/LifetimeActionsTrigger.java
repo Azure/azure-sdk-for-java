@@ -27,7 +27,8 @@ public final class LifetimeActionsTrigger implements JsonSerializable<LifetimeAc
     private String timeBeforeExpiry;
 
     /** Creates an instance of LifetimeActionsTrigger class. */
-    public LifetimeActionsTrigger() {}
+    public LifetimeActionsTrigger() {
+    }
 
     /**
      * Get the timeAfterCreate property: Time after creation to attempt to rotate. It only applies to rotate. It will be
@@ -90,23 +91,22 @@ public final class LifetimeActionsTrigger implements JsonSerializable<LifetimeAc
      * @throws IOException If an error occurs while reading the LifetimeActionsTrigger.
      */
     public static LifetimeActionsTrigger fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    LifetimeActionsTrigger deserializedLifetimeActionsTrigger = new LifetimeActionsTrigger();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            LifetimeActionsTrigger deserializedLifetimeActionsTrigger = new LifetimeActionsTrigger();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("timeAfterCreate".equals(fieldName)) {
-                            deserializedLifetimeActionsTrigger.timeAfterCreate = reader.getString();
-                        } else if ("timeBeforeExpiry".equals(fieldName)) {
-                            deserializedLifetimeActionsTrigger.timeBeforeExpiry = reader.getString();
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("timeAfterCreate".equals(fieldName)) {
+                    deserializedLifetimeActionsTrigger.timeAfterCreate = reader.getString();
+                } else if ("timeBeforeExpiry".equals(fieldName)) {
+                    deserializedLifetimeActionsTrigger.timeBeforeExpiry = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedLifetimeActionsTrigger;
-                });
+            return deserializedLifetimeActionsTrigger;
+        });
     }
 }

@@ -27,7 +27,8 @@ public final class CertificateKeyCurveName extends ExpandableStringEnum<Certific
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public CertificateKeyCurveName() {}
+    public CertificateKeyCurveName() {
+    }
 
     /**
      * Creates or finds a CertificateKeyCurveName from its string representation.

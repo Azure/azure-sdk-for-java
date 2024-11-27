@@ -138,7 +138,7 @@ public final class DeletedSecret extends KeyVaultSecret {
                     deletedSecret.scheduledPurgeDate = reader.getNullable(SecretsModelsUtils::epochToOffsetDateTime);
                 } else if ("deletedDate".equals(fieldName)) {
                     deletedSecret.deletedOn = reader.getNullable(SecretsModelsUtils::epochToOffsetDateTime);
-                } else  {
+                } else {
                     reader.skipChildren();
                 }
             }

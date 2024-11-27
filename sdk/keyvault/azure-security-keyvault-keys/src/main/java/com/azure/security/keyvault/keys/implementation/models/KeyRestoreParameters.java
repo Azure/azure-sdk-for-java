@@ -23,7 +23,8 @@ public final class KeyRestoreParameters implements JsonSerializable<KeyRestorePa
     private Base64Url keyBundleBackup;
 
     /** Creates an instance of KeyRestoreParameters class. */
-    public KeyRestoreParameters() {}
+    public KeyRestoreParameters() {
+    }
 
     /**
      * Get the keyBundleBackup property: The backup blob associated with a key bundle.
@@ -69,22 +70,21 @@ public final class KeyRestoreParameters implements JsonSerializable<KeyRestorePa
      * @throws IOException If an error occurs while reading the KeyRestoreParameters.
      */
     public static KeyRestoreParameters fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    KeyRestoreParameters deserializedKeyRestoreParameters = new KeyRestoreParameters();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            KeyRestoreParameters deserializedKeyRestoreParameters = new KeyRestoreParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("value".equals(fieldName)) {
-                            deserializedKeyRestoreParameters.keyBundleBackup =
-                                    reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("value".equals(fieldName)) {
+                    deserializedKeyRestoreParameters.keyBundleBackup
+                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedKeyRestoreParameters;
-                });
+            return deserializedKeyRestoreParameters;
+        });
     }
 }

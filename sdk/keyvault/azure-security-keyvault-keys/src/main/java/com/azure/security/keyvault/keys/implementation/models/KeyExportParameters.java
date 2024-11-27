@@ -32,7 +32,8 @@ public final class KeyExportParameters implements JsonSerializable<KeyExportPara
     private KeyExportEncryptionAlgorithm enc;
 
     /** Creates an instance of KeyExportParameters class. */
-    public KeyExportParameters() {}
+    public KeyExportParameters() {
+    }
 
     /**
      * Get the wrappingKey property: The export key encryption Json web key. This key MUST be a RSA key that supports
@@ -116,26 +117,24 @@ public final class KeyExportParameters implements JsonSerializable<KeyExportPara
      * @throws IOException If an error occurs while reading the KeyExportParameters.
      */
     public static KeyExportParameters fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    KeyExportParameters deserializedKeyExportParameters = new KeyExportParameters();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            KeyExportParameters deserializedKeyExportParameters = new KeyExportParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("wrappingKey".equals(fieldName)) {
-                            deserializedKeyExportParameters.wrappingKey = JsonWebKey.fromJson(reader);
-                        } else if ("wrappingKid".equals(fieldName)) {
-                            deserializedKeyExportParameters.wrappingKid = reader.getString();
-                        } else if ("enc".equals(fieldName)) {
-                            deserializedKeyExportParameters.enc =
-                                    KeyExportEncryptionAlgorithm.fromString(reader.getString());
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("wrappingKey".equals(fieldName)) {
+                    deserializedKeyExportParameters.wrappingKey = JsonWebKey.fromJson(reader);
+                } else if ("wrappingKid".equals(fieldName)) {
+                    deserializedKeyExportParameters.wrappingKid = reader.getString();
+                } else if ("enc".equals(fieldName)) {
+                    deserializedKeyExportParameters.enc = KeyExportEncryptionAlgorithm.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedKeyExportParameters;
-                });
+            return deserializedKeyExportParameters;
+        });
     }
 }

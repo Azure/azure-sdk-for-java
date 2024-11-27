@@ -27,7 +27,8 @@ public final class CertificateKeyType extends ExpandableStringEnum<CertificateKe
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public CertificateKeyType() {}
+    public CertificateKeyType() {
+    }
 
     /**
      * Creates or finds a CertificateKeyType from its string representation.

@@ -33,7 +33,8 @@ public final class DeletedKeyItem extends KeyItem {
     private Long deletedDate;
 
     /** Creates an instance of DeletedKeyItem class. */
-    public DeletedKeyItem() {}
+    public DeletedKeyItem() {
+    }
 
     /**
      * Get the recoveryId property: The url of the recovery object, used to identify and recover the deleted key.
@@ -119,34 +120,33 @@ public final class DeletedKeyItem extends KeyItem {
      * @throws IOException If an error occurs while reading the DeletedKeyItem.
      */
     public static DeletedKeyItem fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    DeletedKeyItem deserializedDeletedKeyItem = new DeletedKeyItem();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            DeletedKeyItem deserializedDeletedKeyItem = new DeletedKeyItem();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("kid".equals(fieldName)) {
-                            deserializedDeletedKeyItem.setKid(reader.getString());
-                        } else if ("attributes".equals(fieldName)) {
-                            deserializedDeletedKeyItem.setAttributes(KeyAttributes.fromJson(reader));
-                        } else if ("tags".equals(fieldName)) {
-                            Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
-                            deserializedDeletedKeyItem.setTags(tags);
-                        } else if ("managed".equals(fieldName)) {
-                            deserializedDeletedKeyItem.setManaged(reader.getNullable(JsonReader::getBoolean));
-                        } else if ("recoveryId".equals(fieldName)) {
-                            deserializedDeletedKeyItem.recoveryId = reader.getString();
-                        } else if ("scheduledPurgeDate".equals(fieldName)) {
-                            deserializedDeletedKeyItem.scheduledPurgeDate = reader.getNullable(JsonReader::getLong);
-                        } else if ("deletedDate".equals(fieldName)) {
-                            deserializedDeletedKeyItem.deletedDate = reader.getNullable(JsonReader::getLong);
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("kid".equals(fieldName)) {
+                    deserializedDeletedKeyItem.setKid(reader.getString());
+                } else if ("attributes".equals(fieldName)) {
+                    deserializedDeletedKeyItem.setAttributes(KeyAttributes.fromJson(reader));
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedDeletedKeyItem.setTags(tags);
+                } else if ("managed".equals(fieldName)) {
+                    deserializedDeletedKeyItem.setManaged(reader.getNullable(JsonReader::getBoolean));
+                } else if ("recoveryId".equals(fieldName)) {
+                    deserializedDeletedKeyItem.recoveryId = reader.getString();
+                } else if ("scheduledPurgeDate".equals(fieldName)) {
+                    deserializedDeletedKeyItem.scheduledPurgeDate = reader.getNullable(JsonReader::getLong);
+                } else if ("deletedDate".equals(fieldName)) {
+                    deserializedDeletedKeyItem.deletedDate = reader.getNullable(JsonReader::getLong);
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedDeletedKeyItem;
-                });
+            return deserializedDeletedKeyItem;
+        });
     }
 }

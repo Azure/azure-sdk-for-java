@@ -14,14 +14,15 @@ import java.io.IOException;
 /** The pending certificate signing request result. */
 @Immutable
 public final class PendingCertificateSigningRequestResult
-        implements JsonSerializable<PendingCertificateSigningRequestResult> {
+    implements JsonSerializable<PendingCertificateSigningRequestResult> {
     /*
      * The pending certificate signing request as Base64 encoded string.
      */
     private String value;
 
     /** Creates an instance of PendingCertificateSigningRequestResult class. */
-    public PendingCertificateSigningRequestResult() {}
+    public PendingCertificateSigningRequestResult() {
+    }
 
     /**
      * Get the value property: The pending certificate signing request as Base64 encoded string.
@@ -47,22 +48,21 @@ public final class PendingCertificateSigningRequestResult
      * @throws IOException If an error occurs while reading the PendingCertificateSigningRequestResult.
      */
     public static PendingCertificateSigningRequestResult fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    PendingCertificateSigningRequestResult deserializedPendingCertificateSigningRequestResult =
-                            new PendingCertificateSigningRequestResult();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            PendingCertificateSigningRequestResult deserializedPendingCertificateSigningRequestResult
+                = new PendingCertificateSigningRequestResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("value".equals(fieldName)) {
-                            deserializedPendingCertificateSigningRequestResult.value = reader.getString();
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("value".equals(fieldName)) {
+                    deserializedPendingCertificateSigningRequestResult.value = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedPendingCertificateSigningRequestResult;
-                });
+            return deserializedPendingCertificateSigningRequestResult;
+        });
     }
 }

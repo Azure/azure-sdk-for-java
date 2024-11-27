@@ -36,7 +36,8 @@ public final class KeyOperation extends ExpandableStringEnum<KeyOperation> {
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public KeyOperation() {}
+    public KeyOperation() {
+    }
 
     /**
      * Creates or finds a KeyOperation from its string representation.

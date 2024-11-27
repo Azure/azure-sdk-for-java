@@ -34,7 +34,8 @@ public final class KeyVerifyParameters implements JsonSerializable<KeyVerifyPara
     private Base64Url signature;
 
     /** Creates an instance of KeyVerifyParameters class. */
-    public KeyVerifyParameters() {}
+    public KeyVerifyParameters() {
+    }
 
     /**
      * Get the algorithm property: The signing/verification algorithm. For more information on possible algorithm types,
@@ -131,28 +132,27 @@ public final class KeyVerifyParameters implements JsonSerializable<KeyVerifyPara
      * @throws IOException If an error occurs while reading the KeyVerifyParameters.
      */
     public static KeyVerifyParameters fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    KeyVerifyParameters deserializedKeyVerifyParameters = new KeyVerifyParameters();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            KeyVerifyParameters deserializedKeyVerifyParameters = new KeyVerifyParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("alg".equals(fieldName)) {
-                            deserializedKeyVerifyParameters.algorithm =
-                                    JsonWebKeySignatureAlgorithm.fromString(reader.getString());
-                        } else if ("digest".equals(fieldName)) {
-                            deserializedKeyVerifyParameters.digest =
-                                    reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
-                        } else if ("value".equals(fieldName)) {
-                            deserializedKeyVerifyParameters.signature =
-                                    reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("alg".equals(fieldName)) {
+                    deserializedKeyVerifyParameters.algorithm
+                        = JsonWebKeySignatureAlgorithm.fromString(reader.getString());
+                } else if ("digest".equals(fieldName)) {
+                    deserializedKeyVerifyParameters.digest
+                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                } else if ("value".equals(fieldName)) {
+                    deserializedKeyVerifyParameters.signature
+                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedKeyVerifyParameters;
-                });
+            return deserializedKeyVerifyParameters;
+        });
     }
 }

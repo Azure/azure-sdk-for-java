@@ -20,7 +20,8 @@ public final class SecretProperties implements JsonSerializable<SecretProperties
     private String contentType;
 
     /** Creates an instance of SecretProperties class. */
-    public SecretProperties() {}
+    public SecretProperties() {
+    }
 
     /**
      * Get the contentType property: The media type (MIME type).
@@ -58,21 +59,20 @@ public final class SecretProperties implements JsonSerializable<SecretProperties
      * @throws IOException If an error occurs while reading the SecretProperties.
      */
     public static SecretProperties fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    SecretProperties deserializedSecretProperties = new SecretProperties();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            SecretProperties deserializedSecretProperties = new SecretProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("contentType".equals(fieldName)) {
-                            deserializedSecretProperties.contentType = reader.getString();
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("contentType".equals(fieldName)) {
+                    deserializedSecretProperties.contentType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedSecretProperties;
-                });
+            return deserializedSecretProperties;
+        });
     }
 }

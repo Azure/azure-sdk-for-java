@@ -31,7 +31,8 @@ public final class CertificateUpdateParameters implements JsonSerializable<Certi
     private Map<String, String> tags;
 
     /** Creates an instance of CertificateUpdateParameters class. */
-    public CertificateUpdateParameters() {}
+    public CertificateUpdateParameters() {
+    }
 
     /**
      * Get the certificatePolicy property: The management policy for the certificate.
@@ -111,29 +112,26 @@ public final class CertificateUpdateParameters implements JsonSerializable<Certi
      * @throws IOException If an error occurs while reading the CertificateUpdateParameters.
      */
     public static CertificateUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    CertificateUpdateParameters deserializedCertificateUpdateParameters =
-                            new CertificateUpdateParameters();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            CertificateUpdateParameters deserializedCertificateUpdateParameters = new CertificateUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("policy".equals(fieldName)) {
-                            deserializedCertificateUpdateParameters.certificatePolicy =
-                                    CertificatePolicy.fromJson(reader);
-                        } else if ("attributes".equals(fieldName)) {
-                            deserializedCertificateUpdateParameters.certificateAttributes =
-                                    CertificateAttributes.fromJson(reader);
-                        } else if ("tags".equals(fieldName)) {
-                            Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
-                            deserializedCertificateUpdateParameters.tags = tags;
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("policy".equals(fieldName)) {
+                    deserializedCertificateUpdateParameters.certificatePolicy = CertificatePolicy.fromJson(reader);
+                } else if ("attributes".equals(fieldName)) {
+                    deserializedCertificateUpdateParameters.certificateAttributes
+                        = CertificateAttributes.fromJson(reader);
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedCertificateUpdateParameters.tags = tags;
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedCertificateUpdateParameters;
-                });
+            return deserializedCertificateUpdateParameters;
+        });
     }
 }

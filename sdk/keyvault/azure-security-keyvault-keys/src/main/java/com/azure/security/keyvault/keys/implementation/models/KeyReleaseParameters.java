@@ -32,7 +32,8 @@ public final class KeyReleaseParameters implements JsonSerializable<KeyReleasePa
     private KeyExportEncryptionAlgorithm enc;
 
     /** Creates an instance of KeyReleaseParameters class. */
-    public KeyReleaseParameters() {}
+    public KeyReleaseParameters() {
+    }
 
     /**
      * Get the targetAttestationToken property: The attestation assertion for the target of the key release.
@@ -113,26 +114,24 @@ public final class KeyReleaseParameters implements JsonSerializable<KeyReleasePa
      * @throws IOException If an error occurs while reading the KeyReleaseParameters.
      */
     public static KeyReleaseParameters fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    KeyReleaseParameters deserializedKeyReleaseParameters = new KeyReleaseParameters();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            KeyReleaseParameters deserializedKeyReleaseParameters = new KeyReleaseParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("target".equals(fieldName)) {
-                            deserializedKeyReleaseParameters.targetAttestationToken = reader.getString();
-                        } else if ("nonce".equals(fieldName)) {
-                            deserializedKeyReleaseParameters.nonce = reader.getString();
-                        } else if ("enc".equals(fieldName)) {
-                            deserializedKeyReleaseParameters.enc =
-                                    KeyExportEncryptionAlgorithm.fromString(reader.getString());
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("target".equals(fieldName)) {
+                    deserializedKeyReleaseParameters.targetAttestationToken = reader.getString();
+                } else if ("nonce".equals(fieldName)) {
+                    deserializedKeyReleaseParameters.nonce = reader.getString();
+                } else if ("enc".equals(fieldName)) {
+                    deserializedKeyReleaseParameters.enc = KeyExportEncryptionAlgorithm.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedKeyReleaseParameters;
-                });
+            return deserializedKeyReleaseParameters;
+        });
     }
 }

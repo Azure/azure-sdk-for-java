@@ -27,7 +27,8 @@ public final class OrganizationDetails implements JsonSerializable<OrganizationD
     private List<AdministratorContact> adminDetails;
 
     /** Creates an instance of OrganizationDetails class. */
-    public OrganizationDetails() {}
+    public OrganizationDetails() {
+    }
 
     /**
      * Get the id property: Id of the organization.
@@ -86,25 +87,24 @@ public final class OrganizationDetails implements JsonSerializable<OrganizationD
      * @throws IOException If an error occurs while reading the OrganizationDetails.
      */
     public static OrganizationDetails fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    OrganizationDetails deserializedOrganizationDetails = new OrganizationDetails();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            OrganizationDetails deserializedOrganizationDetails = new OrganizationDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("id".equals(fieldName)) {
-                            deserializedOrganizationDetails.id = reader.getString();
-                        } else if ("admin_details".equals(fieldName)) {
-                            List<AdministratorContact> adminDetails =
-                                    reader.readArray(reader1 -> AdministratorContact.fromJson(reader1));
-                            deserializedOrganizationDetails.adminDetails = adminDetails;
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("id".equals(fieldName)) {
+                    deserializedOrganizationDetails.id = reader.getString();
+                } else if ("admin_details".equals(fieldName)) {
+                    List<AdministratorContact> adminDetails
+                        = reader.readArray(reader1 -> AdministratorContact.fromJson(reader1));
+                    deserializedOrganizationDetails.adminDetails = adminDetails;
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedOrganizationDetails;
-                });
+            return deserializedOrganizationDetails;
+        });
     }
 }

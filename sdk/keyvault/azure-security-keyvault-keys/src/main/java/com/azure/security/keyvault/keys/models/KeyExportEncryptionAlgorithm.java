@@ -24,7 +24,8 @@ public final class KeyExportEncryptionAlgorithm extends ExpandableStringEnum<Key
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public KeyExportEncryptionAlgorithm() {}
+    public KeyExportEncryptionAlgorithm() {
+    }
 
     /**
      * Creates or finds a KeyExportEncryptionAlgorithm from its string representation.

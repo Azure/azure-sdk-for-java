@@ -40,7 +40,8 @@ public final class IssuerBundle implements JsonSerializable<IssuerBundle> {
     private IssuerAttributes attributes;
 
     /** Creates an instance of IssuerBundle class. */
-    public IssuerBundle() {}
+    public IssuerBundle() {
+    }
 
     /**
      * Get the id property: Identifier for the issuer object.
@@ -150,29 +151,28 @@ public final class IssuerBundle implements JsonSerializable<IssuerBundle> {
      * @throws IOException If an error occurs while reading the IssuerBundle.
      */
     public static IssuerBundle fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    IssuerBundle deserializedIssuerBundle = new IssuerBundle();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            IssuerBundle deserializedIssuerBundle = new IssuerBundle();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("id".equals(fieldName)) {
-                            deserializedIssuerBundle.id = reader.getString();
-                        } else if ("provider".equals(fieldName)) {
-                            deserializedIssuerBundle.provider = reader.getString();
-                        } else if ("credentials".equals(fieldName)) {
-                            deserializedIssuerBundle.credentials = IssuerCredentials.fromJson(reader);
-                        } else if ("org_details".equals(fieldName)) {
-                            deserializedIssuerBundle.organizationDetails = OrganizationDetails.fromJson(reader);
-                        } else if ("attributes".equals(fieldName)) {
-                            deserializedIssuerBundle.attributes = IssuerAttributes.fromJson(reader);
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("id".equals(fieldName)) {
+                    deserializedIssuerBundle.id = reader.getString();
+                } else if ("provider".equals(fieldName)) {
+                    deserializedIssuerBundle.provider = reader.getString();
+                } else if ("credentials".equals(fieldName)) {
+                    deserializedIssuerBundle.credentials = IssuerCredentials.fromJson(reader);
+                } else if ("org_details".equals(fieldName)) {
+                    deserializedIssuerBundle.organizationDetails = OrganizationDetails.fromJson(reader);
+                } else if ("attributes".equals(fieldName)) {
+                    deserializedIssuerBundle.attributes = IssuerAttributes.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedIssuerBundle;
-                });
+            return deserializedIssuerBundle;
+        });
     }
 }

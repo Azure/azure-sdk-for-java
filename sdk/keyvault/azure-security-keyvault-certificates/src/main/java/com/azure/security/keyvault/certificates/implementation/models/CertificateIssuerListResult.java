@@ -27,7 +27,8 @@ public final class CertificateIssuerListResult implements JsonSerializable<Certi
     private String nextLink;
 
     /** Creates an instance of CertificateIssuerListResult class. */
-    public CertificateIssuerListResult() {}
+    public CertificateIssuerListResult() {
+    }
 
     /**
      * Get the value property: A response message containing a list of certificate issuers in the key vault along with a
@@ -63,26 +64,24 @@ public final class CertificateIssuerListResult implements JsonSerializable<Certi
      * @throws IOException If an error occurs while reading the CertificateIssuerListResult.
      */
     public static CertificateIssuerListResult fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    CertificateIssuerListResult deserializedCertificateIssuerListResult =
-                            new CertificateIssuerListResult();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            CertificateIssuerListResult deserializedCertificateIssuerListResult = new CertificateIssuerListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("value".equals(fieldName)) {
-                            List<CertificateIssuerItem> value =
-                                    reader.readArray(reader1 -> CertificateIssuerItem.fromJson(reader1));
-                            deserializedCertificateIssuerListResult.value = value;
-                        } else if ("nextLink".equals(fieldName)) {
-                            deserializedCertificateIssuerListResult.nextLink = reader.getString();
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("value".equals(fieldName)) {
+                    List<CertificateIssuerItem> value
+                        = reader.readArray(reader1 -> CertificateIssuerItem.fromJson(reader1));
+                    deserializedCertificateIssuerListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedCertificateIssuerListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedCertificateIssuerListResult;
-                });
+            return deserializedCertificateIssuerListResult;
+        });
     }
 }

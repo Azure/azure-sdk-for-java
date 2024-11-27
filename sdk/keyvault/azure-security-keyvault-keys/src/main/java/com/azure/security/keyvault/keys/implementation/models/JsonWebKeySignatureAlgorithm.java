@@ -51,7 +51,8 @@ public final class JsonWebKeySignatureAlgorithm extends ExpandableStringEnum<Jso
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public JsonWebKeySignatureAlgorithm() {}
+    public JsonWebKeySignatureAlgorithm() {
+    }
 
     /**
      * Creates or finds a JsonWebKeySignatureAlgorithm from its string representation.

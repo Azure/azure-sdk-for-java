@@ -37,7 +37,8 @@ public final class DeletedCertificateBundle extends CertificateBundle {
     private Long deletedDate;
 
     /** Creates an instance of DeletedCertificateBundle class. */
-    public DeletedCertificateBundle() {}
+    public DeletedCertificateBundle() {
+    }
 
     /**
      * Get the recoveryId property: The url of the recovery object, used to identify and recover the deleted
@@ -133,46 +134,44 @@ public final class DeletedCertificateBundle extends CertificateBundle {
      * @throws IOException If an error occurs while reading the DeletedCertificateBundle.
      */
     public static DeletedCertificateBundle fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    DeletedCertificateBundle deserializedDeletedCertificateBundle = new DeletedCertificateBundle();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            DeletedCertificateBundle deserializedDeletedCertificateBundle = new DeletedCertificateBundle();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("id".equals(fieldName)) {
-                            deserializedDeletedCertificateBundle.setId(reader.getString());
-                        } else if ("kid".equals(fieldName)) {
-                            deserializedDeletedCertificateBundle.setKid(reader.getString());
-                        } else if ("sid".equals(fieldName)) {
-                            deserializedDeletedCertificateBundle.setSid(reader.getString());
-                        } else if ("x5t".equals(fieldName)) {
-                            deserializedDeletedCertificateBundle.setX509Thumbprint(
-                                    reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString())));
-                        } else if ("policy".equals(fieldName)) {
-                            deserializedDeletedCertificateBundle.setPolicy(CertificatePolicy.fromJson(reader));
-                        } else if ("cer".equals(fieldName)) {
-                            deserializedDeletedCertificateBundle.setCer(reader.getBinary());
-                        } else if ("contentType".equals(fieldName)) {
-                            deserializedDeletedCertificateBundle.setContentType(reader.getString());
-                        } else if ("attributes".equals(fieldName)) {
-                            deserializedDeletedCertificateBundle.setAttributes(CertificateAttributes.fromJson(reader));
-                        } else if ("tags".equals(fieldName)) {
-                            Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
-                            deserializedDeletedCertificateBundle.setTags(tags);
-                        } else if ("recoveryId".equals(fieldName)) {
-                            deserializedDeletedCertificateBundle.recoveryId = reader.getString();
-                        } else if ("scheduledPurgeDate".equals(fieldName)) {
-                            deserializedDeletedCertificateBundle.scheduledPurgeDate =
-                                    reader.getNullable(JsonReader::getLong);
-                        } else if ("deletedDate".equals(fieldName)) {
-                            deserializedDeletedCertificateBundle.deletedDate = reader.getNullable(JsonReader::getLong);
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("id".equals(fieldName)) {
+                    deserializedDeletedCertificateBundle.setId(reader.getString());
+                } else if ("kid".equals(fieldName)) {
+                    deserializedDeletedCertificateBundle.setKid(reader.getString());
+                } else if ("sid".equals(fieldName)) {
+                    deserializedDeletedCertificateBundle.setSid(reader.getString());
+                } else if ("x5t".equals(fieldName)) {
+                    deserializedDeletedCertificateBundle.setX509Thumbprint(
+                        reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString())));
+                } else if ("policy".equals(fieldName)) {
+                    deserializedDeletedCertificateBundle.setPolicy(CertificatePolicy.fromJson(reader));
+                } else if ("cer".equals(fieldName)) {
+                    deserializedDeletedCertificateBundle.setCer(reader.getBinary());
+                } else if ("contentType".equals(fieldName)) {
+                    deserializedDeletedCertificateBundle.setContentType(reader.getString());
+                } else if ("attributes".equals(fieldName)) {
+                    deserializedDeletedCertificateBundle.setAttributes(CertificateAttributes.fromJson(reader));
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedDeletedCertificateBundle.setTags(tags);
+                } else if ("recoveryId".equals(fieldName)) {
+                    deserializedDeletedCertificateBundle.recoveryId = reader.getString();
+                } else if ("scheduledPurgeDate".equals(fieldName)) {
+                    deserializedDeletedCertificateBundle.scheduledPurgeDate = reader.getNullable(JsonReader::getLong);
+                } else if ("deletedDate".equals(fieldName)) {
+                    deserializedDeletedCertificateBundle.deletedDate = reader.getNullable(JsonReader::getLong);
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedDeletedCertificateBundle;
-                });
+            return deserializedDeletedCertificateBundle;
+        });
     }
 }

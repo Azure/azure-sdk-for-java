@@ -33,7 +33,8 @@ public final class DeletedSecretItem extends SecretItem {
     private Long deletedDate;
 
     /** Creates an instance of DeletedSecretItem class. */
-    public DeletedSecretItem() {}
+    public DeletedSecretItem() {
+    }
 
     /**
      * Get the recoveryId property: The url of the recovery object, used to identify and recover the deleted secret.
@@ -127,36 +128,35 @@ public final class DeletedSecretItem extends SecretItem {
      * @throws IOException If an error occurs while reading the DeletedSecretItem.
      */
     public static DeletedSecretItem fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    DeletedSecretItem deserializedDeletedSecretItem = new DeletedSecretItem();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            DeletedSecretItem deserializedDeletedSecretItem = new DeletedSecretItem();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("id".equals(fieldName)) {
-                            deserializedDeletedSecretItem.setId(reader.getString());
-                        } else if ("attributes".equals(fieldName)) {
-                            deserializedDeletedSecretItem.setAttributes(SecretAttributes.fromJson(reader));
-                        } else if ("tags".equals(fieldName)) {
-                            Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
-                            deserializedDeletedSecretItem.setTags(tags);
-                        } else if ("contentType".equals(fieldName)) {
-                            deserializedDeletedSecretItem.setContentType(reader.getString());
-                        } else if ("managed".equals(fieldName)) {
-                            deserializedDeletedSecretItem.setManaged(reader.getNullable(JsonReader::getBoolean));
-                        } else if ("recoveryId".equals(fieldName)) {
-                            deserializedDeletedSecretItem.recoveryId = reader.getString();
-                        } else if ("scheduledPurgeDate".equals(fieldName)) {
-                            deserializedDeletedSecretItem.scheduledPurgeDate = reader.getNullable(JsonReader::getLong);
-                        } else if ("deletedDate".equals(fieldName)) {
-                            deserializedDeletedSecretItem.deletedDate = reader.getNullable(JsonReader::getLong);
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("id".equals(fieldName)) {
+                    deserializedDeletedSecretItem.setId(reader.getString());
+                } else if ("attributes".equals(fieldName)) {
+                    deserializedDeletedSecretItem.setAttributes(SecretAttributes.fromJson(reader));
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedDeletedSecretItem.setTags(tags);
+                } else if ("contentType".equals(fieldName)) {
+                    deserializedDeletedSecretItem.setContentType(reader.getString());
+                } else if ("managed".equals(fieldName)) {
+                    deserializedDeletedSecretItem.setManaged(reader.getNullable(JsonReader::getBoolean));
+                } else if ("recoveryId".equals(fieldName)) {
+                    deserializedDeletedSecretItem.recoveryId = reader.getString();
+                } else if ("scheduledPurgeDate".equals(fieldName)) {
+                    deserializedDeletedSecretItem.scheduledPurgeDate = reader.getNullable(JsonReader::getLong);
+                } else if ("deletedDate".equals(fieldName)) {
+                    deserializedDeletedSecretItem.deletedDate = reader.getNullable(JsonReader::getLong);
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedDeletedSecretItem;
-                });
+            return deserializedDeletedSecretItem;
+        });
     }
 }

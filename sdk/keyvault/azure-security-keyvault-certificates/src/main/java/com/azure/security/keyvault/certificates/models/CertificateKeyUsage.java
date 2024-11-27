@@ -42,7 +42,8 @@ public final class CertificateKeyUsage extends ExpandableStringEnum<CertificateK
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public CertificateKeyUsage() {}
+    public CertificateKeyUsage() {
+    }
 
     /**
      * Creates or finds a CertificateKeyUsage from its string representation.

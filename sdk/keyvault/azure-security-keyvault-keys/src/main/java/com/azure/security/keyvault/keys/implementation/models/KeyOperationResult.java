@@ -41,7 +41,8 @@ public final class KeyOperationResult implements JsonSerializable<KeyOperationRe
     private Base64Url additionalAuthenticatedData;
 
     /** Creates an instance of KeyOperationResult class. */
-    public KeyOperationResult() {}
+    public KeyOperationResult() {
+    }
 
     /**
      * Get the kid property: Key identifier.
@@ -115,33 +116,32 @@ public final class KeyOperationResult implements JsonSerializable<KeyOperationRe
      * @throws IOException If an error occurs while reading the KeyOperationResult.
      */
     public static KeyOperationResult fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    KeyOperationResult deserializedKeyOperationResult = new KeyOperationResult();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            KeyOperationResult deserializedKeyOperationResult = new KeyOperationResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("kid".equals(fieldName)) {
-                            deserializedKeyOperationResult.kid = reader.getString();
-                        } else if ("value".equals(fieldName)) {
-                            deserializedKeyOperationResult.result =
-                                    reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
-                        } else if ("iv".equals(fieldName)) {
-                            deserializedKeyOperationResult.iv =
-                                    reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
-                        } else if ("tag".equals(fieldName)) {
-                            deserializedKeyOperationResult.authenticationTag =
-                                    reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
-                        } else if ("aad".equals(fieldName)) {
-                            deserializedKeyOperationResult.additionalAuthenticatedData =
-                                    reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("kid".equals(fieldName)) {
+                    deserializedKeyOperationResult.kid = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    deserializedKeyOperationResult.result
+                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                } else if ("iv".equals(fieldName)) {
+                    deserializedKeyOperationResult.iv
+                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                } else if ("tag".equals(fieldName)) {
+                    deserializedKeyOperationResult.authenticationTag
+                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                } else if ("aad".equals(fieldName)) {
+                    deserializedKeyOperationResult.additionalAuthenticatedData
+                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedKeyOperationResult;
-                });
+            return deserializedKeyOperationResult;
+        });
     }
 }
