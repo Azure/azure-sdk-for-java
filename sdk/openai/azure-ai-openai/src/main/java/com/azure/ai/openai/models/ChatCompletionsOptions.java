@@ -24,6 +24,12 @@ import java.util.Map;
 public final class ChatCompletionsOptions implements JsonSerializable<ChatCompletionsOptions> {
 
     /*
+     * The available tool definitions that the chat completions request can use, including caller-defined functions.
+     */
+    @Generated
+    private List<ChatCompletionsToolDefinition> tools;
+
+    /*
      * The collection of context messages associated with this chat completions request.
      * Typical usage begins with a chat message for the System role that provides instructions for
      * the behavior of the assistant, followed by alternating messages between the User and
@@ -125,6 +131,94 @@ public final class ChatCompletionsOptions implements JsonSerializable<ChatComple
      */
     @Generated
     private String model;
+
+    /*
+     * A list of functions the model may generate JSON inputs for.
+     */
+    @Generated
+    private List<FunctionDefinition> functions;
+
+    /*
+     * Controls how the model responds to function calls. "none" means the model does not call a function,
+     * and responds to the end-user. "auto" means the model can pick between an end-user or calling a function.
+     * Specifying a particular function via `{"name": "my_function"}` forces the model to call that function.
+     * "none" is the default when no functions are present. "auto" is the default if functions are present.
+     */
+    @Generated
+    private BinaryData functionCall;
+
+    /*
+     * Field not used for serialization. This is a convenience helper field for the serialization of "function_call".
+     */
+    private FunctionCallConfig functionCallConfig;
+
+    /*
+     * The configuration entries for Azure OpenAI chat extensions that use them.
+     * This additional specification is only compatible with Azure OpenAI.
+     */
+    @Generated
+    private List<AzureChatExtensionConfiguration> dataSources;
+
+    /*
+     * If provided, the configuration options for available Azure OpenAI chat enhancements.
+     */
+    @Generated
+    private AzureChatEnhancementConfiguration enhancements;
+
+    /*
+     * If specified, the system will make a best effort to sample deterministically such that repeated requests with the
+     * same seed and parameters should return the same result. Determinism is not guaranteed, and you should refer to
+     * the
+     * system_fingerprint response parameter to monitor changes in the backend."
+     */
+    @Generated
+    private Long seed;
+
+    /*
+     * An object specifying the format that the model must output. Used to enable JSON mode.
+     */
+    @Generated
+    private ChatCompletionsResponseFormat responseFormat;
+
+    /*
+     * If specified, the model will configure which of the provided tools it can use for the chat completions response.
+     */
+    @Generated
+    private BinaryData toolChoice;
+
+    /*
+     * Whether to return log probabilities of the output tokens or not. If true, returns the log probabilities of each
+     * output token returned in the `content` of `message`. This option is currently not available on the
+     * `gpt-4-vision-preview` model.
+     */
+    @Generated
+    private Boolean logprobs;
+
+    /*
+     * An integer between 0 and 5 specifying the number of most likely tokens to return at each token position, each
+     * with an associated log probability. `logprobs` must be set to `true` if this parameter is used.
+     */
+    @Generated
+    private Integer topLogprobs;
+
+    /*
+     * An upper bound for the number of tokens that can be generated for a completion, including visible output tokens
+     * and reasoning tokens.
+     */
+    @Generated
+    private Integer maxCompletionTokens;
+
+    /*
+     * Options for streaming response. Only set this when you set `stream: true`.
+     */
+    @Generated
+    private ChatCompletionStreamOptions streamOptions;
+
+    /*
+     * Whether to enable parallel function calling during tool use.
+     */
+    @Generated
+    private Boolean parallelToolCalls;
 
     /**
      * Creates an instance of ChatCompletionsOptions class.
@@ -455,26 +549,6 @@ public final class ChatCompletionsOptions implements JsonSerializable<ChatComple
         return this;
     }
 
-    /*
-     * A list of functions the model may generate JSON inputs for.
-     */
-    @Generated
-    private List<FunctionDefinition> functions;
-
-    /*
-     * Controls how the model responds to function calls. "none" means the model does not call a function,
-     * and responds to the end-user. "auto" means the model can pick between an end-user or calling a function.
-     * Specifying a particular function via `{"name": "my_function"}` forces the model to call that function.
-     * "none" is the default when no functions are present. "auto" is the default if functions are present.
-     */
-    @Generated
-    private BinaryData functionCall;
-
-    /*
-     * Field not used for serialization. This is a convenience helper field for the serialization of "function_call".
-     */
-    private FunctionCallConfig functionCallConfig;
-
     /**
      * Get the functions property: A list of functions the model may generate JSON inputs for.
      *
@@ -556,13 +630,6 @@ public final class ChatCompletionsOptions implements JsonSerializable<ChatComple
         return this;
     }
 
-    /*
-     * The configuration entries for Azure OpenAI chat extensions that use them.
-     * This additional specification is only compatible with Azure OpenAI.
-     */
-    @Generated
-    private List<AzureChatExtensionConfiguration> dataSources;
-
     /**
      * Get the dataSources property: The configuration entries for Azure OpenAI chat extensions that use them.
      * This additional specification is only compatible with Azure OpenAI.
@@ -586,39 +653,6 @@ public final class ChatCompletionsOptions implements JsonSerializable<ChatComple
         this.dataSources = dataSources;
         return this;
     }
-
-    /*
-     * If provided, the configuration options for available Azure OpenAI chat enhancements.
-     */
-    @Generated
-    private AzureChatEnhancementConfiguration enhancements;
-
-    /*
-     * If specified, the system will make a best effort to sample deterministically such that repeated requests with the
-     * same seed and parameters should return the same result. Determinism is not guaranteed, and you should refer to
-     * the
-     * system_fingerprint response parameter to monitor changes in the backend."
-     */
-    @Generated
-    private Long seed;
-
-    /*
-     * An object specifying the format that the model must output. Used to enable JSON mode.
-     */
-    @Generated
-    private ChatCompletionsResponseFormat responseFormat;
-
-    /*
-     * The available tool definitions that the chat completions request can use, including caller-defined functions.
-     */
-    @Generated
-    private List<ChatCompletionsToolDefinition> tools;
-
-    /*
-     * If specified, the model will configure which of the provided tools it can use for the chat completions response.
-     */
-    @Generated
-    private BinaryData toolChoice;
 
     /**
      * Get the enhancements property: If provided, the configuration options for available Azure OpenAI chat
@@ -750,21 +784,6 @@ public final class ChatCompletionsOptions implements JsonSerializable<ChatComple
         return this;
     }
 
-    /*
-     * Whether to return log probabilities of the output tokens or not. If true, returns the log probabilities of each
-     * output token returned in the `content` of `message`. This option is currently not available on the
-     * `gpt-4-vision-preview` model.
-     */
-    @Generated
-    private Boolean logprobs;
-
-    /*
-     * An integer between 0 and 5 specifying the number of most likely tokens to return at each token position, each
-     * with an associated log probability. `logprobs` must be set to `true` if this parameter is used.
-     */
-    @Generated
-    private Integer topLogprobs;
-
     /**
      * Get the logprobs property: Whether to return log probabilities of the output tokens or not. If true, returns the
      * log probabilities of each output token returned in the `content` of `message`. This option is currently not
@@ -818,12 +837,83 @@ public final class ChatCompletionsOptions implements JsonSerializable<ChatComple
     }
 
     /**
-     * {@inheritDoc}
+     * Get the maxCompletionTokens property: An upper bound for the number of tokens that can be generated for a
+     * completion, including visible output tokens and reasoning tokens.
+     *
+     * @return the maxCompletionTokens value.
      */
     @Generated
+    public Integer getMaxCompletionTokens() {
+        return this.maxCompletionTokens;
+    }
+
+    /**
+     * Set the maxCompletionTokens property: An upper bound for the number of tokens that can be generated for a
+     * completion, including visible output tokens and reasoning tokens.
+     *
+     * @param maxCompletionTokens the maxCompletionTokens value to set.
+     * @return the ChatCompletionsOptions object itself.
+     */
+    @Generated
+    public ChatCompletionsOptions setMaxCompletionTokens(Integer maxCompletionTokens) {
+        this.maxCompletionTokens = maxCompletionTokens;
+        return this;
+    }
+
+    /**
+     * Get the streamOptions property: Options for streaming response. Only set this when you set `stream: true`.
+     *
+     * @return the streamOptions value.
+     */
+    @Generated
+    public ChatCompletionStreamOptions getStreamOptions() {
+        return this.streamOptions;
+    }
+
+    /**
+     * Set the streamOptions property: Options for streaming response. Only set this when you set `stream: true`.
+     *
+     * @param streamOptions the streamOptions value to set.
+     * @return the ChatCompletionsOptions object itself.
+     */
+    @Generated
+    public ChatCompletionsOptions setStreamOptions(ChatCompletionStreamOptions streamOptions) {
+        this.streamOptions = streamOptions;
+        return this;
+    }
+
+    /**
+     * Get the parallelToolCalls property: Whether to enable parallel function calling during tool use.
+     *
+     * @return the parallelToolCalls value.
+     */
+    @Generated
+    public Boolean isParallelToolCalls() {
+        return this.parallelToolCalls;
+    }
+
+    /**
+     * Set the parallelToolCalls property: Whether to enable parallel function calling during tool use.
+     *
+     * @param parallelToolCalls the parallelToolCalls value to set.
+     * @return the ChatCompletionsOptions object itself.
+     */
+    @Generated
+    public ChatCompletionsOptions setParallelToolCalls(Boolean parallelToolCalls) {
+        this.parallelToolCalls = parallelToolCalls;
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("tools", this.tools, (writer, element) -> writer.writeJson(element));
+        if (this.toolChoice != null) {
+            jsonWriter.writeRawField("tool_choice", this.toolChoice.toString());
+        }
         jsonWriter.writeArrayField("messages", this.messages, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("functions", this.functions, (writer, element) -> writer.writeJson(element));
         if (this.functionCall != null) {
@@ -849,11 +939,6 @@ public final class ChatCompletionsOptions implements JsonSerializable<ChatComple
         jsonWriter.writeBooleanField("logprobs", this.logprobs);
         jsonWriter.writeNumberField("top_logprobs", this.topLogprobs);
         jsonWriter.writeJsonField("response_format", this.responseFormat);
-        jsonWriter.writeArrayField("tools", this.tools, (writer, element) -> writer.writeJson(element));
-        if (this.toolChoice != null) {
-            jsonWriter.writeFieldName("tool_choice");
-            this.toolChoice.writeTo(jsonWriter);
-        }
         jsonWriter.writeBooleanField("parallel_tool_calls", this.parallelToolCalls);
         return jsonWriter.writeEndObject();
     }
@@ -981,92 +1066,5 @@ public final class ChatCompletionsOptions implements JsonSerializable<ChatComple
             deserializedChatCompletionsOptions.parallelToolCalls = parallelToolCalls;
             return deserializedChatCompletionsOptions;
         });
-    }
-
-    /*
-     * An upper bound for the number of tokens that can be generated for a completion, including visible output tokens
-     * and reasoning tokens.
-     */
-    @Generated
-    private Integer maxCompletionTokens;
-
-    /*
-     * Options for streaming response. Only set this when you set `stream: true`.
-     */
-    @Generated
-    private ChatCompletionStreamOptions streamOptions;
-
-    /*
-     * Whether to enable parallel function calling during tool use.
-     */
-    @Generated
-    private Boolean parallelToolCalls;
-
-    /**
-     * Get the maxCompletionTokens property: An upper bound for the number of tokens that can be generated for a
-     * completion, including visible output tokens and reasoning tokens.
-     *
-     * @return the maxCompletionTokens value.
-     */
-    @Generated
-    public Integer getMaxCompletionTokens() {
-        return this.maxCompletionTokens;
-    }
-
-    /**
-     * Set the maxCompletionTokens property: An upper bound for the number of tokens that can be generated for a
-     * completion, including visible output tokens and reasoning tokens.
-     *
-     * @param maxCompletionTokens the maxCompletionTokens value to set.
-     * @return the ChatCompletionsOptions object itself.
-     */
-    @Generated
-    public ChatCompletionsOptions setMaxCompletionTokens(Integer maxCompletionTokens) {
-        this.maxCompletionTokens = maxCompletionTokens;
-        return this;
-    }
-
-    /**
-     * Get the streamOptions property: Options for streaming response. Only set this when you set `stream: true`.
-     *
-     * @return the streamOptions value.
-     */
-    @Generated
-    public ChatCompletionStreamOptions getStreamOptions() {
-        return this.streamOptions;
-    }
-
-    /**
-     * Set the streamOptions property: Options for streaming response. Only set this when you set `stream: true`.
-     *
-     * @param streamOptions the streamOptions value to set.
-     * @return the ChatCompletionsOptions object itself.
-     */
-    @Generated
-    public ChatCompletionsOptions setStreamOptions(ChatCompletionStreamOptions streamOptions) {
-        this.streamOptions = streamOptions;
-        return this;
-    }
-
-    /**
-     * Get the parallelToolCalls property: Whether to enable parallel function calling during tool use.
-     *
-     * @return the parallelToolCalls value.
-     */
-    @Generated
-    public Boolean isParallelToolCalls() {
-        return this.parallelToolCalls;
-    }
-
-    /**
-     * Set the parallelToolCalls property: Whether to enable parallel function calling during tool use.
-     *
-     * @param parallelToolCalls the parallelToolCalls value to set.
-     * @return the ChatCompletionsOptions object itself.
-     */
-    @Generated
-    public ChatCompletionsOptions setParallelToolCalls(Boolean parallelToolCalls) {
-        this.parallelToolCalls = parallelToolCalls;
-        return this;
     }
 }
