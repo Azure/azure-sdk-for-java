@@ -4,71 +4,52 @@
 
 package com.azure.resourcemanager.hardwaresecuritymodules.models;
 
-import com.azure.core.annotation.Fluent;
-import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.resourcemanager.hardwaresecuritymodules.fluent.models.PrivateLinkResourceInner;
 
 /**
- * A private link resource.
+ * An immutable client-side representation of PrivateLinkResource.
  */
-@Fluent
-public final class PrivateLinkResource extends ProxyResource {
-    /*
-     * Resource properties.
+public interface PrivateLinkResource {
+    /**
+     * Gets the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
      */
-    @JsonProperty(value = "properties")
-    private PrivateLinkResourceProperties properties;
-
-    /*
-     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
-    private SystemData systemData;
+    String id();
 
     /**
-     * Creates an instance of PrivateLinkResource class.
+     * Gets the name property: The name of the resource.
+     * 
+     * @return the name value.
      */
-    public PrivateLinkResource() {
-    }
+    String name();
 
     /**
-     * Get the properties property: Resource properties.
+     * Gets the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    String type();
+
+    /**
+     * Gets the properties property: Resource properties.
      * 
      * @return the properties value.
      */
-    public PrivateLinkResourceProperties properties() {
-        return this.properties;
-    }
+    PrivateLinkResourceProperties properties();
 
     /**
-     * Set the properties property: Resource properties.
-     * 
-     * @param properties the properties value to set.
-     * @return the PrivateLinkResource object itself.
-     */
-    public PrivateLinkResource withProperties(PrivateLinkResourceProperties properties) {
-        this.properties = properties;
-        return this;
-    }
-
-    /**
-     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      * 
      * @return the systemData value.
      */
-    public SystemData systemData() {
-        return this.systemData;
-    }
+    SystemData systemData();
 
     /**
-     * Validates the instance.
+     * Gets the inner com.azure.resourcemanager.hardwaresecuritymodules.fluent.models.PrivateLinkResourceInner object.
      * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
+     * @return the inner object.
      */
-    public void validate() {
-        if (properties() != null) {
-            properties().validate();
-        }
-    }
+    PrivateLinkResourceInner innerModel();
 }

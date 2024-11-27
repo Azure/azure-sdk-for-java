@@ -1,15 +1,9 @@
 ## Release History
 
-### 4.35.0-beta.1 (Unreleased)
-
-#### Features Added
-
-#### Breaking Changes
+### 4.35.0 (2024-11-27)
 
 #### Bugs Fixed
 * Fixed an issue when using `ChangeFeed` causing some cosmos partitions to not be fully processed in some cases. - See [PR 42553](https://github.com/Azure/azure-sdk-for-java/pull/42553)
-
-#### Other Changes
 
 ### 4.34.0 (2024-10-10)
 > [!IMPORTANT]

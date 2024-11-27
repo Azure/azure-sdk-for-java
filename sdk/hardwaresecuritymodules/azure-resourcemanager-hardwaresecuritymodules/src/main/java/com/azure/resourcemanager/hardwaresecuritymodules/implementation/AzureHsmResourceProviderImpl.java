@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.hardwaresecuritymodules.implementation;
 
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
@@ -23,8 +24,10 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.hardwaresecuritymodules.fluent.AzureHsmResourceProvider;
+import com.azure.resourcemanager.hardwaresecuritymodules.fluent.CloudHsmClusterBackupStatusClient;
 import com.azure.resourcemanager.hardwaresecuritymodules.fluent.CloudHsmClusterPrivateEndpointConnectionsClient;
 import com.azure.resourcemanager.hardwaresecuritymodules.fluent.CloudHsmClusterPrivateLinkResourcesClient;
+import com.azure.resourcemanager.hardwaresecuritymodules.fluent.CloudHsmClusterRestoreStatusClient;
 import com.azure.resourcemanager.hardwaresecuritymodules.fluent.CloudHsmClustersClient;
 import com.azure.resourcemanager.hardwaresecuritymodules.fluent.DedicatedHsmsClient;
 import com.azure.resourcemanager.hardwaresecuritymodules.fluent.OperationsClient;
@@ -69,6 +72,20 @@ public final class AzureHsmResourceProviderImpl implements AzureHsmResourceProvi
      */
     public String getEndpoint() {
         return this.endpoint;
+    }
+
+    /**
+     * Api Version.
+     */
+    private final String apiVersion;
+
+    /**
+     * Gets Api Version.
+     * 
+     * @return the apiVersion value.
+     */
+    public String getApiVersion() {
+        return this.apiVersion;
     }
 
     /**
@@ -170,17 +187,31 @@ public final class AzureHsmResourceProviderImpl implements AzureHsmResourceProvi
     }
 
     /**
-     * The OperationsClient object to access its operations.
+     * The CloudHsmClusterBackupStatusClient object to access its operations.
      */
-    private final OperationsClient operations;
+    private final CloudHsmClusterBackupStatusClient cloudHsmClusterBackupStatus;
 
     /**
-     * Gets the OperationsClient object to access its operations.
+     * Gets the CloudHsmClusterBackupStatusClient object to access its operations.
      * 
-     * @return the OperationsClient object.
+     * @return the CloudHsmClusterBackupStatusClient object.
      */
-    public OperationsClient getOperations() {
-        return this.operations;
+    public CloudHsmClusterBackupStatusClient getCloudHsmClusterBackupStatus() {
+        return this.cloudHsmClusterBackupStatus;
+    }
+
+    /**
+     * The CloudHsmClusterRestoreStatusClient object to access its operations.
+     */
+    private final CloudHsmClusterRestoreStatusClient cloudHsmClusterRestoreStatus;
+
+    /**
+     * Gets the CloudHsmClusterRestoreStatusClient object to access its operations.
+     * 
+     * @return the CloudHsmClusterRestoreStatusClient object.
+     */
+    public CloudHsmClusterRestoreStatusClient getCloudHsmClusterRestoreStatus() {
+        return this.cloudHsmClusterRestoreStatus;
     }
 
     /**
@@ -195,6 +226,20 @@ public final class AzureHsmResourceProviderImpl implements AzureHsmResourceProvi
      */
     public DedicatedHsmsClient getDedicatedHsms() {
         return this.dedicatedHsms;
+    }
+
+    /**
+     * The OperationsClient object to access its operations.
+     */
+    private final OperationsClient operations;
+
+    /**
+     * Gets the OperationsClient object to access its operations.
+     * 
+     * @return the OperationsClient object.
+     */
+    public OperationsClient getOperations() {
+        return this.operations;
     }
 
     /**
@@ -214,12 +259,15 @@ public final class AzureHsmResourceProviderImpl implements AzureHsmResourceProvi
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
+        this.apiVersion = "2024-06-30-preview";
         this.cloudHsmClusters = new CloudHsmClustersClientImpl(this);
         this.cloudHsmClusterPrivateLinkResources = new CloudHsmClusterPrivateLinkResourcesClientImpl(this);
         this.cloudHsmClusterPrivateEndpointConnections = new CloudHsmClusterPrivateEndpointConnectionsClientImpl(this);
         this.privateEndpointConnections = new PrivateEndpointConnectionsClientImpl(this);
-        this.operations = new OperationsClientImpl(this);
+        this.cloudHsmClusterBackupStatus = new CloudHsmClusterBackupStatusClientImpl(this);
+        this.cloudHsmClusterRestoreStatus = new CloudHsmClusterRestoreStatusClientImpl(this);
         this.dedicatedHsms = new DedicatedHsmsClientImpl(this);
+        this.operations = new OperationsClientImpl(this);
     }
 
     /**
@@ -324,7 +372,7 @@ public final class AzureHsmResourceProviderImpl implements AzureHsmResourceProvi
         }
 
         public String getHeaderValue(String s) {
-            return httpHeaders.getValue(s);
+            return httpHeaders.getValue(HttpHeaderName.fromString(s));
         }
 
         public HttpHeaders getHeaders() {

@@ -4,14 +4,13 @@
 
 package com.azure.resourcemanager.hardwaresecuritymodules.implementation;
 
-import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.hardwaresecuritymodules.fluent.CloudHsmClusterPrivateLinkResourcesClient;
-import com.azure.resourcemanager.hardwaresecuritymodules.fluent.models.PrivateLinkResourceListResultInner;
+import com.azure.resourcemanager.hardwaresecuritymodules.fluent.models.PrivateLinkResourceInner;
 import com.azure.resourcemanager.hardwaresecuritymodules.models.CloudHsmClusterPrivateLinkResources;
-import com.azure.resourcemanager.hardwaresecuritymodules.models.PrivateLinkResourceListResult;
+import com.azure.resourcemanager.hardwaresecuritymodules.models.PrivateLinkResource;
 
 public final class CloudHsmClusterPrivateLinkResourcesImpl implements CloudHsmClusterPrivateLinkResources {
     private static final ClientLogger LOGGER = new ClientLogger(CloudHsmClusterPrivateLinkResourcesImpl.class);
@@ -26,26 +25,18 @@ public final class CloudHsmClusterPrivateLinkResourcesImpl implements CloudHsmCl
         this.serviceManager = serviceManager;
     }
 
-    public Response<PrivateLinkResourceListResult> listByCloudHsmClusterWithResponse(String resourceGroupName,
-        String cloudHsmClusterName, Context context) {
-        Response<PrivateLinkResourceListResultInner> inner
-            = this.serviceClient().listByCloudHsmClusterWithResponse(resourceGroupName, cloudHsmClusterName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new PrivateLinkResourceListResultImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+    public PagedIterable<PrivateLinkResource> listByCloudHsmCluster(String resourceGroupName,
+        String cloudHsmClusterName) {
+        PagedIterable<PrivateLinkResourceInner> inner
+            = this.serviceClient().listByCloudHsmCluster(resourceGroupName, cloudHsmClusterName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PrivateLinkResourceImpl(inner1, this.manager()));
     }
 
-    public PrivateLinkResourceListResult listByCloudHsmCluster(String resourceGroupName, String cloudHsmClusterName) {
-        PrivateLinkResourceListResultInner inner
-            = this.serviceClient().listByCloudHsmCluster(resourceGroupName, cloudHsmClusterName);
-        if (inner != null) {
-            return new PrivateLinkResourceListResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public PagedIterable<PrivateLinkResource> listByCloudHsmCluster(String resourceGroupName,
+        String cloudHsmClusterName, Context context) {
+        PagedIterable<PrivateLinkResourceInner> inner
+            = this.serviceClient().listByCloudHsmCluster(resourceGroupName, cloudHsmClusterName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PrivateLinkResourceImpl(inner1, this.manager()));
     }
 
     private CloudHsmClusterPrivateLinkResourcesClient serviceClient() {
