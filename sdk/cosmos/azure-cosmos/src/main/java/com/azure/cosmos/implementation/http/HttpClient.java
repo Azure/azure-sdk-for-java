@@ -46,7 +46,6 @@ public interface HttpClient {
         fixedConnectionProviderBuilder.pendingAcquireTimeout(httpClientConfig.getConnectionAcquireTimeout());
         fixedConnectionProviderBuilder.maxIdleTime(httpClientConfig.getMaxIdleConnectionTimeout());
 
-        // TODO[Http2]: config Http2AllocationStrategy (maxConnections & maxConcurrentStreams)
         if (httpClientConfig.getHttp2ConnectionConfig().isEnabled()) {
             fixedConnectionProviderBuilder.allocationStrategy(
                 Http2AllocationStrategy.builder()

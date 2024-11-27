@@ -6,7 +6,6 @@ package com.azure.cosmos.implementation.http;
 import com.azure.core.http.ProxyOptions;
 import com.azure.cosmos.Http2ConnectionConfig;
 import com.azure.cosmos.implementation.Configs;
-import com.azure.cosmos.util.Beta;
 
 import java.time.Duration;
 
@@ -33,6 +32,7 @@ public class HttpClientConfig {
 
     public HttpClientConfig(Configs configs) {
         this.configs = configs;
+        this.http2ConnectionConfig = new Http2ConnectionConfig();
     }
 
     public HttpClientConfig withMaxHeaderSize(int maxHeaderSize) {
@@ -100,7 +100,7 @@ public class HttpClientConfig {
         return this;
     }
 
-    public HttpClientConfig withHttp2Config(Http2ConnectionConfig http2ConnectionConfig) {
+    public HttpClientConfig withHttp2ConnectionConfig(Http2ConnectionConfig http2ConnectionConfig) {
         this.http2ConnectionConfig = http2ConnectionConfig;
         return this;
     }
@@ -166,11 +166,12 @@ public class HttpClientConfig {
     }
 
     public String toDiagnosticsString() {
-        return String.format("(cps:%s, nrto:%s, icto:%s, cto:%s, p:%s)",
+        return String.format("(cps:%s, nrto:%s, icto:%s, cto:%s, p:%s, http2:%s)",
             maxPoolSize,
             networkRequestTimeout,
             maxIdleConnectionTimeout,
             connectionAcquireTimeout,
-            proxy != null);
+            proxy != null,
+            http2ConnectionConfig.toString());
     }
 }

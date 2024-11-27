@@ -11,7 +11,6 @@ import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.Http2ConnectionConfig;
 import com.azure.cosmos.ThrottlingRetryOptions;
-import reactor.netty.Connection;
 
 import java.time.Duration;
 import java.util.Collections;

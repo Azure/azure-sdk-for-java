@@ -6,29 +6,30 @@ package com.azure.resourcemanager.hardwaresecuritymodules.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Cloud Hsm Cluster SKU information.
  */
 @Fluent
-public final class CloudHsmClusterSku {
+public final class CloudHsmClusterSku implements JsonSerializable<CloudHsmClusterSku> {
     /*
      * Sku family of the Cloud HSM Cluster
      */
-    @JsonProperty(value = "family", required = true)
     private CloudHsmClusterSkuFamily family = CloudHsmClusterSkuFamily.B;
 
     /*
      * Sku name of the Cloud HSM Cluster
      */
-    @JsonProperty(value = "name", required = true)
     private CloudHsmClusterSkuName name;
 
     /*
      * Sku capacity
      */
-    @JsonProperty(value = "capacity")
     private Integer capacity;
 
     /**
@@ -104,14 +105,57 @@ public final class CloudHsmClusterSku {
      */
     public void validate() {
         if (family() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property family in model CloudHsmClusterSku"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property family in model CloudHsmClusterSku"));
         }
         if (name() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property name in model CloudHsmClusterSku"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model CloudHsmClusterSku"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(CloudHsmClusterSku.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("family", this.family == null ? null : this.family.toString());
+        jsonWriter.writeStringField("name", this.name == null ? null : this.name.toString());
+        jsonWriter.writeNumberField("capacity", this.capacity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CloudHsmClusterSku from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CloudHsmClusterSku if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CloudHsmClusterSku.
+     */
+    public static CloudHsmClusterSku fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CloudHsmClusterSku deserializedCloudHsmClusterSku = new CloudHsmClusterSku();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("family".equals(fieldName)) {
+                    deserializedCloudHsmClusterSku.family = CloudHsmClusterSkuFamily.fromString(reader.getString());
+                } else if ("name".equals(fieldName)) {
+                    deserializedCloudHsmClusterSku.name = CloudHsmClusterSkuName.fromString(reader.getString());
+                } else if ("capacity".equals(fieldName)) {
+                    deserializedCloudHsmClusterSku.capacity = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCloudHsmClusterSku;
+        });
+    }
 }

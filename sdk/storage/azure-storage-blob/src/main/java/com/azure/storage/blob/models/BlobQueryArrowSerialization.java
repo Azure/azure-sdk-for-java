@@ -10,8 +10,13 @@ import java.util.List;
  * Defines the output arrow serialization for a blob quick query request.
  */
 public class BlobQueryArrowSerialization implements BlobQuerySerialization {
-
     private List<BlobQueryArrowField> schema;
+
+    /**
+     * Creates a new instance of {@link BlobQueryArrowSerialization}.
+     */
+    public BlobQueryArrowSerialization() {
+    }
 
     /**
      * Gets the arrow fields.

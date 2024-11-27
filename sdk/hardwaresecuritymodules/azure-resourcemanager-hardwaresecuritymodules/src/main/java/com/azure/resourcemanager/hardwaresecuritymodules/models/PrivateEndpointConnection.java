@@ -88,7 +88,7 @@ public interface PrivateEndpointConnection {
              * 
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @param cloudHsmClusterName The name of the Cloud HSM Cluster within the specified resource group. Cloud
-             * HSM Cluster names must be between 3 and 24 characters in length.
+             * HSM Cluster names must be between 3 and 23 characters in length.
              * @return the next definition stage.
              */
             WithCreate withExistingCloudHsmCluster(String resourceGroupName, String cloudHsmClusterName);

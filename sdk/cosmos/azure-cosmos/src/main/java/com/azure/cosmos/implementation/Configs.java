@@ -282,10 +282,25 @@ public class Configs {
     private static final String EMULATOR_HOST = "COSMOS.EMULATOR_HOST";
     private static final String EMULATOR_HOST_VARIABLE = "COSMOS_EMULATOR_HOST";
 
-    // Flag to indicate whether enabled http2 for gateway, Please do not use it, only for internal testing purpose
+    // Flag to indicate whether enabled http2 for gateway
     private static final boolean DEFAULT_HTTP2_ENABLED = false;
     private static final String HTTP2_ENABLED = "COSMOS.HTTP2_ENABLED";
     private static final String HTTP2_ENABLED_VARIABLE = "COSMOS_HTTP2_ENABLED";
+
+    // Config to indicate the maximum number of live connections to keep in the pool for http2
+    private static final int DEFAULT_HTTP2_MAX_CONNECTION_POOL_SIZE = 1000;
+    private static final String HTTP2_MAX_CONNECTION_POOL_SIZE = "COSMOS.HTTP2_MAX_CONNECTION_POOL_SIZE";
+    private static final String HTTP2_MAX_CONNECTION_POOL_SIZE_VARIABLE = "COSMOS_HTTP2_MAX_CONNECTION_POOL_SIZE";
+
+    // Config to indicate the minimum number of live connections to keep in the pool for http2
+    private static final int DEFAULT_HTTP2_MIN_CONNECTION_POOL_SIZE = 1;
+    private static final String HTTP2_MIN_CONNECTION_POOL_SIZE = "COSMOS.HTTP2_MIN_CONNECTION_POOL_SIZE";
+    private static final String HTTP2_MIN_CONNECTION_POOL_SIZE_VARIABLE = "COSMOS_HTTP2_MIN_CONNECTION_POOL_SIZE";
+
+    // Config to indicate the maximum number of the concurrent streams that can be opened to the remote peer for http2
+    private static final int DEFAULT_HTTP2_MAX_CONCURRENT_STREAMS = 30;
+    private static final String HTTP2_MAX_CONCURRENT_STREAMS = "COSMOS.HTTP2_MAX_CONCURRENT_STREAMS";
+    private static final String HTTP2_MAX_CONCURRENT_STREAMS_VARIABLE = "COSMOS_HTTP2_MAX_CONCURRENT_STREAMS";
 
     public static int getCPUCnt() {
         return CPU_CNT;
@@ -903,6 +918,36 @@ public class Configs {
                 String.valueOf(DEFAULT_HTTP2_ENABLED)));
 
         return Boolean.parseBoolean(httpEnabledConfig);
+    }
+
+    public static int getHttp2MaxConnectionPoolSize() {
+        String http2MaxConnectionPoolSize = System.getProperty(
+            HTTP2_MAX_CONNECTION_POOL_SIZE,
+            firstNonNull(
+                emptyToNull(System.getenv().get(HTTP2_MAX_CONNECTION_POOL_SIZE_VARIABLE)),
+                String.valueOf(DEFAULT_HTTP2_MAX_CONNECTION_POOL_SIZE)));
+
+        return Integer.parseInt(http2MaxConnectionPoolSize);
+    }
+
+    public static int getHttp2MinConnectionPoolSize() {
+        String http2MinConnectionPoolSize = System.getProperty(
+            HTTP2_MIN_CONNECTION_POOL_SIZE,
+            firstNonNull(
+                emptyToNull(System.getenv().get(HTTP2_MIN_CONNECTION_POOL_SIZE_VARIABLE)),
+                String.valueOf(DEFAULT_HTTP2_MIN_CONNECTION_POOL_SIZE)));
+
+        return Integer.parseInt(http2MinConnectionPoolSize);
+    }
+
+    public static int getHttp2MaxConcurrentStreams() {
+        String http2MaxConcurrentStreams = System.getProperty(
+            HTTP2_MAX_CONCURRENT_STREAMS,
+            firstNonNull(
+                emptyToNull(System.getenv().get(HTTP2_MAX_CONCURRENT_STREAMS_VARIABLE)),
+                String.valueOf(DEFAULT_HTTP2_MAX_CONCURRENT_STREAMS)));
+
+        return Integer.parseInt(http2MaxConcurrentStreams);
     }
 
     public static boolean isEmulatorServerCertValidationDisabled() {
