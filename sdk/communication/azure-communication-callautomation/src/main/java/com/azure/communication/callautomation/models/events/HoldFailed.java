@@ -13,7 +13,7 @@ import java.io.IOException;
 /** The HoldFailed model. */
 @Immutable
 public final class HoldFailed extends CallAutomationEventBaseWithReasonCode {
-  
+
     private HoldFailed() {
     }
 
@@ -41,7 +41,7 @@ public final class HoldFailed extends CallAutomationEventBaseWithReasonCode {
             while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-               
+
                 if (!event.readField(fieldName, reader)) {
                     reader.skipChildren();
                 }

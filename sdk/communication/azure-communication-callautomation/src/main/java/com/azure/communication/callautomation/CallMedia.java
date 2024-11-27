@@ -107,9 +107,7 @@ public final class CallMedia {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> playToAllWithResponse(PlayToAllOptions options, Context context) {
-        return callMediaAsync
-            .playToAllWithResponseInternal(options, context)
-            .block();
+        return callMediaAsync.playToAllWithResponseInternal(options, context).block();
     }
 
     /**
@@ -128,10 +126,9 @@ public final class CallMedia {
      * @return Response for a successful recognize request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> startRecognizingWithResponse(CallMediaRecognizeOptions callMediaRecognizeOptions, Context context) {
-        return callMediaAsync
-            .recognizeWithResponseInternal(callMediaRecognizeOptions, context)
-            .block();
+    public Response<Void> startRecognizingWithResponse(CallMediaRecognizeOptions callMediaRecognizeOptions,
+        Context context) {
+        return callMediaAsync.recognizeWithResponseInternal(callMediaRecognizeOptions, context).block();
     }
 
     /**
@@ -164,13 +161,13 @@ public final class CallMedia {
         return callMediaAsync.sendDtmfTones(tones, targetParticipant).block();
     }
 
-     /**
-     * Sends Dtmf tones
-     *
-     * @param options SendDtmfTones configuration options
-     * @param context Context
-     * @return Response for successful sendDtmfTones request.
-     */
+    /**
+    * Sends Dtmf tones
+    *
+    * @param options SendDtmfTones configuration options
+    * @param context Context
+    * @return Response for successful sendDtmfTones request.
+    */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SendDtmfTonesResult> sendDtmfTonesWithResponse(SendDtmfTonesOptions options, Context context) {
         return callMediaAsync.sendDtmfTonesWithResponseInternal(options, context).block();
@@ -193,7 +190,8 @@ public final class CallMedia {
      * @return Response for successful start continuous dtmf recognition request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> startContinuousDtmfRecognitionWithResponse(ContinuousDtmfRecognitionOptions options, Context context) {
+    public Response<Void> startContinuousDtmfRecognitionWithResponse(ContinuousDtmfRecognitionOptions options,
+        Context context) {
         return callMediaAsync.startContinuousDtmfRecognitionWithResponseInternal(options, context).block();
     }
 
@@ -213,7 +211,8 @@ public final class CallMedia {
      * @return Response for successful stop continuous dtmf recognition request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> stopContinuousDtmfRecognitionWithResponse(ContinuousDtmfRecognitionOptions options, Context context) {
+    public Response<Void> stopContinuousDtmfRecognitionWithResponse(ContinuousDtmfRecognitionOptions options,
+        Context context) {
         return callMediaAsync.stopContinuousDtmfRecognitionWithResponseInternal(options, context).block();
     }
 
@@ -243,8 +242,7 @@ public final class CallMedia {
      * @return Response for successful operation.
     */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> holdWithResponse(HoldOptions options,
-                                                     Context context) {
+    public Response<Void> holdWithResponse(HoldOptions options, Context context) {
         return callMediaAsync.holdWithResponseInternal(options, context).block();
     }
 
@@ -264,8 +262,7 @@ public final class CallMedia {
      * @return Response for successful operation.
     */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> unholdWithResponse(UnholdOptions options,
-                                                     Context context) {
+    public Response<Void> unholdWithResponse(UnholdOptions options, Context context) {
         return callMediaAsync.unholdWithResponseInternal(options, context).block();
     }
 }

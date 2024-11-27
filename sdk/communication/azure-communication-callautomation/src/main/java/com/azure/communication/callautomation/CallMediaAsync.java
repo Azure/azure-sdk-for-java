@@ -119,6 +119,7 @@ public final class CallMediaAsync {
         PlayToAllOptions options = new PlayToAllOptions(playSources);
         return playToAllWithResponse(options).flatMap(FluxUtil::toMono);
     }
+
     /**
      * Play to all participants
      *
@@ -265,7 +266,7 @@ public final class CallMediaAsync {
 
     PlayRequest getPlayRequest(PlayOptions options) {
         List<PlaySourceInternal> playSourcesInternal = new ArrayList<>();
-        for (PlaySource source: options.getPlaySources()) {
+        for (PlaySource source : options.getPlaySources()) {
             PlaySourceInternal playSourceInternal = null;
             if (source instanceof FileSource) {
                 playSourceInternal = getPlaySourceInternalFromFileSource((FileSource) source);
@@ -282,13 +283,11 @@ public final class CallMediaAsync {
         }
 
         if (!playSourcesInternal.isEmpty()) {
-            PlayRequest request = new PlayRequest()
-                .setPlaySources(playSourcesInternal)
-                .setPlayTo(
-                    options.getPlayTo()
-                        .stream()
-                        .map(CommunicationIdentifierConverter::convert)
-                        .collect(Collectors.toList()));
+            PlayRequest request = new PlayRequest().setPlaySources(playSourcesInternal)
+                .setPlayTo(options.getPlayTo()
+                    .stream()
+                    .map(CommunicationIdentifierConverter::convert)
+                    .collect(Collectors.toList()));
 
             request.setPlayOptions(new PlayOptionsInternal().setLoop(options.isLoop()));
             request.setOperationContext(options.getOperationContext());
@@ -297,12 +296,13 @@ public final class CallMediaAsync {
             return request;
         }
 
-        throw logger.logExceptionAsError(new IllegalArgumentException(options.getPlaySources().getClass().getCanonicalName()));
+        throw logger
+            .logExceptionAsError(new IllegalArgumentException(options.getPlaySources().getClass().getCanonicalName()));
     }
 
     PlayRequest getPlayToAllRequest(PlayToAllOptions options) {
         List<PlaySourceInternal> playSourcesInternal = new ArrayList<>();
-        for (PlaySource source: options.getPlaySources()) {
+        for (PlaySource source : options.getPlaySources()) {
             PlaySourceInternal playSourceInternal = null;
             if (source instanceof FileSource) {
                 playSourceInternal = getPlaySourceInternalFromFileSource((FileSource) source);
@@ -319,8 +319,7 @@ public final class CallMediaAsync {
         }
 
         if (!playSourcesInternal.isEmpty()) {
-            PlayRequest request = new PlayRequest()
-                .setPlaySources(playSourcesInternal);
+            PlayRequest request = new PlayRequest().setPlaySources(playSourcesInternal);
 
             request.setPlayOptions(new PlayOptionsInternal().setLoop(options.isLoop()));
             request.setOperationContext(options.getOperationContext());
@@ -330,13 +329,13 @@ public final class CallMediaAsync {
             return request;
         }
 
-        throw logger.logExceptionAsError(new IllegalArgumentException(options.getPlaySources().getClass().getCanonicalName()));
+        throw logger
+            .logExceptionAsError(new IllegalArgumentException(options.getPlaySources().getClass().getCanonicalName()));
     }
 
     private PlaySourceInternal getPlaySourceInternalFromFileSource(FileSource playSource) {
         FileSourceInternal fileSourceInternal = new FileSourceInternal().setUri(playSource.getUrl());
-        return new PlaySourceInternal()
-            .setKind(PlaySourceTypeInternal.FILE)
+        return new PlaySourceInternal().setKind(PlaySourceTypeInternal.FILE)
             .setFile(fileSourceInternal)
             .setPlaySourceCacheId(playSource.getPlaySourceCacheId());
     }
@@ -356,8 +355,7 @@ public final class CallMediaAsync {
             textSourceInternal.setCustomVoiceEndpointId(playSource.getCustomVoiceEndpointId());
         }
 
-        return new PlaySourceInternal()
-            .setKind(PlaySourceTypeInternal.TEXT)
+        return new PlaySourceInternal().setKind(PlaySourceTypeInternal.TEXT)
             .setText(textSourceInternal)
             .setPlaySourceCacheId(playSource.getPlaySourceCacheId());
     }
@@ -369,8 +367,7 @@ public final class CallMediaAsync {
             ssmlSourceInternal.setCustomVoiceEndpointId(playSource.getCustomVoiceEndpointId());
         }
 
-        return new PlaySourceInternal()
-            .setKind(PlaySourceTypeInternal.SSML)
+        return new PlaySourceInternal().setKind(PlaySourceTypeInternal.SSML)
             .setSsml(ssmlSourceInternal)
             .setPlaySourceCacheId(playSource.getPlaySourceCacheId());
     }
@@ -387,10 +384,9 @@ public final class CallMediaAsync {
         return playSourceInternal;
     }
 
-    private List<RecognitionChoiceInternal> convertListRecognitionChoiceInternal(List<RecognitionChoice> recognitionChoices) {
-        return recognitionChoices.stream()
-            .map(this::convertRecognitionChoiceInternal)
-            .collect(Collectors.toList());
+    private List<RecognitionChoiceInternal>
+        convertListRecognitionChoiceInternal(List<RecognitionChoice> recognitionChoices) {
+        return recognitionChoices.stream().map(this::convertRecognitionChoiceInternal).collect(Collectors.toList());
     }
 
     private RecognitionChoiceInternal convertRecognitionChoiceInternal(RecognitionChoice recognitionChoice) {
@@ -414,24 +410,23 @@ public final class CallMediaAsync {
     private RecognizeRequest getRecognizeRequestFromDtmfConfiguration(CallMediaRecognizeOptions recognizeOptions) {
         CallMediaRecognizeDtmfOptions dtmfRecognizeOptions = (CallMediaRecognizeDtmfOptions) recognizeOptions;
 
-        DtmfOptionsInternal dtmfOptionsInternal = getDtmfOptionsInternal(
-            dtmfRecognizeOptions.getInterToneTimeout(),
-            dtmfRecognizeOptions.getMaxTonesToCollect(),
-            dtmfRecognizeOptions.getStopTones()
-        );
+        DtmfOptionsInternal dtmfOptionsInternal = getDtmfOptionsInternal(dtmfRecognizeOptions.getInterToneTimeout(),
+            dtmfRecognizeOptions.getMaxTonesToCollect(), dtmfRecognizeOptions.getStopTones());
 
         RecognizeOptionsInternal recognizeOptionsInternal = new RecognizeOptionsInternal()
             .setDtmfOptions(dtmfOptionsInternal)
             .setInterruptPrompt(recognizeOptions.isInterruptPrompt())
             .setTargetParticipant(CommunicationIdentifierConverter.convert(recognizeOptions.getTargetParticipant()));
 
-        recognizeOptionsInternal.setInitialSilenceTimeoutInSeconds((int) recognizeOptions.getInitialSilenceTimeout().getSeconds());
+        recognizeOptionsInternal
+            .setInitialSilenceTimeoutInSeconds((int) recognizeOptions.getInitialSilenceTimeout().getSeconds());
 
         PlaySourceInternal playSourceInternal = getPlaySourceInternalFromRecognizeOptions(recognizeOptions);
         List<PlaySourceInternal> playSourcesInternal = getListPlaySourceInternalFromRecognizeOptions(recognizeOptions);
 
         RecognizeRequest recognizeRequest = new RecognizeRequest()
-            .setRecognizeInputType(RecognizeInputTypeInternal.fromString(recognizeOptions.getRecognizeInputType().toString()))
+            .setRecognizeInputType(
+                RecognizeInputTypeInternal.fromString(recognizeOptions.getRecognizeInputType().toString()))
             .setInterruptCallMediaOperation(recognizeOptions.isInterruptCallMediaOperation())
             .setPlayPrompt(playSourceInternal)
             .setPlayPrompts(playSourcesInternal)
@@ -448,9 +443,11 @@ public final class CallMediaAsync {
         RecognizeOptionsInternal recognizeOptionsInternal = new RecognizeOptionsInternal()
             .setChoices(convertListRecognitionChoiceInternal(choiceRecognizeOptions.getChoices()))
             .setInterruptPrompt(choiceRecognizeOptions.isInterruptPrompt())
-            .setTargetParticipant(CommunicationIdentifierConverter.convert(choiceRecognizeOptions.getTargetParticipant()));
+            .setTargetParticipant(
+                CommunicationIdentifierConverter.convert(choiceRecognizeOptions.getTargetParticipant()));
 
-        recognizeOptionsInternal.setInitialSilenceTimeoutInSeconds((int) choiceRecognizeOptions.getInitialSilenceTimeout().getSeconds());
+        recognizeOptionsInternal
+            .setInitialSilenceTimeoutInSeconds((int) choiceRecognizeOptions.getInitialSilenceTimeout().getSeconds());
 
         if (choiceRecognizeOptions.getSpeechLanguage() != null) {
             if (!choiceRecognizeOptions.getSpeechLanguage().isEmpty()) {
@@ -460,7 +457,8 @@ public final class CallMediaAsync {
 
         if (choiceRecognizeOptions.getSpeechRecognitionModelEndpointId() != null) {
             if (!choiceRecognizeOptions.getSpeechRecognitionModelEndpointId().isEmpty()) {
-                recognizeOptionsInternal.setSpeechRecognitionModelEndpointId(choiceRecognizeOptions.getSpeechRecognitionModelEndpointId());
+                recognizeOptionsInternal
+                    .setSpeechRecognitionModelEndpointId(choiceRecognizeOptions.getSpeechRecognitionModelEndpointId());
             }
         }
 
@@ -469,7 +467,8 @@ public final class CallMediaAsync {
         List<PlaySourceInternal> playSourcesInternal = getListPlaySourceInternalFromRecognizeOptions(recognizeOptions);
 
         RecognizeRequest recognizeRequest = new RecognizeRequest()
-            .setRecognizeInputType(RecognizeInputTypeInternal.fromString(choiceRecognizeOptions.getRecognizeInputType().toString()))
+            .setRecognizeInputType(
+                RecognizeInputTypeInternal.fromString(choiceRecognizeOptions.getRecognizeInputType().toString()))
             .setInterruptCallMediaOperation(choiceRecognizeOptions.isInterruptCallMediaOperation())
             .setPlayPrompt(playSourceInternal)
             .setPlayPrompts(playSourcesInternal)
@@ -483,15 +482,17 @@ public final class CallMediaAsync {
     private RecognizeRequest getRecognizeRequestFromSpeechConfiguration(CallMediaRecognizeOptions recognizeOptions) {
         CallMediaRecognizeSpeechOptions speechRecognizeOptions = (CallMediaRecognizeSpeechOptions) recognizeOptions;
 
-        SpeechOptionsInternal speechOptionsInternal = new SpeechOptionsInternal().setEndSilenceTimeoutInMs(speechRecognizeOptions.getEndSilenceTimeout().toMillis());
+        SpeechOptionsInternal speechOptionsInternal = new SpeechOptionsInternal()
+            .setEndSilenceTimeoutInMs(speechRecognizeOptions.getEndSilenceTimeout().toMillis());
 
-        RecognizeOptionsInternal recognizeOptionsInternal = new RecognizeOptionsInternal()
-            .setSpeechOptions(speechOptionsInternal)
-            .setInterruptPrompt(speechRecognizeOptions.isInterruptPrompt())
-            .setTargetParticipant(CommunicationIdentifierConverter.convert(speechRecognizeOptions.getTargetParticipant()));
+        RecognizeOptionsInternal recognizeOptionsInternal
+            = new RecognizeOptionsInternal().setSpeechOptions(speechOptionsInternal)
+                .setInterruptPrompt(speechRecognizeOptions.isInterruptPrompt())
+                .setTargetParticipant(
+                    CommunicationIdentifierConverter.convert(speechRecognizeOptions.getTargetParticipant()));
 
-        recognizeOptionsInternal.setInitialSilenceTimeoutInSeconds((int) speechRecognizeOptions.getInitialSilenceTimeout().getSeconds());
-
+        recognizeOptionsInternal
+            .setInitialSilenceTimeoutInSeconds((int) speechRecognizeOptions.getInitialSilenceTimeout().getSeconds());
 
         if (speechRecognizeOptions.getSpeechLanguage() != null) {
             if (!speechRecognizeOptions.getSpeechLanguage().isEmpty()) {
@@ -501,7 +502,8 @@ public final class CallMediaAsync {
 
         if (speechRecognizeOptions.getSpeechRecognitionModelEndpointId() != null) {
             if (!speechRecognizeOptions.getSpeechRecognitionModelEndpointId().isEmpty()) {
-                recognizeOptionsInternal.setSpeechRecognitionModelEndpointId(speechRecognizeOptions.getSpeechRecognitionModelEndpointId());
+                recognizeOptionsInternal
+                    .setSpeechRecognitionModelEndpointId(speechRecognizeOptions.getSpeechRecognitionModelEndpointId());
             }
         }
 
@@ -510,7 +512,8 @@ public final class CallMediaAsync {
         List<PlaySourceInternal> playSourcesInternal = getListPlaySourceInternalFromRecognizeOptions(recognizeOptions);
 
         RecognizeRequest recognizeRequest = new RecognizeRequest()
-            .setRecognizeInputType(RecognizeInputTypeInternal.fromString(speechRecognizeOptions.getRecognizeInputType().toString()))
+            .setRecognizeInputType(
+                RecognizeInputTypeInternal.fromString(speechRecognizeOptions.getRecognizeInputType().toString()))
             .setInterruptCallMediaOperation(speechRecognizeOptions.isInterruptCallMediaOperation())
             .setPlayPrompt(playSourceInternal)
             .setPlayPrompts(playSourcesInternal)
@@ -521,24 +524,27 @@ public final class CallMediaAsync {
         return recognizeRequest;
     }
 
-    private RecognizeRequest getRecognizeRequestFromSpeechOrDtmfConfiguration(CallMediaRecognizeOptions recognizeOptions) {
-        CallMediaRecognizeSpeechOrDtmfOptions speechOrDtmfRecognizeOptions = (CallMediaRecognizeSpeechOrDtmfOptions) recognizeOptions;
+    private RecognizeRequest
+        getRecognizeRequestFromSpeechOrDtmfConfiguration(CallMediaRecognizeOptions recognizeOptions) {
+        CallMediaRecognizeSpeechOrDtmfOptions speechOrDtmfRecognizeOptions
+            = (CallMediaRecognizeSpeechOrDtmfOptions) recognizeOptions;
 
-        DtmfOptionsInternal dtmfOptionsInternal = getDtmfOptionsInternal(
-            speechOrDtmfRecognizeOptions.getInterToneTimeout(),
-            speechOrDtmfRecognizeOptions.getMaxTonesToCollect(),
-            speechOrDtmfRecognizeOptions.getStopTones()
-        );
+        DtmfOptionsInternal dtmfOptionsInternal
+            = getDtmfOptionsInternal(speechOrDtmfRecognizeOptions.getInterToneTimeout(),
+                speechOrDtmfRecognizeOptions.getMaxTonesToCollect(), speechOrDtmfRecognizeOptions.getStopTones());
 
-        SpeechOptionsInternal speechOptionsInternal = new SpeechOptionsInternal().setEndSilenceTimeoutInMs(speechOrDtmfRecognizeOptions.getEndSilenceTimeout().toMillis());
+        SpeechOptionsInternal speechOptionsInternal = new SpeechOptionsInternal()
+            .setEndSilenceTimeoutInMs(speechOrDtmfRecognizeOptions.getEndSilenceTimeout().toMillis());
 
-        RecognizeOptionsInternal recognizeOptionsInternal = new RecognizeOptionsInternal()
-            .setSpeechOptions(speechOptionsInternal)
-            .setDtmfOptions(dtmfOptionsInternal)
-            .setInterruptPrompt(speechOrDtmfRecognizeOptions.isInterruptPrompt())
-            .setTargetParticipant(CommunicationIdentifierConverter.convert(speechOrDtmfRecognizeOptions.getTargetParticipant()));
+        RecognizeOptionsInternal recognizeOptionsInternal
+            = new RecognizeOptionsInternal().setSpeechOptions(speechOptionsInternal)
+                .setDtmfOptions(dtmfOptionsInternal)
+                .setInterruptPrompt(speechOrDtmfRecognizeOptions.isInterruptPrompt())
+                .setTargetParticipant(
+                    CommunicationIdentifierConverter.convert(speechOrDtmfRecognizeOptions.getTargetParticipant()));
 
-        recognizeOptionsInternal.setInitialSilenceTimeoutInSeconds((int) speechOrDtmfRecognizeOptions.getInitialSilenceTimeout().getSeconds());
+        recognizeOptionsInternal.setInitialSilenceTimeoutInSeconds(
+            (int) speechOrDtmfRecognizeOptions.getInitialSilenceTimeout().getSeconds());
         if (speechOrDtmfRecognizeOptions.getSpeechLanguage() != null) {
             if (!speechOrDtmfRecognizeOptions.getSpeechLanguage().isEmpty()) {
                 recognizeOptionsInternal.setSpeechLanguage(speechOrDtmfRecognizeOptions.getSpeechLanguage());
@@ -546,7 +552,8 @@ public final class CallMediaAsync {
         }
         if (speechOrDtmfRecognizeOptions.getSpeechRecognitionModelEndpointId() != null) {
             if (!speechOrDtmfRecognizeOptions.getSpeechRecognitionModelEndpointId().isEmpty()) {
-                recognizeOptionsInternal.setSpeechRecognitionModelEndpointId(speechOrDtmfRecognizeOptions.getSpeechRecognitionModelEndpointId());
+                recognizeOptionsInternal.setSpeechRecognitionModelEndpointId(
+                    speechOrDtmfRecognizeOptions.getSpeechRecognitionModelEndpointId());
             }
         }
 
@@ -555,7 +562,8 @@ public final class CallMediaAsync {
         List<PlaySourceInternal> playSourcesInternal = getListPlaySourceInternalFromRecognizeOptions(recognizeOptions);
 
         RecognizeRequest recognizeRequest = new RecognizeRequest()
-            .setRecognizeInputType(RecognizeInputTypeInternal.fromString(speechOrDtmfRecognizeOptions.getRecognizeInputType().toString()))
+            .setRecognizeInputType(
+                RecognizeInputTypeInternal.fromString(speechOrDtmfRecognizeOptions.getRecognizeInputType().toString()))
             .setInterruptCallMediaOperation(speechOrDtmfRecognizeOptions.isInterruptCallMediaOperation())
             .setPlayPrompt(playSourceInternal)
             .setPlayPrompts(playSourcesInternal)
@@ -566,7 +574,8 @@ public final class CallMediaAsync {
         return recognizeRequest;
     }
 
-    private List<PlaySourceInternal> getListPlaySourceInternalFromRecognizeOptions(CallMediaRecognizeOptions recognizeOptions) {
+    private List<PlaySourceInternal>
+        getListPlaySourceInternalFromRecognizeOptions(CallMediaRecognizeOptions recognizeOptions) {
         List<PlaySourceInternal> playSourcesInternal = new ArrayList<>();
         if (recognizeOptions.getPlayPrompts() != null) {
             for (PlaySource playSource : recognizeOptions.getPlayPrompts()) {
@@ -578,16 +587,16 @@ public final class CallMediaAsync {
         return playSourcesInternal;
     }
 
-    private DtmfOptionsInternal getDtmfOptionsInternal(Duration interToneTimeout, Integer maxTonesToCollect, List<DtmfTone> stopTones) {
+    private DtmfOptionsInternal getDtmfOptionsInternal(Duration interToneTimeout, Integer maxTonesToCollect,
+        List<DtmfTone> stopTones) {
         DtmfOptionsInternal dtmfOptionsInternal = new DtmfOptionsInternal();
         dtmfOptionsInternal.setInterToneTimeoutInSeconds((int) interToneTimeout.getSeconds());
         if (maxTonesToCollect != null) {
             dtmfOptionsInternal.setMaxTonesToCollect(maxTonesToCollect);
         }
         if (stopTones != null) {
-            List<DtmfToneInternal> dtmfTones = stopTones.stream()
-                                        .map(this::convertDtmfToneInternal)
-                                        .collect(Collectors.toList());
+            List<DtmfToneInternal> dtmfTones
+                = stopTones.stream().map(this::convertDtmfToneInternal).collect(Collectors.toList());
             dtmfOptionsInternal.setStopTones(dtmfTones);
         }
         return dtmfOptionsInternal;
@@ -623,22 +632,19 @@ public final class CallMediaAsync {
         return withContext(context -> sendDtmfTonesWithResponseInternal(options, context));
     }
 
-    Mono<Response<SendDtmfTonesResult>> sendDtmfTonesWithResponseInternal(SendDtmfTonesOptions options, Context context) {
+    Mono<Response<SendDtmfTonesResult>> sendDtmfTonesWithResponseInternal(SendDtmfTonesOptions options,
+        Context context) {
         try {
             context = context == null ? Context.NONE : context;
             SendDtmfTonesRequestInternal requestInternal = new SendDtmfTonesRequestInternal()
                 .setTargetParticipant(CommunicationIdentifierConverter.convert(options.getTargetParticipant()))
-                .setTones(options.getTones().stream()
-                .map(this::convertDtmfToneInternal)
-                .collect(Collectors.toList()))
+                .setTones(options.getTones().stream().map(this::convertDtmfToneInternal).collect(Collectors.toList()))
                 .setOperationContext(options.getOperationContext())
                 .setOperationCallbackUri(options.getOperationCallbackUrl());
 
-            return contentsInternal.sendDtmfTonesWithResponseAsync(
-                callConnectionId,
-                requestInternal,
-                context
-            ).map(response -> new SimpleResponse<>(response, SendDtmfTonesResponseConstructorProxy.create(response.getValue())));
+            return contentsInternal.sendDtmfTonesWithResponseAsync(callConnectionId, requestInternal, context)
+                .map(response -> new SimpleResponse<>(response,
+                    SendDtmfTonesResponseConstructorProxy.create(response.getValue())));
         } catch (RuntimeException e) {
             return monoError(logger, e);
         }
@@ -650,7 +656,8 @@ public final class CallMediaAsync {
      * @return void
      */
     public Mono<Void> startContinuousDtmfRecognition(CommunicationIdentifier targetParticipant) {
-        return startContinuousDtmfRecognitionWithResponse(new ContinuousDtmfRecognitionOptions(targetParticipant)).then();
+        return startContinuousDtmfRecognitionWithResponse(new ContinuousDtmfRecognitionOptions(targetParticipant))
+            .then();
     }
 
     /**
@@ -662,14 +669,16 @@ public final class CallMediaAsync {
         return withContext(context -> startContinuousDtmfRecognitionWithResponseInternal(options, context));
     }
 
-    Mono<Response<Void>> startContinuousDtmfRecognitionWithResponseInternal(ContinuousDtmfRecognitionOptions options, Context context) {
+    Mono<Response<Void>> startContinuousDtmfRecognitionWithResponseInternal(ContinuousDtmfRecognitionOptions options,
+        Context context) {
         try {
             context = context == null ? Context.NONE : context;
             ContinuousDtmfRecognitionRequestInternal requestInternal = new ContinuousDtmfRecognitionRequestInternal()
                 .setTargetParticipant(CommunicationIdentifierConverter.convert(options.getTargetParticipant()))
                 .setOperationContext(options.getOperationContext());
 
-            return contentsInternal.startContinuousDtmfRecognitionWithResponseAsync(callConnectionId, requestInternal, context);
+            return contentsInternal.startContinuousDtmfRecognitionWithResponseAsync(callConnectionId, requestInternal,
+                context);
         } catch (RuntimeException e) {
             return monoError(logger, e);
         }
@@ -681,7 +690,8 @@ public final class CallMediaAsync {
      * @return void
      */
     public Mono<Void> stopContinuousDtmfRecognition(CommunicationIdentifier targetParticipant) {
-        return stopContinuousDtmfRecognitionWithResponse(new ContinuousDtmfRecognitionOptions(targetParticipant)).then();
+        return stopContinuousDtmfRecognitionWithResponse(new ContinuousDtmfRecognitionOptions(targetParticipant))
+            .then();
     }
 
     /**
@@ -693,7 +703,8 @@ public final class CallMediaAsync {
         return withContext(context -> stopContinuousDtmfRecognitionWithResponseInternal(options, context));
     }
 
-    Mono<Response<Void>> stopContinuousDtmfRecognitionWithResponseInternal(ContinuousDtmfRecognitionOptions options, Context context) {
+    Mono<Response<Void>> stopContinuousDtmfRecognitionWithResponseInternal(ContinuousDtmfRecognitionOptions options,
+        Context context) {
         try {
             context = context == null ? Context.NONE : context;
             ContinuousDtmfRecognitionRequestInternal requestInternal = new ContinuousDtmfRecognitionRequestInternal()
@@ -701,13 +712,14 @@ public final class CallMediaAsync {
                 .setOperationContext(options.getOperationContext())
                 .setOperationCallbackUri(options.getOperationCallbackUrl());
 
-            return contentsInternal.stopContinuousDtmfRecognitionWithResponseAsync(callConnectionId, requestInternal, context);
+            return contentsInternal.stopContinuousDtmfRecognitionWithResponseAsync(callConnectionId, requestInternal,
+                context);
         } catch (RuntimeException e) {
             return monoError(logger, e);
         }
     }
 
-   /**
+    /**
      * Holds participant in call.
      * @param targetParticipant the target.
      * @return Response for successful operation.
@@ -717,12 +729,12 @@ public final class CallMediaAsync {
         return holdWithResponse(new HoldOptions(targetParticipant)).flatMap(FluxUtil::toMono);
     }
 
-      /**
-     * Holds participant in call.
-     * @param targetParticipant the target.
-     * @param playSource the play source.
-     * @return Response for successful operation.
-     */
+    /**
+    * Holds participant in call.
+    * @param targetParticipant the target.
+    * @param playSource the play source.
+    * @return Response for successful operation.
+    */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> hold(CommunicationIdentifier targetParticipant, PlaySource playSource) {
         return holdWithResponse(new HoldOptions(targetParticipant).setPlaySource(playSource)).flatMap(FluxUtil::toMono);
@@ -735,8 +747,7 @@ public final class CallMediaAsync {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> holdWithResponse(HoldOptions options) {
-        return withContext(context -> holdWithResponseInternal(
-            options, context));
+        return withContext(context -> holdWithResponseInternal(options, context));
     }
 
     Mono<Response<Void>> holdWithResponseInternal(HoldOptions options, Context context) {
@@ -750,8 +761,7 @@ public final class CallMediaAsync {
                 request.setPlaySourceInfo(convertPlaySourceToPlaySourceInternal(options.getPlaySource()));
             }
 
-            return contentsInternal
-                .holdWithResponseAsync(callConnectionId, request, context);
+            return contentsInternal.holdWithResponseAsync(callConnectionId, request, context);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -777,16 +787,14 @@ public final class CallMediaAsync {
         return withContext(context -> unholdWithResponseInternal(options, context));
     }
 
-    Mono<Response<Void>> unholdWithResponseInternal(UnholdOptions options,
-                                                            Context context) {
+    Mono<Response<Void>> unholdWithResponseInternal(UnholdOptions options, Context context) {
         try {
             context = context == null ? Context.NONE : context;
             UnholdRequest request = new UnholdRequest()
                 .setTargetParticipant(CommunicationIdentifierConverter.convert(options.getTargetParticipant()))
                 .setOperationContext(options.getOperationContext());
 
-            return contentsInternal
-                .unholdWithResponseAsync(callConnectionId, request, context);
+            return contentsInternal.unholdWithResponseAsync(callConnectionId, request, context);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }

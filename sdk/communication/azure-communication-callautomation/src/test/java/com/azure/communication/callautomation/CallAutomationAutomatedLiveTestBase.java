@@ -57,33 +57,28 @@ public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestB
         .get("SERVICEBUS_STRING",
             "Endpoint=sb://REDACTED.servicebus.windows.net/;SharedAccessKeyName=REDACTED;SharedAccessKey=REDACTEDu8EtZn87JJY=");
     protected static final String DISPATCHER_ENDPOINT = Configuration.getGlobalConfiguration()
-        .get("DISPATCHER_ENDPOINT",
-            "https://incomingcalldispatcher.azurewebsites.net");
+        .get("DISPATCHER_ENDPOINT", "https://incomingcalldispatcher.azurewebsites.net");
     protected static final String DISPATCHER_CALLBACK = DISPATCHER_ENDPOINT + "/api/servicebuscallback/events";
-    protected static final String TRANSPORT_URL = Configuration.getGlobalConfiguration()
-        .get("TRANSPORT_URL",
-            "https://REDACTED");
-    protected static final String COGNITIVE_SERVICE_ENDPOINT = Configuration.getGlobalConfiguration()
-        .get("COGNITIVE_SERVICE_ENDPOINT",
-            "https://REDACTED");
-    protected static final String BOT_APP_ID = Configuration.getGlobalConfiguration()
-        .get("BOT_APP_ID", "REDACTED-bedb-REDACTED-b8c6-REDACTED");
+    protected static final String TRANSPORT_URL
+        = Configuration.getGlobalConfiguration().get("TRANSPORT_URL", "https://REDACTED");
+    protected static final String COGNITIVE_SERVICE_ENDPOINT
+        = Configuration.getGlobalConfiguration().get("COGNITIVE_SERVICE_ENDPOINT", "https://REDACTED");
+    protected static final String BOT_APP_ID
+        = Configuration.getGlobalConfiguration().get("BOT_APP_ID", "REDACTED-bedb-REDACTED-b8c6-REDACTED");
 
     private static final StringJoiner JSON_PROPERTIES_TO_REDACT
-        = new StringJoiner("\":\"|\"", "\"", "\":\"")
-        .add("value")
-        .add("rawId")
-        .add("id")
-        .add("callbackUri")
-        .add("botAppId")
-        .add("ivrContext")
-        .add("incomingCallContext")
-        .add("serverCallId")
-        .add("transportUrl");
+        = new StringJoiner("\":\"|\"", "\"", "\":\"").add("value")
+            .add("rawId")
+            .add("id")
+            .add("callbackUri")
+            .add("botAppId")
+            .add("ivrContext")
+            .add("incomingCallContext")
+            .add("serverCallId")
+            .add("transportUrl");
 
     protected static final Pattern JSON_PROPERTY_VALUE_REDACTION_PATTERN
-        = Pattern.compile(String.format("(?:%s)(.*?)(?:\",|\"})", JSON_PROPERTIES_TO_REDACT),
-        Pattern.CASE_INSENSITIVE);
+        = Pattern.compile(String.format("(?:%s)(.*?)(?:\",|\"})", JSON_PROPERTIES_TO_REDACT), Pattern.CASE_INSENSITIVE);
 
     protected static final String URL_REGEX = "(?<=http:\\/\\/|https:\\/\\/)([^\\/?]+)";
 
@@ -129,7 +124,7 @@ public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestB
 
                 String jsonString;
                 try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-                     JsonWriter writer = JsonProviders.createWriter(outputStream)) {
+                    JsonWriter writer = JsonProviders.createWriter(outputStream)) {
                     writer.writeArray(eventsToPersist, JsonWriter::writeString);
                     writer.flush();
                     jsonString = outputStream.toString();
@@ -148,8 +143,7 @@ public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestB
     }
 
     protected static ServiceBusClientBuilder createServiceBusClientBuilderWithConnectionString() {
-        return new ServiceBusClientBuilder()
-            .connectionString(SERVICEBUS_CONNECTION_STRING)
+        return new ServiceBusClientBuilder().connectionString(SERVICEBUS_CONNECTION_STRING)
             .transportType(AmqpTransportType.AMQP_WEB_SOCKETS);
     }
 
@@ -160,18 +154,19 @@ public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestB
         if (getTestMode() != TestMode.PLAYBACK) {
             // subscribe
             HttpClient httpClient = HttpClient.createDefault();
-            String dispatcherUrl = DISPATCHER_ENDPOINT + String.format("/api/servicebuscallback/subscribe?q=%s", uniqueId);
+            String dispatcherUrl
+                = DISPATCHER_ENDPOINT + String.format("/api/servicebuscallback/subscribe?q=%s", uniqueId);
             HttpRequest request = new HttpRequest(HttpMethod.POST, dispatcherUrl);
             HttpResponse response = httpClient.send(request).block();
             assert response != null;
 
             // create a service bus processor
-            ServiceBusProcessorClient serviceBusProcessorClient = createServiceBusClientBuilderWithConnectionString()
-                .processor()
-                .queueName(uniqueId)
-                .processMessage(this::messageHandler)
-                .processError(serviceBusErrorContext -> errorHandler(serviceBusErrorContext, new CountDownLatch(1)))
-                .buildProcessorClient();
+            ServiceBusProcessorClient serviceBusProcessorClient
+                = createServiceBusClientBuilderWithConnectionString().processor()
+                    .queueName(uniqueId)
+                    .processMessage(this::messageHandler)
+                    .processError(serviceBusErrorContext -> errorHandler(serviceBusErrorContext, new CountDownLatch(1)))
+                    .buildProcessorClient();
 
             serviceBusProcessorClient.start();
             processorStore.put(uniqueId, serviceBusProcessorClient);
@@ -243,9 +238,9 @@ public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestB
     }
 
     protected void errorHandler(ServiceBusErrorContext context, CountDownLatch countdownLatch) {
-        LOGGER.log(LogLevel.VERBOSE, () -> String.format(
-            "Error when receiving messages from namespace: '%s'. Entity: '%s'%n",
-            context.getFullyQualifiedNamespace(), context.getEntityPath()));
+        LOGGER.log(LogLevel.VERBOSE,
+            () -> String.format("Error when receiving messages from namespace: '%s'. Entity: '%s'%n",
+                context.getFullyQualifiedNamespace(), context.getEntityPath()));
 
         if (!(context.getException() instanceof ServiceBusException)) {
             LOGGER.log(LogLevel.VERBOSE, () -> "Non-ServiceBusException occurred: " + context.getException());
@@ -258,9 +253,9 @@ public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestB
         if (reason == ServiceBusFailureReason.MESSAGING_ENTITY_DISABLED
             || reason == ServiceBusFailureReason.MESSAGING_ENTITY_NOT_FOUND
             || reason == ServiceBusFailureReason.UNAUTHORIZED) {
-            LOGGER.log(LogLevel.VERBOSE, () -> String.format(
-                "An unrecoverable error occurred. Stopping processing with reason %s: %s%n",
-                reason, exception.getMessage()));
+            LOGGER.log(LogLevel.VERBOSE,
+                () -> String.format("An unrecoverable error occurred. Stopping processing with reason %s: %s%n", reason,
+                    exception.getMessage()));
 
             countdownLatch.countDown();
         } else if (reason == ServiceBusFailureReason.MESSAGE_LOCK_LOST) {
@@ -277,9 +272,12 @@ public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestB
 
     protected String parseIdsFromIdentifier(CommunicationIdentifier communicationIdentifier) {
         assert communicationIdentifier != null;
-        CommunicationIdentifierModel communicationIdentifierModel = CommunicationIdentifierConverter.convert(communicationIdentifier);
+        CommunicationIdentifierModel communicationIdentifierModel
+            = CommunicationIdentifierConverter.convert(communicationIdentifier);
         assert communicationIdentifierModel.getRawId() != null;
-        return getTestMode() == TestMode.PLAYBACK ? "REDACTED" : removeAllNonChar(communicationIdentifierModel.getRawId());
+        return getTestMode() == TestMode.PLAYBACK
+            ? "REDACTED"
+            : removeAllNonChar(communicationIdentifierModel.getRawId());
     }
 
     /* Change the plus + sign to it's unicode without the special characters i.e. u002B.
@@ -302,7 +300,8 @@ public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestB
     }
 
     @SuppressWarnings("unchecked")
-    protected <T extends CallAutomationEventBase> T waitForEvent(Class<T> eventType, String callConnectionId, Duration timeOut) throws InterruptedException {
+    protected <T extends CallAutomationEventBase> T waitForEvent(Class<T> eventType, String callConnectionId,
+        Duration timeOut) throws InterruptedException {
         LocalDateTime timeOutTime = LocalDateTime.now().plusSeconds(timeOut.getSeconds());
         while (LocalDateTime.now().isBefore(timeOutTime)) {
             if (eventStore.get(callConnectionId) != null) {

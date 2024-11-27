@@ -25,13 +25,12 @@ public final class CancelAddParticipantOperationResult {
     private final String operationContext;
 
     static {
-        CancelAddParticipantResponseConstructorProxy.setAccessor(
-                new CancelAddParticipantResponseConstructorAccessor() {
-                    @Override
-                    public CancelAddParticipantOperationResult create(CancelAddParticipantResponse internalHeaders) {
-                        return new CancelAddParticipantOperationResult(internalHeaders);
-                    }
-                });
+        CancelAddParticipantResponseConstructorProxy.setAccessor(new CancelAddParticipantResponseConstructorAccessor() {
+            @Override
+            public CancelAddParticipantOperationResult create(CancelAddParticipantResponse internalHeaders) {
+                return new CancelAddParticipantOperationResult(internalHeaders);
+            }
+        });
     }
 
     /**
@@ -49,7 +48,7 @@ public final class CancelAddParticipantOperationResult {
      */
     CancelAddParticipantOperationResult(CancelAddParticipantResponse cancelAddParticipantResponseInternal) {
         Objects.requireNonNull(cancelAddParticipantResponseInternal,
-                "cancelAddParticipantResponseInternal must not be null");
+            "cancelAddParticipantResponseInternal must not be null");
 
         invitationId = cancelAddParticipantResponseInternal.getInvitationId();
         operationContext = cancelAddParticipantResponseInternal.getOperationContext();

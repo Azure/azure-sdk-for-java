@@ -13,7 +13,7 @@ import java.io.IOException;
 /** The RecognizeFailed model. */
 @Fluent
 public final class RecognizeFailed extends CallAutomationEventBaseWithReasonCode {
-    
+
     /*
      * Contains the index of the failed play source.
      */

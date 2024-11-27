@@ -16,7 +16,7 @@ public final class CreateCallFailed extends CallAutomationEventBase {
     private CreateCallFailed() {
 
     }
-    
+
     /**
      * {@inheritDoc}
      */

@@ -15,7 +15,7 @@ public abstract class CallAutomationEventBase implements JsonSerializable<CallAu
      * Call connection ID.
      */
     private String callConnectionId;
-    
+
     /*
      * Contains the resulting SIP code, sub-code and message.
      */
@@ -113,7 +113,7 @@ public abstract class CallAutomationEventBase implements JsonSerializable<CallAu
         if ("resultInformation".equals(fieldName)) {
             this.resultInformation = ResultInformation.fromJson(reader);
             return true;
-        } 
+        }
         if ("operationContext".equals(fieldName)) {
             this.operationContext = reader.getString();
             return true;

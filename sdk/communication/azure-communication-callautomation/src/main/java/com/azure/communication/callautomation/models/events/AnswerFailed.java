@@ -16,7 +16,7 @@ public final class AnswerFailed extends CallAutomationEventBase {
     private AnswerFailed() {
 
     }
-    
+
     /**
      * {@inheritDoc}
      */
