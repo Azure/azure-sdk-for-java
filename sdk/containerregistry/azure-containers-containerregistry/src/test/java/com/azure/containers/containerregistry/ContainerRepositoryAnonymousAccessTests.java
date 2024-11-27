@@ -26,12 +26,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class ContainerRepositoryAnonymousAccessTests extends ContainerRegistryClientsTestBase {
     @BeforeEach
     void beforeEach() throws InterruptedException {
-        TestUtils.importImage(getTestMode(), ANONYMOUS_REGISTRY_NAME, HELLO_WORLD_REPOSITORY_NAME, Arrays.asList("latest", "v1", "v2", "v3", "v4"), ANONYMOUS_REGISTRY_ENDPOINT);
+        TestUtils.importImage(getTestMode(), ANONYMOUS_REGISTRY_NAME, HELLO_WORLD_REPOSITORY_NAME,
+            Arrays.asList("latest", "v1", "v2", "v3", "v4"), ANONYMOUS_REGISTRY_ENDPOINT);
     }
 
     private HttpClient buildSyncAssertingClient(HttpClient httpClient) {
-        return new AssertingHttpClientBuilder(httpClient)
-            .skipRequest(SKIP_AUTH_TOKEN_REQUEST_FUNCTION)
+        return new AssertingHttpClientBuilder(httpClient).skipRequest(SKIP_AUTH_TOKEN_REQUEST_FUNCTION)
             .assertSync()
             .build();
     }
@@ -40,9 +40,12 @@ public class ContainerRepositoryAnonymousAccessTests extends ContainerRegistryCl
     @MethodSource("getHttpClients")
     public void listAnonymousRepositories(HttpClient httpClient) {
         Assumptions.assumeFalse(ANONYMOUS_REGISTRY_ENDPOINT == null);
-        Assumptions.assumeTrue(getAuthority(ANONYMOUS_REGISTRY_ENDPOINT).equals(AzureAuthorityHosts.AZURE_PUBLIC_CLOUD));
+        Assumptions
+            .assumeTrue(getAuthority(ANONYMOUS_REGISTRY_ENDPOINT).equals(AzureAuthorityHosts.AZURE_PUBLIC_CLOUD));
 
-        ContainerRegistryClient client = getContainerRegistryBuilder(buildSyncAssertingClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient), null, ANONYMOUS_REGISTRY_ENDPOINT).buildClient();
+        ContainerRegistryClient client = getContainerRegistryBuilder(
+            buildSyncAssertingClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient), null,
+            ANONYMOUS_REGISTRY_ENDPOINT).buildClient();
         List<String> repositories = client.listRepositoryNames().stream().collect(Collectors.toList());
         assertTrue(repositories.stream().anyMatch(HELLO_WORLD_REPOSITORY_NAME::equals));
     }

@@ -71,8 +71,8 @@ public final class ContainerRegistryAsyncClient {
     ContainerRegistryAsyncClient(HttpPipeline httpPipeline, String endpoint, String version) {
         this.httpPipeline = httpPipeline;
         this.endpoint = endpoint;
-        this.registriesImplClient = new AzureContainerRegistryImpl(httpPipeline, endpoint, version)
-            .getContainerRegistries();
+        this.registriesImplClient
+            = new AzureContainerRegistryImpl(httpPipeline, endpoint, version).getContainerRegistries();
         this.apiVersion = version;
     }
 
@@ -118,8 +118,7 @@ public final class ContainerRegistryAsyncClient {
     }
 
     private Mono<PagedResponse<String>> listRepositoryNamesNextSinglePageAsync(String nextLink, Context context) {
-        return this.registriesImplClient
-            .getRepositoriesNextSinglePageAsync(nextLink, context)
+        return this.registriesImplClient.getRepositoriesNextSinglePageAsync(nextLink, context)
             .map(UtilsImpl::getPagedResponseWithContinuationToken)
             .onErrorMap(AcrErrorsException.class, UtilsImpl::mapAcrErrorsException);
     }

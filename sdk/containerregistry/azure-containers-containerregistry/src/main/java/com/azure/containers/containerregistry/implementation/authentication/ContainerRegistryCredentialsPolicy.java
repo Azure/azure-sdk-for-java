@@ -112,7 +112,7 @@ public final class ContainerRegistryCredentialsPolicy extends BearerTokenAuthent
         if (!(response.getStatusCode() == 401 && authHeader != null)) {
             return false;
         } else {
-            String scope =  extractValue(authHeader, SCOPES_PARAMETER);
+            String scope = extractValue(authHeader, SCOPES_PARAMETER);
             String serviceName = extractValue(authHeader, SERVICE_PARAMETER);
 
             if (scope != null && serviceName != null) {

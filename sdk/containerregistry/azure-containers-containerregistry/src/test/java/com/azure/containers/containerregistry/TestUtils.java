@@ -43,7 +43,8 @@ public class TestUtils {
     public static final BinaryData LAYER_DATA = BinaryData.fromString("hello world");
     public static final String LAYER_DIGEST = computeDigest(LAYER_DATA.toByteBuffer());
     public static final OciImageManifest MANIFEST = createManifest();
-    public static final String MANIFEST_DIGEST = "sha256:492bc88863bdf51159c4efe84e851c48d7034881159b56c4338003e50e801598";
+    public static final String MANIFEST_DIGEST
+        = "sha256:492bc88863bdf51159c4efe84e851c48d7034881159b56c4338003e50e801598";
     public static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
     private static final Configuration CONFIGURATION = Configuration.getGlobalConfiguration();
     public static final String ALPINE_REPOSITORY_NAME = "library/alpine";
@@ -55,7 +56,8 @@ public class TestUtils {
     public static final String V4_TAG_NAME = "v4";
     public static final String V3_TAG_NAME = "v3";
     public static final String TAG_UNKNOWN = "unknowntag";
-    public static final String DIGEST_UNKNOWN = "sha256:ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff";
+    public static final String DIGEST_UNKNOWN
+        = "sha256:ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff";
     public static final int PAGESIZE_2 = 2;
     public static final int PAGESIZE_1 = 1;
     public static final String REGISTRY_NAME = CONFIGURATION.get("CONTAINERREGISTRY_REGISTRY_NAME");
@@ -65,15 +67,18 @@ public class TestUtils {
     public static final String CLIENT_ID = CONFIGURATION.get("CONTAINERREGISTRY_CLIENT_ID");
     public static final String REGISTRY_URI = "registry.hub.docker.com";
     public static final String REGISTRY_ENDPOINT = CONFIGURATION.get("CONTAINERREGISTRY_ENDPOINT");
-    public static final String ANONYMOUS_REGISTRY_ENDPOINT = CONFIGURATION.get("CONTAINERREGISTRY_ANONREGISTRY_ENDPOINT");
+    public static final String ANONYMOUS_REGISTRY_ENDPOINT
+        = CONFIGURATION.get("CONTAINERREGISTRY_ANONREGISTRY_ENDPOINT");
     public static final long SLEEP_TIME_IN_MILLISECONDS = 5000;
     public static final String ANONYMOUS_REGISTRY_NAME = CONFIGURATION.get("CONTAINERREGISTRY_ANONREGISTRY_NAME");
     public static final String REGISTRY_ENDPOINT_PLAYBACK = "https://pallavitcontainerregistry.azurecr.io";
     public static final String REGISTRY_NAME_PLAYBACK = "pallavitcontainerregistry";
     public static final int HTTP_STATUS_CODE_202 = 202;
     public static final String CONTAINERREGISTRY_CLIENT_SECRET = CONFIGURATION.get("CONTAINERREGISTRY_CLIENT_SECRET");
-    public static final BiFunction<HttpRequest, Context, Boolean> SKIP_AUTH_TOKEN_REQUEST_FUNCTION = (request, context) -> request.getUrl().toString().contains("oauth2");
-    public static final ManifestMediaType OCI_INDEX_MEDIA_TYPE = ManifestMediaType.fromString("application/vnd.oci.image.index.v1+json");
+    public static final BiFunction<HttpRequest, Context, Boolean> SKIP_AUTH_TOKEN_REQUEST_FUNCTION
+        = (request, context) -> request.getUrl().toString().contains("oauth2");
+    public static final ManifestMediaType OCI_INDEX_MEDIA_TYPE
+        = ManifestMediaType.fromString("application/vnd.oci.image.index.v1+json");
 
     static class FakeCredentials implements TokenCredential {
         @Override
@@ -115,11 +120,11 @@ public class TestUtils {
         if (AzureAuthorityHosts.AZURE_PUBLIC_CLOUD.equals(authority)) {
             return new DefaultAzureCredentialBuilder().build();
         } else {
-            return new ClientSecretCredentialBuilder()
-                .tenantId(TENANT_ID)
+            return new ClientSecretCredentialBuilder().tenantId(TENANT_ID)
                 .clientId(CLIENT_ID)
                 .clientSecret(CONTAINERREGISTRY_CLIENT_SECRET)
-                .authorityHost(authority).build();
+                .authorityHost(authority)
+                .build();
         }
     }
 
@@ -176,14 +181,22 @@ public class TestUtils {
 
     static AzureProfile getAzureProfile(String authority) {
         switch (authority) {
-            case AzureAuthorityHosts.AZURE_PUBLIC_CLOUD: return new AzureProfile(TENANT_ID, SUBSCRIPTION_ID, AzureEnvironment.AZURE);
-            case AzureAuthorityHosts.AZURE_CHINA: return new AzureProfile(TENANT_ID, SUBSCRIPTION_ID, AzureEnvironment.AZURE_CHINA);
-            case AzureAuthorityHosts.AZURE_GOVERNMENT: return new AzureProfile(TENANT_ID, SUBSCRIPTION_ID, AzureEnvironment.AZURE_US_GOVERNMENT);
-            default: return null;
+            case AzureAuthorityHosts.AZURE_PUBLIC_CLOUD:
+                return new AzureProfile(TENANT_ID, SUBSCRIPTION_ID, AzureEnvironment.AZURE);
+
+            case AzureAuthorityHosts.AZURE_CHINA:
+                return new AzureProfile(TENANT_ID, SUBSCRIPTION_ID, AzureEnvironment.AZURE_CHINA);
+
+            case AzureAuthorityHosts.AZURE_GOVERNMENT:
+                return new AzureProfile(TENANT_ID, SUBSCRIPTION_ID, AzureEnvironment.AZURE_US_GOVERNMENT);
+
+            default:
+                return null;
         }
     }
 
-    static void importImage(TestMode mode, String registryName, String repository, List<String> tags, String endpoint) throws InterruptedException {
+    static void importImage(TestMode mode, String registryName, String repository, List<String> tags, String endpoint)
+        throws InterruptedException {
         if (mode == TestMode.PLAYBACK) {
             return;
         }
@@ -199,14 +212,12 @@ public class TestUtils {
         int index = 0;
         do {
             try {
-                manager.serviceClient().getRegistries().importImage(
-                    RESOURCE_GROUP,
-                    registryName,
-                    new ImportImageParameters()
-                        .withMode(ImportMode.FORCE)
-                        .withSource(new ImportSource().withSourceImage(repository)
-                            .withRegistryUri(REGISTRY_URI))
-                        .withTargetTags(tags));
+                manager.serviceClient()
+                    .getRegistries()
+                    .importImage(RESOURCE_GROUP, registryName,
+                        new ImportImageParameters().withMode(ImportMode.FORCE)
+                            .withSource(new ImportSource().withSourceImage(repository).withRegistryUri(REGISTRY_URI))
+                            .withTargetTags(tags));
                 return;
             } catch (Exception ex) {
                 Thread.sleep(SLEEP_TIME_IN_MILLISECONDS);
@@ -215,22 +226,18 @@ public class TestUtils {
     }
 
     private static OciImageManifest createManifest() {
-        OciImageManifest manifest = new OciImageManifest()
-            .setSchemaVersion(2)
-            .setConfiguration(new OciDescriptor()
-                .setMediaType("application/vnd.acme.rocket.config.v1+json")
+        OciImageManifest manifest = new OciImageManifest().setSchemaVersion(2)
+            .setConfiguration(new OciDescriptor().setMediaType("application/vnd.acme.rocket.config.v1+json")
                 .setDigest(CONFIG_DIGEST)
                 .setSizeInBytes(171L));
 
-
         List<OciDescriptor> layers = new ArrayList<>();
 
-        layers.add(new OciDescriptor()
-            .setMediaType("application/vnd.oci.image.layer.v1.tar")
+        layers.add(new OciDescriptor().setMediaType("application/vnd.oci.image.layer.v1.tar")
             .setSizeInBytes(28L)
             .setDigest(LAYER_DIGEST)
-            .setAnnotations(new OciAnnotations()
-                .setName("654b93f61054e4ce90ed203bb8d556a6200d5f906cf3eca0620738d6dc18cbed")));
+            .setAnnotations(
+                new OciAnnotations().setName("654b93f61054e4ce90ed203bb8d556a6200d5f906cf3eca0620738d6dc18cbed")));
 
         manifest.setLayers(layers);
         return manifest;

@@ -50,31 +50,34 @@ public class ContainerRegistryTokenServiceTest {
         AcrRefreshToken refreshToken = new AcrRefreshToken().setRefreshToken(REFRESHTOKEN);
         AcrAccessToken accessToken = new AcrAccessToken().setAccessToken(ACCESSTOKEN);
         Response<AcrAccessToken> accessTokenResponse = new SimpleResponse<>(null, 200, new HttpHeaders(), accessToken);
-        Response<AcrRefreshToken> refreshTokenResponse = new SimpleResponse<>(null, 200, new HttpHeaders(), refreshToken);
+        Response<AcrRefreshToken> refreshTokenResponse
+            = new SimpleResponse<>(null, 200, new HttpHeaders(), refreshToken);
 
-        when(authenticationsImpl.exchangeAcrRefreshTokenForAcrAccessTokenWithResponseAsync(anyString(), anyString(), anyString(), any(TokenGrantType.class), any(Context.class)))
-            .thenReturn(Mono.just(accessTokenResponse));
+        when(authenticationsImpl.exchangeAcrRefreshTokenForAcrAccessTokenWithResponseAsync(anyString(), anyString(),
+            anyString(), any(TokenGrantType.class), any(Context.class))).thenReturn(Mono.just(accessTokenResponse));
 
-        when(authenticationsImpl.exchangeAadAccessTokenForAcrRefreshTokenWithResponseAsync(any(PostContentSchemaGrantType.class), anyString(), anyString(), anyString(), anyString(), any(Context.class)))
-            .thenReturn(Mono.just(refreshTokenResponse));
-        when(refreshTokenCredential.getToken(any(TokenRequestContext.class))).thenReturn(Mono.just(new AccessToken(accessToken.getAccessToken(), OffsetDateTime.now().plusHours(1))));
+        when(authenticationsImpl.exchangeAadAccessTokenForAcrRefreshTokenWithResponseAsync(
+            any(PostContentSchemaGrantType.class), anyString(), anyString(), anyString(), anyString(),
+            any(Context.class))).thenReturn(Mono.just(refreshTokenResponse));
+        when(refreshTokenCredential.getToken(any(TokenRequestContext.class)))
+            .thenReturn(Mono.just(new AccessToken(accessToken.getAccessToken(), OffsetDateTime.now().plusHours(1))));
         when(requestContext.getScope()).thenReturn(SCOPE);
         when(requestContext.getServiceName()).thenReturn(SERVICENAME);
-        when(refreshTokenCredential.getToken(any())).thenReturn(Mono.just(new AccessToken(REFRESHTOKEN, OffsetDateTime.now().plusHours(1))));
+        when(refreshTokenCredential.getToken(any()))
+            .thenReturn(Mono.just(new AccessToken(REFRESHTOKEN, OffsetDateTime.now().plusHours(1))));
 
         refreshTokenCache = new AccessTokenCacheImpl(refreshTokenCredential);
     }
 
     @Test
     public void refreshTokenRestAPICalledOnlyOnce() {
-        ContainerRegistryTokenService service = new ContainerRegistryTokenService(authenticationsImpl, refreshTokenCache);
+        ContainerRegistryTokenService service
+            = new ContainerRegistryTokenService(authenticationsImpl, refreshTokenCache);
 
         int count = 10;
         StepVerifier.create(Flux.range(1, count)
             .flatMap(i -> service.getToken(requestContext))
-            .subscribeOn(Schedulers.newParallel("pool", count)))
-            .expectNextCount(count)
-            .verifyComplete();
+            .subscribeOn(Schedulers.newParallel("pool", count))).expectNextCount(count).verifyComplete();
 
         // We call the refreshToken method only once.
         verify(this.refreshTokenCredential, times(1)).getToken(this.requestContext);

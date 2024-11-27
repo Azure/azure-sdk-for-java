@@ -37,7 +37,8 @@ import static org.mockito.Mockito.when;
 public class ContainerRegistryCredentialPolicyTests {
 
     public static final String WWW_AUTHENTICATE = "WWW-Authenticate";
-    public static final String AUTHENTICATE_HEADER = "Bearer realm=\"https://mytest.azurecr.io/oauth2/token\",service=\"mytest.azurecr.io\",scope=\"registry:catalog:*\",error=\"invalid_token\"";
+    public static final String AUTHENTICATE_HEADER
+        = "Bearer realm=\"https://mytest.azurecr.io/oauth2/token\",service=\"mytest.azurecr.io\",scope=\"registry:catalog:*\",error=\"invalid_token\"";
     public static final Integer UNAUTHORIZED = 401;
     public static final Integer SUCCESS = 200;
     public static final String AUTHORIZATION = "Authorization";
@@ -53,6 +54,7 @@ public class ContainerRegistryCredentialPolicyTests {
     private HttpPipelineNextPolicy nextPolicy;
 
     private HttpPipelineNextSyncPolicy nextSyncPolicy;
+
     @BeforeEach
     public void setup() {
         AccessToken accessToken = new AccessToken("tokenValue", OffsetDateTime.now().plusMinutes(30));
@@ -66,20 +68,13 @@ public class ContainerRegistryCredentialPolicyTests {
         HttpPipelineCallContext context = mock(HttpPipelineCallContext.class);
         when(context.getHttpRequest()).thenReturn(request);
 
-        MockHttpResponse unauthorizedResponseWithHeader = new MockHttpResponse(
-            mock(HttpRequest.class),
-            UNAUTHORIZED,
-            new HttpHeaders().set(WWW_AUTHENTICATE, AUTHENTICATE_HEADER)
-        );
+        MockHttpResponse unauthorizedResponseWithHeader = new MockHttpResponse(mock(HttpRequest.class), UNAUTHORIZED,
+            new HttpHeaders().set(WWW_AUTHENTICATE, AUTHENTICATE_HEADER));
 
-        MockHttpResponse unauthorizedResponseWithoutHeader = new MockHttpResponse(
-            mock(HttpRequest.class),
-            UNAUTHORIZED);
+        MockHttpResponse unauthorizedResponseWithoutHeader
+            = new MockHttpResponse(mock(HttpRequest.class), UNAUTHORIZED);
 
-        MockHttpResponse successResponse = new MockHttpResponse(
-            mock(HttpRequest.class),
-            SUCCESS
-        );
+        MockHttpResponse successResponse = new MockHttpResponse(mock(HttpRequest.class), SUCCESS);
 
         HttpPipelineNextPolicy mockNextClone = mock(HttpPipelineNextPolicy.class);
         when(mockNextClone.process()).thenReturn(Mono.just(successResponse));
@@ -111,26 +106,26 @@ public class ContainerRegistryCredentialPolicyTests {
         when(nextPolicy.process()).thenReturn(Mono.just(successResponse));
         when(nextSyncPolicy.processSync()).thenReturn(successResponse);
 
-        SyncAsyncExtension.execute(
-            () -> policy.processSync(this.callContext, this.nextSyncPolicy),
-            () -> policy.process(this.callContext, this.nextPolicy)
-        );
+        SyncAsyncExtension.execute(() -> policy.processSync(this.callContext, this.nextSyncPolicy),
+            () -> policy.process(this.callContext, this.nextPolicy));
 
         // Make sure no call being done to the authorize request.
-        verify(spyPolicy, times(0)).setAuthorizationHeader(any(HttpPipelineCallContext.class), any(ContainerRegistryTokenRequestContext.class));
-        verify(spyPolicy, times(0)).setAuthorizationHeaderSync(any(HttpPipelineCallContext.class), any(ContainerRegistryTokenRequestContext.class));
+        verify(spyPolicy, times(0)).setAuthorizationHeader(any(HttpPipelineCallContext.class),
+            any(ContainerRegistryTokenRequestContext.class));
+        verify(spyPolicy, times(0)).setAuthorizationHeaderSync(any(HttpPipelineCallContext.class),
+            any(ContainerRegistryTokenRequestContext.class));
 
         when(nextPolicy.process()).thenReturn(Mono.just(unauthorizedHttpResponseWithoutHeader));
         when(nextSyncPolicy.processSync()).thenReturn(unauthorizedHttpResponseWithoutHeader);
 
-        SyncAsyncExtension.execute(
-            () -> policy.processSync(this.callContext, this.nextSyncPolicy),
-            () -> policy.process(this.callContext, this.nextPolicy)
-        );
+        SyncAsyncExtension.execute(() -> policy.processSync(this.callContext, this.nextSyncPolicy),
+            () -> policy.process(this.callContext, this.nextPolicy));
 
         // Make sure no call being done to the authorize request.
-        verify(spyPolicy, times(0)).setAuthorizationHeader(any(HttpPipelineCallContext.class), any(ContainerRegistryTokenRequestContext.class));
-        verify(spyPolicy, times(0)).setAuthorizationHeaderSync(any(HttpPipelineCallContext.class), any(ContainerRegistryTokenRequestContext.class));
+        verify(spyPolicy, times(0)).setAuthorizationHeader(any(HttpPipelineCallContext.class),
+            any(ContainerRegistryTokenRequestContext.class));
+        verify(spyPolicy, times(0)).setAuthorizationHeaderSync(any(HttpPipelineCallContext.class),
+            any(ContainerRegistryTokenRequestContext.class));
     }
 
     @Test
@@ -138,7 +133,8 @@ public class ContainerRegistryCredentialPolicyTests {
         ContainerRegistryCredentialsPolicy policy = new ContainerRegistryCredentialsPolicy(this.service, "foo");
         ContainerRegistryCredentialsPolicy spyPolicy = Mockito.spy(policy);
 
-        Boolean onChallenge = spyPolicy.authorizeRequestOnChallenge(this.callContext, this.unauthorizedHttpResponse).block();
+        Boolean onChallenge
+            = spyPolicy.authorizeRequestOnChallenge(this.callContext, this.unauthorizedHttpResponse).block();
 
         // Validate that the onChallenge ran successfully.
         assertTrue(onChallenge);
@@ -149,7 +145,8 @@ public class ContainerRegistryCredentialPolicyTests {
         assertTrue(tokenValue.endsWith(tokenValue));
 
         // Validate that the token creation was called with the correct arguments.
-        ArgumentCaptor<ContainerRegistryTokenRequestContext> argument = ArgumentCaptor.forClass(ContainerRegistryTokenRequestContext.class);
+        ArgumentCaptor<ContainerRegistryTokenRequestContext> argument
+            = ArgumentCaptor.forClass(ContainerRegistryTokenRequestContext.class);
         verify(spyPolicy).setAuthorizationHeader(any(HttpPipelineCallContext.class), argument.capture());
 
         ContainerRegistryTokenRequestContext requestContext = argument.getValue();
@@ -162,7 +159,8 @@ public class ContainerRegistryCredentialPolicyTests {
         ContainerRegistryCredentialsPolicy policy = new ContainerRegistryCredentialsPolicy(this.service, "foo");
         ContainerRegistryCredentialsPolicy spyPolicy = Mockito.spy(policy);
 
-        Boolean onChallenge = spyPolicy.authorizeRequestOnChallengeSync(this.callContext, this.unauthorizedHttpResponse);
+        Boolean onChallenge
+            = spyPolicy.authorizeRequestOnChallengeSync(this.callContext, this.unauthorizedHttpResponse);
 
         // Validate that the onChallenge ran successfully.
         assertTrue(onChallenge);
@@ -173,7 +171,8 @@ public class ContainerRegistryCredentialPolicyTests {
         assertTrue(tokenValue.endsWith(tokenValue));
 
         // Validate that the token creation was called with the correct arguments.
-        ArgumentCaptor<ContainerRegistryTokenRequestContext> argument = ArgumentCaptor.forClass(ContainerRegistryTokenRequestContext.class);
+        ArgumentCaptor<ContainerRegistryTokenRequestContext> argument
+            = ArgumentCaptor.forClass(ContainerRegistryTokenRequestContext.class);
         verify(spyPolicy).setAuthorizationHeaderSync(any(HttpPipelineCallContext.class), argument.capture());
 
         ContainerRegistryTokenRequestContext requestContext = argument.getValue();

@@ -76,8 +76,7 @@ public class ContainerRegistryContentClientIntegrationTests extends ContainerReg
     }
 
     private HttpClient buildSyncAssertingClient(HttpClient httpClient) {
-        return new AssertingHttpClientBuilder(httpClient)
-            .skipRequest(SKIP_AUTH_TOKEN_REQUEST_FUNCTION)
+        return new AssertingHttpClientBuilder(httpClient).skipRequest(SKIP_AUTH_TOKEN_REQUEST_FUNCTION)
             .assertSync()
             .build();
     }
@@ -120,7 +119,8 @@ public class ContainerRegistryContentClientIntegrationTests extends ContainerReg
         client = getContentClient("oci-artifact", httpClient);
         setManifestPrerequisites();
 
-        SetManifestOptions options  = new SetManifestOptions(BinaryData.fromObject(MANIFEST), ManifestMediaType.OCI_IMAGE_MANIFEST);
+        SetManifestOptions options
+            = new SetManifestOptions(BinaryData.fromObject(MANIFEST), ManifestMediaType.OCI_IMAGE_MANIFEST);
         SetManifestResult result = client.setManifestWithResponse(options, Context.NONE).getValue();
         assertNotNull(result);
         assertNotNull(result.getDigest());
@@ -136,7 +136,8 @@ public class ContainerRegistryContentClientIntegrationTests extends ContainerReg
         client = getContentClient("oci-artifact", httpClient);
         setManifestPrerequisites();
 
-        SetManifestResult result = client.setManifestWithResponse(new SetManifestOptions(MANIFEST), Context.NONE).getValue();
+        SetManifestResult result
+            = client.setManifestWithResponse(new SetManifestOptions(MANIFEST), Context.NONE).getValue();
         assertNotNull(result);
         assertNotNull(result.getDigest());
 
@@ -171,8 +172,8 @@ public class ContainerRegistryContentClientIntegrationTests extends ContainerReg
         setManifestPrerequisites();
         BinaryData dockerV2Manifest = BinaryData.fromObject(createDockerV2Manifest());
 
-        SetManifestOptions options = new SetManifestOptions(dockerV2Manifest, ManifestMediaType.DOCKER_MANIFEST)
-            .setTag(tag);
+        SetManifestOptions options
+            = new SetManifestOptions(dockerV2Manifest, ManifestMediaType.DOCKER_MANIFEST).setTag(tag);
         SetManifestResult result = client.setManifestWithResponse(options, Context.NONE).getValue();
         assertNotNull(result);
         assertNotNull(result.getDigest());
@@ -190,18 +191,15 @@ public class ContainerRegistryContentClientIntegrationTests extends ContainerReg
         asyncClient = getBlobAsyncClient("oci-artifact", httpClient);
 
         setManifestPrerequisites();
-        StepVerifier.create(asyncClient.setManifest(MANIFEST, null)
-                .flatMap(result -> {
-                    assertNotNull(result);
-                    assertNotNull(result.getDigest());
+        StepVerifier.create(asyncClient.setManifest(MANIFEST, null).flatMap(result -> {
+            assertNotNull(result);
+            assertNotNull(result.getDigest());
 
-                    return asyncClient.getManifest(MANIFEST_DIGEST);
-                }))
-            .assertNext(getManifestResult -> {
-                assertEquals(MANIFEST_DIGEST, getManifestResult.getDigest());
-                validateManifest(MANIFEST, getManifestResult.getManifest().toObject(OciImageManifest.class));
-            })
-            .verifyComplete();
+            return asyncClient.getManifest(MANIFEST_DIGEST);
+        })).assertNext(getManifestResult -> {
+            assertEquals(MANIFEST_DIGEST, getManifestResult.getDigest());
+            validateManifest(MANIFEST, getManifestResult.getManifest().toObject(OciImageManifest.class));
+        }).verifyComplete();
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -214,16 +212,14 @@ public class ContainerRegistryContentClientIntegrationTests extends ContainerReg
         BinaryData dockerV2Manifest = BinaryData.fromObject(createDockerV2Manifest());
         String digest = computeDigest(dockerV2Manifest.toByteBuffer().asReadOnlyBuffer());
 
-        SetManifestOptions options = new SetManifestOptions(dockerV2Manifest, ManifestMediaType.DOCKER_MANIFEST).setTag(tag);
-        StepVerifier.create(asyncClient.setManifestWithResponse(options)
-                .flatMap(result -> {
-                    assertNotNull(result);
-                    assertNotNull(result.getValue().getDigest());
+        SetManifestOptions options
+            = new SetManifestOptions(dockerV2Manifest, ManifestMediaType.DOCKER_MANIFEST).setTag(tag);
+        StepVerifier.create(asyncClient.setManifestWithResponse(options).flatMap(result -> {
+            assertNotNull(result);
+            assertNotNull(result.getValue().getDigest());
 
-                    return asyncClient.getManifest(tag);
-                }))
-                .assertNext(getManifestResult -> assertEquals(digest, getManifestResult.getDigest()))
-                .verifyComplete();
+            return asyncClient.getManifest(tag);
+        })).assertNext(getManifestResult -> assertEquals(digest, getManifestResult.getDigest())).verifyComplete();
 
         validateTag("oci-artifact", digest, tag, httpClient);
     }
@@ -268,13 +264,11 @@ public class ContainerRegistryContentClientIntegrationTests extends ContainerReg
         Mono<BinaryData> data = BinaryData.fromFlux(generateAsyncStream(size), size, false);
         AtomicLong download = new AtomicLong(0);
         StepVerifier.setDefaultTimeout(Duration.ofMinutes(30));
-        StepVerifier.create(data
-                .flatMap(content -> asyncClient.uploadBlob(content))
-                .flatMap(r -> asyncClient.downloadStream(r.getDigest()))
-                .flatMapMany(BinaryData::toFluxByteBuffer)
-                .doOnNext(bb -> download.addAndGet(bb.remaining()))
-                .then())
-            .verifyComplete();
+        StepVerifier.create(data.flatMap(content -> asyncClient.uploadBlob(content))
+            .flatMap(r -> asyncClient.downloadStream(r.getDigest()))
+            .flatMapMany(BinaryData::toFluxByteBuffer)
+            .doOnNext(bb -> download.addAndGet(bb.remaining()))
+            .then()).verifyComplete();
 
         assertEquals(size, download.get());
     }
@@ -313,14 +307,10 @@ public class ContainerRegistryContentClientIntegrationTests extends ContainerReg
         BinaryData content = generateStream((int) (CHUNK_SIZE * 2.5));
         String digest = computeDigest(content.toByteBuffer());
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        StepVerifier.create(asyncClient
-                .uploadBlob(content)
-                .flatMap(uploadResult -> {
-                    assertEquals(digest, uploadResult.getDigest());
-                    return asyncClient.downloadStream(uploadResult.getDigest());
-                })
-                .flatMap(r -> FluxUtil.writeToOutputStream(r.toFluxByteBuffer(), stream)))
-            .verifyComplete();
+        StepVerifier.create(asyncClient.uploadBlob(content).flatMap(uploadResult -> {
+            assertEquals(digest, uploadResult.getDigest());
+            return asyncClient.downloadStream(uploadResult.getDigest());
+        }).flatMap(r -> FluxUtil.writeToOutputStream(r.toFluxByteBuffer(), stream))).verifyComplete();
 
         stream.flush();
         assertArrayEquals(content.toBytes(), stream.toByteArray());
@@ -334,14 +324,10 @@ public class ContainerRegistryContentClientIntegrationTests extends ContainerReg
         BinaryData content = generateStream(CHUNK_SIZE / 2);
         String digest = computeDigest(content.toByteBuffer());
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        StepVerifier.create(asyncClient
-                .uploadBlob(content)
-                .flatMap(uploadResult -> {
-                    assertEquals(digest, uploadResult.getDigest());
-                    return asyncClient.downloadStream(uploadResult.getDigest());
-                })
-                .flatMap(r -> FluxUtil.writeToOutputStream(r.toFluxByteBuffer(), stream)))
-            .verifyComplete();
+        StepVerifier.create(asyncClient.uploadBlob(content).flatMap(uploadResult -> {
+            assertEquals(digest, uploadResult.getDigest());
+            return asyncClient.downloadStream(uploadResult.getDigest());
+        }).flatMap(r -> FluxUtil.writeToOutputStream(r.toFluxByteBuffer(), stream))).verifyComplete();
 
         stream.flush();
         assertArrayEquals(content.toBytes(), stream.toByteArray());
@@ -367,23 +353,20 @@ public class ContainerRegistryContentClientIntegrationTests extends ContainerReg
     @MethodSource("getHttpClients")
     public void getManifestAsync(HttpClient httpClient) {
         asyncClient = getBlobAsyncClient("oci-artifact", httpClient);
-        StepVerifier.create(
-                setManifestPrerequisitesAsync()
-                    .then(asyncClient.setManifest(MANIFEST, null))
-                    .flatMap(result -> asyncClient.getManifest(result.getDigest())))
-            .assertNext(downloadResult -> {
+        StepVerifier.create(setManifestPrerequisitesAsync().then(asyncClient.setManifest(MANIFEST, null))
+            .flatMap(result -> asyncClient.getManifest(result.getDigest()))).assertNext(downloadResult -> {
                 OciImageManifest returnedManifest = downloadResult.getManifest().toObject(OciImageManifest.class);
                 assertNotNull(returnedManifest);
                 validateManifest(MANIFEST, returnedManifest);
-            })
-            .verifyComplete();
+            }).verifyComplete();
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getHttpClients")
     public void getManifestListManifest(HttpClient httpClient) {
         client = getContentClient(HELLO_WORLD_REPOSITORY_NAME, httpClient);
-        ManifestMediaType dockerListType = ManifestMediaType.fromString("application/vnd.docker.distribution.manifest.list.v2+json");
+        ManifestMediaType dockerListType
+            = ManifestMediaType.fromString("application/vnd.docker.distribution.manifest.list.v2+json");
         Response<GetManifestResult> manifestResult = client.getManifestWithResponse("latest", Context.NONE);
         assertNotNull(manifestResult.getValue());
         assertEquals(dockerListType, manifestResult.getValue().getManifestMediaType());
@@ -398,12 +381,16 @@ public class ContainerRegistryContentClientIntegrationTests extends ContainerReg
     @MethodSource("getHttpClients")
     public void getManifestIncompatibleType(HttpClient httpClient) {
         client = getContentClient(HELLO_WORLD_REPOSITORY_NAME, httpClient);
-        ManifestMediaType ociArtifactType = ManifestMediaType.fromString("application/vnd.oci.artifact.manifest.v1+json");
+        ManifestMediaType ociArtifactType
+            = ManifestMediaType.fromString("application/vnd.oci.artifact.manifest.v1+json");
 
-        BinaryData ociArtifact = BinaryData.fromString("{\"mediaType\": \"application/vnd.oci.artifact.manifest.v1+json\",\"artifactType\": \"application/vnd.example.sbom.v1\"}");
-        SetManifestResult result = client.setManifestWithResponse(new SetManifestOptions(ociArtifact, ociArtifactType), Context.NONE)
-            .getValue();
-        assertThrows(ResourceNotFoundException.class, () -> client.getManifestWithResponse(result.getDigest(), Context.NONE));
+        BinaryData ociArtifact = BinaryData.fromString(
+            "{\"mediaType\": \"application/vnd.oci.artifact.manifest.v1+json\",\"artifactType\": \"application/vnd.example.sbom.v1\"}");
+        SetManifestResult result
+            = client.setManifestWithResponse(new SetManifestOptions(ociArtifact, ociArtifactType), Context.NONE)
+                .getValue();
+        assertThrows(ResourceNotFoundException.class,
+            () -> client.getManifestWithResponse(result.getDigest(), Context.NONE));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -415,26 +402,26 @@ public class ContainerRegistryContentClientIntegrationTests extends ContainerReg
         GetManifestResult manifestResult = client.getManifest("latest");
 
         // but service does the best effort to return what it supports
-        assertEquals("application/vnd.docker.distribution.manifest.list.v2+json", manifestResult.getManifestMediaType().toString());
+        assertEquals("application/vnd.docker.distribution.manifest.list.v2+json",
+            manifestResult.getManifestMediaType().toString());
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getHttpClients")
     public void getManifestListManifestAsync(HttpClient httpClient) {
         asyncClient = getBlobAsyncClient(HELLO_WORLD_REPOSITORY_NAME, httpClient);
-        ManifestMediaType dockerListType = ManifestMediaType.fromString("application/vnd.docker.distribution.manifest.list.v2+json");
+        ManifestMediaType dockerListType
+            = ManifestMediaType.fromString("application/vnd.docker.distribution.manifest.list.v2+json");
 
-        StepVerifier.create(asyncClient.getManifestWithResponse("latest"))
-            .assertNext(manifestResult -> {
-                assertNotNull(manifestResult.getValue());
-                assertEquals(dockerListType, manifestResult.getValue().getManifestMediaType());
-                // does not throw
-                ManifestList list = manifestResult.getValue().getManifest().toObject(ManifestList.class);
-                assertEquals(2, list.getSchemaVersion());
-                assertEquals(dockerListType.toString(), list.getMediaType());
-                assertEquals(11, list.getManifests().size());
-            })
-            .verifyComplete();
+        StepVerifier.create(asyncClient.getManifestWithResponse("latest")).assertNext(manifestResult -> {
+            assertNotNull(manifestResult.getValue());
+            assertEquals(dockerListType, manifestResult.getValue().getManifestMediaType());
+            // does not throw
+            ManifestList list = manifestResult.getValue().getManifest().toObject(ManifestList.class);
+            assertEquals(2, list.getSchemaVersion());
+            assertEquals(dockerListType.toString(), list.getMediaType());
+            assertEquals(11, list.getManifests().size());
+        }).verifyComplete();
     }
 
     private void validateTag(String repoName, String digest, String tag, HttpClient httpClient) {
@@ -466,24 +453,19 @@ public class ContainerRegistryContentClientIntegrationTests extends ContainerReg
     }
 
     private Mono<Void> setManifestPrerequisitesAsync() {
-        return asyncClient.uploadBlob(CONFIG_DATA)
-            .then(asyncClient.uploadBlob(LAYER_DATA))
-            .then();
+        return asyncClient.uploadBlob(CONFIG_DATA).then(asyncClient.uploadBlob(LAYER_DATA)).then();
     }
 
     private V2Manifest createDockerV2Manifest() {
-        V2Manifest manifest = new V2Manifest()
-            .setMediaType(ManifestMediaType.DOCKER_MANIFEST.toString())
+        V2Manifest manifest = new V2Manifest().setMediaType(ManifestMediaType.DOCKER_MANIFEST.toString())
             .setSchemaVersion(2)
-            .setConfig(new OciDescriptor()
-                .setMediaType("application/vnd.docker.container.image.v1+json")
+            .setConfig(new OciDescriptor().setMediaType("application/vnd.docker.container.image.v1+json")
                 .setDigest(CONFIG_DIGEST)
                 .setSizeInBytes(171L));
 
         List<OciDescriptor> layers = new ArrayList<>();
 
-        layers.add(new OciDescriptor()
-            .setMediaType("application/vnd.docker.image.rootfs.diff.tar.gzip")
+        layers.add(new OciDescriptor().setMediaType("application/vnd.docker.image.rootfs.diff.tar.gzip")
             .setSizeInBytes(28L)
             .setDigest(LAYER_DIGEST));
 
@@ -500,19 +482,26 @@ public class ContainerRegistryContentClientIntegrationTests extends ContainerReg
         assertNotNull(originalManifest);
         assertNotNull(returnedManifest);
         assertNotNull(returnedManifest.getConfiguration());
-        assertEquals(originalManifest.getConfiguration().getMediaType(), returnedManifest.getConfiguration().getMediaType());
-        assertEquals(originalManifest.getConfiguration().getSizeInBytes(), returnedManifest.getConfiguration().getSizeInBytes());
+        assertEquals(originalManifest.getConfiguration().getMediaType(),
+            returnedManifest.getConfiguration().getMediaType());
+        assertEquals(originalManifest.getConfiguration().getSizeInBytes(),
+            returnedManifest.getConfiguration().getSizeInBytes());
         assertNotNull(returnedManifest.getLayers());
         assertEquals(originalManifest.getLayers().size(), returnedManifest.getLayers().size());
         for (int i = 0; i < originalManifest.getLayers().size(); i++) {
-            assertEquals(originalManifest.getLayers().get(i).getMediaType(), returnedManifest.getLayers().get(i).getMediaType());
-            assertEquals(originalManifest.getLayers().get(i).getDigest(), returnedManifest.getLayers().get(i).getDigest());
-            assertEquals(originalManifest.getLayers().get(i).getSizeInBytes(), returnedManifest.getLayers().get(i).getSizeInBytes());
+            assertEquals(originalManifest.getLayers().get(i).getMediaType(),
+                returnedManifest.getLayers().get(i).getMediaType());
+            assertEquals(originalManifest.getLayers().get(i).getDigest(),
+                returnedManifest.getLayers().get(i).getDigest());
+            assertEquals(originalManifest.getLayers().get(i).getSizeInBytes(),
+                returnedManifest.getLayers().get(i).getSizeInBytes());
         }
     }
 
     private ContainerRegistryContentClient getContentClient(String repositoryName, HttpClient httpClient) {
-        return getContentClientBuilder(repositoryName, buildSyncAssertingClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)).buildClient();
+        return getContentClientBuilder(repositoryName,
+            buildSyncAssertingClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient))
+                .buildClient();
     }
 
     private ContainerRegistryContentAsyncClient getBlobAsyncClient(String repositoryName, HttpClient httpClient) {
@@ -576,7 +565,6 @@ public class ContainerRegistryContentClientIntegrationTests extends ContainerReg
 
             return (int) (position - startPos);
         }
-
 
         @Override
         public int available() {

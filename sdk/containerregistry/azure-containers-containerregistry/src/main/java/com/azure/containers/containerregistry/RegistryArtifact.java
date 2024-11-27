@@ -70,7 +70,8 @@ public final class RegistryArtifact {
      * @param httpPipeline HttpPipeline that the HTTP requests and responses flow through.
      * @param version {@link ContainerRegistryServiceVersion} of the service to be used when making requests.
      */
-    RegistryArtifact(String repositoryName, String tagOrDigest, HttpPipeline httpPipeline, String endpoint, String version) {
+    RegistryArtifact(String repositoryName, String tagOrDigest, HttpPipeline httpPipeline, String endpoint,
+        String version) {
         Objects.requireNonNull(repositoryName, "'repositoryName' cannot be null.");
         if (repositoryName.isEmpty()) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("'repositoryName' can't be empty"));
@@ -120,9 +121,7 @@ public final class RegistryArtifact {
 
     private String getDigest() {
         if (digest == null) {
-            digest = isDigest(tagOrDigest)
-                ? tagOrDigest
-                : getTagProperties(tagOrDigest).getDigest();
+            digest = isDigest(tagOrDigest) ? tagOrDigest : getTagProperties(tagOrDigest).getDigest();
         }
         return digest;
     }
@@ -239,8 +238,8 @@ public final class RegistryArtifact {
     public Response<ArtifactManifestProperties> getManifestPropertiesWithResponse(Context context) {
         String res = getDigest();
         try {
-            Response<ArtifactManifestPropertiesInternal> internalResponse = this.serviceClient
-                .getManifestPropertiesWithResponse(getRepositoryName(), res, context);
+            Response<ArtifactManifestPropertiesInternal> internalResponse
+                = this.serviceClient.getManifestPropertiesWithResponse(getRepositoryName(), res, context);
 
             return new SimpleResponse<>(internalResponse,
                 ArtifactManifestPropertiesHelper.create(internalResponse.getValue()));
@@ -309,8 +308,8 @@ public final class RegistryArtifact {
         }
 
         try {
-            Response<ArtifactTagPropertiesInternal> internalResponse = this.serviceClient
-                .getTagPropertiesWithResponse(getRepositoryName(), tag, context);
+            Response<ArtifactTagPropertiesInternal> internalResponse
+                = this.serviceClient.getTagPropertiesWithResponse(getRepositoryName(), tag, context);
 
             return new SimpleResponse<>(internalResponse,
                 ArtifactTagPropertiesHelper.create(internalResponse.getValue()));
@@ -448,8 +447,7 @@ public final class RegistryArtifact {
 
     private PagedResponse<ArtifactTagProperties> listTagPropertiesNextSinglePageSync(String nextLink, Context context) {
         try {
-            PagedResponse<TagAttributesBase> res = serviceClient.getTagsNextSinglePage(nextLink,
-                context);
+            PagedResponse<TagAttributesBase> res = serviceClient.getTagsNextSinglePage(nextLink, context);
 
             return UtilsImpl.getPagedResponseWithContinuationToken(res,
                 baseValues -> UtilsImpl.getTagProperties(baseValues, getRepositoryName()));
@@ -485,7 +483,8 @@ public final class RegistryArtifact {
      * @throws HttpResponseException thrown if any other unexpected exception is returned by the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ArtifactTagProperties> updateTagPropertiesWithResponse(String tag, ArtifactTagProperties tagProperties, Context context) {
+    public Response<ArtifactTagProperties> updateTagPropertiesWithResponse(String tag,
+        ArtifactTagProperties tagProperties, Context context) {
         Objects.requireNonNull(tag, "'tag' cannot be null.");
         Objects.requireNonNull(tagProperties, "'tagProperties' cannot be null.");
 
@@ -493,11 +492,11 @@ public final class RegistryArtifact {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("'tag' cannot be empty."));
         }
 
-        TagWriteableProperties writeableProperties = new TagWriteableProperties()
-            .setDeleteEnabled(tagProperties.isDeleteEnabled())
-            .setListEnabled(tagProperties.isListEnabled())
-            .setReadEnabled(tagProperties.isReadEnabled())
-            .setWriteEnabled(tagProperties.isWriteEnabled());
+        TagWriteableProperties writeableProperties
+            = new TagWriteableProperties().setDeleteEnabled(tagProperties.isDeleteEnabled())
+                .setListEnabled(tagProperties.isListEnabled())
+                .setReadEnabled(tagProperties.isReadEnabled())
+                .setWriteEnabled(tagProperties.isWriteEnabled());
 
         try {
             Response<ArtifactTagPropertiesInternal> internalResponse = this.serviceClient
@@ -563,21 +562,20 @@ public final class RegistryArtifact {
      * @throws ResourceNotFoundException thrown if the given {@code digest} was not found.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ArtifactManifestProperties> updateManifestPropertiesWithResponse(
-        ArtifactManifestProperties manifestProperties, Context context) {
+    public Response<ArtifactManifestProperties>
+        updateManifestPropertiesWithResponse(ArtifactManifestProperties manifestProperties, Context context) {
         Objects.requireNonNull(manifestProperties, "'manifestProperties' cannot be null.");
 
-        ManifestWriteableProperties writeableProperties = new ManifestWriteableProperties()
-            .setDeleteEnabled(manifestProperties.isDeleteEnabled())
-            .setListEnabled(manifestProperties.isListEnabled())
-            .setWriteEnabled(manifestProperties.isWriteEnabled())
-            .setReadEnabled(manifestProperties.isReadEnabled());
+        ManifestWriteableProperties writeableProperties
+            = new ManifestWriteableProperties().setDeleteEnabled(manifestProperties.isDeleteEnabled())
+                .setListEnabled(manifestProperties.isListEnabled())
+                .setWriteEnabled(manifestProperties.isWriteEnabled())
+                .setReadEnabled(manifestProperties.isReadEnabled());
 
         String res = getDigest();
         try {
             Response<ArtifactManifestPropertiesInternal> internalResponse = this.serviceClient
-                .updateManifestPropertiesWithResponse(getRepositoryName(), res, writeableProperties,
-                    context);
+                .updateManifestPropertiesWithResponse(getRepositoryName(), res, writeableProperties, context);
 
             return new SimpleResponse<>(internalResponse,
                 ArtifactManifestPropertiesHelper.create(internalResponse.getValue()));
@@ -640,14 +638,13 @@ public final class RegistryArtifact {
         return repositoryName;
     }
 
-
     private PagedIterable<ArtifactTagProperties> listTagPropertiesSync(ArtifactTagOrder order, Context context) {
-        return new PagedIterable<>(
-            (pageSize) -> listTagPropertiesSinglePageSync(pageSize, order, context),
+        return new PagedIterable<>((pageSize) -> listTagPropertiesSinglePageSync(pageSize, order, context),
             (token, pageSize) -> listTagPropertiesNextSinglePageSync(token, context));
     }
 
-    private PagedResponse<ArtifactTagProperties> listTagPropertiesSinglePageSync(Integer pageSize, ArtifactTagOrder order, Context context) {
+    private PagedResponse<ArtifactTagProperties> listTagPropertiesSinglePageSync(Integer pageSize,
+        ArtifactTagOrder order, Context context) {
         if (pageSize != null && pageSize < 0) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("'pageSize' cannot be negative."));
         }
@@ -656,9 +653,8 @@ public final class RegistryArtifact {
 
         String res = getDigest();
         try {
-            PagedResponse<TagAttributesBase> response =
-                serviceClient.getTagsSinglePage(getRepositoryName(), null, pageSize, orderString, res,
-                    context);
+            PagedResponse<TagAttributesBase> response
+                = serviceClient.getTagsSinglePage(getRepositoryName(), null, pageSize, orderString, res, context);
 
             return UtilsImpl.getPagedResponseWithContinuationToken(response,
                 baseValues -> UtilsImpl.getTagProperties(baseValues, getRepositoryName()));

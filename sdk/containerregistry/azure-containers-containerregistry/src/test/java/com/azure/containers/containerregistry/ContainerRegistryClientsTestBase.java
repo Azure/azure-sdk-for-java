@@ -43,59 +43,55 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ContainerRegistryClientsTestBase extends TestBase {
 
-    private static final Pattern JSON_PROPERTY_VALUE_REDACTION_PATTERN
-        = Pattern.compile("(\".*_token\":\"(.*)\".*)");
+    private static final Pattern JSON_PROPERTY_VALUE_REDACTION_PATTERN = Pattern.compile("(\".*_token\":\"(.*)\".*)");
 
-    protected static ArtifactTagProperties tagWriteableProperties = new ArtifactTagProperties()
-        .setDeleteEnabled(false)
+    protected static ArtifactTagProperties tagWriteableProperties = new ArtifactTagProperties().setDeleteEnabled(false)
         .setListEnabled(true)
         .setReadEnabled(true)
         .setWriteEnabled(true);
 
-    protected static ArtifactTagProperties defaultTagProperties = new ArtifactTagProperties()
-        .setDeleteEnabled(true)
+    protected static ArtifactTagProperties defaultTagProperties = new ArtifactTagProperties().setDeleteEnabled(true)
         .setListEnabled(true)
         .setReadEnabled(true)
         .setWriteEnabled(true);
 
-    protected static ArtifactManifestProperties manifestWriteableProperties = new ArtifactManifestProperties()
-        .setDeleteEnabled(false)
-        .setListEnabled(true)
-        .setReadEnabled(true)
-        .setWriteEnabled(true);
+    protected static ArtifactManifestProperties manifestWriteableProperties
+        = new ArtifactManifestProperties().setDeleteEnabled(false)
+            .setListEnabled(true)
+            .setReadEnabled(true)
+            .setWriteEnabled(true);
 
-    protected static ArtifactManifestProperties defaultManifestProperties = new ArtifactManifestProperties()
-        .setDeleteEnabled(true)
-        .setListEnabled(true)
-        .setReadEnabled(true)
-        .setWriteEnabled(true);
+    protected static ArtifactManifestProperties defaultManifestProperties
+        = new ArtifactManifestProperties().setDeleteEnabled(true)
+            .setListEnabled(true)
+            .setReadEnabled(true)
+            .setWriteEnabled(true);
 
+    protected static ContainerRepositoryProperties repoWriteableProperties
+        = new ContainerRepositoryProperties().setDeleteEnabled(false)
+            .setListEnabled(true)
+            .setReadEnabled(true)
+            .setWriteEnabled(true);
+    //.setTeleportEnabled(false);
 
-    protected static ContainerRepositoryProperties repoWriteableProperties = new ContainerRepositoryProperties()
-        .setDeleteEnabled(false)
-        .setListEnabled(true)
-        .setReadEnabled(true)
-        .setWriteEnabled(true);
-        //.setTeleportEnabled(false);
-
-    protected static ContainerRepositoryProperties defaultRepoWriteableProperties = new ContainerRepositoryProperties()
-        .setDeleteEnabled(true)
-        .setListEnabled(true)
-        .setReadEnabled(true)
-        .setWriteEnabled(true);
-        //.setTeleportEnabled(false);
+    protected static ContainerRepositoryProperties defaultRepoWriteableProperties
+        = new ContainerRepositoryProperties().setDeleteEnabled(true)
+            .setListEnabled(true)
+            .setReadEnabled(true)
+            .setWriteEnabled(true);
+    //.setTeleportEnabled(false);
 
     ContainerRegistryClientBuilder getContainerRegistryBuilder(HttpClient httpClient) {
         TokenCredential credential = getCredentialsByEndpoint(getTestMode(), REGISTRY_ENDPOINT);
         return getContainerRegistryBuilder(httpClient, credential);
     }
 
-    ContainerRegistryClientBuilder getContainerRegistryBuilder(HttpClient httpClient, TokenCredential credential, String endpoint) {
+    ContainerRegistryClientBuilder getContainerRegistryBuilder(HttpClient httpClient, TokenCredential credential,
+        String endpoint) {
         List<Function<String, String>> redactors = new ArrayList<>();
         redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), "REDACTED"));
 
-        return new ContainerRegistryClientBuilder()
-            .endpoint(getEndpoint(endpoint))
+        return new ContainerRegistryClientBuilder().endpoint(getEndpoint(endpoint))
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .addPolicy(interceptorManager.getRecordPolicy(redactors))
@@ -121,8 +117,7 @@ public class ContainerRegistryClientsTestBase extends TestBase {
         List<Function<String, String>> redactors = new ArrayList<>();
         redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), "REDACTED"));
 
-        return new ContainerRegistryContentClientBuilder()
-            .endpoint(getEndpoint(endpoint))
+        return new ContainerRegistryContentClientBuilder().endpoint(getEndpoint(endpoint))
             .repositoryName(repositoryName)
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
@@ -178,21 +173,24 @@ public class ContainerRegistryClientsTestBase extends TestBase {
 
         assertTrue(artifacts.stream().anyMatch(prop -> prop.getTags() != null));
 
-        assertTrue(artifacts.stream().anyMatch(a -> ArtifactArchitecture.AMD64.equals(a.getArchitecture())
-            && ArtifactOperatingSystem.WINDOWS.equals(a.getOperatingSystem())));
-        assertTrue(artifacts.stream().anyMatch(a -> ArtifactArchitecture.ARM.equals(a.getArchitecture())
-            && ArtifactOperatingSystem.LINUX.equals(a.getOperatingSystem())));
+        assertTrue(artifacts.stream()
+            .anyMatch(a -> ArtifactArchitecture.AMD64.equals(a.getArchitecture())
+                && ArtifactOperatingSystem.WINDOWS.equals(a.getOperatingSystem())));
+        assertTrue(artifacts.stream()
+            .anyMatch(a -> ArtifactArchitecture.ARM.equals(a.getArchitecture())
+                && ArtifactOperatingSystem.LINUX.equals(a.getOperatingSystem())));
     }
 
     boolean validateListArtifactsByPage(Collection<PagedResponse<ArtifactManifestProperties>> pagedResList) {
         return validateListArtifactsByPage(pagedResList, false);
     }
 
-    boolean validateListArtifactsByPage(Collection<PagedResponse<ArtifactManifestProperties>> pagedResList, boolean isOrdered) {
+    boolean validateListArtifactsByPage(Collection<PagedResponse<ArtifactManifestProperties>> pagedResList,
+        boolean isOrdered) {
         List<ArtifactManifestProperties> props = new ArrayList<>();
         pagedResList.forEach(res -> props.addAll(res.getValue()));
-        List<OffsetDateTime> lastUpdatedOn = props.stream().map(ArtifactManifestProperties::getLastUpdatedOn)
-            .collect(Collectors.toList());
+        List<OffsetDateTime> lastUpdatedOn
+            = props.stream().map(ArtifactManifestProperties::getLastUpdatedOn).collect(Collectors.toList());
 
         validateListArtifacts(props);
         return pagedResList.stream().allMatch(res -> res.getValue().size() <= PAGESIZE_2)
@@ -202,8 +200,8 @@ public class ContainerRegistryClientsTestBase extends TestBase {
     boolean validateListTags(Collection<PagedResponse<ArtifactTagProperties>> pagedResList, boolean isOrdered) {
         List<ArtifactTagProperties> props = new ArrayList<>();
         pagedResList.forEach(res -> props.addAll(res.getValue()));
-        List<OffsetDateTime> lastUpdatedOn = props.stream().map(ArtifactTagProperties::getLastUpdatedOn)
-            .collect(Collectors.toList());
+        List<OffsetDateTime> lastUpdatedOn
+            = props.stream().map(ArtifactTagProperties::getLastUpdatedOn).collect(Collectors.toList());
 
         return validateListTags(props)
             && pagedResList.stream().allMatch(res -> res.getValue().size() <= PAGESIZE_2)
@@ -212,7 +210,8 @@ public class ContainerRegistryClientsTestBase extends TestBase {
 
     boolean validateRepositories(Collection<String> repositories) {
         assertNotNull(repositories);
-        return repositories.containsAll(Arrays.asList(TestUtils.HELLO_WORLD_REPOSITORY_NAME, TestUtils.ALPINE_REPOSITORY_NAME));
+        return repositories
+            .containsAll(Arrays.asList(TestUtils.HELLO_WORLD_REPOSITORY_NAME, TestUtils.ALPINE_REPOSITORY_NAME));
     }
 
     boolean validateRepositoriesByPage(Collection<PagedResponse<String>> pagedResList) {
@@ -326,8 +325,7 @@ public class ContainerRegistryClientsTestBase extends TestBase {
     }
 
     protected String getEndpoint(String endpoint) {
-        return interceptorManager.isPlaybackMode() ? REGISTRY_ENDPOINT_PLAYBACK
-            : endpoint;
+        return interceptorManager.isPlaybackMode() ? REGISTRY_ENDPOINT_PLAYBACK : endpoint;
     }
 
     private String redact(String content, Matcher matcher, String replacement) {
