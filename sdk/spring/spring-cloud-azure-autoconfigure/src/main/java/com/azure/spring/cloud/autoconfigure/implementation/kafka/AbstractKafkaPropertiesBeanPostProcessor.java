@@ -142,6 +142,7 @@ abstract class AbstractKafkaPropertiesBeanPostProcessor<T> implements BeanPostPr
             .forEach(properties::remove);
     }
 
+    @SuppressWarnings("unchecked")
     protected Map<String, Object> invokeBuildKafkaProperties(KafkaProperties kafkaProperties, String buildMethodName) {
         try {
             try {

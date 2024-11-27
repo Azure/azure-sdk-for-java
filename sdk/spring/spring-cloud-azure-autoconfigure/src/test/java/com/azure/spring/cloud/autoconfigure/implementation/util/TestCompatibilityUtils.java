@@ -11,6 +11,7 @@ import java.util.Map;
 
 public class TestCompatibilityUtils {
 
+    @SuppressWarnings("unchecked")
     public static Map<String, Object> invokeBuildKafkaProperties(KafkaProperties kafkaProperties, String buildMethodName) {
         try {
             try {
