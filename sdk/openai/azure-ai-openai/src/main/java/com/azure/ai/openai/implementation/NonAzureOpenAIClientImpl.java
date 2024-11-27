@@ -55,7 +55,7 @@ public final class NonAzureOpenAIClientImpl {
     private final SerializerAdapter serializerAdapter;
 
     /**
-     * Gets The serializer to serialize an object into a string.
+     * Gets the serializer to serialize an object into a string.
      *
      * @return the serializerAdapter value.
      */
