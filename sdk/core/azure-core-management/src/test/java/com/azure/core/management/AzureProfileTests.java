@@ -3,14 +3,15 @@
 
 package com.azure.core.management;
 
-import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.AzureCloud;
+import com.azure.core.management.profile.AzureProfile;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
 
 public class AzureProfileTests {
+    @SuppressWarnings("deprecation")
     @Test
     public void testFromAzureCloud() {
         // normal case
@@ -25,9 +26,10 @@ public class AzureProfileTests {
 
         // exception case
         // exception when initializing using custom AzureCloud
-        Assertions.assertThrows(IllegalArgumentException.class, () -> new AzureProfile(AzureCloud.fromString("Custom")));
+        AzureCloud azureCloud = AzureCloud.fromString("Custom");
+        Assertions.assertNotNull(azureCloud);
+        Assertions.assertThrows(IllegalArgumentException.class, () -> new AzureProfile(azureCloud));
 
-        @Deprecated
         AzureProfile customEnvironment = new AzureProfile(new AzureEnvironment(new HashMap<>()));
     }
 }
