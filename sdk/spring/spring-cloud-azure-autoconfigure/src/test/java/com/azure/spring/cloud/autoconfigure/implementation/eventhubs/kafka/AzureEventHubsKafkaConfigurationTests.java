@@ -40,7 +40,6 @@ class AzureEventHubsKafkaConfigurationTests {
                 KafkaAutoConfiguration.class, AzureKafkaSpringCloudStreamConfiguration.class, KafkaBinderConfiguration.class));
 
 
-    @SuppressWarnings("removal")
     @Test
     void shouldConfigureSaslPlainWhenGivenConnectionString() {
         contextRunner
@@ -55,7 +54,7 @@ class AzureEventHubsKafkaConfigurationTests {
                     assertThat(context).hasSingleBean(KafkaBinderConfigurationProperties.class);
 
                     KafkaProperties kafkaProperties = context.getBean(KafkaProperties.class);
-                    assertSaslPlainConfigured(kafkaProperties.buildProducerProperties());
+                    assertSaslPlainConfigured(kafkaProperties.buildProducerProperties(null));
                     DefaultKafkaConsumerFactory<?, ?> consumerFactory = (DefaultKafkaConsumerFactory<?, ?>) context.getBean(ConsumerFactory.class);
                     assertSaslPlainConfigured(consumerFactory.getConfigurationProperties());
                     DefaultKafkaProducerFactory<?, ?> producerFactory = (DefaultKafkaProducerFactory<?, ?>) context.getBean(ProducerFactory.class);

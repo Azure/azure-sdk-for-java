@@ -148,7 +148,6 @@ class AzureKafkaOAuth2BinderConfigurationTests extends AbstractAzureKafkaOAuth2A
                 });
     }
 
-    @SuppressWarnings("removal")
     @Test
     void testNotBindBinderPropertiesOnBoot() {
         getContextRunnerWithEventHubsURL()
@@ -160,11 +159,11 @@ class AzureKafkaOAuth2BinderConfigurationTests extends AbstractAzureKafkaOAuth2A
             .run(context -> {
                 KafkaProperties kafkaProperties = context.getBean(KafkaProperties.class);
                 assertFalse(kafkaProperties.getProperties().containsKey("azure.credential.client-id"));
-                assertFalse(kafkaProperties.buildConsumerProperties().containsKey("azure.credential.client-id"));
+                assertFalse(kafkaProperties.buildConsumerProperties(null).containsKey("azure.credential.client-id"));
                 assertFalse(kafkaProperties.getProducer().getProperties().get(SASL_JAAS_CONFIG).contains("azure.credential.client-id"));
-                assertFalse(kafkaProperties.buildProducerProperties().containsKey("azure.credential.client-id"));
+                assertFalse(kafkaProperties.buildProducerProperties(null).containsKey("azure.credential.client-id"));
                 assertFalse(kafkaProperties.getConsumer().getProperties().get(SASL_JAAS_CONFIG).contains("azure.credential.client-id"));
-                assertFalse(kafkaProperties.buildAdminProperties().containsKey("azure.credential.client-id"));
+                assertFalse(kafkaProperties.buildAdminProperties(null).containsKey("azure.credential.client-id"));
                 assertFalse(kafkaProperties.getAdmin().getProperties().get(SASL_JAAS_CONFIG).contains("azure.credential.client-id"));
             });
     }
