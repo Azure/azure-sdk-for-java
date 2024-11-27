@@ -3,7 +3,7 @@
 
 package com.azure.core.management;
 
-import com.azure.core.AzureCloud;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.management.profile.AzureProfile;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

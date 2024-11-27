@@ -2,9 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.core.management.profile;
 
-import com.azure.core.AzureCloud;
 import com.azure.core.management.AzureEnvironment;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.logging.ClientLogger;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,6 +15,7 @@ import java.util.Objects;
  * Azure profile for client.
  */
 public final class AzureProfile {
+    private static final ClientLogger LOGGER = new ClientLogger(AzureProfile.class);
 
     private final String tenantId;
     private final String subscriptionId;
@@ -130,8 +132,8 @@ public final class AzureProfile {
     private AzureEnvironment fromAzureCloud(AzureCloud azureCloud) {
         AzureEnvironment azureEnvironment = ENDPOINT_MAP.get(azureCloud);
         if (azureEnvironment == null) {
-            throw new IllegalArgumentException(
-                String.format("No endpoint mapping defined for AzureCloud: [%s].", azureCloud));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("No endpoint mapping defined for AzureCloud: [%s].", azureCloud)));
         }
         return azureEnvironment;
     }
