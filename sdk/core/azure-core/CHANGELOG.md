@@ -4,7 +4,7 @@
 
 ### Features Added
 
-- Added `azure.core.AzureCloud` expandable enum to represent different Azure clouds.
+- Added `azure.core.models.AzureCloud` expandable enum to represent different Azure clouds.
 
 ### Breaking Changes
 
