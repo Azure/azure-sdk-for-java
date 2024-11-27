@@ -495,7 +495,7 @@ public abstract class DocumentIntelligenceClientTestBase extends TestProxyTestBa
                 assertNotNull(documentField.getConfidence());
             } else if ("ReceiptType".equals(key)) {
                 Assertions.assertEquals("Meal", documentField.getValueString());
-                 assertNotNull(documentField.getConfidence());
+                assertNotNull(documentField.getConfidence());
             } else if ("Subtotal".equals(key)) {
                 Assertions.assertEquals("$ 11.70", documentField.getContent());
                 assertNotNull(documentField.getConfidence());

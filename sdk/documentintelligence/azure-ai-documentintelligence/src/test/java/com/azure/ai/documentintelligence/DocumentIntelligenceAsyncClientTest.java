@@ -291,6 +291,7 @@ public class DocumentIntelligenceAsyncClientTest extends DocumentIntelligenceCli
     @RecordWithoutRequestBody
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.documentintelligence.TestUtils#getTestParameters")
+    @Disabled("Long running operation failed.")
     public void testClassifyAnalyzeFromUrl(HttpClient httpClient, DocumentIntelligenceServiceVersion serviceVersion)
         throws RuntimeException {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);

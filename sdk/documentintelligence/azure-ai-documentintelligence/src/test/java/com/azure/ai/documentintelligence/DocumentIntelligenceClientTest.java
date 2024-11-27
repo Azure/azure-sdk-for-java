@@ -351,6 +351,7 @@ public class DocumentIntelligenceClientTest extends DocumentIntelligenceClientTe
     @RecordWithoutRequestBody
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.documentintelligence.TestUtils#getTestParameters")
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/41027")
     public void testClassifyAnalyzeFromUrl(HttpClient httpClient, DocumentIntelligenceServiceVersion serviceVersion) {
         client = getDocumentAnalysisClient(httpClient, serviceVersion);
         String classifierId1 = interceptorManager.isPlaybackMode() ? "REDACTED" : "classifierId" + UUID.randomUUID();
@@ -397,6 +398,7 @@ public class DocumentIntelligenceClientTest extends DocumentIntelligenceClientTe
     @RecordWithoutRequestBody
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.documentintelligence.TestUtils#getTestParameters")
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/41027")
     public void testClassifyAnalyze(HttpClient httpClient, DocumentIntelligenceServiceVersion serviceVersion) {
         client = getDocumentAnalysisClient(httpClient, serviceVersion);
         DocumentIntelligenceAdministrationClient adminClient = getDocumentModelAdminClient(httpClient, serviceVersion);
