@@ -59,6 +59,12 @@ public final class DeletedSecret extends KeyVaultSecret {
     private OffsetDateTime deletedOn;
 
     /**
+     * Creates a new instance of {@link DeletedSecret}.
+     */
+    public DeletedSecret() {
+    }
+
+    /**
      * Get the recoveryId identifier.
      *
      * @return the recoveryId identifier.
