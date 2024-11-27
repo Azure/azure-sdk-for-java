@@ -58,11 +58,12 @@ public final class MessageUtils {
             case DATA:
                 protonJMessage.setBody(new Data(new Binary(body.getFirstData())));
                 break;
+
             case VALUE:
             case SEQUENCE:
             default:
-                throw LOGGER.logExceptionAsError(new UnsupportedOperationException(
-                    "bodyType [" + body.getBodyType() + "] is not supported yet."));
+                throw LOGGER.logExceptionAsError(
+                    new UnsupportedOperationException("bodyType [" + body.getBodyType() + "] is not supported yet."));
         }
 
         // Setting message properties.
@@ -126,8 +127,8 @@ public final class MessageUtils {
                 protonJMessage.setProperties(new Properties());
             }
 
-            protonJMessage.getProperties().setAbsoluteExpiryTime(
-                Date.from(properties.getAbsoluteExpiryTime().toInstant()));
+            protonJMessage.getProperties()
+                .setAbsoluteExpiryTime(Date.from(properties.getAbsoluteExpiryTime().toInstant()));
         }
 
         if (properties.getCreationTime() != null) {
@@ -210,8 +211,7 @@ public final class MessageUtils {
                     bytes = messageData.getArray();
                 }
             } else {
-                LOGGER.warning("Message not of type Data. Actual: {}",
-                    body.getType());
+                LOGGER.warning("Message not of type Data. Actual: {}", body.getType());
                 bytes = EMPTY_BYTE_ARRAY;
             }
         } else {
@@ -242,7 +242,8 @@ public final class MessageUtils {
         // Footer
         final Footer footer = message.getFooter();
         if (footer != null && footer.getValue() != null) {
-            @SuppressWarnings("unchecked") final Map<Symbol, Object> footerValue = footer.getValue();
+            @SuppressWarnings("unchecked")
+            final Map<Symbol, Object> footerValue = footer.getValue();
 
             setValues(footerValue, response.getFooter());
         }
@@ -265,8 +266,8 @@ public final class MessageUtils {
 
         if (protonJProperties != null) {
             if (protonJProperties.getAbsoluteExpiryTime() != null) {
-                responseProperties.setAbsoluteExpiryTime(protonJProperties.getAbsoluteExpiryTime().toInstant()
-                    .atOffset(ZoneOffset.UTC));
+                responseProperties.setAbsoluteExpiryTime(
+                    protonJProperties.getAbsoluteExpiryTime().toInstant().atOffset(ZoneOffset.UTC));
             }
 
             if (protonJProperties.getContentType() != null) {
@@ -283,8 +284,8 @@ public final class MessageUtils {
             }
 
             if (protonJProperties.getCreationTime() != null) {
-                responseProperties.setCreationTime(protonJProperties.getCreationTime().toInstant()
-                    .atOffset(ZoneOffset.UTC));
+                responseProperties
+                    .setCreationTime(protonJProperties.getCreationTime().toInstant().atOffset(ZoneOffset.UTC));
             }
 
             if (protonJProperties.getGroupId() != null) {
@@ -339,17 +340,14 @@ public final class MessageUtils {
             return null;
         }
 
-        return sourceMap.entrySet().stream()
-            .collect(HashMap::new,
-                (existing, entry) -> {
-                    if (entry.getValue() instanceof Instant) {
-                        final long epochMilli = ((Instant) entry.getValue()).toEpochMilli();
-                        existing.put(Symbol.valueOf(entry.getKey()), new Date(epochMilli));
-                    } else {
-                        existing.put(Symbol.valueOf(entry.getKey()), entry.getValue());
-                    }
-                },
-                (HashMap::putAll));
+        return sourceMap.entrySet().stream().collect(HashMap::new, (existing, entry) -> {
+            if (entry.getValue() instanceof Instant) {
+                final long epochMilli = ((Instant) entry.getValue()).toEpochMilli();
+                existing.put(Symbol.valueOf(entry.getKey()), new Date(epochMilli));
+            } else {
+                existing.put(Symbol.valueOf(entry.getKey()), entry.getValue());
+            }
+        }, (HashMap::putAll));
     }
 
     /**
@@ -360,7 +358,7 @@ public final class MessageUtils {
      * @return {@link Instant} enqueued time.
      * @throws IllegalStateException if enqueued time is not {@link Date} or {@link Instant}
      */
-    public static <T>Instant getEnqueuedTime(Map<T, Object> messageAnnotations, T enqueuedTimeKey) {
+    public static <T> Instant getEnqueuedTime(Map<T, Object> messageAnnotations, T enqueuedTimeKey) {
         final Object enqueuedTimeObject = messageAnnotations.get(enqueuedTimeKey);
         if (enqueuedTimeObject instanceof Date) {
             return ((Date) enqueuedTimeObject).toInstant();
@@ -368,8 +366,8 @@ public final class MessageUtils {
             return (Instant) enqueuedTimeObject;
         }
 
-        throw LOGGER.logExceptionAsError(new IllegalStateException(new IllegalStateException(
-            String.format(Locale.US, "enqueuedTime is not a known type. Value: %s. Type: %s",
+        throw LOGGER.logExceptionAsError(new IllegalStateException(
+            new IllegalStateException(String.format(Locale.US, "enqueuedTime is not a known type. Value: %s. Type: %s",
                 enqueuedTimeObject, enqueuedTimeObject.getClass()))));
     }
 
