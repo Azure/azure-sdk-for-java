@@ -35,7 +35,8 @@ public final class LedgerEntriesTest extends ConfidentialLedgerClientTestBase {
 
         Assertions.assertEquals(responseBodyJson.get("collectionId").asText(), "subledger:0");
 
-        Response<BinaryData> transactionResponse = confidentialLedgerClient.getTransactionStatusWithResponse(transactionId, requestOptions);
+        Response<BinaryData> transactionResponse
+            = confidentialLedgerClient.getTransactionStatusWithResponse(transactionId, requestOptions);
 
         JsonNode transactionResponseBodyJson = null;
 
@@ -49,12 +50,13 @@ public final class LedgerEntriesTest extends ConfidentialLedgerClientTestBase {
         Assertions.assertEquals(transactionResponseBodyJson.get("transactionId").asText(), transactionId);
         Assertions.assertTrue(200 == transactionResponse.getStatusCode() || 406 == transactionResponse.getStatusCode());
 
-        Response<BinaryData> currentResponse = confidentialLedgerClient.getCurrentLedgerEntryWithResponse(requestOptions);
+        Response<BinaryData> currentResponse
+            = confidentialLedgerClient.getCurrentLedgerEntryWithResponse(requestOptions);
 
         JsonNode currentResponseBodyJson = null;
 
         try {
-            
+
             currentResponseBodyJson = objectMapper.readTree(currentResponse.getValue().toBytes());
         } catch (IOException e) {
             e.printStackTrace();
@@ -65,7 +67,8 @@ public final class LedgerEntriesTest extends ConfidentialLedgerClientTestBase {
 
         if (200 == currentResponse.getStatusCode()) {
             // we assume no one else is using this test ledger
-            Assertions.assertTrue(currentResponseBodyJson.get("transactionId").asDouble() <= Double.parseDouble(transactionId));
+            Assertions.assertTrue(
+                currentResponseBodyJson.get("transactionId").asDouble() <= Double.parseDouble(transactionId));
         }
     }
 
@@ -97,4 +100,3 @@ public final class LedgerEntriesTest extends ConfidentialLedgerClientTestBase {
         });
     }
 }
-

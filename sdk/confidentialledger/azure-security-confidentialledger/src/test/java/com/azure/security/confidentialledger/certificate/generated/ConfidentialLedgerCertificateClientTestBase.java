@@ -22,21 +22,18 @@ class ConfidentialLedgerCertificateClientTestBase extends TestBase {
 
     @Override
     protected void beforeTest() {
-        ConfidentialLedgerCertificateClientBuilder confidentialLedgerCertificateClientbuilder =
-                new ConfidentialLedgerCertificateClientBuilder()
-                        .certificateEndpoint(
-                                Configuration.getGlobalConfiguration()
-                                        .get("CERTIFICATEENDPOINT", "certificateendpoint"))
-                        .httpClient(HttpClient.createDefault())
-                        .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
+        ConfidentialLedgerCertificateClientBuilder confidentialLedgerCertificateClientbuilder
+            = new ConfidentialLedgerCertificateClientBuilder()
+                .certificateEndpoint(
+                    Configuration.getGlobalConfiguration().get("CERTIFICATEENDPOINT", "certificateendpoint"))
+                .httpClient(HttpClient.createDefault())
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
-            confidentialLedgerCertificateClientbuilder
-                    .httpClient(interceptorManager.getPlaybackClient())
-                    .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
+            confidentialLedgerCertificateClientbuilder.httpClient(interceptorManager.getPlaybackClient())
+                .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
         } else if (getTestMode() == TestMode.RECORD) {
-            confidentialLedgerCertificateClientbuilder
-                    .addPolicy(interceptorManager.getRecordPolicy())
-                    .credential(new DefaultAzureCredentialBuilder().build());
+            confidentialLedgerCertificateClientbuilder.addPolicy(interceptorManager.getRecordPolicy())
+                .credential(new DefaultAzureCredentialBuilder().build());
         } else if (getTestMode() == TestMode.LIVE) {
             confidentialLedgerCertificateClientbuilder.credential(new DefaultAzureCredentialBuilder().build());
         }
