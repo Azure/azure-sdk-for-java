@@ -130,7 +130,8 @@ public final class AzureProfile {
     private AzureEnvironment fromAzureCloud(AzureCloud azureCloud) {
         AzureEnvironment azureEnvironment = ENDPOINT_MAP.get(azureCloud);
         if (azureEnvironment == null) {
-            throw new IllegalArgumentException(String.format("No endpoint mapping defined for AzureCloud: [%s].", azureCloud));
+            throw new IllegalArgumentException(
+                String.format("No endpoint mapping defined for AzureCloud: [%s].", azureCloud));
         }
         return azureEnvironment;
     }
