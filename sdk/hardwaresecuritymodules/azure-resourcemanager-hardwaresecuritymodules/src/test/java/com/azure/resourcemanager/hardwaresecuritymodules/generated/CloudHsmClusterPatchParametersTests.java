@@ -5,12 +5,7 @@
 package com.azure.resourcemanager.hardwaresecuritymodules.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.hardwaresecuritymodules.models.BackupProperties;
 import com.azure.resourcemanager.hardwaresecuritymodules.models.CloudHsmClusterPatchParameters;
-import com.azure.resourcemanager.hardwaresecuritymodules.models.CloudHsmClusterPatchParametersProperties;
-import com.azure.resourcemanager.hardwaresecuritymodules.models.CloudHsmClusterSku;
-import com.azure.resourcemanager.hardwaresecuritymodules.models.CloudHsmClusterSkuFamily;
-import com.azure.resourcemanager.hardwaresecuritymodules.models.CloudHsmClusterSkuName;
 import com.azure.resourcemanager.hardwaresecuritymodules.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.hardwaresecuritymodules.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.hardwaresecuritymodules.models.UserAssignedIdentity;
@@ -22,35 +17,24 @@ public final class CloudHsmClusterPatchParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CloudHsmClusterPatchParameters model = BinaryData.fromString(
-            "{\"tags\":{\"a\":\"ljjgpbtoqcjmkl\"},\"sku\":{\"family\":\"B\",\"name\":\"Standard B10\",\"capacity\":1933596999},\"identity\":{\"principalId\":\"9c294971-c9e0-4e7e-ab25-4daac97c5d8d\",\"tenantId\":\"918a29f7-f971-4a15-bd5d-42464226a07e\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"kudjkrlkhb\":{\"principalId\":\"dfd5a1af-190b-4cdc-a3e0-bfc6648869ea\",\"clientId\":\"14ff3bd8-1630-4ae4-9c80-c0ae296bfa4d\"},\"epgzgqexz\":{\"principalId\":\"320c51bd-c1a6-4665-b6f9-cce494b75ddd\",\"clientId\":\"82e991b9-7c22-41c8-81bc-4995cf81511f\"},\"xscpaierhhbc\":{\"principalId\":\"5f2671dc-939d-4b4a-b921-23d9eed2309a\",\"clientId\":\"d1ef19a4-7ce4-4759-af67-556b91c1c78c\"}}},\"properties\":{\"backupProperties\":{\"azureStorageResourceUri\":\"mmajtjaodx\",\"lastBackupDateTime\":\"2021-10-05T14:42:09Z\",\"lastBackupStatus\":\"dxkqpx\"}}}")
+            "{\"tags\":{\"wtmutduq\":\"b\",\"spwgcuertumkdosv\":\"ta\"},\"identity\":{\"principalId\":\"747bb49d-bd96-4723-837c-c9f19760a313\",\"tenantId\":\"82a0617d-fee1-4007-84d9-a240f872542a\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"jfddgmbmbe\":{\"principalId\":\"ec0f8d59-2512-4c73-be25-7bdeaa77aaba\",\"clientId\":\"e171d199-ff3e-43eb-a105-7456d6bb9779\"},\"bhtqqrolfpfpsa\":{\"principalId\":\"a61f964a-eab5-4c41-ae43-987c52d1a201\",\"clientId\":\"f58efe16-aaef-4506-9d2d-10dc237fb2c6\"},\"qux\":{\"principalId\":\"8018da93-a049-4ae2-ad37-f754eb1ffebf\",\"clientId\":\"837b181c-917e-4736-bc1c-8daeb1ec9efb\"},\"yjgzjaoyfhrtxiln\":{\"principalId\":\"73631669-5d93-44d9-b2ae-e4b400e88ba1\",\"clientId\":\"2a2f2e3f-59fa-4f49-82e4-8d702be56e3b\"}}}}")
             .toObject(CloudHsmClusterPatchParameters.class);
-        Assertions.assertEquals("ljjgpbtoqcjmkl", model.tags().get("a"));
-        Assertions.assertEquals(CloudHsmClusterSkuFamily.B, model.sku().family());
-        Assertions.assertEquals(CloudHsmClusterSkuName.STANDARD_B10, model.sku().name());
-        Assertions.assertEquals(1933596999, model.sku().capacity());
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("mmajtjaodx", model.properties().backupProperties().azureStorageResourceUri());
+        Assertions.assertEquals("b", model.tags().get("wtmutduq"));
+        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.identity().type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CloudHsmClusterPatchParameters model
-            = new CloudHsmClusterPatchParameters().withTags(mapOf("a", "ljjgpbtoqcjmkl"))
-                .withSku(new CloudHsmClusterSku().withFamily(CloudHsmClusterSkuFamily.B)
-                    .withName(CloudHsmClusterSkuName.STANDARD_B10)
-                    .withCapacity(1933596999))
-                .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
-                    .withUserAssignedIdentities(mapOf("kudjkrlkhb", new UserAssignedIdentity(), "epgzgqexz",
-                        new UserAssignedIdentity(), "xscpaierhhbc", new UserAssignedIdentity())))
-                .withProperties(new CloudHsmClusterPatchParametersProperties()
-                    .withBackupProperties(new BackupProperties().withAzureStorageResourceUri("mmajtjaodx")));
+            = new CloudHsmClusterPatchParameters().withTags(mapOf("wtmutduq", "b", "spwgcuertumkdosv", "ta"))
+                .withIdentity(
+                    new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
+                        .withUserAssignedIdentities(mapOf("jfddgmbmbe", new UserAssignedIdentity(), "bhtqqrolfpfpsa",
+                            new UserAssignedIdentity(), "qux", new UserAssignedIdentity(), "yjgzjaoyfhrtxiln",
+                            new UserAssignedIdentity())));
         model = BinaryData.fromObject(model).toObject(CloudHsmClusterPatchParameters.class);
-        Assertions.assertEquals("ljjgpbtoqcjmkl", model.tags().get("a"));
-        Assertions.assertEquals(CloudHsmClusterSkuFamily.B, model.sku().family());
-        Assertions.assertEquals(CloudHsmClusterSkuName.STANDARD_B10, model.sku().name());
-        Assertions.assertEquals(1933596999, model.sku().capacity());
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("mmajtjaodx", model.properties().backupProperties().azureStorageResourceUri());
+        Assertions.assertEquals("b", model.tags().get("wtmutduq"));
+        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.identity().type());
     }
 
     // Use "Map.of" if available
