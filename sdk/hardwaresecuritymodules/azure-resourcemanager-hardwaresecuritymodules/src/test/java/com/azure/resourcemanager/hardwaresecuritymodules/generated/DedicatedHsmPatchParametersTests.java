@@ -13,16 +13,17 @@ import org.junit.jupiter.api.Assertions;
 public final class DedicatedHsmPatchParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DedicatedHsmPatchParameters model
-            = BinaryData.fromString("{\"tags\":{\"ur\":\"hhvh\"}}").toObject(DedicatedHsmPatchParameters.class);
-        Assertions.assertEquals("hhvh", model.tags().get("ur"));
+        DedicatedHsmPatchParameters model = BinaryData.fromString("{\"tags\":{\"bycnojvkn\":\"wroyqbexrmcq\"}}")
+            .toObject(DedicatedHsmPatchParameters.class);
+        Assertions.assertEquals("wroyqbexrmcq", model.tags().get("bycnojvkn"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DedicatedHsmPatchParameters model = new DedicatedHsmPatchParameters().withTags(mapOf("ur", "hhvh"));
+        DedicatedHsmPatchParameters model
+            = new DedicatedHsmPatchParameters().withTags(mapOf("bycnojvkn", "wroyqbexrmcq"));
         model = BinaryData.fromObject(model).toObject(DedicatedHsmPatchParameters.class);
-        Assertions.assertEquals("hhvh", model.tags().get("ur"));
+        Assertions.assertEquals("wroyqbexrmcq", model.tags().get("bycnojvkn"));
     }
 
     // Use "Map.of" if available
