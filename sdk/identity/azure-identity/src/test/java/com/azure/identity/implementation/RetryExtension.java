@@ -26,15 +26,14 @@ public class RetryExtension implements TestExecutionExceptionHandler, BeforeTest
 
         executeWithRetries(() -> {
             try {
-                return context.getTestMethod()
-                        .get()
-                        .invoke(context.getRequiredTestInstance());
+                return context.getTestMethod().get().invoke(context.getRequiredTestInstance());
             } catch (IllegalAccessException | InvocationTargetException e) {
                 throw new RuntimeException(e);
             }
         }, maxRetries, 1000, 2);
 
     }
+
     @Override
     public void beforeTestExecution(ExtensionContext context) {
         // Initialize the retry counter before a test execution starts
@@ -43,8 +42,7 @@ public class RetryExtension implements TestExecutionExceptionHandler, BeforeTest
 
     private int getMaxRetries(ExtensionContext context) {
         return context.getTestMethod()
-            .flatMap(method -> Optional.ofNullable(method.getAnnotation(Retry.class))
-                .map(Retry::maxRetries))
+            .flatMap(method -> Optional.ofNullable(method.getAnnotation(Retry.class)).map(Retry::maxRetries))
             .orElse(DEFAULT_MAX_RETRIES);
     }
 
@@ -56,8 +54,8 @@ public class RetryExtension implements TestExecutionExceptionHandler, BeforeTest
         return "retries-" + context.getUniqueId();
     }
 
-
-    private static <T> T executeWithRetries(Supplier<T> logic, int maxRetries, long initialDelayMillis, double backoffFactor) {
+    private static <T> T executeWithRetries(Supplier<T> logic, int maxRetries, long initialDelayMillis,
+        double backoffFactor) {
         int attempt = 0;
         long delay = initialDelayMillis;
         Exception lastException = null;
