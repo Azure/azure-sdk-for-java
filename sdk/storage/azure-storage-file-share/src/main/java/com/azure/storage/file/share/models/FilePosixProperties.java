@@ -5,9 +5,7 @@ package com.azure.storage.file.share.models;
 
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
-import com.azure.storage.file.share.FileSmbProperties;
 import com.azure.storage.file.share.implementation.accesshelpers.FilePosixPropertiesHelper;
-import com.azure.storage.file.share.implementation.accesshelpers.FileSmbPropertiesHelper;
 import com.azure.storage.file.share.implementation.models.NfsFileType;
 
 /**

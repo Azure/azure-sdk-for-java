@@ -5,7 +5,6 @@ package com.azure.storage.file.share.options;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.storage.file.share.models.DownloadRetryOptions;
-import com.azure.storage.file.share.models.FilePosixProperties;
 import com.azure.storage.file.share.models.ShareFileRange;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 
