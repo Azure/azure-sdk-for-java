@@ -54,7 +54,7 @@ public final class StorageCommonTestUtils {
     public static final TestEnvironment ENVIRONMENT = TestEnvironment.getInstance();
     private static final HttpClient NETTY_HTTP_CLIENT = new NettyAsyncHttpClientProvider().createInstance();
     private static final HttpClient OK_HTTP_CLIENT = new OkHttpAsyncClientProvider().createInstance();
-    private static final HttpClient VERTX_HTTP_CLIENT;;
+    private static final HttpClient VERTX_HTTP_CLIENT;
     private static final HttpClient JDK_HTTP_HTTP_CLIENT;
 
     static {
@@ -269,7 +269,20 @@ public final class StorageCommonTestUtils {
         long seed = UUID.fromString(testResourceNamer.randomUuid()).getMostSignificantBits() & Long.MAX_VALUE;
         Random rand = new Random(seed);
         byte[] data = new byte[size];
-        rand.nextBytes(data);
+        byte[] pseudoRandom = new byte[31];
+        rand.nextBytes(pseudoRandom);
+
+        int count = data.length / pseudoRandom.length;
+        int remaining = data.length % pseudoRandom.length;
+
+        for (int i = 0; i < count; i++) {
+            System.arraycopy(pseudoRandom, 0, data, i * pseudoRandom.length, pseudoRandom.length);
+        }
+
+        if (remaining > 0) {
+            System.arraycopy(pseudoRandom, 0, data, count * pseudoRandom.length, remaining);
+        }
+
         return data;
     }
 
