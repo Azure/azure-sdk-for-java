@@ -18,6 +18,13 @@
   <description>This package provides the ability of authenticating with Azure AD and returning a token as a password.</description>
   <url>https://github.com/azure/azure-sdk-for-java</url>
 
+  <properties>
+    <checkstyle.suppressionsLocation>checkstyle-suppressions.xml</checkstyle.suppressionsLocation>
+
+    <spotbugs.skip>false</spotbugs.skip>
+    <spotbugs.excludeFilterFile>spotbugs-exclude.xml</spotbugs.excludeFilterFile>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>com.mysql</groupId>
