@@ -4,6 +4,7 @@
 package com.azure.cosmos.implementation.feedranges;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.OperationType;
@@ -26,6 +27,7 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isNull;
@@ -300,6 +302,56 @@ public class FeedRangeContinuationTest {
             continuation.getCurrentContinuationToken(),
             ranges.get(0),
             continuationDummy);
+    }
+
+    @Test(groups = "unit")
+    public void feedRangeCompositeContinuation_staleContainerRid() {
+        String continuationDummy = UUID.randomUUID().toString();
+        PartitionKeyInternal partitionKey = PartitionKeyInternalUtils.createPartitionKeyInternal(
+            "Test");
+        FeedRangePartitionKeyImpl feedRange = new FeedRangePartitionKeyImpl(partitionKey);
+
+        List<Range<String>> ranges = new ArrayList<>();
+        ranges.add(new Range<>("AA", "DD", true, false));
+
+        String containerRid = "/cols/" + UUID.randomUUID();
+
+        FeedRangeCompositeContinuationImpl continuation = new FeedRangeCompositeContinuationImpl(
+            containerRid,
+            feedRange,
+            ranges,
+            continuationDummy
+        );
+
+        GoneException goneException = new GoneException("Test");
+        BridgeInternal.setSubStatusCode(
+            goneException,
+            HttpConstants.SubStatusCodes.PARTITION_KEY_RANGE_GONE);
+
+        RxDocumentClientImpl clientMock = Mockito.mock(RxDocumentClientImpl.class);
+        RxPartitionKeyRangeCache cacheMock = Mockito.mock(RxPartitionKeyRangeCache.class);
+        Mockito.when(clientMock.getPartitionKeyRangeCache()).thenReturn(cacheMock);
+        RxDocumentServiceRequest rxDocumentServiceRequest =
+            RxDocumentServiceRequest.create(
+                null,
+                OperationType.ReadFeed,
+                ResourceType.Document);
+
+        Mockito.when(
+            cacheMock.tryGetOverlappingRangesAsync(
+                isNull(),
+                eq(containerRid),
+                any(),
+                eq(true),
+                isNull())).thenReturn(Mono.just(new Utils.ValueHolder<>(null)));
+
+        try {
+            continuation.handleFeedRangeGone(clientMock, goneException, rxDocumentServiceRequest).block();
+            fail("handleFeedRangeGone should fail with BadRequestException when no child ranges can be found");
+        } catch (CosmosException e) {
+            assertThat(e.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.BADREQUEST);
+            assertThat(e.getSubStatusCode()).isEqualTo(HttpConstants.SubStatusCodes.INCORRECT_CONTAINER_RID_SUB_STATUS);
+        }
     }
 
     private void validateCompositeContinuationToken(CompositeContinuationToken token, Range<String> matchedRange, String continuationToken) {

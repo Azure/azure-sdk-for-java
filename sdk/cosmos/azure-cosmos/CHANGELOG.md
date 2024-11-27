@@ -7,6 +7,7 @@
 #### Breaking Changes
 
 #### Bugs Fixed
+* Fixed an issue where queryChangeFeed will return incorrect results or hang when using continuationToken with stale container resourceId. - [PR 43114](https://github.com/Azure/azure-sdk-for-java/pull/43114)
 
 #### Other Changes
 * Added support to enable http2 for gateway mode with system property `COSMOS.HTTP2_ENABLED` and system variable `COSMOS_HTTP2_ENABLED`. - [PR 42947](https://github.com/Azure/azure-sdk-for-java/pull/42947)
