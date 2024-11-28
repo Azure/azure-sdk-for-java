@@ -40,7 +40,7 @@ class QuickPulseDataFetcherTests {
             = builder.pipeline(httpPipeline).buildClient();
         QuickPulsePingSender quickPulsePingSender
             = new QuickPulsePingSender(liveMetricsRestAPIsForClientSDKs, connectionString::getLiveEndpoint,
-                connectionString::getInstrumentationKey, null, "instance1", "machine1", "qpid123", "testSdkVersion");
+                connectionString::getInstrumentationKey, null, "instance1", "machine1", "qpid123", "testSdkVersion", configuration);
         IsSubscribedHeaders pingHeaders = quickPulsePingSender.ping(null);
         assertThat("true").isEqualTo(pingHeaders.getXMsQpsSubscribed());
         assertThat("1000").isEqualTo(pingHeaders.getXMsQpsServicePollingIntervalHint());

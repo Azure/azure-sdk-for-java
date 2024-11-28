@@ -26,7 +26,7 @@ class QuickPulsePingSenderTests {
     void endpointIsFormattedCorrectlyWhenUsingConnectionString() {
         ConnectionString connectionString = ConnectionString.parse("InstrumentationKey=testing-123");
         QuickPulsePingSender quickPulsePingSender = new QuickPulsePingSender(null, connectionString::getLiveEndpoint,
-            connectionString::getInstrumentationKey, null, null, null, null, null);
+            connectionString::getInstrumentationKey, null, null, null, null, null, configuration);
         String quickPulseEndpoint = quickPulsePingSender.getQuickPulseEndpoint();
         String instrumentationKey = quickPulsePingSender.getInstrumentationKey();
         assertThat(quickPulseEndpoint).isEqualTo("https://rt.services.visualstudio.com/");
@@ -37,7 +37,7 @@ class QuickPulsePingSenderTests {
     void endpointIsFormattedCorrectlyWhenUsingInstrumentationKey() {
         ConnectionString connectionString = ConnectionString.parse("InstrumentationKey=A-test-instrumentation-key");
         QuickPulsePingSender quickPulsePingSender = new QuickPulsePingSender(null, connectionString::getLiveEndpoint,
-            connectionString::getInstrumentationKey, null, null, null, null, null);
+            connectionString::getInstrumentationKey, null, null, null, null, null, configuration);
         String quickPulseEndpoint = quickPulsePingSender.getQuickPulseEndpoint();
         String instrumentationKey = quickPulsePingSender.getInstrumentationKey();
         assertThat(quickPulseEndpoint).isEqualTo("https://rt.services.visualstudio.com/");
@@ -61,7 +61,7 @@ class QuickPulsePingSenderTests {
             = builder.pipeline(httpPipeline).buildClient();
         QuickPulsePingSender quickPulsePingSender
             = new QuickPulsePingSender(liveMetricsRestAPIsForClientSDKs, connectionString::getLiveEndpoint,
-                connectionString::getInstrumentationKey, null, "instance1", "machine1", "qpid123", "testSdkVersion");
+                connectionString::getInstrumentationKey, null, "instance1", "machine1", "qpid123", "testSdkVersion", configuration);
         IsSubscribedHeaders pingHeaders = quickPulsePingSender.ping(null);
         assertThat("true").isEqualTo(pingHeaders.getXMsQpsSubscribed());
         assertThat("1000").isEqualTo(pingHeaders.getXMsQpsServicePollingIntervalHint());

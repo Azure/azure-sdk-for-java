@@ -3,17 +3,9 @@
 
 package com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse;
 
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.ContextTagKeys;
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.MonitorDomain;
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.RemoteDependencyData;
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.RequestData;
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.TelemetryExceptionData;
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.TelemetryExceptionDetails;
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.TelemetryItem;
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.DocumentIngress;
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.Request;
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.RemoteDependency;
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.KeyValuePairString;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.*;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.*;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.*;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.Exception;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.CpuPerformanceCounterCalculator;
 import reactor.util.annotation.Nullable;
@@ -26,6 +18,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
@@ -45,7 +38,13 @@ final class QuickPulseDataCollector {
 
     private volatile Supplier<String> instrumentationKeySupplier;
 
-    QuickPulseDataCollector() {
+    // TODO (harskaur): Track projection (runtime) related errors in future PR
+    private volatile ErrorTracker errorTracker;
+    private volatile FilteringConfiguration configuration;
+
+    QuickPulseDataCollector(ErrorTracker errorTracker, FilteringConfiguration configuration) {
+        this.errorTracker = errorTracker;
+        this.configuration = configuration;
     }
 
     private static CpuPerformanceCounterCalculator getCpuPerformanceCounterCalculator() {
@@ -116,6 +115,8 @@ final class QuickPulseDataCollector {
             addDependency((RemoteDependencyData) data, itemCount);
         } else if (data instanceof TelemetryExceptionData) {
             addException((TelemetryExceptionData) data, itemCount);
+        } else if (data instanceof MessageData) {
+            addTrace((MessageData) data);
         }
     }
 
@@ -129,6 +130,18 @@ final class QuickPulseDataCollector {
         return tags == null ? null : tags.get(ContextTagKeys.AI_OPERATION_NAME.toString());
     }
 
+    private boolean matchesDocumentFilters(TelemetryColumns columns, String telemetryType) {
+        // TODO (harskaur): In a future PR, check if the document matches any filter (using Filter class)
+        ConcurrentMap<String, List<FilterConjunctionGroupInfo>> documentsConfig = configuration.fetchDocumentsConfigForTelemetryType(telemetryType);
+        return true; // change this
+    }
+
+    private void applyMetricFilters(TelemetryColumns columns, String telemetryType) {
+        // TODO (harskaur): In a future PR, use Filter class to check if columns match any filter
+        // TODO (harskaur): If columns matches a filter, then create/increment a derived metric
+        List<DerivedMetricInfo> metricsConfig = configuration.fetchMetricConfigForTelemetryType("Dependency");
+    }
+
     private void addDependency(RemoteDependencyData telemetry, int itemCount) {
         Counters counters = this.counters.get();
         if (counters == null) {
@@ -140,16 +153,22 @@ final class QuickPulseDataCollector {
         if (success != null && !success) { // success should not be null
             counters.unsuccessfulRdds.incrementAndGet();
         }
-        RemoteDependency dependencyDoc = new RemoteDependency();
-        dependencyDoc.setName(telemetry.getName());
-        dependencyDoc.setCommandName(telemetry.getData());
-        dependencyDoc.setDuration(Duration.ofMillis(durationMillis).toString());
-        dependencyDoc.setResultCode(telemetry.getResultCode());
-        dependencyDoc.setProperties(setCustomDimensions(telemetry.getProperties(), telemetry.getMeasurements()));
 
-        synchronized (counters.documentList) {
-            if (counters.documentList.size() < Counters.MAX_DOCUMENTS_SIZE) {
-                counters.documentList.add(dependencyDoc);
+        DependencyDataColumns columns = new DependencyDataColumns(telemetry);
+        applyMetricFilters(columns, "Dependency");
+
+        if (matchesDocumentFilters(columns, "Dependency")) {
+            RemoteDependency dependencyDoc = new RemoteDependency();
+            dependencyDoc.setName(telemetry.getName());
+            dependencyDoc.setCommandName(telemetry.getData());
+            dependencyDoc.setDuration(Duration.ofMillis(durationMillis).toString());
+            dependencyDoc.setResultCode(telemetry.getResultCode());
+            dependencyDoc.setProperties(setCustomDimensions(telemetry.getProperties(), telemetry.getMeasurements()));
+
+            synchronized (counters.documentList) {
+                if (counters.documentList.size() < Counters.MAX_DOCUMENTS_SIZE) {
+                    counters.documentList.add(dependencyDoc);
+                }
             }
         }
     }
@@ -162,18 +181,23 @@ final class QuickPulseDataCollector {
 
         counters.exceptions.addAndGet(itemCount);
 
-        List<TelemetryExceptionDetails> exceptionList = exceptionData.getExceptions();
-        // Exception is a class from live metrics swagger that represents a document for an exception
-        Exception exceptionDoc = new Exception();
-        if (exceptionList != null && !exceptionList.isEmpty()) {
-            exceptionDoc.setExceptionMessage(exceptionList.get(0).getMessage());
-            exceptionDoc.setExceptionType(exceptionList.get(0).getTypeName());
-        }
-        exceptionDoc.setProperties(setCustomDimensions(exceptionData.getProperties(), exceptionData.getMeasurements()));
+        ExceptionDataColumns columns = new ExceptionDataColumns(exceptionData);
+        applyMetricFilters(columns, "Exception");
 
-        synchronized (counters.documentList) {
-            if (counters.documentList.size() < Counters.MAX_DOCUMENTS_SIZE) {
-                counters.documentList.add(exceptionDoc);
+        if (matchesDocumentFilters(columns, "Exception")) {
+            List<TelemetryExceptionDetails> exceptionList = exceptionData.getExceptions();
+            // Exception is a class from live metrics swagger that represents a document for an exception
+            Exception exceptionDoc = new Exception();
+            if (exceptionList != null && !exceptionList.isEmpty()) {
+                exceptionDoc.setExceptionMessage(exceptionList.get(0).getMessage());
+                exceptionDoc.setExceptionType(exceptionList.get(0).getTypeName());
+            }
+            exceptionDoc.setProperties(setCustomDimensions(exceptionData.getProperties(), exceptionData.getMeasurements()));
+
+            synchronized (counters.documentList) {
+                if (counters.documentList.size() < Counters.MAX_DOCUMENTS_SIZE) {
+                    counters.documentList.add(exceptionDoc);
+                }
             }
         }
     }
@@ -189,18 +213,27 @@ final class QuickPulseDataCollector {
             counters.unsuccessfulRequests.incrementAndGet();
         }
 
-        Request requestDoc = new Request();
-        requestDoc.setDuration(Duration.ofMillis(durationMillis).toString());
-        requestDoc.setResponseCode(requestTelemetry.getResponseCode());
-        requestDoc.setName(requestTelemetry.getName());
-        requestDoc.setUrl(requestTelemetry.getUrl());
-        requestDoc
-            .setProperties(setCustomDimensions(requestTelemetry.getProperties(), requestTelemetry.getMeasurements()));
-        synchronized (counters.documentList) {
-            if (counters.documentList.size() < Counters.MAX_DOCUMENTS_SIZE) {
-                counters.documentList.add(requestDoc);
+        RequestDataColumns columns = new RequestDataColumns(requestTelemetry);
+        applyMetricFilters(columns, "Request");
+
+        if (matchesDocumentFilters(columns, "Request")) {
+            Request requestDoc = new Request();
+            requestDoc.setDuration(Duration.ofMillis(durationMillis).toString());
+            requestDoc.setResponseCode(requestTelemetry.getResponseCode());
+            requestDoc.setName(requestTelemetry.getName());
+            requestDoc.setUrl(requestTelemetry.getUrl());
+            requestDoc
+                .setProperties(setCustomDimensions(requestTelemetry.getProperties(), requestTelemetry.getMeasurements()));
+            synchronized (counters.documentList) {
+                if (counters.documentList.size() < Counters.MAX_DOCUMENTS_SIZE) {
+                    counters.documentList.add(requestDoc);
+                }
             }
         }
+    }
+
+    private void addTrace(MessageData traceTelemetry) {
+        // TODO (harskaur): implement support for filtering of trace documents in future PR
     }
 
     private static List<KeyValuePairString> setCustomDimensions(@Nullable Map<String, String> properties,

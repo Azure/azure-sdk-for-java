@@ -2,10 +2,23 @@
 // Licensed under the MIT License.
 package com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering;
 
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.*;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.DerivedMetricInfo;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.FilterConjunctionGroupInfo;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.CollectionConfigurationInfo;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.CollectionConfigurationError;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.CollectionConfigurationErrorType;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.DocumentStreamInfo;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.DocumentFilterConjunctionGroupInfo;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.TelemetryType;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.KeyValuePairString;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.FilterInfo;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.PredicateType;
 
-import java.security.Key;
-import java.util.*;
+import java.util.Set;
+import java.util.List;
+import java.util.HashSet;
+import java.util.ArrayList;
+
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -20,32 +33,57 @@ public class FilteringConfiguration {
     // first key is the telemetry type, second key is the id associated with the document filters
     private ConcurrentMap<String, ConcurrentMap<String, List<FilterConjunctionGroupInfo>>> validDocumentFilterConjunctionGroupInfos;
 
-    private List<CollectionConfigurationError> validationErrors;
+    private ErrorTracker errorTracker;
 
     private volatile String etag;
 
-    public FilteringConfiguration() {
-        validDerivedMetricInfos = new ConcurrentHashMap<String, List<DerivedMetricInfo>>();
-        validDocumentFilterConjunctionGroupInfos = new ConcurrentHashMap<String, ConcurrentMap<String, List<FilterConjunctionGroupInfo>>>();
-        seenMetricIds = new HashSet<String>();
+    public FilteringConfiguration(ErrorTracker errorTracker) {
+        validDerivedMetricInfos = new ConcurrentHashMap<>();
+        validDocumentFilterConjunctionGroupInfos = new ConcurrentHashMap<>();
+        seenMetricIds = new HashSet<>();
         etag = "";
-        validationErrors = new ArrayList<CollectionConfigurationError>();
+        this.errorTracker = errorTracker;
     }
 
-    public void updateConfiguration(CollectionConfigurationInfo configuration) {
+    public synchronized void updateConfiguration(CollectionConfigurationInfo configuration) {
         etag = configuration.getETag();
-        validationErrors.clear();
+        errorTracker.clearValidationTimeErrors();
         seenMetricIds.clear();
         parseDocumentFilterConfiguration(configuration);
         parseMetricFilterConfiguration(configuration);
-        // TODO (harskaur): In a future PR, when we have derived metric values saved in a class, those values will need to be cleared on config update
+    }
+
+    public synchronized List<DerivedMetricInfo> fetchMetricConfigForTelemetryType(String telemetryType) {
+        List<DerivedMetricInfo> result;
+        if(validDerivedMetricInfos.containsKey(telemetryType)) {
+            result = List.copyOf(validDerivedMetricInfos.get(telemetryType));
+        } else {
+            result = new ArrayList<>();
+        }
+        return result;
+    }
+
+    public synchronized ConcurrentMap<String, List<FilterConjunctionGroupInfo>> fetchDocumentsConfigForTelemetryType(String telemetryType) {
+        ConcurrentMap<String, List<FilterConjunctionGroupInfo>> result;
+        if(validDocumentFilterConjunctionGroupInfos.containsKey(telemetryType)) {
+            result = new ConcurrentHashMap<>(validDocumentFilterConjunctionGroupInfos.get(telemetryType));
+        } else {
+            result = new ConcurrentHashMap<>();
+        }
+        return result;
+    }
+
+    public synchronized String getEtag() {
+        return etag;
     }
 
     private void parseDocumentFilterConfiguration(CollectionConfigurationInfo configuration) {
         ConcurrentMap<String, ConcurrentMap<String, List<FilterConjunctionGroupInfo>>> newValidDocumentsConfig = new ConcurrentHashMap<>();
         for (DocumentStreamInfo documentStreamInfo : configuration.getDocumentStreams()) {
+            String documentStreamId = documentStreamInfo.getId();
             for (DocumentFilterConjunctionGroupInfo documentFilterGroupInfo : documentStreamInfo.getDocumentFilterGroups()) {
                 String telemetryType = documentFilterGroupInfo.getTelemetryType().getValue();
+                FilterConjunctionGroupInfo filterGroup = documentFilterGroupInfo.getFilters();
                 try {
                     Validator.validateTelemetryType(documentFilterGroupInfo.getTelemetryType());
                     Validator.validateDocumentFilters(documentFilterGroupInfo);
@@ -55,12 +93,12 @@ public class FilteringConfiguration {
                     }
 
                     ConcurrentMap<String, List<FilterConjunctionGroupInfo>>  innerMap = newValidDocumentsConfig.get(telemetryType);
-                    if (innerMap.containsKey(documentStreamInfo.getId())) {
-                        innerMap.get(documentStreamInfo.getId()).add(documentFilterGroupInfo.getFilters());
+                    if (innerMap.containsKey(documentStreamId)) {
+                        innerMap.get(documentStreamId).add(filterGroup);
                     } else {
-                        List<FilterConjunctionGroupInfo> conjunctionGroupInfos = new ArrayList<>();
-                        conjunctionGroupInfos.add(documentFilterGroupInfo.getFilters());
-                        innerMap.put(documentStreamInfo.getId(), conjunctionGroupInfos);
+                        List<FilterConjunctionGroupInfo> filterGroups = new ArrayList<>();
+                        filterGroups.add(filterGroup);
+                        innerMap.put(documentStreamId, filterGroups);
                     }
                 } catch (UnexpectedFilterCreateException | TelemetryTypeException e) {
                     CollectionConfigurationError error = new CollectionConfigurationError();
@@ -74,7 +112,7 @@ public class FilteringConfiguration {
 
                     KeyValuePairString documentStreamInfoId = new KeyValuePairString();
                     documentStreamInfoId.setKey("DocumentStreamInfoId");
-                    documentStreamInfoId.setValue(documentStreamInfo.getId());
+                    documentStreamInfoId.setValue(documentStreamId);
                     KeyValuePairString etag = new KeyValuePairString();
                     etag.setKey("Etag");
                     etag.setValue(configuration.getETag());
@@ -84,7 +122,7 @@ public class FilteringConfiguration {
                     data.add(etag);
                     error.setData(data);
 
-                    validationErrors.add(error);
+                    errorTracker.addValidationError(error);
                 }
             }
         }
@@ -94,24 +132,25 @@ public class FilteringConfiguration {
     private void parseMetricFilterConfiguration(CollectionConfigurationInfo configuration) {
         ConcurrentMap<String, List<DerivedMetricInfo>> newValidConfig = new ConcurrentHashMap<>();
         for (DerivedMetricInfo derivedMetricInfo : configuration.getMetrics()) {
+            String telemetryType = derivedMetricInfo.getTelemetryType();
+            String id = derivedMetricInfo.getId();
             try {
-                if (!seenMetricIds.contains(derivedMetricInfo.getId())) {
-                    seenMetricIds.add(derivedMetricInfo.getId());
-                    Validator.validateTelemetryType(TelemetryType.fromString(derivedMetricInfo.getTelemetryType()));
+                if (!seenMetricIds.contains(id)) {
+                    seenMetricIds.add(id);
+                    Validator.validateTelemetryType(TelemetryType.fromString(telemetryType));
                     Validator.checkCustomMetricProjection(derivedMetricInfo);
                     Validator.validateMetricFilters(derivedMetricInfo);
 
-                    if(newValidConfig.containsKey(derivedMetricInfo.getTelemetryType())) {
-                        newValidConfig.get(derivedMetricInfo.getTelemetryType()).add(derivedMetricInfo);
+                    if(newValidConfig.containsKey(telemetryType)) {
+                        newValidConfig.get(telemetryType).add(derivedMetricInfo);
                     } else {
                         List<DerivedMetricInfo> infos = new ArrayList<>();
                         infos.add(derivedMetricInfo);
-                        newValidConfig.put(derivedMetricInfo.getTelemetryType(), infos);
+                        newValidConfig.put(telemetryType, infos);
                     }
                 } else {
-                    throw new DuplicateMetricIdException("Duplicate Metric Id: " + derivedMetricInfo.getId());
+                    throw new DuplicateMetricIdException("Duplicate Metric Id: " + id);
                 }
-                // TODO (harskaur): For future PR, add initialization to projection maps here
             } catch (UnexpectedFilterCreateException | TelemetryTypeException | DuplicateMetricIdException e) {
                 CollectionConfigurationError error = new CollectionConfigurationError();
                 if (e instanceof TelemetryTypeException) {
@@ -126,7 +165,7 @@ public class FilteringConfiguration {
 
                 KeyValuePairString metricId = new KeyValuePairString();
                 metricId.setKey("MetricId");
-                metricId.setValue(derivedMetricInfo.getId());
+                metricId.setValue(id);
                 KeyValuePairString etag = new KeyValuePairString();
                 etag.setKey("Etag");
                 etag.setValue(configuration.getETag());
@@ -136,7 +175,7 @@ public class FilteringConfiguration {
                 data.add(etag);
                 error.setData(data);
 
-                validationErrors.add(error);
+                errorTracker.addValidationError(error);
             }
         }
         validDerivedMetricInfos = newValidConfig;
@@ -204,7 +243,7 @@ public class FilteringConfiguration {
         }
 
         private static boolean isCustomDimOrAnyField(String fieldName) {
-            return fieldName.startsWith("CustomDimensions.") || fieldName.equals("*");
+            return fieldName.startsWith(Filter.CUSTOM_DIM_FIELDNAME_PREFIX) || fieldName.equals(Filter.ANY_FIELD);
         }
 
         private static void validateFieldNames(String fieldName, TelemetryType telemetryType) throws UnexpectedFilterCreateException {
@@ -236,7 +275,7 @@ public class FilteringConfiguration {
                     throw new UnexpectedFilterCreateException(fieldName + " is not a valid field name for the telemetry type Exception");
                 }
             } else {
-                throw new UnexpectedFilterCreateException( telemetryType.getValue() + " is not a valid telemetry type");
+                throw new UnexpectedFilterCreateException(telemetryType.getValue() + " is not a valid telemetry type");
             }
         }
 

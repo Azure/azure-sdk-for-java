@@ -6,6 +6,8 @@ package com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse;
 import com.azure.core.http.rest.Response;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.Filter;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.FilteringConfiguration;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.LiveMetricsRestAPIsForClientSDKs;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.CollectionConfigurationInfo;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.MonitoringDataPoint;
@@ -39,14 +41,17 @@ class QuickPulseDataSender implements Runnable {
 
     private static final long TICKS_AT_EPOCH = 621355968000000000L;
 
+    private volatile FilteringConfiguration configuration;
+
     QuickPulseDataSender(LiveMetricsRestAPIsForClientSDKs liveMetricsRestAPIsForClientSDKs,
-        ArrayBlockingQueue<MonitoringDataPoint> sendQueue, Supplier<URL> endpointUrl,
-        Supplier<String> instrumentationKey) {
+                         ArrayBlockingQueue<MonitoringDataPoint> sendQueue, Supplier<URL> endpointUrl,
+                         Supplier<String> instrumentationKey, FilteringConfiguration configuration) {
         this.sendQueue = sendQueue;
         this.liveMetricsRestAPIsForClientSDKs = liveMetricsRestAPIsForClientSDKs;
         this.endpointUrl = endpointUrl;
         this.qpStatus = QuickPulseStatus.QP_IS_OFF;
         this.instrumentationKey = instrumentationKey;
+        this.configuration = configuration;
     }
 
     @Override
@@ -74,9 +79,8 @@ class QuickPulseDataSender implements Runnable {
             Date currentDate = new Date();
             long transmissionTimeInTicks = currentDate.getTime() * 10000 + TICKS_AT_EPOCH;
             try {
-                //TODO (harskaur): for a future PR populate the saved etag here for filtering
                 Response<CollectionConfigurationInfo> responseMono = liveMetricsRestAPIsForClientSDKs
-                    .publishNoCustomHeadersWithResponseAsync(endpointPrefix, instrumentationKey.get(), "",
+                    .publishNoCustomHeadersWithResponseAsync(endpointPrefix, instrumentationKey.get(), configuration.getEtag(),
                         transmissionTimeInTicks, dataPointList)
                     .block();
                 if (responseMono == null) {
@@ -96,7 +100,10 @@ class QuickPulseDataSender implements Runnable {
                 }
 
                 lastValidRequestTimeNs = sendTime;
-                //TODO (harskaur): for a future PR parse the response body here for filtering
+                CollectionConfigurationInfo body = responseMono.getValue();
+                if (body != null && !configuration.getEtag().equals(body.getETag())) {
+                    configuration.updateConfiguration(body);
+                }
 
             } catch (RuntimeException e) { // this includes ServiceErrorException & RuntimeException thrown from quickpulse post api
                 onPostError(sendTime);

@@ -36,7 +36,7 @@ public class QuickPulseIntegrationTests extends QuickPulseTestBase {
         LiveMetricsRestAPIsForClientSDKs liveMetricsRestAPIsForClientSDKs
             = builder.pipeline(httpPipeline).buildClient();
         return new QuickPulsePingSender(liveMetricsRestAPIsForClientSDKs, connectionString::getLiveEndpoint,
-            connectionString::getInstrumentationKey, null, "instance1", "machine1", "qpid123", "testSdkVersion");
+            connectionString::getInstrumentationKey, null, "instance1", "machine1", "qpid123", "testSdkVersion", configuration);
     }
 
     private QuickPulsePingSender getQuickPulsePingSenderWithAuthentication() {
@@ -45,7 +45,7 @@ public class QuickPulseIntegrationTests extends QuickPulseTestBase {
         LiveMetricsRestAPIsForClientSDKs liveMetricsRestAPIsForClientSDKs
             = builder.pipeline(httpPipeline).buildClient();
         return new QuickPulsePingSender(liveMetricsRestAPIsForClientSDKs, connectionString::getLiveEndpoint,
-            connectionString::getInstrumentationKey, null, "instance1", "machine1", "qpid123", "testSdkVersion");
+            connectionString::getInstrumentationKey, null, "instance1", "machine1", "qpid123", "testSdkVersion", configuration);
     }
 
     private QuickPulsePingSender getQuickPulsePingSenderWithValidator(HttpPipelinePolicy validator) {
@@ -54,7 +54,7 @@ public class QuickPulseIntegrationTests extends QuickPulseTestBase {
         LiveMetricsRestAPIsForClientSDKs liveMetricsRestAPIsForClientSDKs
             = builder.pipeline(httpPipeline).buildClient();
         return new QuickPulsePingSender(liveMetricsRestAPIsForClientSDKs, connectionString::getLiveEndpoint,
-            connectionString::getInstrumentationKey, null, "instance1", "machine1", "qpid123", "testSdkVersion");
+            connectionString::getInstrumentationKey, null, "instance1", "machine1", "qpid123", "testSdkVersion", configuration);
     }
 
     private QuickPulseDataSender getQuickPulseDataSenderWithValidator(HttpPipelinePolicy validator,
