@@ -21,6 +21,8 @@ spring:
           default-candidate: true
           environment:
             spring:
+              main:
+                sources: com.azure.spring.cloud.autoconfigure.implementation.context.SpringTokenCredentialProviderContextProviderAutoConfiguration,com.azure.spring.cloud.integration.tests.ApplicationConfiguration,com.azure.spring.cloud.integration.tests.servicebus.binder.ServiceBusClientConfiguration
               cloud:
                 azure:
                   servicebus:
@@ -30,6 +32,8 @@ spring:
           default-candidate: false
           environment:
             spring:
+              main:
+                sources: com.azure.spring.cloud.autoconfigure.implementation.context.SpringTokenCredentialProviderContextProviderAutoConfiguration,com.azure.spring.cloud.integration.tests.ApplicationConfiguration,com.azure.spring.cloud.integration.tests.servicebus.binder.ServiceBusClientConfiguration
               cloud:
                 azure:
                   servicebus:
