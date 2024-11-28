@@ -11,7 +11,7 @@ extends:
           TestOptions: "-DskipSpringITs=false -Dcompiler.failondeprecatedstatus=-"
           TestResourceDirectories:
             - spring/spring-cloud-azure-integration-tests/test-resources/common
-#            - spring/spring-cloud-azure-integration-tests/test-resources/jdbc/mysql
+            - spring/spring-cloud-azure-integration-tests/test-resources/jdbc/mysql
             - spring/spring-cloud-azure-integration-tests/test-resources/appconfiguration
             - spring/spring-cloud-azure-integration-tests/test-resources/cosmos
             - spring/spring-cloud-azure-integration-tests/test-resources/servicebus

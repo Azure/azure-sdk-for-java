@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.integration.tests.eventhubs.binder;
 
+import com.azure.spring.cloud.integration.tests.eventhubs.EventHubsClientConfiguration;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Import;
 import org.springframework.integration.annotation.ServiceActivator;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.GenericMessage;
@@ -26,6 +28,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @ActiveProfiles(value = { "eventhubs-binder", "sync" })
+@Import(EventHubsClientConfiguration.class)
 class EventHubsBinderSyncModeIT {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EventHubsBinderSyncModeIT.class);

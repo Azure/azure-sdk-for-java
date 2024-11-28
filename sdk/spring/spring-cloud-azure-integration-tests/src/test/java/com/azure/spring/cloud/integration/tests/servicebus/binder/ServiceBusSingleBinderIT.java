@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Import;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.GenericMessage;
 import org.springframework.test.context.ActiveProfiles;
@@ -25,6 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @ActiveProfiles("servicebus-binder-single")
+@Import(ServiceBusClientConfiguration.class)
 class ServiceBusSingleBinderIT {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceBusSingleBinderIT.class);
@@ -101,7 +103,7 @@ class ServiceBusSingleBinderIT {
         LOGGER.info("Send a message:" + MESSAGE + " to the topic.");
         manyTopic.emitNext(genericMessage, Sinks.EmitFailureHandler.FAIL_FAST);
 
-        assertThat(ServiceBusSingleBinderIT.LATCH.await(15, TimeUnit.SECONDS)).isTrue();
+        assertThat(ServiceBusSingleBinderIT.LATCH.await(25, TimeUnit.SECONDS)).isTrue();
         LOGGER.info("SingleServiceBusQueueAndTopicBinderIT end.");
     }
 

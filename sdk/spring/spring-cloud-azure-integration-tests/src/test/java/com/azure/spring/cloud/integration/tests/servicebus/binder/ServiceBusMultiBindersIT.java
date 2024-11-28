@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Import;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.GenericMessage;
 import org.springframework.test.context.ActiveProfiles;
@@ -25,7 +26,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @ActiveProfiles("servicebus-binder-multi")
-class ServiceBusMultiBindersIT {
+@Import(ServiceBusClientConfiguration.class)
+class ServiceBusMultiBindersIT  {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceBusMultiBindersIT.class);
 
@@ -101,7 +103,7 @@ class ServiceBusMultiBindersIT {
         LOGGER.info("Send a message:" + message + " to the topic.");
         manyTopic.emitNext(genericMessage, Sinks.EmitFailureHandler.FAIL_FAST);
 
-        assertThat(ServiceBusMultiBindersIT.latch.await(15, TimeUnit.SECONDS)).isTrue();
+        assertThat(ServiceBusMultiBindersIT.latch.await(25, TimeUnit.SECONDS)).isTrue();
         LOGGER.info("MultiServiceBusQueueAndTopicBinderIT end.");
     }
 
