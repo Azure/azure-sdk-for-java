@@ -25,11 +25,8 @@ public class CertificatesCustomizations extends Customization {
         // Customize the CertificateClientImpl class.
         PackageCustomization implPackageCustomization =
             libraryCustomization.getPackage("com.azure.security.keyvault.certificates.implementation");
-        ClassCustomization implClientClassCustomization = implPackageCustomization.getClass("KeyVaultClientImpl");
+        ClassCustomization implClientClassCustomization = implPackageCustomization.getClass("CertificateClientImpl");
         customizeClientImpl(implClientClassCustomization);
-
-        // Rename files we will reuse.
-        renameFiles(rawEditor);
 
         customizeModuleInfo(rawEditor);
         customizePackageInfos(rawEditor);
@@ -45,16 +42,12 @@ public class CertificatesCustomizations extends Customization {
         // Remove the next line in favor of renaming to CertificateServiceVersion once the TSP spec includes all service
         // versions.
         editor.removeFile("src/main/java/com/azure/security/keyvault/certificates/KeyVaultServiceVersion.java");
-        editor.removeFile("src/main/java/com/azure/security/keyvault/certificates/KeyVaultAsyncClient.java");
-        editor.removeFile("src/main/java/com/azure/security/keyvault/certificates/KeyVaultClient.java");
-        editor.removeFile("src/main/java/com/azure/security/keyvault/certificates/KeyVaultClientBuilder.java");
+        editor.removeFile("src/main/java/com/azure/security/keyvault/certificates/CertificateAsyncClient.java");
+        editor.removeFile("src/main/java/com/azure/security/keyvault/certificates/CertificateClient.java");
+        editor.removeFile("src/main/java/com/azure/security/keyvault/certificates/CertificateClientBuilder.java");
     }
 
     private static void renameFiles(Editor editor) {
-        editor.renameFile(
-            "src/main/java/com/azure/security/keyvault/certificates/implementation/KeyVaultClientImpl.java",
-            "src/main/java/com/azure/security/keyvault/certificates/implementation/CertificateClientImpl.java");
-
         // Uncomment the following line once the TSP spec includes all service versions.
         /*editor.renameFile("src/main/java/com/azure/security/keyvault/certificates/implementation/KeyVaultServiceVersion.java",
             "src/main/java/com/azure/security/keyvault/certificates/CertificateServiceVersion.java");*/
@@ -68,7 +61,7 @@ public class CertificatesCustomizations extends Customization {
             "com.azure.security.keyvault.certificates.CertificateServiceVersion"));
 
         String classPath =
-            "src/main/java/com/azure/security/keyvault/certificates/implementation/KeyVaultClientImpl.java";
+            "src/main/java/com/azure/security/keyvault/certificates/implementation/CertificateClientImpl.java";
 
         replaceInFile(classCustomization, classPath, "KeyVault", "Certificate");
     }
