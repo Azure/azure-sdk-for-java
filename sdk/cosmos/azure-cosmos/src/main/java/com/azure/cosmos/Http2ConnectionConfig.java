@@ -8,9 +8,6 @@ import com.azure.cosmos.util.Beta;
 
 @Beta(value = Beta.SinceVersion.V4_66_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public class Http2ConnectionConfig {
-    private static final int DEFAULT_MAX_CONCURRENT_STREAMS = 30;
-    private static final int DEFAULT_MIN_CONNECTION_POOL_SIZE = 1;
-
     private int maxConnectionPoolSize;
     private int minConnectionPoolSize;
     private int maxConcurrentStreams;
@@ -18,9 +15,9 @@ public class Http2ConnectionConfig {
 
     @Beta(value = Beta.SinceVersion.V4_66_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Http2ConnectionConfig() {
-        this.maxConnectionPoolSize = Configs.getDefaultHttpPoolSize(); // overlapping with the maxConnectionPoolSize in gateway connection config
-        this.minConnectionPoolSize = DEFAULT_MIN_CONNECTION_POOL_SIZE;
-        this.maxConcurrentStreams = DEFAULT_MAX_CONCURRENT_STREAMS;
+        this.maxConnectionPoolSize = Configs.getHttp2MaxConnectionPoolSize(); // overlapping with the maxConnectionPoolSize in gateway connection config
+        this.minConnectionPoolSize = Configs.getHttp2MinConnectionPoolSize();
+        this.maxConcurrentStreams = Configs.getHttp2MaxConcurrentStreams();
         this.enabled = Configs.isHttp2Enabled();
     }
 
