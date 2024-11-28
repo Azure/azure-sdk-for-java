@@ -650,6 +650,7 @@ class FileApiTests extends FileShareTestBase {
         if (outFile.exists()) {
             assertTrue(outFile.delete());
         }
+        outFile.deleteOnExit();
 
         MockPartialResponsePolicy policy = new MockPartialResponsePolicy(5);
 
@@ -670,16 +671,24 @@ class FileApiTests extends FileShareTestBase {
         assertEquals(0, policy.getTriesRemaining());
 
         // Assert that the range headers that were retried match what was returned from MockPartialResponsePolicy
-        List<int[]> actualRanges = policy.getRangesList();
+        List<String> expectedRanges = expectedHeaderRanges();
+        List<String> actualRanges = policy.getRangeHeaders();
+        assertEquals(expectedRanges.size(), actualRanges.size());
         for (int i = 0; i < actualRanges.size(); i++) {
-            int[] range = actualRanges.get(i);
-            assertEquals(i, range[0]);
-            assertEquals(DATA.getDefaultDataSize() - 1, range[1]);
+            assertEquals(expectedRanges.get(i), actualRanges.get(i));
         }
 
         // Clean up
         Files.deleteIfExists(outFile.toPath());
         Files.deleteIfExists(uploadFile.toPath());
+    }
+
+    private List<String> expectedHeaderRanges() {
+        List<String> expectedRanges = new ArrayList<>();
+        for (int i = 0; i < 6; i++) {
+            expectedRanges.add("bytes=" + i + "-" + (DATA.getDefaultDataSize() - 1));
+        }
+        return expectedRanges;
     }
 
     @Test
@@ -692,6 +701,7 @@ class FileApiTests extends FileShareTestBase {
         if (outFile.exists()) {
             assertTrue(outFile.delete());
         }
+        outFile.deleteOnExit();
 
         MockPartialResponsePolicy policy = new MockPartialResponsePolicy(6);
 
@@ -703,21 +713,19 @@ class FileApiTests extends FileShareTestBase {
         primaryFileClient.create(DATA.getDefaultDataSize());
         primaryFileClient.uploadFromFile(uploadFile.toString());
 
-        try {
-            downloadClient.downloadToFile(outFile.toString());
-        } catch (Throwable e) {
-            assertInstanceOf(IOException.class, e.getCause());
-        }
+        // Throws a Exceptions.ReactiveException.class because of Flux.error
+        Throwable thrown = assertThrows(Throwable.class, () -> downloadClient.downloadToFile(outFile.toString()));
+        assertTrue(thrown.getCause() instanceof IOException);
 
         // Assert that we retried the correct number of times (5) even though the retry policy allowed for 6 retries
         assertEquals(0, policy.getTriesRemaining());
 
         // Assert that the range headers that were retried match what was returned from MockPartialResponsePolicy
-        List<int[]> actualRanges = policy.getRangesList();
+        List<String> expectedRanges = expectedHeaderRanges();
+        List<String> actualRanges = policy.getRangeHeaders();
+        assertEquals(expectedRanges.size(), actualRanges.size());
         for (int i = 0; i < actualRanges.size(); i++) {
-            int[] range = actualRanges.get(i);
-            assertEquals(i, range[0]);
-            assertEquals(DATA.getDefaultDataSize() - 1, range[1]);
+            assertEquals(expectedRanges.get(i), actualRanges.get(i));
         }
 
         // Clean up
@@ -1206,10 +1214,10 @@ class FileApiTests extends FileShareTestBase {
         primaryFileClient.create(1024);
         ShareFileClient destinationClient = shareClient.getFileClient(generatePathName());
         destinationClient.create(1024);
-    
+
         ShareStorageException e = assertThrows(ShareStorageException.class,
             () -> destinationClient.uploadRangeFromUrl(5, 0, 0, primaryFileClient.getFileUrl()));
-    
+
         assertTrue(e.getStatusCode() == 401);
         assertTrue(e.getServiceMessage().contains("NoAuthenticationInformation"));
         assertTrue(e.getServiceMessage().contains("Server failed to authenticate the request. Please refer to the information in the www-authenticate header."));
@@ -1463,12 +1471,12 @@ class FileApiTests extends FileShareTestBase {
     @Test
     public void startCopySourceErrorAndStatusCode() {
         primaryFileClient.create(1024);
-    
+
         ShareStorageException e = assertThrows(ShareStorageException.class, () -> {
             SyncPoller<ShareFileCopyInfo, Void> poller = primaryFileClient.beginCopy("https://error.file.core.windows.net/garbage", testMetadata, null);
             poller.waitForCompletion();
         });
-    
+
         assertTrue(e.getStatusCode() == 400);
         assertTrue(e.getServiceMessage().contains("InvalidUri"));
         assertTrue(e.getServiceMessage().contains("The requested URI does not represent any resource on the server."));

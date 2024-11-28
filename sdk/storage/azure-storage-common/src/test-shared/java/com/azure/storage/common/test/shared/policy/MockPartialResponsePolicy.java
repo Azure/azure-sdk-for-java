@@ -21,7 +21,7 @@ import java.util.List;
 public class MockPartialResponsePolicy implements HttpPipelinePolicy {
     static final HttpHeaderName RANGE_HEADER = HttpHeaderName.fromString("x-ms-range");
     private int tries;
-    private final List<int[]> rangesList = new ArrayList<>();
+    private final List<String> rangeHeaders = new ArrayList<>();
 
     public MockPartialResponsePolicy(int tries) {
         this.tries = tries;
@@ -34,10 +34,7 @@ public class MockPartialResponsePolicy implements HttpPipelinePolicy {
             String rangeHeader = rangeHttpHeader == null ? null : rangeHttpHeader.getValue();
 
             if (rangeHeader != null && rangeHeader.startsWith("bytes=")) {
-                String[] parts = rangeHeader.substring(6).split("-");
-                int start = Integer.parseInt(parts[0]);
-                int end = Integer.parseInt(parts[1]);
-                rangesList.add(new int[]{start, end});
+                rangeHeaders.add(rangeHeader);
             }
 
             if ((response.getRequest().getHttpMethod() != HttpMethod.GET) || this.tries == 0) {
@@ -48,7 +45,7 @@ public class MockPartialResponsePolicy implements HttpPipelinePolicy {
                     ByteBuffer firstBuffer = bodyBuffers.get(0);
                     byte firstByte = firstBuffer.get();
 
-                    // Simulate partial response and timeout
+                    // Simulate partial response by returning the first byte only from the requested range and timeout
                     return Mono.just(new MockDownloadHttpResponse(response, 206,
                             Flux.just(ByteBuffer.wrap(new byte[] { firstByte }))
                                     .concatWith(Flux.error(new IOException("Simulated timeout")))
@@ -62,7 +59,7 @@ public class MockPartialResponsePolicy implements HttpPipelinePolicy {
         return tries;
     }
 
-    public List<int[]> getRangesList() {
-        return rangesList;
+    public List<String> getRangeHeaders() {
+        return rangeHeaders;
     }
 }

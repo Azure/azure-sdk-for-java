@@ -7,6 +7,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+- `ShareFileClient.downloadToFile()` now retries for a maximum of 5 times when the download fails due to a network error.
 
 ### Other Changes
 

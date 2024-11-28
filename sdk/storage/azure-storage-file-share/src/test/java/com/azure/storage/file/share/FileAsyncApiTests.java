@@ -67,6 +67,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
@@ -648,6 +649,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
         if (outFile.exists()) {
             assertTrue(outFile.delete());
         }
+        outFile.deleteOnExit();
 
         MockPartialResponsePolicy policy = new MockPartialResponsePolicy(5);
 
@@ -656,11 +658,12 @@ public class FileAsyncApiTests extends FileShareTestBase {
             primaryFileAsyncClient.getFileUrl(), policy);
 
         // Upload the test data
-        primaryFileAsyncClient.create(DATA.getDefaultDataSize())
-            .then(primaryFileAsyncClient.uploadFromFile(uploadFile.toString()))
-            .block();
+        StepVerifier.create(primaryFileAsyncClient.create(DATA.getDefaultDataSize())
+            .then(primaryFileAsyncClient.uploadFromFile(uploadFile.toString())))
+            .verifyComplete();
 
-        downloadClient.downloadToFile(outFile.toString()).block();
+        StepVerifier.create(downloadClient.downloadToFile(outFile.toString()))
+            .verifyComplete();
 
         byte[] downloadedData = Files.readAllBytes(outFile.toPath());
         Assertions.assertArrayEquals(DATA.getDefaultBytes(), downloadedData);
@@ -669,16 +672,24 @@ public class FileAsyncApiTests extends FileShareTestBase {
         assertEquals(0, policy.getTriesRemaining());
 
         // Assert that the range headers that were retried match what was returned from MockPartialResponsePolicy
-        List<int[]> actualRanges = policy.getRangesList();
+        List<String> expectedRanges = expectedHeaderRanges();
+        List<String> actualRanges = policy.getRangeHeaders();
+        assertEquals(expectedRanges.size(), actualRanges.size());
         for (int i = 0; i < actualRanges.size(); i++) {
-            int[] range = actualRanges.get(i);
-            assertEquals(i, range[0]);
-            assertEquals(DATA.getDefaultDataSize() - 1, range[1]);
+            assertEquals(expectedRanges.get(i), actualRanges.get(i));
         }
 
         // Clean up
         Files.deleteIfExists(outFile.toPath());
         Files.deleteIfExists(uploadFile.toPath());
+    }
+
+    private List<String> expectedHeaderRanges() {
+        List<String> expectedRanges = new ArrayList<>();
+        for (int i = 0; i < 6; i++) {
+            expectedRanges.add("bytes=" + i + "-" + (DATA.getDefaultDataSize() - 1));
+        }
+        return expectedRanges;
     }
 
     @Test
@@ -691,6 +702,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
         if (outFile.exists()) {
             assertTrue(outFile.delete());
         }
+        outFile.deleteOnExit();
 
         MockPartialResponsePolicy policy = new MockPartialResponsePolicy(6);
 
@@ -699,25 +711,22 @@ public class FileAsyncApiTests extends FileShareTestBase {
             primaryFileAsyncClient.getFileUrl(), policy);
 
         // Upload the test data
-        primaryFileAsyncClient.create(DATA.getDefaultDataSize())
-            .then(primaryFileAsyncClient.uploadFromFile(uploadFile.toString()))
-            .block();
+        StepVerifier.create(primaryFileAsyncClient.create(DATA.getDefaultDataSize())
+            .then(primaryFileAsyncClient.uploadFromFile(uploadFile.toString()))).verifyComplete();
 
-        try {
-            downloadClient.downloadToFile(outFile.toString()).block();
-        } catch (Throwable e) {
-            assertInstanceOf(IOException.class, e.getCause());
-        }
+        StepVerifier.create(downloadClient.downloadToFile(outFile.toString()))
+            .expectErrorMatches(throwable -> throwable.getCause() instanceof IOException)
+            .verify();
 
         // Assert that we retried the correct number of times (5) even though the retry policy allowed for 6 retries
         assertEquals(0, policy.getTriesRemaining());
 
         // Assert that the range headers that were retried match what was returned from MockPartialResponsePolicy
-        List<int[]> actualRanges = policy.getRangesList();
+        List<String> expectedRanges = expectedHeaderRanges();
+        List<String> actualRanges = policy.getRangeHeaders();
+        assertEquals(expectedRanges.size(), actualRanges.size());
         for (int i = 0; i < actualRanges.size(); i++) {
-            int[] range = actualRanges.get(i);
-            assertEquals(i, range[0]);
-            assertEquals(DATA.getDefaultDataSize() - 1, range[1]);
+            assertEquals(expectedRanges.get(i), actualRanges.get(i));
         }
 
         // Clean up
@@ -766,7 +775,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
     @Test
     public void uploadRangeFromURLSourceErrorAndStatusCode() {
         ShareFileAsyncClient destinationClient = shareAsyncClient.getFileClient(generatePathName());
-    
+
         StepVerifier.create(primaryFileAsyncClient.create(1024).then(destinationClient.create(1024))
             .then(destinationClient.uploadRangeFromUrl(5, 0, 0, primaryFileAsyncClient.getFileUrl())))
             .verifyErrorSatisfies(r -> {
@@ -956,10 +965,10 @@ public class FileAsyncApiTests extends FileShareTestBase {
     @Test
     public void startCopySourceErrorAndStatusCode() {
         primaryFileAsyncClient.create(1024);
-    
+
         PollerFlux<ShareFileCopyInfo, Void> poller = setPlaybackPollerFluxPollInterval(
             primaryFileAsyncClient.beginCopy("https://error.file.core.windows.net/garbage", new ShareFileCopyOptions(), null));
-    
+
         StepVerifier.create(primaryFileAsyncClient.create(1024).thenMany(poller))
             .verifyErrorSatisfies(r -> {
                 ShareStorageException e = assertInstanceOf(ShareStorageException.class, r);
