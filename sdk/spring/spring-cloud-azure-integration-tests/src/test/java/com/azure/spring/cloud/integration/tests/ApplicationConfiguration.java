@@ -14,9 +14,9 @@ import com.azure.identity.EnvironmentCredentialBuilder;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Primary;
 import reactor.core.scheduler.Schedulers;
 
-import static com.azure.spring.cloud.autoconfigure.implementation.context.AzureContextUtils.DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME;
 import static org.springframework.util.StringUtils.hasText;
 
 
@@ -30,8 +30,9 @@ import static org.springframework.util.StringUtils.hasText;
 @SpringBootConfiguration
 public class ApplicationConfiguration {
 
-    @Bean(name = DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME)
-    TokenCredential tokenCredential() {
+    @Primary
+    @Bean
+    TokenCredential integrationTestTokenCredential() {
         ChainedTokenCredentialBuilder builder = new ChainedTokenCredentialBuilder()
             .addLast(new EnvironmentCredentialBuilder().build())
             .addLast(new AzureCliCredentialBuilder().build())
