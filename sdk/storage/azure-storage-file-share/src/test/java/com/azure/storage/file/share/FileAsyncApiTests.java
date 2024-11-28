@@ -659,10 +659,10 @@ public class FileAsyncApiTests extends FileShareTestBase {
 
         // Upload the test data
         StepVerifier.create(primaryFileAsyncClient.create(DATA.getDefaultDataSize())
-            .then(primaryFileAsyncClient.uploadFromFile(uploadFile.toString())))
-            .verifyComplete();
+            .then(primaryFileAsyncClient.uploadFromFile(uploadFile.toString()))).verifyComplete();
 
         StepVerifier.create(downloadClient.downloadToFile(outFile.toString()))
+            .assertNext(Assertions::assertNotNull)
             .verifyComplete();
 
         byte[] downloadedData = Files.readAllBytes(outFile.toPath());
@@ -675,9 +675,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
         List<String> expectedRanges = expectedHeaderRanges();
         List<String> actualRanges = policy.getRangeHeaders();
         assertEquals(expectedRanges.size(), actualRanges.size());
-        for (int i = 0; i < actualRanges.size(); i++) {
-            assertEquals(expectedRanges.get(i), actualRanges.get(i));
-        }
+        assertEquals(expectedRanges, actualRanges);
 
         // Clean up
         Files.deleteIfExists(outFile.toPath());
@@ -715,8 +713,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
             .then(primaryFileAsyncClient.uploadFromFile(uploadFile.toString()))).verifyComplete();
 
         StepVerifier.create(downloadClient.downloadToFile(outFile.toString()))
-            .expectErrorMatches(throwable -> throwable.getCause() instanceof IOException)
-            .verify();
+            .verifyErrorSatisfies(throwable -> assertInstanceOf(IOException.class, throwable));
 
         // Assert that we retried the correct number of times (5) even though the retry policy allowed for 6 retries
         assertEquals(0, policy.getTriesRemaining());
@@ -725,9 +722,6 @@ public class FileAsyncApiTests extends FileShareTestBase {
         List<String> expectedRanges = expectedHeaderRanges();
         List<String> actualRanges = policy.getRangeHeaders();
         assertEquals(expectedRanges.size(), actualRanges.size());
-        for (int i = 0; i < actualRanges.size(); i++) {
-            assertEquals(expectedRanges.get(i), actualRanges.get(i));
-        }
 
         // Clean up
         Files.deleteIfExists(outFile.toPath());
