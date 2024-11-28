@@ -674,7 +674,6 @@ public class FileAsyncApiTests extends FileShareTestBase {
         // Assert that the range headers that were retried match what was returned from MockPartialResponsePolicy
         List<String> expectedRanges = expectedHeaderRanges();
         List<String> actualRanges = policy.getRangeHeaders();
-        assertEquals(expectedRanges.size(), actualRanges.size());
         assertEquals(expectedRanges, actualRanges);
 
         // Clean up
@@ -721,7 +720,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
         // Assert that the range headers that were retried match what was returned from MockPartialResponsePolicy
         List<String> expectedRanges = expectedHeaderRanges();
         List<String> actualRanges = policy.getRangeHeaders();
-        assertEquals(expectedRanges.size(), actualRanges.size());
+        assertEquals(expectedRanges, actualRanges);
 
         // Clean up
         Files.deleteIfExists(outFile.toPath());
