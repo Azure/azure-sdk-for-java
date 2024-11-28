@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Added support for Service Bus Emulator connection string. Refer [Azure Service Bus Emulator](https://github.com/Azure/azure-service-bus-emulator-installer) for emulator installation and supported connection strings. ([38735](https://github.com/Azure/azure-sdk-for-java/issues/38735)).
+
 ### Breaking Changes
 
 ### Bugs Fixed
