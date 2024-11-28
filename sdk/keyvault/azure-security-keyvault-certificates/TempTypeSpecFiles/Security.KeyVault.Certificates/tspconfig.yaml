@@ -25,8 +25,10 @@ options:
   "@azure-tools/typespec-java":
     flavor: azure
     "package-dir": "azure-security-keyvault-certificates"
-    "namespace": "com.azure.security.keyvault.certificates.implementation"
+    "namespace": "com.azure.security.keyvault.certificates"
+    "models-subpackage": "implementation.models"
     "customization-class": "swagger/src/main/java/CertificatesCustomizations.java"
+    "partial-update": true
     "generate-tests": false
     "generate-samples": false
     "include-api-view-properties": false
