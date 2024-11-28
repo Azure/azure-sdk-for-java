@@ -422,8 +422,10 @@ def generate_typespec_project(
             if sdk_folder:
                 # parse service and module
                 module, service = parse_service_module(sdk_folder)
-        except Exception:
-            pass
+            else:
+                logging.info(f"[GENERATE] Code generation failed. No sdk folder found.")
+        except Exception as e:
+            logging.error(f"[GENERATE] Code generation failed. Finding sdk folder fails: {e}")
 
     return succeeded, require_sdk_integration, sdk_folder, service, module
 
