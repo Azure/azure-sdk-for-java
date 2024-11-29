@@ -50,7 +50,7 @@ public class DefaultMessageHandler extends AbstractMessageProducingHandler {
     private final SendOperation sendOperation;
     private boolean sync = false;
 
-    @SuppressWarnings({"deprecation", "removal"})
+    @SuppressWarnings("removal")
     private ListenableFutureCallback<Void> sendCallback;
     private EvaluationContext evaluationContext;
     private Expression sendTimeoutExpression = new ValueExpression<>(DEFAULT_SEND_TIMEOUT);
