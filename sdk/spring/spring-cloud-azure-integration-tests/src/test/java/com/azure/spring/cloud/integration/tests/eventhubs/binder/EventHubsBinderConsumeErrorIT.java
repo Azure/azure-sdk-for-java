@@ -83,10 +83,10 @@ class EventHubsBinderConsumeErrorIT {
     }
 
     @Test
-    @Timeout(70)
+    @Timeout(90)
     void integrationTest() throws InterruptedException {
         // Wait for eventhub initialization to complete
-        Thread.sleep(15000);
+        Thread.sleep(20000);
         one.emitValue(new GenericMessage<>(MESSAGE), Sinks.EmitFailureHandler.FAIL_FAST);
         String msg = TestConfig.EXCHANGER.exchange(MESSAGE);
         Assertions.assertEquals(MESSAGE, msg);

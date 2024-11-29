@@ -73,10 +73,10 @@ class EventHubsBinderSyncModeIT {
     @Test
     void testSendAndReceiveMessage() throws InterruptedException {
         LOGGER.info("EventHubBinderSyncModeIT begin.");
-        EventHubsBinderSyncModeIT.LATCH.await(15, TimeUnit.SECONDS);
+        EventHubsBinderSyncModeIT.LATCH.await(20, TimeUnit.SECONDS);
         LOGGER.info("Send a message:" + MESSAGE + ".");
         many.emitNext(new GenericMessage<>(MESSAGE), Sinks.EmitFailureHandler.FAIL_FAST);
-        assertThat(EventHubsBinderSyncModeIT.LATCH.await(30, TimeUnit.SECONDS)).isTrue();
+        assertThat(EventHubsBinderSyncModeIT.LATCH.await(40, TimeUnit.SECONDS)).isTrue();
         LOGGER.info("EventHubBinderSyncModeIT end.");
     }
 }

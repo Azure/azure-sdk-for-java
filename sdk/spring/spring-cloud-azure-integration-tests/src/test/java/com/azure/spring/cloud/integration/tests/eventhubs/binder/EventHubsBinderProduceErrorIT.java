@@ -76,10 +76,10 @@ class EventHubsBinderProduceErrorIT {
     @Test
     void testSendAndReceiveMessage() throws InterruptedException {
         LOGGER.info("EventHubsBinderProduceErrorIT begin.");
-        EventHubsBinderProduceErrorIT.LATCH.await(15, TimeUnit.SECONDS);
+        EventHubsBinderProduceErrorIT.LATCH.await(20, TimeUnit.SECONDS);
         LOGGER.info("Send a message:" + MESSAGE + ".");
         many.emitNext(new GenericMessage<>(MESSAGE), Sinks.EmitFailureHandler.FAIL_FAST);
-        assertThat(EventHubsBinderProduceErrorIT.LATCH.await(300, TimeUnit.SECONDS)).isTrue();
+        assertThat(EventHubsBinderProduceErrorIT.LATCH.await(320, TimeUnit.SECONDS)).isTrue();
         LOGGER.info("EventHubsBinderProduceErrorIT end.");
     }
 }

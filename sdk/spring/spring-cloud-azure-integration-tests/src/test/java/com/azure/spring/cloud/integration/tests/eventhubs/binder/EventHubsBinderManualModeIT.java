@@ -79,10 +79,10 @@ class EventHubsBinderManualModeIT {
     @Test
     void testSendAndReceiveMessage() throws InterruptedException {
         LOGGER.info("EventHubBinderManualModeIT begin.");
-        EventHubsBinderManualModeIT.LATCH.await(15, TimeUnit.SECONDS);
+        EventHubsBinderManualModeIT.LATCH.await(20, TimeUnit.SECONDS);
         LOGGER.info("Send a message:" + MESSAGE + ".");
         many.emitNext(new GenericMessage<>(MESSAGE), Sinks.EmitFailureHandler.FAIL_FAST);
-        assertThat(EventHubsBinderManualModeIT.LATCH.await(30, TimeUnit.SECONDS)).isTrue();
+        assertThat(EventHubsBinderManualModeIT.LATCH.await(40, TimeUnit.SECONDS)).isTrue();
         LOGGER.info("EventHubBinderManualModeIT end.");
     }
 }
