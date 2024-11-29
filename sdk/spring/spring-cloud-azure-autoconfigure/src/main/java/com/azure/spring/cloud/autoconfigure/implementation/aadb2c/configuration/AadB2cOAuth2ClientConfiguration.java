@@ -134,6 +134,7 @@ class AadB2cOAuth2ClientConfiguration {
         return manager;
     }
 
+    @SuppressWarnings("deprecation")
     private RefreshTokenOAuth2AuthorizedClientProvider azureRefreshTokenProvider() {
         RefreshTokenOAuth2AuthorizedClientProvider provider = new RefreshTokenOAuth2AuthorizedClientProvider();
         DefaultRefreshTokenTokenResponseClient responseClient = new DefaultRefreshTokenTokenResponseClient();
@@ -142,6 +143,7 @@ class AadB2cOAuth2ClientConfiguration {
         return provider;
     }
 
+    @SuppressWarnings("deprecation")
     private ClientCredentialsOAuth2AuthorizedClientProvider azureClientCredentialProvider() {
         ClientCredentialsOAuth2AuthorizedClientProvider provider = new ClientCredentialsOAuth2AuthorizedClientProvider();
         DefaultClientCredentialsTokenResponseClient responseClient = new DefaultClientCredentialsTokenResponseClient();
