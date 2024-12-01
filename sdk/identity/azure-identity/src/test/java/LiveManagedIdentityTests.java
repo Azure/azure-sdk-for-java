@@ -140,16 +140,11 @@ public class LiveManagedIdentityTests {
     @EnabledIfEnvironmentVariable(named = "AZURE_TEST_MODE", matches = "LIVE")
     @Retry(maxRetries = 3)
     public void callGraphWithClientSecret() {
-
         Configuration configuration = Configuration.getGlobalConfiguration().clone();
 
         String multiTenantId = "54826b22-38d6-4fb2-bad9-b7b93a3e9c5a";
         String multiClientId = "4fc2b07b-9d91-4a4a-86e0-96d5b9145075";
         String multiClientSecret = configuration.get("AZURE_IDENTITY_MULTI_TENANT_CLIENT_SECRET");
-
-        System.out.println("Multi Tenant ID:" + multiTenantId);
-        System.out.println("Multi Client  ID:" + multiClientId);
-        System.out.println("Multi Client Secret:" + multiClientSecret);
 
         ClientSecretCredential credential = new ClientSecretCredentialBuilder().tenantId(multiTenantId)
             .clientId(multiClientId)
@@ -159,35 +154,7 @@ public class LiveManagedIdentityTests {
         AccessToken accessToken
             = credential.getTokenSync(new TokenRequestContext().addScopes("https://graph.microsoft.com/.default"));
 
-        System.out.println("Fetched Token:" + accessToken.getToken());
-
         assertTrue(accessToken != null, "Failed to get access token");
-
-    }
-
-    private boolean callGraphWithClientSecretInternal() {
-        Configuration configuration = Configuration.getGlobalConfiguration().clone();
-
-        String multiTenantId = "54826b22-38d6-4fb2-bad9-b7b93a3e9c5a";
-        String multiClientId = "4fc2b07b-9d91-4a4a-86e0-96d5b9145075";
-        String multiClientSecret = configuration.get("AZURE_IDENTITY_MULTI_TENANT_CLIENT_SECRET");
-
-        System.out.println("Multi Tenant ID:" + multiTenantId);
-        System.out.println("Multi Client  ID:" + multiClientId);
-        System.out.println("Multi Client Secret:" + multiClientSecret);
-
-        ClientSecretCredential credential = new ClientSecretCredentialBuilder().tenantId(multiTenantId)
-            .clientId(multiClientId)
-            .clientSecret(multiClientSecret)
-            .build();
-
-        AccessToken accessToken
-            = credential.getTokenSync(new TokenRequestContext().addScopes("https://graph.microsoft.com/.default"));
-
-        System.out.println("Fetched Token:" + accessToken.getToken());
-
-        assertTrue(accessToken != null, "Failed to get access token");
-        return true;
     }
 
     private String runCommand(String... args) {
