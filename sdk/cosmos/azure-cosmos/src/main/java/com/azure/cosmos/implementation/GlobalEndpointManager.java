@@ -41,6 +41,7 @@ public class GlobalEndpointManager implements AutoCloseable {
     private final AtomicBoolean isRefreshing;
     private final AtomicBoolean refreshInBackground;
     private final Scheduler scheduler = Schedulers.newSingle(theadFactory);
+    private final URI thinclientEndpoint;
     private volatile boolean isClosed;
     private AtomicBoolean firstTimeDatabaseAccountInitialization = new AtomicBoolean(true);
     private volatile DatabaseAccount latestDatabaseAccount;
@@ -70,7 +71,7 @@ public class GlobalEndpointManager implements AutoCloseable {
 
             this.owner = owner;
             this.defaultEndpoint = owner.getServiceEndpoint();
-            this.thinclientEndpoint = owner.getThinclientEndpoint(); // ?
+            this.thinclientEndpoint = owner.getThinclientEndpoint();
             this.connectionPolicy = connectionPolicy;
 
             this.isRefreshing = new AtomicBoolean(false);
