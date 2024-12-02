@@ -906,6 +906,7 @@
             <testFailureIgnore>false</testFailureIgnore>
             <argLine>
               ${defaultSurefireArgLine}
+              ${javaModulesSurefireArgLine}
               ${additionalSurefireArgLine}
             </argLine>
           </configuration>
@@ -958,6 +959,7 @@
             <testFailureIgnore>false</testFailureIgnore>
             <argLine>
               ${defaultFailsafeArgLine}
+              ${javaModulesFailsafeArgLine}
               ${additionalFailsafeArgLine}
             </argLine>
           </configuration>
@@ -1150,10 +1152,11 @@
     <profile>
       <id>java-baseline</id>
       <activation>
-        <jdk>(,17]</jdk>
+        <jdk>17</jdk>
       </activation>
       <properties>
         <maven.compiler.release>17</maven.compiler.release>
+        <maven.compiler.testRelease>17</maven.compiler.testRelease>
       </properties>
       <build>
         <plugins>
@@ -1161,14 +1164,17 @@
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-compiler-plugin</artifactId>
             <version>3.13.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
-            <configuration>
-              <release>17</release>
-              <source>17</source>
-              <target>17</target>
-              <testRelease>17</testRelease>
-              <testSource>17</testSource>
-              <testTarget>17</testTarget>
-            </configuration>
+            <executions>
+              <execution>
+                <id>default-testCompile</id>
+                <goals>
+                  <goal>testCompile</goal>
+                </goals>
+                <configuration>
+                  <useModulePath>false</useModulePath>
+                </configuration>
+              </execution>
+            </executions>
           </plugin>
         </plugins>
       </build>
@@ -1195,9 +1201,10 @@
                   <goal>compile</goal>
                 </goals>
                 <configuration>
+                  <compilerArgs combine.children="append">
+                    <arg>-Xlint:-options</arg> <!-- Needed to compile with Java 20+ -->
+                  </compilerArgs>
                   <release>${java.vm.specification.version}</release>
-                  <source>${java.vm.specification.version}</source>
-                  <target>${java.vm.specification.version}</target>
                 </configuration>
               </execution>
 
@@ -1210,12 +1217,7 @@
                   <goal>compile</goal>
                 </goals>
                 <configuration>
-                  <compilerArgs combine.children="append">
-                    <arg>-Xlint:-options</arg> <!-- Needed to compile with Java 20+ -->
-                  </compilerArgs>
                   <release>17</release>
-                  <source>17</source>
-                  <target>17</target>
                 </configuration>
               </execution>
 
@@ -1226,12 +1228,11 @@
                   <goal>testCompile</goal>
                 </goals>
                 <configuration>
+                  <compilerArgs combine.children="append">
+                    <arg>-Xlint:-options</arg> <!-- Needed to compile with Java 20+ -->
+                  </compilerArgs>
                   <release>${java.vm.specification.version}</release>
-                  <source>${java.vm.specification.version}</source>
-                  <target>${java.vm.specification.version}</target>
                   <testRelease>${java.vm.specification.version}</testRelease>
-                  <testSource>${java.vm.specification.version}</testSource>
-                  <testTarget>${java.vm.specification.version}</testTarget>
                   <useModulePath>false</useModulePath>
                 </configuration>
               </execution>
@@ -1243,45 +1244,12 @@
                   <goal>testCompile</goal>
                 </goals>
                 <configuration>
-                  <compilerArgs combine.children="append">
-                    <arg>-Xlint:-options</arg> <!-- Needed to compile with Java 20+ -->
-                  </compilerArgs>
                   <release>17</release>
-                  <source>17</source>
-                  <target>17</target>
                   <testRelease>17</testRelease>
-                  <testSource>17</testSource>
-                  <testTarget>17</testTarget>
                   <useModulePath>false</useModulePath>
                 </configuration>
               </execution>
             </executions>
-          </plugin>
-          <!-- Surefire plugin is broken, https://issues.apache.org/jira/browse/SUREFIRE-1501 -->
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-surefire-plugin</artifactId>
-            <version>3.5.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
-            <configuration>
-              <argLine>
-                ${defaultSurefireArgLine}
-                ${javaModulesSurefireArgLine}
-                ${additionalSurefireArgLine}
-              </argLine>
-            </configuration>
-          </plugin>
-
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-failsafe-plugin</artifactId>
-            <version>3.5.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
-            <configuration>
-              <argLine>
-                ${defaultFailsafeArgLine}
-                ${javaModulesFailsafeArgLine}
-                ${additionalFailsafeArgLine}
-              </argLine>
-            </configuration>
           </plugin>
         </plugins>
       </build>

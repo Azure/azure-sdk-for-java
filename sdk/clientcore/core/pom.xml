@@ -39,7 +39,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <jacoco.min.linecoverage>0.60</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0.60</jacoco.min.branchcoverage>
-    <jacoco.skip>true</jacoco.skip>
+
     <javaModulesSurefireArgLine>
       --add-opens io.clientcore.core/io.clientcore.core.annotation=ALL-UNNAMED
       --add-opens io.clientcore.core/io.clientcore.core.credential=ALL-UNNAMED
