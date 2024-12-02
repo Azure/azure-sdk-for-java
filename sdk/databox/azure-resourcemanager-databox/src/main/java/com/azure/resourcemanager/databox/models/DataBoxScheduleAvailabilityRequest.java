@@ -5,26 +5,50 @@
 package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Request body to get the availability for scheduling data box orders orders. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "skuName")
-@JsonTypeName("DataBox")
+/**
+ * Request body to get the availability for scheduling data box orders orders.
+ */
 @Fluent
 public final class DataBoxScheduleAvailabilityRequest extends ScheduleAvailabilityRequest {
-    /** Creates an instance of DataBoxScheduleAvailabilityRequest class. */
+    /*
+     * Sku Name for which the order is to be scheduled.
+     */
+    private SkuName skuName = SkuName.DATA_BOX;
+
+    /**
+     * Creates an instance of DataBoxScheduleAvailabilityRequest class.
+     */
     public DataBoxScheduleAvailabilityRequest() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the skuName property: Sku Name for which the order is to be scheduled.
+     * 
+     * @return the skuName value.
+     */
+    @Override
+    public SkuName skuName() {
+        return this.skuName;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataBoxScheduleAvailabilityRequest withStorageLocation(String storageLocation) {
         super.withStorageLocation(storageLocation);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataBoxScheduleAvailabilityRequest withCountry(String country) {
         super.withCountry(country);
@@ -33,11 +57,61 @@ public final class DataBoxScheduleAvailabilityRequest extends ScheduleAvailabili
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+        if (storageLocation() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property storageLocation in model DataBoxScheduleAvailabilityRequest"));
+        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DataBoxScheduleAvailabilityRequest.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("storageLocation", storageLocation());
+        jsonWriter.writeStringField("country", country());
+        jsonWriter.writeStringField("skuName", this.skuName == null ? null : this.skuName.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DataBoxScheduleAvailabilityRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DataBoxScheduleAvailabilityRequest if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DataBoxScheduleAvailabilityRequest.
+     */
+    public static DataBoxScheduleAvailabilityRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DataBoxScheduleAvailabilityRequest deserializedDataBoxScheduleAvailabilityRequest
+                = new DataBoxScheduleAvailabilityRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("storageLocation".equals(fieldName)) {
+                    deserializedDataBoxScheduleAvailabilityRequest.withStorageLocation(reader.getString());
+                } else if ("country".equals(fieldName)) {
+                    deserializedDataBoxScheduleAvailabilityRequest.withCountry(reader.getString());
+                } else if ("skuName".equals(fieldName)) {
+                    deserializedDataBoxScheduleAvailabilityRequest.skuName = SkuName.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDataBoxScheduleAvailabilityRequest;
+        });
     }
 }

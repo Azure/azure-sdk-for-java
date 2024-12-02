@@ -45,6 +45,7 @@ public class BlobParallelUploadOptions {
      * @param dataFlux The data to write to the blob. Unlike other upload methods, this method does not require that
      * the {@code Flux} be replayable. In other words, it does not have to support multiple subscribers and is not
      * expected to produce the same values across subscriptions.
+     * @throws NullPointerException If {@code dataFlux} is null.
      */
     public BlobParallelUploadOptions(Flux<ByteBuffer> dataFlux) {
         StorageImplUtils.assertNotNull("dataFlux", dataFlux);
@@ -55,13 +56,14 @@ public class BlobParallelUploadOptions {
 
     /**
      * Constructs a new {@link BlobParallelUploadOptions}.
-     *
+     * <p>
      * Use {@link #BlobParallelUploadOptions(InputStream)} instead to supply an InputStream without knowing the exact
      * length beforehand.
      *
      * @param dataStream The data to write to the blob.
      * @param length The exact length of the data. It is important that this value match precisely the length of the
      * data provided in the {@link InputStream}.
+     * @throws NullPointerException If {@code dataStream} is null.
      * @deprecated length is no longer necessary; use {@link #BlobParallelUploadOptions(InputStream)} instead.
      */
     @Deprecated
@@ -74,6 +76,7 @@ public class BlobParallelUploadOptions {
      * Note: the {@link InputStream} must be closed by the caller.
      *
      * @param dataStream The data to write to the blob.
+     * @throws NullPointerException If {@code dataStream} is null.
      */
     public BlobParallelUploadOptions(InputStream dataStream) {
         this(dataStream, null);
@@ -85,6 +88,9 @@ public class BlobParallelUploadOptions {
      *
      * @param dataStream The data to write to the blob.
      * @param length Optional known length of the data, affects reactive behavior for backwards compatibility.
+     * @throws NullPointerException If {@code dataStream} is null.
+     * @throws IllegalArgumentException If {@code length} is specified and is less than 0 or greater than
+     * {@link Long#MAX_VALUE}.
      */
     private BlobParallelUploadOptions(InputStream dataStream, Long length) {
         StorageImplUtils.assertNotNull("dataStream", dataStream);
@@ -269,7 +275,9 @@ public class BlobParallelUploadOptions {
     }
 
     /**
-     * @return Whether or not the library should calculate the md5 and send it for the service to verify.
+     * Gets the computeMd5 property.
+     *
+     * @return Whether the library should calculate the md5 and send it for the service to verify.
      */
     public boolean isComputeMd5() {
         return computeMd5;
@@ -278,7 +286,7 @@ public class BlobParallelUploadOptions {
     /**
      * Sets the computeMd5 property.
      *
-     * @param computeMd5 Whether or not the library should calculate the md5 and send it for the service to
+     * @param computeMd5 Whether the library should calculate the md5 and send it for the service to
      * verify.
      * @return The updated options.
      */
@@ -291,7 +299,6 @@ public class BlobParallelUploadOptions {
      * Gets the timeout.
      *
      * @return An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     *
      * @deprecated Use {@link BlobClient#uploadWithResponse(BlobParallelUploadOptions, Duration, Context)} to
      * specify timeout.
      */
@@ -305,7 +312,6 @@ public class BlobParallelUploadOptions {
      *
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @return The updated options
-     *
      * @deprecated Use {@link BlobClient#uploadWithResponse(BlobParallelUploadOptions, Duration, Context)} to
      * specify timeout.
      */
@@ -316,6 +322,8 @@ public class BlobParallelUploadOptions {
     }
 
     /**
+     * Gets the {@link BlobImmutabilityPolicy}.
+     *
      * @return {@link BlobImmutabilityPolicy}
      */
     public BlobImmutabilityPolicy getImmutabilityPolicy() {
@@ -323,8 +331,11 @@ public class BlobParallelUploadOptions {
     }
 
     /**
+     * Sets the {@link BlobImmutabilityPolicy}.
+     * <p>
      * Note that this parameter is only applicable to a blob within a container that has immutable storage with
      * versioning enabled.
+     *
      * @param immutabilityPolicy {@link BlobImmutabilityPolicy}
      * @return The updated options.
      */
@@ -334,6 +345,8 @@ public class BlobParallelUploadOptions {
     }
 
     /**
+     * Gets if a legal hold should be placed on the blob.
+     *
      * @return If a legal hold should be placed on the blob.
      */
     public Boolean isLegalHold() {
@@ -341,8 +354,11 @@ public class BlobParallelUploadOptions {
     }
 
     /**
+     * Sets if a legal hold should be placed on the blob.
+     * <p>
      * Note that this parameter is only applicable to a blob within a container that has immutable storage with
      * versioning enabled.
+     *
      * @param legalHold Indicates if a legal hold should be placed on the blob.
      * @return The updated options.
      */

@@ -24,7 +24,7 @@ public final class PrivateEndpointConnectionsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"privateEndpoint\":{\"id\":\"lgfggcvk\"},\"privateLinkServiceConnectionState\":{\"status\":\"lizrzbjpsfxsfuz\",\"description\":\"lvt\",\"actionsRequired\":\"agb\"},\"provisioningState\":\"Succeeded\",\"groupIds\":[\"vjfn\",\"jmvl\",\"yzgib\"]},\"id\":\"ujr\",\"name\":\"lfojuidjp\",\"type\":\"uyjucejikzo\"}";
+            = "{\"properties\":{\"privateEndpoint\":{\"id\":\"nrqjbtxjea\"},\"privateLinkServiceConnectionState\":{\"status\":\"aqbzgyhfwwvuatbw\",\"description\":\"qamteuliys\",\"actionsRequired\":\"kcvmwfauxxepmy\"},\"provisioningState\":\"Succeeded\",\"groupIds\":[\"qpkzfbojxjmcsmy\",\"wixvcpwnkwywzw\"]},\"id\":\"alickduoi\",\"name\":\"tamtyv\",\"type\":\"kn\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,17 +34,17 @@ public final class PrivateEndpointConnectionsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PrivateEndpointConnection response = manager.privateEndpointConnections()
-            .define("fihotj")
-            .withExistingPrivateLinkScope("mykyujxsglhs", "rryejylmbkzudnig")
+            .define("ttmvmmagoaqylkjz")
+            .withExistingPrivateLinkScope("xdndsbdweaderzm", "ntopa")
             .withProperties(new PrivateEndpointConnectionProperties()
-                .withPrivateEndpoint(new PrivateEndpointProperty().withId("xuzzjgnrefq"))
+                .withPrivateEndpoint(new PrivateEndpointProperty().withId("azjcgmxitpfin"))
                 .withPrivateLinkServiceConnectionState(
-                    new PrivateLinkServiceConnectionStateProperty().withStatus("qotoihiqakydiwfb")
-                        .withDescription("kwpzdqtvh")))
+                    new PrivateLinkServiceConnectionStateProperty().withStatus("pdltkrlg")
+                        .withDescription("mtbdrvcqgu")))
             .create();
 
-        Assertions.assertEquals("lgfggcvk", response.properties().privateEndpoint().id());
-        Assertions.assertEquals("lizrzbjpsfxsfuz", response.properties().privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("lvt", response.properties().privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("nrqjbtxjea", response.properties().privateEndpoint().id());
+        Assertions.assertEquals("aqbzgyhfwwvuatbw", response.properties().privateLinkServiceConnectionState().status());
+        Assertions.assertEquals("qamteuliys", response.properties().privateLinkServiceConnectionState().description());
     }
 }

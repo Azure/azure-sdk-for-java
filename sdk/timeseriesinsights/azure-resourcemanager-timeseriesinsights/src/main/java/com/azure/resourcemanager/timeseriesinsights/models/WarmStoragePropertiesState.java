@@ -5,23 +5,30 @@
 package com.azure.resourcemanager.timeseriesinsights.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** This string represents the state of warm storage properties usage. It can be "Ok", "Error", "Unknown". */
+/**
+ * This string represents the state of warm storage properties usage. It can be "Ok", "Error", "Unknown".
+ */
 public final class WarmStoragePropertiesState extends ExpandableStringEnum<WarmStoragePropertiesState> {
-    /** Static value Ok for WarmStoragePropertiesState. */
+    /**
+     * Static value Ok for WarmStoragePropertiesState.
+     */
     public static final WarmStoragePropertiesState OK = fromString("Ok");
 
-    /** Static value Error for WarmStoragePropertiesState. */
+    /**
+     * Static value Error for WarmStoragePropertiesState.
+     */
     public static final WarmStoragePropertiesState ERROR = fromString("Error");
 
-    /** Static value Unknown for WarmStoragePropertiesState. */
+    /**
+     * Static value Unknown for WarmStoragePropertiesState.
+     */
     public static final WarmStoragePropertiesState UNKNOWN = fromString("Unknown");
 
     /**
      * Creates a new instance of WarmStoragePropertiesState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +37,17 @@ public final class WarmStoragePropertiesState extends ExpandableStringEnum<WarmS
 
     /**
      * Creates or finds a WarmStoragePropertiesState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding WarmStoragePropertiesState.
      */
-    @JsonCreator
     public static WarmStoragePropertiesState fromString(String name) {
         return fromString(name, WarmStoragePropertiesState.class);
     }
 
     /**
      * Gets known WarmStoragePropertiesState values.
-     *
+     * 
      * @return known WarmStoragePropertiesState values.
      */
     public static Collection<WarmStoragePropertiesState> values() {

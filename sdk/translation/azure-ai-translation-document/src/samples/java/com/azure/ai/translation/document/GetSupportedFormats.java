@@ -6,7 +6,6 @@ package com.azure.ai.translation.document;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.ai.translation.document.models.FileFormat;
 import com.azure.ai.translation.document.models.FileFormatType;
-import com.azure.ai.translation.document.models.SupportedFileFormats;
 import java.util.List;
 
 /**
@@ -19,13 +18,12 @@ public class GetSupportedFormats {
         AzureKeyCredential credential = new AzureKeyCredential(apiKey);
 
         DocumentTranslationClient documentTranslationClient = new DocumentTranslationClientBuilder()
-                .endpoint(endpoint)
-                .credential(credential)
-                .buildClient();
+            .endpoint(endpoint)
+            .credential(credential)
+            .buildClient();
 
         // BEGIN: getSupportedFormats
-        SupportedFileFormats documentResponse = documentTranslationClient.getSupportedFormats(FileFormatType.DOCUMENT);
-        List<FileFormat> documentFileFormats = documentResponse.getValue();
+        List<FileFormat> documentFileFormats = documentTranslationClient.getSupportedFormats(FileFormatType.DOCUMENT);
         for (FileFormat fileFormat : documentFileFormats) {
             System.out.println("FileFormat:" + fileFormat.getFormat());
             System.out.println("FileExtensions:" + fileFormat.getFileExtensions());
@@ -33,8 +31,7 @@ public class GetSupportedFormats {
             System.out.println("Type:" + fileFormat.getType());
         }
 
-        SupportedFileFormats glossaryResponse = documentTranslationClient.getSupportedFormats(FileFormatType.GLOSSARY);
-        List<FileFormat> glossaryFileFormats = glossaryResponse.getValue();
+        List<FileFormat> glossaryFileFormats = documentTranslationClient.getSupportedFormats(FileFormatType.GLOSSARY);
         for (FileFormat fileFormat : glossaryFileFormats) {
             System.out.println("FileFormat:" + fileFormat.getFormat());
             System.out.println("FileExtensions:" + fileFormat.getFileExtensions());

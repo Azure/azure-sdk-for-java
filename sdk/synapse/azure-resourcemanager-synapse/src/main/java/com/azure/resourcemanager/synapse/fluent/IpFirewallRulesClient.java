@@ -15,11 +15,13 @@ import com.azure.resourcemanager.synapse.fluent.models.IpFirewallRuleInfoInner;
 import com.azure.resourcemanager.synapse.fluent.models.ReplaceAllFirewallRulesOperationResponseInner;
 import com.azure.resourcemanager.synapse.models.ReplaceAllIpFirewallRulesRequest;
 
-/** An instance of this class provides access to all the operations defined in IpFirewallRulesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in IpFirewallRulesClient.
+ */
 public interface IpFirewallRulesClient {
     /**
      * Returns a list of firewall rules.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -32,7 +34,7 @@ public interface IpFirewallRulesClient {
 
     /**
      * Returns a list of firewall rules.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -47,7 +49,7 @@ public interface IpFirewallRulesClient {
 
     /**
      * Creates or updates a firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param ruleName The IP firewall rule name.
@@ -63,7 +65,7 @@ public interface IpFirewallRulesClient {
 
     /**
      * Creates or updates a firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param ruleName The IP firewall rule name.
@@ -81,7 +83,7 @@ public interface IpFirewallRulesClient {
 
     /**
      * Creates or updates a firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param ruleName The IP firewall rule name.
@@ -97,7 +99,7 @@ public interface IpFirewallRulesClient {
 
     /**
      * Creates or updates a firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param ruleName The IP firewall rule name.
@@ -114,7 +116,7 @@ public interface IpFirewallRulesClient {
 
     /**
      * Deletes a firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param ruleName The IP firewall rule name.
@@ -129,7 +131,7 @@ public interface IpFirewallRulesClient {
 
     /**
      * Deletes a firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param ruleName The IP firewall rule name.
@@ -145,7 +147,7 @@ public interface IpFirewallRulesClient {
 
     /**
      * Deletes a firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param ruleName The IP firewall rule name.
@@ -159,7 +161,7 @@ public interface IpFirewallRulesClient {
 
     /**
      * Deletes a firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param ruleName The IP firewall rule name.
@@ -174,7 +176,7 @@ public interface IpFirewallRulesClient {
 
     /**
      * Get a firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param ruleName The IP firewall rule name.
@@ -190,7 +192,7 @@ public interface IpFirewallRulesClient {
 
     /**
      * Get a firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param ruleName The IP firewall rule name.
@@ -204,7 +206,7 @@ public interface IpFirewallRulesClient {
 
     /**
      * Replaces firewall rules.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param request Replace all IP firewall rules request.
@@ -219,7 +221,7 @@ public interface IpFirewallRulesClient {
 
     /**
      * Replaces firewall rules.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param request Replace all IP firewall rules request.
@@ -236,7 +238,7 @@ public interface IpFirewallRulesClient {
 
     /**
      * Replaces firewall rules.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param request Replace all IP firewall rules request.
@@ -251,7 +253,7 @@ public interface IpFirewallRulesClient {
 
     /**
      * Replaces firewall rules.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param request Replace all IP firewall rules request.

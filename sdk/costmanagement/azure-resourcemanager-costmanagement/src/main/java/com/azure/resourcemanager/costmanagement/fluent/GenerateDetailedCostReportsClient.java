@@ -12,16 +12,18 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.costmanagement.fluent.models.GenerateDetailedCostReportOperationResultInner;
 import com.azure.resourcemanager.costmanagement.models.GenerateDetailedCostReportDefinition;
 
-/** An instance of this class provides access to all the operations defined in GenerateDetailedCostReportsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in GenerateDetailedCostReportsClient.
+ */
 public interface GenerateDetailedCostReportsClient {
     /**
      * Generates the detailed cost report for provided date range, billing period(only enterprise customers) or Invoice
      * ID asynchronously at a certain scope. Call returns a 202 with header Azure-Consumption-AsyncOperation providing a
      * link to the operation created. A call on the operation will provide the status and if the operation is completed
      * the blob file where generated detailed cost report is being stored.
-     *
+     * 
      * @param scope The ARM Resource ID for subscription, resource group, billing account, or other billing scopes. For
-     *     details, see https://aka.ms/costmgmt/scopes.
+     * details, see https://aka.ms/costmgmt/scopes.
      * @param parameters Parameters supplied to the Create detailed cost report operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -37,9 +39,9 @@ public interface GenerateDetailedCostReportsClient {
      * ID asynchronously at a certain scope. Call returns a 202 with header Azure-Consumption-AsyncOperation providing a
      * link to the operation created. A call on the operation will provide the status and if the operation is completed
      * the blob file where generated detailed cost report is being stored.
-     *
+     * 
      * @param scope The ARM Resource ID for subscription, resource group, billing account, or other billing scopes. For
-     *     details, see https://aka.ms/costmgmt/scopes.
+     * details, see https://aka.ms/costmgmt/scopes.
      * @param parameters Parameters supplied to the Create detailed cost report operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -56,9 +58,9 @@ public interface GenerateDetailedCostReportsClient {
      * ID asynchronously at a certain scope. Call returns a 202 with header Azure-Consumption-AsyncOperation providing a
      * link to the operation created. A call on the operation will provide the status and if the operation is completed
      * the blob file where generated detailed cost report is being stored.
-     *
+     * 
      * @param scope The ARM Resource ID for subscription, resource group, billing account, or other billing scopes. For
-     *     details, see https://aka.ms/costmgmt/scopes.
+     * details, see https://aka.ms/costmgmt/scopes.
      * @param parameters Parameters supplied to the Create detailed cost report operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -74,9 +76,9 @@ public interface GenerateDetailedCostReportsClient {
      * ID asynchronously at a certain scope. Call returns a 202 with header Azure-Consumption-AsyncOperation providing a
      * link to the operation created. A call on the operation will provide the status and if the operation is completed
      * the blob file where generated detailed cost report is being stored.
-     *
+     * 
      * @param scope The ARM Resource ID for subscription, resource group, billing account, or other billing scopes. For
-     *     details, see https://aka.ms/costmgmt/scopes.
+     * details, see https://aka.ms/costmgmt/scopes.
      * @param parameters Parameters supplied to the Create detailed cost report operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

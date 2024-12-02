@@ -5,30 +5,31 @@
 package com.azure.resourcemanager.springappdiscovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Error summary properties.
  */
 @Fluent
-public final class ErrorSummariesProperties {
+public final class ErrorSummariesProperties implements JsonSerializable<ErrorSummariesProperties> {
     /*
      * The list of ErrorSummary.
      */
-    @JsonProperty(value = "discoveryScopeErrorSummaries")
     private List<ErrorSummaryModel> discoveryScopeErrorSummaries;
 
     /*
      * The list of errors.
      */
-    @JsonProperty(value = "errors")
     private List<Error> errors;
 
     /*
      * The resource provisioning state.
      */
-    @JsonProperty(value = "provisioningState")
     private ProvisioningState provisioningState;
 
     /**
@@ -110,5 +111,53 @@ public final class ErrorSummariesProperties {
         if (errors() != null) {
             errors().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("discoveryScopeErrorSummaries", this.discoveryScopeErrorSummaries,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("errors", this.errors, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("provisioningState",
+            this.provisioningState == null ? null : this.provisioningState.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ErrorSummariesProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ErrorSummariesProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ErrorSummariesProperties.
+     */
+    public static ErrorSummariesProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ErrorSummariesProperties deserializedErrorSummariesProperties = new ErrorSummariesProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("discoveryScopeErrorSummaries".equals(fieldName)) {
+                    List<ErrorSummaryModel> discoveryScopeErrorSummaries
+                        = reader.readArray(reader1 -> ErrorSummaryModel.fromJson(reader1));
+                    deserializedErrorSummariesProperties.discoveryScopeErrorSummaries = discoveryScopeErrorSummaries;
+                } else if ("errors".equals(fieldName)) {
+                    List<Error> errors = reader.readArray(reader1 -> Error.fromJson(reader1));
+                    deserializedErrorSummariesProperties.errors = errors;
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedErrorSummariesProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedErrorSummariesProperties;
+        });
     }
 }

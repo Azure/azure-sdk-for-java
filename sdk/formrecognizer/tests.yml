@@ -11,4 +11,4 @@ extends:
         safeName: azureaiformrecognizer
     CloudConfig:
       Public:
-        Location: 'centraluseuap'
+        Location: 'eastus'

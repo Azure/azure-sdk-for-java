@@ -13,21 +13,21 @@ public final class VolumeQuotaRulesPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VolumeQuotaRulesProperties model = BinaryData.fromString(
-            "{\"provisioningState\":\"Deleting\",\"quotaSizeInKiBs\":3085317229609250436,\"quotaType\":\"DefaultUserQuota\",\"quotaTarget\":\"tdcqvpniyuj\"}")
+            "{\"provisioningState\":\"Moving\",\"quotaSizeInKiBs\":1232834909698748994,\"quotaType\":\"IndividualUserQuota\",\"quotaTarget\":\"wvtylbfpncurdo\"}")
             .toObject(VolumeQuotaRulesProperties.class);
-        Assertions.assertEquals(3085317229609250436L, model.quotaSizeInKiBs());
-        Assertions.assertEquals(Type.DEFAULT_USER_QUOTA, model.quotaType());
-        Assertions.assertEquals("tdcqvpniyuj", model.quotaTarget());
+        Assertions.assertEquals(1232834909698748994L, model.quotaSizeInKiBs());
+        Assertions.assertEquals(Type.INDIVIDUAL_USER_QUOTA, model.quotaType());
+        Assertions.assertEquals("wvtylbfpncurdo", model.quotaTarget());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VolumeQuotaRulesProperties model = new VolumeQuotaRulesProperties().withQuotaSizeInKiBs(3085317229609250436L)
-            .withQuotaType(Type.DEFAULT_USER_QUOTA)
-            .withQuotaTarget("tdcqvpniyuj");
+        VolumeQuotaRulesProperties model = new VolumeQuotaRulesProperties().withQuotaSizeInKiBs(1232834909698748994L)
+            .withQuotaType(Type.INDIVIDUAL_USER_QUOTA)
+            .withQuotaTarget("wvtylbfpncurdo");
         model = BinaryData.fromObject(model).toObject(VolumeQuotaRulesProperties.class);
-        Assertions.assertEquals(3085317229609250436L, model.quotaSizeInKiBs());
-        Assertions.assertEquals(Type.DEFAULT_USER_QUOTA, model.quotaType());
-        Assertions.assertEquals("tdcqvpniyuj", model.quotaTarget());
+        Assertions.assertEquals(1232834909698748994L, model.quotaSizeInKiBs());
+        Assertions.assertEquals(Type.INDIVIDUAL_USER_QUOTA, model.quotaType());
+        Assertions.assertEquals("wvtylbfpncurdo", model.quotaTarget());
     }
 }

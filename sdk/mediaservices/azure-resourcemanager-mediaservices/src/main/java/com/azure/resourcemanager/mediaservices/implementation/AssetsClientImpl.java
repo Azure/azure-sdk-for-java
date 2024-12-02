@@ -39,17 +39,23 @@ import com.azure.resourcemanager.mediaservices.models.AssetCollection;
 import com.azure.resourcemanager.mediaservices.models.ListContainerSasInput;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in AssetsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in AssetsClient.
+ */
 public final class AssetsClientImpl implements AssetsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final AssetsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AzureMediaServicesImpl client;
 
     /**
      * Initializes an instance of AssetsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     AssetsClientImpl(AzureMediaServicesImpl client) {
@@ -65,8 +71,7 @@ public final class AssetsClientImpl implements AssetsClient {
     @ServiceInterface(name = "AzureMediaServicesAs")
     public interface AssetsService {
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices"
-            + "/{accountName}/assets")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/assets")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AssetCollection>> list(@HostParam("$host") String endpoint,
@@ -77,8 +82,7 @@ public final class AssetsClientImpl implements AssetsClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices"
-            + "/{accountName}/assets/{assetName}")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/assets/{assetName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AssetInner>> get(@HostParam("$host") String endpoint,
@@ -88,8 +92,7 @@ public final class AssetsClientImpl implements AssetsClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices"
-            + "/{accountName}/assets/{assetName}")
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/assets/{assetName}")
         @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AssetInner>> createOrUpdate(@HostParam("$host") String endpoint,
@@ -100,8 +103,7 @@ public final class AssetsClientImpl implements AssetsClient {
             Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices"
-            + "/{accountName}/assets/{assetName}")
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/assets/{assetName}")
         @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
@@ -111,8 +113,7 @@ public final class AssetsClientImpl implements AssetsClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices"
-            + "/{accountName}/assets/{assetName}")
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/assets/{assetName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AssetInner>> update(@HostParam("$host") String endpoint,
@@ -123,8 +124,7 @@ public final class AssetsClientImpl implements AssetsClient {
             Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices"
-            + "/{accountName}/assets/{assetName}/listContainerSas")
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/assets/{assetName}/listContainerSas")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AssetContainerSasInner>> listContainerSas(@HostParam("$host") String endpoint,
@@ -135,8 +135,7 @@ public final class AssetsClientImpl implements AssetsClient {
             Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices"
-            + "/{accountName}/assets/{assetName}/getEncryptionKey")
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/assets/{assetName}/getEncryptionKey")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<StorageEncryptedAssetDecryptionDataInner>> getEncryptionKey(@HostParam("$host") String endpoint,
@@ -146,8 +145,7 @@ public final class AssetsClientImpl implements AssetsClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices"
-            + "/{accountName}/assets/{assetName}/listStreamingLocators")
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/assets/{assetName}/listStreamingLocators")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ListStreamingLocatorsResponseInner>> listStreamingLocators(@HostParam("$host") String endpoint,
@@ -166,14 +164,14 @@ public final class AssetsClientImpl implements AssetsClient {
 
     /**
      * List Assets
-     *
-     * <p>List Assets in the Media Services account with optional filtering and ordering.
-     *
+     * 
+     * List Assets in the Media Services account with optional filtering and ordering.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param filter Restricts the set of items returned.
      * @param top Specifies a non-negative integer n that limits the number of items returned from a collection. The
-     *     service returns the number of available items up to but not greater than the specified value n.
+     * service returns the number of available items up to but not greater than the specified value n.
      * @param orderby Specifies the key by which the result collection should be ordered.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -210,14 +208,14 @@ public final class AssetsClientImpl implements AssetsClient {
 
     /**
      * List Assets
-     *
-     * <p>List Assets in the Media Services account with optional filtering and ordering.
-     *
+     * 
+     * List Assets in the Media Services account with optional filtering and ordering.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param filter Restricts the set of items returned.
      * @param top Specifies a non-negative integer n that limits the number of items returned from a collection. The
-     *     service returns the number of available items up to but not greater than the specified value n.
+     * service returns the number of available items up to but not greater than the specified value n.
      * @param orderby Specifies the key by which the result collection should be ordered.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -255,14 +253,14 @@ public final class AssetsClientImpl implements AssetsClient {
 
     /**
      * List Assets
-     *
-     * <p>List Assets in the Media Services account with optional filtering and ordering.
-     *
+     * 
+     * List Assets in the Media Services account with optional filtering and ordering.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param filter Restricts the set of items returned.
      * @param top Specifies a non-negative integer n that limits the number of items returned from a collection. The
-     *     service returns the number of available items up to but not greater than the specified value n.
+     * service returns the number of available items up to but not greater than the specified value n.
      * @param orderby Specifies the key by which the result collection should be ordered.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -278,9 +276,9 @@ public final class AssetsClientImpl implements AssetsClient {
 
     /**
      * List Assets
-     *
-     * <p>List Assets in the Media Services account with optional filtering and ordering.
-     *
+     * 
+     * List Assets in the Media Services account with optional filtering and ordering.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -299,14 +297,14 @@ public final class AssetsClientImpl implements AssetsClient {
 
     /**
      * List Assets
-     *
-     * <p>List Assets in the Media Services account with optional filtering and ordering.
-     *
+     * 
+     * List Assets in the Media Services account with optional filtering and ordering.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param filter Restricts the set of items returned.
      * @param top Specifies a non-negative integer n that limits the number of items returned from a collection. The
-     *     service returns the number of available items up to but not greater than the specified value n.
+     * service returns the number of available items up to but not greater than the specified value n.
      * @param orderby Specifies the key by which the result collection should be ordered.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -323,9 +321,9 @@ public final class AssetsClientImpl implements AssetsClient {
 
     /**
      * List Assets
-     *
-     * <p>List Assets in the Media Services account with optional filtering and ordering.
-     *
+     * 
+     * List Assets in the Media Services account with optional filtering and ordering.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -343,14 +341,14 @@ public final class AssetsClientImpl implements AssetsClient {
 
     /**
      * List Assets
-     *
-     * <p>List Assets in the Media Services account with optional filtering and ordering.
-     *
+     * 
+     * List Assets in the Media Services account with optional filtering and ordering.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param filter Restricts the set of items returned.
      * @param top Specifies a non-negative integer n that limits the number of items returned from a collection. The
-     *     service returns the number of available items up to but not greater than the specified value n.
+     * service returns the number of available items up to but not greater than the specified value n.
      * @param orderby Specifies the key by which the result collection should be ordered.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -366,9 +364,9 @@ public final class AssetsClientImpl implements AssetsClient {
 
     /**
      * Get an Asset
-     *
-     * <p>Get the details of an Asset in the Media Services account.
-     *
+     * 
+     * Get the details of an Asset in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
@@ -376,7 +374,7 @@ public final class AssetsClientImpl implements AssetsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of an Asset in the Media Services account along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AssetInner>> getWithResponseAsync(String resourceGroupName, String accountName,
@@ -409,9 +407,9 @@ public final class AssetsClientImpl implements AssetsClient {
 
     /**
      * Get an Asset
-     *
-     * <p>Get the details of an Asset in the Media Services account.
-     *
+     * 
+     * Get the details of an Asset in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
@@ -420,7 +418,7 @@ public final class AssetsClientImpl implements AssetsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of an Asset in the Media Services account along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AssetInner>> getWithResponseAsync(String resourceGroupName, String accountName,
@@ -452,9 +450,9 @@ public final class AssetsClientImpl implements AssetsClient {
 
     /**
      * Get an Asset
-     *
-     * <p>Get the details of an Asset in the Media Services account.
-     *
+     * 
+     * Get the details of an Asset in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
@@ -471,9 +469,9 @@ public final class AssetsClientImpl implements AssetsClient {
 
     /**
      * Get an Asset
-     *
-     * <p>Get the details of an Asset in the Media Services account.
-     *
+     * 
+     * Get the details of an Asset in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
@@ -491,9 +489,9 @@ public final class AssetsClientImpl implements AssetsClient {
 
     /**
      * Get an Asset
-     *
-     * <p>Get the details of an Asset in the Media Services account.
-     *
+     * 
+     * Get the details of an Asset in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
@@ -509,9 +507,9 @@ public final class AssetsClientImpl implements AssetsClient {
 
     /**
      * Create or update an Asset
-     *
-     * <p>Creates or updates an Asset in the Media Services account.
-     *
+     * 
+     * Creates or updates an Asset in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
@@ -557,9 +555,9 @@ public final class AssetsClientImpl implements AssetsClient {
 
     /**
      * Create or update an Asset
-     *
-     * <p>Creates or updates an Asset in the Media Services account.
-     *
+     * 
+     * Creates or updates an Asset in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
@@ -605,9 +603,9 @@ public final class AssetsClientImpl implements AssetsClient {
 
     /**
      * Create or update an Asset
-     *
-     * <p>Creates or updates an Asset in the Media Services account.
-     *
+     * 
+     * Creates or updates an Asset in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
@@ -626,9 +624,9 @@ public final class AssetsClientImpl implements AssetsClient {
 
     /**
      * Create or update an Asset
-     *
-     * <p>Creates or updates an Asset in the Media Services account.
-     *
+     * 
+     * Creates or updates an Asset in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
@@ -647,9 +645,9 @@ public final class AssetsClientImpl implements AssetsClient {
 
     /**
      * Create or update an Asset
-     *
-     * <p>Creates or updates an Asset in the Media Services account.
-     *
+     * 
+     * Creates or updates an Asset in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
@@ -668,9 +666,9 @@ public final class AssetsClientImpl implements AssetsClient {
 
     /**
      * Delete an Asset.
-     *
-     * <p>Deletes an Asset in the Media Services account.
-     *
+     * 
+     * Deletes an Asset in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
@@ -710,9 +708,9 @@ public final class AssetsClientImpl implements AssetsClient {
 
     /**
      * Delete an Asset.
-     *
-     * <p>Deletes an Asset in the Media Services account.
-     *
+     * 
+     * Deletes an Asset in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
@@ -752,9 +750,9 @@ public final class AssetsClientImpl implements AssetsClient {
 
     /**
      * Delete an Asset.
-     *
-     * <p>Deletes an Asset in the Media Services account.
-     *
+     * 
+     * Deletes an Asset in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
@@ -770,9 +768,9 @@ public final class AssetsClientImpl implements AssetsClient {
 
     /**
      * Delete an Asset.
-     *
-     * <p>Deletes an Asset in the Media Services account.
-     *
+     * 
+     * Deletes an Asset in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
@@ -790,9 +788,9 @@ public final class AssetsClientImpl implements AssetsClient {
 
     /**
      * Delete an Asset.
-     *
-     * <p>Deletes an Asset in the Media Services account.
-     *
+     * 
+     * Deletes an Asset in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
@@ -807,9 +805,9 @@ public final class AssetsClientImpl implements AssetsClient {
 
     /**
      * Update an Asset
-     *
-     * <p>Updates an existing Asset in the Media Services account.
-     *
+     * 
+     * Updates an existing Asset in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
@@ -855,9 +853,9 @@ public final class AssetsClientImpl implements AssetsClient {
 
     /**
      * Update an Asset
-     *
-     * <p>Updates an existing Asset in the Media Services account.
-     *
+     * 
+     * Updates an existing Asset in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
@@ -903,9 +901,9 @@ public final class AssetsClientImpl implements AssetsClient {
 
     /**
      * Update an Asset
-     *
-     * <p>Updates an existing Asset in the Media Services account.
-     *
+     * 
+     * Updates an existing Asset in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
@@ -924,9 +922,9 @@ public final class AssetsClientImpl implements AssetsClient {
 
     /**
      * Update an Asset
-     *
-     * <p>Updates an existing Asset in the Media Services account.
-     *
+     * 
+     * Updates an existing Asset in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
@@ -945,9 +943,9 @@ public final class AssetsClientImpl implements AssetsClient {
 
     /**
      * Update an Asset
-     *
-     * <p>Updates an existing Asset in the Media Services account.
-     *
+     * 
+     * Updates an existing Asset in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
@@ -964,10 +962,10 @@ public final class AssetsClientImpl implements AssetsClient {
 
     /**
      * List the Asset URLs
-     *
-     * <p>Lists storage container URLs with shared access signatures (SAS) for uploading and downloading Asset content.
-     * The signatures are derived from the storage account keys.
-     *
+     * 
+     * Lists storage container URLs with shared access signatures (SAS) for uploading and downloading Asset content. The
+     * signatures are derived from the storage account keys.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
@@ -975,8 +973,8 @@ public final class AssetsClientImpl implements AssetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Asset Storage container SAS URLs along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the Asset Storage container SAS URLs along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AssetContainerSasInner>> listContainerSasWithResponseAsync(String resourceGroupName,
@@ -1014,10 +1012,10 @@ public final class AssetsClientImpl implements AssetsClient {
 
     /**
      * List the Asset URLs
-     *
-     * <p>Lists storage container URLs with shared access signatures (SAS) for uploading and downloading Asset content.
-     * The signatures are derived from the storage account keys.
-     *
+     * 
+     * Lists storage container URLs with shared access signatures (SAS) for uploading and downloading Asset content. The
+     * signatures are derived from the storage account keys.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
@@ -1026,8 +1024,8 @@ public final class AssetsClientImpl implements AssetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Asset Storage container SAS URLs along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the Asset Storage container SAS URLs along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AssetContainerSasInner>> listContainerSasWithResponseAsync(String resourceGroupName,
@@ -1064,10 +1062,10 @@ public final class AssetsClientImpl implements AssetsClient {
 
     /**
      * List the Asset URLs
-     *
-     * <p>Lists storage container URLs with shared access signatures (SAS) for uploading and downloading Asset content.
-     * The signatures are derived from the storage account keys.
-     *
+     * 
+     * Lists storage container URLs with shared access signatures (SAS) for uploading and downloading Asset content. The
+     * signatures are derived from the storage account keys.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
@@ -1086,10 +1084,10 @@ public final class AssetsClientImpl implements AssetsClient {
 
     /**
      * List the Asset URLs
-     *
-     * <p>Lists storage container URLs with shared access signatures (SAS) for uploading and downloading Asset content.
-     * The signatures are derived from the storage account keys.
-     *
+     * 
+     * Lists storage container URLs with shared access signatures (SAS) for uploading and downloading Asset content. The
+     * signatures are derived from the storage account keys.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
@@ -1109,10 +1107,10 @@ public final class AssetsClientImpl implements AssetsClient {
 
     /**
      * List the Asset URLs
-     *
-     * <p>Lists storage container URLs with shared access signatures (SAS) for uploading and downloading Asset content.
-     * The signatures are derived from the storage account keys.
-     *
+     * 
+     * Lists storage container URLs with shared access signatures (SAS) for uploading and downloading Asset content. The
+     * signatures are derived from the storage account keys.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
@@ -1131,9 +1129,9 @@ public final class AssetsClientImpl implements AssetsClient {
 
     /**
      * Gets the Asset storage key
-     *
-     * <p>Gets the Asset storage encryption keys used to decrypt content created by version 2 of the Media Services API.
-     *
+     * 
+     * Gets the Asset storage encryption keys used to decrypt content created by version 2 of the Media Services API.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
@@ -1141,7 +1139,7 @@ public final class AssetsClientImpl implements AssetsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Asset storage encryption keys used to decrypt content created by version 2 of the Media Services API
-     *     along with {@link Response} on successful completion of {@link Mono}.
+     * along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<StorageEncryptedAssetDecryptionDataInner>>
@@ -1174,9 +1172,9 @@ public final class AssetsClientImpl implements AssetsClient {
 
     /**
      * Gets the Asset storage key
-     *
-     * <p>Gets the Asset storage encryption keys used to decrypt content created by version 2 of the Media Services API.
-     *
+     * 
+     * Gets the Asset storage encryption keys used to decrypt content created by version 2 of the Media Services API.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
@@ -1185,7 +1183,7 @@ public final class AssetsClientImpl implements AssetsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Asset storage encryption keys used to decrypt content created by version 2 of the Media Services API
-     *     along with {@link Response} on successful completion of {@link Mono}.
+     * along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<StorageEncryptedAssetDecryptionDataInner>> getEncryptionKeyWithResponseAsync(
@@ -1217,9 +1215,9 @@ public final class AssetsClientImpl implements AssetsClient {
 
     /**
      * Gets the Asset storage key
-     *
-     * <p>Gets the Asset storage encryption keys used to decrypt content created by version 2 of the Media Services API.
-     *
+     * 
+     * Gets the Asset storage encryption keys used to decrypt content created by version 2 of the Media Services API.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
@@ -1227,7 +1225,7 @@ public final class AssetsClientImpl implements AssetsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Asset storage encryption keys used to decrypt content created by version 2 of the Media Services API
-     *     on successful completion of {@link Mono}.
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<StorageEncryptedAssetDecryptionDataInner> getEncryptionKeyAsync(String resourceGroupName,
@@ -1238,9 +1236,9 @@ public final class AssetsClientImpl implements AssetsClient {
 
     /**
      * Gets the Asset storage key
-     *
-     * <p>Gets the Asset storage encryption keys used to decrypt content created by version 2 of the Media Services API.
-     *
+     * 
+     * Gets the Asset storage encryption keys used to decrypt content created by version 2 of the Media Services API.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
@@ -1249,7 +1247,7 @@ public final class AssetsClientImpl implements AssetsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Asset storage encryption keys used to decrypt content created by version 2 of the Media Services API
-     *     along with {@link Response}.
+     * along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StorageEncryptedAssetDecryptionDataInner> getEncryptionKeyWithResponse(String resourceGroupName,
@@ -1259,9 +1257,9 @@ public final class AssetsClientImpl implements AssetsClient {
 
     /**
      * Gets the Asset storage key
-     *
-     * <p>Gets the Asset storage encryption keys used to decrypt content created by version 2 of the Media Services API.
-     *
+     * 
+     * Gets the Asset storage encryption keys used to decrypt content created by version 2 of the Media Services API.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
@@ -1278,9 +1276,9 @@ public final class AssetsClientImpl implements AssetsClient {
 
     /**
      * List Streaming Locators
-     *
-     * <p>Lists Streaming Locators which are associated with this asset.
-     *
+     * 
+     * Lists Streaming Locators which are associated with this asset.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
@@ -1288,7 +1286,7 @@ public final class AssetsClientImpl implements AssetsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Streaming Locators associated with this Asset along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ListStreamingLocatorsResponseInner>>
@@ -1322,9 +1320,9 @@ public final class AssetsClientImpl implements AssetsClient {
 
     /**
      * List Streaming Locators
-     *
-     * <p>Lists Streaming Locators which are associated with this asset.
-     *
+     * 
+     * Lists Streaming Locators which are associated with this asset.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
@@ -1333,7 +1331,7 @@ public final class AssetsClientImpl implements AssetsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Streaming Locators associated with this Asset along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ListStreamingLocatorsResponseInner>> listStreamingLocatorsWithResponseAsync(
@@ -1365,9 +1363,9 @@ public final class AssetsClientImpl implements AssetsClient {
 
     /**
      * List Streaming Locators
-     *
-     * <p>Lists Streaming Locators which are associated with this asset.
-     *
+     * 
+     * Lists Streaming Locators which are associated with this asset.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
@@ -1385,9 +1383,9 @@ public final class AssetsClientImpl implements AssetsClient {
 
     /**
      * List Streaming Locators
-     *
-     * <p>Lists Streaming Locators which are associated with this asset.
-     *
+     * 
+     * Lists Streaming Locators which are associated with this asset.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
@@ -1405,9 +1403,9 @@ public final class AssetsClientImpl implements AssetsClient {
 
     /**
      * List Streaming Locators
-     *
-     * <p>Lists Streaming Locators which are associated with this asset.
-     *
+     * 
+     * Lists Streaming Locators which are associated with this asset.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
@@ -1424,9 +1422,8 @@ public final class AssetsClientImpl implements AssetsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1450,9 +1447,8 @@ public final class AssetsClientImpl implements AssetsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

@@ -56,17 +56,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in MonitorsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in MonitorsClient.
+ */
 public final class MonitorsClientImpl implements MonitorsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final MonitorsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final DynatraceObservabilityImpl client;
 
     /**
      * Initializes an instance of MonitorsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     MonitorsClientImpl(DynatraceObservabilityImpl client) {
@@ -264,14 +270,14 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * List the resources currently being monitored by the Dynatrace monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of all the resources being monitored by Dynatrace monitor resource along with {@link PagedResponse}
-     *     on successful completion of {@link Mono}.
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MonitoredResourceInner>> listMonitoredResourcesSinglePageAsync(String resourceGroupName,
@@ -303,7 +309,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * List the resources currently being monitored by the Dynatrace monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param context The context to associate with this operation.
@@ -311,7 +317,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of all the resources being monitored by Dynatrace monitor resource along with {@link PagedResponse}
-     *     on successful completion of {@link Mono}.
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MonitoredResourceInner>> listMonitoredResourcesSinglePageAsync(String resourceGroupName,
@@ -342,14 +348,14 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * List the resources currently being monitored by the Dynatrace monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of all the resources being monitored by Dynatrace monitor resource as paginated response with {@link
-     *     PagedFlux}.
+     * @return list of all the resources being monitored by Dynatrace monitor resource as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<MonitoredResourceInner> listMonitoredResourcesAsync(String resourceGroupName,
@@ -360,15 +366,15 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * List the resources currently being monitored by the Dynatrace monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of all the resources being monitored by Dynatrace monitor resource as paginated response with {@link
-     *     PagedFlux}.
+     * @return list of all the resources being monitored by Dynatrace monitor resource as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<MonitoredResourceInner> listMonitoredResourcesAsync(String resourceGroupName, String monitorName,
@@ -379,14 +385,14 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * List the resources currently being monitored by the Dynatrace monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of all the resources being monitored by Dynatrace monitor resource as paginated response with {@link
-     *     PagedIterable}.
+     * @return list of all the resources being monitored by Dynatrace monitor resource as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MonitoredResourceInner> listMonitoredResources(String resourceGroupName, String monitorName) {
@@ -395,15 +401,15 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * List the resources currently being monitored by the Dynatrace monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of all the resources being monitored by Dynatrace monitor resource as paginated response with {@link
-     *     PagedIterable}.
+     * @return list of all the resources being monitored by Dynatrace monitor resource as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MonitoredResourceInner> listMonitoredResources(String resourceGroupName, String monitorName,
@@ -413,14 +419,14 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Returns the payload that needs to be passed in the request body for installing Dynatrace agent on a VM.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response of payload to be passed while installing VM agent along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<VMExtensionPayloadInner>> getVMHostPayloadWithResponseAsync(String resourceGroupName,
@@ -449,7 +455,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Returns the payload that needs to be passed in the request body for installing Dynatrace agent on a VM.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param context The context to associate with this operation.
@@ -457,7 +463,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response of payload to be passed while installing VM agent along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<VMExtensionPayloadInner>> getVMHostPayloadWithResponseAsync(String resourceGroupName,
@@ -485,7 +491,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Returns the payload that needs to be passed in the request body for installing Dynatrace agent on a VM.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -501,7 +507,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Returns the payload that needs to be passed in the request body for installing Dynatrace agent on a VM.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param context The context to associate with this operation.
@@ -518,7 +524,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Returns the payload that needs to be passed in the request body for installing Dynatrace agent on a VM.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -533,7 +539,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Get a MonitorResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -568,7 +574,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Get a MonitorResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param context The context to associate with this operation.
@@ -603,7 +609,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Get a MonitorResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -619,7 +625,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Get a MonitorResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param context The context to associate with this operation.
@@ -636,7 +642,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Get a MonitorResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -651,7 +657,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Create a MonitorResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param resource Resource create parameters.
@@ -692,7 +698,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Create a MonitorResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param resource Resource create parameters.
@@ -733,7 +739,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Create a MonitorResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param resource Resource create parameters.
@@ -753,7 +759,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Create a MonitorResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param resource Resource create parameters.
@@ -775,7 +781,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Create a MonitorResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param resource Resource create parameters.
@@ -792,7 +798,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Create a MonitorResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param resource Resource create parameters.
@@ -810,7 +816,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Create a MonitorResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param resource Resource create parameters.
@@ -828,7 +834,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Create a MonitorResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param resource Resource create parameters.
@@ -847,7 +853,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Create a MonitorResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param resource Resource create parameters.
@@ -864,7 +870,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Create a MonitorResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param resource Resource create parameters.
@@ -882,7 +888,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Update a MonitorResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param resource The resource properties to be updated.
@@ -923,7 +929,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Update a MonitorResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param resource The resource properties to be updated.
@@ -964,7 +970,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Update a MonitorResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param resource The resource properties to be updated.
@@ -982,7 +988,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Update a MonitorResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param resource The resource properties to be updated.
@@ -1000,7 +1006,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Update a MonitorResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param resource The resource properties to be updated.
@@ -1016,7 +1022,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Delete a MonitorResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1050,7 +1056,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Delete a MonitorResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param context The context to associate with this operation.
@@ -1085,7 +1091,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Delete a MonitorResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1102,7 +1108,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Delete a MonitorResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param context The context to associate with this operation.
@@ -1122,7 +1128,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Delete a MonitorResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1137,7 +1143,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Delete a MonitorResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param context The context to associate with this operation.
@@ -1154,7 +1160,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Delete a MonitorResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1169,7 +1175,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Delete a MonitorResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param context The context to associate with this operation.
@@ -1186,7 +1192,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Delete a MonitorResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1200,7 +1206,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Delete a MonitorResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param context The context to associate with this operation.
@@ -1215,11 +1221,11 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * List all MonitorResource by subscriptionId.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a MonitorResource list operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MonitorResourceInner>> listSinglePageAsync() {
@@ -1242,13 +1248,13 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * List all MonitorResource by subscriptionId.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a MonitorResource list operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MonitorResourceInner>> listSinglePageAsync(Context context) {
@@ -1271,7 +1277,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * List all MonitorResource by subscriptionId.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a MonitorResource list operation as paginated response with {@link PagedFlux}.
@@ -1284,7 +1290,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * List all MonitorResource by subscriptionId.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1299,7 +1305,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * List all MonitorResource by subscriptionId.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a MonitorResource list operation as paginated response with {@link PagedIterable}.
@@ -1311,7 +1317,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * List all MonitorResource by subscriptionId.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1325,13 +1331,13 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * List MonitorResource resources by resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a MonitorResource list operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MonitorResourceInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
@@ -1358,14 +1364,14 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * List MonitorResource resources by resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a MonitorResource list operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MonitorResourceInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
@@ -1393,7 +1399,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * List MonitorResource resources by resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1408,7 +1414,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * List MonitorResource resources by resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1424,7 +1430,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * List MonitorResource resources by resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1438,7 +1444,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * List MonitorResource resources by resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1453,14 +1459,14 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Get Marketplace SaaS resource details of a tenant under a specific subscription.
-     *
+     * 
      * @param request Tenant Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws ManagementException thrown if the request is rejected by server on status code 404.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return marketplace SaaS resource details of a tenant under a specific subscription along with {@link Response}
-     *     on successful completion of {@link Mono}.
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<MarketplaceSaaSResourceDetailsResponseInner>>
@@ -1487,7 +1493,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Get Marketplace SaaS resource details of a tenant under a specific subscription.
-     *
+     * 
      * @param request Tenant Id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1495,7 +1501,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @throws ManagementException thrown if the request is rejected by server on status code 404.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return marketplace SaaS resource details of a tenant under a specific subscription along with {@link Response}
-     *     on successful completion of {@link Mono}.
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<MarketplaceSaaSResourceDetailsResponseInner>>
@@ -1522,14 +1528,14 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Get Marketplace SaaS resource details of a tenant under a specific subscription.
-     *
+     * 
      * @param request Tenant Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws ManagementException thrown if the request is rejected by server on status code 404.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return marketplace SaaS resource details of a tenant under a specific subscription on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<MarketplaceSaaSResourceDetailsResponseInner>
@@ -1540,7 +1546,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Get Marketplace SaaS resource details of a tenant under a specific subscription.
-     *
+     * 
      * @param request Tenant Id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1557,7 +1563,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Get Marketplace SaaS resource details of a tenant under a specific subscription.
-     *
+     * 
      * @param request Tenant Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1573,14 +1579,14 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * List the VM/VMSS resources currently being monitored by the Dynatrace resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list VM Host Operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return response of a list VM Host Operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VMInfoInner>> listHostsSinglePageAsync(String resourceGroupName, String monitorName) {
@@ -1610,15 +1616,15 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * List the VM/VMSS resources currently being monitored by the Dynatrace resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list VM Host Operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return response of a list VM Host Operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VMInfoInner>> listHostsSinglePageAsync(String resourceGroupName, String monitorName,
@@ -1649,7 +1655,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * List the VM/VMSS resources currently being monitored by the Dynatrace resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1665,7 +1671,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * List the VM/VMSS resources currently being monitored by the Dynatrace resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param context The context to associate with this operation.
@@ -1682,7 +1688,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * List the VM/VMSS resources currently being monitored by the Dynatrace resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1697,7 +1703,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * List the VM/VMSS resources currently being monitored by the Dynatrace resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param context The context to associate with this operation.
@@ -1713,7 +1719,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Get metric status.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitor resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1748,7 +1754,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Get metric status.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitor resource.
      * @param context The context to associate with this operation.
@@ -1783,7 +1789,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Get metric status.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitor resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1799,7 +1805,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Get metric status.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitor resource.
      * @param context The context to associate with this operation.
@@ -1816,7 +1822,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Get metric status.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitor resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1831,14 +1837,14 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Gets list of App Services with Dynatrace PaaS OneAgent enabled.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of App Services with Dynatrace PaaS OneAgent enabled along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AppServiceInfoInner>> listAppServicesSinglePageAsync(String resourceGroupName,
@@ -1869,7 +1875,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Gets list of App Services with Dynatrace PaaS OneAgent enabled.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param context The context to associate with this operation.
@@ -1877,7 +1883,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of App Services with Dynatrace PaaS OneAgent enabled along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AppServiceInfoInner>> listAppServicesSinglePageAsync(String resourceGroupName,
@@ -1908,7 +1914,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Gets list of App Services with Dynatrace PaaS OneAgent enabled.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1924,7 +1930,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Gets list of App Services with Dynatrace PaaS OneAgent enabled.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param context The context to associate with this operation.
@@ -1942,14 +1948,14 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Gets list of App Services with Dynatrace PaaS OneAgent enabled.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of App Services with Dynatrace PaaS OneAgent enabled as paginated response with {@link
-     *     PagedIterable}.
+     * @return list of App Services with Dynatrace PaaS OneAgent enabled as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AppServiceInfoInner> listAppServices(String resourceGroupName, String monitorName) {
@@ -1958,15 +1964,15 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Gets list of App Services with Dynatrace PaaS OneAgent enabled.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of App Services with Dynatrace PaaS OneAgent enabled as paginated response with {@link
-     *     PagedIterable}.
+     * @return list of App Services with Dynatrace PaaS OneAgent enabled as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AppServiceInfoInner> listAppServices(String resourceGroupName, String monitorName,
@@ -1976,7 +1982,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Gets the SSO configuration details from the partner.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param request The details of the get sso details request.
@@ -1985,7 +1991,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @throws ManagementException thrown if the request is rejected by server on status code 401.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the SSO configuration details from the partner along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SsoDetailsResponseInner>> getSsoDetailsWithResponseAsync(String resourceGroupName,
@@ -2017,7 +2023,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Gets the SSO configuration details from the partner.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param request The details of the get sso details request.
@@ -2027,7 +2033,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @throws ManagementException thrown if the request is rejected by server on status code 401.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the SSO configuration details from the partner along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SsoDetailsResponseInner>> getSsoDetailsWithResponseAsync(String resourceGroupName,
@@ -2058,7 +2064,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Gets the SSO configuration details from the partner.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2076,7 +2082,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Gets the SSO configuration details from the partner.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param request The details of the get sso details request.
@@ -2095,7 +2101,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Gets the SSO configuration details from the partner.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2112,7 +2118,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Gets all the Dynatrace environments that a user can link a azure resource to.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param request The details of the linkable environment request.
@@ -2120,7 +2126,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the Dynatrace environments that a user can link a azure resource to along with {@link PagedResponse}
-     *     on successful completion of {@link Mono}.
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LinkableEnvironmentResponseInner>> listLinkableEnvironmentsSinglePageAsync(
@@ -2157,7 +2163,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Gets all the Dynatrace environments that a user can link a azure resource to.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param request The details of the linkable environment request.
@@ -2166,7 +2172,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the Dynatrace environments that a user can link a azure resource to along with {@link PagedResponse}
-     *     on successful completion of {@link Mono}.
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LinkableEnvironmentResponseInner>> listLinkableEnvironmentsSinglePageAsync(
@@ -2202,15 +2208,15 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Gets all the Dynatrace environments that a user can link a azure resource to.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param request The details of the linkable environment request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the Dynatrace environments that a user can link a azure resource to as paginated response with {@link
-     *     PagedFlux}.
+     * @return all the Dynatrace environments that a user can link a azure resource to as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<LinkableEnvironmentResponseInner> listLinkableEnvironmentsAsync(String resourceGroupName,
@@ -2221,7 +2227,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Gets all the Dynatrace environments that a user can link a azure resource to.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param request The details of the linkable environment request.
@@ -2229,8 +2235,8 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the Dynatrace environments that a user can link a azure resource to as paginated response with {@link
-     *     PagedFlux}.
+     * @return all the Dynatrace environments that a user can link a azure resource to as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<LinkableEnvironmentResponseInner> listLinkableEnvironmentsAsync(String resourceGroupName,
@@ -2242,15 +2248,15 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Gets all the Dynatrace environments that a user can link a azure resource to.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param request The details of the linkable environment request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the Dynatrace environments that a user can link a azure resource to as paginated response with {@link
-     *     PagedIterable}.
+     * @return all the Dynatrace environments that a user can link a azure resource to as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LinkableEnvironmentResponseInner> listLinkableEnvironments(String resourceGroupName,
@@ -2260,7 +2266,7 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Gets all the Dynatrace environments that a user can link a azure resource to.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param request The details of the linkable environment request.
@@ -2268,8 +2274,8 @@ public final class MonitorsClientImpl implements MonitorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the Dynatrace environments that a user can link a azure resource to as paginated response with {@link
-     *     PagedIterable}.
+     * @return all the Dynatrace environments that a user can link a azure resource to as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LinkableEnvironmentResponseInner> listLinkableEnvironments(String resourceGroupName,
@@ -2279,14 +2285,13 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of all the resources being monitored by Dynatrace monitor resource along with {@link PagedResponse}
-     *     on successful completion of {@link Mono}.
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MonitoredResourceInner>> listMonitoredResourcesNextSinglePageAsync(String nextLink) {
@@ -2308,15 +2313,14 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of all the resources being monitored by Dynatrace monitor resource along with {@link PagedResponse}
-     *     on successful completion of {@link Mono}.
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MonitoredResourceInner>> listMonitoredResourcesNextSinglePageAsync(String nextLink,
@@ -2337,14 +2341,13 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a MonitorResource list operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MonitorResourceInner>> listBySubscriptionIdNextSinglePageAsync(String nextLink) {
@@ -2366,15 +2369,14 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a MonitorResource list operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MonitorResourceInner>> listBySubscriptionIdNextSinglePageAsync(String nextLink,
@@ -2395,14 +2397,13 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a MonitorResource list operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MonitorResourceInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -2424,15 +2425,14 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a MonitorResource list operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MonitorResourceInner>> listByResourceGroupNextSinglePageAsync(String nextLink,
@@ -2453,14 +2453,13 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list VM Host Operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return response of a list VM Host Operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VMInfoInner>> listHostsNextSinglePageAsync(String nextLink) {
@@ -2481,15 +2480,14 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list VM Host Operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return response of a list VM Host Operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VMInfoInner>> listHostsNextSinglePageAsync(String nextLink, Context context) {
@@ -2509,14 +2507,13 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response of a list App Services Operation along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AppServiceInfoInner>> listAppServicesNextSinglePageAsync(String nextLink) {
@@ -2537,15 +2534,14 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response of a list App Services Operation along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AppServiceInfoInner>> listAppServicesNextSinglePageAsync(String nextLink,
@@ -2566,14 +2562,13 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for getting all the linkable environments along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LinkableEnvironmentResponseInner>>
@@ -2596,15 +2591,14 @@ public final class MonitorsClientImpl implements MonitorsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for getting all the linkable environments along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LinkableEnvironmentResponseInner>>

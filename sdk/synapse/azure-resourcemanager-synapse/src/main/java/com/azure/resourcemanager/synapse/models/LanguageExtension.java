@@ -6,18 +6,20 @@ package com.azure.resourcemanager.synapse.models;
 
 import com.azure.resourcemanager.synapse.fluent.models.LanguageExtensionInner;
 
-/** An immutable client-side representation of LanguageExtension. */
+/**
+ * An immutable client-side representation of LanguageExtension.
+ */
 public interface LanguageExtension {
     /**
      * Gets the languageExtensionName property: The language extension name.
-     *
+     * 
      * @return the languageExtensionName value.
      */
     LanguageExtensionName languageExtensionName();
 
     /**
      * Gets the inner com.azure.resourcemanager.synapse.fluent.models.LanguageExtensionInner object.
-     *
+     * 
      * @return the inner object.
      */
     LanguageExtensionInner innerModel();

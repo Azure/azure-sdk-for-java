@@ -11,11 +11,13 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.fluent.models.CheckNameResultInner;
 import com.azure.resourcemanager.synapse.models.DatabaseCheckNameRequest;
 
-/** An instance of this class provides access to all the operations defined in KustoPoolChildResourcesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in KustoPoolChildResourcesClient.
+ */
 public interface KustoPoolChildResourcesClient {
     /**
      * Checks that the Kusto Pool child resource name is valid and is not already in use.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -32,7 +34,7 @@ public interface KustoPoolChildResourcesClient {
 
     /**
      * Checks that the Kusto Pool child resource name is valid and is not already in use.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.

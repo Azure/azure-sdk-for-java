@@ -8,11 +8,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.fluent.models.ManagedIdentitySqlControlSettingsModelInner;
 
-/** Resource collection API of WorkspaceManagedIdentitySqlControlSettings. */
+/**
+ * Resource collection API of WorkspaceManagedIdentitySqlControlSettings.
+ */
 public interface WorkspaceManagedIdentitySqlControlSettings {
     /**
      * Get Managed Identity Sql Control Settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -26,7 +28,7 @@ public interface WorkspaceManagedIdentitySqlControlSettings {
 
     /**
      * Get Managed Identity Sql Control Settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -38,7 +40,7 @@ public interface WorkspaceManagedIdentitySqlControlSettings {
 
     /**
      * Create or update Managed Identity Sql Control Settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param managedIdentitySqlControlSettings Managed Identity Sql Control Settings.
@@ -52,7 +54,7 @@ public interface WorkspaceManagedIdentitySqlControlSettings {
 
     /**
      * Create or update Managed Identity Sql Control Settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param managedIdentitySqlControlSettings Managed Identity Sql Control Settings.

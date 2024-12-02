@@ -31,14 +31,14 @@ public final class SqlPoolGeoBackupPoliciesImpl implements SqlPoolGeoBackupPolic
     public PagedIterable<GeoBackupPolicy> list(String resourceGroupName, String workspaceName, String sqlPoolName) {
         PagedIterable<GeoBackupPolicyInner> inner
             = this.serviceClient().list(resourceGroupName, workspaceName, sqlPoolName);
-        return Utils.mapPage(inner, inner1 -> new GeoBackupPolicyImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new GeoBackupPolicyImpl(inner1, this.manager()));
     }
 
     public PagedIterable<GeoBackupPolicy> list(String resourceGroupName, String workspaceName, String sqlPoolName,
         Context context) {
         PagedIterable<GeoBackupPolicyInner> inner
             = this.serviceClient().list(resourceGroupName, workspaceName, sqlPoolName, context);
-        return Utils.mapPage(inner, inner1 -> new GeoBackupPolicyImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new GeoBackupPolicyImpl(inner1, this.manager()));
     }
 
     public Response<GeoBackupPolicy> getWithResponse(String resourceGroupName, String workspaceName, String sqlPoolName,
@@ -65,22 +65,22 @@ public final class SqlPoolGeoBackupPoliciesImpl implements SqlPoolGeoBackupPolic
     }
 
     public GeoBackupPolicy getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
+        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        String sqlPoolName = Utils.getValueFromIdByName(id, "sqlPools");
+        String sqlPoolName = ResourceManagerUtils.getValueFromIdByName(id, "sqlPools");
         if (sqlPoolName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'sqlPools'.", id)));
         }
-        String geoBackupPolicyNameLocal = Utils.getValueFromIdByName(id, "geoBackupPolicies");
+        String geoBackupPolicyNameLocal = ResourceManagerUtils.getValueFromIdByName(id, "geoBackupPolicies");
         if (geoBackupPolicyNameLocal == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'geoBackupPolicies'.", id)));
@@ -91,22 +91,22 @@ public final class SqlPoolGeoBackupPoliciesImpl implements SqlPoolGeoBackupPolic
     }
 
     public Response<GeoBackupPolicy> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
+        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        String sqlPoolName = Utils.getValueFromIdByName(id, "sqlPools");
+        String sqlPoolName = ResourceManagerUtils.getValueFromIdByName(id, "sqlPools");
         if (sqlPoolName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'sqlPools'.", id)));
         }
-        String geoBackupPolicyNameLocal = Utils.getValueFromIdByName(id, "geoBackupPolicies");
+        String geoBackupPolicyNameLocal = ResourceManagerUtils.getValueFromIdByName(id, "geoBackupPolicies");
         if (geoBackupPolicyNameLocal == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'geoBackupPolicies'.", id)));

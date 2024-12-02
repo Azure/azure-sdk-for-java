@@ -36,15 +36,19 @@ import reactor.core.publisher.Mono;
  */
 public final class WorkspaceManagedSqlServerRecoverableSqlPoolsClientImpl
     implements WorkspaceManagedSqlServerRecoverableSqlPoolsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final WorkspaceManagedSqlServerRecoverableSqlPoolsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SynapseManagementClientImpl client;
 
     /**
      * Initializes an instance of WorkspaceManagedSqlServerRecoverableSqlPoolsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     WorkspaceManagedSqlServerRecoverableSqlPoolsClientImpl(SynapseManagementClientImpl client) {
@@ -61,8 +65,7 @@ public final class WorkspaceManagedSqlServerRecoverableSqlPoolsClientImpl
     @ServiceInterface(name = "SynapseManagementCli")
     public interface WorkspaceManagedSqlServerRecoverableSqlPoolsService {
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-            + "/{workspaceName}/recoverableSqlPools")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/recoverableSqlPools")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RecoverableSqlPoolListResult>> list(@HostParam("$host") String endpoint,
@@ -71,8 +74,7 @@ public final class WorkspaceManagedSqlServerRecoverableSqlPoolsClientImpl
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-            + "/{workspaceName}/recoverableSqlPools/{sqlPoolName}")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/recoverableSqlPools/{sqlPoolName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RecoverableSqlPoolInner>> get(@HostParam("$host") String endpoint,
@@ -91,16 +93,16 @@ public final class WorkspaceManagedSqlServerRecoverableSqlPoolsClientImpl
 
     /**
      * Get list of recoverable sql pools for the server.
-     *
-     * <p>Get list of recoverable sql pools for workspace managed sql server.
-     *
+     * 
+     * Get list of recoverable sql pools for workspace managed sql server.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of recoverable sql pools for workspace managed sql server along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RecoverableSqlPoolInner>> listSinglePageAsync(String resourceGroupName,
@@ -132,9 +134,9 @@ public final class WorkspaceManagedSqlServerRecoverableSqlPoolsClientImpl
 
     /**
      * Get list of recoverable sql pools for the server.
-     *
-     * <p>Get list of recoverable sql pools for workspace managed sql server.
-     *
+     * 
+     * Get list of recoverable sql pools for workspace managed sql server.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -142,7 +144,7 @@ public final class WorkspaceManagedSqlServerRecoverableSqlPoolsClientImpl
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of recoverable sql pools for workspace managed sql server along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RecoverableSqlPoolInner>> listSinglePageAsync(String resourceGroupName,
@@ -174,16 +176,16 @@ public final class WorkspaceManagedSqlServerRecoverableSqlPoolsClientImpl
 
     /**
      * Get list of recoverable sql pools for the server.
-     *
-     * <p>Get list of recoverable sql pools for workspace managed sql server.
-     *
+     * 
+     * Get list of recoverable sql pools for workspace managed sql server.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of recoverable sql pools for workspace managed sql server as paginated response with {@link
-     *     PagedFlux}.
+     * @return list of recoverable sql pools for workspace managed sql server as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RecoverableSqlPoolInner> listAsync(String resourceGroupName, String workspaceName) {
@@ -193,17 +195,17 @@ public final class WorkspaceManagedSqlServerRecoverableSqlPoolsClientImpl
 
     /**
      * Get list of recoverable sql pools for the server.
-     *
-     * <p>Get list of recoverable sql pools for workspace managed sql server.
-     *
+     * 
+     * Get list of recoverable sql pools for workspace managed sql server.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of recoverable sql pools for workspace managed sql server as paginated response with {@link
-     *     PagedFlux}.
+     * @return list of recoverable sql pools for workspace managed sql server as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RecoverableSqlPoolInner> listAsync(String resourceGroupName, String workspaceName,
@@ -214,16 +216,16 @@ public final class WorkspaceManagedSqlServerRecoverableSqlPoolsClientImpl
 
     /**
      * Get list of recoverable sql pools for the server.
-     *
-     * <p>Get list of recoverable sql pools for workspace managed sql server.
-     *
+     * 
+     * Get list of recoverable sql pools for workspace managed sql server.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of recoverable sql pools for workspace managed sql server as paginated response with {@link
-     *     PagedIterable}.
+     * @return list of recoverable sql pools for workspace managed sql server as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RecoverableSqlPoolInner> list(String resourceGroupName, String workspaceName) {
@@ -232,17 +234,17 @@ public final class WorkspaceManagedSqlServerRecoverableSqlPoolsClientImpl
 
     /**
      * Get list of recoverable sql pools for the server.
-     *
-     * <p>Get list of recoverable sql pools for workspace managed sql server.
-     *
+     * 
+     * Get list of recoverable sql pools for workspace managed sql server.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of recoverable sql pools for workspace managed sql server as paginated response with {@link
-     *     PagedIterable}.
+     * @return list of recoverable sql pools for workspace managed sql server as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RecoverableSqlPoolInner> list(String resourceGroupName, String workspaceName,
@@ -252,9 +254,9 @@ public final class WorkspaceManagedSqlServerRecoverableSqlPoolsClientImpl
 
     /**
      * Get recoverable sql pools for the server.
-     *
-     * <p>Get recoverable sql pools for workspace managed sql server.
-     *
+     * 
+     * Get recoverable sql pools for workspace managed sql server.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName The name of the sql pool.
@@ -262,7 +264,7 @@ public final class WorkspaceManagedSqlServerRecoverableSqlPoolsClientImpl
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return recoverable sql pools for workspace managed sql server along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RecoverableSqlPoolInner>> getWithResponseAsync(String resourceGroupName, String workspaceName,
@@ -295,9 +297,9 @@ public final class WorkspaceManagedSqlServerRecoverableSqlPoolsClientImpl
 
     /**
      * Get recoverable sql pools for the server.
-     *
-     * <p>Get recoverable sql pools for workspace managed sql server.
-     *
+     * 
+     * Get recoverable sql pools for workspace managed sql server.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName The name of the sql pool.
@@ -306,7 +308,7 @@ public final class WorkspaceManagedSqlServerRecoverableSqlPoolsClientImpl
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return recoverable sql pools for workspace managed sql server along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RecoverableSqlPoolInner>> getWithResponseAsync(String resourceGroupName, String workspaceName,
@@ -338,9 +340,9 @@ public final class WorkspaceManagedSqlServerRecoverableSqlPoolsClientImpl
 
     /**
      * Get recoverable sql pools for the server.
-     *
-     * <p>Get recoverable sql pools for workspace managed sql server.
-     *
+     * 
+     * Get recoverable sql pools for workspace managed sql server.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName The name of the sql pool.
@@ -357,9 +359,9 @@ public final class WorkspaceManagedSqlServerRecoverableSqlPoolsClientImpl
 
     /**
      * Get recoverable sql pools for the server.
-     *
-     * <p>Get recoverable sql pools for workspace managed sql server.
-     *
+     * 
+     * Get recoverable sql pools for workspace managed sql server.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName The name of the sql pool.
@@ -377,9 +379,9 @@ public final class WorkspaceManagedSqlServerRecoverableSqlPoolsClientImpl
 
     /**
      * Get recoverable sql pools for the server.
-     *
-     * <p>Get recoverable sql pools for workspace managed sql server.
-     *
+     * 
+     * Get recoverable sql pools for workspace managed sql server.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName The name of the sql pool.
@@ -395,14 +397,13 @@ public final class WorkspaceManagedSqlServerRecoverableSqlPoolsClientImpl
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to a list recoverable sql pools request along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RecoverableSqlPoolInner>> listNextSinglePageAsync(String nextLink) {
@@ -422,15 +423,14 @@ public final class WorkspaceManagedSqlServerRecoverableSqlPoolsClientImpl
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to a list recoverable sql pools request along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RecoverableSqlPoolInner>> listNextSinglePageAsync(String nextLink, Context context) {

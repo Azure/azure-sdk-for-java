@@ -4,20 +4,22 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-/** Samples for WorkspaceManagedSqlServerExtendedBlobAuditingPolicies ListByWorkspace. */
+/**
+ * Samples for WorkspaceManagedSqlServerExtendedBlobAuditingPolicies ListByWorkspace.
+ */
 public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesListByWorkspaceSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/ListWorkspaceManagedSqlServerExtendedBlobAuditingSettings.json
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * ListWorkspaceManagedSqlServerExtendedBlobAuditingSettings.json
      */
     /**
      * Sample code: Get workspace managed sql server's extended blob auditing settings.
-     *
+     * 
      * @param manager Entry point to SynapseManager.
      */
     public static void getWorkspaceManagedSqlServerSExtendedBlobAuditingSettings(
         com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager
-            .workspaceManagedSqlServerExtendedBlobAuditingPolicies()
+        manager.workspaceManagedSqlServerExtendedBlobAuditingPolicies()
             .listByWorkspace("wsg-7398", "testWorkspace", com.azure.core.util.Context.NONE);
     }
 }

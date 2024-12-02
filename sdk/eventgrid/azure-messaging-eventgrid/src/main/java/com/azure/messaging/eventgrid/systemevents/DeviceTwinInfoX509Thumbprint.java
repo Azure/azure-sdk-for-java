@@ -13,8 +13,8 @@ import java.io.IOException;
 
 /**
  * The thumbprint is a unique value for the x509 certificate, commonly used to find a particular certificate in a
- * certificate store. The thumbprint is dynamically generated using the SHA1 algorithm, and does not physically exist
- * in the certificate.
+ * certificate store. The thumbprint is dynamically generated using the SHA1 algorithm, and does not physically exist in
+ * the certificate.
  */
 @Fluent
 public final class DeviceTwinInfoX509Thumbprint implements JsonSerializable<DeviceTwinInfoX509Thumbprint> {
@@ -74,6 +74,9 @@ public final class DeviceTwinInfoX509Thumbprint implements JsonSerializable<Devi
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

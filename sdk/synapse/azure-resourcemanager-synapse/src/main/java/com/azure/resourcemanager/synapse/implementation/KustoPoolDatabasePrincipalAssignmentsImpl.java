@@ -60,14 +60,16 @@ public final class KustoPoolDatabasePrincipalAssignmentsImpl implements KustoPoo
         String databaseName, String resourceGroupName) {
         PagedIterable<DatabasePrincipalAssignmentInner> inner
             = this.serviceClient().list(workspaceName, kustoPoolName, databaseName, resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new DatabasePrincipalAssignmentImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new DatabasePrincipalAssignmentImpl(inner1, this.manager()));
     }
 
     public PagedIterable<DatabasePrincipalAssignment> list(String workspaceName, String kustoPoolName,
         String databaseName, String resourceGroupName, Context context) {
         PagedIterable<DatabasePrincipalAssignmentInner> inner
             = this.serviceClient().list(workspaceName, kustoPoolName, databaseName, resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new DatabasePrincipalAssignmentImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new DatabasePrincipalAssignmentImpl(inner1, this.manager()));
     }
 
     public Response<DatabasePrincipalAssignment> getWithResponse(String workspaceName, String kustoPoolName,
@@ -107,27 +109,27 @@ public final class KustoPoolDatabasePrincipalAssignmentsImpl implements KustoPoo
     }
 
     public DatabasePrincipalAssignment getById(String id) {
-        String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
+        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        String kustoPoolName = Utils.getValueFromIdByName(id, "kustoPools");
+        String kustoPoolName = ResourceManagerUtils.getValueFromIdByName(id, "kustoPools");
         if (kustoPoolName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'kustoPools'.", id)));
         }
-        String databaseName = Utils.getValueFromIdByName(id, "databases");
+        String databaseName = ResourceManagerUtils.getValueFromIdByName(id, "databases");
         if (databaseName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'databases'.", id)));
         }
-        String principalAssignmentName = Utils.getValueFromIdByName(id, "principalAssignments");
+        String principalAssignmentName = ResourceManagerUtils.getValueFromIdByName(id, "principalAssignments");
         if (principalAssignmentName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'principalAssignments'.", id)));
         }
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
@@ -139,27 +141,27 @@ public final class KustoPoolDatabasePrincipalAssignmentsImpl implements KustoPoo
     }
 
     public Response<DatabasePrincipalAssignment> getByIdWithResponse(String id, Context context) {
-        String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
+        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        String kustoPoolName = Utils.getValueFromIdByName(id, "kustoPools");
+        String kustoPoolName = ResourceManagerUtils.getValueFromIdByName(id, "kustoPools");
         if (kustoPoolName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'kustoPools'.", id)));
         }
-        String databaseName = Utils.getValueFromIdByName(id, "databases");
+        String databaseName = ResourceManagerUtils.getValueFromIdByName(id, "databases");
         if (databaseName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'databases'.", id)));
         }
-        String principalAssignmentName = Utils.getValueFromIdByName(id, "principalAssignments");
+        String principalAssignmentName = ResourceManagerUtils.getValueFromIdByName(id, "principalAssignments");
         if (principalAssignmentName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'principalAssignments'.", id)));
         }
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
@@ -169,27 +171,27 @@ public final class KustoPoolDatabasePrincipalAssignmentsImpl implements KustoPoo
     }
 
     public void deleteById(String id) {
-        String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
+        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        String kustoPoolName = Utils.getValueFromIdByName(id, "kustoPools");
+        String kustoPoolName = ResourceManagerUtils.getValueFromIdByName(id, "kustoPools");
         if (kustoPoolName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'kustoPools'.", id)));
         }
-        String databaseName = Utils.getValueFromIdByName(id, "databases");
+        String databaseName = ResourceManagerUtils.getValueFromIdByName(id, "databases");
         if (databaseName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'databases'.", id)));
         }
-        String principalAssignmentName = Utils.getValueFromIdByName(id, "principalAssignments");
+        String principalAssignmentName = ResourceManagerUtils.getValueFromIdByName(id, "principalAssignments");
         if (principalAssignmentName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'principalAssignments'.", id)));
         }
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
@@ -199,27 +201,27 @@ public final class KustoPoolDatabasePrincipalAssignmentsImpl implements KustoPoo
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
+        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        String kustoPoolName = Utils.getValueFromIdByName(id, "kustoPools");
+        String kustoPoolName = ResourceManagerUtils.getValueFromIdByName(id, "kustoPools");
         if (kustoPoolName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'kustoPools'.", id)));
         }
-        String databaseName = Utils.getValueFromIdByName(id, "databases");
+        String databaseName = ResourceManagerUtils.getValueFromIdByName(id, "databases");
         if (databaseName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'databases'.", id)));
         }
-        String principalAssignmentName = Utils.getValueFromIdByName(id, "principalAssignments");
+        String principalAssignmentName = ResourceManagerUtils.getValueFromIdByName(id, "principalAssignments");
         if (principalAssignmentName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'principalAssignments'.", id)));
         }
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));

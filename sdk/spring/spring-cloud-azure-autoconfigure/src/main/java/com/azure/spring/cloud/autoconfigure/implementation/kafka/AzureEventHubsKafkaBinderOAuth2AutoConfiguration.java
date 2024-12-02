@@ -8,6 +8,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.cloud.stream.binder.kafka.config.KafkaBinderConfiguration;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for Azure Event Hubs Kafka Azure Identity support on Spring Cloud Stream framework.
@@ -17,6 +18,7 @@ import org.springframework.context.annotation.Bean;
  *
  * @since 4.4.0
  */
+@Configuration(proxyBeanMethods = false)
 @ConditionalOnClass(KafkaBinderConfiguration.class)
 @ConditionalOnProperty(value = "spring.cloud.azure.eventhubs.kafka.enabled", havingValue = "true", matchIfMissing = true)
 public class AzureEventHubsKafkaBinderOAuth2AutoConfiguration {

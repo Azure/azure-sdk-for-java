@@ -4,20 +4,22 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-/** Samples for SqlPoolSensitivityLabels ListCurrent. */
+/**
+ * Samples for SqlPoolSensitivityLabels ListCurrent.
+ */
 public final class SqlPoolSensitivityLabelsListCurrentSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/ListSqlPoolsSensitivityLabelsWithSourceCurrent.json
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * ListSqlPoolsSensitivityLabelsWithSourceCurrent.json
      */
     /**
      * Sample code: Gets the current sensitivity labels of a given SQL Analytics pool.
-     *
+     * 
      * @param manager Entry point to SynapseManager.
      */
     public static void getsTheCurrentSensitivityLabelsOfAGivenSQLAnalyticsPool(
         com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager
-            .sqlPoolSensitivityLabels()
+        manager.sqlPoolSensitivityLabels()
             .listCurrent("myRG", "myServer", "myDatabase", null, com.azure.core.util.Context.NONE);
     }
 }

@@ -7,88 +7,106 @@ package com.azure.resourcemanager.cognitiveservices.models;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.cognitiveservices.fluent.models.DeploymentInner;
+import java.util.Map;
 
-/** An immutable client-side representation of Deployment. */
+/**
+ * An immutable client-side representation of Deployment.
+ */
 public interface Deployment {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the sku property: The resource model definition representing SKU.
-     *
+     * 
      * @return the sku value.
      */
     Sku sku();
 
     /**
      * Gets the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
+     * 
      * @return the systemData value.
      */
     SystemData systemData();
 
     /**
      * Gets the etag property: Resource Etag.
-     *
+     * 
      * @return the etag value.
      */
     String etag();
 
     /**
+     * Gets the tags property: Resource tags.
+     * 
+     * @return the tags value.
+     */
+    Map<String, String> tags();
+
+    /**
      * Gets the properties property: Properties of Cognitive Services account deployment.
-     *
+     * 
      * @return the properties value.
      */
     DeploymentProperties properties();
 
     /**
      * Gets the name of the resource group.
-     *
+     * 
      * @return the name of the resource group.
      */
     String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.cognitiveservices.fluent.models.DeploymentInner object.
-     *
+     * 
      * @return the inner object.
      */
     DeploymentInner innerModel();
 
-    /** The entirety of the Deployment definition. */
+    /**
+     * The entirety of the Deployment definition.
+     */
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
 
-    /** The Deployment definition stages. */
+    /**
+     * The Deployment definition stages.
+     */
     interface DefinitionStages {
-        /** The first stage of the Deployment definition. */
+        /**
+         * The first stage of the Deployment definition.
+         */
         interface Blank extends WithParentResource {
         }
 
-        /** The stage of the Deployment definition allowing to specify parent resource. */
+        /**
+         * The stage of the Deployment definition allowing to specify parent resource.
+         */
         interface WithParentResource {
             /**
              * Specifies resourceGroupName, accountName.
-             *
+             * 
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @param accountName The name of Cognitive Services account.
              * @return the next definition stage.
@@ -100,39 +118,57 @@ public interface Deployment {
          * The stage of the Deployment definition which contains all the minimum required properties for the resource to
          * be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate extends DefinitionStages.WithSku, DefinitionStages.WithProperties {
+        interface WithCreate
+            extends DefinitionStages.WithTags, DefinitionStages.WithSku, DefinitionStages.WithProperties {
             /**
              * Executes the create request.
-             *
+             * 
              * @return the created resource.
              */
             Deployment create();
 
             /**
              * Executes the create request.
-             *
+             * 
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
             Deployment create(Context context);
         }
 
-        /** The stage of the Deployment definition allowing to specify sku. */
+        /**
+         * The stage of the Deployment definition allowing to specify tags.
+         */
+        interface WithTags {
+            /**
+             * Specifies the tags property: Resource tags..
+             * 
+             * @param tags Resource tags.
+             * @return the next definition stage.
+             */
+            WithCreate withTags(Map<String, String> tags);
+        }
+
+        /**
+         * The stage of the Deployment definition allowing to specify sku.
+         */
         interface WithSku {
             /**
              * Specifies the sku property: The resource model definition representing SKU.
-             *
+             * 
              * @param sku The resource model definition representing SKU.
              * @return the next definition stage.
              */
             WithCreate withSku(Sku sku);
         }
 
-        /** The stage of the Deployment definition allowing to specify properties. */
+        /**
+         * The stage of the Deployment definition allowing to specify properties.
+         */
         interface WithProperties {
             /**
              * Specifies the properties property: Properties of Cognitive Services account deployment..
-             *
+             * 
              * @param properties Properties of Cognitive Services account deployment.
              * @return the next definition stage.
              */
@@ -142,64 +178,72 @@ public interface Deployment {
 
     /**
      * Begins update for the Deployment resource.
-     *
+     * 
      * @return the stage of resource update.
      */
     Deployment.Update update();
 
-    /** The template for Deployment update. */
-    interface Update extends UpdateStages.WithSku, UpdateStages.WithProperties {
+    /**
+     * The template for Deployment update.
+     */
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithSku {
         /**
          * Executes the update request.
-         *
+         * 
          * @return the updated resource.
          */
         Deployment apply();
 
         /**
          * Executes the update request.
-         *
+         * 
          * @param context The context to associate with this operation.
          * @return the updated resource.
          */
         Deployment apply(Context context);
     }
 
-    /** The Deployment update stages. */
+    /**
+     * The Deployment update stages.
+     */
     interface UpdateStages {
-        /** The stage of the Deployment update allowing to specify sku. */
+        /**
+         * The stage of the Deployment update allowing to specify tags.
+         */
+        interface WithTags {
+            /**
+             * Specifies the tags property: Resource tags..
+             * 
+             * @param tags Resource tags.
+             * @return the next definition stage.
+             */
+            Update withTags(Map<String, String> tags);
+        }
+
+        /**
+         * The stage of the Deployment update allowing to specify sku.
+         */
         interface WithSku {
             /**
              * Specifies the sku property: The resource model definition representing SKU.
-             *
+             * 
              * @param sku The resource model definition representing SKU.
              * @return the next definition stage.
              */
             Update withSku(Sku sku);
         }
-
-        /** The stage of the Deployment update allowing to specify properties. */
-        interface WithProperties {
-            /**
-             * Specifies the properties property: Properties of Cognitive Services account deployment..
-             *
-             * @param properties Properties of Cognitive Services account deployment.
-             * @return the next definition stage.
-             */
-            Update withProperties(DeploymentProperties properties);
-        }
     }
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @return the refreshed resource.
      */
     Deployment refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */

@@ -5,7 +5,6 @@ package com.azure.cosmos.implementation.http;
 
 import com.azure.core.http.ProxyOptions;
 import com.azure.cosmos.implementation.Configs;
-import com.azure.cosmos.implementation.guava27.Strings;
 
 import java.time.Duration;
 
@@ -13,17 +12,61 @@ import java.time.Duration;
  * Helper class internally used for instantiating reactor netty http client.
  */
 public class HttpClientConfig {
-    public final static String REACTOR_NETWORK_LOG_CATEGORY = "com.azure.cosmos.netty-network";
 
     private final Configs configs;
-    private Integer maxPoolSize;
-    private Duration maxIdleConnectionTimeout;
-    private Duration networkRequestTimeout;
+    private Duration connectionAcquireTimeout = Configs.getConnectionAcquireTimeout();
+    private int maxPoolSize = Configs.getDefaultHttpPoolSize();
+    private Duration maxIdleConnectionTimeout = Configs.getMaxIdleConnectionTimeout();
+    private Duration networkRequestTimeout = Duration.ofSeconds(Configs.getHttpResponseTimeoutInSeconds());
+    private String connectionPoolName = Configs.getReactorNettyConnectionPoolName();
+    private int maxHeaderSize = Configs.getMaxHttpHeaderSize();
+    private int maxInitialLineLength = Configs.getMaxHttpInitialLineLength();
+    private int maxChunkSize = Configs.getMaxHttpChunkSize();
+    private int maxBodyLength = Configs.getMaxHttpBodyLength();
+    public String reactorNetworkLogCategory = "com.azure.cosmos.netty-network";
     private ProxyOptions proxy;
     private boolean connectionKeepAlive = true;
+    private boolean serverCertValidationDisabled = false;
+    private Http2ConnectionConfig http2ConnectionConfig;
 
     public HttpClientConfig(Configs configs) {
         this.configs = configs;
+        this.http2ConnectionConfig = new Http2ConnectionConfig();
+    }
+
+    public HttpClientConfig withMaxHeaderSize(int maxHeaderSize) {
+        this.maxHeaderSize = maxHeaderSize;
+        return this;
+    }
+
+    public HttpClientConfig withMaxInitialLineLength(int maxInitialLineLength) {
+        this.maxInitialLineLength = maxInitialLineLength;
+        return this;
+    }
+
+    public HttpClientConfig withMaxChunkSize(int maxChunkSize) {
+        this.maxChunkSize = maxChunkSize;
+        return this;
+    }
+
+    public HttpClientConfig withMaxBodyLength(int maxBodyLength) {
+        this.maxBodyLength = maxBodyLength;
+        return this;
+    }
+
+    public HttpClientConfig withReactorNetworkLogCategory(String reactorNetworkLogCategory) {
+        this.reactorNetworkLogCategory = reactorNetworkLogCategory;
+        return this;
+    }
+
+    public HttpClientConfig withConnectionPoolName(String connectionPoolName) {
+        this.connectionPoolName = connectionPoolName;
+        return this;
+    }
+
+    public HttpClientConfig withConnectionAcquireTimeout(Duration connectionAcquireTimeout) {
+        this.connectionAcquireTimeout = connectionAcquireTimeout;
+        return this;
     }
 
     public HttpClientConfig withPoolSize(int maxPoolSize) {
@@ -51,11 +94,21 @@ public class HttpClientConfig {
         return this;
     }
 
+    public HttpClientConfig withServerCertValidationDisabled(boolean serverCertValidationDisabled) {
+        this.serverCertValidationDisabled = serverCertValidationDisabled;
+        return this;
+    }
+
+    public HttpClientConfig withHttp2Config(Http2ConnectionConfig http2ConnectionConfig) {
+        this.http2ConnectionConfig = http2ConnectionConfig;
+        return this;
+    }
+
     public Configs getConfigs() {
         return configs;
     }
 
-    public Integer getMaxPoolSize() {
+    public int getMaxPoolSize() {
         return maxPoolSize;
     }
 
@@ -75,13 +128,48 @@ public class HttpClientConfig {
         return connectionKeepAlive;
     }
 
-    //  TODO(kuthapar): Do we really need to use Strings.lenientFormat() here?
-    //  Even the documentation of this API suggests to use String.format or just string appends if possible.
+    public Duration getConnectionAcquireTimeout() {
+        return connectionAcquireTimeout;
+    }
+
+    public String getConnectionPoolName() {
+        return this.connectionPoolName;
+    }
+
+    public String getReactorNetworkLogCategory() {
+        return reactorNetworkLogCategory;
+    }
+
+    public int getMaxHeaderSize() {
+        return maxHeaderSize;
+    }
+
+    public int getMaxInitialLineLength() {
+        return maxInitialLineLength;
+    }
+
+    public int getMaxChunkSize() {
+        return maxChunkSize;
+    }
+
+    public int getMaxBodyLength() {
+        return maxBodyLength;
+    }
+
+    public boolean isServerCertValidationDisabled() {
+        return serverCertValidationDisabled;
+    }
+
+    public Http2ConnectionConfig getHttp2Config() {
+        return http2ConnectionConfig;
+    }
+
     public String toDiagnosticsString() {
-        return Strings.lenientFormat("(cps:%s, nrto:%s, icto:%s, p:%s)",
+        return String.format("(cps:%s, nrto:%s, icto:%s, cto:%s, p:%s)",
             maxPoolSize,
             networkRequestTimeout,
             maxIdleConnectionTimeout,
+            connectionAcquireTimeout,
             proxy != null);
     }
 }

@@ -29,14 +29,14 @@ public final class AssetFiltersImpl implements AssetFilters {
 
     public PagedIterable<AssetFilter> list(String resourceGroupName, String accountName, String assetName) {
         PagedIterable<AssetFilterInner> inner = this.serviceClient().list(resourceGroupName, accountName, assetName);
-        return Utils.mapPage(inner, inner1 -> new AssetFilterImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AssetFilterImpl(inner1, this.manager()));
     }
 
     public PagedIterable<AssetFilter> list(String resourceGroupName, String accountName, String assetName,
         Context context) {
         PagedIterable<AssetFilterInner> inner
             = this.serviceClient().list(resourceGroupName, accountName, assetName, context);
-        return Utils.mapPage(inner, inner1 -> new AssetFilterImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AssetFilterImpl(inner1, this.manager()));
     }
 
     public Response<AssetFilter> getWithResponse(String resourceGroupName, String accountName, String assetName,
@@ -70,22 +70,22 @@ public final class AssetFiltersImpl implements AssetFilters {
     }
 
     public AssetFilter getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String accountName = Utils.getValueFromIdByName(id, "mediaServices");
+        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "mediaServices");
         if (accountName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'mediaServices'.", id)));
         }
-        String assetName = Utils.getValueFromIdByName(id, "assets");
+        String assetName = ResourceManagerUtils.getValueFromIdByName(id, "assets");
         if (assetName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'assets'.", id)));
         }
-        String filterName = Utils.getValueFromIdByName(id, "assetFilters");
+        String filterName = ResourceManagerUtils.getValueFromIdByName(id, "assetFilters");
         if (filterName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'assetFilters'.", id)));
@@ -94,22 +94,22 @@ public final class AssetFiltersImpl implements AssetFilters {
     }
 
     public Response<AssetFilter> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String accountName = Utils.getValueFromIdByName(id, "mediaServices");
+        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "mediaServices");
         if (accountName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'mediaServices'.", id)));
         }
-        String assetName = Utils.getValueFromIdByName(id, "assets");
+        String assetName = ResourceManagerUtils.getValueFromIdByName(id, "assets");
         if (assetName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'assets'.", id)));
         }
-        String filterName = Utils.getValueFromIdByName(id, "assetFilters");
+        String filterName = ResourceManagerUtils.getValueFromIdByName(id, "assetFilters");
         if (filterName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'assetFilters'.", id)));
@@ -118,22 +118,22 @@ public final class AssetFiltersImpl implements AssetFilters {
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String accountName = Utils.getValueFromIdByName(id, "mediaServices");
+        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "mediaServices");
         if (accountName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'mediaServices'.", id)));
         }
-        String assetName = Utils.getValueFromIdByName(id, "assets");
+        String assetName = ResourceManagerUtils.getValueFromIdByName(id, "assets");
         if (assetName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'assets'.", id)));
         }
-        String filterName = Utils.getValueFromIdByName(id, "assetFilters");
+        String filterName = ResourceManagerUtils.getValueFromIdByName(id, "assetFilters");
         if (filterName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'assetFilters'.", id)));
@@ -142,22 +142,22 @@ public final class AssetFiltersImpl implements AssetFilters {
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String accountName = Utils.getValueFromIdByName(id, "mediaServices");
+        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "mediaServices");
         if (accountName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'mediaServices'.", id)));
         }
-        String assetName = Utils.getValueFromIdByName(id, "assets");
+        String assetName = ResourceManagerUtils.getValueFromIdByName(id, "assets");
         if (assetName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'assets'.", id)));
         }
-        String filterName = Utils.getValueFromIdByName(id, "assetFilters");
+        String filterName = ResourceManagerUtils.getValueFromIdByName(id, "assetFilters");
         if (filterName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'assetFilters'.", id)));

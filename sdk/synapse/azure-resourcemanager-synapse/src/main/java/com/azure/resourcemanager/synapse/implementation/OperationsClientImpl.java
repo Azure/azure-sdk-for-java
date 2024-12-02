@@ -31,17 +31,23 @@ import com.azure.resourcemanager.synapse.models.CheckNameAvailabilityRequest;
 import java.util.List;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in OperationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in OperationsClient.
+ */
 public final class OperationsClientImpl implements OperationsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final OperationsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SynapseManagementClientImpl client;
 
     /**
      * Initializes an instance of OperationsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     OperationsClientImpl(SynapseManagementClientImpl client) {
@@ -74,8 +80,7 @@ public final class OperationsClientImpl implements OperationsClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-            + "/{workspaceName}/operationResults/{operationId}")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/operationResults/{operationId}")
         @ExpectedResponses({ 200, 201, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> getLocationHeaderResult(@HostParam("$host") String endpoint,
@@ -84,8 +89,7 @@ public final class OperationsClientImpl implements OperationsClient {
             @PathParam("operationId") String operationId, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-            + "/{workspaceName}/operationStatuses/{operationId}")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/operationStatuses/{operationId}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<OperationResourceInner>> getAzureAsyncHeaderResult(@HostParam("$host") String endpoint,
@@ -96,9 +100,9 @@ public final class OperationsClientImpl implements OperationsClient {
 
     /**
      * Check name availability
-     *
-     * <p>Check whether a workspace name is available.
-     *
+     * 
+     * Check whether a workspace name is available.
+     * 
      * @param request The check request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -131,9 +135,9 @@ public final class OperationsClientImpl implements OperationsClient {
 
     /**
      * Check name availability
-     *
-     * <p>Check whether a workspace name is available.
-     *
+     * 
+     * Check whether a workspace name is available.
+     * 
      * @param request The check request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -166,9 +170,9 @@ public final class OperationsClientImpl implements OperationsClient {
 
     /**
      * Check name availability
-     *
-     * <p>Check whether a workspace name is available.
-     *
+     * 
+     * Check whether a workspace name is available.
+     * 
      * @param request The check request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -182,9 +186,9 @@ public final class OperationsClientImpl implements OperationsClient {
 
     /**
      * Check name availability
-     *
-     * <p>Check whether a workspace name is available.
-     *
+     * 
+     * Check whether a workspace name is available.
+     * 
      * @param request The check request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -200,9 +204,9 @@ public final class OperationsClientImpl implements OperationsClient {
 
     /**
      * Check name availability
-     *
-     * <p>Check whether a workspace name is available.
-     *
+     * 
+     * Check whether a workspace name is available.
+     * 
      * @param request The check request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -216,9 +220,9 @@ public final class OperationsClientImpl implements OperationsClient {
 
     /**
      * All operations
-     *
-     * <p>Get all available operations.
-     *
+     * 
+     * Get all available operations.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all available operations along with {@link Response} on successful completion of {@link Mono}.
@@ -236,9 +240,9 @@ public final class OperationsClientImpl implements OperationsClient {
 
     /**
      * All operations
-     *
-     * <p>Get all available operations.
-     *
+     * 
+     * Get all available operations.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -258,9 +262,9 @@ public final class OperationsClientImpl implements OperationsClient {
 
     /**
      * All operations
-     *
-     * <p>Get all available operations.
-     *
+     * 
+     * Get all available operations.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all available operations on successful completion of {@link Mono}.
@@ -272,9 +276,9 @@ public final class OperationsClientImpl implements OperationsClient {
 
     /**
      * All operations
-     *
-     * <p>Get all available operations.
-     *
+     * 
+     * Get all available operations.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -288,9 +292,9 @@ public final class OperationsClientImpl implements OperationsClient {
 
     /**
      * All operations
-     *
-     * <p>Get all available operations.
-     *
+     * 
+     * Get all available operations.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all available operations.
@@ -302,9 +306,9 @@ public final class OperationsClientImpl implements OperationsClient {
 
     /**
      * Get operation result
-     *
-     * <p>Get the result of an operation.
-     *
+     * 
+     * Get the result of an operation.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param operationId Operation ID.
@@ -344,9 +348,9 @@ public final class OperationsClientImpl implements OperationsClient {
 
     /**
      * Get operation result
-     *
-     * <p>Get the result of an operation.
-     *
+     * 
+     * Get the result of an operation.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param operationId Operation ID.
@@ -386,9 +390,9 @@ public final class OperationsClientImpl implements OperationsClient {
 
     /**
      * Get operation result
-     *
-     * <p>Get the result of an operation.
-     *
+     * 
+     * Get the result of an operation.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param operationId Operation ID.
@@ -406,9 +410,9 @@ public final class OperationsClientImpl implements OperationsClient {
 
     /**
      * Get operation result
-     *
-     * <p>Get the result of an operation.
-     *
+     * 
+     * Get the result of an operation.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param operationId Operation ID.
@@ -426,9 +430,9 @@ public final class OperationsClientImpl implements OperationsClient {
 
     /**
      * Get operation result
-     *
-     * <p>Get the result of an operation.
-     *
+     * 
+     * Get the result of an operation.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param operationId Operation ID.
@@ -443,9 +447,9 @@ public final class OperationsClientImpl implements OperationsClient {
 
     /**
      * Get operation status
-     *
-     * <p>Get the status of an operation.
-     *
+     * 
+     * Get the status of an operation.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param operationId Operation ID.
@@ -485,9 +489,9 @@ public final class OperationsClientImpl implements OperationsClient {
 
     /**
      * Get operation status
-     *
-     * <p>Get the status of an operation.
-     *
+     * 
+     * Get the status of an operation.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param operationId Operation ID.
@@ -527,9 +531,9 @@ public final class OperationsClientImpl implements OperationsClient {
 
     /**
      * Get operation status
-     *
-     * <p>Get the status of an operation.
-     *
+     * 
+     * Get the status of an operation.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param operationId Operation ID.
@@ -547,9 +551,9 @@ public final class OperationsClientImpl implements OperationsClient {
 
     /**
      * Get operation status
-     *
-     * <p>Get the status of an operation.
-     *
+     * 
+     * Get the status of an operation.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param operationId Operation ID.
@@ -568,9 +572,9 @@ public final class OperationsClientImpl implements OperationsClient {
 
     /**
      * Get operation status
-     *
-     * <p>Get the status of an operation.
-     *
+     * 
+     * Get the status of an operation.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param operationId Operation ID.

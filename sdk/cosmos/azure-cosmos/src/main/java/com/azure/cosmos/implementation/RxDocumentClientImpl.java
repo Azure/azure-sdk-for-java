@@ -40,6 +40,7 @@ import com.azure.cosmos.implementation.directconnectivity.StoreClient;
 import com.azure.cosmos.implementation.directconnectivity.StoreClientFactory;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
+import com.azure.cosmos.implementation.http.Http2ConnectionConfig;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpClientConfig;
 import com.azure.cosmos.implementation.http.HttpHeaders;
@@ -491,7 +492,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         logger.info(
             "Initializing DocumentClient [{}] with"
                 + " serviceEndpoint [{}], connectionPolicy [{}], consistencyLevel [{}]",
-            this.clientId, serviceEndpoint, connectionPolicy, consistencyLevel, configs.getProtocol());
+            this.clientId, serviceEndpoint, connectionPolicy, consistencyLevel);
 
         try {
             this.connectionSharingAcrossClientsEnabled = connectionSharingAcrossClientsEnabled;
@@ -561,7 +562,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             this.httpClientInterceptor = null;
             this.reactorHttpClient = httpClient();
 
-            this.globalEndpointManager = new GlobalEndpointManager(asDatabaseAccountManagerInternal(), this.connectionPolicy, /**/configs);
+            this.globalEndpointManager = new GlobalEndpointManager(asDatabaseAccountManagerInternal(), this.connectionPolicy, configs);
             this.isRegionScopedSessionCapturingEnabledOnClientOrSystemConfig = isRegionScopedSessionCapturingEnabled;
 
             this.sessionContainer = new SessionContainer(this.serviceEndpoint.getHost(), disableSessionCapturing);
@@ -636,8 +637,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         this.useMultipleWriteLocations = this.connectionPolicy.isMultipleWriteRegionsEnabled() && BridgeInternal.isEnableMultipleWriteLocations(databaseAccount);
         return databaseAccount;
-        // TODO: add support for openAsync
-        // https://msdata.visualstudio.com/CosmosDB/_workitems/edit/332589
     }
 
     private void resetSessionContainerIfNeeded(DatabaseAccount databaseAccount) {
@@ -685,8 +684,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     public void init(CosmosClientMetadataCachesSnapshot metadataCachesSnapshot, Function<HttpClient, HttpClient> httpClientInterceptor) {
         try {
-            // TODO: add support for openAsync
-            // https://msdata.visualstudio.com/CosmosDB/_workitems/edit/332589
 
             this.httpClientInterceptor = httpClientInterceptor;
             if (httpClientInterceptor != null) {
@@ -848,7 +845,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             .withMaxIdleConnectionTimeout(this.connectionPolicy.getIdleHttpConnectionTimeout())
             .withPoolSize(this.connectionPolicy.getMaxConnectionPoolSize())
             .withProxy(this.connectionPolicy.getProxy())
-            .withNetworkRequestTimeout(this.connectionPolicy.getHttpNetworkRequestTimeout());
+            .withNetworkRequestTimeout(this.connectionPolicy.getHttpNetworkRequestTimeout())
+            .withServerCertValidationDisabled(this.connectionPolicy.isServerCertValidationDisabled())
+            .withHttp2Config(new Http2ConnectionConfig());
 
         if (connectionSharingAcrossClientsEnabled) {
             return SharedGatewayHttpClient.getOrCreateInstance(httpClientConfig, diagnosticsClientConfig);

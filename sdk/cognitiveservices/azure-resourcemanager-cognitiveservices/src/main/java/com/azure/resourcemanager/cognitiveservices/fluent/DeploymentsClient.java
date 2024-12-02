@@ -12,41 +12,45 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.cognitiveservices.fluent.models.DeploymentInner;
+import com.azure.resourcemanager.cognitiveservices.fluent.models.SkuResourceInner;
+import com.azure.resourcemanager.cognitiveservices.models.PatchResourceTagsAndSku;
 
-/** An instance of this class provides access to all the operations defined in DeploymentsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DeploymentsClient.
+ */
 public interface DeploymentsClient {
     /**
      * Gets the deployments associated with the Cognitive Services account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the deployments associated with the Cognitive Services account as paginated response with {@link
-     *     PagedIterable}.
+     * @return the deployments associated with the Cognitive Services account as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DeploymentInner> list(String resourceGroupName, String accountName);
 
     /**
      * Gets the deployments associated with the Cognitive Services account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the deployments associated with the Cognitive Services account as paginated response with {@link
-     *     PagedIterable}.
+     * @return the deployments associated with the Cognitive Services account as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DeploymentInner> list(String resourceGroupName, String accountName, Context context);
 
     /**
      * Gets the specified deployments associated with the Cognitive Services account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param deploymentName The name of the deployment associated with the Cognitive Services Account.
@@ -62,7 +66,7 @@ public interface DeploymentsClient {
 
     /**
      * Gets the specified deployments associated with the Cognitive Services account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param deploymentName The name of the deployment associated with the Cognitive Services Account.
@@ -76,7 +80,7 @@ public interface DeploymentsClient {
 
     /**
      * Update the state of specified deployments associated with the Cognitive Services account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param deploymentName The name of the deployment associated with the Cognitive Services Account.
@@ -92,7 +96,7 @@ public interface DeploymentsClient {
 
     /**
      * Update the state of specified deployments associated with the Cognitive Services account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param deploymentName The name of the deployment associated with the Cognitive Services Account.
@@ -109,7 +113,7 @@ public interface DeploymentsClient {
 
     /**
      * Update the state of specified deployments associated with the Cognitive Services account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param deploymentName The name of the deployment associated with the Cognitive Services Account.
@@ -125,7 +129,7 @@ public interface DeploymentsClient {
 
     /**
      * Update the state of specified deployments associated with the Cognitive Services account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param deploymentName The name of the deployment associated with the Cognitive Services Account.
@@ -141,8 +145,74 @@ public interface DeploymentsClient {
         DeploymentInner deployment, Context context);
 
     /**
+     * Update specified deployments associated with the Cognitive Services account.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of Cognitive Services account.
+     * @param deploymentName The name of the deployment associated with the Cognitive Services Account.
+     * @param deployment The deployment properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of cognitive Services account deployment.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<DeploymentInner>, DeploymentInner> beginUpdate(String resourceGroupName, String accountName,
+        String deploymentName, PatchResourceTagsAndSku deployment);
+
+    /**
+     * Update specified deployments associated with the Cognitive Services account.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of Cognitive Services account.
+     * @param deploymentName The name of the deployment associated with the Cognitive Services Account.
+     * @param deployment The deployment properties.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of cognitive Services account deployment.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<DeploymentInner>, DeploymentInner> beginUpdate(String resourceGroupName, String accountName,
+        String deploymentName, PatchResourceTagsAndSku deployment, Context context);
+
+    /**
+     * Update specified deployments associated with the Cognitive Services account.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of Cognitive Services account.
+     * @param deploymentName The name of the deployment associated with the Cognitive Services Account.
+     * @param deployment The deployment properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cognitive Services account deployment.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    DeploymentInner update(String resourceGroupName, String accountName, String deploymentName,
+        PatchResourceTagsAndSku deployment);
+
+    /**
+     * Update specified deployments associated with the Cognitive Services account.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of Cognitive Services account.
+     * @param deploymentName The name of the deployment associated with the Cognitive Services Account.
+     * @param deployment The deployment properties.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cognitive Services account deployment.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    DeploymentInner update(String resourceGroupName, String accountName, String deploymentName,
+        PatchResourceTagsAndSku deployment, Context context);
+
+    /**
      * Deletes the specified deployment associated with the Cognitive Services account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param deploymentName The name of the deployment associated with the Cognitive Services Account.
@@ -156,7 +226,7 @@ public interface DeploymentsClient {
 
     /**
      * Deletes the specified deployment associated with the Cognitive Services account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param deploymentName The name of the deployment associated with the Cognitive Services Account.
@@ -172,7 +242,7 @@ public interface DeploymentsClient {
 
     /**
      * Deletes the specified deployment associated with the Cognitive Services account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param deploymentName The name of the deployment associated with the Cognitive Services Account.
@@ -185,7 +255,7 @@ public interface DeploymentsClient {
 
     /**
      * Deletes the specified deployment associated with the Cognitive Services account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param deploymentName The name of the deployment associated with the Cognitive Services Account.
@@ -196,4 +266,36 @@ public interface DeploymentsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void delete(String resourceGroupName, String accountName, String deploymentName, Context context);
+
+    /**
+     * Lists the specified deployments skus associated with the Cognitive Services account.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of Cognitive Services account.
+     * @param deploymentName The name of the deployment associated with the Cognitive Services Account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of cognitive services accounts operation response as paginated response with
+     * {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<SkuResourceInner> listSkus(String resourceGroupName, String accountName, String deploymentName);
+
+    /**
+     * Lists the specified deployments skus associated with the Cognitive Services account.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of Cognitive Services account.
+     * @param deploymentName The name of the deployment associated with the Cognitive Services Account.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of cognitive services accounts operation response as paginated response with
+     * {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<SkuResourceInner> listSkus(String resourceGroupName, String accountName, String deploymentName,
+        Context context);
 }

@@ -34,9 +34,8 @@ public final class DataLakeServiceProperties {
     private List<DataLakeCorsRule> cors;
 
     /*
-     * The default version to use for requests to the DataLake service if an
-     * incoming request's version is not specified. Possible values include
-     * version 2008-10-27 and all more recent versions
+     * The default version to use for requests to the DataLake service if an incoming request's version is not
+     * specified. Possible values include version 2008-10-27 and all more recent versions
      */
     private String defaultServiceVersion;
 
@@ -45,11 +44,16 @@ public final class DataLakeServiceProperties {
      */
     private DataLakeRetentionPolicy deleteRetentionPolicy;
 
-
     /*
      * The properties that enable an account to host a static website
      */
     private DataLakeStaticWebsite staticWebsite;
+
+    /**
+     * Creates a new instance of {@link DataLakeServiceProperties}.
+     */
+    public DataLakeServiceProperties() {
+    }
 
     /**
      * Get the logging property: The logging property.
@@ -135,10 +139,9 @@ public final class DataLakeServiceProperties {
     }
 
     /**
-     * Get the defaultServiceVersion property: The default version to use for
-     * requests to the DataLake service if an incoming request's version is not
-     * specified. Possible values include version 2008-10-27 and all more
-     * recent versions.
+     * Get the defaultServiceVersion property: The default version to use for requests to the DataLake service if an
+     * incoming request's version is not specified. Possible values include version 2008-10-27 and all more recent
+     * versions.
      *
      * @return the defaultServiceVersion value.
      */
@@ -147,10 +150,9 @@ public final class DataLakeServiceProperties {
     }
 
     /**
-     * Set the defaultServiceVersion property: The default version to use for
-     * requests to the DataLake service if an incoming request's version is not
-     * specified. Possible values include version 2008-10-27 and all more
-     * recent versions.
+     * Set the defaultServiceVersion property: The default version to use for requests to the DataLake service if an
+     * incoming request's version is not specified. Possible values include version 2008-10-27 and all more recent
+     * versions.
      *
      * @param defaultServiceVersion the defaultServiceVersion value to set.
      * @return the DataLakeServiceProperties object itself.
@@ -161,8 +163,7 @@ public final class DataLakeServiceProperties {
     }
 
     /**
-     * Get the deleteRetentionPolicy property: The deleteRetentionPolicy
-     * property.
+     * Get the deleteRetentionPolicy property: The deleteRetentionPolicy property.
      *
      * @return the deleteRetentionPolicy value.
      */
@@ -171,8 +172,7 @@ public final class DataLakeServiceProperties {
     }
 
     /**
-     * Set the deleteRetentionPolicy property: The deleteRetentionPolicy
-     * property.
+     * Set the deleteRetentionPolicy property: The deleteRetentionPolicy property.
      *
      * @param deleteRetentionPolicy the deleteRetentionPolicy value to set.
      * @return the DataLakeServiceProperties object itself.

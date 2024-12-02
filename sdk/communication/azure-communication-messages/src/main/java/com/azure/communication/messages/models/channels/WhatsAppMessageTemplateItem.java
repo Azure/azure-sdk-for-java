@@ -31,7 +31,7 @@ public final class WhatsAppMessageTemplateItem extends MessageTemplateItem {
      * WhatsApp platform's template content. This is the payload returned from WhatsApp API.
      */
     @Generated
-    private Object content;
+    private BinaryData content;
 
     /**
      * Creates an instance of WhatsAppMessageTemplateItem class.
@@ -62,7 +62,7 @@ public final class WhatsAppMessageTemplateItem extends MessageTemplateItem {
      */
     @Generated
     public BinaryData getContent() {
-        return BinaryData.fromObject(this.content);
+        return this.content;
     }
 
     /**
@@ -75,7 +75,10 @@ public final class WhatsAppMessageTemplateItem extends MessageTemplateItem {
         jsonWriter.writeStringField("language", getLanguage());
         jsonWriter.writeStringField("status", getStatus() == null ? null : getStatus().toString());
         jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
-        jsonWriter.writeUntypedField("content", this.content);
+        if (this.content != null) {
+            jsonWriter.writeFieldName("content");
+            this.content.writeTo(jsonWriter);
+        }
         return jsonWriter.writeEndObject();
     }
 
@@ -95,7 +98,7 @@ public final class WhatsAppMessageTemplateItem extends MessageTemplateItem {
             String language = null;
             MessageTemplateStatus status = null;
             CommunicationMessagesChannel kind = CommunicationMessagesChannel.WHATS_APP;
-            Object content = null;
+            BinaryData content = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -108,7 +111,7 @@ public final class WhatsAppMessageTemplateItem extends MessageTemplateItem {
                 } else if ("kind".equals(fieldName)) {
                     kind = CommunicationMessagesChannel.fromString(reader.getString());
                 } else if ("content".equals(fieldName)) {
-                    content = reader.readUntyped();
+                    content = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
                 } else {
                     reader.skipChildren();
                 }

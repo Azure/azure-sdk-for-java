@@ -1,7 +1,11 @@
 // Original file from https://github.com/FasterXML/jackson-core under Apache-2.0 license.
 package io.clientcore.core.json.implementation.jackson.core.json;
 
-import io.clientcore.core.json.implementation.jackson.core.*;
+import io.clientcore.core.json.implementation.jackson.core.JsonGenerationException;
+import io.clientcore.core.json.implementation.jackson.core.JsonGenerator;
+import io.clientcore.core.json.implementation.jackson.core.JsonProcessingException;
+import io.clientcore.core.json.implementation.jackson.core.JsonStreamContext;
+import io.clientcore.core.json.implementation.jackson.core.JsonToken;
 
 /**
  * Extension of {@link JsonStreamContext}, which implements
@@ -28,18 +32,18 @@ public class JsonWriteContext extends JsonStreamContext {
     protected DupDetector _dups;
 
     /*
-    /**********************************************************
-    /* Simple instance reuse slots; speed up things a bit (10-15%)
-    /* for docs with lots of small arrays/objects
-    /**********************************************************
+     * /**********************************************************
+     * /* Simple instance reuse slots; speed up things a bit (10-15%)
+     * /* for docs with lots of small arrays/objects
+     * /**********************************************************
      */
 
     protected JsonWriteContext _child;
 
     /*
-    /**********************************************************
-    /* Location/state information (minus source reference)
-    /**********************************************************
+     * /**********************************************************
+     * /* Location/state information (minus source reference)
+     * /**********************************************************
      */
 
     /**
@@ -60,9 +64,9 @@ public class JsonWriteContext extends JsonStreamContext {
     protected boolean _gotName;
 
     /*
-    /**********************************************************
-    /* Life-cycle
-    /**********************************************************
+     * /**********************************************************
+     * /* Life-cycle
+     * /**********************************************************
      */
 
     protected JsonWriteContext(int type, JsonWriteContext parent, DupDetector dups) {
@@ -152,9 +156,9 @@ public class JsonWriteContext extends JsonStreamContext {
     }
 
     /*
-    /**********************************************************
-    /* Factory methods
-    /**********************************************************
+     * /**********************************************************
+     * /* Factory methods
+     * /**********************************************************
      */
 
     /**
@@ -219,12 +223,6 @@ public class JsonWriteContext extends JsonStreamContext {
         return _currentName;
     }
 
-    // @since 2.9
-    @Override
-    public boolean hasCurrentName() {
-        return _currentName != null;
-    }
-
     /**
      * Method that can be used to both clear the accumulated references
      * (specifically value set with {@link #setCurrentValue(Object)})
@@ -268,7 +266,7 @@ public class JsonWriteContext extends JsonStreamContext {
         return (_index < 0) ? STATUS_OK_AS_IS : STATUS_OK_AFTER_COMMA;
     }
 
-    private final void _checkDup(DupDetector dd, String name) throws JsonProcessingException {
+    private void _checkDup(DupDetector dd, String name) throws JsonProcessingException {
         if (dd.isDup(name)) {
             Object src = dd.getSource();
             throw new JsonGenerationException("Duplicate field '" + name + "'",

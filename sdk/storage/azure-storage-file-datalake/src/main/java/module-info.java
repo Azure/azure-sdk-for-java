@@ -10,8 +10,7 @@ module com.azure.storage.file.datalake {
     exports com.azure.storage.file.datalake.specialized;
     exports com.azure.storage.file.datalake.options;
 
-    exports com.azure.storage.file.datalake.implementation.util to
-        com.azure.core;
+    exports com.azure.storage.file.datalake.implementation.util to com.azure.core;
 
     exports com.azure.storage.file.datalake.implementation.models to com.azure.core;
 

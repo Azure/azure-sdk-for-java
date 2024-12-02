@@ -42,6 +42,8 @@ public class DataLakeAclChangeFailedException extends AzureException {
     }
 
     /**
+     * Gets the continuation token to resume a datalake recursive acl function.
+     *
      * @return the continuation token to resume a datalake recursive acl function.
      */
     public String getContinuationToken() {

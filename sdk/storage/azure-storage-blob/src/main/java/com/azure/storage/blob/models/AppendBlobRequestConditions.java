@@ -21,6 +21,12 @@ public final class AppendBlobRequestConditions extends BlobRequestConditions {
     private Long appendPosition;
 
     /**
+     * Creates a new instance of {@link AppendBlobRequestConditions}.
+     */
+    public AppendBlobRequestConditions() {
+    }
+
+    /**
      * Optionally limit requests to resources that match the passed ETag.
      *
      * @param ifMatch ETag that resources must match.

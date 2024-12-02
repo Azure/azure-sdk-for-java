@@ -42,15 +42,19 @@ import reactor.core.publisher.Mono;
  * An instance of this class provides access to all the operations defined in SignalRSharedPrivateLinkResourcesClient.
  */
 public final class SignalRSharedPrivateLinkResourcesClientImpl implements SignalRSharedPrivateLinkResourcesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final SignalRSharedPrivateLinkResourcesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SignalRManagementClientImpl client;
 
     /**
      * Initializes an instance of SignalRSharedPrivateLinkResourcesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     SignalRSharedPrivateLinkResourcesClientImpl(SignalRManagementClientImpl client) {
@@ -117,14 +121,14 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
 
     /**
      * List shared private link resources.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of shared private link resources along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SharedPrivateLinkResourceInner>> listSinglePageAsync(String resourceGroupName,
@@ -155,7 +159,7 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
 
     /**
      * List shared private link resources.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
@@ -163,7 +167,7 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of shared private link resources along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SharedPrivateLinkResourceInner>> listSinglePageAsync(String resourceGroupName,
@@ -194,7 +198,7 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
 
     /**
      * List shared private link resources.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -210,7 +214,7 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
 
     /**
      * List shared private link resources.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
@@ -228,7 +232,7 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
 
     /**
      * List shared private link resources.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -243,7 +247,7 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
 
     /**
      * List shared private link resources.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
@@ -260,15 +264,15 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
 
     /**
      * Get the specified shared private link resource.
-     *
+     * 
      * @param sharedPrivateLinkResourceName The name of the shared private link resource.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified shared private link resource along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the specified shared private link resource along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SharedPrivateLinkResourceInner>> getWithResponseAsync(String sharedPrivateLinkResourceName,
@@ -302,7 +306,7 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
 
     /**
      * Get the specified shared private link resource.
-     *
+     * 
      * @param sharedPrivateLinkResourceName The name of the shared private link resource.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
@@ -310,8 +314,8 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified shared private link resource along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the specified shared private link resource along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SharedPrivateLinkResourceInner>> getWithResponseAsync(String sharedPrivateLinkResourceName,
@@ -343,7 +347,7 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
 
     /**
      * Get the specified shared private link resource.
-     *
+     * 
      * @param sharedPrivateLinkResourceName The name of the shared private link resource.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
@@ -361,7 +365,7 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
 
     /**
      * Get the specified shared private link resource.
-     *
+     * 
      * @param sharedPrivateLinkResourceName The name of the shared private link resource.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
@@ -379,7 +383,7 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
 
     /**
      * Get the specified shared private link resource.
-     *
+     * 
      * @param sharedPrivateLinkResourceName The name of the shared private link resource.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
@@ -396,7 +400,7 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
 
     /**
      * Create or update a shared private link resource.
-     *
+     * 
      * @param sharedPrivateLinkResourceName The name of the shared private link resource.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
@@ -404,8 +408,8 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Shared Private Link Resource along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return describes a Shared Private Link Resource along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String sharedPrivateLinkResourceName,
@@ -444,7 +448,7 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
 
     /**
      * Create or update a shared private link resource.
-     *
+     * 
      * @param sharedPrivateLinkResourceName The name of the shared private link resource.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
@@ -453,8 +457,8 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Shared Private Link Resource along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return describes a Shared Private Link Resource along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String sharedPrivateLinkResourceName,
@@ -492,7 +496,7 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
 
     /**
      * Create or update a shared private link resource.
-     *
+     * 
      * @param sharedPrivateLinkResourceName The name of the shared private link resource.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
@@ -515,7 +519,7 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
 
     /**
      * Create or update a shared private link resource.
-     *
+     * 
      * @param sharedPrivateLinkResourceName The name of the shared private link resource.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
@@ -540,7 +544,7 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
 
     /**
      * Create or update a shared private link resource.
-     *
+     * 
      * @param sharedPrivateLinkResourceName The name of the shared private link resource.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
@@ -560,7 +564,7 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
 
     /**
      * Create or update a shared private link resource.
-     *
+     * 
      * @param sharedPrivateLinkResourceName The name of the shared private link resource.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
@@ -583,7 +587,7 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
 
     /**
      * Create or update a shared private link resource.
-     *
+     * 
      * @param sharedPrivateLinkResourceName The name of the shared private link resource.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
@@ -603,7 +607,7 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
 
     /**
      * Create or update a shared private link resource.
-     *
+     * 
      * @param sharedPrivateLinkResourceName The name of the shared private link resource.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
@@ -623,7 +627,7 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
 
     /**
      * Create or update a shared private link resource.
-     *
+     * 
      * @param sharedPrivateLinkResourceName The name of the shared private link resource.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
@@ -641,7 +645,7 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
 
     /**
      * Create or update a shared private link resource.
-     *
+     * 
      * @param sharedPrivateLinkResourceName The name of the shared private link resource.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
@@ -661,7 +665,7 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
 
     /**
      * Delete the specified shared private link resource.
-     *
+     * 
      * @param sharedPrivateLinkResourceName The name of the shared private link resource.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
@@ -702,7 +706,7 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
 
     /**
      * Delete the specified shared private link resource.
-     *
+     * 
      * @param sharedPrivateLinkResourceName The name of the shared private link resource.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
@@ -742,7 +746,7 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
 
     /**
      * Delete the specified shared private link resource.
-     *
+     * 
      * @param sharedPrivateLinkResourceName The name of the shared private link resource.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
@@ -762,7 +766,7 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
 
     /**
      * Delete the specified shared private link resource.
-     *
+     * 
      * @param sharedPrivateLinkResourceName The name of the shared private link resource.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
@@ -784,7 +788,7 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
 
     /**
      * Delete the specified shared private link resource.
-     *
+     * 
      * @param sharedPrivateLinkResourceName The name of the shared private link resource.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
@@ -801,7 +805,7 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
 
     /**
      * Delete the specified shared private link resource.
-     *
+     * 
      * @param sharedPrivateLinkResourceName The name of the shared private link resource.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
@@ -820,7 +824,7 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
 
     /**
      * Delete the specified shared private link resource.
-     *
+     * 
      * @param sharedPrivateLinkResourceName The name of the shared private link resource.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
@@ -838,7 +842,7 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
 
     /**
      * Delete the specified shared private link resource.
-     *
+     * 
      * @param sharedPrivateLinkResourceName The name of the shared private link resource.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
@@ -857,7 +861,7 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
 
     /**
      * Delete the specified shared private link resource.
-     *
+     * 
      * @param sharedPrivateLinkResourceName The name of the shared private link resource.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
@@ -872,7 +876,7 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
 
     /**
      * Delete the specified shared private link resource.
-     *
+     * 
      * @param sharedPrivateLinkResourceName The name of the shared private link resource.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
@@ -889,14 +893,13 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of shared private link resources along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SharedPrivateLinkResourceInner>> listNextSinglePageAsync(String nextLink) {
@@ -916,15 +919,14 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of shared private link resources along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SharedPrivateLinkResourceInner>> listNextSinglePageAsync(String nextLink,

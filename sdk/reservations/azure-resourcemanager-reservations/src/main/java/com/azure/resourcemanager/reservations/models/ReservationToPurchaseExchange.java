@@ -5,49 +5,52 @@
 package com.azure.resourcemanager.reservations.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Reservation purchase details. */
+/**
+ * Reservation purchase details.
+ */
 @Fluent
-public final class ReservationToPurchaseExchange {
+public final class ReservationToPurchaseExchange implements JsonSerializable<ReservationToPurchaseExchange> {
     /*
      * Fully qualified id of the reservationOrder being purchased
      */
-    @JsonProperty(value = "reservationOrderId")
     private String reservationOrderId;
 
     /*
      * Fully qualified id of the reservation being purchased. This value is only guaranteed to be non-null if the
      * purchase is successful.
      */
-    @JsonProperty(value = "reservationId")
     private String reservationId;
 
     /*
      * The request for reservation purchase
      */
-    @JsonProperty(value = "properties")
     private PurchaseRequest properties;
 
     /*
      * Pricing information containing the amount and the currency code
      */
-    @JsonProperty(value = "billingCurrencyTotal")
     private Price billingCurrencyTotal;
 
     /*
      * Status of the individual operation.
      */
-    @JsonProperty(value = "status")
     private OperationStatus status;
 
-    /** Creates an instance of ReservationToPurchaseExchange class. */
+    /**
+     * Creates an instance of ReservationToPurchaseExchange class.
+     */
     public ReservationToPurchaseExchange() {
     }
 
     /**
      * Get the reservationOrderId property: Fully qualified id of the reservationOrder being purchased.
-     *
+     * 
      * @return the reservationOrderId value.
      */
     public String reservationOrderId() {
@@ -56,7 +59,7 @@ public final class ReservationToPurchaseExchange {
 
     /**
      * Set the reservationOrderId property: Fully qualified id of the reservationOrder being purchased.
-     *
+     * 
      * @param reservationOrderId the reservationOrderId value to set.
      * @return the ReservationToPurchaseExchange object itself.
      */
@@ -68,7 +71,7 @@ public final class ReservationToPurchaseExchange {
     /**
      * Get the reservationId property: Fully qualified id of the reservation being purchased. This value is only
      * guaranteed to be non-null if the purchase is successful.
-     *
+     * 
      * @return the reservationId value.
      */
     public String reservationId() {
@@ -78,7 +81,7 @@ public final class ReservationToPurchaseExchange {
     /**
      * Set the reservationId property: Fully qualified id of the reservation being purchased. This value is only
      * guaranteed to be non-null if the purchase is successful.
-     *
+     * 
      * @param reservationId the reservationId value to set.
      * @return the ReservationToPurchaseExchange object itself.
      */
@@ -89,7 +92,7 @@ public final class ReservationToPurchaseExchange {
 
     /**
      * Get the properties property: The request for reservation purchase.
-     *
+     * 
      * @return the properties value.
      */
     public PurchaseRequest properties() {
@@ -98,7 +101,7 @@ public final class ReservationToPurchaseExchange {
 
     /**
      * Set the properties property: The request for reservation purchase.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the ReservationToPurchaseExchange object itself.
      */
@@ -109,7 +112,7 @@ public final class ReservationToPurchaseExchange {
 
     /**
      * Get the billingCurrencyTotal property: Pricing information containing the amount and the currency code.
-     *
+     * 
      * @return the billingCurrencyTotal value.
      */
     public Price billingCurrencyTotal() {
@@ -118,7 +121,7 @@ public final class ReservationToPurchaseExchange {
 
     /**
      * Set the billingCurrencyTotal property: Pricing information containing the amount and the currency code.
-     *
+     * 
      * @param billingCurrencyTotal the billingCurrencyTotal value to set.
      * @return the ReservationToPurchaseExchange object itself.
      */
@@ -129,7 +132,7 @@ public final class ReservationToPurchaseExchange {
 
     /**
      * Get the status property: Status of the individual operation.
-     *
+     * 
      * @return the status value.
      */
     public OperationStatus status() {
@@ -138,7 +141,7 @@ public final class ReservationToPurchaseExchange {
 
     /**
      * Set the status property: Status of the individual operation.
-     *
+     * 
      * @param status the status value to set.
      * @return the ReservationToPurchaseExchange object itself.
      */
@@ -149,7 +152,7 @@ public final class ReservationToPurchaseExchange {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -159,5 +162,54 @@ public final class ReservationToPurchaseExchange {
         if (billingCurrencyTotal() != null) {
             billingCurrencyTotal().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("reservationOrderId", this.reservationOrderId);
+        jsonWriter.writeStringField("reservationId", this.reservationId);
+        jsonWriter.writeJsonField("properties", this.properties);
+        jsonWriter.writeJsonField("billingCurrencyTotal", this.billingCurrencyTotal);
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ReservationToPurchaseExchange from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ReservationToPurchaseExchange if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ReservationToPurchaseExchange.
+     */
+    public static ReservationToPurchaseExchange fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ReservationToPurchaseExchange deserializedReservationToPurchaseExchange
+                = new ReservationToPurchaseExchange();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("reservationOrderId".equals(fieldName)) {
+                    deserializedReservationToPurchaseExchange.reservationOrderId = reader.getString();
+                } else if ("reservationId".equals(fieldName)) {
+                    deserializedReservationToPurchaseExchange.reservationId = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedReservationToPurchaseExchange.properties = PurchaseRequest.fromJson(reader);
+                } else if ("billingCurrencyTotal".equals(fieldName)) {
+                    deserializedReservationToPurchaseExchange.billingCurrencyTotal = Price.fromJson(reader);
+                } else if ("status".equals(fieldName)) {
+                    deserializedReservationToPurchaseExchange.status = OperationStatus.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedReservationToPurchaseExchange;
+        });
     }
 }

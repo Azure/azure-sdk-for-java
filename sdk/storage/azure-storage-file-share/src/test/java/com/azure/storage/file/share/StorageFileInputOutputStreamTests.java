@@ -53,7 +53,6 @@ public class StorageFileInputOutputStreamTests extends FileShareTestBase {
         assertArrayEquals(randomBytes2, randomBytes);
     }
 
-
     @LiveOnly
     @Test
     public void streamWithOffset() throws IOException {

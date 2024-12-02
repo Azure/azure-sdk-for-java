@@ -13,14 +13,16 @@ public final class ExportDatasetConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExportDatasetConfiguration model
-            = BinaryData.fromString("{\"columns\":[\"vudutncor\"]}").toObject(ExportDatasetConfiguration.class);
-        Assertions.assertEquals("vudutncor", model.columns().get(0));
+            = BinaryData.fromString("{\"columns\":[\"xhnpo\",\"yqwcabvnuil\",\"ey\",\"swlpaugmrmfj\"]}")
+                .toObject(ExportDatasetConfiguration.class);
+        Assertions.assertEquals("xhnpo", model.columns().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ExportDatasetConfiguration model = new ExportDatasetConfiguration().withColumns(Arrays.asList("vudutncor"));
+        ExportDatasetConfiguration model
+            = new ExportDatasetConfiguration().withColumns(Arrays.asList("xhnpo", "yqwcabvnuil", "ey", "swlpaugmrmfj"));
         model = BinaryData.fromObject(model).toObject(ExportDatasetConfiguration.class);
-        Assertions.assertEquals("vudutncor", model.columns().get(0));
+        Assertions.assertEquals("xhnpo", model.columns().get(0));
     }
 }

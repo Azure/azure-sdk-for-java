@@ -1,6 +1,6 @@
 # Release History
 
-## 2.45.0-beta.1 (Unreleased)
+## 2.46.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,20 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.45.0 (2024-11-28)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.44.1 (2024-11-07)
+
+### Bugs Fixed
+
+- Removed wrong validation on non-required `location` property for some classes.
 
 ## 2.44.0 (2024-10-25)
 

@@ -20,15 +20,15 @@ import com.azure.resourcemanager.synapse.fluent.models.AttachedDatabaseConfigura
 public interface KustoPoolAttachedDatabaseConfigurationsClient {
     /**
      * Returns the list of attached database configurations of the given Kusto Pool.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list attached database configurations operation response as paginated response with {@link
-     *     PagedIterable}.
+     * @return the list attached database configurations operation response as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<AttachedDatabaseConfigurationInner> listByKustoPool(String workspaceName, String kustoPoolName,
@@ -36,7 +36,7 @@ public interface KustoPoolAttachedDatabaseConfigurationsClient {
 
     /**
      * Returns the list of attached database configurations of the given Kusto Pool.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -44,8 +44,8 @@ public interface KustoPoolAttachedDatabaseConfigurationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list attached database configurations operation response as paginated response with {@link
-     *     PagedIterable}.
+     * @return the list attached database configurations operation response as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<AttachedDatabaseConfigurationInner> listByKustoPool(String workspaceName, String kustoPoolName,
@@ -53,7 +53,7 @@ public interface KustoPoolAttachedDatabaseConfigurationsClient {
 
     /**
      * Returns an attached database configuration.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param attachedDatabaseConfigurationName The name of the attached database configuration.
@@ -70,7 +70,7 @@ public interface KustoPoolAttachedDatabaseConfigurationsClient {
 
     /**
      * Returns an attached database configuration.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param attachedDatabaseConfigurationName The name of the attached database configuration.
@@ -86,7 +86,7 @@ public interface KustoPoolAttachedDatabaseConfigurationsClient {
 
     /**
      * Creates or updates an attached database configuration.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param attachedDatabaseConfigurationName The name of the attached database configuration.
@@ -104,7 +104,7 @@ public interface KustoPoolAttachedDatabaseConfigurationsClient {
 
     /**
      * Creates or updates an attached database configuration.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param attachedDatabaseConfigurationName The name of the attached database configuration.
@@ -123,7 +123,7 @@ public interface KustoPoolAttachedDatabaseConfigurationsClient {
 
     /**
      * Creates or updates an attached database configuration.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param attachedDatabaseConfigurationName The name of the attached database configuration.
@@ -141,7 +141,7 @@ public interface KustoPoolAttachedDatabaseConfigurationsClient {
 
     /**
      * Creates or updates an attached database configuration.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param attachedDatabaseConfigurationName The name of the attached database configuration.
@@ -160,7 +160,7 @@ public interface KustoPoolAttachedDatabaseConfigurationsClient {
 
     /**
      * Deletes the attached database configuration with the given name.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param attachedDatabaseConfigurationName The name of the attached database configuration.
@@ -176,7 +176,7 @@ public interface KustoPoolAttachedDatabaseConfigurationsClient {
 
     /**
      * Deletes the attached database configuration with the given name.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param attachedDatabaseConfigurationName The name of the attached database configuration.
@@ -193,7 +193,7 @@ public interface KustoPoolAttachedDatabaseConfigurationsClient {
 
     /**
      * Deletes the attached database configuration with the given name.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param attachedDatabaseConfigurationName The name of the attached database configuration.
@@ -208,7 +208,7 @@ public interface KustoPoolAttachedDatabaseConfigurationsClient {
 
     /**
      * Deletes the attached database configuration with the given name.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param attachedDatabaseConfigurationName The name of the attached database configuration.

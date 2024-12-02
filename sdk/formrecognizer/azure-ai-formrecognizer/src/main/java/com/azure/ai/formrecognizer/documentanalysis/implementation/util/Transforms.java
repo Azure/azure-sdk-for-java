@@ -141,6 +141,7 @@ public class Transforms {
                             DocumentSelectionMarkState.fromString(innerSelectionMark.getState().toString()));
                         return documentSelectionMark;
                     }).collect(Collectors.toList()));
+            List<DocumentWord> documentWords = toDocumentWords(innerDocumentPage);
             DocumentPageHelper.setLines(documentPage,
                 innerDocumentPage.getLines() == null
                     ? null
@@ -150,10 +151,10 @@ public class Transforms {
                             toPolygonPoints(innerDocumentLine.getPolygon()));
                         DocumentLineHelper.setContent(documentLine, innerDocumentLine.getContent());
                         DocumentLineHelper.setSpans(documentLine, toDocumentSpans(innerDocumentLine.getSpans()));
-                        DocumentLineHelper.setPageWords(documentLine, toDocumentWords(innerDocumentPage));
+                        DocumentLineHelper.setPageWords(documentLine, documentWords);
                         return documentLine;
                     }).collect(Collectors.toList()));
-            DocumentPageHelper.setWords(documentPage, toDocumentWords(innerDocumentPage));
+            DocumentPageHelper.setWords(documentPage, documentWords);
             DocumentPageHelper.setFormulas(documentPage, fromInnerFormulas(innerDocumentPage.getFormulas()));
             DocumentPageHelper.setBarcodes(documentPage, fromInnerBarcodes(innerDocumentPage.getBarcodes()));
             return documentPage;
@@ -572,9 +573,11 @@ public class Transforms {
                 DocumentFieldHelper.setValue(documentField, null);
             } else {
                 CurrencyValue currencyValue = new CurrencyValue();
-                CurrencyValueHelper.setAmount(currencyValue, innerDocumentField.getValueCurrency().getAmount());
-                CurrencyValueHelper.setCurrencySymbol(currencyValue,
-                    innerDocumentField.getValueCurrency().getCurrencySymbol());
+                com.azure.ai.formrecognizer.documentanalysis.implementation.models.CurrencyValue innerCurrencyValue
+                    = innerDocumentField.getValueCurrency();
+                CurrencyValueHelper.setAmount(currencyValue, innerCurrencyValue.getAmount());
+                CurrencyValueHelper.setCurrencySymbol(currencyValue, innerCurrencyValue.getCurrencySymbol());
+                CurrencyValueHelper.setCode(currencyValue, innerCurrencyValue.getCurrencyCode());
                 DocumentFieldHelper.setValue(documentField, currencyValue);
             }
         } else if (com.azure.ai.formrecognizer.documentanalysis.implementation.models.DocumentFieldType.ADDRESS

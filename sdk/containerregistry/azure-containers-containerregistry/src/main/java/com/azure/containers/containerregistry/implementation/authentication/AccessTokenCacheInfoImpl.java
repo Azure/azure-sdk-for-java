@@ -9,8 +9,8 @@ import java.time.OffsetDateTime;
 
 // TODO (limolkova) copy-paste from core, no modifications, unify
 public class AccessTokenCacheInfoImpl {
-    private AccessToken cache;
-    private OffsetDateTime nextTokenRefresh;
+    private final AccessToken cache;
+    private final OffsetDateTime nextTokenRefresh;
 
     /**
      * Create an Instance of Access Token Cache Info.

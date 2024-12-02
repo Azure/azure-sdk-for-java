@@ -19,6 +19,8 @@ import com.azure.core.amqp.implementation.ReactorProvider;
 import com.azure.core.amqp.implementation.RetryUtil;
 import com.azure.core.amqp.implementation.StringUtil;
 import com.azure.core.amqp.implementation.TokenManagerProvider;
+import com.azure.core.amqp.implementation.handler.ConnectionHandler;
+import com.azure.core.amqp.implementation.handler.WebSocketsConnectionHandler;
 import com.azure.core.amqp.models.CbsAuthorizationType;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.annotation.ServiceClientProtocol;
@@ -62,6 +64,7 @@ import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.time.Duration;
 import java.util.Collections;
@@ -483,6 +486,7 @@ public final class ServiceBusClientBuilder
     private ClientOptions clientOptions;
     private Configuration configuration;
     private ServiceBusConnectionProcessor sharedConnection;
+    private ConnectionStringProperties connectionStringProperties;
     private String connectionStringEntityName;
     private TokenCredential credentials;
     private String fullyQualifiedNamespace;
@@ -589,6 +593,7 @@ public final class ServiceBusClientBuilder
      */
     public ServiceBusClientBuilder connectionString(String connectionString) {
         final ConnectionStringProperties properties = new ConnectionStringProperties(connectionString);
+        this.connectionStringProperties = properties;
         final TokenCredential tokenCredential;
         try {
             tokenCredential = getTokenCredential(properties);
@@ -1017,21 +1022,41 @@ public final class ServiceBusClientBuilder
             ? CbsAuthorizationType.SHARED_ACCESS_SIGNATURE
             : CbsAuthorizationType.JSON_WEB_TOKEN;
 
-        final SslDomain.VerifyMode verificationMode
-            = verifyMode != null ? verifyMode : SslDomain.VerifyMode.VERIFY_PEER_NAME;
+        SslDomain.VerifyMode verificationMode = verifyMode != null ? verifyMode : SslDomain.VerifyMode.VERIFY_PEER_NAME;
+
+        final boolean usingDevelopmentEmulator
+            = connectionStringProperties != null && connectionStringProperties.useDevelopmentEmulator();
+
+        if (usingDevelopmentEmulator) {
+            // https://github.com/Azure/azure-service-bus-emulator-installer
+            verificationMode = SslDomain.VerifyMode.ANONYMOUS_PEER;
+        }
 
         final ClientOptions options = clientOptions != null ? clientOptions : new ClientOptions();
+        final String fullyQualifiedNamespace = getAndValidateFullyQualifiedNamespace();
 
-        if (customEndpointAddress == null) {
-            return new ConnectionOptions(getAndValidateFullyQualifiedNamespace(), credentials, authorizationType,
-                ServiceBusConstants.AZURE_ACTIVE_DIRECTORY_SCOPE, transport, retryOptions, proxyOptions, scheduler,
-                options, verificationMode, LIBRARY_NAME, LIBRARY_VERSION);
+        final String hostname;
+        final int port;
+
+        if (customEndpointAddress != null) {
+            hostname = customEndpointAddress.getHost();
+            port = customEndpointAddress.getPort();
+        } else if (connectionStringProperties != null) {
+            final URI endpoint = connectionStringProperties.getEndpoint();
+            hostname = endpoint.getHost();
+            port = endpoint.getPort();
         } else {
-            return new ConnectionOptions(getAndValidateFullyQualifiedNamespace(), credentials, authorizationType,
-                ServiceBusConstants.AZURE_ACTIVE_DIRECTORY_SCOPE, transport, retryOptions, proxyOptions, scheduler,
-                options, verificationMode, LIBRARY_NAME, LIBRARY_VERSION, customEndpointAddress.getHost(),
-                customEndpointAddress.getPort(), true);
+            hostname = fullyQualifiedNamespace;
+            port = -1;
         }
+
+        // No explicit port was listed, so choose a default port.
+        final int portToUse = port != -1 ? port : getPort(transport, usingDevelopmentEmulator);
+        final boolean enableSsl = !usingDevelopmentEmulator;
+
+        return new ConnectionOptions(fullyQualifiedNamespace, credentials, authorizationType,
+            ServiceBusConstants.AZURE_ACTIVE_DIRECTORY_SCOPE, transport, retryOptions, proxyOptions, scheduler, options,
+            verificationMode, LIBRARY_NAME, LIBRARY_VERSION, hostname, portToUse, enableSsl);
     }
 
     // Connection-caching for the V2-Stack.
@@ -1131,6 +1156,23 @@ public final class ServiceBusClientBuilder
         return entityPath;
     }
 
+    private static int getPort(AmqpTransportType transport, boolean useDevelopmentEmulator) {
+        if (useDevelopmentEmulator) {
+            return ConnectionHandler.AMQP_PORT;
+        }
+        switch (transport) {
+            case AMQP:
+                return ConnectionHandler.AMQPS_PORT;
+
+            case AMQP_WEB_SOCKETS:
+                return WebSocketsConnectionHandler.HTTPS_PORT;
+
+            default:
+                throw LOGGER
+                    .logThrowableAsError(new IllegalArgumentException("Transport Type is not supported: " + transport));
+        }
+    }
+
     // Temporary type for Builders to work with the V2-Stack. Type will be removed once migration to new v2 stack is completed.
     private static final class V2StackSupport {
         private static final String NON_SESSION_ASYNC_RECEIVE_KEY
@@ -1195,7 +1237,7 @@ public final class ServiceBusClientBuilder
         private static final ConfigurationProperty<Boolean> SESSION_CHANNEL_CACHE_PROPERTY
             = ConfigurationPropertyBuilder.ofBoolean(SESSION_CHANNEL_CACHE_KEY)
                 .environmentVariableName(SESSION_CHANNEL_CACHE_KEY)
-                .defaultValue(false) // "SessionCache" and "RequestResponseChannelCache" requires explicit opt in along with v2 stack opt in.
+                .defaultValue(true) // "SessionCache" and "RequestResponseChannelCache" is auto on when v2 stack is also opted in.
                 .shared(true)
                 .build();
         private final AtomicReference<Boolean> sessionChannelCacheFlag = new AtomicReference<>();
@@ -1267,13 +1309,13 @@ public final class ServiceBusClientBuilder
         }
 
         /**
-         * SessionCache and RequestResponseChannelCache not opted-in default, but the application may opt in.
+         * SessionCache and RequestResponseChannelCache is on by default, but the application may opt out.
          *
          * @param configuration the client configuration.
-         * @return true if SessionCache and RequestResponseChannelCache is opted-in.
+         * @return true if SessionCache and RequestResponseChannelCache is not opted-out.
          */
         boolean isSessionChannelCacheEnabled(Configuration configuration) {
-            return isOptedIn(configuration, SESSION_CHANNEL_CACHE_PROPERTY, sessionChannelCacheFlag);
+            return !isOptedOut(configuration, SESSION_CHANNEL_CACHE_PROPERTY, sessionChannelCacheFlag);
         }
 
         // Obtain the shared connection-cache based on the V2-Stack.
@@ -1351,33 +1393,6 @@ public final class ServiceBusClientBuilder
                         = "If your application fails to work without explicitly setting {} configuration to 'false', please file an urgent issue at https://github.com/Azure/azure-sdk-for-java/issues/new/choose";
                     ServiceBusClientBuilder.LOGGER.info(logMessage, propName);
                 }
-            }
-            return choiceFlag.get();
-        }
-
-        private boolean isOptedIn(Configuration configuration, ConfigurationProperty<Boolean> configProperty,
-            AtomicReference<Boolean> choiceFlag) {
-            final Boolean flag = choiceFlag.get();
-            if (flag != null) {
-                return flag;
-            }
-
-            final String propName = configProperty.getName();
-            final boolean isOptedIn;
-            if (configuration != null) {
-                isOptedIn = configuration.get(configProperty);
-            } else {
-                assert !CoreUtils.isNullOrEmpty(propName);
-                if (!CoreUtils.isNullOrEmpty(System.getenv(propName))) {
-                    isOptedIn = "true".equalsIgnoreCase(System.getenv(propName));
-                } else if (!CoreUtils.isNullOrEmpty(System.getProperty(propName))) {
-                    isOptedIn = "true".equalsIgnoreCase(System.getProperty(propName));
-                } else {
-                    isOptedIn = false;
-                }
-            }
-            if (choiceFlag.compareAndSet(null, isOptedIn)) {
-                ServiceBusClientBuilder.LOGGER.verbose("Selected configuration {}={}", propName, isOptedIn);
             }
             return choiceFlag.get();
         }
@@ -1784,11 +1799,17 @@ public final class ServiceBusClientBuilder
 
         /**
          * Max concurrent messages that this processor should process.
-         *
+         * <p>
+         * This setting allows the application to configure the number of concurrent calls to the message processing
+         * callback {@link ServiceBusSessionProcessorClientBuilder#processMessage(Consumer)} per session, allowing
+         * parallel processing of multiple messages across sessions.
+         * </p>
          * @param maxConcurrentCalls max concurrent messages that this processor should process.
          *
          * @return The updated {@link ServiceBusSessionProcessorClientBuilder} object.
          * @throws IllegalArgumentException if {@code maxConcurrentCalls} is less than 1.
+         *
+         * @see <a href="https://learn.microsoft.com/azure/developer/java/sdk/troubleshooting-messaging-service-bus-overview#concurrency-in-servicebusprocessorclient">Concurrency in ServiceBusProcessorClient</a>
          */
         public ServiceBusSessionProcessorClientBuilder maxConcurrentCalls(int maxConcurrentCalls) {
             if (maxConcurrentCalls < 1) {
@@ -2129,8 +2150,12 @@ public final class ServiceBusClientBuilder
             final ConnectionCacheWrapper connectionCacheWrapper = new ConnectionCacheWrapper(
                 getOrCreateConnectionCache(messageSerializer, meter, useSessionChannelCache));
 
-            final ServiceBusSessionAcquirer sessionAcquirer = new ServiceBusSessionAcquirer(logger, clientIdentifier,
-                entityPath, entityType, receiveMode, retryOptions.getTryTimeout(), connectionCacheWrapper);
+            // For session enabled ServiceBusProcessorClient, the session acquire should be retried if broker timeout
+            // due to no session (see the type ServiceBusSessionAcquirer).
+            final boolean timeoutRetryDisabled = false;
+            final ServiceBusSessionAcquirer sessionAcquirer
+                = new ServiceBusSessionAcquirer(logger, clientIdentifier, entityPath, entityType, receiveMode,
+                    retryOptions.getTryTimeout(), timeoutRetryDisabled, connectionCacheWrapper);
 
             final ServiceBusReceiverInstrumentation instrumentation = new ServiceBusReceiverInstrumentation(
                 createTracer(clientOptions), meter, connectionCacheWrapper.getFullyQualifiedNamespace(), entityPath,
@@ -2159,9 +2184,8 @@ public final class ServiceBusClientBuilder
          *     queueName()} or {@link #topicName(String) topicName()}, respectively.
          */
         public ServiceBusSessionReceiverAsyncClient buildAsyncClient() {
-            final boolean isSessionReactorReceiveOnV2
-                = v2StackSupport.isSessionReactorAsyncReceiveEnabled(configuration);
-            return buildAsyncClient(true, isSessionReactorReceiveOnV2);
+            final boolean isV2 = v2StackSupport.isSessionReactorAsyncReceiveEnabled(configuration);
+            return buildAsyncClient(false, isV2);
         }
 
         /**
@@ -2178,19 +2202,27 @@ public final class ServiceBusClientBuilder
          *     queueName()} or {@link #topicName(String) topicName()}, respectively.
          */
         public ServiceBusSessionReceiverClient buildClient() {
-            final boolean isSessionSyncReceiveOnV2 = v2StackSupport.isSessionSyncReceiveEnabled(configuration);
+            final boolean isV2 = v2StackSupport.isSessionSyncReceiveEnabled(configuration);
             final boolean isPrefetchDisabled = prefetchCount == 0;
-            return new ServiceBusSessionReceiverClient(buildAsyncClient(false, isSessionSyncReceiveOnV2),
-                isPrefetchDisabled, MessageUtils.getTotalTimeout(retryOptions));
+            return new ServiceBusSessionReceiverClient(buildAsyncClient(true, isV2), isPrefetchDisabled,
+                MessageUtils.getTotalTimeout(retryOptions));
         }
 
-        // Common function to build Session-Enabled Receiver-Client - For Async[Reactor]Client Or to back SyncClient.
-        private ServiceBusSessionReceiverAsyncClient buildAsyncClient(boolean isAutoCompleteAllowed, boolean isV2) {
+        /**
+         * Common function to build a {@link ServiceBusSessionReceiverAsyncClient} which is either used directly
+         * as asynchronous client or to back a synchronous {@link ServiceBusSessionReceiverClient}.
+         *
+         * @param isForSyncMode {@code true} if the client is build to back synchronous client.
+         * @param isV2 whether V2 stack should be enabled.
+         *
+         * @return async client to obtain session from session enabled entity.
+         */
+        private ServiceBusSessionReceiverAsyncClient buildAsyncClient(boolean isForSyncMode, boolean isV2) {
             final MessagingEntityType entityType
                 = validateEntityPaths(connectionStringEntityName, topicName, queueName);
             final String entityPath = getEntityPath(entityType, queueName, topicName, subscriptionName, SubQueue.NONE);
 
-            if (!isAutoCompleteAllowed && enableAutoComplete) {
+            if (isForSyncMode && enableAutoComplete) {
                 LOGGER.warning(
                     "'enableAutoComplete' is not supported in synchronous client except through callback receive.");
                 enableAutoComplete = false;
@@ -2229,12 +2261,16 @@ public final class ServiceBusClientBuilder
                 clientIdentifier = UUID.randomUUID().toString();
             }
 
+            // For ServiceBusSessionReceiverClient, the session acquire should not be retried if broker timeout due to
+            // no session (see the type ServiceBusSessionAcquirer), such timeout are propagated to the acceptNextSession() caller.
+            final boolean timeoutRetryDisabled = isV2 && isForSyncMode;
+
             final ServiceBusReceiverInstrumentation instrumentation = new ServiceBusReceiverInstrumentation(
                 createTracer(clientOptions), meter, connectionCacheWrapper.getFullyQualifiedNamespace(), entityPath,
                 subscriptionName, ReceiverKind.ASYNC_RECEIVER);
             return new ServiceBusSessionReceiverAsyncClient(connectionCacheWrapper.getFullyQualifiedNamespace(),
                 entityPath, entityType, receiverOptions, connectionCacheWrapper, instrumentation, messageSerializer,
-                onClientClose, clientIdentifier);
+                onClientClose, clientIdentifier, timeoutRetryDisabled);
         }
     }
 
@@ -2502,9 +2538,17 @@ public final class ServiceBusClientBuilder
         /**
          * Max concurrent messages that this processor should process. By default, this is set to 1.
          *
+         * <p>
+         * This setting allows the application to configure the number of concurrent calls to the message processing
+         * callback {@link ServiceBusProcessorClientBuilder#processMessage(Consumer)}, enabling the processing of
+         * multiple messages in parallel.
+         * </p>
+         *
          * @param maxConcurrentCalls max concurrent messages that this processor should process.
          * @return The updated {@link ServiceBusProcessorClientBuilder} object.
          * @throws IllegalArgumentException if the {@code maxConcurrentCalls} is set to a value less than 1.
+         *
+         * @see <a href="https://learn.microsoft.com/azure/developer/java/sdk/troubleshooting-messaging-service-bus-overview#concurrency-in-servicebusprocessorclient">Concurrency in ServiceBusProcessorClient</a>
          */
         public ServiceBusProcessorClientBuilder maxConcurrentCalls(int maxConcurrentCalls) {
             if (maxConcurrentCalls < 1) {

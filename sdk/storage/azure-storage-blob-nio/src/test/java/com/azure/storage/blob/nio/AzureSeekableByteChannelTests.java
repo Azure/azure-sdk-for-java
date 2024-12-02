@@ -78,8 +78,7 @@ public class AzureSeekableByteChannelTests extends BlobNioTestBase {
     private void resetForLargeSource() {
         if (getTestMode() != TestMode.PLAYBACK) {
             // Base setup only uploads a small source to reduce size of session record.
-            BlobClient blobClient = getNonRecordingServiceClient()
-                .getBlobContainerClient(bc.getContainerName())
+            BlobClient blobClient = getNonRecordingServiceClient().getBlobContainerClient(bc.getContainerName())
                 .getBlobClient(bc.getBlobName());
             blobClient.upload(BinaryData.fromBytes(fileBytes), true);
         }
@@ -209,8 +208,8 @@ public class AzureSeekableByteChannelTests extends BlobNioTestBase {
         // the nearest accessible observation point, so the test mocks a BlobOutputStream such that all write
         // methods store data in ByteArrayOutputStream which it can later examine for its size and content.
         ByteArrayOutputStream actualOutput = new ByteArrayOutputStream(sourceFileSize);
-        BlobOutputStream blobOutputStream = Mockito.mock(
-            BlobOutputStream.class, Mockito.withSettings().useConstructor(4096 /* block size */));
+        BlobOutputStream blobOutputStream
+            = Mockito.mock(BlobOutputStream.class, Mockito.withSettings().useConstructor(4096 /* block size */));
         Mockito.doAnswer(invocation -> {
             actualOutput.write(invocation.getArgument(0));
             return null;
@@ -313,8 +312,7 @@ public class AzureSeekableByteChannelTests extends BlobNioTestBase {
     }
 
     private static Stream<Arguments> seekSupplier() {
-        return Stream.of(
-            Arguments.of(1024, 1024, (2 * 1024 * 1024) - 1024, 3 * 1024 * 1024, 2 * 1024 * 1024), // Only ever seek in place. Read whole blob
+        return Stream.of(Arguments.of(1024, 1024, (2 * 1024 * 1024) - 1024, 3 * 1024 * 1024, 2 * 1024 * 1024), // Only ever seek in place. Read whole blob
             Arguments.of(1024, (5 * 1024 * 1024) - 1024, 1024, 2048, 1024), // Seek forward then seek backward
             Arguments.of(2 * 1024 * 1024, 1024, 1024, (5 * 1024 * 1024) - 1024, 1024) // Seek backward then seek forward
         );

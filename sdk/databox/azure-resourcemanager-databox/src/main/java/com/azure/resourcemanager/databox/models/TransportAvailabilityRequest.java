@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Request body to get the transport availability for given sku. */
+/**
+ * Request body to get the transport availability for given sku.
+ */
 @Fluent
-public final class TransportAvailabilityRequest {
+public final class TransportAvailabilityRequest implements JsonSerializable<TransportAvailabilityRequest> {
     /*
      * Type of the device.
      */
-    @JsonProperty(value = "skuName")
     private SkuName skuName;
 
-    /** Creates an instance of TransportAvailabilityRequest class. */
+    /**
+     * Creates an instance of TransportAvailabilityRequest class.
+     */
     public TransportAvailabilityRequest() {
     }
 
     /**
      * Get the skuName property: Type of the device.
-     *
+     * 
      * @return the skuName value.
      */
     public SkuName skuName() {
@@ -31,7 +38,7 @@ public final class TransportAvailabilityRequest {
 
     /**
      * Set the skuName property: Type of the device.
-     *
+     * 
      * @param skuName the skuName value to set.
      * @return the TransportAvailabilityRequest object itself.
      */
@@ -42,9 +49,45 @@ public final class TransportAvailabilityRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("skuName", this.skuName == null ? null : this.skuName.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TransportAvailabilityRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TransportAvailabilityRequest if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TransportAvailabilityRequest.
+     */
+    public static TransportAvailabilityRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TransportAvailabilityRequest deserializedTransportAvailabilityRequest = new TransportAvailabilityRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("skuName".equals(fieldName)) {
+                    deserializedTransportAvailabilityRequest.skuName = SkuName.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTransportAvailabilityRequest;
+        });
     }
 }

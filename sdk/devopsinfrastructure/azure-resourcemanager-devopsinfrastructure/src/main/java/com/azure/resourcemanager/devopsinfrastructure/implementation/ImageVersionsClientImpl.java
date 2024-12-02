@@ -42,22 +42,22 @@ public final class ImageVersionsClientImpl implements ImageVersionsClient {
     /**
      * The service client containing this operation class.
      */
-    private final DevOpsInfrastructureClientImpl client;
+    private final DevOpsInfrastructureManagementClientImpl client;
 
     /**
      * Initializes an instance of ImageVersionsClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    ImageVersionsClientImpl(DevOpsInfrastructureClientImpl client) {
+    ImageVersionsClientImpl(DevOpsInfrastructureManagementClientImpl client) {
         this.service
             = RestProxy.create(ImageVersionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for DevOpsInfrastructureClientImageVersions to be used by the proxy
-     * service to perform REST calls.
+     * The interface defining all the services for DevOpsInfrastructureManagementClientImageVersions to be used by the
+     * proxy service to perform REST calls.
      */
     @Host("{endpoint}")
     @ServiceInterface(name = "DevOpsInfrastructure")

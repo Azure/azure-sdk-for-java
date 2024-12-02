@@ -199,15 +199,11 @@ public class SpyClientUnderTestFactory {
 
         private Mono<HttpResponse> captureHttpRequest(InvocationOnMock invocationOnMock) {
             HttpRequest httpRequest = invocationOnMock.getArgument(0, HttpRequest.class);
-            Duration responseTimeout = Duration.ofSeconds(Configs.getHttpResponseTimeoutInSeconds());
-            if (invocationOnMock.getArguments().length == 2) {
-                responseTimeout = invocationOnMock.getArgument(1, Duration.class);
-            }
             CompletableFuture<HttpResponse> f = new CompletableFuture<>();
             this.requestsResponsePairs.add(Pair.of(httpRequest, f));
 
             return origHttpClient
-                .send(httpRequest, responseTimeout)
+                .send(httpRequest)
                 .doOnNext(httpResponse -> f.complete(httpResponse.buffer()))
                 .doOnError(f::completeExceptionally);
         }

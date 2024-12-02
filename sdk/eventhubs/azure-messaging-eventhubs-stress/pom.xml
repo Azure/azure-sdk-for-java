@@ -37,6 +37,11 @@
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
+      <artifactId>azure-identity</artifactId>
+      <version>1.14.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
       <artifactId>azure-messaging-eventhubs</artifactId>
       <version>5.20.0-beta.1</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;current} -->
     </dependency>
@@ -65,12 +70,12 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-tracing-opentelemetry</artifactId>
-      <version>1.0.0-beta.50</version> <!--{x-version-update;com.azure:azure-core-tracing-opentelemetry;dependency} -->
+      <version>1.0.0-beta.52</version> <!--{x-version-update;com.azure:azure-core-tracing-opentelemetry;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-metrics-opentelemetry</artifactId>
-      <version>1.0.0-beta.23</version> <!--{x-version-update;com.azure:azure-core-metrics-opentelemetry;dependency} -->
+      <version>1.0.0-beta.25</version> <!--{x-version-update;com.azure:azure-core-metrics-opentelemetry;dependency} -->
     </dependency>
   </dependencies>
 

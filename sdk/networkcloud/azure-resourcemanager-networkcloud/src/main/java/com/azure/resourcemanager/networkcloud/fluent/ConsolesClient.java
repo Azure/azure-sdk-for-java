@@ -12,15 +12,18 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.networkcloud.fluent.models.ConsoleInner;
+import com.azure.resourcemanager.networkcloud.fluent.models.OperationStatusResultInner;
 import com.azure.resourcemanager.networkcloud.models.ConsolePatchParameters;
 
-/** An instance of this class provides access to all the operations defined in ConsolesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ConsolesClient.
+ */
 public interface ConsolesClient {
     /**
      * List consoles of the virtual machine.
-     *
-     * <p>Get a list of consoles for the provided virtual machine.
-     *
+     * 
+     * Get a list of consoles for the provided virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -33,9 +36,9 @@ public interface ConsolesClient {
 
     /**
      * List consoles of the virtual machine.
-     *
-     * <p>Get a list of consoles for the provided virtual machine.
-     *
+     * 
+     * Get a list of consoles for the provided virtual machine.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @param context The context to associate with this operation.
@@ -50,9 +53,9 @@ public interface ConsolesClient {
 
     /**
      * Retrieve the virtual machine console.
-     *
-     * <p>Get properties of the provided virtual machine console.
-     *
+     * 
+     * Get properties of the provided virtual machine console.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @param consoleName The name of the virtual machine console.
@@ -68,9 +71,9 @@ public interface ConsolesClient {
 
     /**
      * Retrieve the virtual machine console.
-     *
-     * <p>Get properties of the provided virtual machine console.
-     *
+     * 
+     * Get properties of the provided virtual machine console.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @param consoleName The name of the virtual machine console.
@@ -84,9 +87,9 @@ public interface ConsolesClient {
 
     /**
      * Create or update the virtual machine console.
-     *
-     * <p>Create a new virtual machine console or update the properties of the existing virtual machine console.
-     *
+     * 
+     * Create a new virtual machine console or update the properties of the existing virtual machine console.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @param consoleName The name of the virtual machine console.
@@ -95,7 +98,7 @@ public interface ConsolesClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of console represents the console of an on-premises Network Cloud
-     *     virtual machine.
+     * virtual machine.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ConsoleInner>, ConsoleInner> beginCreateOrUpdate(String resourceGroupName,
@@ -103,9 +106,9 @@ public interface ConsolesClient {
 
     /**
      * Create or update the virtual machine console.
-     *
-     * <p>Create a new virtual machine console or update the properties of the existing virtual machine console.
-     *
+     * 
+     * Create a new virtual machine console or update the properties of the existing virtual machine console.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @param consoleName The name of the virtual machine console.
@@ -115,7 +118,7 @@ public interface ConsolesClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of console represents the console of an on-premises Network Cloud
-     *     virtual machine.
+     * virtual machine.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ConsoleInner>, ConsoleInner> beginCreateOrUpdate(String resourceGroupName,
@@ -123,9 +126,9 @@ public interface ConsolesClient {
 
     /**
      * Create or update the virtual machine console.
-     *
-     * <p>Create a new virtual machine console or update the properties of the existing virtual machine console.
-     *
+     * 
+     * Create a new virtual machine console or update the properties of the existing virtual machine console.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @param consoleName The name of the virtual machine console.
@@ -141,9 +144,9 @@ public interface ConsolesClient {
 
     /**
      * Create or update the virtual machine console.
-     *
-     * <p>Create a new virtual machine console or update the properties of the existing virtual machine console.
-     *
+     * 
+     * Create a new virtual machine console or update the properties of the existing virtual machine console.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @param consoleName The name of the virtual machine console.
@@ -160,26 +163,26 @@ public interface ConsolesClient {
 
     /**
      * Delete the virtual machine console.
-     *
-     * <p>Delete the provided virtual machine console.
-     *
+     * 
+     * Delete the provided virtual machine console.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @param consoleName The name of the virtual machine console.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String virtualMachineName,
-        String consoleName);
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginDelete(String resourceGroupName,
+        String virtualMachineName, String consoleName);
 
     /**
      * Delete the virtual machine console.
-     *
-     * <p>Delete the provided virtual machine console.
-     *
+     * 
+     * Delete the provided virtual machine console.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @param consoleName The name of the virtual machine console.
@@ -187,32 +190,33 @@ public interface ConsolesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String virtualMachineName,
-        String consoleName, Context context);
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginDelete(String resourceGroupName,
+        String virtualMachineName, String consoleName, Context context);
 
     /**
      * Delete the virtual machine console.
-     *
-     * <p>Delete the provided virtual machine console.
-     *
+     * 
+     * Delete the provided virtual machine console.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @param consoleName The name of the virtual machine console.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String virtualMachineName, String consoleName);
+    OperationStatusResultInner delete(String resourceGroupName, String virtualMachineName, String consoleName);
 
     /**
      * Delete the virtual machine console.
-     *
-     * <p>Delete the provided virtual machine console.
-     *
+     * 
+     * Delete the provided virtual machine console.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @param consoleName The name of the virtual machine console.
@@ -220,16 +224,18 @@ public interface ConsolesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String virtualMachineName, String consoleName, Context context);
+    OperationStatusResultInner delete(String resourceGroupName, String virtualMachineName, String consoleName,
+        Context context);
 
     /**
      * Patch the virtual machine console.
-     *
-     * <p>Patch the properties of the provided virtual machine console, or update the tags associated with the virtual
+     * 
+     * Patch the properties of the provided virtual machine console, or update the tags associated with the virtual
      * machine console. Properties and tag updates can be done independently.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @param consoleName The name of the virtual machine console.
@@ -237,7 +243,7 @@ public interface ConsolesClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of console represents the console of an on-premises Network Cloud
-     *     virtual machine.
+     * virtual machine.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ConsoleInner>, ConsoleInner> beginUpdate(String resourceGroupName, String virtualMachineName,
@@ -245,10 +251,10 @@ public interface ConsolesClient {
 
     /**
      * Patch the virtual machine console.
-     *
-     * <p>Patch the properties of the provided virtual machine console, or update the tags associated with the virtual
+     * 
+     * Patch the properties of the provided virtual machine console, or update the tags associated with the virtual
      * machine console. Properties and tag updates can be done independently.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @param consoleName The name of the virtual machine console.
@@ -258,7 +264,7 @@ public interface ConsolesClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of console represents the console of an on-premises Network Cloud
-     *     virtual machine.
+     * virtual machine.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ConsoleInner>, ConsoleInner> beginUpdate(String resourceGroupName, String virtualMachineName,
@@ -266,10 +272,10 @@ public interface ConsolesClient {
 
     /**
      * Patch the virtual machine console.
-     *
-     * <p>Patch the properties of the provided virtual machine console, or update the tags associated with the virtual
+     * 
+     * Patch the properties of the provided virtual machine console, or update the tags associated with the virtual
      * machine console. Properties and tag updates can be done independently.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @param consoleName The name of the virtual machine console.
@@ -283,10 +289,10 @@ public interface ConsolesClient {
 
     /**
      * Patch the virtual machine console.
-     *
-     * <p>Patch the properties of the provided virtual machine console, or update the tags associated with the virtual
+     * 
+     * Patch the properties of the provided virtual machine console, or update the tags associated with the virtual
      * machine console. Properties and tag updates can be done independently.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @param consoleName The name of the virtual machine console.

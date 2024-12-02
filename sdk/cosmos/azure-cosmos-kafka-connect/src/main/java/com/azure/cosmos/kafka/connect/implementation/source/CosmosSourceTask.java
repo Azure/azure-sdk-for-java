@@ -61,8 +61,11 @@ public class CosmosSourceTask extends SourceTask {
         this.taskUnitsQueue.addAll(this.taskConfig.getFeedRangeTaskUnits());
         LOGGER.info("Creating the cosmos client");
 
-        // TODO[GA]: optimize the client creation, client metadata cache?
-        this.cosmosClient = CosmosClientStore.getCosmosClient(this.taskConfig.getAccountConfig(), this.taskConfig.getTaskId());
+        this.cosmosClient =
+            CosmosClientStore.getCosmosClient(
+                this.taskConfig.getAccountConfig(),
+                this.taskConfig.getTaskId(),
+                this.taskConfig.getCosmosClientMetadataCachesSnapshot());
         this.throughputControlCosmosClient = this.getThroughputControlCosmosClient();
     }
 
@@ -72,7 +75,8 @@ public class CosmosSourceTask extends SourceTask {
             // throughput control is using a different database account config
             return CosmosClientStore.getCosmosClient(
                 this.taskConfig.getThroughputControlConfig().getThroughputControlAccountConfig(),
-                this.taskConfig.getTaskId());
+                this.taskConfig.getTaskId(),
+                this.taskConfig.getThroughputControlCosmosClientMetadataCachesSnapshot());
         } else {
             return this.cosmosClient;
         }
@@ -121,10 +125,8 @@ public class CosmosSourceTask extends SourceTask {
             }
             return results;
         } catch (Exception e) {
-            // for error cases, we should always the task back to the queue
+            // for error cases, we should always put the task back to the queue
             this.taskUnitsQueue.add(taskUnit);
-
-            // TODO[Public Preview]: add checking for max retries checking
             throw KafkaCosmosExceptionsHelper.convertToConnectException(e, "PollTask failed");
         }
     }
@@ -263,8 +265,6 @@ public class CosmosSourceTask extends SourceTask {
     }
 
     private Mono<Boolean> handleFeedRangeGone(FeedRangeTaskUnit feedRangeTaskUnit) {
-        //TODO (xinlian-public preview): Add more debug logs
-
         // need to find out whether it is split or merge
         CosmosAsyncContainer container =
             this.cosmosClient

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.synapse.implementation;
 
-import com.azure.core.http.rest.Response;
 import com.azure.core.management.Region;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.fluent.models.SqlPoolInner;
 import com.azure.resourcemanager.synapse.models.CreateMode;
-import com.azure.resourcemanager.synapse.models.ResourceMoveDefinition;
 import com.azure.resourcemanager.synapse.models.Sku;
 import com.azure.resourcemanager.synapse.models.SqlPool;
 import com.azure.resourcemanager.synapse.models.SqlPoolPatchInfo;
@@ -172,9 +170,9 @@ public final class SqlPoolImpl implements SqlPool, SqlPool.Definition, SqlPool.U
     SqlPoolImpl(SqlPoolInner innerObject, com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.workspaceName = Utils.getValueFromIdByName(innerObject.id(), "workspaces");
-        this.sqlPoolName = Utils.getValueFromIdByName(innerObject.id(), "sqlPools");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.workspaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "workspaces");
+        this.sqlPoolName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "sqlPools");
     }
 
     public SqlPool refresh() {
@@ -207,15 +205,6 @@ public final class SqlPoolImpl implements SqlPool, SqlPool.Definition, SqlPool.U
 
     public SqlPool resume(Context context) {
         return serviceManager.sqlPools().resume(resourceGroupName, workspaceName, sqlPoolName, context);
-    }
-
-    public Response<Void> renameWithResponse(ResourceMoveDefinition parameters, Context context) {
-        return serviceManager.sqlPools()
-            .renameWithResponse(resourceGroupName, workspaceName, sqlPoolName, parameters, context);
-    }
-
-    public void rename(ResourceMoveDefinition parameters) {
-        serviceManager.sqlPools().rename(resourceGroupName, workspaceName, sqlPoolName, parameters);
     }
 
     public SqlPoolImpl withRegion(Region location) {

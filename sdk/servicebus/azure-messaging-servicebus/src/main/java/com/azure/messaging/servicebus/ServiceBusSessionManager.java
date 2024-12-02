@@ -47,7 +47,8 @@ import static reactor.core.scheduler.Schedulers.DEFAULT_BOUNDED_ELASTIC_QUEUESIZ
 import static reactor.core.scheduler.Schedulers.DEFAULT_BOUNDED_ELASTIC_SIZE;
 
 /**
- * Package-private class that manages session aware message receiving.
+ * Package-private class that manages session aware message receiving in v1 stack.
+ *
  */
 class ServiceBusSessionManager implements AutoCloseable, IServiceBusSessionManager {
     // Time to delay before trying to accept another session.

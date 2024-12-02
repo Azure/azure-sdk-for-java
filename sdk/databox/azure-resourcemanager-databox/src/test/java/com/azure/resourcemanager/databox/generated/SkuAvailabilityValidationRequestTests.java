@@ -14,24 +14,25 @@ public final class SkuAvailabilityValidationRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SkuAvailabilityValidationRequest model = BinaryData.fromString(
-            "{\"validationType\":\"ValidateSkuAvailability\",\"deviceType\":\"DataBox\",\"transferType\":\"ImportToAzure\",\"country\":\"pxacqqudfn\",\"location\":\"yxbaaabjyvayf\"}")
+            "{\"validationType\":\"ValidateSkuAvailability\",\"deviceType\":\"DataBoxDisk\",\"transferType\":\"ImportToAzure\",\"country\":\"klff\",\"location\":\"mouwqlgzrfzeey\"}")
             .toObject(SkuAvailabilityValidationRequest.class);
-        Assertions.assertEquals(SkuName.DATA_BOX, model.deviceType());
+        Assertions.assertEquals(SkuName.DATA_BOX_DISK, model.deviceType());
         Assertions.assertEquals(TransferType.IMPORT_TO_AZURE, model.transferType());
-        Assertions.assertEquals("pxacqqudfn", model.country());
-        Assertions.assertEquals("yxbaaabjyvayf", model.location());
+        Assertions.assertEquals("klff", model.country());
+        Assertions.assertEquals("mouwqlgzrfzeey", model.location());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SkuAvailabilityValidationRequest model = new SkuAvailabilityValidationRequest().withDeviceType(SkuName.DATA_BOX)
-            .withTransferType(TransferType.IMPORT_TO_AZURE)
-            .withCountry("pxacqqudfn")
-            .withLocation("yxbaaabjyvayf");
+        SkuAvailabilityValidationRequest model
+            = new SkuAvailabilityValidationRequest().withDeviceType(SkuName.DATA_BOX_DISK)
+                .withTransferType(TransferType.IMPORT_TO_AZURE)
+                .withCountry("klff")
+                .withLocation("mouwqlgzrfzeey");
         model = BinaryData.fromObject(model).toObject(SkuAvailabilityValidationRequest.class);
-        Assertions.assertEquals(SkuName.DATA_BOX, model.deviceType());
+        Assertions.assertEquals(SkuName.DATA_BOX_DISK, model.deviceType());
         Assertions.assertEquals(TransferType.IMPORT_TO_AZURE, model.transferType());
-        Assertions.assertEquals("pxacqqudfn", model.country());
-        Assertions.assertEquals("yxbaaabjyvayf", model.location());
+        Assertions.assertEquals("klff", model.country());
+        Assertions.assertEquals("mouwqlgzrfzeey", model.location());
     }
 }

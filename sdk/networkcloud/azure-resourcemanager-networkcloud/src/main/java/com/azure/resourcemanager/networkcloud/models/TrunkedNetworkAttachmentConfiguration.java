@@ -6,30 +6,37 @@ package com.azure.resourcemanager.networkcloud.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** TrunkedNetworkAttachmentConfiguration represents the configuration of the attachment of a trunked network. */
+/**
+ * TrunkedNetworkAttachmentConfiguration represents the configuration of the attachment of a trunked network.
+ */
 @Fluent
-public final class TrunkedNetworkAttachmentConfiguration {
+public final class TrunkedNetworkAttachmentConfiguration
+    implements JsonSerializable<TrunkedNetworkAttachmentConfiguration> {
     /*
      * The resource ID of the network that is being configured for attachment.
      */
-    @JsonProperty(value = "networkId", required = true)
     private String networkId;
 
     /*
      * The indicator of how this network will be utilized by the Kubernetes cluster.
      */
-    @JsonProperty(value = "pluginType")
     private KubernetesPluginType pluginType;
 
-    /** Creates an instance of TrunkedNetworkAttachmentConfiguration class. */
+    /**
+     * Creates an instance of TrunkedNetworkAttachmentConfiguration class.
+     */
     public TrunkedNetworkAttachmentConfiguration() {
     }
 
     /**
      * Get the networkId property: The resource ID of the network that is being configured for attachment.
-     *
+     * 
      * @return the networkId value.
      */
     public String networkId() {
@@ -38,7 +45,7 @@ public final class TrunkedNetworkAttachmentConfiguration {
 
     /**
      * Set the networkId property: The resource ID of the network that is being configured for attachment.
-     *
+     * 
      * @param networkId the networkId value to set.
      * @return the TrunkedNetworkAttachmentConfiguration object itself.
      */
@@ -49,7 +56,7 @@ public final class TrunkedNetworkAttachmentConfiguration {
 
     /**
      * Get the pluginType property: The indicator of how this network will be utilized by the Kubernetes cluster.
-     *
+     * 
      * @return the pluginType value.
      */
     public KubernetesPluginType pluginType() {
@@ -58,7 +65,7 @@ public final class TrunkedNetworkAttachmentConfiguration {
 
     /**
      * Set the pluginType property: The indicator of how this network will be utilized by the Kubernetes cluster.
-     *
+     * 
      * @param pluginType the pluginType value to set.
      * @return the TrunkedNetworkAttachmentConfiguration object itself.
      */
@@ -69,15 +76,58 @@ public final class TrunkedNetworkAttachmentConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (networkId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property networkId in model TrunkedNetworkAttachmentConfiguration"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property networkId in model TrunkedNetworkAttachmentConfiguration"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(TrunkedNetworkAttachmentConfiguration.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("networkId", this.networkId);
+        jsonWriter.writeStringField("pluginType", this.pluginType == null ? null : this.pluginType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TrunkedNetworkAttachmentConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TrunkedNetworkAttachmentConfiguration if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the TrunkedNetworkAttachmentConfiguration.
+     */
+    public static TrunkedNetworkAttachmentConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TrunkedNetworkAttachmentConfiguration deserializedTrunkedNetworkAttachmentConfiguration
+                = new TrunkedNetworkAttachmentConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("networkId".equals(fieldName)) {
+                    deserializedTrunkedNetworkAttachmentConfiguration.networkId = reader.getString();
+                } else if ("pluginType".equals(fieldName)) {
+                    deserializedTrunkedNetworkAttachmentConfiguration.pluginType
+                        = KubernetesPluginType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTrunkedNetworkAttachmentConfiguration;
+        });
+    }
 }

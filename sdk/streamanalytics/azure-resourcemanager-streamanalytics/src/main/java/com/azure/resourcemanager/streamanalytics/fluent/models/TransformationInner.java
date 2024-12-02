@@ -6,31 +6,31 @@ package com.azure.resourcemanager.streamanalytics.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
- * A transformation object, containing all information associated with the named transformation. All transformations
- * are contained under a streaming job.
+ * A transformation object, containing all information associated with the named transformation. All transformations are
+ * contained under a streaming job.
  */
 @Fluent
 public final class TransformationInner extends SubResource {
     /*
      * The properties that are associated with a transformation. Required on PUT (CreateOrReplace) requests.
      */
-    @JsonProperty(value = "properties")
     private TransformationProperties innerProperties;
 
     /*
      * Resource name
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Resource type
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /**
@@ -161,9 +161,9 @@ public final class TransformationInner extends SubResource {
     }
 
     /**
-     * Get the etag property: The current entity tag for the transformation. This is an opaque string. You can use it
-     * to detect whether the resource has changed between requests. You can also use it in the If-Match or
-     * If-None-Match headers for write operations for optimistic concurrency.
+     * Get the etag property: The current entity tag for the transformation. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. You can also use it in the If-Match or If-None-Match
+     * headers for write operations for optimistic concurrency.
      * 
      * @return the etag value.
      */
@@ -180,5 +180,49 @@ public final class TransformationInner extends SubResource {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("name", this.name);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TransformationInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TransformationInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TransformationInner.
+     */
+    public static TransformationInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TransformationInner deserializedTransformationInner = new TransformationInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedTransformationInner.withId(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedTransformationInner.innerProperties = TransformationProperties.fromJson(reader);
+                } else if ("name".equals(fieldName)) {
+                    deserializedTransformationInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedTransformationInner.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTransformationInner;
+        });
     }
 }

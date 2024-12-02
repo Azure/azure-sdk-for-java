@@ -11,21 +11,23 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.mediaservices.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.mediaservices.fluent.models.PrivateEndpointConnectionListResultInner;
 
-/** An instance of this class provides access to all the operations defined in PrivateEndpointConnectionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in PrivateEndpointConnectionsClient.
+ */
 public interface PrivateEndpointConnectionsClient {
     /**
      * List private endpoint connections.
-     *
-     * <p>List all private endpoint connections.
-     *
+     * 
+     * List all private endpoint connections.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of private endpoint connection associated with the specified storage account along with {@link
-     *     Response}.
+     * @return list of private endpoint connection associated with the specified storage account along with
+     * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<PrivateEndpointConnectionListResultInner> listWithResponse(String resourceGroupName, String accountName,
@@ -33,9 +35,9 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * List private endpoint connections.
-     *
-     * <p>List all private endpoint connections.
-     *
+     * 
+     * List all private endpoint connections.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -48,9 +50,9 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Get private endpoint connection.
-     *
-     * <p>Get the details of a private endpoint connection.
-     *
+     * 
+     * Get the details of a private endpoint connection.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param name The name parameter.
@@ -66,9 +68,9 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Get private endpoint connection.
-     *
-     * <p>Get the details of a private endpoint connection.
-     *
+     * 
+     * Get the details of a private endpoint connection.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param name The name parameter.
@@ -82,9 +84,9 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Update a private endpoint connection.
-     *
-     * <p>Update an existing private endpoint connection.
-     *
+     * 
+     * Update an existing private endpoint connection.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param name The name parameter.
@@ -101,9 +103,9 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Update a private endpoint connection.
-     *
-     * <p>Update an existing private endpoint connection.
-     *
+     * 
+     * Update an existing private endpoint connection.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param name The name parameter.
@@ -119,9 +121,9 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Delete a private endpoint connection.
-     *
-     * <p>Deletes a private endpoint connection.
-     *
+     * 
+     * Deletes a private endpoint connection.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param name The name parameter.
@@ -136,9 +138,9 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Delete a private endpoint connection.
-     *
-     * <p>Deletes a private endpoint connection.
-     *
+     * 
+     * Deletes a private endpoint connection.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param name The name parameter.

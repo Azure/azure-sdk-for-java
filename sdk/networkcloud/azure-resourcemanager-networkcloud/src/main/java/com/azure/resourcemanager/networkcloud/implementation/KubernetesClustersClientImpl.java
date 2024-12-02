@@ -43,17 +43,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in KubernetesClustersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in KubernetesClustersClient.
+ */
 public final class KubernetesClustersClientImpl implements KubernetesClustersClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final KubernetesClustersService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final NetworkCloudImpl client;
 
     /**
      * Initializes an instance of KubernetesClustersClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     KubernetesClustersClientImpl(NetworkCloudImpl client) {
@@ -130,7 +136,7 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
 
         @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/kubernetesClusters/{kubernetesClusterName}/restartNode")
-        @ExpectedResponses({ 200, 202, 204 })
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> restartNode(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
@@ -158,13 +164,13 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
 
     /**
      * List Kubernetes clusters in the subscription.
-     *
-     * <p>Get a list of Kubernetes clusters in the provided subscription.
-     *
+     * 
+     * Get a list of Kubernetes clusters in the provided subscription.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of Kubernetes clusters in the provided subscription along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<KubernetesClusterInner>> listSinglePageAsync() {
@@ -187,15 +193,15 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
 
     /**
      * List Kubernetes clusters in the subscription.
-     *
-     * <p>Get a list of Kubernetes clusters in the provided subscription.
-     *
+     * 
+     * Get a list of Kubernetes clusters in the provided subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of Kubernetes clusters in the provided subscription along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<KubernetesClusterInner>> listSinglePageAsync(Context context) {
@@ -218,9 +224,9 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
 
     /**
      * List Kubernetes clusters in the subscription.
-     *
-     * <p>Get a list of Kubernetes clusters in the provided subscription.
-     *
+     * 
+     * Get a list of Kubernetes clusters in the provided subscription.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of Kubernetes clusters in the provided subscription as paginated response with {@link PagedFlux}.
@@ -233,9 +239,9 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
 
     /**
      * List Kubernetes clusters in the subscription.
-     *
-     * <p>Get a list of Kubernetes clusters in the provided subscription.
-     *
+     * 
+     * Get a list of Kubernetes clusters in the provided subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -250,13 +256,13 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
 
     /**
      * List Kubernetes clusters in the subscription.
-     *
-     * <p>Get a list of Kubernetes clusters in the provided subscription.
-     *
+     * 
+     * Get a list of Kubernetes clusters in the provided subscription.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Kubernetes clusters in the provided subscription as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of Kubernetes clusters in the provided subscription as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<KubernetesClusterInner> list() {
@@ -265,15 +271,15 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
 
     /**
      * List Kubernetes clusters in the subscription.
-     *
-     * <p>Get a list of Kubernetes clusters in the provided subscription.
-     *
+     * 
+     * Get a list of Kubernetes clusters in the provided subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Kubernetes clusters in the provided subscription as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of Kubernetes clusters in the provided subscription as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<KubernetesClusterInner> list(Context context) {
@@ -282,15 +288,15 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
 
     /**
      * List Kubernetes clusters in the resource group.
-     *
-     * <p>Get a list of Kubernetes clusters in the provided resource group.
-     *
+     * 
+     * Get a list of Kubernetes clusters in the provided resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of Kubernetes clusters in the provided resource group along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<KubernetesClusterInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
@@ -317,16 +323,16 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
 
     /**
      * List Kubernetes clusters in the resource group.
-     *
-     * <p>Get a list of Kubernetes clusters in the provided resource group.
-     *
+     * 
+     * Get a list of Kubernetes clusters in the provided resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of Kubernetes clusters in the provided resource group along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<KubernetesClusterInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
@@ -354,15 +360,15 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
 
     /**
      * List Kubernetes clusters in the resource group.
-     *
-     * <p>Get a list of Kubernetes clusters in the provided resource group.
-     *
+     * 
+     * Get a list of Kubernetes clusters in the provided resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Kubernetes clusters in the provided resource group as paginated response with {@link
-     *     PagedFlux}.
+     * @return a list of Kubernetes clusters in the provided resource group as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<KubernetesClusterInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -372,16 +378,16 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
 
     /**
      * List Kubernetes clusters in the resource group.
-     *
-     * <p>Get a list of Kubernetes clusters in the provided resource group.
-     *
+     * 
+     * Get a list of Kubernetes clusters in the provided resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Kubernetes clusters in the provided resource group as paginated response with {@link
-     *     PagedFlux}.
+     * @return a list of Kubernetes clusters in the provided resource group as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<KubernetesClusterInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
@@ -391,15 +397,15 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
 
     /**
      * List Kubernetes clusters in the resource group.
-     *
-     * <p>Get a list of Kubernetes clusters in the provided resource group.
-     *
+     * 
+     * Get a list of Kubernetes clusters in the provided resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Kubernetes clusters in the provided resource group as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of Kubernetes clusters in the provided resource group as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<KubernetesClusterInner> listByResourceGroup(String resourceGroupName) {
@@ -408,16 +414,16 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
 
     /**
      * List Kubernetes clusters in the resource group.
-     *
-     * <p>Get a list of Kubernetes clusters in the provided resource group.
-     *
+     * 
+     * Get a list of Kubernetes clusters in the provided resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Kubernetes clusters in the provided resource group as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of Kubernetes clusters in the provided resource group as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<KubernetesClusterInner> listByResourceGroup(String resourceGroupName, Context context) {
@@ -426,16 +432,16 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
 
     /**
      * Retrieve the Kubernetes cluster.
-     *
-     * <p>Get properties of the provided the Kubernetes cluster.
-     *
+     * 
+     * Get properties of the provided the Kubernetes cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kubernetesClusterName The name of the Kubernetes cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return properties of the provided the Kubernetes cluster along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<KubernetesClusterInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
@@ -465,9 +471,9 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
 
     /**
      * Retrieve the Kubernetes cluster.
-     *
-     * <p>Get properties of the provided the Kubernetes cluster.
-     *
+     * 
+     * Get properties of the provided the Kubernetes cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kubernetesClusterName The name of the Kubernetes cluster.
      * @param context The context to associate with this operation.
@@ -475,7 +481,7 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return properties of the provided the Kubernetes cluster along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<KubernetesClusterInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
@@ -504,9 +510,9 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
 
     /**
      * Retrieve the Kubernetes cluster.
-     *
-     * <p>Get properties of the provided the Kubernetes cluster.
-     *
+     * 
+     * Get properties of the provided the Kubernetes cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kubernetesClusterName The name of the Kubernetes cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -523,9 +529,9 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
 
     /**
      * Retrieve the Kubernetes cluster.
-     *
-     * <p>Get properties of the provided the Kubernetes cluster.
-     *
+     * 
+     * Get properties of the provided the Kubernetes cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kubernetesClusterName The name of the Kubernetes cluster.
      * @param context The context to associate with this operation.
@@ -542,9 +548,9 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
 
     /**
      * Retrieve the Kubernetes cluster.
-     *
-     * <p>Get properties of the provided the Kubernetes cluster.
-     *
+     * 
+     * Get properties of the provided the Kubernetes cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kubernetesClusterName The name of the Kubernetes cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -559,9 +565,9 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
 
     /**
      * Create or update the Kubernetes cluster.
-     *
-     * <p>Create a new Kubernetes cluster or update the properties of the existing one.
-     *
+     * 
+     * Create a new Kubernetes cluster or update the properties of the existing one.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kubernetesClusterName The name of the Kubernetes cluster.
      * @param kubernetesClusterParameters The request body.
@@ -569,7 +575,7 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return kubernetesCluster represents the Kubernetes cluster hosted on Network Cloud along with {@link Response}
-     *     on successful completion of {@link Mono}.
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
@@ -606,9 +612,9 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
 
     /**
      * Create or update the Kubernetes cluster.
-     *
-     * <p>Create a new Kubernetes cluster or update the properties of the existing one.
-     *
+     * 
+     * Create a new Kubernetes cluster or update the properties of the existing one.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kubernetesClusterName The name of the Kubernetes cluster.
      * @param kubernetesClusterParameters The request body.
@@ -617,7 +623,7 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return kubernetesCluster represents the Kubernetes cluster hosted on Network Cloud along with {@link Response}
-     *     on successful completion of {@link Mono}.
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
@@ -653,9 +659,9 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
 
     /**
      * Create or update the Kubernetes cluster.
-     *
-     * <p>Create a new Kubernetes cluster or update the properties of the existing one.
-     *
+     * 
+     * Create a new Kubernetes cluster or update the properties of the existing one.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kubernetesClusterName The name of the Kubernetes cluster.
      * @param kubernetesClusterParameters The request body.
@@ -663,7 +669,7 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of kubernetesCluster represents the Kubernetes cluster hosted on
-     *     Network Cloud.
+     * Network Cloud.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<KubernetesClusterInner>, KubernetesClusterInner> beginCreateOrUpdateAsync(
@@ -677,9 +683,9 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
 
     /**
      * Create or update the Kubernetes cluster.
-     *
-     * <p>Create a new Kubernetes cluster or update the properties of the existing one.
-     *
+     * 
+     * Create a new Kubernetes cluster or update the properties of the existing one.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kubernetesClusterName The name of the Kubernetes cluster.
      * @param kubernetesClusterParameters The request body.
@@ -688,7 +694,7 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of kubernetesCluster represents the Kubernetes cluster hosted on
-     *     Network Cloud.
+     * Network Cloud.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<KubernetesClusterInner>, KubernetesClusterInner> beginCreateOrUpdateAsync(
@@ -703,9 +709,9 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
 
     /**
      * Create or update the Kubernetes cluster.
-     *
-     * <p>Create a new Kubernetes cluster or update the properties of the existing one.
-     *
+     * 
+     * Create a new Kubernetes cluster or update the properties of the existing one.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kubernetesClusterName The name of the Kubernetes cluster.
      * @param kubernetesClusterParameters The request body.
@@ -713,7 +719,7 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of kubernetesCluster represents the Kubernetes cluster hosted on
-     *     Network Cloud.
+     * Network Cloud.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<KubernetesClusterInner>, KubernetesClusterInner> beginCreateOrUpdate(
@@ -724,9 +730,9 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
 
     /**
      * Create or update the Kubernetes cluster.
-     *
-     * <p>Create a new Kubernetes cluster or update the properties of the existing one.
-     *
+     * 
+     * Create a new Kubernetes cluster or update the properties of the existing one.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kubernetesClusterName The name of the Kubernetes cluster.
      * @param kubernetesClusterParameters The request body.
@@ -735,7 +741,7 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of kubernetesCluster represents the Kubernetes cluster hosted on
-     *     Network Cloud.
+     * Network Cloud.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<KubernetesClusterInner>, KubernetesClusterInner> beginCreateOrUpdate(
@@ -748,9 +754,9 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
 
     /**
      * Create or update the Kubernetes cluster.
-     *
-     * <p>Create a new Kubernetes cluster or update the properties of the existing one.
-     *
+     * 
+     * Create a new Kubernetes cluster or update the properties of the existing one.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kubernetesClusterName The name of the Kubernetes cluster.
      * @param kubernetesClusterParameters The request body.
@@ -758,7 +764,7 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return kubernetesCluster represents the Kubernetes cluster hosted on Network Cloud on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<KubernetesClusterInner> createOrUpdateAsync(String resourceGroupName, String kubernetesClusterName,
@@ -769,9 +775,9 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
 
     /**
      * Create or update the Kubernetes cluster.
-     *
-     * <p>Create a new Kubernetes cluster or update the properties of the existing one.
-     *
+     * 
+     * Create a new Kubernetes cluster or update the properties of the existing one.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kubernetesClusterName The name of the Kubernetes cluster.
      * @param kubernetesClusterParameters The request body.
@@ -780,7 +786,7 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return kubernetesCluster represents the Kubernetes cluster hosted on Network Cloud on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<KubernetesClusterInner> createOrUpdateAsync(String resourceGroupName, String kubernetesClusterName,
@@ -792,9 +798,9 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
 
     /**
      * Create or update the Kubernetes cluster.
-     *
-     * <p>Create a new Kubernetes cluster or update the properties of the existing one.
-     *
+     * 
+     * Create a new Kubernetes cluster or update the properties of the existing one.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kubernetesClusterName The name of the Kubernetes cluster.
      * @param kubernetesClusterParameters The request body.
@@ -811,9 +817,9 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
 
     /**
      * Create or update the Kubernetes cluster.
-     *
-     * <p>Create a new Kubernetes cluster or update the properties of the existing one.
-     *
+     * 
+     * Create a new Kubernetes cluster or update the properties of the existing one.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kubernetesClusterName The name of the Kubernetes cluster.
      * @param kubernetesClusterParameters The request body.
@@ -832,15 +838,16 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
 
     /**
      * Delete the Kubernetes cluster.
-     *
-     * <p>Delete the provided Kubernetes cluster.
-     *
+     * 
+     * Delete the provided Kubernetes cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kubernetesClusterName The name of the Kubernetes cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
@@ -870,16 +877,17 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
 
     /**
      * Delete the Kubernetes cluster.
-     *
-     * <p>Delete the provided Kubernetes cluster.
-     *
+     * 
+     * Delete the provided Kubernetes cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kubernetesClusterName The name of the Kubernetes cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
@@ -908,159 +916,164 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
 
     /**
      * Delete the Kubernetes cluster.
-     *
-     * <p>Delete the provided Kubernetes cluster.
-     *
+     * 
+     * Delete the provided Kubernetes cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kubernetesClusterName The name of the Kubernetes cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName,
-        String kubernetesClusterName) {
+    private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginDeleteAsync(String resourceGroupName, String kubernetesClusterName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, kubernetesClusterName);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+        return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(mono,
+            this.client.getHttpPipeline(), OperationStatusResultInner.class, OperationStatusResultInner.class,
             this.client.getContext());
     }
 
     /**
      * Delete the Kubernetes cluster.
-     *
-     * <p>Delete the provided Kubernetes cluster.
-     *
+     * 
+     * Delete the provided Kubernetes cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kubernetesClusterName The name of the Kubernetes cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String kubernetesClusterName,
-        Context context) {
+    private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginDeleteAsync(String resourceGroupName, String kubernetesClusterName, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono
             = deleteWithResponseAsync(resourceGroupName, kubernetesClusterName, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
+        return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(mono,
+            this.client.getHttpPipeline(), OperationStatusResultInner.class, OperationStatusResultInner.class, context);
     }
 
     /**
      * Delete the Kubernetes cluster.
-     *
-     * <p>Delete the provided Kubernetes cluster.
-     *
+     * 
+     * Delete the provided Kubernetes cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kubernetesClusterName The name of the Kubernetes cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String kubernetesClusterName) {
+    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginDelete(String resourceGroupName, String kubernetesClusterName) {
         return this.beginDeleteAsync(resourceGroupName, kubernetesClusterName).getSyncPoller();
     }
 
     /**
      * Delete the Kubernetes cluster.
-     *
-     * <p>Delete the provided Kubernetes cluster.
-     *
+     * 
+     * Delete the provided Kubernetes cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kubernetesClusterName The name of the Kubernetes cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String kubernetesClusterName,
-        Context context) {
+    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginDelete(String resourceGroupName, String kubernetesClusterName, Context context) {
         return this.beginDeleteAsync(resourceGroupName, kubernetesClusterName, context).getSyncPoller();
     }
 
     /**
      * Delete the Kubernetes cluster.
-     *
-     * <p>Delete the provided Kubernetes cluster.
-     *
+     * 
+     * Delete the provided Kubernetes cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kubernetesClusterName The name of the Kubernetes cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the current status of an async operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String kubernetesClusterName) {
+    private Mono<OperationStatusResultInner> deleteAsync(String resourceGroupName, String kubernetesClusterName) {
         return beginDeleteAsync(resourceGroupName, kubernetesClusterName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete the Kubernetes cluster.
-     *
-     * <p>Delete the provided Kubernetes cluster.
-     *
+     * 
+     * Delete the provided Kubernetes cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kubernetesClusterName The name of the Kubernetes cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the current status of an async operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String kubernetesClusterName, Context context) {
+    private Mono<OperationStatusResultInner> deleteAsync(String resourceGroupName, String kubernetesClusterName,
+        Context context) {
         return beginDeleteAsync(resourceGroupName, kubernetesClusterName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete the Kubernetes cluster.
-     *
-     * <p>Delete the provided Kubernetes cluster.
-     *
+     * 
+     * Delete the provided Kubernetes cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kubernetesClusterName The name of the Kubernetes cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String kubernetesClusterName) {
-        deleteAsync(resourceGroupName, kubernetesClusterName).block();
+    public OperationStatusResultInner delete(String resourceGroupName, String kubernetesClusterName) {
+        return deleteAsync(resourceGroupName, kubernetesClusterName).block();
     }
 
     /**
      * Delete the Kubernetes cluster.
-     *
-     * <p>Delete the provided Kubernetes cluster.
-     *
+     * 
+     * Delete the provided Kubernetes cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kubernetesClusterName The name of the Kubernetes cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String kubernetesClusterName, Context context) {
-        deleteAsync(resourceGroupName, kubernetesClusterName, context).block();
+    public OperationStatusResultInner delete(String resourceGroupName, String kubernetesClusterName, Context context) {
+        return deleteAsync(resourceGroupName, kubernetesClusterName, context).block();
     }
 
     /**
      * Patch the Kubernetes cluster.
-     *
-     * <p>Patch the properties of the provided Kubernetes cluster, or update the tags associated with the Kubernetes
+     * 
+     * Patch the properties of the provided Kubernetes cluster, or update the tags associated with the Kubernetes
      * cluster. Properties and tag updates can be done independently.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kubernetesClusterName The name of the Kubernetes cluster.
      * @param kubernetesClusterUpdateParameters The request body.
@@ -1068,7 +1081,7 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return kubernetesCluster represents the Kubernetes cluster hosted on Network Cloud along with {@link Response}
-     *     on successful completion of {@link Mono}.
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName,
@@ -1102,10 +1115,10 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
 
     /**
      * Patch the Kubernetes cluster.
-     *
-     * <p>Patch the properties of the provided Kubernetes cluster, or update the tags associated with the Kubernetes
+     * 
+     * Patch the properties of the provided Kubernetes cluster, or update the tags associated with the Kubernetes
      * cluster. Properties and tag updates can be done independently.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kubernetesClusterName The name of the Kubernetes cluster.
      * @param kubernetesClusterUpdateParameters The request body.
@@ -1114,7 +1127,7 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return kubernetesCluster represents the Kubernetes cluster hosted on Network Cloud along with {@link Response}
-     *     on successful completion of {@link Mono}.
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName,
@@ -1147,10 +1160,10 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
 
     /**
      * Patch the Kubernetes cluster.
-     *
-     * <p>Patch the properties of the provided Kubernetes cluster, or update the tags associated with the Kubernetes
+     * 
+     * Patch the properties of the provided Kubernetes cluster, or update the tags associated with the Kubernetes
      * cluster. Properties and tag updates can be done independently.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kubernetesClusterName The name of the Kubernetes cluster.
      * @param kubernetesClusterUpdateParameters The request body.
@@ -1158,7 +1171,7 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of kubernetesCluster represents the Kubernetes cluster hosted on
-     *     Network Cloud.
+     * Network Cloud.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<KubernetesClusterInner>, KubernetesClusterInner> beginUpdateAsync(
@@ -1173,17 +1186,17 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
 
     /**
      * Patch the Kubernetes cluster.
-     *
-     * <p>Patch the properties of the provided Kubernetes cluster, or update the tags associated with the Kubernetes
+     * 
+     * Patch the properties of the provided Kubernetes cluster, or update the tags associated with the Kubernetes
      * cluster. Properties and tag updates can be done independently.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kubernetesClusterName The name of the Kubernetes cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of kubernetesCluster represents the Kubernetes cluster hosted on
-     *     Network Cloud.
+     * Network Cloud.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<KubernetesClusterInner>, KubernetesClusterInner>
@@ -1198,10 +1211,10 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
 
     /**
      * Patch the Kubernetes cluster.
-     *
-     * <p>Patch the properties of the provided Kubernetes cluster, or update the tags associated with the Kubernetes
+     * 
+     * Patch the properties of the provided Kubernetes cluster, or update the tags associated with the Kubernetes
      * cluster. Properties and tag updates can be done independently.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kubernetesClusterName The name of the Kubernetes cluster.
      * @param kubernetesClusterUpdateParameters The request body.
@@ -1210,7 +1223,7 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of kubernetesCluster represents the Kubernetes cluster hosted on
-     *     Network Cloud.
+     * Network Cloud.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<KubernetesClusterInner>, KubernetesClusterInner> beginUpdateAsync(
@@ -1225,17 +1238,17 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
 
     /**
      * Patch the Kubernetes cluster.
-     *
-     * <p>Patch the properties of the provided Kubernetes cluster, or update the tags associated with the Kubernetes
+     * 
+     * Patch the properties of the provided Kubernetes cluster, or update the tags associated with the Kubernetes
      * cluster. Properties and tag updates can be done independently.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kubernetesClusterName The name of the Kubernetes cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of kubernetesCluster represents the Kubernetes cluster hosted on
-     *     Network Cloud.
+     * Network Cloud.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<KubernetesClusterInner>, KubernetesClusterInner> beginUpdate(String resourceGroupName,
@@ -1247,10 +1260,10 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
 
     /**
      * Patch the Kubernetes cluster.
-     *
-     * <p>Patch the properties of the provided Kubernetes cluster, or update the tags associated with the Kubernetes
+     * 
+     * Patch the properties of the provided Kubernetes cluster, or update the tags associated with the Kubernetes
      * cluster. Properties and tag updates can be done independently.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kubernetesClusterName The name of the Kubernetes cluster.
      * @param kubernetesClusterUpdateParameters The request body.
@@ -1259,7 +1272,7 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of kubernetesCluster represents the Kubernetes cluster hosted on
-     *     Network Cloud.
+     * Network Cloud.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<KubernetesClusterInner>, KubernetesClusterInner> beginUpdate(String resourceGroupName,
@@ -1272,10 +1285,10 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
 
     /**
      * Patch the Kubernetes cluster.
-     *
-     * <p>Patch the properties of the provided Kubernetes cluster, or update the tags associated with the Kubernetes
+     * 
+     * Patch the properties of the provided Kubernetes cluster, or update the tags associated with the Kubernetes
      * cluster. Properties and tag updates can be done independently.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kubernetesClusterName The name of the Kubernetes cluster.
      * @param kubernetesClusterUpdateParameters The request body.
@@ -1283,7 +1296,7 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return kubernetesCluster represents the Kubernetes cluster hosted on Network Cloud on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<KubernetesClusterInner> updateAsync(String resourceGroupName, String kubernetesClusterName,
@@ -1294,17 +1307,17 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
 
     /**
      * Patch the Kubernetes cluster.
-     *
-     * <p>Patch the properties of the provided Kubernetes cluster, or update the tags associated with the Kubernetes
+     * 
+     * Patch the properties of the provided Kubernetes cluster, or update the tags associated with the Kubernetes
      * cluster. Properties and tag updates can be done independently.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kubernetesClusterName The name of the Kubernetes cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return kubernetesCluster represents the Kubernetes cluster hosted on Network Cloud on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<KubernetesClusterInner> updateAsync(String resourceGroupName, String kubernetesClusterName) {
@@ -1315,10 +1328,10 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
 
     /**
      * Patch the Kubernetes cluster.
-     *
-     * <p>Patch the properties of the provided Kubernetes cluster, or update the tags associated with the Kubernetes
+     * 
+     * Patch the properties of the provided Kubernetes cluster, or update the tags associated with the Kubernetes
      * cluster. Properties and tag updates can be done independently.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kubernetesClusterName The name of the Kubernetes cluster.
      * @param kubernetesClusterUpdateParameters The request body.
@@ -1327,7 +1340,7 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return kubernetesCluster represents the Kubernetes cluster hosted on Network Cloud on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<KubernetesClusterInner> updateAsync(String resourceGroupName, String kubernetesClusterName,
@@ -1339,10 +1352,10 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
 
     /**
      * Patch the Kubernetes cluster.
-     *
-     * <p>Patch the properties of the provided Kubernetes cluster, or update the tags associated with the Kubernetes
+     * 
+     * Patch the properties of the provided Kubernetes cluster, or update the tags associated with the Kubernetes
      * cluster. Properties and tag updates can be done independently.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kubernetesClusterName The name of the Kubernetes cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1358,10 +1371,10 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
 
     /**
      * Patch the Kubernetes cluster.
-     *
-     * <p>Patch the properties of the provided Kubernetes cluster, or update the tags associated with the Kubernetes
+     * 
+     * Patch the properties of the provided Kubernetes cluster, or update the tags associated with the Kubernetes
      * cluster. Properties and tag updates can be done independently.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kubernetesClusterName The name of the Kubernetes cluster.
      * @param kubernetesClusterUpdateParameters The request body.
@@ -1380,17 +1393,17 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
 
     /**
      * Restart a targeted node.
-     *
-     * <p>Restart a targeted node of a Kubernetes cluster.
-     *
+     * 
+     * Restart a targeted node of a Kubernetes cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kubernetesClusterName The name of the Kubernetes cluster.
      * @param kubernetesClusterRestartNodeParameters The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current status of an async operation along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> restartNodeWithResponseAsync(String resourceGroupName,
@@ -1427,9 +1440,9 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
 
     /**
      * Restart a targeted node.
-     *
-     * <p>Restart a targeted node of a Kubernetes cluster.
-     *
+     * 
+     * Restart a targeted node of a Kubernetes cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kubernetesClusterName The name of the Kubernetes cluster.
      * @param kubernetesClusterRestartNodeParameters The request body.
@@ -1437,8 +1450,8 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current status of an async operation along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> restartNodeWithResponseAsync(String resourceGroupName,
@@ -1475,9 +1488,9 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
 
     /**
      * Restart a targeted node.
-     *
-     * <p>Restart a targeted node of a Kubernetes cluster.
-     *
+     * 
+     * Restart a targeted node of a Kubernetes cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kubernetesClusterName The name of the Kubernetes cluster.
      * @param kubernetesClusterRestartNodeParameters The request body.
@@ -1499,9 +1512,9 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
 
     /**
      * Restart a targeted node.
-     *
-     * <p>Restart a targeted node of a Kubernetes cluster.
-     *
+     * 
+     * Restart a targeted node of a Kubernetes cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kubernetesClusterName The name of the Kubernetes cluster.
      * @param kubernetesClusterRestartNodeParameters The request body.
@@ -1524,9 +1537,9 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
 
     /**
      * Restart a targeted node.
-     *
-     * <p>Restart a targeted node of a Kubernetes cluster.
-     *
+     * 
+     * Restart a targeted node of a Kubernetes cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kubernetesClusterName The name of the Kubernetes cluster.
      * @param kubernetesClusterRestartNodeParameters The request body.
@@ -1546,9 +1559,9 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
 
     /**
      * Restart a targeted node.
-     *
-     * <p>Restart a targeted node of a Kubernetes cluster.
-     *
+     * 
+     * Restart a targeted node of a Kubernetes cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kubernetesClusterName The name of the Kubernetes cluster.
      * @param kubernetesClusterRestartNodeParameters The request body.
@@ -1570,9 +1583,9 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
 
     /**
      * Restart a targeted node.
-     *
-     * <p>Restart a targeted node of a Kubernetes cluster.
-     *
+     * 
+     * Restart a targeted node of a Kubernetes cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kubernetesClusterName The name of the Kubernetes cluster.
      * @param kubernetesClusterRestartNodeParameters The request body.
@@ -1591,9 +1604,9 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
 
     /**
      * Restart a targeted node.
-     *
-     * <p>Restart a targeted node of a Kubernetes cluster.
-     *
+     * 
+     * Restart a targeted node of a Kubernetes cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kubernetesClusterName The name of the Kubernetes cluster.
      * @param kubernetesClusterRestartNodeParameters The request body.
@@ -1612,9 +1625,9 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
 
     /**
      * Restart a targeted node.
-     *
-     * <p>Restart a targeted node of a Kubernetes cluster.
-     *
+     * 
+     * Restart a targeted node of a Kubernetes cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kubernetesClusterName The name of the Kubernetes cluster.
      * @param kubernetesClusterRestartNodeParameters The request body.
@@ -1632,9 +1645,9 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
 
     /**
      * Restart a targeted node.
-     *
-     * <p>Restart a targeted node of a Kubernetes cluster.
-     *
+     * 
+     * Restart a targeted node of a Kubernetes cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kubernetesClusterName The name of the Kubernetes cluster.
      * @param kubernetesClusterRestartNodeParameters The request body.
@@ -1653,14 +1666,13 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return kubernetesClusterList represents a list of Kubernetes clusters along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<KubernetesClusterInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
@@ -1682,15 +1694,14 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return kubernetesClusterList represents a list of Kubernetes clusters along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<KubernetesClusterInner>> listBySubscriptionNextSinglePageAsync(String nextLink,
@@ -1711,14 +1722,13 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return kubernetesClusterList represents a list of Kubernetes clusters along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<KubernetesClusterInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -1740,15 +1750,14 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return kubernetesClusterList represents a list of Kubernetes clusters along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<KubernetesClusterInner>> listByResourceGroupNextSinglePageAsync(String nextLink,

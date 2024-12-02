@@ -41,8 +41,7 @@ public class KeyVaultKeyTests extends BlobCryptographyTestBase {
             keyVaultUrl = Configuration.getGlobalConfiguration().get("KEYVAULT_URL");
         }
 
-        keyClient = new KeyClientBuilder()
-            .pipeline(getHttpPipeline(KEY_SERVICE_VERSION))
+        keyClient = new KeyClientBuilder().pipeline(getHttpPipeline(KEY_SERVICE_VERSION))
             .httpClient(getHttpClient())
             .vaultUrl(keyVaultUrl)
             .serviceVersion(KEY_SERVICE_VERSION)
@@ -50,19 +49,16 @@ public class KeyVaultKeyTests extends BlobCryptographyTestBase {
 
         keyId = testResourceNamer.randomName(prefix, 50);
 
-        KeyVaultKey keyVaultKey = keyClient.createRsaKey(new CreateRsaKeyOptions(keyId)
-            .setExpiresOn(testResourceNamer.now().plusYears(1))
-            .setKeySize(2048));
+        KeyVaultKey keyVaultKey = keyClient.createRsaKey(
+            new CreateRsaKeyOptions(keyId).setExpiresOn(testResourceNamer.now().plusYears(1)).setKeySize(2048));
 
-        AsyncKeyEncryptionKey akek = new KeyEncryptionKeyClientBuilder()
-            .pipeline(getHttpPipeline(KEY_SERVICE_VERSION))
+        AsyncKeyEncryptionKey akek = new KeyEncryptionKeyClientBuilder().pipeline(getHttpPipeline(KEY_SERVICE_VERSION))
             .httpClient(getHttpClient())
             .serviceVersion(CRYPTOGRAPHY_SERVICE_VERSION)
             .buildAsyncKeyEncryptionKey(keyVaultKey.getId())
             .block();
 
-        cc = getServiceClientBuilder(ENV.getPrimaryAccount())
-            .buildClient()
+        cc = getServiceClientBuilder(ENV.getPrimaryAccount()).buildClient()
             .getBlobContainerClient(generateContainerName());
         cc.create();
 

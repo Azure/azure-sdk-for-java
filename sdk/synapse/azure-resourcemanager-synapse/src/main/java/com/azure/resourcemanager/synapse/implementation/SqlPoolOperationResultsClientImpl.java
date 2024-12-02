@@ -30,17 +30,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in SqlPoolOperationResultsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SqlPoolOperationResultsClient.
+ */
 public final class SqlPoolOperationResultsClientImpl implements SqlPoolOperationResultsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final SqlPoolOperationResultsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SynapseManagementClientImpl client;
 
     /**
      * Initializes an instance of SqlPoolOperationResultsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     SqlPoolOperationResultsClientImpl(SynapseManagementClientImpl client) {
@@ -57,8 +63,7 @@ public final class SqlPoolOperationResultsClientImpl implements SqlPoolOperation
     @ServiceInterface(name = "SynapseManagementCli")
     public interface SqlPoolOperationResultsService {
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-            + "/{workspaceName}/sqlPools/{sqlPoolName}/operationResults/{operationId}")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/operationResults/{operationId}")
         @ExpectedResponses({ 200, 201, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> getLocationHeaderResult(@HostParam("$host") String endpoint,
@@ -70,9 +75,9 @@ public final class SqlPoolOperationResultsClientImpl implements SqlPoolOperation
 
     /**
      * Get SQL pool operation status
-     *
-     * <p>Get the status of a SQL pool operation.
-     *
+     * 
+     * Get the status of a SQL pool operation.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -117,9 +122,9 @@ public final class SqlPoolOperationResultsClientImpl implements SqlPoolOperation
 
     /**
      * Get SQL pool operation status
-     *
-     * <p>Get the status of a SQL pool operation.
-     *
+     * 
+     * Get the status of a SQL pool operation.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -163,9 +168,9 @@ public final class SqlPoolOperationResultsClientImpl implements SqlPoolOperation
 
     /**
      * Get SQL pool operation status
-     *
-     * <p>Get the status of a SQL pool operation.
-     *
+     * 
+     * Get the status of a SQL pool operation.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -186,9 +191,9 @@ public final class SqlPoolOperationResultsClientImpl implements SqlPoolOperation
 
     /**
      * Get SQL pool operation status
-     *
-     * <p>Get the status of a SQL pool operation.
-     *
+     * 
+     * Get the status of a SQL pool operation.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -211,9 +216,9 @@ public final class SqlPoolOperationResultsClientImpl implements SqlPoolOperation
 
     /**
      * Get SQL pool operation status
-     *
-     * <p>Get the status of a SQL pool operation.
-     *
+     * 
+     * Get the status of a SQL pool operation.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -232,9 +237,9 @@ public final class SqlPoolOperationResultsClientImpl implements SqlPoolOperation
 
     /**
      * Get SQL pool operation status
-     *
-     * <p>Get the status of a SQL pool operation.
-     *
+     * 
+     * Get the status of a SQL pool operation.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -255,9 +260,9 @@ public final class SqlPoolOperationResultsClientImpl implements SqlPoolOperation
 
     /**
      * Get SQL pool operation status
-     *
-     * <p>Get the status of a SQL pool operation.
-     *
+     * 
+     * Get the status of a SQL pool operation.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -276,9 +281,9 @@ public final class SqlPoolOperationResultsClientImpl implements SqlPoolOperation
 
     /**
      * Get SQL pool operation status
-     *
-     * <p>Get the status of a SQL pool operation.
-     *
+     * 
+     * Get the status of a SQL pool operation.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -299,9 +304,9 @@ public final class SqlPoolOperationResultsClientImpl implements SqlPoolOperation
 
     /**
      * Get SQL pool operation status
-     *
-     * <p>Get the status of a SQL pool operation.
-     *
+     * 
+     * Get the status of a SQL pool operation.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -319,9 +324,9 @@ public final class SqlPoolOperationResultsClientImpl implements SqlPoolOperation
 
     /**
      * Get SQL pool operation status
-     *
-     * <p>Get the status of a SQL pool operation.
-     *
+     * 
+     * Get the status of a SQL pool operation.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.

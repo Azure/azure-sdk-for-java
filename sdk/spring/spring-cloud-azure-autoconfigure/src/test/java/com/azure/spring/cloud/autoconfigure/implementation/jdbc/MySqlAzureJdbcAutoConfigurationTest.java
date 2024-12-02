@@ -9,6 +9,8 @@ import com.azure.spring.cloud.service.implementation.identity.credential.provide
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.boot.test.context.FilteredClassLoader;
 
+import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertiesBeanPostProcessorTest.MANAGED_IDENTITY_ENABLED_DEFAULT;
+import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertiesBeanPostProcessorTest.SCOPES_DEFAULT;
 import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.MYSQL_AUTH_PLUGIN_CLASS_NAME;
 import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.MYSQL_PROPERTY_CONNECTION_ATTRIBUTES_ATTRIBUTE_EXTENSION_VERSION;
 import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.MYSQL_PROPERTY_CONNECTION_ATTRIBUTES_KV_DELIMITER;
@@ -82,10 +84,10 @@ class MySqlAzureJdbcAutoConfigurationTest extends AbstractAzureJdbcAutoConfigura
                     DatabaseType.MYSQL,
                     false,
                     connectionString,
-                    PUBLIC_TOKEN_CREDENTIAL_BEAN_NAME_STRING,
                     PUBLIC_AUTHORITY_HOST_STRING,
-                    AUTHPROPERTY_TOKENCREDENTIALPROVIDERCLASSNAME_PROPERTY,
-                    MYSQL_USER_AGENT
+                    MYSQL_USER_AGENT,
+                    MANAGED_IDENTITY_ENABLED_DEFAULT,
+                    SCOPES_DEFAULT
                 );
                 assertEquals(expectedUrl, dataSourceProperties.getUrl());
             });
@@ -109,9 +111,12 @@ class MySqlAzureJdbcAutoConfigurationTest extends AbstractAzureJdbcAutoConfigura
                     false,
                     connectionString,
                     PUBLIC_AUTHORITY_HOST_STRING,
-                    AUTHPROPERTY_CREDENTIAL_BEAN_NAME,
-                    AUTHPROPERTY_TOKENCREDENTIALPROVIDERCLASSNAME_PROPERTY,
-                    MYSQL_USER_AGENT
+                    MYSQL_USER_AGENT,
+                    "azure.clientId=fake-clientId",
+                    "azure.clientSecret=fake-clientSecret",
+                    MANAGED_IDENTITY_ENABLED_DEFAULT,
+                    SCOPES_DEFAULT,
+                    "azure.tenantId=fake-tenantId"
                 );
 
                 assertEquals(expectedUrl, dataSourceProperties.getUrl());

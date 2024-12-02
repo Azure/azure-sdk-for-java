@@ -18,9 +18,9 @@ import com.azure.resourcemanager.synapse.models.IntegrationRuntimeRegenerateKeyP
 public interface IntegrationRuntimeAuthKeysOperationsClient {
     /**
      * Regenerate integration runtime authentication key
-     *
-     * <p>Regenerate the authentication key for an integration runtime.
-     *
+     * 
+     * Regenerate the authentication key for an integration runtime.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -38,9 +38,9 @@ public interface IntegrationRuntimeAuthKeysOperationsClient {
 
     /**
      * Regenerate integration runtime authentication key
-     *
-     * <p>Regenerate the authentication key for an integration runtime.
-     *
+     * 
+     * Regenerate the authentication key for an integration runtime.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -56,9 +56,9 @@ public interface IntegrationRuntimeAuthKeysOperationsClient {
 
     /**
      * List integration runtime authentication keys
-     *
-     * <p>List authentication keys in an integration runtime.
-     *
+     * 
+     * List authentication keys in an integration runtime.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -74,9 +74,9 @@ public interface IntegrationRuntimeAuthKeysOperationsClient {
 
     /**
      * List integration runtime authentication keys
-     *
-     * <p>List authentication keys in an integration runtime.
-     *
+     * 
+     * List authentication keys in an integration runtime.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.

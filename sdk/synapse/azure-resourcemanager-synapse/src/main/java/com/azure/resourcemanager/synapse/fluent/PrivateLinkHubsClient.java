@@ -14,11 +14,13 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.synapse.fluent.models.PrivateLinkHubInner;
 import com.azure.resourcemanager.synapse.models.PrivateLinkHubPatchInfo;
 
-/** An instance of this class provides access to all the operations defined in PrivateLinkHubsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in PrivateLinkHubsClient.
+ */
 public interface PrivateLinkHubsClient {
     /**
      * Returns a list of privateLinkHubs in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -30,7 +32,7 @@ public interface PrivateLinkHubsClient {
 
     /**
      * Returns a list of privateLinkHubs in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -43,7 +45,7 @@ public interface PrivateLinkHubsClient {
 
     /**
      * Gets a privateLinkHub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateLinkHubName Name of the privateLinkHub.
      * @param context The context to associate with this operation.
@@ -58,7 +60,7 @@ public interface PrivateLinkHubsClient {
 
     /**
      * Gets a privateLinkHub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateLinkHubName Name of the privateLinkHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -71,7 +73,7 @@ public interface PrivateLinkHubsClient {
 
     /**
      * Updates a privateLinkHub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateLinkHubName Name of the privateLinkHub.
      * @param privateLinkHubPatchInfo PrivateLinkHub patch request properties.
@@ -87,7 +89,7 @@ public interface PrivateLinkHubsClient {
 
     /**
      * Updates a privateLinkHub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateLinkHubName Name of the privateLinkHub.
      * @param privateLinkHubPatchInfo PrivateLinkHub patch request properties.
@@ -102,7 +104,7 @@ public interface PrivateLinkHubsClient {
 
     /**
      * Creates or updates a privateLinkHub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateLinkHubName Name of the privateLinkHub.
      * @param privateLinkHubInfo PrivateLinkHub create or update request properties.
@@ -118,7 +120,7 @@ public interface PrivateLinkHubsClient {
 
     /**
      * Creates or updates a privateLinkHub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateLinkHubName Name of the privateLinkHub.
      * @param privateLinkHubInfo PrivateLinkHub create or update request properties.
@@ -133,7 +135,7 @@ public interface PrivateLinkHubsClient {
 
     /**
      * Deletes a privateLinkHub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateLinkHubName Name of the privateLinkHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -146,7 +148,7 @@ public interface PrivateLinkHubsClient {
 
     /**
      * Deletes a privateLinkHub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateLinkHubName Name of the privateLinkHub.
      * @param context The context to associate with this operation.
@@ -161,7 +163,7 @@ public interface PrivateLinkHubsClient {
 
     /**
      * Deletes a privateLinkHub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateLinkHubName Name of the privateLinkHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -173,7 +175,7 @@ public interface PrivateLinkHubsClient {
 
     /**
      * Deletes a privateLinkHub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateLinkHubName Name of the privateLinkHub.
      * @param context The context to associate with this operation.
@@ -186,7 +188,7 @@ public interface PrivateLinkHubsClient {
 
     /**
      * Returns a list of privateLinkHubs in a subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of privateLinkHubs as paginated response with {@link PagedIterable}.
@@ -196,7 +198,7 @@ public interface PrivateLinkHubsClient {
 
     /**
      * Returns a list of privateLinkHubs in a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

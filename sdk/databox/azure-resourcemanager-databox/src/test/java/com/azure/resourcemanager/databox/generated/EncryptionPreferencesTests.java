@@ -14,18 +14,18 @@ public final class EncryptionPreferencesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EncryptionPreferences model
-            = BinaryData.fromString("{\"doubleEncryption\":\"Enabled\",\"hardwareEncryption\":\"Enabled\"}")
+            = BinaryData.fromString("{\"doubleEncryption\":\"Disabled\",\"hardwareEncryption\":\"Enabled\"}")
                 .toObject(EncryptionPreferences.class);
-        Assertions.assertEquals(DoubleEncryption.ENABLED, model.doubleEncryption());
+        Assertions.assertEquals(DoubleEncryption.DISABLED, model.doubleEncryption());
         Assertions.assertEquals(HardwareEncryption.ENABLED, model.hardwareEncryption());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EncryptionPreferences model = new EncryptionPreferences().withDoubleEncryption(DoubleEncryption.ENABLED)
+        EncryptionPreferences model = new EncryptionPreferences().withDoubleEncryption(DoubleEncryption.DISABLED)
             .withHardwareEncryption(HardwareEncryption.ENABLED);
         model = BinaryData.fromObject(model).toObject(EncryptionPreferences.class);
-        Assertions.assertEquals(DoubleEncryption.ENABLED, model.doubleEncryption());
+        Assertions.assertEquals(DoubleEncryption.DISABLED, model.doubleEncryption());
         Assertions.assertEquals(HardwareEncryption.ENABLED, model.hardwareEncryption());
     }
 }

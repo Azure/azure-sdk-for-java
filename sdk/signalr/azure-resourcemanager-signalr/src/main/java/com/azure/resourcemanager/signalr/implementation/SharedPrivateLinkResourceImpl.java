@@ -121,9 +121,10 @@ public final class SharedPrivateLinkResourceImpl
         com.azure.resourcemanager.signalr.SignalRManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.sharedPrivateLinkResourceName = Utils.getValueFromIdByName(innerObject.id(), "sharedPrivateLinkResources");
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.resourceName = Utils.getValueFromIdByName(innerObject.id(), "signalR");
+        this.sharedPrivateLinkResourceName
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "sharedPrivateLinkResources");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.resourceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "signalR");
     }
 
     public SharedPrivateLinkResource refresh() {

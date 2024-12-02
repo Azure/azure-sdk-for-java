@@ -205,9 +205,9 @@ public final class StreamingEndpointImpl
         com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.accountName = Utils.getValueFromIdByName(innerObject.id(), "mediaservices");
-        this.streamingEndpointName = Utils.getValueFromIdByName(innerObject.id(), "streamingEndpoints");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.accountName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "mediaservices");
+        this.streamingEndpointName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "streamingEndpoints");
     }
 
     public StreamingEndpoint refresh() {

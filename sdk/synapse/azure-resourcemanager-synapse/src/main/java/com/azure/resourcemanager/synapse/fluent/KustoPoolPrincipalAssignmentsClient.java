@@ -15,11 +15,13 @@ import com.azure.resourcemanager.synapse.fluent.models.CheckNameResultInner;
 import com.azure.resourcemanager.synapse.fluent.models.ClusterPrincipalAssignmentInner;
 import com.azure.resourcemanager.synapse.models.ClusterPrincipalAssignmentCheckNameRequest;
 
-/** An instance of this class provides access to all the operations defined in KustoPoolPrincipalAssignmentsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in KustoPoolPrincipalAssignmentsClient.
+ */
 public interface KustoPoolPrincipalAssignmentsClient {
     /**
      * Checks that the principal assignment name is valid and is not already in use.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -36,7 +38,7 @@ public interface KustoPoolPrincipalAssignmentsClient {
 
     /**
      * Checks that the principal assignment name is valid and is not already in use.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -52,15 +54,15 @@ public interface KustoPoolPrincipalAssignmentsClient {
 
     /**
      * Lists all Kusto pool principalAssignments.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list Kusto cluster principal assignments operation response as paginated response with {@link
-     *     PagedIterable}.
+     * @return the list Kusto cluster principal assignments operation response as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ClusterPrincipalAssignmentInner> list(String workspaceName, String kustoPoolName,
@@ -68,7 +70,7 @@ public interface KustoPoolPrincipalAssignmentsClient {
 
     /**
      * Lists all Kusto pool principalAssignments.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -76,8 +78,8 @@ public interface KustoPoolPrincipalAssignmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list Kusto cluster principal assignments operation response as paginated response with {@link
-     *     PagedIterable}.
+     * @return the list Kusto cluster principal assignments operation response as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ClusterPrincipalAssignmentInner> list(String workspaceName, String kustoPoolName,
@@ -85,7 +87,7 @@ public interface KustoPoolPrincipalAssignmentsClient {
 
     /**
      * Gets a Kusto pool principalAssignment.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
@@ -102,7 +104,7 @@ public interface KustoPoolPrincipalAssignmentsClient {
 
     /**
      * Gets a Kusto pool principalAssignment.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
@@ -118,7 +120,7 @@ public interface KustoPoolPrincipalAssignmentsClient {
 
     /**
      * Create a Kusto pool principalAssignment.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
@@ -136,7 +138,7 @@ public interface KustoPoolPrincipalAssignmentsClient {
 
     /**
      * Create a Kusto pool principalAssignment.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
@@ -155,7 +157,7 @@ public interface KustoPoolPrincipalAssignmentsClient {
 
     /**
      * Create a Kusto pool principalAssignment.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
@@ -172,7 +174,7 @@ public interface KustoPoolPrincipalAssignmentsClient {
 
     /**
      * Create a Kusto pool principalAssignment.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
@@ -191,7 +193,7 @@ public interface KustoPoolPrincipalAssignmentsClient {
 
     /**
      * Deletes a Kusto pool principalAssignment.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
@@ -207,7 +209,7 @@ public interface KustoPoolPrincipalAssignmentsClient {
 
     /**
      * Deletes a Kusto pool principalAssignment.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
@@ -224,7 +226,7 @@ public interface KustoPoolPrincipalAssignmentsClient {
 
     /**
      * Deletes a Kusto pool principalAssignment.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
@@ -238,7 +240,7 @@ public interface KustoPoolPrincipalAssignmentsClient {
 
     /**
      * Deletes a Kusto pool principalAssignment.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param principalAssignmentName The name of the Kusto principalAssignment.

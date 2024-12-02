@@ -31,17 +31,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in CalculateExchangesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in CalculateExchangesClient.
+ */
 public final class CalculateExchangesClientImpl implements CalculateExchangesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final CalculateExchangesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AzureReservationApiImpl client;
 
     /**
      * Initializes an instance of CalculateExchangesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     CalculateExchangesClientImpl(AzureReservationApiImpl client) {
@@ -68,9 +74,9 @@ public final class CalculateExchangesClientImpl implements CalculateExchangesCli
 
     /**
      * Calculates the refund amounts and price of the new purchases.
-     *
-     * <p>Calculates price for exchanging `Reservations` if there are no policy errors.
-     *
+     * 
+     * Calculates price for exchanging `Reservations` if there are no policy errors.
+     * 
      * @param body Request containing purchases and refunds that need to be executed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -97,9 +103,9 @@ public final class CalculateExchangesClientImpl implements CalculateExchangesCli
 
     /**
      * Calculates the refund amounts and price of the new purchases.
-     *
-     * <p>Calculates price for exchanging `Reservations` if there are no policy errors.
-     *
+     * 
+     * Calculates price for exchanging `Reservations` if there are no policy errors.
+     * 
      * @param body Request containing purchases and refunds that need to be executed.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -126,9 +132,9 @@ public final class CalculateExchangesClientImpl implements CalculateExchangesCli
 
     /**
      * Calculates the refund amounts and price of the new purchases.
-     *
-     * <p>Calculates price for exchanging `Reservations` if there are no policy errors.
-     *
+     * 
+     * Calculates price for exchanging `Reservations` if there are no policy errors.
+     * 
      * @param body Request containing purchases and refunds that need to be executed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -148,9 +154,9 @@ public final class CalculateExchangesClientImpl implements CalculateExchangesCli
 
     /**
      * Calculates the refund amounts and price of the new purchases.
-     *
-     * <p>Calculates price for exchanging `Reservations` if there are no policy errors.
-     *
+     * 
+     * Calculates price for exchanging `Reservations` if there are no policy errors.
+     * 
      * @param body Request containing purchases and refunds that need to be executed.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -172,9 +178,9 @@ public final class CalculateExchangesClientImpl implements CalculateExchangesCli
 
     /**
      * Calculates the refund amounts and price of the new purchases.
-     *
-     * <p>Calculates price for exchanging `Reservations` if there are no policy errors.
-     *
+     * 
+     * Calculates price for exchanging `Reservations` if there are no policy errors.
+     * 
      * @param body Request containing purchases and refunds that need to be executed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -190,9 +196,9 @@ public final class CalculateExchangesClientImpl implements CalculateExchangesCli
 
     /**
      * Calculates the refund amounts and price of the new purchases.
-     *
-     * <p>Calculates price for exchanging `Reservations` if there are no policy errors.
-     *
+     * 
+     * Calculates price for exchanging `Reservations` if there are no policy errors.
+     * 
      * @param body Request containing purchases and refunds that need to be executed.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -209,9 +215,9 @@ public final class CalculateExchangesClientImpl implements CalculateExchangesCli
 
     /**
      * Calculates the refund amounts and price of the new purchases.
-     *
-     * <p>Calculates price for exchanging `Reservations` if there are no policy errors.
-     *
+     * 
+     * Calculates price for exchanging `Reservations` if there are no policy errors.
+     * 
      * @param body Request containing purchases and refunds that need to be executed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -225,9 +231,9 @@ public final class CalculateExchangesClientImpl implements CalculateExchangesCli
 
     /**
      * Calculates the refund amounts and price of the new purchases.
-     *
-     * <p>Calculates price for exchanging `Reservations` if there are no policy errors.
-     *
+     * 
+     * Calculates price for exchanging `Reservations` if there are no policy errors.
+     * 
      * @param body Request containing purchases and refunds that need to be executed.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -243,9 +249,9 @@ public final class CalculateExchangesClientImpl implements CalculateExchangesCli
 
     /**
      * Calculates the refund amounts and price of the new purchases.
-     *
-     * <p>Calculates price for exchanging `Reservations` if there are no policy errors.
-     *
+     * 
+     * Calculates price for exchanging `Reservations` if there are no policy errors.
+     * 
      * @param body Request containing purchases and refunds that need to be executed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -259,9 +265,9 @@ public final class CalculateExchangesClientImpl implements CalculateExchangesCli
 
     /**
      * Calculates the refund amounts and price of the new purchases.
-     *
-     * <p>Calculates price for exchanging `Reservations` if there are no policy errors.
-     *
+     * 
+     * Calculates price for exchanging `Reservations` if there are no policy errors.
+     * 
      * @param body Request containing purchases and refunds that need to be executed.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

@@ -5,17 +5,20 @@
 package com.azure.resourcemanager.timeseriesinsights.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The type of the property. */
+/**
+ * The type of the property.
+ */
 public final class PropertyType extends ExpandableStringEnum<PropertyType> {
-    /** Static value String for PropertyType. */
+    /**
+     * Static value String for PropertyType.
+     */
     public static final PropertyType STRING = fromString("String");
 
     /**
      * Creates a new instance of PropertyType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -24,18 +27,17 @@ public final class PropertyType extends ExpandableStringEnum<PropertyType> {
 
     /**
      * Creates or finds a PropertyType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding PropertyType.
      */
-    @JsonCreator
     public static PropertyType fromString(String name) {
         return fromString(name, PropertyType.class);
     }
 
     /**
      * Gets known PropertyType values.
-     *
+     * 
      * @return known PropertyType values.
      */
     public static Collection<PropertyType> values() {

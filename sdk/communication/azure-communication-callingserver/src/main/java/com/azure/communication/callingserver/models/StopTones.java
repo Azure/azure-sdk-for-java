@@ -76,7 +76,10 @@ public final class StopTones extends ExpandableStringEnum<StopTones> {
         return fromString(name, StopTones.class);
     }
 
-    /** @return known StopTones values. */
+    /**
+     * Get the collection of StopTones values.
+     * @return known StopTones values.
+     */
     public static Collection<StopTones> values() {
         return values(StopTones.class);
     }

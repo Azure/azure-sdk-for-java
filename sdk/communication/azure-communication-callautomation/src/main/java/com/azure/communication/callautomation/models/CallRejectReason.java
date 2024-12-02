@@ -18,6 +18,15 @@ public final class CallRejectReason extends ExpandableStringEnum<CallRejectReaso
     public static final CallRejectReason FORBIDDEN = fromString("forbidden");
 
     /**
+     * Creates an instance of {@link CallRejectReason} with no string value.
+     *
+     * @deprecated Please use {@link #fromString(String)} to create an instance of CallRejectReason.
+     */
+    @Deprecated
+    public CallRejectReason() {
+    }
+
+    /**
      * Creates or finds a CallRejectReason from its string representation.
      *
      * @param name a name to look for.
@@ -27,7 +36,10 @@ public final class CallRejectReason extends ExpandableStringEnum<CallRejectReaso
         return fromString(name, CallRejectReason.class);
     }
 
-    /** @return known CallRejectReason values. */
+    /**
+     * Get the collection of CallRejectReason values.
+     * @return known CallRejectReason values.
+     */
     public static Collection<CallRejectReason> values() {
         return values(CallRejectReason.class);
     }

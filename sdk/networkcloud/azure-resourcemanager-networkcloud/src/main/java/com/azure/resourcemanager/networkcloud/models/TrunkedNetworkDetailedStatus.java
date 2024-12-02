@@ -5,23 +5,30 @@
 package com.azure.resourcemanager.networkcloud.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The more detailed status of the trunked network. */
+/**
+ * The more detailed status of the trunked network.
+ */
 public final class TrunkedNetworkDetailedStatus extends ExpandableStringEnum<TrunkedNetworkDetailedStatus> {
-    /** Static value Error for TrunkedNetworkDetailedStatus. */
+    /**
+     * Static value Error for TrunkedNetworkDetailedStatus.
+     */
     public static final TrunkedNetworkDetailedStatus ERROR = fromString("Error");
 
-    /** Static value Available for TrunkedNetworkDetailedStatus. */
+    /**
+     * Static value Available for TrunkedNetworkDetailedStatus.
+     */
     public static final TrunkedNetworkDetailedStatus AVAILABLE = fromString("Available");
 
-    /** Static value Provisioning for TrunkedNetworkDetailedStatus. */
+    /**
+     * Static value Provisioning for TrunkedNetworkDetailedStatus.
+     */
     public static final TrunkedNetworkDetailedStatus PROVISIONING = fromString("Provisioning");
 
     /**
      * Creates a new instance of TrunkedNetworkDetailedStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +37,17 @@ public final class TrunkedNetworkDetailedStatus extends ExpandableStringEnum<Tru
 
     /**
      * Creates or finds a TrunkedNetworkDetailedStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding TrunkedNetworkDetailedStatus.
      */
-    @JsonCreator
     public static TrunkedNetworkDetailedStatus fromString(String name) {
         return fromString(name, TrunkedNetworkDetailedStatus.class);
     }
 
     /**
      * Gets known TrunkedNetworkDetailedStatus values.
-     *
+     * 
      * @return known TrunkedNetworkDetailedStatus values.
      */
     public static Collection<TrunkedNetworkDetailedStatus> values() {

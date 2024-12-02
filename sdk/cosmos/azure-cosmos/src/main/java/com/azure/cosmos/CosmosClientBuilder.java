@@ -151,6 +151,7 @@ public class CosmosClientBuilder implements
     private CosmosItemSerializer defaultCustomSerializer;
     private boolean isRegionScopedSessionCapturingEnabled = false;
     private boolean isPerPartitionAutomaticFailoverEnabled = false;
+    private boolean serverCertValidationDisabled = false;
 
     /**
      * Instantiates a new Cosmos client builder.
@@ -225,25 +226,6 @@ public class CosmosClientBuilder implements
      * */
     boolean isRegionScopedSessionCapturingEnabled() {
         return this.isRegionScopedSessionCapturingEnabled;
-    }
-
-    /**
-     * Sets whether PPAF is enabled.
-     *
-     * @param isPerPartitionAutomaticFailoverEnabled A boolean flag to indicate whether PPAF is enabled.
-     * */
-    public CosmosClientBuilder perPartitionAutomaticFailoverEnabled(boolean isPerPartitionAutomaticFailoverEnabled) {
-        this.isPerPartitionAutomaticFailoverEnabled = isPerPartitionAutomaticFailoverEnabled;
-        return this;
-    }
-
-    /**
-     * Gets whether PPAF is enabled.
-     *
-     * @return isPPAFEnabled
-     * */
-    public boolean isPerPartitionAutomaticFailoverEnabled() {
-        return this.isPerPartitionAutomaticFailoverEnabled;
     }
 
     /**
@@ -884,14 +866,6 @@ public class CosmosClientBuilder implements
         }
     }
 
-    void resetIsPerPartitionAutomaticFailoverEnabledSetting() {
-        String isPerPartitionAutomaticFailoverEnabledAsEnvProperty = Configs.isPerPartitionAutomaticFailoverEnabled();
-
-        if (!StringUtils.isEmpty(isPerPartitionAutomaticFailoverEnabledAsEnvProperty)) {
-            this.isPerPartitionAutomaticFailoverEnabled = Boolean.parseBoolean(isPerPartitionAutomaticFailoverEnabledAsEnvProperty);
-        }
-    }
-
     /**
      * Sets the {@link CosmosContainerProactiveInitConfig} which enable warming up of caches and connections
      * associated with containers obtained from {@link CosmosContainerProactiveInitConfig#getCosmosContainerIdentities()} to replicas
@@ -1212,8 +1186,6 @@ public class CosmosClientBuilder implements
         }
 
         this.resetSessionCapturingType();
-        this.resetIsPerPartitionAutomaticFailoverEnabledSetting();
-
         validateConfig();
         buildConnectionPolicy();
         CosmosAsyncClient cosmosAsyncClient = new CosmosAsyncClient(this);
@@ -1254,8 +1226,6 @@ public class CosmosClientBuilder implements
         }
 
         this.resetSessionCapturingType();
-        this.resetIsPerPartitionAutomaticFailoverEnabledSetting();
-
         validateConfig();
         buildConnectionPolicy();
         CosmosClient cosmosClient = new CosmosClient(this);
@@ -1297,16 +1267,21 @@ public class CosmosClientBuilder implements
         this.connectionPolicy.setEndpointDiscoveryEnabled(this.endpointDiscoveryEnabled);
         this.connectionPolicy.setMultipleWriteRegionsEnabled(this.multipleWriteRegionsEnabled);
         this.connectionPolicy.setReadRequestsFallbackEnabled(this.readRequestsFallbackEnabled);
+        this.connectionPolicy.setServerCertValidationDisabled(this.serverCertValidationDisabled);
         return this.connectionPolicy;
     }
 
-    private void validateConfig() {
+    void validateConfig() {
         URI uri;
         try {
             uri = new URI(serviceEndpoint);
             if (!Strings.isNullOrEmpty(uri.getPath()) || !Strings.isNullOrEmpty(uri.getQuery())) {
                 serviceEndpoint = uri.getScheme() + "://" + uri.getAuthority() + "/";
                 uri = new URI(serviceEndpoint);
+            }
+
+            if (Configs.isEmulatorServerCertValidationDisabled() && isEmulatorHost(uri)) {
+                this.serverCertValidationDisabled = true;
             }
         } catch (URISyntaxException e) {
             throw new IllegalArgumentException("invalid serviceEndpoint", e);
@@ -1334,11 +1309,6 @@ public class CosmosClientBuilder implements
             }
         }
 
-        if (this.isPerPartitionAutomaticFailoverEnabled) {
-            Preconditions.checkArgument(preferredRegions != null && !preferredRegions.isEmpty(),
-                "preferredRegions cannot be null or empty when per-partition automatic failover has been enabled");
-        }
-
         ifThrowIllegalArgException(this.serviceEndpoint == null,
             "cannot buildAsyncClient client without service endpoint");
         ifThrowIllegalArgException(
@@ -1362,6 +1332,17 @@ public class CosmosClientBuilder implements
     CosmosClientBuilder configs(Configs configs) {
         this.configs = configs;
         return this;
+    }
+
+    private boolean isEmulatorHost(URI uri) {
+        if (StringUtils.isNotEmpty(Configs.getEmulatorHost())) {
+            return Configs.getEmulatorHost().equals(uri.getHost());
+        }
+
+        return "localhost".equalsIgnoreCase(uri.getHost())
+            || "[::1]".equals(uri.getHost())
+            || "127.0.0.1".equals(uri.getHost())
+            || "[0:0:0:0:0:0:0:1]".equals(uri.getHost());
     }
 
     private void ifThrowIllegalArgException(boolean value, String error) {
@@ -1467,16 +1448,6 @@ public class CosmosClientBuilder implements
                 @Override
                 public boolean getRegionScopedSessionCapturingEnabled(CosmosClientBuilder builder) {
                     return builder.isRegionScopedSessionCapturingEnabled();
-                }
-
-                @Override
-                public void setPerPartitionAutomaticFailoverEnabled(CosmosClientBuilder builder, boolean isPerPartitionAutomaticFailoverEnabled) {
-                    builder.perPartitionAutomaticFailoverEnabled(isPerPartitionAutomaticFailoverEnabled);
-                }
-
-                @Override
-                public boolean getPerPartitionAutomaticFailoverEnabled(CosmosClientBuilder builder) {
-                    return builder.isPerPartitionAutomaticFailoverEnabled();
                 }
             });
     }

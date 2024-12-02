@@ -8,6 +8,8 @@ import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.cognitiveservices.fluent.models.CommitmentPlanAccountAssociationInner;
 import com.azure.resourcemanager.cognitiveservices.models.CommitmentPlanAccountAssociation;
+import java.util.Collections;
+import java.util.Map;
 
 public final class CommitmentPlanAccountAssociationImpl implements CommitmentPlanAccountAssociation,
     CommitmentPlanAccountAssociation.Definition, CommitmentPlanAccountAssociation.Update {
@@ -33,6 +35,15 @@ public final class CommitmentPlanAccountAssociationImpl implements CommitmentPla
 
     public String etag() {
         return this.innerModel().etag();
+    }
+
+    public Map<String, String> tags() {
+        Map<String, String> inner = this.innerModel().tags();
+        if (inner != null) {
+            return Collections.unmodifiableMap(inner);
+        } else {
+            return Collections.emptyMap();
+        }
     }
 
     public String accountId() {
@@ -111,9 +122,10 @@ public final class CommitmentPlanAccountAssociationImpl implements CommitmentPla
         com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.commitmentPlanName = Utils.getValueFromIdByName(innerObject.id(), "commitmentPlans");
-        this.commitmentPlanAssociationName = Utils.getValueFromIdByName(innerObject.id(), "accountAssociations");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.commitmentPlanName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "commitmentPlans");
+        this.commitmentPlanAssociationName
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "accountAssociations");
     }
 
     public CommitmentPlanAccountAssociation refresh() {
@@ -130,6 +142,11 @@ public final class CommitmentPlanAccountAssociationImpl implements CommitmentPla
             .getCommitmentPlans()
             .getAssociationWithResponse(resourceGroupName, commitmentPlanName, commitmentPlanAssociationName, context)
             .getValue();
+        return this;
+    }
+
+    public CommitmentPlanAccountAssociationImpl withTags(Map<String, String> tags) {
+        this.innerModel().withTags(tags);
         return this;
     }
 

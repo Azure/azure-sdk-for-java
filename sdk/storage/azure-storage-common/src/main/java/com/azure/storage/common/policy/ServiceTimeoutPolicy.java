@@ -95,4 +95,3 @@ public final class ServiceTimeoutPolicy implements HttpPipelinePolicy {
         return HttpPipelinePosition.PER_CALL;
     }
 }
-

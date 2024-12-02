@@ -24,9 +24,7 @@ public class AzuriteUrlTests extends DataLakeTestBase {
         "devstoreaccount1", "Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==");
 
     private DataLakeServiceClient getAzuriteServiceClient() {
-        return instrument(new DataLakeServiceClientBuilder()
-            .endpoint(AZURITE_ENDPOINT)
-            .credential(AZURITE_CREDENTIAL))
+        return instrument(new DataLakeServiceClientBuilder().endpoint(AZURITE_ENDPOINT).credential(AZURITE_CREDENTIAL))
             .buildClient();
     }
 
@@ -78,8 +76,7 @@ public class AzuriteUrlTests extends DataLakeTestBase {
                 "http://localhost:10000/devstoreaccount1/fileSystem/%E6%96%91%E9%BB%9E"),
             Arguments.of("http://localhost:10000/devstoreaccount1/fileSystem/%E6%96%91%E9%BB%9E", "http",
                 "localhost:10000", "devstoreaccount1", "fileSystem", "斑點",
-                "http://localhost:10000/devstoreaccount1/fileSystem/%E6%96%91%E9%BB%9E")
-        );
+                "http://localhost:10000/devstoreaccount1/fileSystem/%E6%96%91%E9%BB%9E"));
     }
 
     @Test
@@ -88,8 +85,7 @@ public class AzuriteUrlTests extends DataLakeTestBase {
         try {
             System.setProperty("UseDevelopmentStorage", "true");
 
-            DataLakeServiceClient serviceClient = new DataLakeServiceClientBuilder()
-                .endpoint(AZURITE_ENDPOINT)
+            DataLakeServiceClient serviceClient = new DataLakeServiceClientBuilder().endpoint(AZURITE_ENDPOINT)
                 .credential(AZURITE_CREDENTIAL)
                 .buildClient();
 
@@ -123,10 +119,10 @@ public class AzuriteUrlTests extends DataLakeTestBase {
 
     @Test
     public void azuriteUrlConstructContainerClient() {
-        DataLakeFileSystemClient fileSystemClient = new DataLakeFileSystemClientBuilder()
-            .endpoint("http://127.0.0.1:10000/devstoreaccount1/fileSystem")
-            .credential(AZURITE_CREDENTIAL)
-            .buildClient();
+        DataLakeFileSystemClient fileSystemClient
+            = new DataLakeFileSystemClientBuilder().endpoint("http://127.0.0.1:10000/devstoreaccount1/fileSystem")
+                .credential(AZURITE_CREDENTIAL)
+                .buildClient();
 
         assertEquals("http://127.0.0.1:10000/devstoreaccount1/fileSystem", fileSystemClient.getFileSystemUrl());
         assertEquals("devstoreaccount1", fileSystemClient.getAccountName());
@@ -135,9 +131,8 @@ public class AzuriteUrlTests extends DataLakeTestBase {
 
     @Test
     public void azuriteUrlGetFileClient() {
-        DataLakeFileClient pathClient = getAzuriteServiceClient()
-            .getFileSystemClient("fileSystem")
-            .getFileClient("file");
+        DataLakeFileClient pathClient
+            = getAzuriteServiceClient().getFileSystemClient("fileSystem").getFileClient("file");
 
         validatePathClient(pathClient, "devstoreaccount1", "fileSystem", "file",
             "http://127.0.0.1:10000/devstoreaccount1/fileSystem/file");
@@ -145,9 +140,8 @@ public class AzuriteUrlTests extends DataLakeTestBase {
 
     @Test
     public void azuriteUrlGetDirectoryClient() {
-        DataLakeDirectoryClient pathClient = getAzuriteServiceClient()
-            .getFileSystemClient("fileSystem")
-            .getDirectoryClient("directory");
+        DataLakeDirectoryClient pathClient
+            = getAzuriteServiceClient().getFileSystemClient("fileSystem").getDirectoryClient("directory");
 
         validatePathClient(pathClient, "devstoreaccount1", "fileSystem", "directory",
             "http://127.0.0.1:10000/devstoreaccount1/fileSystem/directory");
@@ -155,10 +149,10 @@ public class AzuriteUrlTests extends DataLakeTestBase {
 
     @Test
     public void azuriteUrlConstructFileClient() {
-        DataLakeFileClient pathClient = new DataLakePathClientBuilder()
-            .endpoint("http://127.0.0.1:10000/devstoreaccount1/fileSystem/file")
-            .credential(AZURITE_CREDENTIAL)
-            .buildFileClient();
+        DataLakeFileClient pathClient
+            = new DataLakePathClientBuilder().endpoint("http://127.0.0.1:10000/devstoreaccount1/fileSystem/file")
+                .credential(AZURITE_CREDENTIAL)
+                .buildFileClient();
 
         validatePathClient(pathClient, "devstoreaccount1", "fileSystem", "file",
             "http://127.0.0.1:10000/devstoreaccount1/fileSystem/file");
@@ -166,10 +160,10 @@ public class AzuriteUrlTests extends DataLakeTestBase {
 
     @Test
     public void azuriteUrlConstructDirectoryClient() {
-        DataLakeDirectoryClient pathClient = new DataLakePathClientBuilder()
-            .endpoint("http://127.0.0.1:10000/devstoreaccount1/fileSystem/directory")
-            .credential(AZURITE_CREDENTIAL)
-            .buildDirectoryClient();
+        DataLakeDirectoryClient pathClient
+            = new DataLakePathClientBuilder().endpoint("http://127.0.0.1:10000/devstoreaccount1/fileSystem/directory")
+                .credential(AZURITE_CREDENTIAL)
+                .buildDirectoryClient();
 
         validatePathClient(pathClient, "devstoreaccount1", "fileSystem", "directory",
             "http://127.0.0.1:10000/devstoreaccount1/fileSystem/directory");
@@ -180,16 +174,13 @@ public class AzuriteUrlTests extends DataLakeTestBase {
         DataLakeFileSystemClient fileSystemClient = getAzuriteServiceClient().getFileSystemClient("fileSystem");
         DataLakeFileClient pathClient = fileSystemClient.getFileClient("file");
 
-        DataLakeLeaseClient fileSystemLeaseClient = new DataLakeLeaseClientBuilder()
-            .fileSystemClient(fileSystemClient)
-            .buildClient();
+        DataLakeLeaseClient fileSystemLeaseClient
+            = new DataLakeLeaseClientBuilder().fileSystemClient(fileSystemClient).buildClient();
 
         assertEquals("http://127.0.0.1:10000/devstoreaccount1/fileSystem", fileSystemLeaseClient.getResourceUrl());
         assertEquals("devstoreaccount1", fileSystemLeaseClient.getAccountName());
 
-        DataLakeLeaseClient pathLeaseClient = new DataLakeLeaseClientBuilder()
-            .fileClient(pathClient)
-            .buildClient();
+        DataLakeLeaseClient pathLeaseClient = new DataLakeLeaseClientBuilder().fileClient(pathClient).buildClient();
 
         assertEquals("http://127.0.0.1:10000/devstoreaccount1/fileSystem/file", pathLeaseClient.getResourceUrl());
         assertEquals("devstoreaccount1", pathLeaseClient.getAccountName());

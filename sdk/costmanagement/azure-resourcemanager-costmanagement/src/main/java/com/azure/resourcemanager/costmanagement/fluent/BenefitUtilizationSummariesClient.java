@@ -11,12 +11,14 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.costmanagement.fluent.models.BenefitUtilizationSummaryInner;
 import com.azure.resourcemanager.costmanagement.models.GrainParameter;
 
-/** An instance of this class provides access to all the operations defined in BenefitUtilizationSummariesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in BenefitUtilizationSummariesClient.
+ */
 public interface BenefitUtilizationSummariesClient {
     /**
      * Lists savings plan utilization summaries for the enterprise agreement scope. Supported at grain values: 'Daily'
      * and 'Monthly'.
-     *
+     * 
      * @param billingAccountId Billing account ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -29,7 +31,7 @@ public interface BenefitUtilizationSummariesClient {
     /**
      * Lists savings plan utilization summaries for the enterprise agreement scope. Supported at grain values: 'Daily'
      * and 'Monthly'.
-     *
+     * 
      * @param billingAccountId Billing account ID.
      * @param grainParameter Grain.
      * @param filter Supports filtering by properties/benefitId, properties/benefitOrderId and properties/usageDate.
@@ -45,7 +47,7 @@ public interface BenefitUtilizationSummariesClient {
 
     /**
      * Lists savings plan utilization summaries for billing profile. Supported at grain values: 'Daily' and 'Monthly'.
-     *
+     * 
      * @param billingAccountId Billing account ID.
      * @param billingProfileId Billing profile ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -59,7 +61,7 @@ public interface BenefitUtilizationSummariesClient {
 
     /**
      * Lists savings plan utilization summaries for billing profile. Supported at grain values: 'Daily' and 'Monthly'.
-     *
+     * 
      * @param billingAccountId Billing account ID.
      * @param billingProfileId Billing profile ID.
      * @param grainParameter Grain.
@@ -76,7 +78,7 @@ public interface BenefitUtilizationSummariesClient {
 
     /**
      * Lists the savings plan utilization summaries for daily or monthly grain.
-     *
+     * 
      * @param savingsPlanOrderId Savings plan order ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -88,7 +90,7 @@ public interface BenefitUtilizationSummariesClient {
 
     /**
      * Lists the savings plan utilization summaries for daily or monthly grain.
-     *
+     * 
      * @param savingsPlanOrderId Savings plan order ID.
      * @param filter Supports filtering by properties/usageDate.
      * @param grainParameter Grain.
@@ -104,7 +106,7 @@ public interface BenefitUtilizationSummariesClient {
 
     /**
      * Lists the savings plan utilization summaries for daily or monthly grain.
-     *
+     * 
      * @param savingsPlanOrderId Savings plan order ID.
      * @param savingsPlanId Savings plan ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -117,7 +119,7 @@ public interface BenefitUtilizationSummariesClient {
 
     /**
      * Lists the savings plan utilization summaries for daily or monthly grain.
-     *
+     * 
      * @param savingsPlanOrderId Savings plan order ID.
      * @param savingsPlanId Savings plan ID.
      * @param filter Supports filtering by properties/usageDate.

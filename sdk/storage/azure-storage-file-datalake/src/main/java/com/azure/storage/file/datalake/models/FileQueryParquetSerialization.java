@@ -6,4 +6,10 @@ package com.azure.storage.file.datalake.models;
 /**
  * Defines the input parquet serialization for a file quick query request.
  */
-public final class FileQueryParquetSerialization implements FileQuerySerialization { }
+public final class FileQueryParquetSerialization implements FileQuerySerialization {
+    /**
+     * Creates a new instance of {@link FileQueryParquetSerialization}.
+     */
+    public FileQueryParquetSerialization() {
+    }
+}

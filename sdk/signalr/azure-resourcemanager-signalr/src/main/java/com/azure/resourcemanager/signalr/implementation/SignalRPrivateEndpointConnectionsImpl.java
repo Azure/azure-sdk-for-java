@@ -30,14 +30,14 @@ public final class SignalRPrivateEndpointConnectionsImpl implements SignalRPriva
     public PagedIterable<PrivateEndpointConnection> list(String resourceGroupName, String resourceName) {
         PagedIterable<PrivateEndpointConnectionInner> inner
             = this.serviceClient().list(resourceGroupName, resourceName);
-        return Utils.mapPage(inner, inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager()));
     }
 
     public PagedIterable<PrivateEndpointConnection> list(String resourceGroupName, String resourceName,
         Context context) {
         PagedIterable<PrivateEndpointConnectionInner> inner
             = this.serviceClient().list(resourceGroupName, resourceName, context);
-        return Utils.mapPage(inner, inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager()));
     }
 
     public Response<PrivateEndpointConnection> getWithResponse(String privateEndpointConnectionName,

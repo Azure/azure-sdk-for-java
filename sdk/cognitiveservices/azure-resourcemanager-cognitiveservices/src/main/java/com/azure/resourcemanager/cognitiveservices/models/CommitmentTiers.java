@@ -7,30 +7,32 @@ package com.azure.resourcemanager.cognitiveservices.models;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 
-/** Resource collection API of CommitmentTiers. */
+/**
+ * Resource collection API of CommitmentTiers.
+ */
 public interface CommitmentTiers {
     /**
      * List Commitment Tiers.
-     *
+     * 
      * @param location Resource location.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of cognitive services accounts operation response as paginated response with {@link
-     *     PagedIterable}.
+     * @return the list of cognitive services accounts operation response as paginated response with
+     * {@link PagedIterable}.
      */
     PagedIterable<CommitmentTier> list(String location);
 
     /**
      * List Commitment Tiers.
-     *
+     * 
      * @param location Resource location.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of cognitive services accounts operation response as paginated response with {@link
-     *     PagedIterable}.
+     * @return the list of cognitive services accounts operation response as paginated response with
+     * {@link PagedIterable}.
      */
     PagedIterable<CommitmentTier> list(String location, Context context);
 }

@@ -1318,7 +1318,7 @@ public final class OpenAIClientImpl {
      *          (Optional){
      *             name: String (Required)
      *             description: String (Optional)
-     *             parameters: Object (Optional)
+     *             parameters: BinaryData (Optional)
      *         }
      *     ]
      *     function_call: BinaryData (Optional)
@@ -1579,7 +1579,7 @@ public final class OpenAIClientImpl {
      *          (Optional){
      *             name: String (Required)
      *             description: String (Optional)
-     *             parameters: Object (Optional)
+     *             parameters: BinaryData (Optional)
      *         }
      *     ]
      *     function_call: BinaryData (Optional)

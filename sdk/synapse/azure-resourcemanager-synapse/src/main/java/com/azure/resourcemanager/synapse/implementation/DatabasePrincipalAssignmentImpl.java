@@ -143,11 +143,12 @@ public final class DatabasePrincipalAssignmentImpl
         com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.workspaceName = Utils.getValueFromIdByName(innerObject.id(), "workspaces");
-        this.kustoPoolName = Utils.getValueFromIdByName(innerObject.id(), "kustoPools");
-        this.databaseName = Utils.getValueFromIdByName(innerObject.id(), "databases");
-        this.principalAssignmentName = Utils.getValueFromIdByName(innerObject.id(), "principalAssignments");
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.workspaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "workspaces");
+        this.kustoPoolName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "kustoPools");
+        this.databaseName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "databases");
+        this.principalAssignmentName
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "principalAssignments");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
     }
 
     public DatabasePrincipalAssignment refresh() {

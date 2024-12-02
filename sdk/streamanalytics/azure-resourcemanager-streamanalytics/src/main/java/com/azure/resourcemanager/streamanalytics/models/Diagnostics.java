@@ -5,19 +5,22 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Describes conditions applicable to the Input, Output, or the job overall, that warrant customer attention.
  */
 @Immutable
-public final class Diagnostics {
+public final class Diagnostics implements JsonSerializable<Diagnostics> {
     /*
      * A collection of zero or more conditions applicable to the resource, or to the job overall, that warrant customer
      * attention.
      */
-    @JsonProperty(value = "conditions", access = JsonProperty.Access.WRITE_ONLY)
     private List<DiagnosticCondition> conditions;
 
     /**
@@ -45,5 +48,42 @@ public final class Diagnostics {
         if (conditions() != null) {
             conditions().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Diagnostics from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Diagnostics if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the Diagnostics.
+     */
+    public static Diagnostics fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Diagnostics deserializedDiagnostics = new Diagnostics();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("conditions".equals(fieldName)) {
+                    List<DiagnosticCondition> conditions
+                        = reader.readArray(reader1 -> DiagnosticCondition.fromJson(reader1));
+                    deserializedDiagnostics.conditions = conditions;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDiagnostics;
+        });
     }
 }

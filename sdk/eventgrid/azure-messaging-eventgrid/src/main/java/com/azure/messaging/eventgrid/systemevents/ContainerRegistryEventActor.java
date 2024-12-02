@@ -12,8 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The agent that initiated the event. For most situations, this could be from the authorization context of the
- * request.
+ * The agent that initiated the event. For most situations, this could be from the authorization context of the request.
  */
 @Fluent
 public final class ContainerRegistryEventActor implements JsonSerializable<ContainerRegistryEventActor> {
@@ -48,6 +47,9 @@ public final class ContainerRegistryEventActor implements JsonSerializable<Conta
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

@@ -1,5 +1,6 @@
 // Original file from https://github.com/FasterXML/jackson-core under Apache-2.0 license.
-/* Jackson JSON-processor.
+/*
+ * Jackson JSON-processor.
  *
  * Copyright (c) 2007- Tatu Saloranta, tatu.saloranta@iki.fi
  */
@@ -54,24 +55,6 @@ public class JsonParseException extends StreamReadException {
     // @since 2.7
     public JsonParseException(JsonParser p, String msg, JsonLocation loc, Throwable root) {
         super(msg, loc, root);
-    }
-
-    /**
-     * Fluent method that may be used to assign originating {@link JsonParser},
-     * to be accessed using {@link #getProcessor()}.
-     *<p>
-     * NOTE: `this` instance is modified and no new instance is constructed.
-     *
-     * @param p Parser instance to assign to this exception
-     *
-     * @return This exception instance to allow call chaining
-     *
-     * @since 2.7
-     */
-    @Override
-    public JsonParseException withParser(JsonParser p) {
-        _processor = p;
-        return this;
     }
 
     /**

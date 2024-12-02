@@ -9,11 +9,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.defendereasm.fluent.models.LabelResourceInner;
 
-/** Resource collection API of Labels. */
+/**
+ * Resource collection API of Labels.
+ */
 public interface Labels {
     /**
      * Returns a list of labels in the given workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the Workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -25,7 +27,7 @@ public interface Labels {
 
     /**
      * Returns a list of labels in the given workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the Workspace.
      * @param context The context to associate with this operation.
@@ -38,7 +40,7 @@ public interface Labels {
 
     /**
      * Returns a label in the given workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the Workspace.
      * @param labelName The name of the Label.
@@ -53,7 +55,7 @@ public interface Labels {
 
     /**
      * Returns a label in the given workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the Workspace.
      * @param labelName The name of the Label.
@@ -66,7 +68,7 @@ public interface Labels {
 
     /**
      * Create or update a Label.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the Workspace.
      * @param labelName The name of the Label.
@@ -79,7 +81,7 @@ public interface Labels {
 
     /**
      * Create or update a Label.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the Workspace.
      * @param labelName The name of the Label.
@@ -95,7 +97,7 @@ public interface Labels {
 
     /**
      * Update a Label.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the Workspace.
      * @param labelName The name of the Label.
@@ -111,7 +113,7 @@ public interface Labels {
 
     /**
      * Update a Label.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the Workspace.
      * @param labelName The name of the Label.
@@ -124,7 +126,7 @@ public interface Labels {
 
     /**
      * Delete a Label.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the Workspace.
      * @param labelName The name of the Label.
@@ -136,7 +138,7 @@ public interface Labels {
 
     /**
      * Delete a Label.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the Workspace.
      * @param labelName The name of the Label.
