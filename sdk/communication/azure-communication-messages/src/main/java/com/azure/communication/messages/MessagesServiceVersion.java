@@ -18,7 +18,12 @@ public enum MessagesServiceVersion implements ServiceVersion {
     /**
      * Enum value 2024-08-30.
      */
-    V2024_08_30("2024-08-30");
+    V2024_08_30("2024-08-30"),
+
+    /**
+     * Enum value 2024-11-15-preview.
+     */
+    V2024_11_15_PREVIEW("2024-11-15-preview");
 
     private final String version;
 
@@ -40,6 +45,6 @@ public enum MessagesServiceVersion implements ServiceVersion {
      * @return The latest {@link MessagesServiceVersion}.
      */
     public static MessagesServiceVersion getLatest() {
-        return V2024_08_30;
+        return V2024_11_15_PREVIEW;
     }
 }

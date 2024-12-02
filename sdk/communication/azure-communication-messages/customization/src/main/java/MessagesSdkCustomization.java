@@ -32,6 +32,11 @@ public class MessagesSdkCustomization extends Customization {
         customizeMessageTemplateLocation(modelsPackage);
         customizeMessageTemplateItemModel(modelsPackage);
 
+        //Handle Interactive message content models
+        updateModelClassModifierToAbstract(modelsPackage, "MessageContent");
+        updateModelClassModifierToAbstract(modelsPackage, "ActionBindings");
+        customizeInteractiveMessage(modelsPackage);
+
         PackageCustomization channelsModelsPackage = libraryCustomization.getPackage(
             "com.azure.communication.messages.models.channels");
         updateWhatsAppMessageTemplateItemWithBinaryDataContent(channelsModelsPackage);
@@ -170,6 +175,27 @@ public class MessagesSdkCustomization extends Customization {
                     .setJavadocComment(new Javadoc(JavadocDescription.parseText(
                         "Get the geo position: The longitude and latitude of the location.")).addBlockTag("return",
                         "the GeoPosition object."));
+            });
+        });
+    }
+
+    private void customizeInteractiveMessage(PackageCustomization modelsPackage) {
+        modelsPackage.getClass("InteractiveMessage").customizeAst(ast -> {
+            ast.getClassByName("InteractiveMessage").ifPresent(clazz -> {
+                clazz.addMethod("getHeader", Modifier.Keyword.PUBLIC)
+                    .setType(clazz.getMethodsByName("getHeaderProperty").get(0).getType())
+                    .setBody(clazz.getMethodsByName("getHeaderProperty").get(0).getBody().get())
+                    .setJavadocComment(clazz.getMethodsByName("getHeaderProperty").get(0).getJavadocComment().get());
+
+                clazz.getMethodsByName("getHeaderProperty").forEach(Node::remove);
+
+                clazz.addMethod("setHeader", Modifier.Keyword.PUBLIC)
+                    .setParameters(clazz.getMethodsByName("setHeaderProperty").get(0).getParameters())
+                    .setType(clazz.getMethodsByName("setHeaderProperty").get(0).getType())
+                    .setBody(clazz.getMethodsByName("setHeaderProperty").get(0).getBody().get())
+                    .setJavadocComment(clazz.getMethodsByName("setHeaderProperty").get(0).getJavadocComment().get());
+
+                clazz.getMethodsByName("setHeaderProperty").forEach(Node::remove);
             });
         });
     }
