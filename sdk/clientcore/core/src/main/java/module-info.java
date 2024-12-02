@@ -25,4 +25,7 @@ module io.clientcore.core {
     exports io.clientcore.core.util.auth;
 
     uses io.clientcore.core.http.client.HttpClientProvider;
+
+    provides io.clientcore.core.http.client.HttpClientProvider
+        with io.clientcore.core.http.client.DefaultHttpClientProvider;
 }

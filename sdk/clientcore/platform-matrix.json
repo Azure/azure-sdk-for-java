@@ -1,7 +1,7 @@
 {
   "displayNames": {
-    "ioclientcorecorehttpclientDefaultHttpClientProvider": "DefaultHttpClient",
-    "ioclientcorehttpokhttp3OkHttpHttpClientProvider": "OkHttpHttpClient"
+    "io.clientcore.core.http.client.DefaultHttpClientProvider": "DefaultHttpClient",
+    "io.clientcore.http.okhttp3.OkHttpHttpClientProvider": "OkHttpHttpClient"
   },
   "matrix": {
     "Agent": {
