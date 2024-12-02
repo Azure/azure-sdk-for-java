@@ -204,7 +204,6 @@
     "sdk/clientcore/core/**",
     "sdk/clientcore/core-json/**",
     "sdk/clientcore/http-okhttp3/**",
-    "sdk/clientcore/http-jdk-httpclient/**",
     "sdk/serialization/azure-json-gson/**",
     "sdk/serialization/azure-json/**",
     "sdk/serialization/azure-xml/**",

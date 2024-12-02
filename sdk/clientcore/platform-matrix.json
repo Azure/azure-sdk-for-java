@@ -1,0 +1,48 @@
+{
+  "displayNames": {
+    "true": "TestFromSource"
+  },
+  "matrix": {
+    "Agent": {
+      "ubuntu-20.04": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" },
+      "windows-2022": { "OSVmImage": "env:WINDOWSVMIMAGE", "Pool": "env:WINDOWSPOOL" },
+      "macos-latest": { "OSVmImage": "env:MACVMIMAGE", "Pool": "env:MACPOOL" }
+    },
+    "JavaTestVersion": [ "1.17", "1.21" ],
+    "HTTP_CLIENT_IMPLEMENTATION": [ "io.clientcore.core.http.client.DefaultHttpClientProvider", "io.clientcore.http.okhttp3.OkHttpHttpClientProvider" ],
+    "TestFromSource": false,
+    "RunAggregateReports": false,
+    "TestGoals": "surefire:test failsafe:integration-test failsafe:verify",
+    "TestOptions": ""
+  },
+  "exclude": [
+    {
+      "Pool": "env:LINUXPOOL",
+      "JavaTestVersion": "1.21"
+    }
+  ],
+  "include": [
+    {
+      "Agent": {
+          "ubuntu-20.04": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
+      },
+      "JavaTestVersion": "1.21",
+      "HTTP_CLIENT_IMPLEMENTATION": "io.clientcore.core.http.client.DefaultHttpClientProvider",
+      "TestFromSource": true,
+      "RunAggregateReports": false,
+      "TestGoals": "verify",
+      "TestOptions": "-DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false"
+    },
+    {
+      "Agent": {
+        "windows-2022": { "OSVmImage": "env:WINDOWSVMIMAGE", "Pool": "env:LINUXPOOL" }
+      },
+      "JavaTestVersion": "1.21",
+      "HTTP_CLIENT_IMPLEMENTATION": "io.clientcore.core.http.client.DefaultHttpClientProvider",
+      "TestFromSource": false,
+      "RunAggregateReports": true,
+      "TestGoals": "verify",
+      "TestOptions": "-DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false"
+    }
+  ]
+}

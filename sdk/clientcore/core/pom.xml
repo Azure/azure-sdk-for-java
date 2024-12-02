@@ -136,7 +136,7 @@
 
   <build>
     <plugins>
-      <!-- RestProxyTests is inherited by tests in http-okhttp3 and http-jdk-httpclient -->
+      <!-- RestProxyTests is inherited by tests in http-okhttp3 -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
