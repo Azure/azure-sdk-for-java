@@ -9,9 +9,11 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import com.azure.storage.file.share.*;
+import com.azure.storage.file.share.implementation.models.DeleteSnapshotsOptionType;
 import com.azure.storage.file.share.models.*;
 import com.azure.storage.file.share.options.ShareAcquireLeaseOptions;
 import com.azure.storage.file.share.options.ShareBreakLeaseOptions;
+import com.azure.storage.file.share.options.ShareDeleteOptions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -22,6 +24,8 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -40,13 +44,13 @@ public class LeaseAsyncApiTests extends FileShareTestBase {
         shareAsyncClient = shareBuilderHelper(shareName).buildAsyncClient();
         shareAsyncClient.create().block();
         primaryFileAsyncClient = fileBuilderHelper(shareName, filePath).buildFileAsyncClient();
-        primaryFileAsyncClient.create(50);
+        primaryFileAsyncClient.create(50).block();
     }
 
     @Test
     public void acquireFileLease() {
         ShareLeaseAsyncClient leaseClient = createLeaseClient(primaryFileAsyncClient);
-        StepVerifier.create(primaryFileAsyncClient.create(50).then(leaseClient.acquireLease())).assertNext(leaseId -> {
+        StepVerifier.create(leaseClient.acquireLease()).assertNext(leaseId -> {
             assertNotNull(leaseId);
             assertEquals(leaseId, leaseClient.getLeaseId());
         }).verifyComplete();
@@ -119,8 +123,7 @@ public class LeaseAsyncApiTests extends FileShareTestBase {
     @Test
     public void releaseLease() {
         StepVerifier
-            .create(primaryFileAsyncClient.create(50)
-                .then(setupFileLeaseCondition(primaryFileAsyncClient, RECEIVED_LEASE_ID))
+            .create(setupFileLeaseCondition(primaryFileAsyncClient, RECEIVED_LEASE_ID)
                 .flatMap(leaseID -> createLeaseClient(primaryFileAsyncClient, leaseID).releaseLeaseWithResponse(null))
                 .flatMap(response -> primaryFileAsyncClient.getProperties()))
             .assertNext(properties -> assertEquals(LeaseStateType.AVAILABLE, properties.getLeaseState()))
@@ -129,11 +132,10 @@ public class LeaseAsyncApiTests extends FileShareTestBase {
 
     @Test
     public void releaseLeaseMin() {
-        StepVerifier.create(primaryFileAsyncClient.create(50)
-            .then(setupFileLeaseCondition(primaryFileAsyncClient, RECEIVED_LEASE_ID))
-            .flatMap(leaseID -> {
-                return createLeaseClient(primaryFileAsyncClient, leaseID).releaseLease();
-            })).verifyComplete();
+        StepVerifier
+            .create(setupFileLeaseCondition(primaryFileAsyncClient, RECEIVED_LEASE_ID)
+                .flatMap(leaseID -> createLeaseClient(primaryFileAsyncClient, leaseID).releaseLease()))
+            .verifyComplete();
     }
 
     @Test
@@ -147,20 +149,16 @@ public class LeaseAsyncApiTests extends FileShareTestBase {
     @Test
     public void breakFileLease() {
         ShareLeaseAsyncClient leaseClient = createLeaseClient(primaryFileAsyncClient, testResourceNamer.randomUuid());
-
         StepVerifier
-            .create(primaryFileAsyncClient.create(50)
-                .then(leaseClient.acquireLease())
-                .then(leaseClient.breakLease())
-                .then(primaryFileAsyncClient.getProperties()))
+            .create(
+                leaseClient.acquireLease().then(leaseClient.breakLease()).then(primaryFileAsyncClient.getProperties()))
             .assertNext(properties -> assertEquals(LeaseStateType.BROKEN, properties.getLeaseState()))
             .verifyComplete();
     }
 
     @Test
     public void breakFileLeaseMin() {
-        StepVerifier.create(primaryFileAsyncClient.create(50)
-            .then(setupFileLeaseCondition(primaryFileAsyncClient, RECEIVED_LEASE_ID))
+        StepVerifier.create(setupFileLeaseCondition(primaryFileAsyncClient, RECEIVED_LEASE_ID)
             .flatMap(leaseID -> createLeaseClient(primaryFileAsyncClient, leaseID).breakLease())).verifyComplete();
     }
 
@@ -177,19 +175,11 @@ public class LeaseAsyncApiTests extends FileShareTestBase {
         Mono<Response<String>> acquireLease = leaseClient.acquireLeaseWithResponse(null, null);
         Mono<Response<Void>> breakLease = leaseClient.breakLeaseWithResponse(null);
 
-        StepVerifier.create(createFile.then(acquireLease).flatMap(acquireResponse -> {
-            assertEquals(201, acquireResponse.getStatusCode());
-            assertNotNull(acquireResponse.getValue());
-            System.out.println("Lease acquired successfully: " + acquireResponse.getValue());
-            return breakLease;
-        }).flatMap(breakResponse -> {
-            assertEquals(202, breakResponse.getStatusCode());
-            System.out.println("Lease broken successfully");
-            return shareFileAsyncClient.getProperties();
-        })).assertNext(properties -> {
-            System.out.println("File properties validated: Lease state is " + properties.getLeaseState());
-            assertEquals(LeaseStateType.BROKEN, properties.getLeaseState());
-        }).verifyComplete();
+        StepVerifier.create(createFile.then(acquireLease)
+            .flatMap(acquireResponse -> breakLease)
+            .flatMap(breakResponse -> shareFileAsyncClient.getProperties())).assertNext(properties -> {
+                assertEquals(LeaseStateType.BROKEN, properties.getLeaseState());
+            }).verifyComplete();
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2021-04-10")
@@ -209,22 +199,17 @@ public class LeaseAsyncApiTests extends FileShareTestBase {
         Mono<Response<String>> acquireLease = leaseClient.acquireLeaseWithResponse(null, null);
         Mono<Response<Void>> breakLease = leaseClient.breakLeaseWithResponse(null);
 
-        StepVerifier.create(createDir.then(createFile).then(acquireLease).flatMap(acquireResponse -> {
-            assertEquals(201, acquireResponse.getStatusCode());
-            assertNotNull(acquireResponse.getValue());
-            return breakLease;
-        }).flatMap(breakResponse -> {
-            assertEquals(202, breakResponse.getStatusCode());
-            return fileClient.getProperties();
-        })).assertNext(properties -> {
-            assertEquals(LeaseStateType.BROKEN, properties.getLeaseState());
-        }).verifyComplete();
+        StepVerifier.create(createDir.then(createFile)
+            .then(acquireLease)
+            .flatMap(acquireResponse -> breakLease)
+            .flatMap(breakResponse -> fileClient.getProperties())).assertNext(properties -> {
+                assertEquals(LeaseStateType.BROKEN, properties.getLeaseState());
+            }).verifyComplete();
     }
 
     @Test
     public void breakFileLeaseError() {
-        ShareFileAsyncClient fileClient = shareAsyncClient.getFileClient("garbage");
-        StepVerifier.create(createLeaseClient(fileClient).breakLease())
+        StepVerifier.create(createLeaseClient(primaryFileAsyncClient).breakLease())
             .expectError(ShareStorageException.class)
             .verify();
     }
@@ -233,11 +218,6 @@ public class LeaseAsyncApiTests extends FileShareTestBase {
     public void changeFileLease() {
         String initialLeaseId = testResourceNamer.randomUuid();
         String newLeaseId = testResourceNamer.randomUuid();
-
-        StepVerifier.create(primaryFileAsyncClient.create(50))
-            .assertNext(fileInfo -> assertNotNull(fileInfo))
-            .verifyComplete();
-
         ShareLeaseAsyncClient leaseClient = createLeaseClient(primaryFileAsyncClient, initialLeaseId);
 
         StepVerifier.create(leaseClient.acquireLease().flatMap(leaseId -> {
@@ -258,10 +238,8 @@ public class LeaseAsyncApiTests extends FileShareTestBase {
 
     @Test
     public void changeFileLeaseMin() {
-        StepVerifier.create(primaryFileAsyncClient.create(50)
-            .then(setupFileLeaseCondition(primaryFileAsyncClient, RECEIVED_LEASE_ID))
-            .flatMap(leaseID -> createLeaseClient(primaryFileAsyncClient, leaseID)
-                .changeLease(testResourceNamer.randomUuid())))
+        StepVerifier.create(setupFileLeaseCondition(primaryFileAsyncClient, RECEIVED_LEASE_ID).flatMap(
+            leaseID -> createLeaseClient(primaryFileAsyncClient, leaseID).changeLease(testResourceNamer.randomUuid())))
             .expectNextCount(1)
             .verifyComplete();
     }
@@ -277,13 +255,10 @@ public class LeaseAsyncApiTests extends FileShareTestBase {
             .allowTrailingDot(true)
             .buildAsyncClient();
 
-        Mono<String> acquireLease = leaseClient.acquireLease();
-        Mono<Response<String>> changeLease
-            = acquireLease.flatMap(leaseID -> leaseClient.changeLeaseWithResponse(leaseID, null));
+        Mono<String> changeLease = leaseClient.acquireLease().flatMap(leaseID -> leaseClient.changeLease(leaseID));
 
-        StepVerifier.create(createFile.then(acquireLease).then(changeLease)).assertNext(changeResponse -> {
-            assertNotNull(changeResponse.getValue());
-            assertEquals(changeResponse.getValue(), leaseClient.getLeaseId());
+        StepVerifier.create(createFile.then(changeLease)).assertNext(changeResponse -> {
+            assertEquals(changeResponse, leaseClient.getLeaseId());
         }).verifyComplete();
     }
 
@@ -302,16 +277,11 @@ public class LeaseAsyncApiTests extends FileShareTestBase {
             .shareTokenIntent(ShareTokenIntent.BACKUP)
             .buildAsyncClient();
 
-        Mono<String> acquireLease = leaseClient.acquireLease();
-        Mono<Response<String>> changeLease
-            = acquireLease.flatMap(leaseID -> leaseClient.changeLeaseWithResponse(leaseID, null));
+        Mono<String> changeLease = leaseClient.acquireLease().flatMap(leaseID -> leaseClient.changeLease(leaseID));
 
-        StepVerifier.create(createDir.then(createFile).then(acquireLease).then(changeLease))
-            .assertNext(changeResponse -> {
-                assertNotNull(changeResponse.getValue());
-                assertEquals(changeResponse.getValue(), leaseClient.getLeaseId());
-            })
-            .verifyComplete();
+        StepVerifier.create(createDir.then(createFile).then(changeLease)).assertNext(changeResponse -> {
+            assertEquals(changeResponse, leaseClient.getLeaseId());
+        }).verifyComplete();
     }
 
     @Test
@@ -334,9 +304,7 @@ public class LeaseAsyncApiTests extends FileShareTestBase {
 
         StepVerifier.create(leaseResponseMono.flatMap(leaseResponse -> {
             assertEquals(leaseClient.getLeaseId(), leaseResponse.getValue());
-            return PollerFlux.interval(Duration.ofSeconds(1), Duration.ofSeconds(1))
-                .take(1)
-                .then(Mono.defer(() -> shareAsyncClient.getProperties()));
+            return shareAsyncClient.getProperties();
         })).assertNext(properties -> {
             assertNotNull(properties);
             assertEquals(leaseState, properties.getLeaseState());
@@ -379,6 +347,37 @@ public class LeaseAsyncApiTests extends FileShareTestBase {
         StepVerifier.create(createLeaseClient(shareAsyncClient).acquireLeaseWithResponse(null, null))
             .assertNext(response -> assertEquals(201, response.getStatusCode()))
             .verifyComplete();
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2020-02-10")
+    @Test
+    public void acquireShareLeaseSnapshot() {
+        Mono<String> shareSnapshotMono = shareAsyncClient.createSnapshot().map(ShareSnapshotInfo::getSnapshot);
+        Mono<ShareAsyncClient> scMono = shareSnapshotMono
+            .map(snapshot -> shareBuilderHelper(shareAsyncClient.getShareName(), snapshot).buildAsyncClient());
+
+        StepVerifier.create(scMono.flatMap(sc -> {
+            ShareLeaseAsyncClient leaseClient = createLeaseClient(sc);
+
+            Supplier<Mono<Response<String>>> action
+                = () -> leaseClient.acquireLeaseWithResponse(new ShareAcquireLeaseOptions().setDuration(-1), null);
+
+            Predicate<ShareStorageException> retryPredicate
+                = it -> it.getErrorCode() == ShareErrorCode.SHARE_SNAPSHOT_IN_PROGRESS;
+
+            int times = 6;
+            Duration delay = Duration.ofSeconds(10);
+
+            try {
+                return retry(action, retryPredicate, times, delay).flatMap(resp -> {
+                    assertNotNull(resp);
+                    assertEquals(201, resp.getStatusCode());
+                    return createLeaseClient(sc, resp.getValue()).releaseLeaseWithResponse(null).then(Mono.empty());
+                });
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        })).verifyComplete();
     }
 
     @Test
@@ -630,8 +629,7 @@ public class LeaseAsyncApiTests extends FileShareTestBase {
     public void breakShareLeaseMin() {
         StepVerifier
             .create(setupShareLeaseAsyncCondition(shareAsyncClient, RECEIVED_LEASE_ID)
-                .flatMap(leaseID -> createLeaseClient(shareAsyncClient, leaseID)
-                    .breakLeaseWithResponse(new ShareBreakLeaseOptions(), null)))
+                .then(createLeaseClient(shareAsyncClient).breakLeaseWithResponse(new ShareBreakLeaseOptions(), null)))
             .assertNext(response -> assertEquals(202, response.getStatusCode()))
             .verifyComplete();
     }
