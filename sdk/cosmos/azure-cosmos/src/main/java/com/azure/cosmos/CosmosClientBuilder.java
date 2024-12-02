@@ -885,6 +885,15 @@ public class CosmosClientBuilder implements
         }
     }
 
+    // todo: revert this method - only stick to system property
+    void resetIsPerPartitionAutomaticFailoverEnabled() {
+        boolean isPerPartitionAutomaticFailoverEnabledFromEnvVariable = Configs.isPerPartitionAutomaticFailoverEnabled();
+        boolean isPerPartitionAutomaticFailoverEnabledFromPublicApi = this.isPerPartitionAutomaticFailoverEnabled;
+
+        this.isPerPartitionAutomaticFailoverEnabled
+            = isPerPartitionAutomaticFailoverEnabledFromPublicApi || isPerPartitionAutomaticFailoverEnabledFromEnvVariable;
+    }
+
     /**
      * Sets the {@link CosmosContainerProactiveInitConfig} which enable warming up of caches and connections
      * associated with containers obtained from {@link CosmosContainerProactiveInitConfig#getCosmosContainerIdentities()} to replicas
@@ -1205,6 +1214,8 @@ public class CosmosClientBuilder implements
         }
 
         this.resetSessionCapturingType();
+        this.resetIsPerPartitionAutomaticFailoverEnabled();
+
         validateConfig();
         buildConnectionPolicy();
         CosmosAsyncClient cosmosAsyncClient = new CosmosAsyncClient(this);
@@ -1245,6 +1256,8 @@ public class CosmosClientBuilder implements
         }
 
         this.resetSessionCapturingType();
+        this.resetIsPerPartitionAutomaticFailoverEnabled();
+
         validateConfig();
         buildConnectionPolicy();
         CosmosClient cosmosClient = new CosmosClient(this);

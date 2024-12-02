@@ -758,6 +758,17 @@ public class Configs {
         return Boolean.parseBoolean(shouldOptInDefaultPartitionLevelCircuitBreakerConfig);
     }
 
+    public static boolean isPerPartitionAutomaticFailoverEnabled() {
+        String isPerPartitionAutomaticFailoverEnabledAsString =
+            System.getProperty(
+                IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED,
+                firstNonNull(
+                    emptyToNull(System.getenv().get(IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED)),
+                    String.valueOf(DEFAULT_IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED)));
+
+        return Boolean.parseBoolean(isPerPartitionAutomaticFailoverEnabledAsString);
+    }
+
     public static CosmosMicrometerMetricsConfig getMetricsConfig() {
         String metricsConfig =
             System.getProperty(
