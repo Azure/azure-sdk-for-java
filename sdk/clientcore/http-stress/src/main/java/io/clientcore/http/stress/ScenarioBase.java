@@ -9,6 +9,8 @@ import reactor.core.publisher.Mono;
 
 /**
  * Performance test for getting messages.
+ *
+ * @param <TOptions> The options configured for the test.
  */
 public abstract class ScenarioBase<TOptions extends StressOptions> extends PerfStressTest<TOptions> {
     private final TelemetryHelper telemetryHelper;

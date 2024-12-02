@@ -1,10 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-import io.clientcore.core.http.client.HttpClientProvider;
-
+/**
+ * This module provides core functionality for the Java SDK.
+ */
 module io.clientcore.core {
     requires transitive io.clientcore.core.json;
+    requires java.net.http;
 
     // public API surface area
     exports io.clientcore.core.annotation;
@@ -22,5 +24,5 @@ module io.clientcore.core {
     exports io.clientcore.core.util.serializer;
     exports io.clientcore.core.util.auth;
 
-    uses HttpClientProvider;
+    uses io.clientcore.core.http.client.HttpClientProvider;
 }

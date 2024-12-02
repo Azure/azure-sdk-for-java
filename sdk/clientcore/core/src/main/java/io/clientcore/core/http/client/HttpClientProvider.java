@@ -33,6 +33,12 @@ public abstract class HttpClientProvider {
     private static Providers<HttpClientProvider, HttpClient> providers;
 
     /**
+     * Creates a new instance of {@link HttpClientProvider}.
+     */
+    public HttpClientProvider() {
+    }
+
+    /**
      * Gets a new instance of the {@link HttpClient} that this {@link HttpClientProvider} is configured to create.
      *
      * @return A new instance of {@link HttpClient} that this {@link HttpClientProvider} is configured to create.

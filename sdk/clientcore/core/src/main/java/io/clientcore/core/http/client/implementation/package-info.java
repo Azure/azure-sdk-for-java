@@ -4,4 +4,4 @@
 /**
  * Package containing implementation classes used by the JDK-backed Client Core HTTP client.
  */
-package io.clientcore.http.jdk.httpclient;
+package io.clientcore.core.http.client.implementation;
