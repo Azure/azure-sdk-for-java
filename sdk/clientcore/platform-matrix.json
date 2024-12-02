@@ -1,6 +1,7 @@
 {
   "displayNames": {
-    "true": "TestFromSource"
+    "ioclientcorecorehttpclientDefaultHttpClientProvider": "DefaultHttpClient",
+    "ioclientcorehttpokhttp3OkHttpHttpClientProvider": "OkHttpHttpClient"
   },
   "matrix": {
     "Agent": {
@@ -10,10 +11,18 @@
     },
     "JavaTestVersion": [ "1.17", "1.21" ],
     "HTTP_CLIENT_IMPLEMENTATION": [ "io.clientcore.core.http.client.DefaultHttpClientProvider", "io.clientcore.http.okhttp3.OkHttpHttpClientProvider" ],
-    "TestFromSource": false,
-    "RunAggregateReports": false,
-    "TestGoals": "surefire:test failsafe:integration-test failsafe:verify",
-    "TestOptions": ""
+    "TestFromSource": {
+      "NotFromSource": { "TestFromSource": false }
+    },
+    "RunAggregateReports": {
+      "NotAggregateReports": { "RunAggregateReports": false }
+    },
+    "TestOptions": {
+      "NoTestOptions": { "TestOptions": "" }
+    },
+    "TestGoalsGrouping": {
+      "TestsOnly": { "TestGoals": "surefire:test failsafe:integration-test failsafe:verify" }
+    }
   },
   "exclude": [
     {
@@ -28,21 +37,37 @@
       },
       "JavaTestVersion": "1.21",
       "HTTP_CLIENT_IMPLEMENTATION": "io.clientcore.core.http.client.DefaultHttpClientProvider",
-      "TestFromSource": true,
-      "RunAggregateReports": false,
-      "TestGoals": "verify",
-      "TestOptions": "-DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false"
+      "TestFromSource": {
+        "TestFromSource": { "TestFromSource": true }
+      },
+      "RunAggregateReports": {
+        "NotAggregateReports": { "RunAggregateReports": false }
+      },
+      "TestOptions": {
+        "SkipRebuild": { "TestOptions": "-DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false" }
+      },
+      "TestGoalsGrouping": {
+        "Verify": { "TestGoals": "verify" }
+      }
     },
     {
       "Agent": {
-        "windows-2022": { "OSVmImage": "env:WINDOWSVMIMAGE", "Pool": "env:LINUXPOOL" }
+        "ubuntu-20.04": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
       },
       "JavaTestVersion": "1.21",
       "HTTP_CLIENT_IMPLEMENTATION": "io.clientcore.core.http.client.DefaultHttpClientProvider",
-      "TestFromSource": false,
-      "RunAggregateReports": true,
-      "TestGoals": "verify",
-      "TestOptions": "-DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false"
+      "TestFromSource": {
+        "NotFromSource": { "TestFromSource": false }
+      },
+      "RunAggregateReports": {
+        "AggregateReports": { "RunAggregateReports": true }
+      },
+      "TestOptions": {
+        "SkipRebuild": { "TestOptions": "-DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false" }
+      },
+      "TestGoalsGrouping": {
+        "Verify": { "TestGoals": "verify" }
+      }
     }
   ]
 }
