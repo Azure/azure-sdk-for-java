@@ -4,6 +4,7 @@ parameters:
   EnvVars: {}
   MaxParallel: 0
   PreSteps: []
+  PreTestRunSteps: []
   PostSteps: []
   TimeoutInMinutes: 60
   TestMode: 'LIVE'
@@ -24,6 +25,7 @@ parameters:
   UseHttpFaultInjector: false
   OSName:
   UseFederatedAuth: false
+  PersistOidcToken: false
   VersionOverride: $(VersionOverride)
 
 jobs:
@@ -114,6 +116,7 @@ jobs:
               SubscriptionConfiguration: $(SubscriptionConfiguration)
               ArmTemplateParameters: $(ArmTemplateParameters)
               UseFederatedAuth: ${{ parameters.UseFederatedAuth }}
+              PersistOidcToken: ${{ parameters.PersistOidcToken }}
               ServiceConnection: ${{ parameters.CloudConfig.ServiceConnection }}
               SubscriptionConfigurationFilePaths: ${{ parameters.CloudConfig.SubscriptionConfigurationFilePaths }}
               EnvVars:
@@ -124,6 +127,7 @@ jobs:
 
       - template: /eng/pipelines/templates/steps/build-and-test.yml
         parameters:
+          PreTestRunSteps: ${{ parameters.PreTestRunSteps }}
           ParallelTestPlayback: 'false'
           BuildParallelization: ${{ parameters.BuildParallelization }}
           BuildOptions: ${{ parameters.BuildOptions }}
