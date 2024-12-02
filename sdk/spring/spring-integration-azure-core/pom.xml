@@ -37,6 +37,7 @@
     <compiler.failondeprecatedstatus/>
     <jacoco.skip>true</jacoco.skip>
     <spotless.skip>true</spotless.skip>
+    <maven.javadoc.skip>true</maven.javadoc.skip> <!-- Ignore javadoc warning for removal ListenableFutureCallback in DefaultMessageHandler -->
   </properties>
   <dependencies>
     <dependency>
