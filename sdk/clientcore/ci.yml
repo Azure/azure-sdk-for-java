@@ -41,7 +41,7 @@ extends:
     ServiceDirectory: clientcore
     MatrixConfigs:
       - Name: clientcore_ci_test_base
-        Path: platform-matrix.json
+        Path: sdk/clientcore/platform-matrix.json
         Selection: sparse
         NonSparseParameters: Agent
         GenerateVMJobs: true
