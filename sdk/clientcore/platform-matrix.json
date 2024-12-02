@@ -12,13 +12,13 @@
     "JavaTestVersion": [ "1.17", "1.21" ],
     "TEST_HTTP_CLIENT_IMPLEMENTATION": [ "io.clientcore.core.http.client.DefaultHttpClientProvider", "io.clientcore.http.okhttp3.OkHttpHttpClientProvider" ],
     "TestFromSource": {
-      "": { "TestFromSource": false }
+      "NotFromSource": { "TestFromSource": false }
     },
     "RunAggregateReports": {
-      "": { "RunAggregateReports": false }
+      "NotAggregateReports": { "RunAggregateReports": false }
     },
     "TestOptions": {
-      "": { "TestOptions": "" }
+      "NoTestOptions": { "TestOptions": "" }
     },
     "TestGoalsGrouping": {
       "TestsOnly": { "TestGoals": "surefire:test failsafe:integration-test failsafe:verify" }
@@ -41,7 +41,7 @@
         "TestFromSource": { "TestFromSource": true }
       },
       "RunAggregateReports": {
-        "": { "RunAggregateReports": false }
+        "NotAggregateReports": { "RunAggregateReports": false }
       },
       "TestOptions": {
         "SkipRebuild": { "TestOptions": "-DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false" }
@@ -57,7 +57,7 @@
       "JavaTestVersion": "1.21",
       "TEST_HTTP_CLIENT_IMPLEMENTATION": "io.clientcore.core.http.client.DefaultHttpClientProvider",
       "TestFromSource": {
-        "": { "TestFromSource": false }
+        "NotFromSource": { "TestFromSource": false }
       },
       "RunAggregateReports": {
         "AggregateReports": { "RunAggregateReports": true }
