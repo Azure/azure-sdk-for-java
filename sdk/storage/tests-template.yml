@@ -48,8 +48,8 @@ stages:
       Location: canadacentral
       CloudConfig:
         Preview:
-        PrivatePreview:
-          SubscriptionConfiguration: $(sub-config-storage-test-resources)
+        # PrivatePreview:
+        #  SubscriptionConfiguration: $(sub-config-storage-test-resources)
       Clouds: Preview
       SupportedClouds: Preview
       MatrixReplace:
