@@ -130,6 +130,7 @@ public class Checkpoint {
      * @return The updated {@link Checkpoint} instance.
      * @deprecated This method is obsolete and should no longer be used. Please use {@link #setOffsetString(String)}.
      */
+    @Deprecated
     public Checkpoint setOffset(Long offset) {
         this.offset = offset;
         this.offsetString = offset != null ? String.valueOf(offset) : null;
