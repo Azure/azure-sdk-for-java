@@ -382,11 +382,10 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailoverTests
         try {
 
             CosmosClientBuilder cosmosClientBuilder = getClientBuilder()
+                .perPartitionAutomaticFailoverEnabled(true)
                 .preferredRegions(preferredRegions);
 
-            COSMOS_CLIENT_BUILDER_ACCESSOR.setPerPartitionAutomaticFailoverEnabled(cosmosClientBuilder, true);
-
-            CosmosAsyncClient asyncClient = getClientBuilder().buildAsyncClient();
+            CosmosAsyncClient asyncClient = cosmosClientBuilder.buildAsyncClient();
             cosmosAsyncClientValueHolder.v = asyncClient;
 
             CosmosAsyncContainer asyncContainer = asyncClient
@@ -476,11 +475,10 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailoverTests
         try {
 
             CosmosClientBuilder cosmosClientBuilder = getClientBuilder()
+                .perPartitionAutomaticFailoverEnabled(true)
                 .preferredRegions(preferredRegions);
 
-            COSMOS_CLIENT_BUILDER_ACCESSOR.setPerPartitionAutomaticFailoverEnabled(cosmosClientBuilder, true);
-
-            CosmosAsyncClient asyncClient = getClientBuilder().buildAsyncClient();
+            CosmosAsyncClient asyncClient = cosmosClientBuilder.buildAsyncClient();
             cosmosAsyncClientValueHolder.v = asyncClient;
 
             CosmosAsyncContainer asyncContainer = asyncClient

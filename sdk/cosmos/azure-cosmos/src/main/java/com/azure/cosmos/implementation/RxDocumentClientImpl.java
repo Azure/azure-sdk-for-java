@@ -1991,7 +1991,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         options.setPartitionKeyDefinition(documentCollectionValueHolder.v.getPartitionKey());
 
                         PartitionKeyRange preResolvePartitionKeyRangeIfAny
-                            = addPartitionKeyRangeForPointOperationRequestForPerPartitionAutomaticFailover(
+                            = setPartitionKeyRangeForPointOperationRequestForPerPartitionAutomaticFailover(
                             request,
                             options,
                             collectionRoutingMapValueHolder.v,
@@ -2385,7 +2385,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
                             options.setPartitionKeyDefinition(documentCollectionValueHolder.v.getPartitionKey());
 
-                            PartitionKeyRange preResolvedPartitionKeyRangeIfAny = addPartitionKeyRangeForPointOperationRequestForPerPartitionAutomaticFailover(
+                            PartitionKeyRange preResolvedPartitionKeyRangeIfAny = setPartitionKeyRangeForPointOperationRequestForPerPartitionAutomaticFailover(
                                 request,
                                 options,
                                 collectionRoutingMapValueHolder.v,
@@ -2693,7 +2693,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
                             options.setPartitionKeyDefinition(documentCollectionValueHolder.v.getPartitionKey());
 
-                            PartitionKeyRange preResolvedPartitionKeyRangeIfAny = addPartitionKeyRangeForPointOperationRequestForPerPartitionAutomaticFailover(
+                            PartitionKeyRange preResolvedPartitionKeyRangeIfAny = setPartitionKeyRangeForPointOperationRequestForPerPartitionAutomaticFailover(
                                 request,
                                 options,
                                 collectionRoutingMapValueHolder.v,
@@ -2990,7 +2990,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
                                 options.setPartitionKeyDefinition(documentCollectionValueHolder.v.getPartitionKey());
 
-                                PartitionKeyRange preResolvedPartitionKeyRangeIfAny = addPartitionKeyRangeForPointOperationRequestForPerPartitionAutomaticFailover(
+                                PartitionKeyRange preResolvedPartitionKeyRangeIfAny = setPartitionKeyRangeForPointOperationRequestForPerPartitionAutomaticFailover(
                                     req,
                                     options,
                                     collectionRoutingMapValueHolder.v,
@@ -3198,7 +3198,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
                                 options.setPartitionKeyDefinition(documentCollectionValueHolder.v.getPartitionKey());
 
-                                PartitionKeyRange preResolvedPartitionKeyRangeIfAny = addPartitionKeyRangeForPointOperationRequestForPerPartitionAutomaticFailover(
+                                PartitionKeyRange preResolvedPartitionKeyRangeIfAny = setPartitionKeyRangeForPointOperationRequestForPerPartitionAutomaticFailover(
                                     req,
                                     options,
                                     collectionRoutingMapValueHolder.v,
@@ -3357,7 +3357,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
                                 options.setPartitionKeyDefinition(documentCollectionValueHolder.v.getPartitionKey());
 
-                                PartitionKeyRange preResolvedPartitionKeyRangeIfAny = addPartitionKeyRangeForPointOperationRequestForPerPartitionAutomaticFailover(
+                                PartitionKeyRange preResolvedPartitionKeyRangeIfAny = setPartitionKeyRangeForPointOperationRequestForPerPartitionAutomaticFailover(
                                     req,
                                     options,
                                     collectionRoutingMapValueHolder.v,
@@ -3532,7 +3532,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
                                 options.setPartitionKeyDefinition(documentCollection.getPartitionKey());
 
-                                PartitionKeyRange preResolvedPartionKeyRangeIfAny = addPartitionKeyRangeForPointOperationRequestForPerPartitionAutomaticFailover(
+                                PartitionKeyRange preResolvedPartionKeyRangeIfAny = setPartitionKeyRangeForPointOperationRequestForPerPartitionAutomaticFailover(
                                     req,
                                     options,
                                     collectionRoutingMapValueHolder.v,
@@ -4171,7 +4171,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                             }
 
                             PartitionKeyRange preResolvedPartitionKeyRangeIfAny
-                                = RxDocumentClientImpl.this.addPartitionKeyRangeForFeedRequestForPerPartitionAutomaticFailover(
+                                = RxDocumentClientImpl.this.setPartitionKeyRangeForFeedRequestForPerPartitionAutomaticFailover(
                                 request,
                                 queryRequestOptions,
                                 collectionRoutingMapValueHolder.v,
@@ -6230,7 +6230,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return null;
     }
 
-    public PartitionKeyRange addPartitionKeyRangeForPointOperationRequestForPerPartitionAutomaticFailover(
+    public PartitionKeyRange setPartitionKeyRangeForPointOperationRequestForPerPartitionAutomaticFailover(
         RxDocumentServiceRequest request,
         RequestOptions options,
         CollectionRoutingMap collectionRoutingMap,
@@ -6415,7 +6415,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return null;
     }
 
-    public PartitionKeyRange addPartitionKeyRangeForFeedRequestForPerPartitionAutomaticFailover(
+    public PartitionKeyRange setPartitionKeyRangeForFeedRequestForPerPartitionAutomaticFailover(
         RxDocumentServiceRequest request,
         CosmosQueryRequestOptions options,
         CollectionRoutingMap collectionRoutingMap,
@@ -6533,7 +6533,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
     }
 
-    public PartitionKeyRange addPartitionKeyRangeForChangeFeedOperationRequestForPerPartitionAutomaticFailover(
+    public PartitionKeyRange setPartitionKeyRangeForChangeFeedOperationRequestForPerPartitionAutomaticFailover(
         RxDocumentServiceRequest request,
         CosmosChangeFeedRequestOptions options,
         CollectionRoutingMap collectionRoutingMap,

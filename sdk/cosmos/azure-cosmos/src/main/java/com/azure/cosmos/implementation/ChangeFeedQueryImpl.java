@@ -228,7 +228,7 @@ class ChangeFeedQueryImpl<T> {
                                 changeFeedRequestOptionsAccessor.setCollectionRid(options, documentCollectionValueHolder.v.getResourceId());
 
                                 PartitionKeyRange preResolvedPartitionKeyRangeIfAny = this.client
-                                    .addPartitionKeyRangeForChangeFeedOperationRequestForPerPartitionAutomaticFailover(
+                                    .setPartitionKeyRangeForChangeFeedOperationRequestForPerPartitionAutomaticFailover(
                                         req,
                                         options,
                                         collectionRoutingMapValueHolder.v,

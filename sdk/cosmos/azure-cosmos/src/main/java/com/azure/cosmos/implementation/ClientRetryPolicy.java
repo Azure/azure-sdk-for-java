@@ -109,7 +109,10 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
             logger.info("Endpoint not writable. Will refresh cache and retry ", e);
 
             // todo: should master resource writes be forced to the hub region
-            this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.tryMarkEndpointAsUnavailableForPartitionKeyRange(this.request);
+            if (this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.tryMarkEndpointAsUnavailableForPartitionKeyRange(this.request)) {
+                return Mono.just(ShouldRetryResult.retryAfter(Duration.ZERO));
+            }
+
             return this.shouldRetryOnEndpointFailureAsync(false, true, false);
         }
 

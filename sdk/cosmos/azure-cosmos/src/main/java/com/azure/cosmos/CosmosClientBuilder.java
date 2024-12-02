@@ -227,12 +227,22 @@ public class CosmosClientBuilder implements
         return this.isRegionScopedSessionCapturingEnabled;
     }
 
-    CosmosClientBuilder perPartitionAutomaticFailoverEnabled(boolean isPerPartitionAutomaticFailoverEnabled) {
+    /**
+     * Sets whether PPAF is enabled.
+     *
+     * @param isPerPartitionAutomaticFailoverEnabled A boolean flag to indicate whether PPAF is enabled.
+     * */
+    public CosmosClientBuilder perPartitionAutomaticFailoverEnabled(boolean isPerPartitionAutomaticFailoverEnabled) {
         this.isPerPartitionAutomaticFailoverEnabled = isPerPartitionAutomaticFailoverEnabled;
         return this;
     }
 
-    boolean isPerPartitionAutomaticFailoverEnabled() {
+    /**
+     * Gets whether PPAF is enabled.
+     *
+     * @return isPPAFEnabled
+     * */
+    public boolean isPerPartitionAutomaticFailoverEnabled() {
         return this.isPerPartitionAutomaticFailoverEnabled;
     }
 
