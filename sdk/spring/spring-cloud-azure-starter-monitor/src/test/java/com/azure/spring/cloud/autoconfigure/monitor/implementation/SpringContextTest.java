@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.autoconfigure.monitor.implementation;
 
-import com.azure.spring.cloud.autoconfigure.monitor.selfdiagnostics.implementation.SelfDiagAutoConfig;
+import com.azure.spring.cloud.autoconfigure.monitor.implementation.selfdiagnostics.SelfDiagAutoConfig;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
