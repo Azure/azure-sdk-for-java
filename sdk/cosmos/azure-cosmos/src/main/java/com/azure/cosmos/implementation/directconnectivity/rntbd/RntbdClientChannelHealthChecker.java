@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
+import com.azure.cosmos.implementation.ClientSideRequestStatistics;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.cpu.CpuMemoryMonitor;
@@ -18,6 +19,7 @@ import org.slf4j.LoggerFactory;
 import java.text.MessageFormat;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
@@ -271,6 +273,8 @@ public final class RntbdClientChannelHealthChecker implements ChannelHealthCheck
 
             final Optional<RntbdContext> rntbdContext = requestManager.rntbdContext();
             final int pendingRequestCount = requestManager.pendingRequestCount();
+
+            Map<String, Object> systemInfo = ClientSideRequestStatistics.fetchSystemInformation().toMap();
 
             writeHangMessage = MessageFormat.format(
                     "{0} health check failed due to non-responding write: [lastChannelWriteAttemptTime: {1}, " +
