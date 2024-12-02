@@ -1,5 +1,18 @@
 # Release History
 
+## 12.25.1 (2024-12-04)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+- `ShareFileClient.downloadToFile()` now retries for a maximum of 5 times when the download fails due to a network error.
+Previously, the maximum number of retries was unintentionally higher (maximum of 15), which could lead to writing in 
+incorrect positions in the file when retried more than 5 times.
+
+### Other Changes
+
 ## 12.25.0 (2024-11-13)
 
 ### Features Added
