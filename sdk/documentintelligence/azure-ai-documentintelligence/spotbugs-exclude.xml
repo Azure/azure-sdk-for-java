@@ -44,6 +44,12 @@
       <Class name="com.azure.ai.documentintelligence.models.DocumentWord" />
       <Class name="com.azure.ai.documentintelligence.models.Error" />
       <Class name="com.azure.ai.documentintelligence.models.OperationDetails" />
+      <Class name="com.azure.ai.documentintelligence.models.AnalyzedDocument" />
+      <Class name="com.azure.ai.documentintelligence.models.AuthorizeClassifierCopyOptions" />
+      <Class name="com.azure.ai.documentintelligence.models.AuthorizeModelCopyOptions" />
+      <Class name="com.azure.ai.documentintelligence.models.BuildDocumentClassifierOptions" />
+      <Class name="com.azure.ai.documentintelligence.models.BuildDocumentModelOptions" />
+      <Class name="com.azure.ai.documentintelligence.models.DocumentIntelligenceError" />
     </Or>
   </Match>
   <Match>
@@ -58,6 +64,11 @@
       <Class name="com.azure.ai.documentintelligence.models.ComposeDocumentModelRequest" />
       <Class name="com.azure.ai.documentintelligence.models.DocumentFieldSchema" />
       <Class name="com.azure.ai.documentintelligence.models.DocumentTypeDetails" />
+      <Class name="com.azure.ai.documentintelligence.models.AuthorizeClassifierCopyOptions" />
+      <Class name="com.azure.ai.documentintelligence.models.AuthorizeModelCopyOptions" />
+      <Class name="com.azure.ai.documentintelligence.models.BuildDocumentClassifierOptions" />
+      <Class name="com.azure.ai.documentintelligence.models.BuildDocumentModelOptions" />
+      <Class name="com.azure.ai.documentintelligence.models.DocumentIntelligenceError" />
     </Or>
   </Match>
 </FindBugsFilter>
