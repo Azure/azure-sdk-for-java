@@ -68,12 +68,6 @@ public final class EmailMessage {
     private Boolean userEngagementTrackingDisabled;
 
     /**
-     * Creates a new isntance of {@link EmailMessage}.
-     */
-    public EmailMessage() {
-    }
-
-    /**
      * Get the headers property: Custom email headers to be passed.
      *
      * @return the headers value.
@@ -212,7 +206,7 @@ public final class EmailMessage {
      */
     public EmailMessage setToRecipients(String... toRecipientAddresses) {
         List<EmailAddress> toRecipients = new ArrayList<>();
-        for (String toRecipientAddress : toRecipientAddresses) {
+        for (String toRecipientAddress: toRecipientAddresses) {
             toRecipients.add(new EmailAddress(toRecipientAddress));
         }
         this.toRecipients = toRecipients;
@@ -258,7 +252,7 @@ public final class EmailMessage {
      */
     public EmailMessage setCcRecipients(String... ccRecipientAddresses) {
         List<EmailAddress> ccRecipients = new ArrayList<>();
-        for (String ccRecipientAddress : ccRecipientAddresses) {
+        for (String ccRecipientAddress: ccRecipientAddresses) {
             ccRecipients.add(new EmailAddress(ccRecipientAddress));
         }
         this.ccRecipients = ccRecipients;
@@ -304,7 +298,7 @@ public final class EmailMessage {
      */
     public EmailMessage setBccRecipients(String... bccRecipientAddresses) {
         List<EmailAddress> bccRecipients = new ArrayList<>();
-        for (String bccRecipientAddress : bccRecipientAddresses) {
+        for (String bccRecipientAddress: bccRecipientAddresses) {
             bccRecipients.add(new EmailAddress(bccRecipientAddress));
         }
         this.bccRecipients = bccRecipients;
