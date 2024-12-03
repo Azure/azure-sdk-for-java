@@ -31,9 +31,13 @@ public final class NamespacesCreateOrUpdateSamples {
      */
     public static void
         namespacesCreateOrUpdate(com.azure.resourcemanager.notificationhubs.NotificationHubsManager manager) {
-        manager.namespaces().define("nh-sdk-ns").withRegion("South Central US").withExistingResourceGroup("5ktrial")
+        manager.namespaces()
+            .define("nh-sdk-ns")
+            .withRegion("South Central US")
+            .withExistingResourceGroup("5ktrial")
             .withSku(new Sku().withName(SkuName.STANDARD).withTier("Standard"))
-            .withTags(mapOf("tag1", "value1", "tag2", "value2")).withZoneRedundancy(ZoneRedundancyPreference.ENABLED)
+            .withTags(mapOf("tag1", "value1", "tag2", "value2"))
+            .withZoneRedundancy(ZoneRedundancyPreference.ENABLED)
             .withNetworkAcls(new NetworkAcls()
                 .withIpRules(Arrays.asList(new IpRule().withIpMask("185.48.100.00/24")
                     .withRights(Arrays.asList(AccessRights.MANAGE, AccessRights.SEND, AccessRights.LISTEN))))

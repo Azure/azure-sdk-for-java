@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.notificationhubs.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class AccessRights extends ExpandableStringEnum<AccessRights> {
      * @param name a name to look for.
      * @return the corresponding AccessRights.
      */
-    @JsonCreator
     public static AccessRights fromString(String name) {
         return fromString(name, AccessRights.class);
     }
