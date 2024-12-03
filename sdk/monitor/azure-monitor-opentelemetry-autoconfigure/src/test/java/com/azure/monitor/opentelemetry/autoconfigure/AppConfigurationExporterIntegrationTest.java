@@ -11,6 +11,7 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.test.annotation.LiveOnly;
+import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.data.appconfiguration.ConfigurationClient;
@@ -99,6 +100,7 @@ public class AppConfigurationExporterIntegrationTest extends MonitorExporterClie
 
     private ConfigurationClient getConfigurationClient() {
         return new ConfigurationClientBuilder().credential(credential)
+            .endpoint(Configuration.getGlobalConfiguration().get("MONITOR_RESOURCE_MANAGER_URL"))
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .buildClient();
     }
