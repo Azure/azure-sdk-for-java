@@ -28,7 +28,7 @@ public final class GroupMessageEvent {
      * @param sequenceId the sequenceId.
      */
     public GroupMessageEvent(String group, BinaryData data, WebPubSubDataFormat dataFormat, String fromUserId,
-                             Long sequenceId) {
+        Long sequenceId) {
         this.data = data;
         this.dataFormat = dataFormat;
         this.fromUserId = fromUserId;

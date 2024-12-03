@@ -12,7 +12,6 @@ public final class AckMessage extends WebPubSubMessage {
 
     private AckResponseError error;
 
-
     public long getAckId() {
         return ackId;
     }

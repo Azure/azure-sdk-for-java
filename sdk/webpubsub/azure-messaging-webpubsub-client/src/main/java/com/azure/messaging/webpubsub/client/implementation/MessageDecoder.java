@@ -55,21 +55,14 @@ public final class MessageDecoder {
         BinaryData data = parseData(jsonNode, type);
         switch (jsonNode.get("from").asText()) {
             case "group":
-                msg = new GroupDataMessage(
-                    jsonNode.get("group").asText(),
-                    type,
-                    data,
+                msg = new GroupDataMessage(jsonNode.get("group").asText(), type, data,
                     jsonNode.has("fromUserId") ? jsonNode.get("fromUserId").asText() : null,
-                    jsonNode.has("sequenceId") ? jsonNode.get("sequenceId").asLong() : null
-                );
+                    jsonNode.has("sequenceId") ? jsonNode.get("sequenceId").asLong() : null);
                 break;
 
             case "server":
-                msg = new ServerDataMessage(
-                    type,
-                    data,
-                    jsonNode.has("sequenceId") ? jsonNode.get("sequenceId").asLong() : null
-                );
+                msg = new ServerDataMessage(type, data,
+                    jsonNode.has("sequenceId") ? jsonNode.get("sequenceId").asLong() : null);
                 break;
 
             default:
@@ -104,14 +97,12 @@ public final class MessageDecoder {
     }
 
     private static WebPubSubMessage parseAck(JsonNode jsonNode) {
-        AckMessage ackMessage = new AckMessage()
-            .setAckId(jsonNode.get("ackId").asLong())
-            .setSuccess(jsonNode.get("success").asBoolean());
+        AckMessage ackMessage
+            = new AckMessage().setAckId(jsonNode.get("ackId").asLong()).setSuccess(jsonNode.get("success").asBoolean());
         if (jsonNode.has("error")) {
             JsonNode errorNode = jsonNode.get("error");
-            ackMessage.setError(new AckResponseError(
-                errorNode.get("name").asText(),
-                errorNode.get("message").asText()));
+            ackMessage
+                .setError(new AckResponseError(errorNode.get("name").asText(), errorNode.get("message").asText()));
         }
         return ackMessage;
     }

@@ -15,14 +15,12 @@ public final class WebPubSubProtocolType extends ExpandableStringEnum<WebPubSubP
     /**
      * the json.reliable.webpubsub.azure.v1 protocol.
      */
-    public static final WebPubSubProtocolType JSON_RELIABLE_PROTOCOL =
-        fromString("json.reliable.webpubsub.azure.v1");
+    public static final WebPubSubProtocolType JSON_RELIABLE_PROTOCOL = fromString("json.reliable.webpubsub.azure.v1");
 
     /**
      * the json.webpubsub.azure.v1 protocol.
      */
-    public static final WebPubSubProtocolType JSON_PROTOCOL =
-        fromString("json.webpubsub.azure.v1");
+    public static final WebPubSubProtocolType JSON_PROTOCOL = fromString("json.webpubsub.azure.v1");
 
     /**
      * Creates a new instance of WebPubSubProtocolType value.

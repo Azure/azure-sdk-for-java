@@ -26,13 +26,10 @@ public class TestBase extends com.azure.core.test.TestBase {
             .buildClient();
 
         // client builder
-        return new WebPubSubClientBuilder()
-            .credential(new WebPubSubClientCredential(
-                () -> client.getClientAccessToken(new GetClientAccessTokenOptions()
-                        .setUserId(userId)
-                        .addRole("webpubsub.joinLeaveGroup")
-                        .addRole("webpubsub.sendToGroup"))
-                    .getUrl()));
+        return new WebPubSubClientBuilder().credential(new WebPubSubClientCredential(
+            () -> client.getClientAccessToken(new GetClientAccessTokenOptions().setUserId(userId)
+                .addRole("webpubsub.joinLeaveGroup")
+                .addRole("webpubsub.sendToGroup")).getUrl()));
     }
 
     protected static WebPubSubClient getClient() {

@@ -25,7 +25,8 @@ public class GroupMessageTests extends TestBase {
     @DoNotRecord(skipInPlayback = true)
     public void testSendMessageBeforeStart() {
         WebPubSubClient client = getClient();
-        Assertions.assertThrows(SendMessageFailedException.class, () -> client.sendToGroup("testSendMessageBeforeStart", HELLO));
+        Assertions.assertThrows(SendMessageFailedException.class,
+            () -> client.sendToGroup("testSendMessageBeforeStart", HELLO));
     }
 
     @Test
@@ -56,8 +57,8 @@ public class GroupMessageTests extends TestBase {
         try {
             client.start();
 
-            WebPubSubResult result = client.sendToGroup(groupName, HELLO,
-                new SendToGroupOptions().setAckId(1L).setFireAndForget(true));
+            WebPubSubResult result
+                = client.sendToGroup(groupName, HELLO, new SendToGroupOptions().setAckId(1L).setFireAndForget(true));
             // no ackId in SendToGroupMessage or in WebPubSubResult
             Assertions.assertNull(result.getAckId());
         } finally {
@@ -86,7 +87,8 @@ public class GroupMessageTests extends TestBase {
             JsonModel model = new JsonModel();
             model.name = "john";
             model.description = "unknown";
-            WebPubSubResult result = client.sendToGroup(groupName, BinaryData.fromObject(model), WebPubSubDataFormat.JSON);
+            WebPubSubResult result
+                = client.sendToGroup(groupName, BinaryData.fromObject(model), WebPubSubDataFormat.JSON);
             Assertions.assertNotNull(result.getAckId());
 
             latch.await(1, TimeUnit.SECONDS);
@@ -117,7 +119,8 @@ public class GroupMessageTests extends TestBase {
             client.joinGroup(groupName);
 
             byte[] bytes = new byte[] { 0x64, 0x61, 0x74, 0x61 };
-            WebPubSubResult result = client.sendToGroup(groupName, BinaryData.fromBytes(bytes), WebPubSubDataFormat.BINARY);
+            WebPubSubResult result
+                = client.sendToGroup(groupName, BinaryData.fromBytes(bytes), WebPubSubDataFormat.BINARY);
             Assertions.assertNotNull(result.getAckId());
 
             latch.await(1, TimeUnit.SECONDS);
@@ -167,8 +170,8 @@ public class GroupMessageTests extends TestBase {
 
             final long beginNano = System.nanoTime();
             for (int i = 0; i < count; ++i) {
-                WebPubSubResult result = client.sendToGroup(groupName, HELLO + i, new SendToGroupOptions()
-                    .setFireAndForget(true));
+                WebPubSubResult result
+                    = client.sendToGroup(groupName, HELLO + i, new SendToGroupOptions().setFireAndForget(true));
                 Assertions.assertNotNull(result);
             }
             final long endNanoSend = System.nanoTime();

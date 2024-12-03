@@ -36,15 +36,14 @@ public class MockClientTests {
         ArgumentCaptor<Consumer<CloseReason>> closeCaptor = ArgumentCaptor.forClass(Consumer.class);
 
         WebSocketClient mockWsClient = Mockito.mock(WebSocketClient.class);
-        Mockito.when(mockWsClient.connectToServer(Mockito.any(), Mockito.any(), Mockito.any(),
-                messageCaptor.capture(), openCaptor.capture(), closeCaptor.capture()))
+        Mockito
+            .when(mockWsClient.connectToServer(Mockito.any(), Mockito.any(), Mockito.any(), messageCaptor.capture(),
+                openCaptor.capture(), closeCaptor.capture()))
             .thenThrow(new ConnectFailedException("mock error", new IllegalArgumentException()));
 
         WebPubSubClientBuilder builder = new WebPubSubClientBuilder();
         builder.webSocketClient = mockWsClient;
-        WebPubSubClient client = builder
-            .clientAccessUrl("mock")
-            .buildClient();
+        WebPubSubClient client = builder.clientAccessUrl("mock").buildClient();
 
         Assertions.assertThrows(ConnectFailedException.class, () -> client.start());
     }
@@ -57,9 +56,8 @@ public class MockClientTests {
 
         WebSocketSession mockWsSession = Mockito.mock(WebSocketSession.class);
         WebSocketClient mockWsClient = Mockito.mock(WebSocketClient.class);
-        Mockito.when(mockWsClient.connectToServer(Mockito.any(), Mockito.any(), Mockito.any(),
-                messageCaptor.capture(), openCaptor.capture(), closeCaptor.capture()))
-            .thenAnswer(invocation -> {
+        Mockito.when(mockWsClient.connectToServer(Mockito.any(), Mockito.any(), Mockito.any(), messageCaptor.capture(),
+            openCaptor.capture(), closeCaptor.capture())).thenAnswer(invocation -> {
                 openCaptor.getValue().accept(mockWsSession);
                 sendConnectedEvent(messageCaptor.getValue());
                 return mockWsSession;
@@ -70,9 +68,7 @@ public class MockClientTests {
 
         WebPubSubClientBuilder builder = new WebPubSubClientBuilder();
         builder.webSocketClient = mockWsClient;
-        WebPubSubClient client = builder
-            .clientAccessUrl("mock")
-            .buildClient();
+        WebPubSubClient client = builder.clientAccessUrl("mock").buildClient();
 
         client.addOnConnectedEventHandler(event -> {
             events.add(event);
@@ -90,10 +86,8 @@ public class MockClientTests {
     }
 
     private static void sendConnectedEvent(Consumer<Object> messageHandler) {
-        Mono.delay(SMALL_DELAY)
-            .then(Mono.fromRunnable(() -> {
-                messageHandler.accept(new ConnectedMessage("mock_connection_id"));
-            }).subscribeOn(Schedulers.boundedElastic()))
-            .subscribe();
+        Mono.delay(SMALL_DELAY).then(Mono.fromRunnable(() -> {
+            messageHandler.accept(new ConnectedMessage("mock_connection_id"));
+        }).subscribeOn(Schedulers.boundedElastic())).subscribe();
     }
 }

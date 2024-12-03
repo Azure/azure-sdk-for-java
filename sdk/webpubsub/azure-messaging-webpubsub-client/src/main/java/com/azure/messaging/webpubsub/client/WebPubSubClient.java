@@ -98,17 +98,23 @@ public final class WebPubSubClient implements Closeable {
      */
     public synchronized void start() {
         asyncClient.start(() -> {
-            this.asyncClient.receiveGroupMessageEvents().publishOn(Schedulers.boundedElastic())
+            this.asyncClient.receiveGroupMessageEvents()
+                .publishOn(Schedulers.boundedElastic())
                 .subscribe(event -> eventHandlerCollection.fireEvent(GROUP_MESSAGE_EVENT, event));
-            this.asyncClient.receiveServerMessageEvents().publishOn(Schedulers.boundedElastic())
+            this.asyncClient.receiveServerMessageEvents()
+                .publishOn(Schedulers.boundedElastic())
                 .subscribe(event -> eventHandlerCollection.fireEvent(SERVER_MESSAGE_EVENT, event));
-            this.asyncClient.receiveConnectedEvents().publishOn(Schedulers.boundedElastic())
+            this.asyncClient.receiveConnectedEvents()
+                .publishOn(Schedulers.boundedElastic())
                 .subscribe(event -> eventHandlerCollection.fireEvent(CONNECT_EVENT, event));
-            this.asyncClient.receiveDisconnectedEvents().publishOn(Schedulers.boundedElastic())
+            this.asyncClient.receiveDisconnectedEvents()
+                .publishOn(Schedulers.boundedElastic())
                 .subscribe(event -> eventHandlerCollection.fireEvent(DISCONNECT_EVENT, event));
-            this.asyncClient.receiveStoppedEvents().publishOn(Schedulers.boundedElastic())
+            this.asyncClient.receiveStoppedEvents()
+                .publishOn(Schedulers.boundedElastic())
                 .subscribe(event -> eventHandlerCollection.fireEvent(STOPPED_EVENT, event));
-            this.asyncClient.receiveRejoinGroupFailedEvents().publishOn(Schedulers.boundedElastic())
+            this.asyncClient.receiveRejoinGroupFailedEvents()
+                .publishOn(Schedulers.boundedElastic())
                 .subscribe(event -> eventHandlerCollection.fireEvent(REJOIN_GROUP_FAILED_EVENT, event));
         }).block();
     }
@@ -123,7 +129,6 @@ public final class WebPubSubClient implements Closeable {
     public synchronized void stop() {
         asyncClient.stop().block();
     }
-
 
     /**
      * {@inheritDoc}
@@ -255,8 +260,7 @@ public final class WebPubSubClient implements Closeable {
      *
      * @param onRejoinGroupFailedEventHandler the event handler for RejoinGroupFailedEvent.
      */
-    public void addOnRejoinGroupFailedEventHandler(
-        Consumer<RejoinGroupFailedEvent> onRejoinGroupFailedEventHandler) {
+    public void addOnRejoinGroupFailedEventHandler(Consumer<RejoinGroupFailedEvent> onRejoinGroupFailedEventHandler) {
         eventHandlerCollection.addEventHandler(REJOIN_GROUP_FAILED_EVENT, onRejoinGroupFailedEventHandler);
     }
 
@@ -265,8 +269,8 @@ public final class WebPubSubClient implements Closeable {
      *
      * @param onRejoinGroupFailedEventHandler the event handler for RejoinGroupFailedEvent.
      */
-    public void removeOnRejoinGroupFailedEventHandler(
-        Consumer<RejoinGroupFailedEvent> onRejoinGroupFailedEventHandler) {
+    public void
+        removeOnRejoinGroupFailedEventHandler(Consumer<RejoinGroupFailedEvent> onRejoinGroupFailedEventHandler) {
         eventHandlerCollection.removeEventHandler(REJOIN_GROUP_FAILED_EVENT, onRejoinGroupFailedEventHandler);
     }
 
@@ -407,7 +411,7 @@ public final class WebPubSubClient implements Closeable {
      * @return the result.
      */
     public WebPubSubResult sendToGroup(String group, BinaryData content, WebPubSubDataFormat dataFormat,
-                                       SendToGroupOptions options) {
+        SendToGroupOptions options) {
         return asyncClient.sendToGroup(group, content, dataFormat, options).block();
     }
 
@@ -439,7 +443,7 @@ public final class WebPubSubClient implements Closeable {
      * @return the result.
      */
     public WebPubSubResult sendEvent(String eventName, BinaryData content, WebPubSubDataFormat dataFormat,
-                                     SendEventOptions options) {
+        SendEventOptions options) {
         return asyncClient.sendEvent(eventName, content, dataFormat, options).block();
     }
 
@@ -447,6 +451,7 @@ public final class WebPubSubClient implements Closeable {
     WebPubSubClientState getClientState() {
         return this.asyncClient.getClientState();
     }
+
     WebSocketSession getWebsocketSession() {
         return this.asyncClient.getWebsocketSession();
     }
