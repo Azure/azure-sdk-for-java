@@ -91,9 +91,10 @@ import java.util.Map;
  * @see KeyVaultAccessControlAsyncClient
  * @see KeyVaultAccessControlClient
  */
-@ServiceClientBuilder(serviceClients = { KeyVaultAccessControlClient.class, KeyVaultAccessControlAsyncClient.class })
-public final class KeyVaultAccessControlClientBuilder
-    implements TokenCredentialTrait<KeyVaultAccessControlClientBuilder>, HttpTrait<KeyVaultAccessControlClientBuilder>,
+@ServiceClientBuilder(serviceClients = {KeyVaultAccessControlClient.class, KeyVaultAccessControlAsyncClient.class})
+public final class KeyVaultAccessControlClientBuilder implements
+    TokenCredentialTrait<KeyVaultAccessControlClientBuilder>,
+    HttpTrait<KeyVaultAccessControlClientBuilder>,
     ConfigurationTrait<KeyVaultAccessControlClientBuilder> {
     // This is the properties file name.
     private static final ClientLogger LOGGER = new ClientLogger(KeyVaultAccessControlClientBuilder.class);
@@ -181,15 +182,17 @@ public final class KeyVaultAccessControlClientBuilder
         return new KeyVaultAccessControlAsyncClient(vaultUrl, buildPipeline, serviceVersion);
     }
 
+
     private Configuration validateEndpointAndGetConfiguration() {
-        Configuration buildConfiguration
-            = (configuration == null) ? Configuration.getGlobalConfiguration().clone() : configuration;
+        Configuration buildConfiguration = (configuration == null)
+            ? Configuration.getGlobalConfiguration().clone()
+            : configuration;
 
         URL buildEndpoint = getBuildEndpoint(buildConfiguration);
 
         if (buildEndpoint == null) {
-            throw LOGGER
-                .logExceptionAsError(new IllegalStateException(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED));
+            throw LOGGER.logExceptionAsError(
+                new IllegalStateException(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED));
         }
         return buildConfiguration;
     }
@@ -197,6 +200,7 @@ public final class KeyVaultAccessControlClientBuilder
     private KeyVaultAdministrationServiceVersion getServiceVersion() {
         return serviceVersion != null ? serviceVersion : KeyVaultAdministrationServiceVersion.getLatest();
     }
+
 
     private HttpPipeline getPipeline(Configuration buildConfiguration, ServiceVersion serviceVersion) {
         // Closest to API goes first, closest to wire goes last.
@@ -213,8 +217,8 @@ public final class KeyVaultAccessControlClientBuilder
             clientVersion, buildConfiguration));
 
         List<HttpHeader> httpHeaderList = new ArrayList<>();
-        localClientOptions.getHeaders()
-            .forEach(header -> httpHeaderList.add(new HttpHeader(header.getName(), header.getValue())));
+        localClientOptions.getHeaders().forEach(header ->
+            httpHeaderList.add(new HttpHeader(header.getName(), header.getValue())));
         policies.add(new AddHeadersPolicy(new HttpHeaders(httpHeaderList)));
 
         // Add per call additional policies.
@@ -236,7 +240,8 @@ public final class KeyVaultAccessControlClientBuilder
         Tracer tracer = TracerProvider.getDefaultProvider()
             .createTracer(clientName, clientVersion, KEYVAULT_TRACING_NAMESPACE_VALUE, tracingOptions);
 
-        return new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
+        return new HttpPipelineBuilder()
+            .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
             .tracer(tracer)
             .clientOptions(localClientOptions)
@@ -263,7 +268,8 @@ public final class KeyVaultAccessControlClientBuilder
         try {
             this.vaultUrl = new URL(vaultUrl);
         } catch (MalformedURLException e) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("The Azure Key Vault URL is malformed.", e));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("The Azure Key Vault URL is malformed.", e));
         }
 
         return this;

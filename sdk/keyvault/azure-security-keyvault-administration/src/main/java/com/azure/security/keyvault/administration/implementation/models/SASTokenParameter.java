@@ -10,6 +10,8 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The SASTokenParameter model.
@@ -72,8 +74,8 @@ public final class SASTokenParameter implements JsonSerializable<SASTokenParamet
 
     /**
      * Get the useManagedIdentity property: Indicates which authentication method should be used. If set to true,
-     * Managed HSM will use the configured user-assigned managed identity to authenticate with Azure Storage. Otherwise,
-     * a SAS token has to be specified.
+     * Managed HSM will use the configured user-assigned managed identity to authenticate with Azure Storage.
+     * Otherwise, a SAS token has to be specified.
      * 
      * @return the useManagedIdentity value.
      */
@@ -83,8 +85,8 @@ public final class SASTokenParameter implements JsonSerializable<SASTokenParamet
 
     /**
      * Set the useManagedIdentity property: Indicates which authentication method should be used. If set to true,
-     * Managed HSM will use the configured user-assigned managed identity to authenticate with Azure Storage. Otherwise,
-     * a SAS token has to be specified.
+     * Managed HSM will use the configured user-assigned managed identity to authenticate with Azure Storage.
+     * Otherwise, a SAS token has to be specified.
      * 
      * @param useManagedIdentity the useManagedIdentity value to set.
      * @return the SASTokenParameter object itself.
@@ -94,9 +96,6 @@ public final class SASTokenParameter implements JsonSerializable<SASTokenParamet
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -143,7 +142,13 @@ public final class SASTokenParameter implements JsonSerializable<SASTokenParamet
 
                 return deserializedSASTokenParameter;
             }
-            throw new IllegalStateException("Missing required property: storageResourceUri");
+            List<String> missingProperties = new ArrayList<>();
+            if (!storageResourceUriFound) {
+                missingProperties.add("storageResourceUri");
+            }
+
+            throw new IllegalStateException(
+                "Missing required property/properties: " + String.join(", ", missingProperties));
         });
     }
 }

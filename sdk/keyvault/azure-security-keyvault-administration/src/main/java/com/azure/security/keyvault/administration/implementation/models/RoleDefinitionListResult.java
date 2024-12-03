@@ -73,9 +73,6 @@ public final class RoleDefinitionListResult implements JsonSerializable<RoleDefi
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

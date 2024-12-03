@@ -59,9 +59,6 @@ public final class RoleAssignmentProperties implements JsonSerializable<RoleAssi
         return this.principalId;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -100,7 +97,10 @@ public final class RoleAssignmentProperties implements JsonSerializable<RoleAssi
                 }
             }
             if (roleDefinitionIdFound && principalIdFound) {
-                return new RoleAssignmentProperties(roleDefinitionId, principalId);
+                RoleAssignmentProperties deserializedRoleAssignmentProperties
+                    = new RoleAssignmentProperties(roleDefinitionId, principalId);
+
+                return deserializedRoleAssignmentProperties;
             }
             List<String> missingProperties = new ArrayList<>();
             if (!roleDefinitionIdFound) {

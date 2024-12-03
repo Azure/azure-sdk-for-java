@@ -133,10 +133,8 @@ import static com.azure.core.util.FluxUtil.monoError;
  * @see com.azure.security.keyvault.administration
  * @see KeyVaultSettingsClientBuilder
  */
-@ServiceClient(
-    builder = KeyVaultSettingsClientBuilder.class,
-    isAsync = true,
-    serviceInterfaces = KeyVaultSettingsClientImpl.KeyVaultSettingsClientService.class)
+@ServiceClient(builder = KeyVaultSettingsClientBuilder.class, isAsync = true, serviceInterfaces =
+    KeyVaultSettingsClientImpl.KeyVaultSettingsClientService.class)
 public final class KeyVaultSettingsAsyncClient {
     private static final ClientLogger LOGGER = new ClientLogger(KeyVaultSettingsAsyncClient.class);
     private final String vaultUrl;
@@ -359,8 +357,8 @@ public final class KeyVaultSettingsAsyncClient {
                 .map(settingsListResult -> {
                     List<KeyVaultSetting> keyVaultSettings = new ArrayList<>();
 
-                    settingsListResult.getSettings()
-                        .forEach(setting -> keyVaultSettings.add(transformToKeyVaultSetting(setting)));
+                    settingsListResult.getSettings().forEach(setting ->
+                        keyVaultSettings.add(transformToKeyVaultSetting(setting)));
 
                     return new KeyVaultGetSettingsResult(keyVaultSettings);
                 });
@@ -408,9 +406,8 @@ public final class KeyVaultSettingsAsyncClient {
                 .map(response -> {
                     List<KeyVaultSetting> keyVaultSettings = new ArrayList<>();
 
-                    response.getValue()
-                        .getSettings()
-                        .forEach(setting -> keyVaultSettings.add(transformToKeyVaultSetting(setting)));
+                    response.getValue().getSettings().forEach(setting ->
+                        keyVaultSettings.add(transformToKeyVaultSetting(setting)));
 
                     return new SimpleResponse<>(response, new KeyVaultGetSettingsResult(keyVaultSettings));
                 });
