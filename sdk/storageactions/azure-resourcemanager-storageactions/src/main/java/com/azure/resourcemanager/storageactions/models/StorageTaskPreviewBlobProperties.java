@@ -5,42 +5,41 @@
 package com.azure.resourcemanager.storageactions.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Storage task preview container properties.
  */
 @Fluent
-public final class StorageTaskPreviewBlobProperties {
+public final class StorageTaskPreviewBlobProperties implements JsonSerializable<StorageTaskPreviewBlobProperties> {
     /*
-     * property for the container name.
+     * Name of test blob
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * properties key value pairs to be tested for a match against the provided condition.
      */
-    @JsonProperty(value = "properties")
     private List<StorageTaskPreviewKeyValueProperties> properties;
 
     /*
      * metadata key value pairs to be tested for a match against the provided condition.
      */
-    @JsonProperty(value = "metadata")
     private List<StorageTaskPreviewKeyValueProperties> metadata;
 
     /*
      * tags key value pairs to be tested for a match against the provided condition.
      */
-    @JsonProperty(value = "tags")
     private List<StorageTaskPreviewKeyValueProperties> tags;
 
     /*
      * Represents the condition block name that matched blob properties.
      */
-    @JsonProperty(value = "matchedBlock", access = JsonProperty.Access.WRITE_ONLY)
     private MatchedBlockName matchedBlock;
 
     /**
@@ -50,7 +49,7 @@ public final class StorageTaskPreviewBlobProperties {
     }
 
     /**
-     * Get the name property: property for the container name.
+     * Get the name property: Name of test blob.
      * 
      * @return the name value.
      */
@@ -59,7 +58,7 @@ public final class StorageTaskPreviewBlobProperties {
     }
 
     /**
-     * Set the name property: property for the container name.
+     * Set the name property: Name of test blob.
      * 
      * @param name the name value to set.
      * @return the StorageTaskPreviewBlobProperties object itself.
@@ -153,5 +152,60 @@ public final class StorageTaskPreviewBlobProperties {
         if (tags() != null) {
             tags().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeArrayField("properties", this.properties, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("metadata", this.metadata, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("tags", this.tags, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StorageTaskPreviewBlobProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StorageTaskPreviewBlobProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the StorageTaskPreviewBlobProperties.
+     */
+    public static StorageTaskPreviewBlobProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StorageTaskPreviewBlobProperties deserializedStorageTaskPreviewBlobProperties
+                = new StorageTaskPreviewBlobProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedStorageTaskPreviewBlobProperties.name = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    List<StorageTaskPreviewKeyValueProperties> properties
+                        = reader.readArray(reader1 -> StorageTaskPreviewKeyValueProperties.fromJson(reader1));
+                    deserializedStorageTaskPreviewBlobProperties.properties = properties;
+                } else if ("metadata".equals(fieldName)) {
+                    List<StorageTaskPreviewKeyValueProperties> metadata
+                        = reader.readArray(reader1 -> StorageTaskPreviewKeyValueProperties.fromJson(reader1));
+                    deserializedStorageTaskPreviewBlobProperties.metadata = metadata;
+                } else if ("tags".equals(fieldName)) {
+                    List<StorageTaskPreviewKeyValueProperties> tags
+                        = reader.readArray(reader1 -> StorageTaskPreviewKeyValueProperties.fromJson(reader1));
+                    deserializedStorageTaskPreviewBlobProperties.tags = tags;
+                } else if ("matchedBlock".equals(fieldName)) {
+                    deserializedStorageTaskPreviewBlobProperties.matchedBlock
+                        = MatchedBlockName.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStorageTaskPreviewBlobProperties;
+        });
     }
 }

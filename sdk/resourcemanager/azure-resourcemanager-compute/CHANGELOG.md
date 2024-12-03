@@ -1,10 +1,21 @@
 # Release History
 
-## 2.45.0-beta.1 (Unreleased)
+## 2.46.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 2.45.0 (2024-11-28)
 
 ### Features Added
 
 - Supported `capacityReservationGroupId` and `withCapacityReservationGroup` methods for `VirtualMachine`.
+- Supported enabling write accelerator for OS disk and data disks in `VirtualMachine` class.
 
 ## 2.44.0 (2024-10-25)
 

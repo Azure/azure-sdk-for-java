@@ -19,7 +19,7 @@ public final class NamespacesDeleteSamples {
      * @param manager Entry point to NotificationHubsManager.
      */
     public static void namespacesDelete(com.azure.resourcemanager.notificationhubs.NotificationHubsManager manager) {
-        manager.namespaces().deleteByResourceGroupWithResponse("5ktrial", "nh-sdk-ns",
-            com.azure.core.util.Context.NONE);
+        manager.namespaces()
+            .deleteByResourceGroupWithResponse("5ktrial", "nh-sdk-ns", com.azure.core.util.Context.NONE);
     }
 }

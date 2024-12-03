@@ -6,30 +6,31 @@ package com.azure.resourcemanager.storageactions.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Storage task preview action properties.
  */
 @Fluent
-public final class StorageTaskPreviewActionProperties {
+public final class StorageTaskPreviewActionProperties implements JsonSerializable<StorageTaskPreviewActionProperties> {
     /*
-     * Preview action container properties to be tested for a match with the provided condition.
+     * Properties of a sample container to test for a match with the preview action.
      */
-    @JsonProperty(value = "container", required = true)
     private StorageTaskPreviewContainerProperties container;
 
     /*
-     * Preview action container properties to be tested for a match with the provided condition.
+     * Properties of some sample blobs in the container to test for matches with the preview action.
      */
-    @JsonProperty(value = "blobs", required = true)
     private List<StorageTaskPreviewBlobProperties> blobs;
 
     /*
-     * Preview action container properties to be tested for a match with the provided condition.
+     * Preview action to test
      */
-    @JsonProperty(value = "action", required = true)
     private StorageTaskPreviewActionCondition action;
 
     /**
@@ -39,8 +40,7 @@ public final class StorageTaskPreviewActionProperties {
     }
 
     /**
-     * Get the container property: Preview action container properties to be tested for a match with the provided
-     * condition.
+     * Get the container property: Properties of a sample container to test for a match with the preview action.
      * 
      * @return the container value.
      */
@@ -49,8 +49,7 @@ public final class StorageTaskPreviewActionProperties {
     }
 
     /**
-     * Set the container property: Preview action container properties to be tested for a match with the provided
-     * condition.
+     * Set the container property: Properties of a sample container to test for a match with the preview action.
      * 
      * @param container the container value to set.
      * @return the StorageTaskPreviewActionProperties object itself.
@@ -61,8 +60,8 @@ public final class StorageTaskPreviewActionProperties {
     }
 
     /**
-     * Get the blobs property: Preview action container properties to be tested for a match with the provided
-     * condition.
+     * Get the blobs property: Properties of some sample blobs in the container to test for matches with the preview
+     * action.
      * 
      * @return the blobs value.
      */
@@ -71,8 +70,8 @@ public final class StorageTaskPreviewActionProperties {
     }
 
     /**
-     * Set the blobs property: Preview action container properties to be tested for a match with the provided
-     * condition.
+     * Set the blobs property: Properties of some sample blobs in the container to test for matches with the preview
+     * action.
      * 
      * @param blobs the blobs value to set.
      * @return the StorageTaskPreviewActionProperties object itself.
@@ -83,8 +82,7 @@ public final class StorageTaskPreviewActionProperties {
     }
 
     /**
-     * Get the action property: Preview action container properties to be tested for a match with the provided
-     * condition.
+     * Get the action property: Preview action to test.
      * 
      * @return the action value.
      */
@@ -93,8 +91,7 @@ public final class StorageTaskPreviewActionProperties {
     }
 
     /**
-     * Set the action property: Preview action container properties to be tested for a match with the provided
-     * condition.
+     * Set the action property: Preview action to test.
      * 
      * @param action the action value to set.
      * @return the StorageTaskPreviewActionProperties object itself.
@@ -111,24 +108,75 @@ public final class StorageTaskPreviewActionProperties {
      */
     public void validate() {
         if (container() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property container in model StorageTaskPreviewActionProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property container in model StorageTaskPreviewActionProperties"));
         } else {
             container().validate();
         }
         if (blobs() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property blobs in model StorageTaskPreviewActionProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property blobs in model StorageTaskPreviewActionProperties"));
         } else {
             blobs().forEach(e -> e.validate());
         }
         if (action() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property action in model StorageTaskPreviewActionProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property action in model StorageTaskPreviewActionProperties"));
         } else {
             action().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(StorageTaskPreviewActionProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("container", this.container);
+        jsonWriter.writeArrayField("blobs", this.blobs, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("action", this.action);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StorageTaskPreviewActionProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StorageTaskPreviewActionProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the StorageTaskPreviewActionProperties.
+     */
+    public static StorageTaskPreviewActionProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StorageTaskPreviewActionProperties deserializedStorageTaskPreviewActionProperties
+                = new StorageTaskPreviewActionProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("container".equals(fieldName)) {
+                    deserializedStorageTaskPreviewActionProperties.container
+                        = StorageTaskPreviewContainerProperties.fromJson(reader);
+                } else if ("blobs".equals(fieldName)) {
+                    List<StorageTaskPreviewBlobProperties> blobs
+                        = reader.readArray(reader1 -> StorageTaskPreviewBlobProperties.fromJson(reader1));
+                    deserializedStorageTaskPreviewActionProperties.blobs = blobs;
+                } else if ("action".equals(fieldName)) {
+                    deserializedStorageTaskPreviewActionProperties.action
+                        = StorageTaskPreviewActionCondition.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStorageTaskPreviewActionProperties;
+        });
+    }
 }

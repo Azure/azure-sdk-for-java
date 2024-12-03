@@ -19,6 +19,8 @@ import com.azure.core.amqp.implementation.ReactorProvider;
 import com.azure.core.amqp.implementation.RetryUtil;
 import com.azure.core.amqp.implementation.StringUtil;
 import com.azure.core.amqp.implementation.TokenManagerProvider;
+import com.azure.core.amqp.implementation.handler.ConnectionHandler;
+import com.azure.core.amqp.implementation.handler.WebSocketsConnectionHandler;
 import com.azure.core.amqp.models.CbsAuthorizationType;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.annotation.ServiceClientProtocol;
@@ -62,6 +64,7 @@ import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.time.Duration;
 import java.util.Collections;
@@ -483,6 +486,7 @@ public final class ServiceBusClientBuilder
     private ClientOptions clientOptions;
     private Configuration configuration;
     private ServiceBusConnectionProcessor sharedConnection;
+    private ConnectionStringProperties connectionStringProperties;
     private String connectionStringEntityName;
     private TokenCredential credentials;
     private String fullyQualifiedNamespace;
@@ -589,6 +593,7 @@ public final class ServiceBusClientBuilder
      */
     public ServiceBusClientBuilder connectionString(String connectionString) {
         final ConnectionStringProperties properties = new ConnectionStringProperties(connectionString);
+        this.connectionStringProperties = properties;
         final TokenCredential tokenCredential;
         try {
             tokenCredential = getTokenCredential(properties);
@@ -1017,21 +1022,41 @@ public final class ServiceBusClientBuilder
             ? CbsAuthorizationType.SHARED_ACCESS_SIGNATURE
             : CbsAuthorizationType.JSON_WEB_TOKEN;
 
-        final SslDomain.VerifyMode verificationMode
-            = verifyMode != null ? verifyMode : SslDomain.VerifyMode.VERIFY_PEER_NAME;
+        SslDomain.VerifyMode verificationMode = verifyMode != null ? verifyMode : SslDomain.VerifyMode.VERIFY_PEER_NAME;
+
+        final boolean usingDevelopmentEmulator
+            = connectionStringProperties != null && connectionStringProperties.useDevelopmentEmulator();
+
+        if (usingDevelopmentEmulator) {
+            // https://github.com/Azure/azure-service-bus-emulator-installer
+            verificationMode = SslDomain.VerifyMode.ANONYMOUS_PEER;
+        }
 
         final ClientOptions options = clientOptions != null ? clientOptions : new ClientOptions();
+        final String fullyQualifiedNamespace = getAndValidateFullyQualifiedNamespace();
 
-        if (customEndpointAddress == null) {
-            return new ConnectionOptions(getAndValidateFullyQualifiedNamespace(), credentials, authorizationType,
-                ServiceBusConstants.AZURE_ACTIVE_DIRECTORY_SCOPE, transport, retryOptions, proxyOptions, scheduler,
-                options, verificationMode, LIBRARY_NAME, LIBRARY_VERSION);
+        final String hostname;
+        final int port;
+
+        if (customEndpointAddress != null) {
+            hostname = customEndpointAddress.getHost();
+            port = customEndpointAddress.getPort();
+        } else if (connectionStringProperties != null) {
+            final URI endpoint = connectionStringProperties.getEndpoint();
+            hostname = endpoint.getHost();
+            port = endpoint.getPort();
         } else {
-            return new ConnectionOptions(getAndValidateFullyQualifiedNamespace(), credentials, authorizationType,
-                ServiceBusConstants.AZURE_ACTIVE_DIRECTORY_SCOPE, transport, retryOptions, proxyOptions, scheduler,
-                options, verificationMode, LIBRARY_NAME, LIBRARY_VERSION, customEndpointAddress.getHost(),
-                customEndpointAddress.getPort(), true);
+            hostname = fullyQualifiedNamespace;
+            port = -1;
         }
+
+        // No explicit port was listed, so choose a default port.
+        final int portToUse = port != -1 ? port : getPort(transport, usingDevelopmentEmulator);
+        final boolean enableSsl = !usingDevelopmentEmulator;
+
+        return new ConnectionOptions(fullyQualifiedNamespace, credentials, authorizationType,
+            ServiceBusConstants.AZURE_ACTIVE_DIRECTORY_SCOPE, transport, retryOptions, proxyOptions, scheduler, options,
+            verificationMode, LIBRARY_NAME, LIBRARY_VERSION, hostname, portToUse, enableSsl);
     }
 
     // Connection-caching for the V2-Stack.
@@ -1129,6 +1154,23 @@ public final class ServiceBusClientBuilder
         }
 
         return entityPath;
+    }
+
+    private static int getPort(AmqpTransportType transport, boolean useDevelopmentEmulator) {
+        if (useDevelopmentEmulator) {
+            return ConnectionHandler.AMQP_PORT;
+        }
+        switch (transport) {
+            case AMQP:
+                return ConnectionHandler.AMQPS_PORT;
+
+            case AMQP_WEB_SOCKETS:
+                return WebSocketsConnectionHandler.HTTPS_PORT;
+
+            default:
+                throw LOGGER
+                    .logThrowableAsError(new IllegalArgumentException("Transport Type is not supported: " + transport));
+        }
     }
 
     // Temporary type for Builders to work with the V2-Stack. Type will be removed once migration to new v2 stack is completed.

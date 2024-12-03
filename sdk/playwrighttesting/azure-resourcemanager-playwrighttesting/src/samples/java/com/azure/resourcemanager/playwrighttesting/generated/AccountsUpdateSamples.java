@@ -28,8 +28,10 @@ public final class AccountsUpdateSamples {
         Account resource = manager.accounts()
             .getByResourceGroupWithResponse("dummyrg", "myPlaywrightAccount", com.azure.core.util.Context.NONE)
             .getValue();
-        resource.update().withTags(mapOf("Division", "LT", "Team", "Dev Exp"))
-            .withProperties(new AccountUpdateProperties().withRegionalAffinity(EnablementStatus.ENABLED)).apply();
+        resource.update()
+            .withTags(mapOf("Division", "LT", "Team", "Dev Exp"))
+            .withProperties(new AccountUpdateProperties().withRegionalAffinity(EnablementStatus.ENABLED))
+            .apply();
     }
 
     // Use "Map.of" if available

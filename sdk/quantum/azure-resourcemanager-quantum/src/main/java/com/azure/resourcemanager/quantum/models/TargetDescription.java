@@ -5,42 +5,41 @@
 package com.azure.resourcemanager.quantum.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Information about a Target. A target is the component that can process a specific type of Job.
  */
 @Fluent
-public final class TargetDescription {
+public final class TargetDescription implements JsonSerializable<TargetDescription> {
     /*
      * Unique target id.
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * Display name of this target.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * A description about this target.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * List of data formats accepted by this target.
      */
-    @JsonProperty(value = "acceptedDataFormats")
     private List<String> acceptedDataFormats;
 
     /*
      * List of content encodings accepted by this target.
      */
-    @JsonProperty(value = "acceptedContentEncodings")
     private List<String> acceptedContentEncodings;
 
     /**
@@ -155,5 +154,57 @@ public final class TargetDescription {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeArrayField("acceptedDataFormats", this.acceptedDataFormats,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("acceptedContentEncodings", this.acceptedContentEncodings,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TargetDescription from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TargetDescription if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TargetDescription.
+     */
+    public static TargetDescription fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TargetDescription deserializedTargetDescription = new TargetDescription();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedTargetDescription.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedTargetDescription.name = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedTargetDescription.description = reader.getString();
+                } else if ("acceptedDataFormats".equals(fieldName)) {
+                    List<String> acceptedDataFormats = reader.readArray(reader1 -> reader1.getString());
+                    deserializedTargetDescription.acceptedDataFormats = acceptedDataFormats;
+                } else if ("acceptedContentEncodings".equals(fieldName)) {
+                    List<String> acceptedContentEncodings = reader.readArray(reader1 -> reader1.getString());
+                    deserializedTargetDescription.acceptedContentEncodings = acceptedContentEncodings;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTargetDescription;
+        });
     }
 }

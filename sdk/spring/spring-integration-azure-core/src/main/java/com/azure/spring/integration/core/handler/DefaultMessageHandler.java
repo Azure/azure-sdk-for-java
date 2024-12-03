@@ -50,7 +50,7 @@ public class DefaultMessageHandler extends AbstractMessageProducingHandler {
     private final SendOperation sendOperation;
     private boolean sync = false;
 
-    @SuppressWarnings("deprecation")
+    @SuppressWarnings({"deprecation", "removal"})
     private ListenableFutureCallback<Void> sendCallback;
     private EvaluationContext evaluationContext;
     private Expression sendTimeoutExpression = new ValueExpression<>(DEFAULT_SEND_TIMEOUT);
@@ -263,7 +263,7 @@ public class DefaultMessageHandler extends AbstractMessageProducingHandler {
      *
      * @param callback the call back
      */
-    @SuppressWarnings("deprecation")
+    @SuppressWarnings({"deprecation", "removal"})
     public void setSendCallback(ListenableFutureCallback<Void> callback) {
         this.sendCallback = callback;
     }

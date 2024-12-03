@@ -6,30 +6,31 @@ package com.azure.resourcemanager.cosmosdbforpostgresql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cosmosdbforpostgresql.models.PrincipalType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * The RolePropertiesExternalIdentity model.
  */
 @Fluent
-public final class RolePropertiesExternalIdentity {
+public final class RolePropertiesExternalIdentity implements JsonSerializable<RolePropertiesExternalIdentity> {
     /*
      * The objectId property.
      */
-    @JsonProperty(value = "objectId", required = true)
     private String objectId;
 
     /*
      * The principalType property.
      */
-    @JsonProperty(value = "principalType", required = true)
     private PrincipalType principalType;
 
     /*
      * The tenantId property.
      */
-    @JsonProperty(value = "tenantId")
     private String tenantId;
 
     /**
@@ -105,14 +106,61 @@ public final class RolePropertiesExternalIdentity {
      */
     public void validate() {
         if (objectId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property objectId in model RolePropertiesExternalIdentity"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property objectId in model RolePropertiesExternalIdentity"));
         }
         if (principalType() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property principalType in model RolePropertiesExternalIdentity"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property principalType in model RolePropertiesExternalIdentity"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(RolePropertiesExternalIdentity.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("objectId", this.objectId);
+        jsonWriter.writeStringField("principalType", this.principalType == null ? null : this.principalType.toString());
+        jsonWriter.writeStringField("tenantId", this.tenantId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RolePropertiesExternalIdentity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RolePropertiesExternalIdentity if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RolePropertiesExternalIdentity.
+     */
+    public static RolePropertiesExternalIdentity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RolePropertiesExternalIdentity deserializedRolePropertiesExternalIdentity
+                = new RolePropertiesExternalIdentity();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("objectId".equals(fieldName)) {
+                    deserializedRolePropertiesExternalIdentity.objectId = reader.getString();
+                } else if ("principalType".equals(fieldName)) {
+                    deserializedRolePropertiesExternalIdentity.principalType
+                        = PrincipalType.fromString(reader.getString());
+                } else if ("tenantId".equals(fieldName)) {
+                    deserializedRolePropertiesExternalIdentity.tenantId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRolePropertiesExternalIdentity;
+        });
+    }
 }

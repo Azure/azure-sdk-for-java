@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.hardwaresecuritymodules.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -32,7 +31,6 @@ public final class CloudHsmClusterSkuFamily extends ExpandableStringEnum<CloudHs
      * @param name a name to look for.
      * @return the corresponding CloudHsmClusterSkuFamily.
      */
-    @JsonCreator
     public static CloudHsmClusterSkuFamily fromString(String name) {
         return fromString(name, CloudHsmClusterSkuFamily.class);
     }

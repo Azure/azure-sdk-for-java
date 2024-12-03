@@ -1029,11 +1029,8 @@ public class ShareFileAsyncClient {
                 .setRangeContentMd5Requested(false)
                 .setRequestConditions(requestConditions), context)
                     .map(ShareFileDownloadAsyncResponse::getValue)
-                    .flatMap(fbb -> FluxUtil
-                        .writeFile(fbb, channel, chunk.getStart() - (range == null ? 0 : range.getStart()))
-                        .retryWhen(Retry.max(3)
-                            .filter(throwable -> throwable instanceof IOException
-                                || throwable instanceof TimeoutException))))
+                    .flatMap(fbb -> FluxUtil.writeFile(fbb, channel,
+                        chunk.getStart() - (range == null ? 0 : range.getStart()))))
             .then(Mono.just(response));
     }
 

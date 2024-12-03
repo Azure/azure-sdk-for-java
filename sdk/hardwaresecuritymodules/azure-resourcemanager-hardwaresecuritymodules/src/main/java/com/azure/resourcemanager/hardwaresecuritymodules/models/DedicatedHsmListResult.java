@@ -5,25 +5,27 @@
 package com.azure.resourcemanager.hardwaresecuritymodules.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.hardwaresecuritymodules.fluent.models.DedicatedHsmInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * List of dedicated HSMs.
  */
 @Fluent
-public final class DedicatedHsmListResult {
+public final class DedicatedHsmListResult implements JsonSerializable<DedicatedHsmListResult> {
     /*
      * The list of dedicated HSMs.
      */
-    @JsonProperty(value = "value")
     private List<DedicatedHsmInner> value;
 
     /*
      * The URL to get the next set of dedicated hsms.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
@@ -81,5 +83,45 @@ public final class DedicatedHsmListResult {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DedicatedHsmListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DedicatedHsmListResult if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DedicatedHsmListResult.
+     */
+    public static DedicatedHsmListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DedicatedHsmListResult deserializedDedicatedHsmListResult = new DedicatedHsmListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<DedicatedHsmInner> value = reader.readArray(reader1 -> DedicatedHsmInner.fromJson(reader1));
+                    deserializedDedicatedHsmListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedDedicatedHsmListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDedicatedHsmListResult;
+        });
     }
 }
