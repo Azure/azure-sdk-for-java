@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.astro.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -16,7 +15,7 @@ import java.io.IOException;
  * Marketplace details for an organization.
  */
 @Fluent
-public final class LiftrBaseMarketplaceDetails implements JsonSerializable<LiftrBaseMarketplaceDetails> {
+public final class LiftrBaseMarketplaceDetailsUpdate implements JsonSerializable<LiftrBaseMarketplaceDetailsUpdate> {
     /*
      * Azure subscription id for the the marketplace offer is purchased from
      */
@@ -30,12 +29,12 @@ public final class LiftrBaseMarketplaceDetails implements JsonSerializable<Liftr
     /*
      * Offer details for the marketplace that is selected by the user
      */
-    private LiftrBaseOfferDetails offerDetails;
+    private LiftrBaseOfferDetailsUpdate offerDetails;
 
     /**
-     * Creates an instance of LiftrBaseMarketplaceDetails class.
+     * Creates an instance of LiftrBaseMarketplaceDetailsUpdate class.
      */
-    public LiftrBaseMarketplaceDetails() {
+    public LiftrBaseMarketplaceDetailsUpdate() {
     }
 
     /**
@@ -51,9 +50,9 @@ public final class LiftrBaseMarketplaceDetails implements JsonSerializable<Liftr
      * Set the subscriptionId property: Azure subscription id for the the marketplace offer is purchased from.
      * 
      * @param subscriptionId the subscriptionId value to set.
-     * @return the LiftrBaseMarketplaceDetails object itself.
+     * @return the LiftrBaseMarketplaceDetailsUpdate object itself.
      */
-    public LiftrBaseMarketplaceDetails withSubscriptionId(String subscriptionId) {
+    public LiftrBaseMarketplaceDetailsUpdate withSubscriptionId(String subscriptionId) {
         this.subscriptionId = subscriptionId;
         return this;
     }
@@ -71,9 +70,9 @@ public final class LiftrBaseMarketplaceDetails implements JsonSerializable<Liftr
      * Set the subscriptionStatus property: Marketplace subscription status.
      * 
      * @param subscriptionStatus the subscriptionStatus value to set.
-     * @return the LiftrBaseMarketplaceDetails object itself.
+     * @return the LiftrBaseMarketplaceDetailsUpdate object itself.
      */
-    public LiftrBaseMarketplaceDetails withSubscriptionStatus(MarketplaceSubscriptionStatus subscriptionStatus) {
+    public LiftrBaseMarketplaceDetailsUpdate withSubscriptionStatus(MarketplaceSubscriptionStatus subscriptionStatus) {
         this.subscriptionStatus = subscriptionStatus;
         return this;
     }
@@ -83,7 +82,7 @@ public final class LiftrBaseMarketplaceDetails implements JsonSerializable<Liftr
      * 
      * @return the offerDetails value.
      */
-    public LiftrBaseOfferDetails offerDetails() {
+    public LiftrBaseOfferDetailsUpdate offerDetails() {
         return this.offerDetails;
     }
 
@@ -91,9 +90,9 @@ public final class LiftrBaseMarketplaceDetails implements JsonSerializable<Liftr
      * Set the offerDetails property: Offer details for the marketplace that is selected by the user.
      * 
      * @param offerDetails the offerDetails value to set.
-     * @return the LiftrBaseMarketplaceDetails object itself.
+     * @return the LiftrBaseMarketplaceDetailsUpdate object itself.
      */
-    public LiftrBaseMarketplaceDetails withOfferDetails(LiftrBaseOfferDetails offerDetails) {
+    public LiftrBaseMarketplaceDetailsUpdate withOfferDetails(LiftrBaseOfferDetailsUpdate offerDetails) {
         this.offerDetails = offerDetails;
         return this;
     }
@@ -104,16 +103,10 @@ public final class LiftrBaseMarketplaceDetails implements JsonSerializable<Liftr
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (offerDetails() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property offerDetails in model LiftrBaseMarketplaceDetails"));
-        } else {
+        if (offerDetails() != null) {
             offerDetails().validate();
         }
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(LiftrBaseMarketplaceDetails.class);
 
     /**
      * {@inheritDoc}
@@ -121,42 +114,43 @@ public final class LiftrBaseMarketplaceDetails implements JsonSerializable<Liftr
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("offerDetails", this.offerDetails);
         jsonWriter.writeStringField("subscriptionId", this.subscriptionId);
         jsonWriter.writeStringField("subscriptionStatus",
             this.subscriptionStatus == null ? null : this.subscriptionStatus.toString());
+        jsonWriter.writeJsonField("offerDetails", this.offerDetails);
         return jsonWriter.writeEndObject();
     }
 
     /**
-     * Reads an instance of LiftrBaseMarketplaceDetails from the JsonReader.
+     * Reads an instance of LiftrBaseMarketplaceDetailsUpdate from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of LiftrBaseMarketplaceDetails if the JsonReader was pointing to an instance of it, or null
-     * if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the LiftrBaseMarketplaceDetails.
+     * @return An instance of LiftrBaseMarketplaceDetailsUpdate if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LiftrBaseMarketplaceDetailsUpdate.
      */
-    public static LiftrBaseMarketplaceDetails fromJson(JsonReader jsonReader) throws IOException {
+    public static LiftrBaseMarketplaceDetailsUpdate fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            LiftrBaseMarketplaceDetails deserializedLiftrBaseMarketplaceDetails = new LiftrBaseMarketplaceDetails();
+            LiftrBaseMarketplaceDetailsUpdate deserializedLiftrBaseMarketplaceDetailsUpdate
+                = new LiftrBaseMarketplaceDetailsUpdate();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("offerDetails".equals(fieldName)) {
-                    deserializedLiftrBaseMarketplaceDetails.offerDetails = LiftrBaseOfferDetails.fromJson(reader);
-                } else if ("subscriptionId".equals(fieldName)) {
-                    deserializedLiftrBaseMarketplaceDetails.subscriptionId = reader.getString();
+                if ("subscriptionId".equals(fieldName)) {
+                    deserializedLiftrBaseMarketplaceDetailsUpdate.subscriptionId = reader.getString();
                 } else if ("subscriptionStatus".equals(fieldName)) {
-                    deserializedLiftrBaseMarketplaceDetails.subscriptionStatus
+                    deserializedLiftrBaseMarketplaceDetailsUpdate.subscriptionStatus
                         = MarketplaceSubscriptionStatus.fromString(reader.getString());
+                } else if ("offerDetails".equals(fieldName)) {
+                    deserializedLiftrBaseMarketplaceDetailsUpdate.offerDetails
+                        = LiftrBaseOfferDetailsUpdate.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedLiftrBaseMarketplaceDetails;
+            return deserializedLiftrBaseMarketplaceDetailsUpdate;
         });
     }
 }
