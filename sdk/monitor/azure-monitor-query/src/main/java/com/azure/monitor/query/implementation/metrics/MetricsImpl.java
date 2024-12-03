@@ -305,7 +305,7 @@ public final class MetricsImpl {
         String metricnamespace, Boolean autoAdjustTimegrain, Boolean validateDimensions, String rollupby) {
         return listAtSubscriptionScopeWithResponseAsync(region, timespan, interval, metricnames, aggregation, top,
             orderBy, filter, resultType, metricnamespace, autoAdjustTimegrain, validateDimensions, rollupby)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -357,7 +357,7 @@ public final class MetricsImpl {
         Context context) {
         return listAtSubscriptionScopeWithResponseAsync(region, timespan, interval, metricnames, aggregation, top,
             orderBy, filter, resultType, metricnamespace, autoAdjustTimegrain, validateDimensions, rollupby, context)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -460,7 +460,7 @@ public final class MetricsImpl {
         String metricnamespace, Boolean autoAdjustTimegrain, Boolean validateDimensions, String rollupby) {
         return listAtSubscriptionScopeWithResponse(region, timespan, interval, metricnames, aggregation, top, orderBy,
             filter, resultType, metricnamespace, autoAdjustTimegrain, validateDimensions, rollupby, Context.NONE)
-            .getValue();
+                .getValue();
     }
 
     /**
@@ -620,7 +620,7 @@ public final class MetricsImpl {
         SubscriptionScopeMetricsRequestBodyParameters body) {
         return listAtSubscriptionScopePostWithResponseAsync(region, timespan, interval, metricnames, aggregation, top,
             orderBy, filter, resultType, metricnamespace, autoAdjustTimegrain, validateDimensions, rollupby, body)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -933,7 +933,7 @@ public final class MetricsImpl {
         Boolean autoAdjustTimegrain, Boolean validateDimensions, String rollupby) {
         return listWithResponseAsync(resourceUri, timespan, interval, metricnames, aggregation, top, orderBy, filter,
             resultType, metricnamespace, autoAdjustTimegrain, validateDimensions, rollupby)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -984,7 +984,7 @@ public final class MetricsImpl {
         Boolean autoAdjustTimegrain, Boolean validateDimensions, String rollupby, Context context) {
         return listWithResponseAsync(resourceUri, timespan, interval, metricnames, aggregation, top, orderBy, filter,
             resultType, metricnamespace, autoAdjustTimegrain, validateDimensions, rollupby, context)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
