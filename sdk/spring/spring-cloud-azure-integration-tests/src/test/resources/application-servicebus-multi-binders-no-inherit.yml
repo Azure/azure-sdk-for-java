@@ -19,12 +19,19 @@ spring:
         servicebus-1:
           type: servicebus
           default-candidate: true
+          inherit-environment: false
           environment:
             spring:
               cloud:
                 azure:
                   servicebus:
                     namespace: ${AZURE_SERVICE_BUS_NAMESPACE2}
+                stream:
+                  servicebus:
+                    bindings:
+                      topicSupply-out-0:
+                        producer:
+                          entity-type: topic
         servicebus-2:
           type: servicebus
           default-candidate: false
@@ -36,9 +43,6 @@ spring:
                     namespace: ${AZURE_SERVICE_BUS_NAMESPACE3}
       servicebus:
         bindings:
-          topicSupply-out-0:
-            producer:
-              entity-type: topic
           queueSupply-out-0:
             producer:
               entity-type: queue

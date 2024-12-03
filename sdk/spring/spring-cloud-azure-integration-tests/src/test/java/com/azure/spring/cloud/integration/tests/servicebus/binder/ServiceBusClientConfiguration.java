@@ -20,12 +20,6 @@ import org.springframework.context.annotation.Bean;
 class ServiceBusClientConfiguration {
 
     @Bean
-    AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder> clientBuilderCustomizer(
-        @Qualifier("integrationTestTokenCredential") TokenCredential integrationTestTokenCredential) {
-        return (builder) -> builder.credential(integrationTestTokenCredential);
-    }
-
-    @Bean
     ServiceBusProcessorFactoryCustomizer processorFactoryCustomizer(@Qualifier("integrationTestTokenCredential") TokenCredential integrationTestTokenCredential,
                                                                     AzureTokenCredentialResolver azureTokenCredentialResolver,
                                                                     ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder>> clientBuilderCustomizers) {
@@ -34,6 +28,7 @@ class ServiceBusClientConfiguration {
                 factory.setDefaultCredential(integrationTestTokenCredential);
                 factory.setTokenCredentialResolver(azureTokenCredentialResolver);
                 clientBuilderCustomizers.orderedStream().forEach(factory::addServiceBusClientBuilderCustomizer);
+                factory.addServiceBusClientBuilderCustomizer(builder -> builder.credential(integrationTestTokenCredential));
             }
         });
     }
@@ -47,6 +42,7 @@ class ServiceBusClientConfiguration {
                 factory.setDefaultCredential(integrationTestTokenCredential);
                 factory.setTokenCredentialResolver(azureTokenCredentialResolver);
                 clientBuilderCustomizers.orderedStream().forEach(factory::addServiceBusClientBuilderCustomizer);
+                factory.addServiceBusClientBuilderCustomizer(builder -> builder.credential(integrationTestTokenCredential));
             }
         });
     }

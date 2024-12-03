@@ -1,6 +1,8 @@
 spring:
   cloud:
     azure:
+      credential:
+        token-credential-bean-name: integrationTestTokenCredential
       eventhubs:
         processor:
           initial-partition-event-position:

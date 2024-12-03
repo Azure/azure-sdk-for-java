@@ -6,8 +6,6 @@ spring:
       enabled: false     # default not to create jmsConnectionFactory bean
   cloud:
     azure:
-      credential:
-        token-credential-bean-name: integrationTestTokenCredential
       profile:
         tenant-id: ${AZURE_SPRING_TENANT_ID}
       eventhubs:

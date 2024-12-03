@@ -13,15 +13,15 @@ import org.springframework.test.context.ActiveProfiles;
 import reactor.core.publisher.Sinks;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
-@ActiveProfiles("servicebus-binder-multi")
+@ActiveProfiles("servicebus-single-binder-no-inherit")
 @Import({
     ServiceBusClientConfiguration.class,
-    TestServiceBusMultiBinders.TestQueueConfig.class,
-    TestServiceBusMultiBinders.TestTopicConfig.class
+    TestServiceBusSingleBinder.TestQueueConfig.class,
+    TestServiceBusSingleBinder.TestTopicConfig.class
 })
-class ServiceBusMultiBindersIT extends TestServiceBusMultiBinders {
+class ServiceBusSingleBinderNoInheritQueueAndTopicIT extends TestServiceBusSingleBinder {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ServiceBusMultiBindersIT.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ServiceBusSingleBinderNoInheritQueueAndTopicIT.class);
 
     @Autowired
     private Sinks.Many<Message<String>> manyQueue;
@@ -30,10 +30,10 @@ class ServiceBusMultiBindersIT extends TestServiceBusMultiBinders {
     private Sinks.Many<Message<String>> manyTopic;
 
     @Test
-    void testMultiServiceBusSendAndReceiveMessage() throws InterruptedException {
-        LOGGER.info("MultiServiceBusQueueAndTopicBinderIT begin.");
+    void useSingleBindersNoInheritQueueAndTopic() throws InterruptedException {
+        LOGGER.info("ServiceBusSingleBinderNoInheritQueueAndTopicIT begin, the property inherit-environment is set to false.");
         exchangeMessageAndVerify(manyQueue, manyTopic);
-        LOGGER.info("MultiServiceBusQueueAndTopicBinderIT end.");
+        LOGGER.info("ServiceBusSingleBinderNoInheritQueueAndTopicIT end.");
     }
 
 }
