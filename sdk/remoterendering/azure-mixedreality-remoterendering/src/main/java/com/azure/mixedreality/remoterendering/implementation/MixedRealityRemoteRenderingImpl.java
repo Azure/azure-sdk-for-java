@@ -85,12 +85,8 @@ public final class MixedRealityRemoteRenderingImpl {
      *     found at https://docs.microsoft.com/azure/remote-rendering/reference/regions.
      */
     MixedRealityRemoteRenderingImpl(String endpoint) {
-        this(
-                new HttpPipelineBuilder()
-                        .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
-                        .build(),
-                JacksonAdapter.createDefaultSerializerAdapter(),
-                endpoint);
+        this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build(),
+            JacksonAdapter.createDefaultSerializerAdapter(), endpoint);
     }
 
     /**

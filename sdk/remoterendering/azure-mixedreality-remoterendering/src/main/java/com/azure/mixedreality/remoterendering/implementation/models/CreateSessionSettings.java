@@ -34,9 +34,8 @@ public final class CreateSessionSettings {
      * @param size the size value to set.
      */
     @JsonCreator
-    public CreateSessionSettings(
-            @JsonProperty(value = "maxLeaseTimeMinutes", required = true) int maxLeaseTimeMinutes,
-            @JsonProperty(value = "size", required = true) SessionSize size) {
+    public CreateSessionSettings(@JsonProperty(value = "maxLeaseTimeMinutes", required = true) int maxLeaseTimeMinutes,
+        @JsonProperty(value = "size", required = true) SessionSize size) {
         this.maxLeaseTimeMinutes = maxLeaseTimeMinutes;
         this.size = size;
     }

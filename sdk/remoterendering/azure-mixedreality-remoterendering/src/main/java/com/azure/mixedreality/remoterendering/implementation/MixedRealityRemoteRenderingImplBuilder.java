@@ -26,14 +26,14 @@ import java.util.List;
 import java.util.Map;
 
 /** A builder for creating a new instance of the MixedRealityRemoteRendering type. */
-@ServiceClientBuilder(serviceClients = {MixedRealityRemoteRenderingImpl.class})
+@ServiceClientBuilder(serviceClients = { MixedRealityRemoteRenderingImpl.class })
 public final class MixedRealityRemoteRenderingImplBuilder {
     private static final String SDK_NAME = "name";
 
     private static final String SDK_VERSION = "version";
 
-    private final Map<String, String> properties =
-            CoreUtils.getProperties("azure-mixedreality-remoterendering.properties");
+    private final Map<String, String> properties
+        = CoreUtils.getProperties("azure-mixedreality-remoterendering.properties");
 
     public MixedRealityRemoteRenderingImplBuilder() {
         this.pipelinePolicies = new ArrayList<>();
@@ -201,14 +201,14 @@ public final class MixedRealityRemoteRenderingImplBuilder {
         if (serializerAdapter == null) {
             this.serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
         }
-        MixedRealityRemoteRenderingImpl client =
-                new MixedRealityRemoteRenderingImpl(pipeline, serializerAdapter, endpoint);
+        MixedRealityRemoteRenderingImpl client
+            = new MixedRealityRemoteRenderingImpl(pipeline, serializerAdapter, endpoint);
         return client;
     }
 
     private HttpPipeline createHttpPipeline() {
-        Configuration buildConfiguration =
-                (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
+        Configuration buildConfiguration
+            = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
         if (httpLogOptions == null) {
             httpLogOptions = new HttpLogOptions();
         }
@@ -218,19 +218,17 @@ public final class MixedRealityRemoteRenderingImplBuilder {
         }
         String clientName = properties.getOrDefault(SDK_NAME, "UnknownName");
         String clientVersion = properties.getOrDefault(SDK_VERSION, "UnknownVersion");
-        policies.add(
-                new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion, buildConfiguration));
+        policies
+            .add(new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion, buildConfiguration));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(retryPolicy == null ? new RetryPolicy() : retryPolicy);
         policies.add(new CookiePolicy());
         policies.addAll(this.pipelinePolicies);
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(httpLogOptions));
-        HttpPipeline httpPipeline =
-                new HttpPipelineBuilder()
-                        .policies(policies.toArray(new HttpPipelinePolicy[0]))
-                        .httpClient(httpClient)
-                        .build();
+        HttpPipeline httpPipeline = new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
+            .httpClient(httpClient)
+            .build();
         return httpPipeline;
     }
 }

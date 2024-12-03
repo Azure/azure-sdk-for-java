@@ -54,9 +54,8 @@ public final class RemoteRenderingsImpl {
      * @param client the instance of the service client containing this operation class.
      */
     RemoteRenderingsImpl(MixedRealityRemoteRenderingImpl client) {
-        this.service =
-                RestProxy.create(
-                        RemoteRenderingsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(RemoteRenderingsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -68,101 +67,74 @@ public final class RemoteRenderingsImpl {
     @ServiceInterface(name = "MixedRealityRemoteRe")
     public interface RemoteRenderingsService {
         @Put("/accounts/{account_id}/conversions/{conversion_id}")
-        @ExpectedResponses({200, 201})
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<RemoteRenderingsCreateConversionResponse> createConversion(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("account_id") UUID accountId,
-                @PathParam("conversion_id") String conversionId,
-                @BodyParam("application/json") CreateConversionSettings body,
-                Context context);
+        Mono<RemoteRenderingsCreateConversionResponse> createConversion(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("account_id") UUID accountId,
+            @PathParam("conversion_id") String conversionId,
+            @BodyParam("application/json") CreateConversionSettings body, Context context);
 
         @Get("/accounts/{account_id}/conversions/{conversion_id}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<RemoteRenderingsGetConversionResponse> getConversion(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("account_id") UUID accountId,
-                @PathParam("conversion_id") String conversionId,
-                Context context);
+        Mono<RemoteRenderingsGetConversionResponse> getConversion(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("account_id") UUID accountId,
+            @PathParam("conversion_id") String conversionId, Context context);
 
         @Get("/accounts/{account_id}/conversions")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<RemoteRenderingsListConversionsResponse> listConversions(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("account_id") UUID accountId,
-                Context context);
+        Mono<RemoteRenderingsListConversionsResponse> listConversions(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("account_id") UUID accountId, Context context);
 
         @Put("/accounts/{account_id}/sessions/{session_id}")
-        @ExpectedResponses({200, 201})
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<RemoteRenderingsCreateSessionResponse> createSession(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("account_id") UUID accountId,
-                @PathParam("session_id") String sessionId,
-                @BodyParam("application/json") CreateSessionSettings body,
-                Context context);
+        Mono<RemoteRenderingsCreateSessionResponse> createSession(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("account_id") UUID accountId,
+            @PathParam("session_id") String sessionId, @BodyParam("application/json") CreateSessionSettings body,
+            Context context);
 
         @Get("/accounts/{account_id}/sessions/{session_id}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<SessionProperties>> getSession(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("account_id") UUID accountId,
-                @PathParam("session_id") String sessionId,
-                Context context);
+        Mono<Response<SessionProperties>> getSession(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("account_id") UUID accountId,
+            @PathParam("session_id") String sessionId, Context context);
 
         @Patch("/accounts/{account_id}/sessions/{session_id}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<SessionProperties>> updateSession(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("account_id") UUID accountId,
-                @PathParam("session_id") String sessionId,
-                @BodyParam("application/json") UpdateSessionSettings body,
-                Context context);
+        Mono<Response<SessionProperties>> updateSession(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("account_id") UUID accountId,
+            @PathParam("session_id") String sessionId, @BodyParam("application/json") UpdateSessionSettings body,
+            Context context);
 
         @Post("/accounts/{account_id}/sessions/{session_id}/:stop")
-        @ExpectedResponses({204})
+        @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<RemoteRenderingsStopSessionResponse> stopSession(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("account_id") UUID accountId,
-                @PathParam("session_id") String sessionId,
-                Context context);
+        Mono<RemoteRenderingsStopSessionResponse> stopSession(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("account_id") UUID accountId,
+            @PathParam("session_id") String sessionId, Context context);
 
         @Get("/accounts/{account_id}/sessions")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<SessionsList>> listSessions(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("account_id") UUID accountId,
-                Context context);
+        Mono<Response<SessionsList>> listSessions(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("account_id") UUID accountId, Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<RemoteRenderingsListConversionsNextResponse> listConversionsNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("endpoint") String endpoint,
-                Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<SessionsList>> listSessionsNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("endpoint") String endpoint,
-                Context context);
+        Mono<Response<SessionsList>> listSessionsNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("endpoint") String endpoint, Context context);
     }
 
     /**
@@ -180,10 +152,10 @@ public final class RemoteRenderingsImpl {
      * @return the properties of the conversion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RemoteRenderingsCreateConversionResponse> createConversionWithResponseAsync(
-            UUID accountId, String conversionId, CreateConversionSettings body, Context context) {
-        return service.createConversion(
-                this.client.getEndpoint(), this.client.getApiVersion(), accountId, conversionId, body, context);
+    public Mono<RemoteRenderingsCreateConversionResponse> createConversionWithResponseAsync(UUID accountId,
+        String conversionId, CreateConversionSettings body, Context context) {
+        return service.createConversion(this.client.getEndpoint(), this.client.getApiVersion(), accountId, conversionId,
+            body, context);
     }
 
     /**
@@ -200,10 +172,10 @@ public final class RemoteRenderingsImpl {
      * @return the status of a particular conversion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RemoteRenderingsGetConversionResponse> getConversionWithResponseAsync(
-            UUID accountId, String conversionId, Context context) {
-        return service.getConversion(
-                this.client.getEndpoint(), this.client.getApiVersion(), accountId, conversionId, context);
+    public Mono<RemoteRenderingsGetConversionResponse> getConversionWithResponseAsync(UUID accountId,
+        String conversionId, Context context) {
+        return service.getConversion(this.client.getEndpoint(), this.client.getApiVersion(), accountId, conversionId,
+            context);
     }
 
     /**
@@ -219,15 +191,8 @@ public final class RemoteRenderingsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<Conversion>> listConversionsSinglePageAsync(UUID accountId, Context context) {
         return service.listConversions(this.client.getEndpoint(), this.client.getApiVersion(), accountId, context)
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getConversions(),
-                                        res.getValue().getNextLink(),
-                                        res.getDeserializedHeaders()));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getConversions(), res.getValue().getNextLink(), res.getDeserializedHeaders()));
     }
 
     /**
@@ -245,10 +210,10 @@ public final class RemoteRenderingsImpl {
      * @return the properties of a rendering session.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RemoteRenderingsCreateSessionResponse> createSessionWithResponseAsync(
-            UUID accountId, String sessionId, CreateSessionSettings body, Context context) {
-        return service.createSession(
-                this.client.getEndpoint(), this.client.getApiVersion(), accountId, sessionId, body, context);
+    public Mono<RemoteRenderingsCreateSessionResponse> createSessionWithResponseAsync(UUID accountId, String sessionId,
+        CreateSessionSettings body, Context context) {
+        return service.createSession(this.client.getEndpoint(), this.client.getApiVersion(), accountId, sessionId, body,
+            context);
     }
 
     /**
@@ -265,10 +230,10 @@ public final class RemoteRenderingsImpl {
      * @return the properties of a particular rendering session.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SessionProperties>> getSessionWithResponseAsync(
-            UUID accountId, String sessionId, Context context) {
-        return service.getSession(
-                this.client.getEndpoint(), this.client.getApiVersion(), accountId, sessionId, context);
+    public Mono<Response<SessionProperties>> getSessionWithResponseAsync(UUID accountId, String sessionId,
+        Context context) {
+        return service.getSession(this.client.getEndpoint(), this.client.getApiVersion(), accountId, sessionId,
+            context);
     }
 
     /**
@@ -286,10 +251,10 @@ public final class RemoteRenderingsImpl {
      * @return the properties of a rendering session.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SessionProperties>> updateSessionWithResponseAsync(
-            UUID accountId, String sessionId, UpdateSessionSettings body, Context context) {
-        return service.updateSession(
-                this.client.getEndpoint(), this.client.getApiVersion(), accountId, sessionId, body, context);
+    public Mono<Response<SessionProperties>> updateSessionWithResponseAsync(UUID accountId, String sessionId,
+        UpdateSessionSettings body, Context context) {
+        return service.updateSession(this.client.getEndpoint(), this.client.getApiVersion(), accountId, sessionId, body,
+            context);
     }
 
     /**
@@ -306,10 +271,10 @@ public final class RemoteRenderingsImpl {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RemoteRenderingsStopSessionResponse> stopSessionWithResponseAsync(
-            UUID accountId, String sessionId, Context context) {
-        return service.stopSession(
-                this.client.getEndpoint(), this.client.getApiVersion(), accountId, sessionId, context);
+    public Mono<RemoteRenderingsStopSessionResponse> stopSessionWithResponseAsync(UUID accountId, String sessionId,
+        Context context) {
+        return service.stopSession(this.client.getEndpoint(), this.client.getApiVersion(), accountId, sessionId,
+            context);
     }
 
     /**
@@ -325,15 +290,8 @@ public final class RemoteRenderingsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<SessionProperties>> listSessionsSinglePageAsync(UUID accountId, Context context) {
         return service.listSessions(this.client.getEndpoint(), this.client.getApiVersion(), accountId, context)
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getSessions(),
-                                        res.getValue().getNextLink(),
-                                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getSessions(), res.getValue().getNextLink(), null));
     }
 
     /**
@@ -349,15 +307,8 @@ public final class RemoteRenderingsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<Conversion>> listConversionsNextSinglePageAsync(String nextLink, Context context) {
         return service.listConversionsNext(nextLink, this.client.getEndpoint(), context)
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getConversions(),
-                                        res.getValue().getNextLink(),
-                                        res.getDeserializedHeaders()));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getConversions(), res.getValue().getNextLink(), res.getDeserializedHeaders()));
     }
 
     /**
@@ -373,14 +324,7 @@ public final class RemoteRenderingsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<SessionProperties>> listSessionsNextSinglePageAsync(String nextLink, Context context) {
         return service.listSessionsNext(nextLink, this.client.getEndpoint(), context)
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getSessions(),
-                                        res.getValue().getNextLink(),
-                                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getSessions(), res.getValue().getNextLink(), null));
     }
 }

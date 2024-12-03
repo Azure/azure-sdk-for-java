@@ -27,13 +27,19 @@ public class RemoteRenderingTestBase extends TestBase {
     static final String RESPONSE_CODE_403 = "403";
 
     private final String accountId = Configuration.getGlobalConfiguration().get("REMOTERENDERING_ARR_ACCOUNT_ID");
-    private final String accountDomain = Configuration.getGlobalConfiguration().get("REMOTERENDERING_ARR_ACCOUNT_DOMAIN");
+    private final String accountDomain
+        = Configuration.getGlobalConfiguration().get("REMOTERENDERING_ARR_ACCOUNT_DOMAIN");
     private final String accountKey = Configuration.getGlobalConfiguration().get("REMOTERENDERING_ARR_ACCOUNT_KEY");
-    private final String storageAccountName = Configuration.getGlobalConfiguration().get("REMOTERENDERING_ARR_STORAGE_ACCOUNT_NAME");
-    private final String storageAccountKey = Configuration.getGlobalConfiguration().get("REMOTERENDERING_ARR_STORAGE_ACCOUNT_KEY");
-    private final String blobContainerName = Configuration.getGlobalConfiguration().get("REMOTERENDERING_ARR_BLOB_CONTAINER_NAME");
-    private final String blobContainerSasToken = Configuration.getGlobalConfiguration().get("REMOTERENDERING_ARR_SAS_TOKEN");
-    private final String serviceEndpoint = Configuration.getGlobalConfiguration().get("REMOTERENDERING_ARR_SERVICE_ENDPOINT");
+    private final String storageAccountName
+        = Configuration.getGlobalConfiguration().get("REMOTERENDERING_ARR_STORAGE_ACCOUNT_NAME");
+    private final String storageAccountKey
+        = Configuration.getGlobalConfiguration().get("REMOTERENDERING_ARR_STORAGE_ACCOUNT_KEY");
+    private final String blobContainerName
+        = Configuration.getGlobalConfiguration().get("REMOTERENDERING_ARR_BLOB_CONTAINER_NAME");
+    private final String blobContainerSasToken
+        = Configuration.getGlobalConfiguration().get("REMOTERENDERING_ARR_SAS_TOKEN");
+    private final String serviceEndpoint
+        = Configuration.getGlobalConfiguration().get("REMOTERENDERING_ARR_SERVICE_ENDPOINT");
 
     // NOT REAL ACCOUNT DETAILS
     private final String playbackAccountId = "d879da79-415d-45f0-b641-1cfec1386ddf";
@@ -51,8 +57,7 @@ public class RemoteRenderingTestBase extends TestBase {
         String scope = getServiceEndpoint().replaceFirst("/$", "") + "/.default";
 
         if (!interceptorManager.isPlaybackMode()) {
-            MixedRealityStsAsyncClient stsClient = new MixedRealityStsClientBuilder()
-                .accountId(getAccountId())
+            MixedRealityStsAsyncClient stsClient = new MixedRealityStsClientBuilder().accountId(getAccountId())
                 .accountDomain(getAccountDomain())
                 .credential(getAccountKey())
                 .buildAsyncClient();
@@ -63,57 +68,44 @@ public class RemoteRenderingTestBase extends TestBase {
             policies.add(interceptorManager.getRecordPolicy());
         }
 
-        return new HttpPipelineBuilder()
-            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+        return new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
             .build();
     }
 
     String getAccountDomain() {
-        return interceptorManager.isPlaybackMode()
-            ? this.playbackAccountDomain
-            : this.accountDomain;
+        return interceptorManager.isPlaybackMode() ? this.playbackAccountDomain : this.accountDomain;
     }
 
     String getAccountId() {
 
-        return interceptorManager.isPlaybackMode()
-            ? this.playbackAccountId
-            : this.accountId;
+        return interceptorManager.isPlaybackMode() ? this.playbackAccountId : this.accountId;
     }
 
     AzureKeyCredential getAccountKey() {
-        String accountKeyValue = interceptorManager.isPlaybackMode()
-            ? this.playbackAccountKey
-            : this.accountKey;
+        String accountKeyValue = interceptorManager.isPlaybackMode() ? this.playbackAccountKey : this.accountKey;
 
         return new AzureKeyCredential(accountKeyValue);
     }
 
     String getStorageUrl() {
-        String storageAccount = interceptorManager.isPlaybackMode()
-            ? this.playbackStorageAccountName
-            : this.storageAccountName;
+        String storageAccount
+            = interceptorManager.isPlaybackMode() ? this.playbackStorageAccountName : this.storageAccountName;
 
-        String blobContainer = interceptorManager.isPlaybackMode()
-            ? this.playbackBlobContainerName
-            : this.blobContainerName;
+        String blobContainer
+            = interceptorManager.isPlaybackMode() ? this.playbackBlobContainerName : this.blobContainerName;
 
         return "https://" + storageAccount + ".blob.core.windows.net/" + blobContainer;
     }
 
     String getBlobContainerSasToken() {
 
-        return interceptorManager.isPlaybackMode()
-            ? this.playbackBlobContainerSasToken
-            : this.blobContainerSasToken;
+        return interceptorManager.isPlaybackMode() ? this.playbackBlobContainerSasToken : this.blobContainerSasToken;
     }
 
     String getServiceEndpoint() {
 
-        return interceptorManager.isPlaybackMode()
-            ? this.playbackServiceEndpoint
-            : this.serviceEndpoint;
+        return interceptorManager.isPlaybackMode() ? this.playbackServiceEndpoint : this.serviceEndpoint;
     }
 
     String getRandomId(String playback) {

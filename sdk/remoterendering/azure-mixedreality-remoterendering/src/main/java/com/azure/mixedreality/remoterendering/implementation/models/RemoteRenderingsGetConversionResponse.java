@@ -10,7 +10,7 @@ import com.azure.core.http.rest.ResponseBase;
 
 /** Contains all response data for the getConversion operation. */
 public final class RemoteRenderingsGetConversionResponse
-        extends ResponseBase<RemoteRenderingsGetConversionHeaders, Conversion> {
+    extends ResponseBase<RemoteRenderingsGetConversionHeaders, Conversion> {
     /**
      * Creates an instance of RemoteRenderingsGetConversionResponse.
      *
@@ -20,12 +20,8 @@ public final class RemoteRenderingsGetConversionResponse
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public RemoteRenderingsGetConversionResponse(
-            HttpRequest request,
-            int statusCode,
-            HttpHeaders rawHeaders,
-            Conversion value,
-            RemoteRenderingsGetConversionHeaders headers) {
+    public RemoteRenderingsGetConversionResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders,
+        Conversion value, RemoteRenderingsGetConversionHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 

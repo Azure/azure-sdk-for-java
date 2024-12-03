@@ -62,12 +62,11 @@ public final class Conversion {
      * @param creationTime the creationTime value to set.
      */
     @JsonCreator
-    public Conversion(
-            @JsonProperty(value = "id", required = true) String id,
-            @JsonProperty(value = "settings", required = true) ConversionSettings settings,
-            @JsonProperty(value = "error", required = true) Error error,
-            @JsonProperty(value = "status", required = true) ConversionStatus status,
-            @JsonProperty(value = "creationTime", required = true) OffsetDateTime creationTime) {
+    public Conversion(@JsonProperty(value = "id", required = true) String id,
+        @JsonProperty(value = "settings", required = true) ConversionSettings settings,
+        @JsonProperty(value = "error", required = true) Error error,
+        @JsonProperty(value = "status", required = true) ConversionStatus status,
+        @JsonProperty(value = "creationTime", required = true) OffsetDateTime creationTime) {
         this.id = id;
         this.settings = settings;
         this.error = error;

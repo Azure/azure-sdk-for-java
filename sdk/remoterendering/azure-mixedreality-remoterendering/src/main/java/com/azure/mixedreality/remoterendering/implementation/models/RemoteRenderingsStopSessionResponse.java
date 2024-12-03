@@ -19,12 +19,8 @@ public final class RemoteRenderingsStopSessionResponse extends ResponseBase<Remo
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public RemoteRenderingsStopSessionResponse(
-            HttpRequest request,
-            int statusCode,
-            HttpHeaders rawHeaders,
-            Void value,
-            RemoteRenderingsStopSessionHeaders headers) {
+    public RemoteRenderingsStopSessionResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, Void value,
+        RemoteRenderingsStopSessionHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 }

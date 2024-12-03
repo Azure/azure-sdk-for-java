@@ -26,7 +26,7 @@ public final class UpdateSessionSettings {
      */
     @JsonCreator
     public UpdateSessionSettings(
-            @JsonProperty(value = "maxLeaseTimeMinutes", required = true) int maxLeaseTimeMinutes) {
+        @JsonProperty(value = "maxLeaseTimeMinutes", required = true) int maxLeaseTimeMinutes) {
         this.maxLeaseTimeMinutes = maxLeaseTimeMinutes;
     }
 

@@ -10,7 +10,7 @@ import com.azure.core.http.rest.ResponseBase;
 
 /** Contains all response data for the createSession operation. */
 public final class RemoteRenderingsCreateSessionResponse
-        extends ResponseBase<RemoteRenderingsCreateSessionHeaders, SessionProperties> {
+    extends ResponseBase<RemoteRenderingsCreateSessionHeaders, SessionProperties> {
     /**
      * Creates an instance of RemoteRenderingsCreateSessionResponse.
      *
@@ -20,12 +20,8 @@ public final class RemoteRenderingsCreateSessionResponse
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public RemoteRenderingsCreateSessionResponse(
-            HttpRequest request,
-            int statusCode,
-            HttpHeaders rawHeaders,
-            SessionProperties value,
-            RemoteRenderingsCreateSessionHeaders headers) {
+    public RemoteRenderingsCreateSessionResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders,
+        SessionProperties value, RemoteRenderingsCreateSessionHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 

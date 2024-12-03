@@ -52,9 +52,8 @@ public final class Error {
      * @param message the message value to set.
      */
     @JsonCreator
-    public Error(
-            @JsonProperty(value = "code", required = true) String code,
-            @JsonProperty(value = "message", required = true) String message) {
+    public Error(@JsonProperty(value = "code", required = true) String code,
+        @JsonProperty(value = "message", required = true) String message) {
         this.code = code;
         this.message = message;
     }

@@ -55,8 +55,8 @@ public final class ConversionInputSettings {
      */
     @JsonCreator
     public ConversionInputSettings(
-            @JsonProperty(value = "storageContainerUri", required = true) String storageContainerUri,
-            @JsonProperty(value = "relativeInputAssetPath", required = true) String relativeInputAssetPath) {
+        @JsonProperty(value = "storageContainerUri", required = true) String storageContainerUri,
+        @JsonProperty(value = "relativeInputAssetPath", required = true) String relativeInputAssetPath) {
         this.storageContainerUri = storageContainerUri;
         this.relativeInputAssetPath = relativeInputAssetPath;
     }

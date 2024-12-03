@@ -53,7 +53,7 @@ public final class ConversionOutputSettings {
      */
     @JsonCreator
     public ConversionOutputSettings(
-            @JsonProperty(value = "storageContainerUri", required = true) String storageContainerUri) {
+        @JsonProperty(value = "storageContainerUri", required = true) String storageContainerUri) {
         this.storageContainerUri = storageContainerUri;
     }
 

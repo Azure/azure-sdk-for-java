@@ -10,7 +10,7 @@ import com.azure.core.http.rest.ResponseBase;
 
 /** Contains all response data for the listConversionsNext operation. */
 public final class RemoteRenderingsListConversionsNextResponse
-        extends ResponseBase<RemoteRenderingsListConversionsNextHeaders, ConversionList> {
+    extends ResponseBase<RemoteRenderingsListConversionsNextHeaders, ConversionList> {
     /**
      * Creates an instance of RemoteRenderingsListConversionsNextResponse.
      *
@@ -20,12 +20,8 @@ public final class RemoteRenderingsListConversionsNextResponse
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public RemoteRenderingsListConversionsNextResponse(
-            HttpRequest request,
-            int statusCode,
-            HttpHeaders rawHeaders,
-            ConversionList value,
-            RemoteRenderingsListConversionsNextHeaders headers) {
+    public RemoteRenderingsListConversionsNextResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders,
+        ConversionList value, RemoteRenderingsListConversionsNextHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 

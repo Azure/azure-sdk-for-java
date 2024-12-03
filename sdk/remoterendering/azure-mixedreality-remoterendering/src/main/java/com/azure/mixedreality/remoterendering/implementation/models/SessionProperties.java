@@ -96,10 +96,9 @@ public final class SessionProperties {
      * @param status the status value to set.
      */
     @JsonCreator
-    public SessionProperties(
-            @JsonProperty(value = "id", required = true) String id,
-            @JsonProperty(value = "size", required = true) SessionSize size,
-            @JsonProperty(value = "status", required = true) SessionStatus status) {
+    public SessionProperties(@JsonProperty(value = "id", required = true) String id,
+        @JsonProperty(value = "size", required = true) SessionSize size,
+        @JsonProperty(value = "status", required = true) SessionStatus status) {
         this.id = id;
         this.size = size;
         this.status = status;

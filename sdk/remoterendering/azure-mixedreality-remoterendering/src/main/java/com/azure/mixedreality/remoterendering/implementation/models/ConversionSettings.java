@@ -32,8 +32,8 @@ public final class ConversionSettings {
      */
     @JsonCreator
     public ConversionSettings(
-            @JsonProperty(value = "inputLocation", required = true) ConversionInputSettings inputLocation,
-            @JsonProperty(value = "outputLocation", required = true) ConversionOutputSettings outputLocation) {
+        @JsonProperty(value = "inputLocation", required = true) ConversionInputSettings inputLocation,
+        @JsonProperty(value = "outputLocation", required = true) ConversionOutputSettings outputLocation) {
         this.inputLocation = inputLocation;
         this.outputLocation = outputLocation;
     }
