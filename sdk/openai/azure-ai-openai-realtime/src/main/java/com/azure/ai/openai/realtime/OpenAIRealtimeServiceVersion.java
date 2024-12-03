@@ -12,7 +12,7 @@ import com.azure.core.util.ServiceVersion;
 public enum OpenAIRealtimeServiceVersion implements ServiceVersion {
 
     /**
-     * Enum value 2024-10-01.
+     * Enum value 2024-10-01-preview.
      */
     V2024_10_01_PREVIEW("2024-10-01-preview");
 
