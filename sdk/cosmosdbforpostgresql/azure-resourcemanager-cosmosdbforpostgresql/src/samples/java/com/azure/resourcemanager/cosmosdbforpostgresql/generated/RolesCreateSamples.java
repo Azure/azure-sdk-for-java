@@ -20,7 +20,10 @@ public final class RolesCreateSamples {
      */
     public static void
         roleCreate(com.azure.resourcemanager.cosmosdbforpostgresql.CosmosDBForPostgreSqlManager manager) {
-        manager.roles().define("role1").withExistingServerGroupsv2("TestGroup", "pgtestsvc4").withPassword("password")
+        manager.roles()
+            .define("role1")
+            .withExistingServerGroupsv2("TestGroup", "pgtestsvc4")
+            .withPassword("password")
             .create();
     }
 }

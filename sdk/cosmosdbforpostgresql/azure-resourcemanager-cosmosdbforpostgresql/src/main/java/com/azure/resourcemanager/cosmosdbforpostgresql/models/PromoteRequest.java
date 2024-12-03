@@ -5,17 +5,20 @@
 package com.azure.resourcemanager.cosmosdbforpostgresql.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Request from client to promote geo-redundant replica.
  */
 @Fluent
-public final class PromoteRequest {
+public final class PromoteRequest implements JsonSerializable<PromoteRequest> {
     /*
-     * Cluster name to verify.
+     * Boolean property to enable geo-redundant replica promotion.
      */
-    @JsonProperty(value = "enableGeoBackup")
     private Boolean enableGeoBackup;
 
     /**
@@ -25,7 +28,7 @@ public final class PromoteRequest {
     }
 
     /**
-     * Get the enableGeoBackup property: Cluster name to verify.
+     * Get the enableGeoBackup property: Boolean property to enable geo-redundant replica promotion.
      * 
      * @return the enableGeoBackup value.
      */
@@ -34,7 +37,7 @@ public final class PromoteRequest {
     }
 
     /**
-     * Set the enableGeoBackup property: Cluster name to verify.
+     * Set the enableGeoBackup property: Boolean property to enable geo-redundant replica promotion.
      * 
      * @param enableGeoBackup the enableGeoBackup value to set.
      * @return the PromoteRequest object itself.
@@ -50,5 +53,41 @@ public final class PromoteRequest {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("enableGeoBackup", this.enableGeoBackup);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PromoteRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PromoteRequest if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PromoteRequest.
+     */
+    public static PromoteRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PromoteRequest deserializedPromoteRequest = new PromoteRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("enableGeoBackup".equals(fieldName)) {
+                    deserializedPromoteRequest.enableGeoBackup = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPromoteRequest;
+        });
     }
 }

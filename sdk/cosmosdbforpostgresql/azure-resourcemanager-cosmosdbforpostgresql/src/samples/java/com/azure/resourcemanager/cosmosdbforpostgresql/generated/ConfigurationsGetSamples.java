@@ -20,7 +20,7 @@ public final class ConfigurationsGetSamples {
      */
     public static void
         getConfigurationDetails(com.azure.resourcemanager.cosmosdbforpostgresql.CosmosDBForPostgreSqlManager manager) {
-        manager.configurations().getWithResponse("TestResourceGroup", "testcluster", "client_encoding",
-            com.azure.core.util.Context.NONE);
+        manager.configurations()
+            .getWithResponse("TestResourceGroup", "testcluster", "client_encoding", com.azure.core.util.Context.NONE);
     }
 }
