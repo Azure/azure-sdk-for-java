@@ -5,24 +5,27 @@
 package com.azure.resourcemanager.storageactions.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Storage task preview container properties.
  */
 @Fluent
-public final class StorageTaskPreviewContainerProperties {
+public final class StorageTaskPreviewContainerProperties
+    implements JsonSerializable<StorageTaskPreviewContainerProperties> {
     /*
-     * property for the container name.
+     * Name of test container
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * metadata key value pairs to be tested for a match against the provided condition.
      */
-    @JsonProperty(value = "metadata")
     private List<StorageTaskPreviewKeyValueProperties> metadata;
 
     /**
@@ -32,7 +35,7 @@ public final class StorageTaskPreviewContainerProperties {
     }
 
     /**
-     * Get the name property: property for the container name.
+     * Get the name property: Name of test container.
      * 
      * @return the name value.
      */
@@ -41,7 +44,7 @@ public final class StorageTaskPreviewContainerProperties {
     }
 
     /**
-     * Set the name property: property for the container name.
+     * Set the name property: Name of test container.
      * 
      * @param name the name value to set.
      * @return the StorageTaskPreviewContainerProperties object itself.
@@ -80,5 +83,47 @@ public final class StorageTaskPreviewContainerProperties {
         if (metadata() != null) {
             metadata().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeArrayField("metadata", this.metadata, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StorageTaskPreviewContainerProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StorageTaskPreviewContainerProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the StorageTaskPreviewContainerProperties.
+     */
+    public static StorageTaskPreviewContainerProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StorageTaskPreviewContainerProperties deserializedStorageTaskPreviewContainerProperties
+                = new StorageTaskPreviewContainerProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedStorageTaskPreviewContainerProperties.name = reader.getString();
+                } else if ("metadata".equals(fieldName)) {
+                    List<StorageTaskPreviewKeyValueProperties> metadata
+                        = reader.readArray(reader1 -> StorageTaskPreviewKeyValueProperties.fromJson(reader1));
+                    deserializedStorageTaskPreviewContainerProperties.metadata = metadata;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStorageTaskPreviewContainerProperties;
+        });
     }
 }

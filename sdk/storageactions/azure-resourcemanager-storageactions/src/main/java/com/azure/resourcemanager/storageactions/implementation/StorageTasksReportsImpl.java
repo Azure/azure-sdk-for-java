@@ -32,7 +32,7 @@ public final class StorageTasksReportsImpl implements StorageTasksReports {
     }
 
     public PagedIterable<StorageTaskReportInstance> list(String resourceGroupName, String storageTaskName,
-        String maxpagesize, String filter, Context context) {
+        Integer maxpagesize, String filter, Context context) {
         PagedIterable<StorageTaskReportInstanceInner> inner
             = this.serviceClient().list(resourceGroupName, storageTaskName, maxpagesize, filter, context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new StorageTaskReportInstanceImpl(inner1, this.manager()));
