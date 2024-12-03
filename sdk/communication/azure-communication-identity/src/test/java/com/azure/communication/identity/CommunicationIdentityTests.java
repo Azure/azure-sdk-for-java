@@ -34,8 +34,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
     @Test
     public void createIdentityClientUsingConnectionString() {
         // Arrange
-        CommunicationIdentityClientBuilder builder
-            = createClientBuilderUsingConnectionString(buildSyncAssertingClient(httpClient));
+        CommunicationIdentityClientBuilder builder = createClientBuilderUsingConnectionString(buildSyncAssertingClient(httpClient));
         client = setupClient(builder, "createIdentityClientUsingConnectionStringSync");
         assertNotNull(client);
 
@@ -43,6 +42,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         CommunicationUserIdentifier communicationUser = client.createUser();
         verifyUserNotEmpty(communicationUser);
     }
+
 
     @Test
     public void createUser() {
@@ -103,8 +103,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         client = setupClient(builder, "createUserAndTokenWithResponseSync");
 
         // Action & Assert
-        Response<CommunicationUserIdentifierAndToken> response
-            = client.createUserAndTokenWithResponse(SCOPES, Context.NONE);
+        Response<CommunicationUserIdentifierAndToken> response = client.createUserAndTokenWithResponse(SCOPES, Context.NONE);
         CommunicationUserIdentifierAndToken result = response.getValue();
         assertEquals(201, response.getStatusCode(), "Expect status code to be 201");
         verifyUserNotEmpty(result.getUser());
@@ -128,12 +127,10 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
     @MethodSource("com.azure.communication.identity.TokenCustomExpirationTimeHelper#getValidExpirationTimes")
     public void createUserAndTokenWithResponseWithValidCustomExpiration(String testName, Duration tokenExpiresIn) {
         // Arrange
-        client = setupClient(builder,
-            "createUserAndTokenWithResponseWithValidCustomExpiration " + testName + SYNC_TEST_SUFFIX);
+        client = setupClient(builder, "createUserAndTokenWithResponseWithValidCustomExpiration " + testName + SYNC_TEST_SUFFIX);
 
         // Action & Assert
-        Response<CommunicationUserIdentifierAndToken> response
-            = client.createUserAndTokenWithResponse(SCOPES, tokenExpiresIn, Context.NONE);
+        Response<CommunicationUserIdentifierAndToken> response = client.createUserAndTokenWithResponse(SCOPES, tokenExpiresIn, Context.NONE);
         CommunicationUserIdentifierAndToken result = response.getValue();
         assertEquals(201, response.getStatusCode(), "Expect status code to be 201");
         verifyUserNotEmpty(result.getUser());
@@ -162,8 +159,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
     @MethodSource("com.azure.communication.identity.TokenCustomExpirationTimeHelper#getInvalidExpirationTimes")
     public void createUserAndTokenWithResponseWithInvalidCustomExpiration(String testName, Duration tokenExpiresIn) {
         // Arrange
-        client = setupClient(builder,
-            "createUserAndTokenWithResponseWithInvalidCustomExpiration " + testName + SYNC_TEST_SUFFIX);
+        client = setupClient(builder, "createUserAndTokenWithResponseWithInvalidCustomExpiration " + testName + SYNC_TEST_SUFFIX);
 
         // Action & Assert
         try {
@@ -339,8 +335,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         verifyUserNotEmpty(communicationUser);
 
         // Action & Assert
-        Response<AccessToken> issuedTokenResponse
-            = client.getTokenWithResponse(communicationUser, SCOPES, Context.NONE);
+        Response<AccessToken> issuedTokenResponse = client.getTokenWithResponse(communicationUser, SCOPES, Context.NONE);
         assertEquals(200, issuedTokenResponse.getStatusCode(), "Expect status code to be 200");
         verifyTokenNotEmpty(issuedTokenResponse.getValue());
     }
@@ -387,8 +382,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         verifyUserNotEmpty(communicationUser);
 
         // Action & Assert
-        Response<AccessToken> issuedTokenResponse
-            = client.getTokenWithResponse(communicationUser, SCOPES, tokenExpiresIn, Context.NONE);
+        Response<AccessToken> issuedTokenResponse = client.getTokenWithResponse(communicationUser, SCOPES, tokenExpiresIn, Context.NONE);
         assertEquals(200, issuedTokenResponse.getStatusCode(), "Expect status code to be 200");
         verifyTokenNotEmpty(issuedTokenResponse.getValue());
         assertTokenExpirationWithinAllowedDeviation(tokenExpiresIn, issuedTokenResponse.getValue().getExpiresAt());
@@ -507,6 +501,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         assertEquals(200, response.getStatusCode(), "Expect status code to be 200");
         verifyTokenNotEmpty(response.getValue());
     }
+
 
     @ParameterizedTest(name = "when {1} is null")
     @MethodSource("com.azure.communication.identity.CteTestHelper#getNullParams")
