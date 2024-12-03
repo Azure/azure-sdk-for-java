@@ -375,7 +375,8 @@ public class ReadmeSamples {
 
     public void troubleshootingExceptions() {
         ConfigurationClient client = new ConfigurationClientBuilder()
-                                                      .buildClient();
+            .connectionString(connectionString)
+            .buildClient();
         // BEGIN: readme-sample-troubleshootingExceptions
         try {
             ConfigurationSetting setting = new ConfigurationSetting().setKey("myKey").setValue("myValue");
@@ -387,7 +388,8 @@ public class ReadmeSamples {
         // END: readme-sample-troubleshootingExceptions
 
         ConfigurationAsyncClient asyncClient = new ConfigurationClientBuilder()
-                                         .buildAsyncClient();
+            .connectionString(connectionString)
+            .buildAsyncClient();
         // BEGIN: readme-sample-troubleshootingExceptions-async
         ConfigurationSetting setting = new ConfigurationSetting().setKey("myKey").setValue("myValue");
         asyncClient.getConfigurationSetting(setting)
