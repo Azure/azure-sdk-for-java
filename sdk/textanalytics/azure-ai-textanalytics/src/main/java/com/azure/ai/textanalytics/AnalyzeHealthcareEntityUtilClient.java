@@ -105,8 +105,7 @@ class AnalyzeHealthcareEntityUtilClient {
         beginAnalyzeHealthcareEntities(Iterable<TextDocumentInput> documents, AnalyzeHealthcareEntitiesOptions options,
             Context context) {
         try {
-            throwIfTargetServiceVersionFound(this.serviceVersion,
-                Arrays.asList(TextAnalyticsServiceVersion.V3_0),
+            throwIfTargetServiceVersionFound(this.serviceVersion, Arrays.asList(TextAnalyticsServiceVersion.V3_0),
                 getUnsupportedServiceApiVersionMessage("beginAnalyzeHealthcareEntities", serviceVersion,
                     TextAnalyticsServiceVersion.V3_1));
             throwIfCallingNotAvailableFeatureInOptions(options);
@@ -120,61 +119,46 @@ class AnalyzeHealthcareEntityUtilClient {
 
             if (service != null) {
                 final String displayName = options.getDisplayName();
-                return new PollerFlux<>(
-                    DEFAULT_POLL_INTERVAL,
+                return new PollerFlux<>(DEFAULT_POLL_INTERVAL,
                     activationOperation(
-                        service.submitJobWithResponseAsync(
-                            new AnalyzeTextJobsInput()
-                                .setDisplayName(displayName)
-                                .setAnalysisInput(
-                                    new MultiLanguageAnalysisInput().setDocuments(toMultiLanguageInput(documents)))
-                                .setTasks(Arrays.asList(
-                                    new HealthcareLROTask().setParameters(
-                                        new HealthcareTaskParameters()
-                                            .setStringIndexType(finalStringIndexType)
-                                            .setModelVersion(finalModelVersion)
-                                            .setLoggingOptOut(finalLoggingOptOut)))),
-                            finalContext)
-                            .map(healthResponse -> {
-                                final AnalyzeHealthcareEntitiesOperationDetail operationDetail =
-                                    new AnalyzeHealthcareEntitiesOperationDetail();
+                        service.submitJobWithResponseAsync(new AnalyzeTextJobsInput().setDisplayName(displayName)
+                            .setAnalysisInput(
+                                new MultiLanguageAnalysisInput().setDocuments(toMultiLanguageInput(documents)))
+                            .setTasks(Arrays.asList(new HealthcareLROTask()
+                                .setParameters(new HealthcareTaskParameters().setStringIndexType(finalStringIndexType)
+                                    .setModelVersion(finalModelVersion)
+                                    .setLoggingOptOut(finalLoggingOptOut)))),
+                            finalContext).map(healthResponse -> {
+                                final AnalyzeHealthcareEntitiesOperationDetail operationDetail
+                                    = new AnalyzeHealthcareEntitiesOperationDetail();
                                 AnalyzeHealthcareEntitiesOperationDetailPropertiesHelper.setOperationId(operationDetail,
                                     parseOperationId(healthResponse.getDeserializedHeaders().getOperationLocation()));
                                 return operationDetail;
                             })),
-                    pollingOperationTextJob(
-                        operationId -> service.jobStatusWithResponseAsync(operationId,
-                            finalIncludeStatistics, null, null, finalContext)),
+                    pollingOperationTextJob(operationId -> service.jobStatusWithResponseAsync(operationId,
+                        finalIncludeStatistics, null, null, finalContext)),
                     cancelOperationTextJob(
                         operationId -> service.cancelJobWithResponseAsync(operationId, finalContext)),
-                    fetchingOperationTextJob(
-                        operationId -> Mono.just(getHealthcareEntitiesPagedFlux(operationId, null, null,
-                            finalIncludeStatistics, finalContext)))
-                );
+                    fetchingOperationTextJob(operationId -> Mono.just(getHealthcareEntitiesPagedFlux(operationId, null,
+                        null, finalIncludeStatistics, finalContext))));
             }
 
-            return new PollerFlux<>(
-                DEFAULT_POLL_INTERVAL,
-                activationOperation(
-                    legacyService.healthWithResponseAsync(
-                        new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
-                        finalModelVersion,
-                        finalStringIndexType,
-                        finalLoggingOptOut,
-                        finalContext)
-                        .map(healthResponse -> {
-                            final AnalyzeHealthcareEntitiesOperationDetail operationDetail =
-                                new AnalyzeHealthcareEntitiesOperationDetail();
-                            AnalyzeHealthcareEntitiesOperationDetailPropertiesHelper.setOperationId(operationDetail,
-                                parseOperationId(healthResponse.getDeserializedHeaders().getOperationLocation()));
-                            return operationDetail;
-                        })),
-                pollingOperation(operationId -> legacyService.healthStatusWithResponseAsync(operationId,
-                    null, null, finalIncludeStatistics, finalContext)),
-                cancelOperation(operationId -> legacyService.cancelHealthJobWithResponseAsync(operationId, finalContext)),
-                fetchingOperation(operationId -> Mono.just(getHealthcareEntitiesPagedFlux(operationId,
-                    null, null, finalIncludeStatistics, finalContext)))
-            );
+            return new PollerFlux<>(DEFAULT_POLL_INTERVAL, activationOperation(legacyService
+                .healthWithResponseAsync(new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
+                    finalModelVersion, finalStringIndexType, finalLoggingOptOut, finalContext)
+                .map(healthResponse -> {
+                    final AnalyzeHealthcareEntitiesOperationDetail operationDetail
+                        = new AnalyzeHealthcareEntitiesOperationDetail();
+                    AnalyzeHealthcareEntitiesOperationDetailPropertiesHelper.setOperationId(operationDetail,
+                        parseOperationId(healthResponse.getDeserializedHeaders().getOperationLocation()));
+                    return operationDetail;
+                })),
+                pollingOperation(operationId -> legacyService.healthStatusWithResponseAsync(operationId, null, null,
+                    finalIncludeStatistics, finalContext)),
+                cancelOperation(
+                    operationId -> legacyService.cancelHealthJobWithResponseAsync(operationId, finalContext)),
+                fetchingOperation(operationId -> Mono.just(
+                    getHealthcareEntitiesPagedFlux(operationId, null, null, finalIncludeStatistics, finalContext))));
         } catch (RuntimeException ex) {
             return PollerFlux.error(ex);
         }
@@ -184,8 +168,7 @@ class AnalyzeHealthcareEntityUtilClient {
         beginAnalyzeHealthcarePagedIterable(Iterable<TextDocumentInput> documents,
             AnalyzeHealthcareEntitiesOptions options, Context context) {
         try {
-            throwIfTargetServiceVersionFound(this.serviceVersion,
-                Arrays.asList(TextAnalyticsServiceVersion.V3_0),
+            throwIfTargetServiceVersionFound(this.serviceVersion, Arrays.asList(TextAnalyticsServiceVersion.V3_0),
                 getUnsupportedServiceApiVersionMessage("beginAnalyzeHealthcareEntities", serviceVersion,
                     TextAnalyticsServiceVersion.V3_1));
             throwIfCallingNotAvailableFeatureInOptions(options);
@@ -199,57 +182,46 @@ class AnalyzeHealthcareEntityUtilClient {
 
             if (service != null) {
                 final String displayName = options.getDisplayName();
-                final HealthcareLROTask task = new HealthcareLROTask().setParameters(
-                    new HealthcareTaskParameters()
-                        .setStringIndexType(finalStringIndexType)
+                final HealthcareLROTask task = new HealthcareLROTask()
+                    .setParameters(new HealthcareTaskParameters().setStringIndexType(finalStringIndexType)
                         .setModelVersion(finalModelVersion)
                         .setLoggingOptOut(finalLoggingOptOut));
 
-                return SyncPoller.createPoller(
-                    DEFAULT_POLL_INTERVAL,
+                return SyncPoller.createPoller(DEFAULT_POLL_INTERVAL,
                     cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
                         activationOperationLanguageApiSync(documents, task, displayName, finalContext).apply(cxt)),
-                    pollingOperationLanguageApiSync(
-                        operationId -> service.jobStatusWithResponse(operationId,
-                            finalIncludeStatistics, null, null, finalContext)),
+                    pollingOperationLanguageApiSync(operationId -> service.jobStatusWithResponse(operationId,
+                        finalIncludeStatistics, null, null, finalContext)),
                     cancelOperationLanguageApiSync(
                         operationId -> service.cancelJobWithResponse(operationId, finalContext)),
-                    fetchingOperationIterable(
-                        operationId -> getHealthcareEntitiesPagedIterable(operationId, null, null,
-                            finalIncludeStatistics, finalContext))
-                );
+                    fetchingOperationIterable(operationId -> getHealthcareEntitiesPagedIterable(operationId, null, null,
+                        finalIncludeStatistics, finalContext)));
             }
-            return SyncPoller.createPoller(
-                DEFAULT_POLL_INTERVAL,
+            return SyncPoller.createPoller(DEFAULT_POLL_INTERVAL,
                 cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
                     activationOperationLegacyApiSync(documents, finalModelVersion, finalStringIndexType,
                         finalLoggingOptOut, finalContext).apply(cxt)),
-                pollingOperationLegacyApiSync(
-                    operationId -> legacyService.healthStatusWithResponseSync(operationId, null,
-                        null, finalIncludeStatistics, finalContext)),
-                cancelOperationLegacyApiSync(operationId ->
-                    legacyService.cancelHealthJobWithResponseSync(operationId, finalContext)),
-                fetchingOperationIterable(
-                    operationId -> getHealthcareEntitiesPagedIterable(operationId, null, null,
-                        finalIncludeStatistics, finalContext))
-            );
+                pollingOperationLegacyApiSync(operationId -> legacyService.healthStatusWithResponseSync(operationId,
+                    null, null, finalIncludeStatistics, finalContext)),
+                cancelOperationLegacyApiSync(
+                    operationId -> legacyService.cancelHealthJobWithResponseSync(operationId, finalContext)),
+                fetchingOperationIterable(operationId -> getHealthcareEntitiesPagedIterable(operationId, null, null,
+                    finalIncludeStatistics, finalContext)));
         } catch (ErrorResponseException ex) {
             throw LOGGER.logExceptionAsError(getHttpResponseException(ex));
         }
     }
 
-    AnalyzeHealthcareEntitiesPagedFlux getHealthcareEntitiesPagedFlux(
-        UUID operationId, Integer top, Integer skip, boolean showStats, Context context) {
-        return new AnalyzeHealthcareEntitiesPagedFlux(
-            () -> (continuationToken, pageSize) ->
-                getPagedResult(continuationToken, operationId, top, skip, showStats, context).flux());
+    AnalyzeHealthcareEntitiesPagedFlux getHealthcareEntitiesPagedFlux(UUID operationId, Integer top, Integer skip,
+        boolean showStats, Context context) {
+        return new AnalyzeHealthcareEntitiesPagedFlux(() -> (continuationToken,
+            pageSize) -> getPagedResult(continuationToken, operationId, top, skip, showStats, context).flux());
     }
 
-    AnalyzeHealthcareEntitiesPagedIterable getHealthcareEntitiesPagedIterable(
-        UUID operationId, Integer top, Integer skip, boolean showStats, Context context) {
-        return new AnalyzeHealthcareEntitiesPagedIterable(
-            () -> (continuationToken, pageSize) ->
-                getPagedResultSync(continuationToken, operationId, top, skip, showStats, context));
+    AnalyzeHealthcareEntitiesPagedIterable getHealthcareEntitiesPagedIterable(UUID operationId, Integer top,
+        Integer skip, boolean showStats, Context context) {
+        return new AnalyzeHealthcareEntitiesPagedIterable(() -> (continuationToken,
+            pageSize) -> getPagedResultSync(continuationToken, operationId, top, skip, showStats, context));
     }
 
     Mono<PagedResponse<AnalyzeHealthcareEntitiesResultCollection>> getPagedResult(String continuationToken,
@@ -263,11 +235,11 @@ class AnalyzeHealthcareEntityUtilClient {
             }
             return service != null
                 ? service.jobStatusWithResponseAsync(operationId, showStats, top, skip, context)
-                .map(this::toHealthcarePagedResponse)
-                .onErrorMap(Utility::mapToHttpResponseExceptionIfExists)
+                    .map(this::toHealthcarePagedResponse)
+                    .onErrorMap(Utility::mapToHttpResponseExceptionIfExists)
                 : legacyService.healthStatusWithResponseAsync(operationId, top, skip, showStats, context)
-                .map(this::toTextAnalyticsPagedResponse)
-                .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
+                    .map(this::toTextAnalyticsPagedResponse)
+                    .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -282,96 +254,85 @@ class AnalyzeHealthcareEntityUtilClient {
             showStats = getShowStatsContinuesToken(continuationTokenMap);
         }
         return service != null
-            ? toHealthcarePagedResponse(service.jobStatusWithResponse(
-            operationId, showStats, top, skip, context))
-            : toTextAnalyticsPagedResponse(legacyService.healthStatusWithResponseSync(
-            operationId, top, skip, showStats, context));
+            ? toHealthcarePagedResponse(service.jobStatusWithResponse(operationId, showStats, top, skip, context))
+            : toTextAnalyticsPagedResponse(
+                legacyService.healthStatusWithResponseSync(operationId, top, skip, showStats, context));
     }
 
-    private PagedResponse<AnalyzeHealthcareEntitiesResultCollection> toTextAnalyticsPagedResponse(
-        Response<HealthcareJobState> response) {
+    private PagedResponse<AnalyzeHealthcareEntitiesResultCollection>
+        toTextAnalyticsPagedResponse(Response<HealthcareJobState> response) {
         final HealthcareJobState healthcareJobState = response.getValue();
         final HealthcareResult healthcareResult = healthcareJobState.getResults();
-        final AnalyzeHealthcareEntitiesResultCollection analyzeHealthcareEntitiesResultCollection =
-            toAnalyzeHealthcareEntitiesResultCollection(healthcareResult);
-        AnalyzeHealthcareEntitiesResultCollectionPropertiesHelper.setModelVersion(
-            analyzeHealthcareEntitiesResultCollection, healthcareResult.getModelVersion());
+        final AnalyzeHealthcareEntitiesResultCollection analyzeHealthcareEntitiesResultCollection
+            = toAnalyzeHealthcareEntitiesResultCollection(healthcareResult);
+        AnalyzeHealthcareEntitiesResultCollectionPropertiesHelper
+            .setModelVersion(analyzeHealthcareEntitiesResultCollection, healthcareResult.getModelVersion());
         final RequestStatistics requestStatistics = healthcareResult.getStatistics();
         if (requestStatistics != null) {
             final TextDocumentBatchStatistics batchStatistic = new TextDocumentBatchStatistics(
                 requestStatistics.getDocumentsCount(), requestStatistics.getValidDocumentsCount(),
-                requestStatistics.getErroneousDocumentsCount(), requestStatistics.getTransactionsCount()
-            );
-            AnalyzeHealthcareEntitiesResultCollectionPropertiesHelper.setStatistics(
-                analyzeHealthcareEntitiesResultCollection, batchStatistic);
+                requestStatistics.getErroneousDocumentsCount(), requestStatistics.getTransactionsCount());
+            AnalyzeHealthcareEntitiesResultCollectionPropertiesHelper
+                .setStatistics(analyzeHealthcareEntitiesResultCollection, batchStatistic);
         }
 
         final List<Error> errors = healthcareJobState.getErrors();
 
         if (!CoreUtils.isNullOrEmpty(errors)) {
-            final TextAnalyticsException textAnalyticsException = new TextAnalyticsException(
-                "Analyze healthcare operation failed", null, null);
-            final IterableStream<com.azure.ai.textanalytics.models.TextAnalyticsError> textAnalyticsErrors =
-                IterableStream.of(errors.stream().map(Utility::toTextAnalyticsError).collect(Collectors.toList()));
+            final TextAnalyticsException textAnalyticsException
+                = new TextAnalyticsException("Analyze healthcare operation failed", null, null);
+            final IterableStream<com.azure.ai.textanalytics.models.TextAnalyticsError> textAnalyticsErrors
+                = IterableStream.of(errors.stream().map(Utility::toTextAnalyticsError).collect(Collectors.toList()));
             TextAnalyticsExceptionPropertiesHelper.setErrors(textAnalyticsException, textAnalyticsErrors);
             throw LOGGER.logExceptionAsError(textAnalyticsException);
         }
 
-        return new PagedResponseBase<Void, AnalyzeHealthcareEntitiesResultCollection>(
-            response.getRequest(),
-            response.getStatusCode(),
-            response.getHeaders(),
-            Arrays.asList(analyzeHealthcareEntitiesResultCollection),
-            healthcareJobState.getNextLink(),
-            null);
+        return new PagedResponseBase<Void, AnalyzeHealthcareEntitiesResultCollection>(response.getRequest(),
+            response.getStatusCode(), response.getHeaders(), Arrays.asList(analyzeHealthcareEntitiesResultCollection),
+            healthcareJobState.getNextLink(), null);
     }
 
-    private PagedResponse<AnalyzeHealthcareEntitiesResultCollection> toHealthcarePagedResponse(
-        Response<AnalyzeTextJobState> response) {
+    private PagedResponse<AnalyzeHealthcareEntitiesResultCollection>
+        toHealthcarePagedResponse(Response<AnalyzeTextJobState> response) {
 
         final AnalyzeTextJobState jobState = response.getValue();
         final List<AnalyzeTextLROResult> lroResults = jobState.getTasks().getItems();
 
         HealthcareLROResult healthcareLROResult = (HealthcareLROResult) lroResults.get(0);
         final HealthcareResult healthcareResult = healthcareLROResult.getResults();
-        final AnalyzeHealthcareEntitiesResultCollection analyzeHealthcareEntitiesResultCollection =
-            toAnalyzeHealthcareEntitiesResultCollection(healthcareResult);
-        AnalyzeHealthcareEntitiesResultCollectionPropertiesHelper.setModelVersion(
-            analyzeHealthcareEntitiesResultCollection, healthcareResult.getModelVersion());
+        final AnalyzeHealthcareEntitiesResultCollection analyzeHealthcareEntitiesResultCollection
+            = toAnalyzeHealthcareEntitiesResultCollection(healthcareResult);
+        AnalyzeHealthcareEntitiesResultCollectionPropertiesHelper
+            .setModelVersion(analyzeHealthcareEntitiesResultCollection, healthcareResult.getModelVersion());
         final RequestStatistics requestStatistics = healthcareResult.getStatistics();
         if (requestStatistics != null) {
             final TextDocumentBatchStatistics batchStatistic = new TextDocumentBatchStatistics(
                 requestStatistics.getDocumentsCount(), requestStatistics.getValidDocumentsCount(),
-                requestStatistics.getErroneousDocumentsCount(), requestStatistics.getTransactionsCount()
-            );
-            AnalyzeHealthcareEntitiesResultCollectionPropertiesHelper.setStatistics(
-                analyzeHealthcareEntitiesResultCollection, batchStatistic);
+                requestStatistics.getErroneousDocumentsCount(), requestStatistics.getTransactionsCount());
+            AnalyzeHealthcareEntitiesResultCollectionPropertiesHelper
+                .setStatistics(analyzeHealthcareEntitiesResultCollection, batchStatistic);
         }
 
         final List<Error> errors = jobState.getErrors();
 
         if (!CoreUtils.isNullOrEmpty(errors)) {
-            final TextAnalyticsException textAnalyticsException = new TextAnalyticsException(
-                "Analyze healthcare operation failed", null, null);
-            final IterableStream<com.azure.ai.textanalytics.models.TextAnalyticsError> textAnalyticsErrors =
-                IterableStream.of(errors.stream().map(Utility::toTextAnalyticsError).collect(Collectors.toList()));
+            final TextAnalyticsException textAnalyticsException
+                = new TextAnalyticsException("Analyze healthcare operation failed", null, null);
+            final IterableStream<com.azure.ai.textanalytics.models.TextAnalyticsError> textAnalyticsErrors
+                = IterableStream.of(errors.stream().map(Utility::toTextAnalyticsError).collect(Collectors.toList()));
             TextAnalyticsExceptionPropertiesHelper.setErrors(textAnalyticsException, textAnalyticsErrors);
             throw LOGGER.logExceptionAsError(textAnalyticsException);
         }
 
-        return new PagedResponseBase<Void, AnalyzeHealthcareEntitiesResultCollection>(
-            response.getRequest(),
-            response.getStatusCode(),
-            response.getHeaders(),
-            Arrays.asList(analyzeHealthcareEntitiesResultCollection),
-            jobState.getNextLink(),
-            null);
+        return new PagedResponseBase<Void, AnalyzeHealthcareEntitiesResultCollection>(response.getRequest(),
+            response.getStatusCode(), response.getHeaders(), Arrays.asList(analyzeHealthcareEntitiesResultCollection),
+            jobState.getNextLink(), null);
     }
 
     // Activation operation
-    private Function<PollingContext<AnalyzeHealthcareEntitiesOperationDetail>,
-        Mono<AnalyzeHealthcareEntitiesOperationDetail>> activationOperation(
-            Mono<AnalyzeHealthcareEntitiesOperationDetail> operationResult) {
+    private
+        Function<PollingContext<AnalyzeHealthcareEntitiesOperationDetail>, Mono<AnalyzeHealthcareEntitiesOperationDetail>>
+        activationOperation(Mono<AnalyzeHealthcareEntitiesOperationDetail> operationResult) {
         return pollingContext -> {
             try {
                 return operationResult.onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
@@ -381,22 +342,18 @@ class AnalyzeHealthcareEntityUtilClient {
         };
     }
 
-    private Function<PollingContext<AnalyzeHealthcareEntitiesOperationDetail>,
-        AnalyzeHealthcareEntitiesOperationDetail> activationOperationLanguageApiSync(
-        Iterable<TextDocumentInput> documents, AnalyzeTextLROTask task, String displayName,
-        Context context) {
+    private Function<PollingContext<AnalyzeHealthcareEntitiesOperationDetail>, AnalyzeHealthcareEntitiesOperationDetail>
+        activationOperationLanguageApiSync(Iterable<TextDocumentInput> documents, AnalyzeTextLROTask task,
+            String displayName, Context context) {
         return pollingContext -> {
             try {
-                final ResponseBase<AnalyzeTextsSubmitJobHeaders, Void> analyzeResponse =
-                    service.submitJobWithResponse(
-                        new AnalyzeTextJobsInput()
-                            .setDisplayName(displayName)
-                            .setAnalysisInput(new MultiLanguageAnalysisInput()
-                                .setDocuments(toMultiLanguageInput(documents)))
-                            .setTasks(Arrays.asList(task)),
-                        context);
-                final AnalyzeHealthcareEntitiesOperationDetail operationDetail =
-                    new AnalyzeHealthcareEntitiesOperationDetail();
+                final ResponseBase<AnalyzeTextsSubmitJobHeaders, Void> analyzeResponse
+                    = service.submitJobWithResponse(new AnalyzeTextJobsInput().setDisplayName(displayName)
+                        .setAnalysisInput(
+                            new MultiLanguageAnalysisInput().setDocuments(toMultiLanguageInput(documents)))
+                        .setTasks(Arrays.asList(task)), context);
+                final AnalyzeHealthcareEntitiesOperationDetail operationDetail
+                    = new AnalyzeHealthcareEntitiesOperationDetail();
                 AnalyzeHealthcareEntitiesOperationDetailPropertiesHelper.setOperationId(operationDetail,
                     parseOperationId(analyzeResponse.getDeserializedHeaders().getOperationLocation()));
                 return operationDetail;
@@ -406,19 +363,15 @@ class AnalyzeHealthcareEntityUtilClient {
         };
     }
 
-    private Function<PollingContext<AnalyzeHealthcareEntitiesOperationDetail>,
-        AnalyzeHealthcareEntitiesOperationDetail> activationOperationLegacyApiSync(
-        Iterable<TextDocumentInput> documents, String modelVersion, StringIndexType stringIndexType,
-        boolean loggingOptOut, Context context) {
+    private Function<PollingContext<AnalyzeHealthcareEntitiesOperationDetail>, AnalyzeHealthcareEntitiesOperationDetail>
+        activationOperationLegacyApiSync(Iterable<TextDocumentInput> documents, String modelVersion,
+            StringIndexType stringIndexType, boolean loggingOptOut, Context context) {
         return pollingContext -> {
             final ResponseBase<HealthHeaders, Void> analyzeResponse = legacyService.healthWithResponseSync(
-                new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
-                modelVersion,
-                stringIndexType,
-                loggingOptOut,
-                context);
-            final AnalyzeHealthcareEntitiesOperationDetail operationDetail =
-                new AnalyzeHealthcareEntitiesOperationDetail();
+                new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)), modelVersion,
+                stringIndexType, loggingOptOut, context);
+            final AnalyzeHealthcareEntitiesOperationDetail operationDetail
+                = new AnalyzeHealthcareEntitiesOperationDetail();
             AnalyzeHealthcareEntitiesOperationDetailPropertiesHelper.setOperationId(operationDetail,
                 parseOperationId(analyzeResponse.getDeserializedHeaders().getOperationLocation()));
             return operationDetail;
@@ -426,17 +379,17 @@ class AnalyzeHealthcareEntityUtilClient {
     }
 
     // Polling operation
-    private Function<PollingContext<AnalyzeHealthcareEntitiesOperationDetail>,
-        Mono<PollResponse<AnalyzeHealthcareEntitiesOperationDetail>>> pollingOperation(
-            Function<UUID, Mono<Response<HealthcareJobState>>> pollingFunction) {
+    private
+        Function<PollingContext<AnalyzeHealthcareEntitiesOperationDetail>, Mono<PollResponse<AnalyzeHealthcareEntitiesOperationDetail>>>
+        pollingOperation(Function<UUID, Mono<Response<HealthcareJobState>>> pollingFunction) {
         return pollingContext -> {
             try {
-                final PollResponse<AnalyzeHealthcareEntitiesOperationDetail> operationResultPollResponse =
-                    pollingContext.getLatestResponse();
+                final PollResponse<AnalyzeHealthcareEntitiesOperationDetail> operationResultPollResponse
+                    = pollingContext.getLatestResponse();
                 final UUID resultUuid = UUID.fromString(operationResultPollResponse.getValue().getOperationId());
                 return pollingFunction.apply(resultUuid)
-                    .flatMap(modelResponse -> Mono.just(
-                        processHealthcareJobResponseLegacyApi(modelResponse, operationResultPollResponse)))
+                    .flatMap(modelResponse -> Mono
+                        .just(processHealthcareJobResponseLegacyApi(modelResponse, operationResultPollResponse)))
                     .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
             } catch (RuntimeException ex) {
                 return monoError(LOGGER, ex);
@@ -444,17 +397,17 @@ class AnalyzeHealthcareEntityUtilClient {
         };
     }
 
-    private Function<PollingContext<AnalyzeHealthcareEntitiesOperationDetail>,
-        Mono<PollResponse<AnalyzeHealthcareEntitiesOperationDetail>>> pollingOperationTextJob(
-            Function<UUID, Mono<Response<AnalyzeTextJobState>>> pollingFunction) {
+    private
+        Function<PollingContext<AnalyzeHealthcareEntitiesOperationDetail>, Mono<PollResponse<AnalyzeHealthcareEntitiesOperationDetail>>>
+        pollingOperationTextJob(Function<UUID, Mono<Response<AnalyzeTextJobState>>> pollingFunction) {
         return pollingContext -> {
             try {
-                final PollResponse<AnalyzeHealthcareEntitiesOperationDetail> operationResultPollResponse =
-                    pollingContext.getLatestResponse();
+                final PollResponse<AnalyzeHealthcareEntitiesOperationDetail> operationResultPollResponse
+                    = pollingContext.getLatestResponse();
                 final UUID operationId = UUID.fromString(operationResultPollResponse.getValue().getOperationId());
                 return pollingFunction.apply(operationId)
-                    .flatMap(modelResponse ->
-                        Mono.just(processHealthcareJobResponseLanguageApi(modelResponse, operationResultPollResponse)))
+                    .flatMap(modelResponse -> Mono
+                        .just(processHealthcareJobResponseLanguageApi(modelResponse, operationResultPollResponse)))
                     .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
             } catch (RuntimeException ex) {
                 return monoError(LOGGER, ex);
@@ -462,13 +415,13 @@ class AnalyzeHealthcareEntityUtilClient {
         };
     }
 
-    private Function<PollingContext<AnalyzeHealthcareEntitiesOperationDetail>,
-        PollResponse<AnalyzeHealthcareEntitiesOperationDetail>> pollingOperationLanguageApiSync(
-            Function<UUID, Response<AnalyzeTextJobState>> pollingFunction) {
+    private
+        Function<PollingContext<AnalyzeHealthcareEntitiesOperationDetail>, PollResponse<AnalyzeHealthcareEntitiesOperationDetail>>
+        pollingOperationLanguageApiSync(Function<UUID, Response<AnalyzeTextJobState>> pollingFunction) {
         return pollingContext -> {
             try {
-                final PollResponse<AnalyzeHealthcareEntitiesOperationDetail> operationResultPollResponse =
-                    pollingContext.getLatestResponse();
+                final PollResponse<AnalyzeHealthcareEntitiesOperationDetail> operationResultPollResponse
+                    = pollingContext.getLatestResponse();
                 final UUID operationId = UUID.fromString(operationResultPollResponse.getValue().getOperationId());
                 return processHealthcareJobResponseLanguageApi(pollingFunction.apply(operationId),
                     operationResultPollResponse);
@@ -478,12 +431,12 @@ class AnalyzeHealthcareEntityUtilClient {
         };
     }
 
-    private Function<PollingContext<AnalyzeHealthcareEntitiesOperationDetail>,
-        PollResponse<AnalyzeHealthcareEntitiesOperationDetail>> pollingOperationLegacyApiSync(
-        Function<UUID, Response<HealthcareJobState>> pollingFunction) {
+    private
+        Function<PollingContext<AnalyzeHealthcareEntitiesOperationDetail>, PollResponse<AnalyzeHealthcareEntitiesOperationDetail>>
+        pollingOperationLegacyApiSync(Function<UUID, Response<HealthcareJobState>> pollingFunction) {
         return pollingContext -> {
-            final PollResponse<AnalyzeHealthcareEntitiesOperationDetail> operationResultPollResponse =
-                pollingContext.getLatestResponse();
+            final PollResponse<AnalyzeHealthcareEntitiesOperationDetail> operationResultPollResponse
+                = pollingContext.getLatestResponse();
             final UUID operationId = UUID.fromString(operationResultPollResponse.getValue().getOperationId());
             return processHealthcareJobResponseLegacyApi(pollingFunction.apply(operationId),
                 operationResultPollResponse);
@@ -516,73 +469,69 @@ class AnalyzeHealthcareEntityUtilClient {
     }
 
     // Cancel operation
-    private BiFunction<PollingContext<AnalyzeHealthcareEntitiesOperationDetail>,
-        PollResponse<AnalyzeHealthcareEntitiesOperationDetail>, Mono<AnalyzeHealthcareEntitiesOperationDetail>>
+    private
+        BiFunction<PollingContext<AnalyzeHealthcareEntitiesOperationDetail>, PollResponse<AnalyzeHealthcareEntitiesOperationDetail>, Mono<AnalyzeHealthcareEntitiesOperationDetail>>
         cancelOperation(Function<UUID, Mono<ResponseBase<CancelHealthJobHeaders, Void>>> cancelFunction) {
         return (activationResponse, pollingContext) -> {
             final UUID resultUuid = UUID.fromString(pollingContext.getValue().getOperationId());
             try {
-                return cancelFunction.apply(resultUuid)
-                    .map(cancelHealthJobResponse -> {
-                        final AnalyzeHealthcareEntitiesOperationDetail operationResult =
-                            new AnalyzeHealthcareEntitiesOperationDetail();
-                        AnalyzeHealthcareEntitiesOperationDetailPropertiesHelper.setOperationId(operationResult,
-                            parseOperationId(cancelHealthJobResponse.getDeserializedHeaders().getOperationLocation()));
-                        return operationResult;
-                    }).onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
+                return cancelFunction.apply(resultUuid).map(cancelHealthJobResponse -> {
+                    final AnalyzeHealthcareEntitiesOperationDetail operationResult
+                        = new AnalyzeHealthcareEntitiesOperationDetail();
+                    AnalyzeHealthcareEntitiesOperationDetailPropertiesHelper.setOperationId(operationResult,
+                        parseOperationId(cancelHealthJobResponse.getDeserializedHeaders().getOperationLocation()));
+                    return operationResult;
+                }).onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
             } catch (RuntimeException ex) {
                 return monoError(LOGGER, ex);
             }
         };
     }
 
-    private BiFunction<PollingContext<AnalyzeHealthcareEntitiesOperationDetail>,
-        PollResponse<AnalyzeHealthcareEntitiesOperationDetail>, Mono<AnalyzeHealthcareEntitiesOperationDetail>>
+    private
+        BiFunction<PollingContext<AnalyzeHealthcareEntitiesOperationDetail>, PollResponse<AnalyzeHealthcareEntitiesOperationDetail>, Mono<AnalyzeHealthcareEntitiesOperationDetail>>
         cancelOperationTextJob(Function<UUID, Mono<ResponseBase<AnalyzeTextsCancelJobHeaders, Void>>> cancelFunction) {
         return (activationResponse, pollingContext) -> {
             final UUID resultUuid = UUID.fromString(pollingContext.getValue().getOperationId());
             try {
-                return cancelFunction.apply(resultUuid)
-                           .map(cancelHealthJobResponse -> {
-                               final AnalyzeHealthcareEntitiesOperationDetail operationResult =
-                                   new AnalyzeHealthcareEntitiesOperationDetail();
-                               AnalyzeHealthcareEntitiesOperationDetailPropertiesHelper.setOperationId(operationResult,
-                                   parseOperationId(cancelHealthJobResponse.getDeserializedHeaders().getOperationLocation()));
-                               return operationResult;
-                           }).onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
+                return cancelFunction.apply(resultUuid).map(cancelHealthJobResponse -> {
+                    final AnalyzeHealthcareEntitiesOperationDetail operationResult
+                        = new AnalyzeHealthcareEntitiesOperationDetail();
+                    AnalyzeHealthcareEntitiesOperationDetailPropertiesHelper.setOperationId(operationResult,
+                        parseOperationId(cancelHealthJobResponse.getDeserializedHeaders().getOperationLocation()));
+                    return operationResult;
+                }).onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
             } catch (RuntimeException ex) {
                 return monoError(LOGGER, ex);
             }
         };
     }
 
-    private BiFunction<PollingContext<AnalyzeHealthcareEntitiesOperationDetail>,
-        PollResponse<AnalyzeHealthcareEntitiesOperationDetail>, AnalyzeHealthcareEntitiesOperationDetail>
+    private
+        BiFunction<PollingContext<AnalyzeHealthcareEntitiesOperationDetail>, PollResponse<AnalyzeHealthcareEntitiesOperationDetail>, AnalyzeHealthcareEntitiesOperationDetail>
         cancelOperationLegacyApiSync(Function<UUID, ResponseBase<CancelHealthJobHeaders, Void>> cancelFunction) {
         return (activationResponse, pollingContext) -> {
             final UUID resultUuid = UUID.fromString(pollingContext.getValue().getOperationId());
-            final ResponseBase<CancelHealthJobHeaders, Void> cancelResponse =
-                cancelFunction.apply(resultUuid);
-            final AnalyzeHealthcareEntitiesOperationDetail operationResult =
-                new AnalyzeHealthcareEntitiesOperationDetail();
+            final ResponseBase<CancelHealthJobHeaders, Void> cancelResponse = cancelFunction.apply(resultUuid);
+            final AnalyzeHealthcareEntitiesOperationDetail operationResult
+                = new AnalyzeHealthcareEntitiesOperationDetail();
             AnalyzeHealthcareEntitiesOperationDetailPropertiesHelper.setOperationId(operationResult,
                 parseOperationId(cancelResponse.getDeserializedHeaders().getOperationLocation()));
             return operationResult;
         };
     }
 
-
-    private BiFunction<PollingContext<AnalyzeHealthcareEntitiesOperationDetail>,
-        PollResponse<AnalyzeHealthcareEntitiesOperationDetail>, AnalyzeHealthcareEntitiesOperationDetail>
+    private
+        BiFunction<PollingContext<AnalyzeHealthcareEntitiesOperationDetail>, PollResponse<AnalyzeHealthcareEntitiesOperationDetail>, AnalyzeHealthcareEntitiesOperationDetail>
         cancelOperationLanguageApiSync(
             Function<UUID, ResponseBase<AnalyzeTextsCancelJobHeaders, Void>> cancelFunction) {
         return (activationResponse, pollingContext) -> {
             final UUID resultUuid = UUID.fromString(pollingContext.getValue().getOperationId());
             try {
-                final ResponseBase<AnalyzeTextsCancelJobHeaders, Void> cancelResponse =
-                    cancelFunction.apply(resultUuid);
-                final AnalyzeHealthcareEntitiesOperationDetail operationResult =
-                    new AnalyzeHealthcareEntitiesOperationDetail();
+                final ResponseBase<AnalyzeTextsCancelJobHeaders, Void> cancelResponse
+                    = cancelFunction.apply(resultUuid);
+                final AnalyzeHealthcareEntitiesOperationDetail operationResult
+                    = new AnalyzeHealthcareEntitiesOperationDetail();
                 AnalyzeHealthcareEntitiesOperationDetailPropertiesHelper.setOperationId(operationResult,
                     parseOperationId(cancelResponse.getDeserializedHeaders().getOperationLocation()));
                 return operationResult;
@@ -593,9 +542,8 @@ class AnalyzeHealthcareEntityUtilClient {
     }
 
     // Fetching iterable operation
-    private Function<PollingContext<AnalyzeHealthcareEntitiesOperationDetail>,
-        AnalyzeHealthcareEntitiesPagedIterable> fetchingOperationIterable(
-            final Function<UUID, AnalyzeHealthcareEntitiesPagedIterable> fetchingFunction) {
+    private Function<PollingContext<AnalyzeHealthcareEntitiesOperationDetail>, AnalyzeHealthcareEntitiesPagedIterable>
+        fetchingOperationIterable(final Function<UUID, AnalyzeHealthcareEntitiesPagedIterable> fetchingFunction) {
         return pollingContext -> {
             final UUID resultUuid = UUID.fromString(pollingContext.getLatestResponse().getValue().getOperationId());
             return fetchingFunction.apply(resultUuid);
@@ -614,8 +562,8 @@ class AnalyzeHealthcareEntityUtilClient {
         } else if (CANCELLED.equals(state)) {
             status = LongRunningOperationStatus.USER_CANCELLED;
         } else {
-            status = LongRunningOperationStatus.fromString(
-                analyzeOperationResultResponse.getValue().getStatus().toString(), true);
+            status = LongRunningOperationStatus
+                .fromString(analyzeOperationResultResponse.getValue().getStatus().toString(), true);
         }
 
         AnalyzeHealthcareEntitiesOperationDetailPropertiesHelper.setCreatedAt(operationResultPollResponse.getValue(),
@@ -639,8 +587,8 @@ class AnalyzeHealthcareEntityUtilClient {
         } else if (CANCELLED.equals(state)) {
             status = LongRunningOperationStatus.USER_CANCELLED;
         } else {
-            status = LongRunningOperationStatus.fromString(
-                analyzeOperationResultResponse.getValue().getStatus().toString(), true);
+            status = LongRunningOperationStatus
+                .fromString(analyzeOperationResultResponse.getValue().getStatus().toString(), true);
         }
         AnalyzeHealthcareEntitiesOperationDetailPropertiesHelper.setDisplayName(operationResultPollResponse.getValue(),
             analyzeOperationResultResponse.getValue().getDisplayName());
@@ -653,17 +601,16 @@ class AnalyzeHealthcareEntityUtilClient {
         return new PollResponse<>(status, operationResultPollResponse.getValue());
     }
 
-    private AnalyzeHealthcareEntitiesOptions getNotNullAnalyzeHealthcareEntitiesOptions(
-        AnalyzeHealthcareEntitiesOptions options) {
+    private AnalyzeHealthcareEntitiesOptions
+        getNotNullAnalyzeHealthcareEntitiesOptions(AnalyzeHealthcareEntitiesOptions options) {
         return options == null ? new AnalyzeHealthcareEntitiesOptions() : options;
     }
 
     private void throwIfCallingNotAvailableFeatureInOptions(AnalyzeHealthcareEntitiesOptions options) {
         if (options != null && options.getDisplayName() != null) {
-            throwIfTargetServiceVersionFound(serviceVersion,
-                Arrays.asList(TextAnalyticsServiceVersion.V3_1),
-                getUnsupportedServiceApiVersionMessage("AnalyzeHealthcareEntitiesOptions.displayName",
-                    serviceVersion, TextAnalyticsServiceVersion.V2022_05_01));
+            throwIfTargetServiceVersionFound(serviceVersion, Arrays.asList(TextAnalyticsServiceVersion.V3_1),
+                getUnsupportedServiceApiVersionMessage("AnalyzeHealthcareEntitiesOptions.displayName", serviceVersion,
+                    TextAnalyticsServiceVersion.V2022_05_01));
         }
     }
 }
