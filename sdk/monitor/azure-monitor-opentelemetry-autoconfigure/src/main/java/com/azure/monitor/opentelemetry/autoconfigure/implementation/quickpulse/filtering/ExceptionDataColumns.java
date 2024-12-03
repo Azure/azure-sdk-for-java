@@ -19,8 +19,7 @@ public class ExceptionDataColumns implements TelemetryColumns {
     private final Map<String, Object> mapping = new HashMap<>();
 
     public ExceptionDataColumns(TelemetryExceptionData exceptionData) {
-        customDims = new CustomDimensions();
-        customDims.setCustomDimensions(exceptionData.getProperties(), exceptionData.getMeasurements());
+        customDims = new CustomDimensions(exceptionData.getProperties(), exceptionData.getMeasurements());
         List<TelemetryExceptionDetails> details = exceptionData.getExceptions();
         mapping.put(KnownExceptionColumns.MESSAGE,
             details != null && !details.isEmpty() ? details.get(0).getMessage() : "");
@@ -31,8 +30,7 @@ public class ExceptionDataColumns implements TelemetryColumns {
     // To be used in tests only
     public ExceptionDataColumns(String message, String stackTrace, Map<String, String> dims,
         Map<String, Double> measurements) {
-        customDims = new CustomDimensions();
-        customDims.setCustomDimensions(dims, measurements);
+        customDims = new CustomDimensions(dims, measurements);
         mapping.put(KnownExceptionColumns.MESSAGE, message);
         mapping.put(KnownExceptionColumns.STACK, stackTrace);
     }

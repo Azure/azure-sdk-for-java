@@ -16,8 +16,7 @@ public class DependencyDataColumns implements TelemetryColumns {
     private final Map<String, Object> mapping = new HashMap<>();
 
     public DependencyDataColumns(RemoteDependencyData rdData) {
-        customDims = new CustomDimensions();
-        customDims.setCustomDimensions(rdData.getProperties(), rdData.getMeasurements());
+        customDims = new CustomDimensions(rdData.getProperties(), rdData.getMeasurements());
         mapping.put(KnownDependencyColumns.TARGET, rdData.getTarget());
         mapping.put(KnownDependencyColumns.DURATION,
             FormattedDuration.getDurationFromTelemetryItemDurationString(rdData.getDuration()));
@@ -37,8 +36,7 @@ public class DependencyDataColumns implements TelemetryColumns {
     // To be used for tests only
     public DependencyDataColumns(String target, long duration, boolean success, String name, int resultCode,
         String type, String data, Map<String, String> dims, Map<String, Double> measurements) {
-        customDims = new CustomDimensions();
-        customDims.setCustomDimensions(dims, measurements);
+        customDims = new CustomDimensions(dims, measurements);
         mapping.put(KnownDependencyColumns.TARGET, target);
         mapping.put(KnownDependencyColumns.DURATION, duration);
         mapping.put(KnownDependencyColumns.SUCCESS, success);

@@ -10,11 +10,7 @@ import java.util.Map;
 public class CustomDimensions {
     private Map<String, String> customDimensions;
 
-    public CustomDimensions() {
-        this.customDimensions = new HashMap<String, String>();
-    }
-
-    public void setCustomDimensions(Map<String, String> customDimensions, Map<String, Double> customMeasurements) {
+    public CustomDimensions(Map<String, String> customDimensions, Map<String, Double> customMeasurements) {
         Map<String, String> resultMap = new HashMap<>();
         if (customDimensions != null) {
             resultMap.putAll(customDimensions);

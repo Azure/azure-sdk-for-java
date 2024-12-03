@@ -17,8 +17,7 @@ public class RequestDataColumns implements TelemetryColumns {
     private final CustomDimensions customDims;
 
     public RequestDataColumns(RequestData requestData) {
-        customDims = new CustomDimensions();
-        customDims.setCustomDimensions(requestData.getProperties(), requestData.getMeasurements());
+        customDims = new CustomDimensions(requestData.getProperties(), requestData.getMeasurements());
         mapping.put(KnownRequestColumns.URL, requestData.getUrl());
         mapping.put(KnownRequestColumns.SUCCESS, requestData.isSuccess());
         mapping.put(KnownRequestColumns.DURATION,
@@ -36,8 +35,7 @@ public class RequestDataColumns implements TelemetryColumns {
     // To be used in tests only
     public RequestDataColumns(String url, long duration, int responseCode, boolean success, String name,
         Map<String, String> dims, Map<String, Double> measurements) {
-        customDims = new CustomDimensions();
-        customDims.setCustomDimensions(dims, measurements);
+        customDims = new CustomDimensions(dims, measurements);
         mapping.put(KnownRequestColumns.URL, url);
         mapping.put(KnownRequestColumns.SUCCESS, success);
         mapping.put(KnownRequestColumns.DURATION, duration);

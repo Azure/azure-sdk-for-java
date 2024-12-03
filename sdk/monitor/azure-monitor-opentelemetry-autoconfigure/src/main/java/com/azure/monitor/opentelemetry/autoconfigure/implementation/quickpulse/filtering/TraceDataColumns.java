@@ -17,15 +17,13 @@ public class TraceDataColumns implements TelemetryColumns {
     private final CustomDimensions customDims;
 
     public TraceDataColumns(MessageData traceData) {
-        customDims = new CustomDimensions();
-        customDims.setCustomDimensions(traceData.getProperties(), traceData.getMeasurements());
+        customDims = new CustomDimensions(traceData.getProperties(), traceData.getMeasurements());
         mapping.put(KnownTraceColumns.MESSAGE, traceData.getMessage());
     }
 
     // to be used in tests only
     public TraceDataColumns(String message, Map<String, String> dims, Map<String, Double> measurements) {
-        customDims = new CustomDimensions();
-        customDims.setCustomDimensions(dims, measurements);
+        customDims = new CustomDimensions(dims, measurements);
         mapping.put(KnownTraceColumns.MESSAGE, message);
     }
 
