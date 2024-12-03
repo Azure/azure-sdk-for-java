@@ -23,8 +23,7 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the asynchronous DeviceUpdateClient type. */
 @ServiceClient(builder = DeviceUpdateClientBuilder.class, isAsync = true)
 public final class DeviceUpdateAsyncClient {
-    @Generated
-    private final DeviceUpdatesImpl serviceClient;
+    @Generated private final DeviceUpdatesImpl serviceClient;
 
     /**
      * Initializes an instance of DeviceUpdateAsyncClient class.
@@ -195,8 +194,8 @@ public final class DeviceUpdateAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginImportUpdate(BinaryData updateToImport,
-        RequestOptions requestOptions) {
+    public PollerFlux<BinaryData, BinaryData> beginImportUpdate(
+            BinaryData updateToImport, RequestOptions requestOptions) {
         return this.serviceClient.beginImportUpdateAsync(updateToImport, requestOptions);
     }
 
@@ -269,8 +268,8 @@ public final class DeviceUpdateAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getUpdateWithResponse(String provider, String name, String version,
-        RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getUpdateWithResponse(
+            String provider, String name, String version, RequestOptions requestOptions) {
         return this.serviceClient.getUpdateWithResponseAsync(provider, name, version, requestOptions);
     }
 
@@ -290,8 +289,8 @@ public final class DeviceUpdateAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginDeleteUpdate(String provider, String name, String version,
-        RequestOptions requestOptions) {
+    public PollerFlux<BinaryData, BinaryData> beginDeleteUpdate(
+            String provider, String name, String version, RequestOptions requestOptions) {
         return this.serviceClient.beginDeleteUpdateAsync(provider, name, version, requestOptions);
     }
 
@@ -419,8 +418,8 @@ public final class DeviceUpdateAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listFiles(String provider, String name, String version,
-        RequestOptions requestOptions) {
+    public PagedFlux<BinaryData> listFiles(
+            String provider, String name, String version, RequestOptions requestOptions) {
         return this.serviceClient.listFilesAsync(provider, name, version, requestOptions);
     }
 
@@ -489,8 +488,8 @@ public final class DeviceUpdateAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getFileWithResponse(String provider, String name, String version, String fileId,
-        RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getFileWithResponse(
+            String provider, String name, String version, String fileId, RequestOptions requestOptions) {
         return this.serviceClient.getFileWithResponseAsync(provider, name, version, fileId, requestOptions);
     }
 
@@ -626,8 +625,8 @@ public final class DeviceUpdateAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getOperationStatusWithResponse(String operationId,
-        RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getOperationStatusWithResponse(
+            String operationId, RequestOptions requestOptions) {
         return this.serviceClient.getOperationStatusWithResponseAsync(operationId, requestOptions);
     }
 }
