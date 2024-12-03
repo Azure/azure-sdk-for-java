@@ -51,3 +51,4 @@ public final class AttestationData {
         return interpretation;
     }
 }
+
