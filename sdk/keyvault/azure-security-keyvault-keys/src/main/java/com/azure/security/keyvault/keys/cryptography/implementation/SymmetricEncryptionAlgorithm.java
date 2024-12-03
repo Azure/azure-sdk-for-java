@@ -33,7 +33,8 @@ abstract class SymmetricEncryptionAlgorithm extends LocalEncryptionAlgorithm {
      * @return A {@link ICryptoTransform} implementation.
      */
     abstract ICryptoTransform createEncryptor(byte[] key, byte[] iv, byte[] additionalAuthenticatedData,
-        byte[] authenticationTag) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException,
+                                              byte[] authenticationTag)
+        throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException,
         InvalidAlgorithmParameterException;
 
     /*
@@ -48,8 +49,9 @@ abstract class SymmetricEncryptionAlgorithm extends LocalEncryptionAlgorithm {
      * @return A {@link ICryptoTransform} implementation.
      */
     abstract ICryptoTransform createEncryptor(byte[] key, byte[] iv, byte[] additionalAuthenticatedData,
-        byte[] authenticationTag, Provider provider) throws InvalidKeyException, NoSuchAlgorithmException,
-        NoSuchPaddingException, InvalidAlgorithmParameterException;
+                                              byte[] authenticationTag, Provider provider)
+        throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException,
+        InvalidAlgorithmParameterException;
 
     /*
      * Creates a {@link ICryptoTransform} implementation for decryption using the supplied initialization vector and the
@@ -64,7 +66,8 @@ abstract class SymmetricEncryptionAlgorithm extends LocalEncryptionAlgorithm {
      * @return A {@link ICryptoTransform} implementation.
      */
     abstract ICryptoTransform createDecryptor(byte[] key, byte[] iv, byte[] additionalAuthenticatedData,
-        byte[] authenticationTag) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException,
+                                              byte[] authenticationTag)
+        throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException,
         InvalidAlgorithmParameterException;
 
     /*
@@ -81,6 +84,7 @@ abstract class SymmetricEncryptionAlgorithm extends LocalEncryptionAlgorithm {
      * @return A {@link ICryptoTransform} implementation
      */
     abstract ICryptoTransform createDecryptor(byte[] key, byte[] iv, byte[] additionalAuthenticatedData,
-        byte[] authenticationTag, Provider provider) throws InvalidKeyException, NoSuchAlgorithmException,
-        NoSuchPaddingException, InvalidAlgorithmParameterException;
+                                              byte[] authenticationTag, Provider provider)
+        throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException,
+        InvalidAlgorithmParameterException;
 }

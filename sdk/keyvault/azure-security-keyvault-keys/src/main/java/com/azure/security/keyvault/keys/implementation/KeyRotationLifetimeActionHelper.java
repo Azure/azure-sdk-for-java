@@ -12,9 +12,7 @@ public final class KeyRotationLifetimeActionHelper {
 
     public interface KeyRotationLifetimeActionAccessor {
         KeyRotationLifetimeAction createLifetimeAction(LifetimeActionsTrigger trigger, LifetimeActionsType actionsType);
-
         LifetimeActionsTrigger getTrigger(KeyRotationLifetimeAction lifetimeAction);
-
         LifetimeActionsType getActionType(KeyRotationLifetimeAction lifetimeAction);
     }
 
@@ -40,6 +38,5 @@ public final class KeyRotationLifetimeActionHelper {
         KeyRotationLifetimeActionHelper.accessor = accessor;
     }
 
-    private KeyRotationLifetimeActionHelper() {
-    }
+    private KeyRotationLifetimeActionHelper() { }
 }

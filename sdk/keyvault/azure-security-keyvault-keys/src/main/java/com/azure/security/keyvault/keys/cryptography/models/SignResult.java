@@ -38,6 +38,7 @@ public final class SignResult {
         this.keyId = keyId;
     }
 
+
     /**
      * Get the identifier of the key used for the verify operation
      * @return the key identifier

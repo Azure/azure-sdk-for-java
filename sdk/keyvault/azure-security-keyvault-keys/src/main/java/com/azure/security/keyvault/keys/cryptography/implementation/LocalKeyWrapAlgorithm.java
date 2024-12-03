@@ -31,8 +31,9 @@ abstract class LocalKeyWrapAlgorithm extends Algorithm {
      *         The AES key material to be used.
      * @return A {@link ICryptoTransform} implementation
      */
-    abstract ICryptoTransform createEncryptor(byte[] key) throws NoSuchAlgorithmException, NoSuchPaddingException,
-        InvalidKeyException, InvalidAlgorithmParameterException;
+    abstract ICryptoTransform createEncryptor(byte[] key)
+        throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException,
+        InvalidAlgorithmParameterException;
 
     /*
      * Creates a {@link ICryptoTransform} implementation for encryption that
@@ -44,8 +45,9 @@ abstract class LocalKeyWrapAlgorithm extends Algorithm {
      *         The provider to use.
      * @return A {@link ICryptoTransform} implementation
      */
-    abstract ICryptoTransform createEncryptor(byte[] key, Provider provider) throws NoSuchAlgorithmException,
-        NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException;
+    abstract ICryptoTransform createEncryptor(byte[] key, Provider provider)
+        throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException,
+        InvalidAlgorithmParameterException;
 
     /*
      * Creates a {@link ICryptoTransform} implementation for encryption
@@ -56,8 +58,9 @@ abstract class LocalKeyWrapAlgorithm extends Algorithm {
      *         The initialization vector to be used.
      * @return A {@link ICryptoTransform} implementation
      */
-    abstract ICryptoTransform createEncryptor(byte[] key, byte[] iv) throws NoSuchAlgorithmException,
-        NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException;
+    abstract ICryptoTransform createEncryptor(byte[] key, byte[] iv)
+        throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException,
+        InvalidAlgorithmParameterException;
 
     /*
      * Creates a {@link ICryptoTransform} implementation for encryption
@@ -70,8 +73,9 @@ abstract class LocalKeyWrapAlgorithm extends Algorithm {
      *         The provider to use.
      * @return A {@link ICryptoTransform} implementation
      */
-    abstract ICryptoTransform createEncryptor(byte[] key, byte[] iv, Provider provider) throws NoSuchAlgorithmException,
-        NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException;
+    abstract ICryptoTransform createEncryptor(byte[] key, byte[] iv, Provider provider)
+        throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException,
+        InvalidAlgorithmParameterException;
 
     /*
      * Creates a {@link ICryptoTransform} implementation for decryption.
@@ -80,8 +84,9 @@ abstract class LocalKeyWrapAlgorithm extends Algorithm {
      *         The AES key material to be used.
      * @return A {@link ICryptoTransform} implementation
      */
-    abstract ICryptoTransform createDecryptor(byte[] key) throws NoSuchAlgorithmException, NoSuchPaddingException,
-        InvalidKeyException, InvalidAlgorithmParameterException;
+    abstract ICryptoTransform createDecryptor(byte[] key)
+        throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException,
+        InvalidAlgorithmParameterException;
 
     /*
      * Creates a {@link ICryptoTransform} implementation for decryption that
@@ -93,8 +98,9 @@ abstract class LocalKeyWrapAlgorithm extends Algorithm {
      *         The provider to use.
      * @return A {@link ICryptoTransform} implementation
      */
-    abstract ICryptoTransform createDecryptor(byte[] key, Provider provider) throws NoSuchAlgorithmException,
-        NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException;
+    abstract ICryptoTransform createDecryptor(byte[] key, Provider provider)
+        throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException,
+        InvalidAlgorithmParameterException;
 
     /*
      * Creates a {@link ICryptoTransform} implementation for decryption
@@ -105,8 +111,9 @@ abstract class LocalKeyWrapAlgorithm extends Algorithm {
      *         The initialization vector to be used.
      * @return A {@link ICryptoTransform} implementation
      */
-    abstract ICryptoTransform createDecryptor(byte[] key, byte[] iv) throws NoSuchAlgorithmException,
-        NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException;
+    abstract ICryptoTransform createDecryptor(byte[] key, byte[] iv)
+        throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException,
+        InvalidAlgorithmParameterException;
 
     /*
      * Creates a {@link ICryptoTransform} implementation for decryption
@@ -119,6 +126,7 @@ abstract class LocalKeyWrapAlgorithm extends Algorithm {
      *         The provider to use.
      * @return A {@link ICryptoTransform} implementation
      */
-    abstract ICryptoTransform createDecryptor(byte[] key, byte[] iv, Provider provider) throws NoSuchAlgorithmException,
-        NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException;
+    abstract ICryptoTransform createDecryptor(byte[] key, byte[] iv, Provider provider)
+        throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException,
+        InvalidAlgorithmParameterException;
 }

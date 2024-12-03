@@ -61,11 +61,11 @@ public final class CryptographyUtils {
             String keyVersion = (tokens.length >= 4 ? tokens[3] : null);
 
             if (CoreUtils.isNullOrEmpty(vaultUrl)) {
-                throw logger
-                    .logExceptionAsError(new IllegalArgumentException("Key endpoint in key identifier is invalid."));
+                throw logger.logExceptionAsError(
+                    new IllegalArgumentException("Key endpoint in key identifier is invalid."));
             } else if (CoreUtils.isNullOrEmpty(keyName)) {
-                throw logger
-                    .logExceptionAsError(new IllegalArgumentException("Key name in key identifier is invalid."));
+                throw logger.logExceptionAsError(
+                    new IllegalArgumentException("Key name in key identifier is invalid."));
             }
 
             return Arrays.asList(vaultUrl, keyCollection, keyName, keyVersion);
@@ -97,8 +97,7 @@ public final class CryptographyUtils {
         }
     }
 
-    public static Mono<LocalKeyCryptographyClient>
-        retrieveJwkAndCreateLocalAsyncClient(CryptographyClientImpl implClient) {
+    public static Mono<LocalKeyCryptographyClient> retrieveJwkAndCreateLocalAsyncClient(CryptographyClientImpl implClient) {
         // Technically the collection portion of a key identifier should never be null/empty, but we still check for it.
         if (!CoreUtils.isNullOrEmpty(implClient.getKeyCollection())) {
             // Get the JWK from the service and validate it. Then attempt to create a local cryptography client or
@@ -125,8 +124,8 @@ public final class CryptographyUtils {
         CryptographyClientImpl implClient) {
 
         if (!KeyType.values().contains(jsonWebKey.getKeyType())) {
-            throw new IllegalArgumentException(
-                String.format("The JSON Web Key type: %s is not supported.", jsonWebKey.getKeyType().toString()));
+            throw new IllegalArgumentException(String.format(
+                "The JSON Web Key type: %s is not supported.", jsonWebKey.getKeyType().toString()));
         }
 
         if (jsonWebKey.getKeyType().equals(RSA) || jsonWebKey.getKeyType().equals(RSA_HSM)) {
@@ -143,8 +142,9 @@ public final class CryptographyUtils {
 
     public static void verifyKeyPermissions(JsonWebKey jsonWebKey, KeyOperation keyOperation) {
         if (!jsonWebKey.getKeyOps().contains(keyOperation)) {
-            throw new UnsupportedOperationException(String.format("The %s operation is not allowed for key with id: %s",
-                keyOperation.toString().toLowerCase(Locale.ROOT), jsonWebKey.getId()));
+            throw new UnsupportedOperationException(
+                String.format("The %s operation is not allowed for key with id: %s",
+                    keyOperation.toString().toLowerCase(Locale.ROOT), jsonWebKey.getId()));
         }
     }
 
@@ -153,8 +153,7 @@ public final class CryptographyUtils {
             int statusCode = ((HttpResponseException) e).getResponse().getStatusCode();
 
             // Not a retriable error code.
-            return statusCode != 501
-                && statusCode != 505
+            return statusCode != 501 && statusCode != 505
                 && (statusCode >= 500 || statusCode == 408 || statusCode == 429);
         } else {
             // Not a service-related transient error.

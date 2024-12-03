@@ -22,7 +22,6 @@ abstract class Ecdsa extends AsymmetricSignatureAlgorithm {
     }
 
     public abstract int getDigestLength();
-
     public abstract int getCoordLength();
 
     class EcdsaSignatureTransform implements ISignatureTransform {

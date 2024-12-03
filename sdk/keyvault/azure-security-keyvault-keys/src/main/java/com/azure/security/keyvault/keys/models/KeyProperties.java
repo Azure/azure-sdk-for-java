@@ -208,6 +208,7 @@ public class KeyProperties implements JsonSerializable<KeyProperties> {
         return this.name;
     }
 
+
     /**
      * Get the enabled value.
      *
@@ -322,6 +323,7 @@ public class KeyProperties implements JsonSerializable<KeyProperties> {
     public String getId() {
         return this.id;
     }
+
 
     /**
      * Get the tags associated with the key.
