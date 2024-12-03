@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.largeinstance.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Describes the billing related details of the AzureLargeStorageInstance.
  */
 @Fluent
-public final class StorageBillingProperties {
+public final class StorageBillingProperties implements JsonSerializable<StorageBillingProperties> {
     /*
      * the billing mode for the storage instance
      */
-    @JsonProperty(value = "billingMode")
     private String billingMode;
 
     /*
      * the SKU type that is provisioned
      */
-    @JsonProperty(value = "sku")
     private String sku;
 
     /**
@@ -76,5 +78,44 @@ public final class StorageBillingProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("billingMode", this.billingMode);
+        jsonWriter.writeStringField("sku", this.sku);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StorageBillingProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StorageBillingProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the StorageBillingProperties.
+     */
+    public static StorageBillingProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StorageBillingProperties deserializedStorageBillingProperties = new StorageBillingProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("billingMode".equals(fieldName)) {
+                    deserializedStorageBillingProperties.billingMode = reader.getString();
+                } else if ("sku".equals(fieldName)) {
+                    deserializedStorageBillingProperties.sku = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStorageBillingProperties;
+        });
     }
 }
