@@ -8,7 +8,19 @@
 npm install -g autorest
 ```
 
-#### Generate the models
+#### Generate the models for live metrics
+First, go to [this link](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/applicationinsights/data-plane/LiveMetrics) to determine the version of the api you want to use.
+If a new api version gets added to above link, then please update the "input-file" property 
+of livemetrics_autorest.md in this repo to a new link that points to the correct swagger definition.
+
+In the cmd prompt, run the following commands:
+```
+cd <repo-root>\sdk\monitor\azure-monitor-opentelemetry-autoconfigure\swagger
+autorest livemetrics_autorest.md
+```
+This should generate the live metrics apis/classes in the swagger folder inside the quickpulse directory.
+
+#### Generate other models relevant to the module
 
 ```ps
 cd <swagger-folder>

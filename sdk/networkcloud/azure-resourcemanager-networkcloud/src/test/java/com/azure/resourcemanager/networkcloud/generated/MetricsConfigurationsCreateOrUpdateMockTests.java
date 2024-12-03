@@ -6,15 +6,12 @@ package com.azure.resourcemanager.networkcloud.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.networkcloud.NetworkCloudManager;
 import com.azure.resourcemanager.networkcloud.models.ClusterMetricsConfiguration;
 import com.azure.resourcemanager.networkcloud.models.ExtendedLocation;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
@@ -22,53 +19,37 @@ import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class MetricsConfigurationsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"extendedLocation\":{\"name\":\"w\",\"type\":\"ch\"},\"properties\":{\"collectionInterval\":5033961721581707117,\"detailedStatus\":\"Applied\",\"detailedStatusMessage\":\"kshfy\",\"disabledMetrics\":[\"ibjepzwhj\"],\"enabledMetrics\":[\"dgbggcjxzh\",\"livwehsud\",\"mymbhdosmbng\",\"q\"],\"provisioningState\":\"Succeeded\"},\"location\":\"duvxd\",\"tags\":{\"mnrs\":\"xatm\",\"dmiplois\":\"nxoirxy\",\"ntwgkvyo\":\"kzsoxz\"},\"id\":\"psapzu\",\"name\":\"zwwy\",\"type\":\"bdjzghximkg\"}";
+            = "{\"extendedLocation\":{\"name\":\"q\",\"type\":\"btimpkjblor\"},\"properties\":{\"collectionInterval\":89470103286938544,\"detailedStatus\":\"Processing\",\"detailedStatusMessage\":\"uds\",\"disabledMetrics\":[\"uaawja\",\"xwjnfcz\"],\"enabledMetrics\":[\"iixyxvqbanosj\"],\"provisioningState\":\"Succeeded\"},\"location\":\"nbg\",\"tags\":{\"foeajogsy\":\"ddorgmynltwmpft\"},\"id\":\"wetamfddrvlk\",\"name\":\"zwbhnrecc\",\"type\":\"d\"}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         NetworkCloudManager manager = NetworkCloudManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         ClusterMetricsConfiguration response = manager.metricsConfigurations()
-            .define("gwn")
-            .withRegion("svkkjbjolpyokl")
-            .withExistingCluster("udayprldidwmtf", "bvtzldzchub")
-            .withExtendedLocation(new ExtendedLocation().withName("zuvigvl").withType("hfrbzakpjt"))
-            .withCollectionInterval(735504182529978592L)
-            .withTags(mapOf("hmlieoigowxxb", "znad", "qe", "tpsyi", "wanvmwdvgjqcrbko", "qwtqszzgyksik"))
-            .withEnabledMetrics(Arrays.asList("bgngcrusxhirc"))
+            .define("tvdxxhe")
+            .withRegion("mlnfyz")
+            .withExistingCluster("polzkgysdgzyy", "zoxlvoc")
+            .withExtendedLocation(new ExtendedLocation().withName("gmlilwzghjhjvmab").withType("zbwaybfmdafbgym"))
+            .withCollectionInterval(1745929206373036946L)
+            .withTags(mapOf("dbkp", "rbypi", "njhx", "jtaqhsmqazpdg"))
+            .withEnabledMetrics(Arrays.asList("sgnwdxzedpq", "rfbo"))
             .create();
 
-        Assertions.assertEquals("duvxd", response.location());
-        Assertions.assertEquals("xatm", response.tags().get("mnrs"));
-        Assertions.assertEquals("w", response.extendedLocation().name());
-        Assertions.assertEquals("ch", response.extendedLocation().type());
-        Assertions.assertEquals(5033961721581707117L, response.collectionInterval());
-        Assertions.assertEquals("dgbggcjxzh", response.enabledMetrics().get(0));
+        Assertions.assertEquals("nbg", response.location());
+        Assertions.assertEquals("ddorgmynltwmpft", response.tags().get("foeajogsy"));
+        Assertions.assertEquals("q", response.extendedLocation().name());
+        Assertions.assertEquals("btimpkjblor", response.extendedLocation().type());
+        Assertions.assertEquals(89470103286938544L, response.collectionInterval());
+        Assertions.assertEquals("iixyxvqbanosj", response.enabledMetrics().get(0));
     }
 
     // Use "Map.of" if available

@@ -22,6 +22,12 @@ public final class StartTranscriptionOptions {
     private String operationContext;
 
     /**
+     * Creates an instance of {@link StartTranscriptionOptions}.
+     */
+    public StartTranscriptionOptions() {
+    }
+
+    /**
      * Endpoint where the custom model was deployed.
      */
     private String speechRecognitionModelEndpointId;

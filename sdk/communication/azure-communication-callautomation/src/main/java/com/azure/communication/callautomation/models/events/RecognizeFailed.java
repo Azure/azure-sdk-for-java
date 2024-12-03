@@ -20,6 +20,12 @@ public final class RecognizeFailed extends CallAutomationEventBaseWithReasonCode
     private Integer failedPlaySourceIndex;
 
     /**
+     * Creates an instance of {@link RecognizeFailed}.
+     */
+    public RecognizeFailed() {
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override

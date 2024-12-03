@@ -55,7 +55,7 @@ import static com.azure.cosmos.implementation.HttpConstants.HttpHeaders.INTENDED
  * Used internally to provide functionality to communicate and process response from GATEWAY in the Azure Cosmos DB database service.
  */
 public class RxGatewayStoreModel implements RxStoreModel {
-    private static final boolean INSECURE_HTTP_CONNECTION_FOR_EMULATOR_ALLOWED = Configs.isInsecureEmulatorConnectionAllowed();
+    private static final boolean HTTP_CONNECTION_WITHOUT_TLS_ALLOWED = Configs.isHttpConnectionWithoutTLSAllowed();
 
     private final DiagnosticsClientContext clientContext;
     private final Logger logger = LoggerFactory.getLogger(RxGatewayStoreModel.class);
@@ -315,7 +315,7 @@ public class RxGatewayStoreModel implements RxStoreModel {
         }
 
         // allow using http connections if customer opt in to use http for vnext emulator
-        String scheme = INSECURE_HTTP_CONNECTION_FOR_EMULATOR_ALLOWED ? rootUri.getScheme() : "https";
+        String scheme = HTTP_CONNECTION_WITHOUT_TLS_ALLOWED ? rootUri.getScheme() : "https";
 
         return new URI(scheme,
             null,

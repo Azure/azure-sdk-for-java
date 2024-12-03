@@ -42,6 +42,8 @@ public final class CertificateContentType extends ExpandableStringEnum<Certifica
     }
 
     /**
+     * Gets the known values for {@link CertificateContentType}.
+     *
      * @return Known {@link CertificateContentType} values.
      */
     public static Collection<CertificateContentType> values() {

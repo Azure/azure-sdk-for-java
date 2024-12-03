@@ -34,23 +34,30 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.networkcloud.fluent.BareMetalMachineKeySetsClient;
 import com.azure.resourcemanager.networkcloud.fluent.models.BareMetalMachineKeySetInner;
+import com.azure.resourcemanager.networkcloud.fluent.models.OperationStatusResultInner;
 import com.azure.resourcemanager.networkcloud.models.BareMetalMachineKeySetList;
 import com.azure.resourcemanager.networkcloud.models.BareMetalMachineKeySetPatchParameters;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in BareMetalMachineKeySetsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in BareMetalMachineKeySetsClient.
+ */
 public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachineKeySetsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final BareMetalMachineKeySetsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final NetworkCloudImpl client;
 
     /**
      * Initializes an instance of BareMetalMachineKeySetsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     BareMetalMachineKeySetsClientImpl(NetworkCloudImpl client) {
@@ -128,16 +135,16 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
 
     /**
      * List bare metal machine key sets of the cluster.
-     *
-     * <p>Get a list of bare metal machine key sets for the provided cluster.
-     *
+     * 
+     * Get a list of bare metal machine key sets for the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of bare metal machine key sets for the provided cluster along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BareMetalMachineKeySetInner>> listByClusterSinglePageAsync(String resourceGroupName,
@@ -168,9 +175,9 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
 
     /**
      * List bare metal machine key sets of the cluster.
-     *
-     * <p>Get a list of bare metal machine key sets for the provided cluster.
-     *
+     * 
+     * Get a list of bare metal machine key sets for the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param context The context to associate with this operation.
@@ -178,7 +185,7 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of bare metal machine key sets for the provided cluster along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BareMetalMachineKeySetInner>> listByClusterSinglePageAsync(String resourceGroupName,
@@ -209,16 +216,16 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
 
     /**
      * List bare metal machine key sets of the cluster.
-     *
-     * <p>Get a list of bare metal machine key sets for the provided cluster.
-     *
+     * 
+     * Get a list of bare metal machine key sets for the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of bare metal machine key sets for the provided cluster as paginated response with {@link
-     *     PagedFlux}.
+     * @return a list of bare metal machine key sets for the provided cluster as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<BareMetalMachineKeySetInner> listByClusterAsync(String resourceGroupName, String clusterName) {
@@ -228,17 +235,17 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
 
     /**
      * List bare metal machine key sets of the cluster.
-     *
-     * <p>Get a list of bare metal machine key sets for the provided cluster.
-     *
+     * 
+     * Get a list of bare metal machine key sets for the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of bare metal machine key sets for the provided cluster as paginated response with {@link
-     *     PagedFlux}.
+     * @return a list of bare metal machine key sets for the provided cluster as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<BareMetalMachineKeySetInner> listByClusterAsync(String resourceGroupName, String clusterName,
@@ -249,16 +256,16 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
 
     /**
      * List bare metal machine key sets of the cluster.
-     *
-     * <p>Get a list of bare metal machine key sets for the provided cluster.
-     *
+     * 
+     * Get a list of bare metal machine key sets for the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of bare metal machine key sets for the provided cluster as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of bare metal machine key sets for the provided cluster as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BareMetalMachineKeySetInner> listByCluster(String resourceGroupName, String clusterName) {
@@ -267,17 +274,17 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
 
     /**
      * List bare metal machine key sets of the cluster.
-     *
-     * <p>Get a list of bare metal machine key sets for the provided cluster.
-     *
+     * 
+     * Get a list of bare metal machine key sets for the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of bare metal machine key sets for the provided cluster as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of bare metal machine key sets for the provided cluster as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BareMetalMachineKeySetInner> listByCluster(String resourceGroupName, String clusterName,
@@ -287,9 +294,9 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
 
     /**
      * Retrieve the bare metal machine key set of the cluster.
-     *
-     * <p>Get bare metal machine key set of the provided cluster.
-     *
+     * 
+     * Get bare metal machine key set of the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bareMetalMachineKeySetName The name of the bare metal machine key set.
@@ -297,7 +304,7 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return bare metal machine key set of the provided cluster along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<BareMetalMachineKeySetInner>> getWithResponseAsync(String resourceGroupName,
@@ -331,9 +338,9 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
 
     /**
      * Retrieve the bare metal machine key set of the cluster.
-     *
-     * <p>Get bare metal machine key set of the provided cluster.
-     *
+     * 
+     * Get bare metal machine key set of the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bareMetalMachineKeySetName The name of the bare metal machine key set.
@@ -342,7 +349,7 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return bare metal machine key set of the provided cluster along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<BareMetalMachineKeySetInner>> getWithResponseAsync(String resourceGroupName,
@@ -374,9 +381,9 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
 
     /**
      * Retrieve the bare metal machine key set of the cluster.
-     *
-     * <p>Get bare metal machine key set of the provided cluster.
-     *
+     * 
+     * Get bare metal machine key set of the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bareMetalMachineKeySetName The name of the bare metal machine key set.
@@ -394,9 +401,9 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
 
     /**
      * Retrieve the bare metal machine key set of the cluster.
-     *
-     * <p>Get bare metal machine key set of the provided cluster.
-     *
+     * 
+     * Get bare metal machine key set of the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bareMetalMachineKeySetName The name of the bare metal machine key set.
@@ -414,9 +421,9 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
 
     /**
      * Retrieve the bare metal machine key set of the cluster.
-     *
-     * <p>Get bare metal machine key set of the provided cluster.
-     *
+     * 
+     * Get bare metal machine key set of the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bareMetalMachineKeySetName The name of the bare metal machine key set.
@@ -433,9 +440,9 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
 
     /**
      * Create or update the bare metal machine key set of the cluster.
-     *
-     * <p>Create a new bare metal machine key set or update the existing one for the provided cluster.
-     *
+     * 
+     * Create a new bare metal machine key set or update the existing one for the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bareMetalMachineKeySetName The name of the bare metal machine key set.
@@ -444,7 +451,7 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return bareMetalMachineKeySet represents the bare metal machine key set along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
@@ -485,9 +492,9 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
 
     /**
      * Create or update the bare metal machine key set of the cluster.
-     *
-     * <p>Create a new bare metal machine key set or update the existing one for the provided cluster.
-     *
+     * 
+     * Create a new bare metal machine key set or update the existing one for the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bareMetalMachineKeySetName The name of the bare metal machine key set.
@@ -497,7 +504,7 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return bareMetalMachineKeySet represents the bare metal machine key set along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
@@ -537,9 +544,9 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
 
     /**
      * Create or update the bare metal machine key set of the cluster.
-     *
-     * <p>Create a new bare metal machine key set or update the existing one for the provided cluster.
-     *
+     * 
+     * Create a new bare metal machine key set or update the existing one for the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bareMetalMachineKeySetName The name of the bare metal machine key set.
@@ -562,9 +569,9 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
 
     /**
      * Create or update the bare metal machine key set of the cluster.
-     *
-     * <p>Create a new bare metal machine key set or update the existing one for the provided cluster.
-     *
+     * 
+     * Create a new bare metal machine key set or update the existing one for the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bareMetalMachineKeySetName The name of the bare metal machine key set.
@@ -589,9 +596,9 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
 
     /**
      * Create or update the bare metal machine key set of the cluster.
-     *
-     * <p>Create a new bare metal machine key set or update the existing one for the provided cluster.
-     *
+     * 
+     * Create a new bare metal machine key set or update the existing one for the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bareMetalMachineKeySetName The name of the bare metal machine key set.
@@ -613,9 +620,9 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
 
     /**
      * Create or update the bare metal machine key set of the cluster.
-     *
-     * <p>Create a new bare metal machine key set or update the existing one for the provided cluster.
-     *
+     * 
+     * Create a new bare metal machine key set or update the existing one for the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bareMetalMachineKeySetName The name of the bare metal machine key set.
@@ -638,9 +645,9 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
 
     /**
      * Create or update the bare metal machine key set of the cluster.
-     *
-     * <p>Create a new bare metal machine key set or update the existing one for the provided cluster.
-     *
+     * 
+     * Create a new bare metal machine key set or update the existing one for the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bareMetalMachineKeySetName The name of the bare metal machine key set.
@@ -648,8 +655,8 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return bareMetalMachineKeySet represents the bare metal machine key set on successful completion of {@link
-     *     Mono}.
+     * @return bareMetalMachineKeySet represents the bare metal machine key set on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<BareMetalMachineKeySetInner> createOrUpdateAsync(String resourceGroupName, String clusterName,
@@ -660,9 +667,9 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
 
     /**
      * Create or update the bare metal machine key set of the cluster.
-     *
-     * <p>Create a new bare metal machine key set or update the existing one for the provided cluster.
-     *
+     * 
+     * Create a new bare metal machine key set or update the existing one for the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bareMetalMachineKeySetName The name of the bare metal machine key set.
@@ -671,8 +678,8 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return bareMetalMachineKeySet represents the bare metal machine key set on successful completion of {@link
-     *     Mono}.
+     * @return bareMetalMachineKeySet represents the bare metal machine key set on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<BareMetalMachineKeySetInner> createOrUpdateAsync(String resourceGroupName, String clusterName,
@@ -684,9 +691,9 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
 
     /**
      * Create or update the bare metal machine key set of the cluster.
-     *
-     * <p>Create a new bare metal machine key set or update the existing one for the provided cluster.
-     *
+     * 
+     * Create a new bare metal machine key set or update the existing one for the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bareMetalMachineKeySetName The name of the bare metal machine key set.
@@ -705,9 +712,9 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
 
     /**
      * Create or update the bare metal machine key set of the cluster.
-     *
-     * <p>Create a new bare metal machine key set or update the existing one for the provided cluster.
-     *
+     * 
+     * Create a new bare metal machine key set or update the existing one for the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bareMetalMachineKeySetName The name of the bare metal machine key set.
@@ -728,16 +735,17 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
 
     /**
      * Delete the bare metal machine key set of the cluster.
-     *
-     * <p>Delete the bare metal machine key set of the provided cluster.
-     *
+     * 
+     * Delete the bare metal machine key set of the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bareMetalMachineKeySetName The name of the bare metal machine key set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String clusterName,
@@ -771,9 +779,9 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
 
     /**
      * Delete the bare metal machine key set of the cluster.
-     *
-     * <p>Delete the bare metal machine key set of the provided cluster.
-     *
+     * 
+     * Delete the bare metal machine key set of the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bareMetalMachineKeySetName The name of the bare metal machine key set.
@@ -781,7 +789,8 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the current status of an async operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String clusterName,
@@ -813,31 +822,32 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
 
     /**
      * Delete the bare metal machine key set of the cluster.
-     *
-     * <p>Delete the bare metal machine key set of the provided cluster.
-     *
+     * 
+     * Delete the bare metal machine key set of the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bareMetalMachineKeySetName The name of the bare metal machine key set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String clusterName,
-        String bareMetalMachineKeySetName) {
+    private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginDeleteAsync(String resourceGroupName, String clusterName, String bareMetalMachineKeySetName) {
         Mono<Response<Flux<ByteBuffer>>> mono
             = deleteWithResponseAsync(resourceGroupName, clusterName, bareMetalMachineKeySetName);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+        return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(mono,
+            this.client.getHttpPipeline(), OperationStatusResultInner.class, OperationStatusResultInner.class,
             this.client.getContext());
     }
 
     /**
      * Delete the bare metal machine key set of the cluster.
-     *
-     * <p>Delete the bare metal machine key set of the provided cluster.
-     *
+     * 
+     * Delete the bare metal machine key set of the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bareMetalMachineKeySetName The name of the bare metal machine key set.
@@ -845,42 +855,42 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String clusterName,
-        String bareMetalMachineKeySetName, Context context) {
+    private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginDeleteAsync(
+        String resourceGroupName, String clusterName, String bareMetalMachineKeySetName, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono
             = deleteWithResponseAsync(resourceGroupName, clusterName, bareMetalMachineKeySetName, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
+        return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(mono,
+            this.client.getHttpPipeline(), OperationStatusResultInner.class, OperationStatusResultInner.class, context);
     }
 
     /**
      * Delete the bare metal machine key set of the cluster.
-     *
-     * <p>Delete the bare metal machine key set of the provided cluster.
-     *
+     * 
+     * Delete the bare metal machine key set of the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bareMetalMachineKeySetName The name of the bare metal machine key set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName,
-        String bareMetalMachineKeySetName) {
+    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginDelete(String resourceGroupName, String clusterName, String bareMetalMachineKeySetName) {
         return this.beginDeleteAsync(resourceGroupName, clusterName, bareMetalMachineKeySetName).getSyncPoller();
     }
 
     /**
      * Delete the bare metal machine key set of the cluster.
-     *
-     * <p>Delete the bare metal machine key set of the provided cluster.
-     *
+     * 
+     * Delete the bare metal machine key set of the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bareMetalMachineKeySetName The name of the bare metal machine key set.
@@ -888,39 +898,40 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName,
-        String bareMetalMachineKeySetName, Context context) {
+    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginDelete(String resourceGroupName, String clusterName, String bareMetalMachineKeySetName, Context context) {
         return this.beginDeleteAsync(resourceGroupName, clusterName, bareMetalMachineKeySetName, context)
             .getSyncPoller();
     }
 
     /**
      * Delete the bare metal machine key set of the cluster.
-     *
-     * <p>Delete the bare metal machine key set of the provided cluster.
-     *
+     * 
+     * Delete the bare metal machine key set of the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bareMetalMachineKeySetName The name of the bare metal machine key set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the current status of an async operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String clusterName, String bareMetalMachineKeySetName) {
+    private Mono<OperationStatusResultInner> deleteAsync(String resourceGroupName, String clusterName,
+        String bareMetalMachineKeySetName) {
         return beginDeleteAsync(resourceGroupName, clusterName, bareMetalMachineKeySetName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete the bare metal machine key set of the cluster.
-     *
-     * <p>Delete the bare metal machine key set of the provided cluster.
-     *
+     * 
+     * Delete the bare metal machine key set of the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bareMetalMachineKeySetName The name of the bare metal machine key set.
@@ -928,37 +939,39 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the current status of an async operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String clusterName, String bareMetalMachineKeySetName,
-        Context context) {
+    private Mono<OperationStatusResultInner> deleteAsync(String resourceGroupName, String clusterName,
+        String bareMetalMachineKeySetName, Context context) {
         return beginDeleteAsync(resourceGroupName, clusterName, bareMetalMachineKeySetName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete the bare metal machine key set of the cluster.
-     *
-     * <p>Delete the bare metal machine key set of the provided cluster.
-     *
+     * 
+     * Delete the bare metal machine key set of the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bareMetalMachineKeySetName The name of the bare metal machine key set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String clusterName, String bareMetalMachineKeySetName) {
-        deleteAsync(resourceGroupName, clusterName, bareMetalMachineKeySetName).block();
+    public OperationStatusResultInner delete(String resourceGroupName, String clusterName,
+        String bareMetalMachineKeySetName) {
+        return deleteAsync(resourceGroupName, clusterName, bareMetalMachineKeySetName).block();
     }
 
     /**
      * Delete the bare metal machine key set of the cluster.
-     *
-     * <p>Delete the bare metal machine key set of the provided cluster.
-     *
+     * 
+     * Delete the bare metal machine key set of the provided cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bareMetalMachineKeySetName The name of the bare metal machine key set.
@@ -966,19 +979,20 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String clusterName, String bareMetalMachineKeySetName,
-        Context context) {
-        deleteAsync(resourceGroupName, clusterName, bareMetalMachineKeySetName, context).block();
+    public OperationStatusResultInner delete(String resourceGroupName, String clusterName,
+        String bareMetalMachineKeySetName, Context context) {
+        return deleteAsync(resourceGroupName, clusterName, bareMetalMachineKeySetName, context).block();
     }
 
     /**
      * Patch bare metal machine key set of the cluster.
-     *
-     * <p>Patch properties of bare metal machine key set for the provided cluster, or update the tags associated with
-     * it. Properties and tag updates can be done independently.
-     *
+     * 
+     * Patch properties of bare metal machine key set for the provided cluster, or update the tags associated with it.
+     * Properties and tag updates can be done independently.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bareMetalMachineKeySetName The name of the bare metal machine key set.
@@ -987,7 +1001,7 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return bareMetalMachineKeySet represents the bare metal machine key set along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String clusterName,
@@ -1025,10 +1039,10 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
 
     /**
      * Patch bare metal machine key set of the cluster.
-     *
-     * <p>Patch properties of bare metal machine key set for the provided cluster, or update the tags associated with
-     * it. Properties and tag updates can be done independently.
-     *
+     * 
+     * Patch properties of bare metal machine key set for the provided cluster, or update the tags associated with it.
+     * Properties and tag updates can be done independently.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bareMetalMachineKeySetName The name of the bare metal machine key set.
@@ -1038,7 +1052,7 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return bareMetalMachineKeySet represents the bare metal machine key set along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String clusterName,
@@ -1075,10 +1089,10 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
 
     /**
      * Patch bare metal machine key set of the cluster.
-     *
-     * <p>Patch properties of bare metal machine key set for the provided cluster, or update the tags associated with
-     * it. Properties and tag updates can be done independently.
-     *
+     * 
+     * Patch properties of bare metal machine key set for the provided cluster, or update the tags associated with it.
+     * Properties and tag updates can be done independently.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bareMetalMachineKeySetName The name of the bare metal machine key set.
@@ -1101,10 +1115,10 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
 
     /**
      * Patch bare metal machine key set of the cluster.
-     *
-     * <p>Patch properties of bare metal machine key set for the provided cluster, or update the tags associated with
-     * it. Properties and tag updates can be done independently.
-     *
+     * 
+     * Patch properties of bare metal machine key set for the provided cluster, or update the tags associated with it.
+     * Properties and tag updates can be done independently.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bareMetalMachineKeySetName The name of the bare metal machine key set.
@@ -1126,10 +1140,10 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
 
     /**
      * Patch bare metal machine key set of the cluster.
-     *
-     * <p>Patch properties of bare metal machine key set for the provided cluster, or update the tags associated with
-     * it. Properties and tag updates can be done independently.
-     *
+     * 
+     * Patch properties of bare metal machine key set for the provided cluster, or update the tags associated with it.
+     * Properties and tag updates can be done independently.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bareMetalMachineKeySetName The name of the bare metal machine key set.
@@ -1154,10 +1168,10 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
 
     /**
      * Patch bare metal machine key set of the cluster.
-     *
-     * <p>Patch properties of bare metal machine key set for the provided cluster, or update the tags associated with
-     * it. Properties and tag updates can be done independently.
-     *
+     * 
+     * Patch properties of bare metal machine key set for the provided cluster, or update the tags associated with it.
+     * Properties and tag updates can be done independently.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bareMetalMachineKeySetName The name of the bare metal machine key set.
@@ -1178,10 +1192,10 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
 
     /**
      * Patch bare metal machine key set of the cluster.
-     *
-     * <p>Patch properties of bare metal machine key set for the provided cluster, or update the tags associated with
-     * it. Properties and tag updates can be done independently.
-     *
+     * 
+     * Patch properties of bare metal machine key set for the provided cluster, or update the tags associated with it.
+     * Properties and tag updates can be done independently.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bareMetalMachineKeySetName The name of the bare metal machine key set.
@@ -1204,10 +1218,10 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
 
     /**
      * Patch bare metal machine key set of the cluster.
-     *
-     * <p>Patch properties of bare metal machine key set for the provided cluster, or update the tags associated with
-     * it. Properties and tag updates can be done independently.
-     *
+     * 
+     * Patch properties of bare metal machine key set for the provided cluster, or update the tags associated with it.
+     * Properties and tag updates can be done independently.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bareMetalMachineKeySetName The name of the bare metal machine key set.
@@ -1215,8 +1229,8 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return bareMetalMachineKeySet represents the bare metal machine key set on successful completion of {@link
-     *     Mono}.
+     * @return bareMetalMachineKeySet represents the bare metal machine key set on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<BareMetalMachineKeySetInner> updateAsync(String resourceGroupName, String clusterName,
@@ -1228,18 +1242,18 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
 
     /**
      * Patch bare metal machine key set of the cluster.
-     *
-     * <p>Patch properties of bare metal machine key set for the provided cluster, or update the tags associated with
-     * it. Properties and tag updates can be done independently.
-     *
+     * 
+     * Patch properties of bare metal machine key set for the provided cluster, or update the tags associated with it.
+     * Properties and tag updates can be done independently.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bareMetalMachineKeySetName The name of the bare metal machine key set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return bareMetalMachineKeySet represents the bare metal machine key set on successful completion of {@link
-     *     Mono}.
+     * @return bareMetalMachineKeySet represents the bare metal machine key set on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<BareMetalMachineKeySetInner> updateAsync(String resourceGroupName, String clusterName,
@@ -1251,10 +1265,10 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
 
     /**
      * Patch bare metal machine key set of the cluster.
-     *
-     * <p>Patch properties of bare metal machine key set for the provided cluster, or update the tags associated with
-     * it. Properties and tag updates can be done independently.
-     *
+     * 
+     * Patch properties of bare metal machine key set for the provided cluster, or update the tags associated with it.
+     * Properties and tag updates can be done independently.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bareMetalMachineKeySetName The name of the bare metal machine key set.
@@ -1263,8 +1277,8 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return bareMetalMachineKeySet represents the bare metal machine key set on successful completion of {@link
-     *     Mono}.
+     * @return bareMetalMachineKeySet represents the bare metal machine key set on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<BareMetalMachineKeySetInner> updateAsync(String resourceGroupName, String clusterName,
@@ -1276,10 +1290,10 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
 
     /**
      * Patch bare metal machine key set of the cluster.
-     *
-     * <p>Patch properties of bare metal machine key set for the provided cluster, or update the tags associated with
-     * it. Properties and tag updates can be done independently.
-     *
+     * 
+     * Patch properties of bare metal machine key set for the provided cluster, or update the tags associated with it.
+     * Properties and tag updates can be done independently.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bareMetalMachineKeySetName The name of the bare metal machine key set.
@@ -1298,10 +1312,10 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
 
     /**
      * Patch bare metal machine key set of the cluster.
-     *
-     * <p>Patch properties of bare metal machine key set for the provided cluster, or update the tags associated with
-     * it. Properties and tag updates can be done independently.
-     *
+     * 
+     * Patch properties of bare metal machine key set for the provided cluster, or update the tags associated with it.
+     * Properties and tag updates can be done independently.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bareMetalMachineKeySetName The name of the bare metal machine key set.
@@ -1322,14 +1336,13 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return bareMetalMachineKeySetList represents a list of bare metal machine key sets along with {@link
-     *     PagedResponse} on successful completion of {@link Mono}.
+     * @return bareMetalMachineKeySetList represents a list of bare metal machine key sets along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BareMetalMachineKeySetInner>> listByClusterNextSinglePageAsync(String nextLink) {
@@ -1350,15 +1363,14 @@ public final class BareMetalMachineKeySetsClientImpl implements BareMetalMachine
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return bareMetalMachineKeySetList represents a list of bare metal machine key sets along with {@link
-     *     PagedResponse} on successful completion of {@link Mono}.
+     * @return bareMetalMachineKeySetList represents a list of bare metal machine key sets along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BareMetalMachineKeySetInner>> listByClusterNextSinglePageAsync(String nextLink,

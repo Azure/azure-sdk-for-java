@@ -8,30 +8,27 @@ import com.azure.resourcemanager.networkcloud.models.BareMetalMachineCommandSpec
 import com.azure.resourcemanager.networkcloud.models.BareMetalMachineRunDataExtractsParameters;
 import java.util.Arrays;
 
-/** Samples for BareMetalMachines RunDataExtracts. */
+/**
+ * Samples for BareMetalMachines RunDataExtracts.
+ */
 public final class BareMetalMachinesRunDataExtractsSamples {
     /*
-     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2023-07-01/examples/BareMetalMachines_RunDataExtracts.json
+     * x-ms-original-file:
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-06-01-preview/examples/
+     * BareMetalMachines_RunDataExtracts.json
      */
     /**
      * Sample code: Run data extraction on bare metal machine.
-     *
+     * 
      * @param manager Entry point to NetworkCloudManager.
      */
-    public static void runDataExtractionOnBareMetalMachine(
-        com.azure.resourcemanager.networkcloud.NetworkCloudManager manager) {
-        manager
-            .bareMetalMachines()
-            .runDataExtracts(
-                "resourceGroupName",
-                "bareMetalMachineName",
-                new BareMetalMachineRunDataExtractsParameters()
-                    .withCommands(
-                        Arrays
-                            .asList(
-                                new BareMetalMachineCommandSpecification()
-                                    .withArguments(Arrays.asList("SysInfo", "TTYLog"))
-                                    .withCommand("hardware-support-data-collection")))
+    public static void
+        runDataExtractionOnBareMetalMachine(com.azure.resourcemanager.networkcloud.NetworkCloudManager manager) {
+        manager.bareMetalMachines()
+            .runDataExtracts("resourceGroupName", "bareMetalMachineName",
+                new BareMetalMachineRunDataExtractsParameters().withCommands(Arrays
+                    .asList(new BareMetalMachineCommandSpecification().withArguments(Arrays.asList("SysInfo", "TTYLog"))
+                        .withCommand("hardware-support-data-collection")))
                     .withLimitTimeSeconds(60L),
                 com.azure.core.util.Context.NONE);
     }

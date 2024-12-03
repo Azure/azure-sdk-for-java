@@ -18,6 +18,12 @@ public class ShareFilePermission {
     private String permission;
 
     /**
+     * Creates a new instance of {@link ShareFilePermission}.
+     */
+    public ShareFilePermission() {
+    }
+
+    /**
      * Get the format of file permission.
      *
      * @return the format of file permission.

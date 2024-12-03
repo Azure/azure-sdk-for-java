@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.{CosmosException, spark}
+import com.azure.cosmos.CosmosException
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple
 import com.azure.cosmos.models.FeedResponse
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
@@ -14,9 +14,8 @@ import java.util.concurrent.atomic.{AtomicLong, AtomicReference}
 import scala.util.Random
 import scala.util.control.Breaks
 import scala.concurrent.{Await, ExecutionContext, Future}
-import com.azure.cosmos.implementation.OperationCancelledException
+import com.azure.cosmos.implementation.{ChangeFeedSparkRowItem, OperationCancelledException, SparkBridgeImplementationInternal}
 
-import scala.concurrent.duration.FiniteDuration
 
 // scalastyle:off underscore.import
 import scala.collection.JavaConverters._
@@ -42,7 +41,8 @@ private class TransientIOErrorsRetryingIterator[TSparkRow]
   val cosmosPagedFluxFactory: String => CosmosPagedFlux[TSparkRow],
   val pageSize: Int,
   val pagePrefetchBufferSize: Int,
-  val operationContextAndListener: Option[OperationContextAndListenerTuple]
+  val operationContextAndListener: Option[OperationContextAndListenerTuple],
+  val endLsn: Option[Long]
 ) extends BufferedIterator[TSparkRow] with BasicLoggingTrait with AutoCloseable {
 
   private[spark] var maxRetryIntervalInMs = CosmosConstants.maxRetryIntervalForTransientFailuresInMs
@@ -162,7 +162,7 @@ private class TransientIOErrorsRetryingIterator[TSparkRow]
         val iteratorCandidate = feedResponse.getResults.iterator().asScala.buffered
         lastContinuationToken.set(feedResponse.getContinuationToken)
 
-        if (iteratorCandidate.hasNext) {
+        if (iteratorCandidate.hasNext && validateNextLsn(iteratorCandidate)) {
           currentItemIterator = Some(iteratorCandidate)
           Some(true)
         } else {
@@ -178,7 +178,7 @@ private class TransientIOErrorsRetryingIterator[TSparkRow]
 
   private def hasBufferedNext: Boolean = {
     currentItemIterator match {
-      case Some(iterator) => if (iterator.hasNext) {
+      case Some(iterator) => if (iterator.hasNext && validateNextLsn(iterator)) {
         true
       } else {
         currentItemIterator = None
@@ -237,6 +237,27 @@ private class TransientIOErrorsRetryingIterator[TSparkRow]
     }
 
     returnValue.get
+  }
+
+  private[this] def validateNextLsn(itemIterator: BufferedIterator[TSparkRow]): Boolean = {
+    this.endLsn match {
+      case None =>
+        // Only relevant in change feed
+        // In batch mode endLsn is cleared - we will always continue reading until the change feed is
+        // completely drained so all partitions return 304
+        true
+      case Some(endLsn) =>
+        // In streaming mode we only continue until we hit the endOffset's continuation Lsn
+        if (itemIterator.isEmpty) {
+          return false
+        }
+        val node = itemIterator.head.asInstanceOf[ChangeFeedSparkRowItem]
+        assert(node.lsn != null, "Change feed responses must have _lsn property.")
+        assert(node.lsn != "", "Change feed responses must have non empty _lsn.")
+        val nextLsn = SparkBridgeImplementationInternal.toLsn(node.lsn)
+
+        nextLsn <= endLsn
+    }
   }
 
   //  Correct way to cancel a flux and dispose it

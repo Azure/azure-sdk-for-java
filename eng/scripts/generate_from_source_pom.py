@@ -109,9 +109,18 @@ def create_from_source_pom(artifacts_list: str, additional_modules_list: str, se
     sparse_checkout_directories: Set[str] = set()
     service_directories: Set[str] = set()
     for p in source_projects:
-        # get the service directory, which is one level up from the library's directory
-        sparse_checkout_directory = '/'.join(p.directory_path.split('/')[0:-1])
+        # Get the service directory. If there's a ci.yml file in the directory path then
+        # the directory path needs to be added to the sparse checkout, otherwise it's one
+        # directory up.
+        proj_path = os.path.normpath(root_path + p.directory_path )
+        proj_path_with_yml = os.path.normpath(proj_path + "/ci.yml")
+        if os.path.exists(proj_path_with_yml):
+            sparse_checkout_directory = p.directory_path
+        else:
+            sparse_checkout_directory = '/'.join(p.directory_path.split('/')[0:-1])
+
         sparse_checkout_directories.add(sparse_checkout_directory)
+
         # The ServiceDirectories list should only ever contain the list of service
         # directories for the project list and nothing else.
         if p.identifier in artifacts_list_identifiers:

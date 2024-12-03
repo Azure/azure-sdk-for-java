@@ -10,7 +10,7 @@ package com.azure.resourcemanager.appservice.generated;
 public final class AppServicePlansDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/DeleteAppServicePlan.json
+     * specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/DeleteAppServicePlan.json
      */
     /**
      * Sample code: Delete App Service plan.

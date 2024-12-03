@@ -42,6 +42,7 @@ import com.azure.cosmos.implementation.directconnectivity.StoreClient;
 import com.azure.cosmos.implementation.directconnectivity.StoreClientFactory;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
+import com.azure.cosmos.implementation.http.Http2ConnectionConfig;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpClientConfig;
 import com.azure.cosmos.implementation.http.HttpHeaders;
@@ -95,7 +96,6 @@ import reactor.core.publisher.Mono;
 import reactor.core.publisher.SignalType;
 import reactor.util.concurrent.Queues;
 import reactor.util.function.Tuple2;
-import reactor.util.retry.Retry;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -831,7 +831,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             .withMaxIdleConnectionTimeout(this.connectionPolicy.getIdleHttpConnectionTimeout())
             .withPoolSize(this.connectionPolicy.getMaxConnectionPoolSize())
             .withProxy(this.connectionPolicy.getProxy())
-            .withNetworkRequestTimeout(this.connectionPolicy.getHttpNetworkRequestTimeout());
+            .withNetworkRequestTimeout(this.connectionPolicy.getHttpNetworkRequestTimeout())
+            .withServerCertValidationDisabled(this.connectionPolicy.isServerCertValidationDisabled())
+            .withHttp2Config(new Http2ConnectionConfig());
 
         if (connectionSharingAcrossClientsEnabled) {
             return SharedGatewayHttpClient.getOrCreateInstance(httpClientConfig, diagnosticsClientConfig);

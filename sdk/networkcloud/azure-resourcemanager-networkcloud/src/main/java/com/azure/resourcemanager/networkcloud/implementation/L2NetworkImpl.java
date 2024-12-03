@@ -187,8 +187,8 @@ public final class L2NetworkImpl implements L2Network, L2Network.Definition, L2N
         com.azure.resourcemanager.networkcloud.NetworkCloudManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.l2NetworkName = Utils.getValueFromIdByName(innerObject.id(), "l2Networks");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.l2NetworkName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "l2Networks");
     }
 
     public L2Network refresh() {

@@ -12,6 +12,7 @@ import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
+import com.azure.core.annotation.Patch;
 import com.azure.core.annotation.PathParam;
 import com.azure.core.annotation.Put;
 import com.azure.core.annotation.QueryParam;
@@ -33,7 +34,10 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.cognitiveservices.fluent.DeploymentsClient;
 import com.azure.resourcemanager.cognitiveservices.fluent.models.DeploymentInner;
+import com.azure.resourcemanager.cognitiveservices.fluent.models.SkuResourceInner;
 import com.azure.resourcemanager.cognitiveservices.models.DeploymentListResult;
+import com.azure.resourcemanager.cognitiveservices.models.DeploymentSkuListResult;
+import com.azure.resourcemanager.cognitiveservices.models.PatchResourceTagsAndSku;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -100,10 +104,30 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
             Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/deployments/{deploymentName}")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("deploymentName") String deploymentName,
+            @BodyParam("application/json") PatchResourceTagsAndSku deployment, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/deployments/{deploymentName}")
         @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("deploymentName") String deploymentName, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/deployments/{deploymentName}/skus")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<DeploymentSkuListResult>> listSkus(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("deploymentName") String deploymentName, @HeaderParam("Accept") String accept, Context context);
@@ -114,6 +138,14 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DeploymentListResult>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<DeploymentSkuListResult>> listSkusNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -645,6 +677,255 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
     }
 
     /**
+     * Update specified deployments associated with the Cognitive Services account.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of Cognitive Services account.
+     * @param deploymentName The name of the deployment associated with the Cognitive Services Account.
+     * @param deployment The deployment properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cognitive Services account deployment along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String accountName,
+        String deploymentName, PatchResourceTagsAndSku deployment) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (deploymentName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
+        }
+        if (deployment == null) {
+            return Mono.error(new IllegalArgumentException("Parameter deployment is required and cannot be null."));
+        } else {
+            deployment.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.update(this.client.getEndpoint(), resourceGroupName, accountName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), deploymentName, deployment, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Update specified deployments associated with the Cognitive Services account.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of Cognitive Services account.
+     * @param deploymentName The name of the deployment associated with the Cognitive Services Account.
+     * @param deployment The deployment properties.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cognitive Services account deployment along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String accountName,
+        String deploymentName, PatchResourceTagsAndSku deployment, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (deploymentName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
+        }
+        if (deployment == null) {
+            return Mono.error(new IllegalArgumentException("Parameter deployment is required and cannot be null."));
+        } else {
+            deployment.validate();
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.update(this.client.getEndpoint(), resourceGroupName, accountName, this.client.getApiVersion(),
+            this.client.getSubscriptionId(), deploymentName, deployment, accept, context);
+    }
+
+    /**
+     * Update specified deployments associated with the Cognitive Services account.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of Cognitive Services account.
+     * @param deploymentName The name of the deployment associated with the Cognitive Services Account.
+     * @param deployment The deployment properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of cognitive Services account deployment.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<DeploymentInner>, DeploymentInner> beginUpdateAsync(String resourceGroupName,
+        String accountName, String deploymentName, PatchResourceTagsAndSku deployment) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, accountName, deploymentName, deployment);
+        return this.client.<DeploymentInner, DeploymentInner>getLroResult(mono, this.client.getHttpPipeline(),
+            DeploymentInner.class, DeploymentInner.class, this.client.getContext());
+    }
+
+    /**
+     * Update specified deployments associated with the Cognitive Services account.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of Cognitive Services account.
+     * @param deploymentName The name of the deployment associated with the Cognitive Services Account.
+     * @param deployment The deployment properties.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of cognitive Services account deployment.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<DeploymentInner>, DeploymentInner> beginUpdateAsync(String resourceGroupName,
+        String accountName, String deploymentName, PatchResourceTagsAndSku deployment, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, accountName, deploymentName, deployment, context);
+        return this.client.<DeploymentInner, DeploymentInner>getLroResult(mono, this.client.getHttpPipeline(),
+            DeploymentInner.class, DeploymentInner.class, context);
+    }
+
+    /**
+     * Update specified deployments associated with the Cognitive Services account.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of Cognitive Services account.
+     * @param deploymentName The name of the deployment associated with the Cognitive Services Account.
+     * @param deployment The deployment properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of cognitive Services account deployment.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<DeploymentInner>, DeploymentInner> beginUpdate(String resourceGroupName,
+        String accountName, String deploymentName, PatchResourceTagsAndSku deployment) {
+        return this.beginUpdateAsync(resourceGroupName, accountName, deploymentName, deployment).getSyncPoller();
+    }
+
+    /**
+     * Update specified deployments associated with the Cognitive Services account.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of Cognitive Services account.
+     * @param deploymentName The name of the deployment associated with the Cognitive Services Account.
+     * @param deployment The deployment properties.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of cognitive Services account deployment.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<DeploymentInner>, DeploymentInner> beginUpdate(String resourceGroupName,
+        String accountName, String deploymentName, PatchResourceTagsAndSku deployment, Context context) {
+        return this.beginUpdateAsync(resourceGroupName, accountName, deploymentName, deployment, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Update specified deployments associated with the Cognitive Services account.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of Cognitive Services account.
+     * @param deploymentName The name of the deployment associated with the Cognitive Services Account.
+     * @param deployment The deployment properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cognitive Services account deployment on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<DeploymentInner> updateAsync(String resourceGroupName, String accountName, String deploymentName,
+        PatchResourceTagsAndSku deployment) {
+        return beginUpdateAsync(resourceGroupName, accountName, deploymentName, deployment).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Update specified deployments associated with the Cognitive Services account.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of Cognitive Services account.
+     * @param deploymentName The name of the deployment associated with the Cognitive Services Account.
+     * @param deployment The deployment properties.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cognitive Services account deployment on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<DeploymentInner> updateAsync(String resourceGroupName, String accountName, String deploymentName,
+        PatchResourceTagsAndSku deployment, Context context) {
+        return beginUpdateAsync(resourceGroupName, accountName, deploymentName, deployment, context).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Update specified deployments associated with the Cognitive Services account.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of Cognitive Services account.
+     * @param deploymentName The name of the deployment associated with the Cognitive Services Account.
+     * @param deployment The deployment properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cognitive Services account deployment.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DeploymentInner update(String resourceGroupName, String accountName, String deploymentName,
+        PatchResourceTagsAndSku deployment) {
+        return updateAsync(resourceGroupName, accountName, deploymentName, deployment).block();
+    }
+
+    /**
+     * Update specified deployments associated with the Cognitive Services account.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of Cognitive Services account.
+     * @param deploymentName The name of the deployment associated with the Cognitive Services Account.
+     * @param deployment The deployment properties.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cognitive Services account deployment.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DeploymentInner update(String resourceGroupName, String accountName, String deploymentName,
+        PatchResourceTagsAndSku deployment, Context context) {
+        return updateAsync(resourceGroupName, accountName, deploymentName, deployment, context).block();
+    }
+
+    /**
      * Deletes the specified deployment associated with the Cognitive Services account.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -866,6 +1147,165 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
     }
 
     /**
+     * Lists the specified deployments skus associated with the Cognitive Services account.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of Cognitive Services account.
+     * @param deploymentName The name of the deployment associated with the Cognitive Services Account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of cognitive services accounts operation response along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<SkuResourceInner>> listSkusSinglePageAsync(String resourceGroupName, String accountName,
+        String deploymentName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (deploymentName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.listSkus(this.client.getEndpoint(), resourceGroupName, accountName,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), deploymentName, accept, context))
+            .<PagedResponse<SkuResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Lists the specified deployments skus associated with the Cognitive Services account.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of Cognitive Services account.
+     * @param deploymentName The name of the deployment associated with the Cognitive Services Account.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of cognitive services accounts operation response along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<SkuResourceInner>> listSkusSinglePageAsync(String resourceGroupName, String accountName,
+        String deploymentName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (deploymentName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter deploymentName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .listSkus(this.client.getEndpoint(), resourceGroupName, accountName, this.client.getApiVersion(),
+                this.client.getSubscriptionId(), deploymentName, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
+    }
+
+    /**
+     * Lists the specified deployments skus associated with the Cognitive Services account.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of Cognitive Services account.
+     * @param deploymentName The name of the deployment associated with the Cognitive Services Account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of cognitive services accounts operation response as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<SkuResourceInner> listSkusAsync(String resourceGroupName, String accountName,
+        String deploymentName) {
+        return new PagedFlux<>(() -> listSkusSinglePageAsync(resourceGroupName, accountName, deploymentName),
+            nextLink -> listSkusNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Lists the specified deployments skus associated with the Cognitive Services account.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of Cognitive Services account.
+     * @param deploymentName The name of the deployment associated with the Cognitive Services Account.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of cognitive services accounts operation response as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<SkuResourceInner> listSkusAsync(String resourceGroupName, String accountName,
+        String deploymentName, Context context) {
+        return new PagedFlux<>(() -> listSkusSinglePageAsync(resourceGroupName, accountName, deploymentName, context),
+            nextLink -> listSkusNextSinglePageAsync(nextLink, context));
+    }
+
+    /**
+     * Lists the specified deployments skus associated with the Cognitive Services account.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of Cognitive Services account.
+     * @param deploymentName The name of the deployment associated with the Cognitive Services Account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of cognitive services accounts operation response as paginated response with
+     * {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<SkuResourceInner> listSkus(String resourceGroupName, String accountName,
+        String deploymentName) {
+        return new PagedIterable<>(listSkusAsync(resourceGroupName, accountName, deploymentName));
+    }
+
+    /**
+     * Lists the specified deployments skus associated with the Cognitive Services account.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of Cognitive Services account.
+     * @param deploymentName The name of the deployment associated with the Cognitive Services Account.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of cognitive services accounts operation response as paginated response with
+     * {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<SkuResourceInner> listSkus(String resourceGroupName, String accountName, String deploymentName,
+        Context context) {
+        return new PagedIterable<>(listSkusAsync(resourceGroupName, accountName, deploymentName, context));
+    }
+
+    /**
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -914,6 +1354,60 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of cognitive services accounts operation response along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<SkuResourceInner>> listSkusNextSinglePageAsync(String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.listSkusNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<SkuResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of cognitive services accounts operation response along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<SkuResourceInner>> listSkusNextSinglePageAsync(String nextLink, Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.listSkusNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }

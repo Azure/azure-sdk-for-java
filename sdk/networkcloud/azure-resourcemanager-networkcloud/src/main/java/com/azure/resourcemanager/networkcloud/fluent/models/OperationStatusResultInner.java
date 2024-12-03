@@ -6,75 +6,98 @@ package com.azure.resourcemanager.networkcloud.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.exception.ManagementError;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** The current status of an async operation. */
+/**
+ * The current status of an async operation.
+ */
 @Fluent
-public final class OperationStatusResultInner {
-    /*
-     * Fully qualified ID for the async operation.
-     */
-    @JsonProperty(value = "id")
-    private String id;
-
-    /*
-     * Fully qualified ID of the resource against which the original async operation was started.
-     */
-    @JsonProperty(value = "resourceId", access = JsonProperty.Access.WRITE_ONLY)
-    private String resourceId;
-
-    /*
-     * Name of the async operation.
-     */
-    @JsonProperty(value = "name")
-    private String name;
-
-    /*
-     * Operation status.
-     */
-    @JsonProperty(value = "status", required = true)
-    private String status;
-
-    /*
-     * Percent of the operation that is complete.
-     */
-    @JsonProperty(value = "percentComplete")
-    private Float percentComplete;
-
-    /*
-     * The start time of the operation.
-     */
-    @JsonProperty(value = "startTime")
-    private OffsetDateTime startTime;
-
+public final class OperationStatusResultInner implements JsonSerializable<OperationStatusResultInner> {
     /*
      * The end time of the operation.
      */
-    @JsonProperty(value = "endTime")
     private OffsetDateTime endTime;
-
-    /*
-     * The operations list.
-     */
-    @JsonProperty(value = "operations")
-    private List<OperationStatusResultInner> operations;
 
     /*
      * If present, details of the operation error.
      */
-    @JsonProperty(value = "error")
     private ManagementError error;
 
-    /** Creates an instance of OperationStatusResultInner class. */
+    /*
+     * Fully qualified ID for the async operation.
+     */
+    private String id;
+
+    /*
+     * Name of the async operation.
+     */
+    private String name;
+
+    /*
+     * The operations list.
+     */
+    private List<OperationStatusResultInner> operations;
+
+    /*
+     * Percent of the operation that is complete.
+     */
+    private Float percentComplete;
+
+    /*
+     * The additional properties of the operation status result.
+     */
+    private OperationStatusResultProperties innerProperties;
+
+    /*
+     * Fully qualified ID of the resource against which the original async operation was started.
+     */
+    private String resourceId;
+
+    /*
+     * The start time of the operation.
+     */
+    private OffsetDateTime startTime;
+
+    /*
+     * Operation status.
+     */
+    private String status;
+
+    /**
+     * Creates an instance of OperationStatusResultInner class.
+     */
     public OperationStatusResultInner() {
     }
 
     /**
+     * Get the endTime property: The end time of the operation.
+     * 
+     * @return the endTime value.
+     */
+    public OffsetDateTime endTime() {
+        return this.endTime;
+    }
+
+    /**
+     * Get the error property: If present, details of the operation error.
+     * 
+     * @return the error value.
+     */
+    public ManagementError error() {
+        return this.error;
+    }
+
+    /**
      * Get the id property: Fully qualified ID for the async operation.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -82,29 +105,8 @@ public final class OperationStatusResultInner {
     }
 
     /**
-     * Set the id property: Fully qualified ID for the async operation.
-     *
-     * @param id the id value to set.
-     * @return the OperationStatusResultInner object itself.
-     */
-    public OperationStatusResultInner withId(String id) {
-        this.id = id;
-        return this;
-    }
-
-    /**
-     * Get the resourceId property: Fully qualified ID of the resource against which the original async operation was
-     * started.
-     *
-     * @return the resourceId value.
-     */
-    public String resourceId() {
-        return this.resourceId;
-    }
-
-    /**
      * Get the name property: Name of the async operation.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -112,19 +114,54 @@ public final class OperationStatusResultInner {
     }
 
     /**
-     * Set the name property: Name of the async operation.
-     *
-     * @param name the name value to set.
-     * @return the OperationStatusResultInner object itself.
+     * Get the operations property: The operations list.
+     * 
+     * @return the operations value.
      */
-    public OperationStatusResultInner withName(String name) {
-        this.name = name;
-        return this;
+    public List<OperationStatusResultInner> operations() {
+        return this.operations;
+    }
+
+    /**
+     * Get the percentComplete property: Percent of the operation that is complete.
+     * 
+     * @return the percentComplete value.
+     */
+    public Float percentComplete() {
+        return this.percentComplete;
+    }
+
+    /**
+     * Get the innerProperties property: The additional properties of the operation status result.
+     * 
+     * @return the innerProperties value.
+     */
+    private OperationStatusResultProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
+     * Get the resourceId property: Fully qualified ID of the resource against which the original async operation was
+     * started.
+     * 
+     * @return the resourceId value.
+     */
+    public String resourceId() {
+        return this.resourceId;
+    }
+
+    /**
+     * Get the startTime property: The start time of the operation.
+     * 
+     * @return the startTime value.
+     */
+    public OffsetDateTime startTime() {
+        return this.startTime;
     }
 
     /**
      * Get the status property: Operation status.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -133,7 +170,7 @@ public final class OperationStatusResultInner {
 
     /**
      * Set the status property: Operation status.
-     *
+     * 
      * @param status the status value to set.
      * @return the OperationStatusResultInner object itself.
      */
@@ -143,119 +180,122 @@ public final class OperationStatusResultInner {
     }
 
     /**
-     * Get the percentComplete property: Percent of the operation that is complete.
-     *
-     * @return the percentComplete value.
+     * Get the exitCode property: For actions that run commands or scripts, the exit code of the script execution.
+     * 
+     * @return the exitCode value.
      */
-    public Float percentComplete() {
-        return this.percentComplete;
+    public String exitCode() {
+        return this.innerProperties() == null ? null : this.innerProperties().exitCode();
     }
 
     /**
-     * Set the percentComplete property: Percent of the operation that is complete.
-     *
-     * @param percentComplete the percentComplete value to set.
-     * @return the OperationStatusResultInner object itself.
+     * Get the outputHead property: For actions that run commands or scripts, the leading bytes of the output of the
+     * script execution.
+     * 
+     * @return the outputHead value.
      */
-    public OperationStatusResultInner withPercentComplete(Float percentComplete) {
-        this.percentComplete = percentComplete;
-        return this;
+    public String outputHead() {
+        return this.innerProperties() == null ? null : this.innerProperties().outputHead();
     }
 
     /**
-     * Get the startTime property: The start time of the operation.
-     *
-     * @return the startTime value.
+     * Get the resultRef property: For actions that run commands or scripts, a reference to the location of the result.
+     * 
+     * @return the resultRef value.
      */
-    public OffsetDateTime startTime() {
-        return this.startTime;
+    public String resultRef() {
+        return this.innerProperties() == null ? null : this.innerProperties().resultRef();
     }
 
     /**
-     * Set the startTime property: The start time of the operation.
-     *
-     * @param startTime the startTime value to set.
-     * @return the OperationStatusResultInner object itself.
+     * Get the resultUrl property: For actions that run commands or scripts, the URL where the full output of the script
+     * output can be retrieved.
+     * 
+     * @return the resultUrl value.
      */
-    public OperationStatusResultInner withStartTime(OffsetDateTime startTime) {
-        this.startTime = startTime;
-        return this;
-    }
-
-    /**
-     * Get the endTime property: The end time of the operation.
-     *
-     * @return the endTime value.
-     */
-    public OffsetDateTime endTime() {
-        return this.endTime;
-    }
-
-    /**
-     * Set the endTime property: The end time of the operation.
-     *
-     * @param endTime the endTime value to set.
-     * @return the OperationStatusResultInner object itself.
-     */
-    public OperationStatusResultInner withEndTime(OffsetDateTime endTime) {
-        this.endTime = endTime;
-        return this;
-    }
-
-    /**
-     * Get the operations property: The operations list.
-     *
-     * @return the operations value.
-     */
-    public List<OperationStatusResultInner> operations() {
-        return this.operations;
-    }
-
-    /**
-     * Set the operations property: The operations list.
-     *
-     * @param operations the operations value to set.
-     * @return the OperationStatusResultInner object itself.
-     */
-    public OperationStatusResultInner withOperations(List<OperationStatusResultInner> operations) {
-        this.operations = operations;
-        return this;
-    }
-
-    /**
-     * Get the error property: If present, details of the operation error.
-     *
-     * @return the error value.
-     */
-    public ManagementError error() {
-        return this.error;
-    }
-
-    /**
-     * Set the error property: If present, details of the operation error.
-     *
-     * @param error the error value to set.
-     * @return the OperationStatusResultInner object itself.
-     */
-    public OperationStatusResultInner withError(ManagementError error) {
-        this.error = error;
-        return this;
+    public String resultUrl() {
+        return this.innerProperties() == null ? null : this.innerProperties().resultUrl();
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (status() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property status in model OperationStatusResultInner"));
-        }
         if (operations() != null) {
             operations().forEach(e -> e.validate());
+        }
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
+        if (status() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property status in model OperationStatusResultInner"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(OperationStatusResultInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("status", this.status);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OperationStatusResultInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OperationStatusResultInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the OperationStatusResultInner.
+     */
+    public static OperationStatusResultInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OperationStatusResultInner deserializedOperationStatusResultInner = new OperationStatusResultInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("status".equals(fieldName)) {
+                    deserializedOperationStatusResultInner.status = reader.getString();
+                } else if ("endTime".equals(fieldName)) {
+                    deserializedOperationStatusResultInner.endTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("error".equals(fieldName)) {
+                    deserializedOperationStatusResultInner.error = ManagementError.fromJson(reader);
+                } else if ("id".equals(fieldName)) {
+                    deserializedOperationStatusResultInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedOperationStatusResultInner.name = reader.getString();
+                } else if ("operations".equals(fieldName)) {
+                    List<OperationStatusResultInner> operations
+                        = reader.readArray(reader1 -> OperationStatusResultInner.fromJson(reader1));
+                    deserializedOperationStatusResultInner.operations = operations;
+                } else if ("percentComplete".equals(fieldName)) {
+                    deserializedOperationStatusResultInner.percentComplete = reader.getNullable(JsonReader::getFloat);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedOperationStatusResultInner.innerProperties
+                        = OperationStatusResultProperties.fromJson(reader);
+                } else if ("resourceId".equals(fieldName)) {
+                    deserializedOperationStatusResultInner.resourceId = reader.getString();
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedOperationStatusResultInner.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOperationStatusResultInner;
+        });
+    }
 }

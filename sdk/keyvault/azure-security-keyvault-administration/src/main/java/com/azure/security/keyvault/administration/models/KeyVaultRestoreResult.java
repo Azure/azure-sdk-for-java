@@ -6,4 +6,9 @@ package com.azure.security.keyvault.administration.models;
  * A class that represents the result of a Restore operation.
  */
 public final class KeyVaultRestoreResult {
+    /**
+     * Creates an instance of {@link KeyVaultRestoreResult}.
+     */
+    public KeyVaultRestoreResult() {
+    }
 }

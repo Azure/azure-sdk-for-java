@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.hardwaresecuritymodules.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * Sku name of the Cloud HSM Cluster.
  */
@@ -36,7 +33,6 @@ public enum CloudHsmClusterSkuName {
      * @param value the serialized value to parse.
      * @return the parsed CloudHsmClusterSkuName object, or null if unable to parse.
      */
-    @JsonCreator
     public static CloudHsmClusterSkuName fromString(String value) {
         if (value == null) {
             return null;
@@ -53,7 +49,6 @@ public enum CloudHsmClusterSkuName {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

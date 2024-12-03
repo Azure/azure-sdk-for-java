@@ -13,13 +13,20 @@ import com.azure.storage.blob.models.ConsistentReadControl;
  */
 @Fluent
 public class BlobInputStreamOptions {
-
     private BlobRange range;
     private BlobRequestConditions requestConditions;
     private Integer blockSize;
     private ConsistentReadControl consistentReadControl;
 
     /**
+     * Creates a new instance of {@link BlobInputStreamOptions}.
+     */
+    public BlobInputStreamOptions() {
+    }
+
+    /**
+     * Gets the {@link BlobRange}.
+     *
      * @return {@link BlobRange}
      */
     public BlobRange getRange() {
@@ -27,6 +34,8 @@ public class BlobInputStreamOptions {
     }
 
     /**
+     * Sets the {@link BlobRange}.
+     *
      * @param range {@link BlobRange}
      * @return The updated options.
      */
@@ -36,6 +45,8 @@ public class BlobInputStreamOptions {
     }
 
     /**
+     * Gets the {@link BlobRequestConditions}.
+     *
      * @return {@link BlobRequestConditions}
      */
     public BlobRequestConditions getRequestConditions() {
@@ -43,6 +54,8 @@ public class BlobInputStreamOptions {
     }
 
     /**
+     * Sets the {@link BlobRequestConditions}.
+     *
      * @param requestConditions {@link BlobRequestConditions}
      * @return The updated options.
      */
@@ -52,6 +65,10 @@ public class BlobInputStreamOptions {
     }
 
     /**
+     * Gets the size of each data chunk returned from the service. If block size is large, input stream will make
+     * fewer network calls, but each individual call will send more data and will therefore take longer.
+     * The default value is 4 MB.
+     *
      * @return The size of each data chunk returned from the service. If block size is large, input stream will make
      * fewer network calls, but each individual call will send more data and will therefore take longer.
      * The default value is 4 MB.
@@ -61,6 +78,10 @@ public class BlobInputStreamOptions {
     }
 
     /**
+     * Sets the size of each data chunk returned from the service. If block size is large, input stream will make
+     * fewer network calls, but each individual call will send more data and will therefore take longer.
+     * The default value is 4 MB.
+     *
      * @param blockSize The size of each data chunk returned from the service. If block size is large, input stream
      * will make fewer network calls, but each individual call will send more data and will therefore take longer.
      * The default value is 4 MB.
@@ -72,6 +93,8 @@ public class BlobInputStreamOptions {
     }
 
     /**
+     * Gets the {@link ConsistentReadControl} Default is E-Tag.
+     *
      * @return {@link ConsistentReadControl} Default is E-Tag.
      */
     public ConsistentReadControl getConsistentReadControl() {
@@ -79,6 +102,8 @@ public class BlobInputStreamOptions {
     }
 
     /**
+     * Sets the {@link ConsistentReadControl} Default is E-Tag.
+     *
      * @param consistentReadControl {@link ConsistentReadControl} Default is E-Tag.
      * @return The updated options.
      */

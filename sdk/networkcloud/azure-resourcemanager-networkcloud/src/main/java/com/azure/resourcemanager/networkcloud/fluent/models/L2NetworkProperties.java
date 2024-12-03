@@ -6,87 +6,85 @@ package com.azure.resourcemanager.networkcloud.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.networkcloud.models.HybridAksPluginType;
 import com.azure.resourcemanager.networkcloud.models.L2NetworkDetailedStatus;
 import com.azure.resourcemanager.networkcloud.models.L2NetworkProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** L2NetworkProperties represents properties of the L2 network. */
+/**
+ * L2NetworkProperties represents properties of the L2 network.
+ */
 @Fluent
-public final class L2NetworkProperties {
+public final class L2NetworkProperties implements JsonSerializable<L2NetworkProperties> {
     /*
      * The list of resource IDs for the other Microsoft.NetworkCloud resources that have attached this network.
      */
-    @JsonProperty(value = "associatedResourceIds", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> associatedResourceIds;
 
     /*
      * The resource ID of the Network Cloud cluster this L2 network is associated with.
      */
-    @JsonProperty(value = "clusterId", access = JsonProperty.Access.WRITE_ONLY)
     private String clusterId;
 
     /*
      * The more detailed status of the L2 network.
      */
-    @JsonProperty(value = "detailedStatus", access = JsonProperty.Access.WRITE_ONLY)
     private L2NetworkDetailedStatus detailedStatus;
 
     /*
      * The descriptive message about the current detailed status.
      */
-    @JsonProperty(value = "detailedStatusMessage", access = JsonProperty.Access.WRITE_ONLY)
     private String detailedStatusMessage;
 
     /*
      * Field Deprecated. These fields will be empty/omitted. The list of Hybrid AKS cluster resource ID(s) that are
      * associated with this L2 network.
      */
-    @JsonProperty(value = "hybridAksClustersAssociatedIds", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> hybridAksClustersAssociatedIds;
 
     /*
      * Field Deprecated. The field was previously optional, now it will have no defined behavior and will be ignored.
      * The network plugin type for Hybrid AKS.
      */
-    @JsonProperty(value = "hybridAksPluginType")
     private HybridAksPluginType hybridAksPluginType;
 
     /*
      * The default interface name for this L2 network in the virtual machine. This name can be overridden by the name
      * supplied in the network attachment configuration of that virtual machine.
      */
-    @JsonProperty(value = "interfaceName")
     private String interfaceName;
 
     /*
      * The resource ID of the Network Fabric l2IsolationDomain.
      */
-    @JsonProperty(value = "l2IsolationDomainId", required = true)
     private String l2IsolationDomainId;
 
     /*
      * The provisioning state of the L2 network.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private L2NetworkProvisioningState provisioningState;
 
     /*
      * Field Deprecated. These fields will be empty/omitted. The list of virtual machine resource ID(s), excluding any
      * Hybrid AKS virtual machines, that are currently using this L2 network.
      */
-    @JsonProperty(value = "virtualMachinesAssociatedIds", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> virtualMachinesAssociatedIds;
 
-    /** Creates an instance of L2NetworkProperties class. */
+    /**
+     * Creates an instance of L2NetworkProperties class.
+     */
     public L2NetworkProperties() {
     }
 
     /**
      * Get the associatedResourceIds property: The list of resource IDs for the other Microsoft.NetworkCloud resources
      * that have attached this network.
-     *
+     * 
      * @return the associatedResourceIds value.
      */
     public List<String> associatedResourceIds() {
@@ -95,7 +93,7 @@ public final class L2NetworkProperties {
 
     /**
      * Get the clusterId property: The resource ID of the Network Cloud cluster this L2 network is associated with.
-     *
+     * 
      * @return the clusterId value.
      */
     public String clusterId() {
@@ -104,7 +102,7 @@ public final class L2NetworkProperties {
 
     /**
      * Get the detailedStatus property: The more detailed status of the L2 network.
-     *
+     * 
      * @return the detailedStatus value.
      */
     public L2NetworkDetailedStatus detailedStatus() {
@@ -113,7 +111,7 @@ public final class L2NetworkProperties {
 
     /**
      * Get the detailedStatusMessage property: The descriptive message about the current detailed status.
-     *
+     * 
      * @return the detailedStatusMessage value.
      */
     public String detailedStatusMessage() {
@@ -123,7 +121,7 @@ public final class L2NetworkProperties {
     /**
      * Get the hybridAksClustersAssociatedIds property: Field Deprecated. These fields will be empty/omitted. The list
      * of Hybrid AKS cluster resource ID(s) that are associated with this L2 network.
-     *
+     * 
      * @return the hybridAksClustersAssociatedIds value.
      */
     public List<String> hybridAksClustersAssociatedIds() {
@@ -133,7 +131,7 @@ public final class L2NetworkProperties {
     /**
      * Get the hybridAksPluginType property: Field Deprecated. The field was previously optional, now it will have no
      * defined behavior and will be ignored. The network plugin type for Hybrid AKS.
-     *
+     * 
      * @return the hybridAksPluginType value.
      */
     public HybridAksPluginType hybridAksPluginType() {
@@ -143,7 +141,7 @@ public final class L2NetworkProperties {
     /**
      * Set the hybridAksPluginType property: Field Deprecated. The field was previously optional, now it will have no
      * defined behavior and will be ignored. The network plugin type for Hybrid AKS.
-     *
+     * 
      * @param hybridAksPluginType the hybridAksPluginType value to set.
      * @return the L2NetworkProperties object itself.
      */
@@ -155,7 +153,7 @@ public final class L2NetworkProperties {
     /**
      * Get the interfaceName property: The default interface name for this L2 network in the virtual machine. This name
      * can be overridden by the name supplied in the network attachment configuration of that virtual machine.
-     *
+     * 
      * @return the interfaceName value.
      */
     public String interfaceName() {
@@ -165,7 +163,7 @@ public final class L2NetworkProperties {
     /**
      * Set the interfaceName property: The default interface name for this L2 network in the virtual machine. This name
      * can be overridden by the name supplied in the network attachment configuration of that virtual machine.
-     *
+     * 
      * @param interfaceName the interfaceName value to set.
      * @return the L2NetworkProperties object itself.
      */
@@ -176,7 +174,7 @@ public final class L2NetworkProperties {
 
     /**
      * Get the l2IsolationDomainId property: The resource ID of the Network Fabric l2IsolationDomain.
-     *
+     * 
      * @return the l2IsolationDomainId value.
      */
     public String l2IsolationDomainId() {
@@ -185,7 +183,7 @@ public final class L2NetworkProperties {
 
     /**
      * Set the l2IsolationDomainId property: The resource ID of the Network Fabric l2IsolationDomain.
-     *
+     * 
      * @param l2IsolationDomainId the l2IsolationDomainId value to set.
      * @return the L2NetworkProperties object itself.
      */
@@ -196,7 +194,7 @@ public final class L2NetworkProperties {
 
     /**
      * Get the provisioningState property: The provisioning state of the L2 network.
-     *
+     * 
      * @return the provisioningState value.
      */
     public L2NetworkProvisioningState provisioningState() {
@@ -207,7 +205,7 @@ public final class L2NetworkProperties {
      * Get the virtualMachinesAssociatedIds property: Field Deprecated. These fields will be empty/omitted. The list of
      * virtual machine resource ID(s), excluding any Hybrid AKS virtual machines, that are currently using this L2
      * network.
-     *
+     * 
      * @return the virtualMachinesAssociatedIds value.
      */
     public List<String> virtualMachinesAssociatedIds() {
@@ -216,15 +214,80 @@ public final class L2NetworkProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (l2IsolationDomainId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property l2IsolationDomainId in model L2NetworkProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property l2IsolationDomainId in model L2NetworkProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(L2NetworkProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("l2IsolationDomainId", this.l2IsolationDomainId);
+        jsonWriter.writeStringField("hybridAksPluginType",
+            this.hybridAksPluginType == null ? null : this.hybridAksPluginType.toString());
+        jsonWriter.writeStringField("interfaceName", this.interfaceName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of L2NetworkProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of L2NetworkProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the L2NetworkProperties.
+     */
+    public static L2NetworkProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            L2NetworkProperties deserializedL2NetworkProperties = new L2NetworkProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("l2IsolationDomainId".equals(fieldName)) {
+                    deserializedL2NetworkProperties.l2IsolationDomainId = reader.getString();
+                } else if ("associatedResourceIds".equals(fieldName)) {
+                    List<String> associatedResourceIds = reader.readArray(reader1 -> reader1.getString());
+                    deserializedL2NetworkProperties.associatedResourceIds = associatedResourceIds;
+                } else if ("clusterId".equals(fieldName)) {
+                    deserializedL2NetworkProperties.clusterId = reader.getString();
+                } else if ("detailedStatus".equals(fieldName)) {
+                    deserializedL2NetworkProperties.detailedStatus
+                        = L2NetworkDetailedStatus.fromString(reader.getString());
+                } else if ("detailedStatusMessage".equals(fieldName)) {
+                    deserializedL2NetworkProperties.detailedStatusMessage = reader.getString();
+                } else if ("hybridAksClustersAssociatedIds".equals(fieldName)) {
+                    List<String> hybridAksClustersAssociatedIds = reader.readArray(reader1 -> reader1.getString());
+                    deserializedL2NetworkProperties.hybridAksClustersAssociatedIds = hybridAksClustersAssociatedIds;
+                } else if ("hybridAksPluginType".equals(fieldName)) {
+                    deserializedL2NetworkProperties.hybridAksPluginType
+                        = HybridAksPluginType.fromString(reader.getString());
+                } else if ("interfaceName".equals(fieldName)) {
+                    deserializedL2NetworkProperties.interfaceName = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedL2NetworkProperties.provisioningState
+                        = L2NetworkProvisioningState.fromString(reader.getString());
+                } else if ("virtualMachinesAssociatedIds".equals(fieldName)) {
+                    List<String> virtualMachinesAssociatedIds = reader.readArray(reader1 -> reader1.getString());
+                    deserializedL2NetworkProperties.virtualMachinesAssociatedIds = virtualMachinesAssociatedIds;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedL2NetworkProperties;
+        });
+    }
 }

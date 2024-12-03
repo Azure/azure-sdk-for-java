@@ -29,9 +29,15 @@
       <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.models.TelemetryItem" />
       <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.pipeline.ByteBufferOutputStream" />
       <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.pipeline.TelemetryPipelineRequest" />
-      <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.model.QuickPulseDocument" />
-      <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.model.QuickPulseEnvelope" />
       <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.statsbeat.StatsbeatModule" />
+      <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.CollectionConfigurationError" />
+      <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.CollectionConfigurationInfo" />
+      <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.DerivedMetricInfo" />
+      <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.DocumentIngress" />
+      <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.DocumentStreamInfo" />
+      <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.FilterConjunctionGroupInfo" />
+      <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.MonitoringDataPoint" />
+      <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.CustomDimensions" />
     </Or>
   </Match>
   <Match>
@@ -55,10 +61,15 @@
       <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.models.TelemetryItem" />
       <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.pipeline.ByteBufferOutputStream" />
       <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.pipeline.TelemetryPipelineListener$CompositeTelemetryPipelineListener" />
-      <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.model.QuickPulseDocument" />
-      <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.model.QuickPulseEnvelope" />
-      <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.model.QuickPulseMonitoringDataPoints" />
       <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.statsbeat.NetworkStatsbeatHttpPipelinePolicy" />
+      <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.LiveMetricsRestAPIsForClientSDKsBuilder" />
+      <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.CollectionConfigurationError" />
+      <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.CollectionConfigurationInfo" />
+      <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.DerivedMetricInfo" />
+      <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.DocumentIngress" />
+      <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.DocumentStreamInfo" />
+      <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.FilterConjunctionGroupInfo" />
+      <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.MonitoringDataPoint" />
     </Or>
   </Match>
   <Match>
@@ -84,4 +95,13 @@
     <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR" />
     <Class name="com.azure.monitor.opentelemetry.autoconfigure.AzureMonitorExporterBuilder" />
   </Match>
+  <Match>
+    <Bug pattern="NM_CLASS_NOT_EXCEPTION" />
+    <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.Exception" />
+  </Match>
+  <Match>
+    <Bug pattern="DM_CONVERT_CASE" />
+    <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.Filter" />
+  </Match>
+
 </FindBugsFilter>

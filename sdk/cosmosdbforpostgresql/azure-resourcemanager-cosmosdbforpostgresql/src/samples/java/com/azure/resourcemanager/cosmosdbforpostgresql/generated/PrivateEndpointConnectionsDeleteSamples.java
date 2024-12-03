@@ -20,7 +20,7 @@ public final class PrivateEndpointConnectionsDeleteSamples {
      */
     public static void deletesAPrivateEndpointConnectionWithAGivenName(
         com.azure.resourcemanager.cosmosdbforpostgresql.CosmosDBForPostgreSqlManager manager) {
-        manager.privateEndpointConnections().delete("TestGroup", "testcluster", "private-endpoint-connection-name",
-            com.azure.core.util.Context.NONE);
+        manager.privateEndpointConnections()
+            .delete("TestGroup", "testcluster", "private-endpoint-connection-name", com.azure.core.util.Context.NONE);
     }
 }

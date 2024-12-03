@@ -20,7 +20,8 @@ public final class PrivateEndpointConnectionsGetSamples {
      */
     public static void
         privateEndpointConnectionsGet(com.azure.resourcemanager.notificationhubs.NotificationHubsManager manager) {
-        manager.privateEndpointConnections().getWithResponse("5ktrial", "nh-sdk-ns",
-            "nh-sdk-ns.1fa229cd-bf3f-47f0-8c49-afb36723997e", com.azure.core.util.Context.NONE);
+        manager.privateEndpointConnections()
+            .getWithResponse("5ktrial", "nh-sdk-ns", "nh-sdk-ns.1fa229cd-bf3f-47f0-8c49-afb36723997e",
+                com.azure.core.util.Context.NONE);
     }
 }

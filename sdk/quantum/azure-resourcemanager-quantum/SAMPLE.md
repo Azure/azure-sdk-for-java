@@ -88,8 +88,9 @@ public final class WorkspaceOperationCheckNameAvailabilitySamples {
     public static void
         quantumWorkspacesCheckNameAvailability(com.azure.resourcemanager.quantum.AzureQuantumManager manager) {
         manager.workspaceOperations()
-            .checkNameAvailabilityWithResponse("westus2", new CheckNameAvailabilityParameters()
-                .withName("sample-workspace-name").withType("Microsoft.Quantum/Workspaces"),
+            .checkNameAvailabilityWithResponse("westus2",
+                new CheckNameAvailabilityParameters().withName("sample-workspace-name")
+                    .withType("Microsoft.Quantum/Workspaces"),
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -112,8 +113,8 @@ public final class WorkspaceOperationListKeysSamples {
      * @param manager Entry point to AzureQuantumManager.
      */
     public static void listKeys(com.azure.resourcemanager.quantum.AzureQuantumManager manager) {
-        manager.workspaceOperations().listKeysWithResponse("quantumResourcegroup", "quantumworkspace1",
-            com.azure.core.util.Context.NONE);
+        manager.workspaceOperations()
+            .listKeysWithResponse("quantumResourcegroup", "quantumworkspace1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -139,9 +140,10 @@ public final class WorkspaceOperationRegenerateKeysSamples {
      * @param manager Entry point to AzureQuantumManager.
      */
     public static void regenerateKey(com.azure.resourcemanager.quantum.AzureQuantumManager manager) {
-        manager.workspaceOperations().regenerateKeysWithResponse("quantumResourcegroup", "quantumworkspace1",
-            new ApiKeys().withKeys(Arrays.asList(KeyType.PRIMARY, KeyType.SECONDARY)),
-            com.azure.core.util.Context.NONE);
+        manager.workspaceOperations()
+            .regenerateKeysWithResponse("quantumResourcegroup", "quantumworkspace1",
+                new ApiKeys().withKeys(Arrays.asList(KeyType.PRIMARY, KeyType.SECONDARY)),
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -150,6 +152,7 @@ public final class WorkspaceOperationRegenerateKeysSamples {
 
 ```java
 import com.azure.resourcemanager.quantum.models.Provider;
+import com.azure.resourcemanager.quantum.models.WorkspaceResourceProperties;
 import java.util.Arrays;
 
 /**
@@ -167,13 +170,16 @@ public final class WorkspacesCreateOrUpdateSamples {
      * @param manager Entry point to AzureQuantumManager.
      */
     public static void quantumWorkspacesPut(com.azure.resourcemanager.quantum.AzureQuantumManager manager) {
-        manager.workspaces().define("quantumworkspace1").withRegion("West US")
+        manager.workspaces()
+            .define("quantumworkspace1")
+            .withRegion("West US")
             .withExistingResourceGroup("quantumResourcegroup")
-            .withProviders(Arrays.asList(new Provider().withProviderId("Honeywell").withProviderSku("Basic"),
-                new Provider().withProviderId("IonQ").withProviderSku("Basic"),
-                new Provider().withProviderId("OneQBit").withProviderSku("Basic")))
-            .withStorageAccount(
-                "/subscriptions/1C4B2828-7D49-494F-933D-061373BE28C2/resourceGroups/quantumResourcegroup/providers/Microsoft.Storage/storageAccounts/testStorageAccount")
+            .withProperties(new WorkspaceResourceProperties()
+                .withProviders(Arrays.asList(new Provider().withProviderId("Honeywell").withProviderSku("Basic"),
+                    new Provider().withProviderId("IonQ").withProviderSku("Basic"),
+                    new Provider().withProviderId("OneQBit").withProviderSku("Basic")))
+                .withStorageAccount(
+                    "/subscriptions/1C4B2828-7D49-494F-933D-061373BE28C2/resourceGroups/quantumResourcegroup/providers/Microsoft.Storage/storageAccounts/testStorageAccount"))
             .create();
     }
 }
@@ -219,8 +225,9 @@ public final class WorkspacesGetByResourceGroupSamples {
      * @param manager Entry point to AzureQuantumManager.
      */
     public static void quantumWorkspacesGet(com.azure.resourcemanager.quantum.AzureQuantumManager manager) {
-        manager.workspaces().getByResourceGroupWithResponse("quantumResourcegroup", "quantumworkspace1",
-            com.azure.core.util.Context.NONE);
+        manager.workspaces()
+            .getByResourceGroupWithResponse("quantumResourcegroup", "quantumworkspace1",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -292,8 +299,10 @@ public final class WorkspacesUpdateTagsSamples {
      * @param manager Entry point to AzureQuantumManager.
      */
     public static void quantumWorkspacesPatchTags(com.azure.resourcemanager.quantum.AzureQuantumManager manager) {
-        QuantumWorkspace resource = manager.workspaces().getByResourceGroupWithResponse("quantumResourcegroup",
-            "quantumworkspace1", com.azure.core.util.Context.NONE).getValue();
+        QuantumWorkspace resource = manager.workspaces()
+            .getByResourceGroupWithResponse("quantumResourcegroup", "quantumworkspace1",
+                com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("tag1", "value1", "tag2", "value2")).apply();
     }
 

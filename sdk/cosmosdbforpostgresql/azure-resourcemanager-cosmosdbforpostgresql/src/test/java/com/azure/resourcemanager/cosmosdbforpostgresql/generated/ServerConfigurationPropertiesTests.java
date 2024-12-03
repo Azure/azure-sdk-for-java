@@ -12,15 +12,15 @@ public final class ServerConfigurationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ServerConfigurationProperties model = BinaryData.fromString(
-            "{\"value\":\"sglumma\",\"source\":\"j\",\"description\":\"dxob\",\"defaultValue\":\"dxkqpx\",\"dataType\":\"Enumeration\",\"allowedValues\":\"ionpimexg\",\"requiresRestart\":false,\"provisioningState\":\"Succeeded\"}")
+            "{\"value\":\"vsnb\",\"source\":\"qabnmoc\",\"description\":\"ysh\",\"defaultValue\":\"zafb\",\"dataType\":\"Boolean\",\"allowedValues\":\"pbtoqcjmkl\",\"requiresRestart\":false,\"provisioningState\":\"InProgress\"}")
             .toObject(ServerConfigurationProperties.class);
-        Assertions.assertEquals("sglumma", model.value());
+        Assertions.assertEquals("vsnb", model.value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServerConfigurationProperties model = new ServerConfigurationProperties().withValue("sglumma");
+        ServerConfigurationProperties model = new ServerConfigurationProperties().withValue("vsnb");
         model = BinaryData.fromObject(model).toObject(ServerConfigurationProperties.class);
-        Assertions.assertEquals("sglumma", model.value());
+        Assertions.assertEquals("vsnb", model.value());
     }
 }

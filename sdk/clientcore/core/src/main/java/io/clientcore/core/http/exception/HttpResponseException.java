@@ -9,7 +9,7 @@ import io.clientcore.core.http.models.Response;
  * The exception thrown when an unsuccessful response is received with http status code (e.g. {@code 3XX}, {@code 4XX},
  * {@code 5XX}) from the service request.
  */
-public final class HttpResponseException extends RuntimeException {
+public class HttpResponseException extends RuntimeException {
     /**
      * The HTTP response value.
      */

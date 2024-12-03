@@ -32,6 +32,12 @@ public class WordData implements JsonSerializable<WordData> {
     private long duration;
 
     /**
+     * Creates a new instance of {@link Word}.
+     */
+    public Word() {
+    }
+
+    /**
      * Get the text property.
      *
      * @return the text value.

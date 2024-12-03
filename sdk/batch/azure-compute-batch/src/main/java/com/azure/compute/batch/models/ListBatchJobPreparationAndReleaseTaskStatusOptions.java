@@ -13,6 +13,12 @@ public class ListBatchJobPreparationAndReleaseTaskStatusOptions extends BatchBas
     private List<String> select;
 
     /**
+     * Creates an instance of {@link ListBatchJobPreparationAndReleaseTaskStatusOptions}.
+     */
+    public ListBatchJobPreparationAndReleaseTaskStatusOptions() {
+    }
+
+    /**
      * Gets the OData $filter clause used for filtering results.
      *
      * @return The OData $filter clause.

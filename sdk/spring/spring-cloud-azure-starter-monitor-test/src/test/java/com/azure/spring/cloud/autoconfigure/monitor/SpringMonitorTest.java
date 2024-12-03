@@ -11,9 +11,7 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
 import com.azure.monitor.opentelemetry.exporter.AzureMonitorExporterOptions;
-import com.azure.spring.cloud.autoconfigure.monitor.selfdiagnostics.SelfDiagnosticsLevel;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.*;
-import io.opentelemetry.sdk.common.internal.OtelVersion;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +19,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Primary;
 import reactor.util.annotation.Nullable;
 
 import java.io.IOException;
@@ -63,12 +60,6 @@ class SpringMonitorTest {
                 .httpClient(HttpClient.createDefault())
                 .policies(policy)
                 .build();
-        }
-
-        @Bean
-        @Primary
-        SelfDiagnosticsLevel testSelfDiagnosticsLevel() {
-            return SelfDiagnosticsLevel.DEBUG;
         }
     }
 

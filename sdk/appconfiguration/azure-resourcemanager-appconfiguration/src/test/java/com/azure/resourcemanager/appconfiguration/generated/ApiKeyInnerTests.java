@@ -11,7 +11,7 @@ public final class ApiKeyInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ApiKeyInner model = BinaryData.fromString(
-            "{\"id\":\"fqpte\",\"name\":\"zzvypyqrimzinp\",\"value\":\"wjdk\",\"connectionString\":\"soodqxhcrmnoh\",\"lastModified\":\"2021-01-19T09:55:19Z\",\"readOnly\":true}")
+            "{\"id\":\"jqul\",\"name\":\"sntnbybkzgcw\",\"value\":\"clxxwrljdo\",\"connectionString\":\"kcqvkocrc\",\"lastModified\":\"2021-02-11T18:18:15Z\",\"readOnly\":false}")
             .toObject(ApiKeyInner.class);
     }
 

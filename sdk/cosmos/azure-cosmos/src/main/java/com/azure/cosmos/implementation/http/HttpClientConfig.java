@@ -26,9 +26,12 @@ public class HttpClientConfig {
     public String reactorNetworkLogCategory = "com.azure.cosmos.netty-network";
     private ProxyOptions proxy;
     private boolean connectionKeepAlive = true;
+    private boolean serverCertValidationDisabled = false;
+    private Http2ConnectionConfig http2ConnectionConfig;
 
     public HttpClientConfig(Configs configs) {
         this.configs = configs;
+        this.http2ConnectionConfig = new Http2ConnectionConfig();
     }
 
     public HttpClientConfig withMaxHeaderSize(int maxHeaderSize) {
@@ -91,6 +94,16 @@ public class HttpClientConfig {
         return this;
     }
 
+    public HttpClientConfig withServerCertValidationDisabled(boolean serverCertValidationDisabled) {
+        this.serverCertValidationDisabled = serverCertValidationDisabled;
+        return this;
+    }
+
+    public HttpClientConfig withHttp2Config(Http2ConnectionConfig http2ConnectionConfig) {
+        this.http2ConnectionConfig = http2ConnectionConfig;
+        return this;
+    }
+
     public Configs getConfigs() {
         return configs;
     }
@@ -141,6 +154,14 @@ public class HttpClientConfig {
 
     public int getMaxBodyLength() {
         return maxBodyLength;
+    }
+
+    public boolean isServerCertValidationDisabled() {
+        return serverCertValidationDisabled;
+    }
+
+    public Http2ConnectionConfig getHttp2Config() {
+        return http2ConnectionConfig;
     }
 
     public String toDiagnosticsString() {

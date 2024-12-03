@@ -6,6 +6,7 @@ package com.azure.resourcemanager.devopsinfrastructure.implementation;
 
 import com.azure.resourcemanager.devopsinfrastructure.fluent.models.QuotaInner;
 import com.azure.resourcemanager.devopsinfrastructure.models.Quota;
+import com.azure.resourcemanager.devopsinfrastructure.models.QuotaName;
 
 public final class QuotaImpl implements Quota {
     private QuotaInner innerObject;
@@ -16,6 +17,10 @@ public final class QuotaImpl implements Quota {
         com.azure.resourcemanager.devopsinfrastructure.DevOpsInfrastructureManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
+    }
+
+    public QuotaName name() {
+        return this.innerModel().name();
     }
 
     public String id() {

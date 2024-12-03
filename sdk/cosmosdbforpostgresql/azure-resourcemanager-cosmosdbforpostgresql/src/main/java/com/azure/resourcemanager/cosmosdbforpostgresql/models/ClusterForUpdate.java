@@ -5,27 +5,32 @@
 package com.azure.resourcemanager.cosmosdbforpostgresql.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cosmosdbforpostgresql.fluent.models.ClusterPropertiesForUpdate;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
 /**
  * Represents a cluster for update.
  */
 @Fluent
-public final class ClusterForUpdate {
+public final class ClusterForUpdate implements JsonSerializable<ClusterForUpdate> {
     /*
      * Properties of the cluster.
      */
-    @JsonProperty(value = "properties")
     private ClusterPropertiesForUpdate innerProperties;
+
+    /*
+     * Describes the identity of the cluster.
+     */
+    private IdentityProperties identity;
 
     /*
      * Application-specific metadata in the form of key-value pairs.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /**
@@ -41,6 +46,26 @@ public final class ClusterForUpdate {
      */
     private ClusterPropertiesForUpdate innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the identity property: Describes the identity of the cluster.
+     * 
+     * @return the identity value.
+     */
+    public IdentityProperties identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: Describes the identity of the cluster.
+     * 
+     * @param identity the identity value to set.
+     * @return the ClusterForUpdate object itself.
+     */
+    public ClusterForUpdate withIdentity(IdentityProperties identity) {
+        this.identity = identity;
+        return this;
     }
 
     /**
@@ -135,8 +160,8 @@ public final class ClusterForUpdate {
     }
 
     /**
-     * Get the enableShardsOnCoordinator property: If distributed tables are placed on coordinator or not. Should be
-     * set to 'true' on single node clusters. Requires shard rebalancing after value is changed.
+     * Get the enableShardsOnCoordinator property: If distributed tables are placed on coordinator or not. Should be set
+     * to 'true' on single node clusters. Requires shard rebalancing after value is changed.
      * 
      * @return the enableShardsOnCoordinator value.
      */
@@ -145,8 +170,8 @@ public final class ClusterForUpdate {
     }
 
     /**
-     * Set the enableShardsOnCoordinator property: If distributed tables are placed on coordinator or not. Should be
-     * set to 'true' on single node clusters. Requires shard rebalancing after value is changed.
+     * Set the enableShardsOnCoordinator property: If distributed tables are placed on coordinator or not. Should be set
+     * to 'true' on single node clusters. Requires shard rebalancing after value is changed.
      * 
      * @param enableShardsOnCoordinator the enableShardsOnCoordinator value to set.
      * @return the ClusterForUpdate object itself.
@@ -434,5 +459,51 @@ public final class ClusterForUpdate {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+        if (identity() != null) {
+            identity().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeJsonField("identity", this.identity);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ClusterForUpdate from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ClusterForUpdate if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ClusterForUpdate.
+     */
+    public static ClusterForUpdate fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ClusterForUpdate deserializedClusterForUpdate = new ClusterForUpdate();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedClusterForUpdate.innerProperties = ClusterPropertiesForUpdate.fromJson(reader);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedClusterForUpdate.identity = IdentityProperties.fromJson(reader);
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedClusterForUpdate.tags = tags;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedClusterForUpdate;
+        });
     }
 }

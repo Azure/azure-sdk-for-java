@@ -9,31 +9,29 @@ import com.azure.resourcemanager.networkcloud.models.VirtualMachine;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for VirtualMachines Update. */
+/**
+ * Samples for VirtualMachines Update.
+ */
 public final class VirtualMachinesUpdateSamples {
     /*
-     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2023-07-01/examples/VirtualMachines_Patch.json
+     * x-ms-original-file:
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-06-01-preview/examples/
+     * VirtualMachines_Patch.json
      */
     /**
      * Sample code: Patch virtual machine.
-     *
+     * 
      * @param manager Entry point to NetworkCloudManager.
      */
     public static void patchVirtualMachine(com.azure.resourcemanager.networkcloud.NetworkCloudManager manager) {
-        VirtualMachine resource =
-            manager
-                .virtualMachines()
-                .getByResourceGroupWithResponse(
-                    "resourceGroupName", "virtualMachineName", com.azure.core.util.Context.NONE)
-                .getValue();
-        resource
-            .update()
+        VirtualMachine resource = manager.virtualMachines()
+            .getByResourceGroupWithResponse("resourceGroupName", "virtualMachineName", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
             .withTags(mapOf("key1", "fakeTokenPlaceholder", "key2", "fakeTokenPlaceholder"))
-            .withVmImageRepositoryCredentials(
-                new ImageRepositoryCredentials()
-                    .withPassword("fakeTokenPlaceholder")
-                    .withRegistryUrl("myacr.azurecr.io")
-                    .withUsername("myuser"))
+            .withVmImageRepositoryCredentials(new ImageRepositoryCredentials().withPassword("fakeTokenPlaceholder")
+                .withRegistryUrl("myacr.azurecr.io")
+                .withUsername("myuser"))
             .apply();
     }
 
