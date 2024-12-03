@@ -66,6 +66,7 @@ public class EventHubsExporterIntegrationTest extends MonitorExporterClientTestB
         Tracer tracer = TestUtils.createOpenTelemetrySdk(getHttpPipeline(validationPolicy)).getTracer("Sample");
         EventHubProducerAsyncClient producer = new EventHubClientBuilder().credential(credential)
             .fullyQualifiedNamespace("namespace")
+            .eventHubName("event-hub")
             .buildAsyncProducerClient();
         Span span = tracer.spanBuilder(spanName).startSpan();
         Scope scope = span.makeCurrent();
