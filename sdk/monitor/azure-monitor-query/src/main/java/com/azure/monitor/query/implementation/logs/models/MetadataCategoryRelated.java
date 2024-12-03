@@ -148,9 +148,6 @@ public final class MetadataCategoryRelated implements JsonSerializable<MetadataC
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

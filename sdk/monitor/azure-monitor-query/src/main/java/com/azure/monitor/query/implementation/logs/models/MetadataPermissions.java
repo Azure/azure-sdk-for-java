@@ -94,9 +94,6 @@ public final class MetadataPermissions implements JsonSerializable<MetadataPermi
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

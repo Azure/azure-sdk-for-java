@@ -175,7 +175,9 @@ public final class QueriesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<QueryResults>> getWithResponseAsync(String workspaceId, String query, Duration timespan) {
-        return FluxUtil.withContext(context -> getWithResponseAsync(workspaceId, query, timespan, context));
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.get(this.client.getHost(), workspaceId, query, timespan, accept, context));
     }
 
     /**
@@ -310,7 +312,9 @@ public final class QueriesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<QueryResults>> executeWithResponseAsync(String workspaceId, QueryBody body, String prefer) {
-        return FluxUtil.withContext(context -> executeWithResponseAsync(workspaceId, body, prefer, context));
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.execute(this.client.getHost(), workspaceId, prefer, body, accept, context));
     }
 
     /**
@@ -451,7 +455,9 @@ public final class QueriesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<QueryResults>> resourceGetWithResponseAsync(String resourceId, String query,
         Duration timespan) {
-        return FluxUtil.withContext(context -> resourceGetWithResponseAsync(resourceId, query, timespan, context));
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+            context -> service.resourceGet(this.client.getHost(), resourceId, query, timespan, accept, context));
     }
 
     /**
@@ -592,7 +598,9 @@ public final class QueriesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<QueryResults>> resourceExecuteWithResponseAsync(String resourceId, QueryBody body,
         String prefer) {
-        return FluxUtil.withContext(context -> resourceExecuteWithResponseAsync(resourceId, body, prefer, context));
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+            context -> service.resourceExecute(this.client.getHost(), resourceId, prefer, body, accept, context));
     }
 
     /**
@@ -724,7 +732,8 @@ public final class QueriesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BatchResponse>> batchWithResponseAsync(BatchRequest body) {
-        return FluxUtil.withContext(context -> batchWithResponseAsync(body, context));
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.batch(this.client.getHost(), body, accept, context));
     }
 
     /**
@@ -842,7 +851,9 @@ public final class QueriesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<QueryResults>> resourceGetXmsWithResponseAsync(String resourceId, String query,
         Duration timespan) {
-        return FluxUtil.withContext(context -> resourceGetXmsWithResponseAsync(resourceId, query, timespan, context));
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+            context -> service.resourceGetXms(this.client.getHost(), resourceId, query, timespan, accept, context));
     }
 
     /**
@@ -983,7 +994,9 @@ public final class QueriesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<QueryResults>> resourceExecuteXmsWithResponseAsync(String resourceId, QueryBody body,
         String prefer) {
-        return FluxUtil.withContext(context -> resourceExecuteXmsWithResponseAsync(resourceId, body, prefer, context));
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+            context -> service.resourceExecuteXms(this.client.getHost(), resourceId, prefer, body, accept, context));
     }
 
     /**

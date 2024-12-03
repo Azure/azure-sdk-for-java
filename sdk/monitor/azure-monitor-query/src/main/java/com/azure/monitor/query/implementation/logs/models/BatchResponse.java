@@ -48,9 +48,6 @@ public final class BatchResponse implements JsonSerializable<BatchResponse> {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

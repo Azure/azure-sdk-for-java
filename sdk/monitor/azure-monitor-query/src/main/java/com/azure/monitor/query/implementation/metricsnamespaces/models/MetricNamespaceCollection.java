@@ -40,9 +40,6 @@ public final class MetricNamespaceCollection implements JsonSerializable<MetricN
         return this.value;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

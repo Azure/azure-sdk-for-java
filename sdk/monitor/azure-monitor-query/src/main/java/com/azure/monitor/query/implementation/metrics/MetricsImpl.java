@@ -198,9 +198,11 @@ public final class MetricsImpl {
         Duration interval, String metricnames, String aggregation, Integer top, String orderBy, String filter,
         MetricResultType resultType, String metricnamespace, Boolean autoAdjustTimegrain, Boolean validateDimensions,
         String rollupby) {
-        return FluxUtil.withContext(context -> listAtSubscriptionScopeWithResponseAsync(region, timespan, interval,
-            metricnames, aggregation, top, orderBy, filter, resultType, metricnamespace, autoAdjustTimegrain,
-            validateDimensions, rollupby, context));
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+            context -> service.listAtSubscriptionScope(this.client.getHost(), this.client.getSubscriptionId(),
+                this.client.getApiVersion(), region, timespan, interval, metricnames, aggregation, top, orderBy, filter,
+                resultType, metricnamespace, autoAdjustTimegrain, validateDimensions, rollupby, accept, context));
     }
 
     /**
@@ -303,7 +305,7 @@ public final class MetricsImpl {
         String metricnamespace, Boolean autoAdjustTimegrain, Boolean validateDimensions, String rollupby) {
         return listAtSubscriptionScopeWithResponseAsync(region, timespan, interval, metricnames, aggregation, top,
             orderBy, filter, resultType, metricnamespace, autoAdjustTimegrain, validateDimensions, rollupby)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -355,7 +357,7 @@ public final class MetricsImpl {
         Context context) {
         return listAtSubscriptionScopeWithResponseAsync(region, timespan, interval, metricnames, aggregation, top,
             orderBy, filter, resultType, metricnamespace, autoAdjustTimegrain, validateDimensions, rollupby, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -458,7 +460,7 @@ public final class MetricsImpl {
         String metricnamespace, Boolean autoAdjustTimegrain, Boolean validateDimensions, String rollupby) {
         return listAtSubscriptionScopeWithResponse(region, timespan, interval, metricnames, aggregation, top, orderBy,
             filter, resultType, metricnamespace, autoAdjustTimegrain, validateDimensions, rollupby, Context.NONE)
-                .getValue();
+            .getValue();
     }
 
     /**
@@ -508,9 +510,11 @@ public final class MetricsImpl {
         Duration interval, String metricnames, String aggregation, Integer top, String orderBy, String filter,
         MetricResultType resultType, String metricnamespace, Boolean autoAdjustTimegrain, Boolean validateDimensions,
         String rollupby, SubscriptionScopeMetricsRequestBodyParameters body) {
-        return FluxUtil.withContext(context -> listAtSubscriptionScopePostWithResponseAsync(region, timespan, interval,
-            metricnames, aggregation, top, orderBy, filter, resultType, metricnamespace, autoAdjustTimegrain,
-            validateDimensions, rollupby, body, context));
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+            context -> service.listAtSubscriptionScopePost(this.client.getHost(), this.client.getSubscriptionId(),
+                this.client.getApiVersion(), region, timespan, interval, metricnames, aggregation, top, orderBy, filter,
+                resultType, metricnamespace, autoAdjustTimegrain, validateDimensions, rollupby, body, accept, context));
     }
 
     /**
@@ -616,7 +620,7 @@ public final class MetricsImpl {
         SubscriptionScopeMetricsRequestBodyParameters body) {
         return listAtSubscriptionScopePostWithResponseAsync(region, timespan, interval, metricnames, aggregation, top,
             orderBy, filter, resultType, metricnamespace, autoAdjustTimegrain, validateDimensions, rollupby, body)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -823,9 +827,10 @@ public final class MetricsImpl {
     public Mono<Response<MetricsResponse>> listWithResponseAsync(String resourceUri, String timespan, Duration interval,
         String metricnames, String aggregation, Integer top, String orderBy, String filter, ResultType resultType,
         String metricnamespace, Boolean autoAdjustTimegrain, Boolean validateDimensions, String rollupby) {
-        return FluxUtil.withContext(
-            context -> listWithResponseAsync(resourceUri, timespan, interval, metricnames, aggregation, top, orderBy,
-                filter, resultType, metricnamespace, autoAdjustTimegrain, validateDimensions, rollupby, context));
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.list(this.client.getHost(), resourceUri, timespan, interval,
+            metricnames, aggregation, top, orderBy, filter, resultType, this.client.getApiVersion(), metricnamespace,
+            autoAdjustTimegrain, validateDimensions, rollupby, accept, context));
     }
 
     /**
@@ -928,7 +933,7 @@ public final class MetricsImpl {
         Boolean autoAdjustTimegrain, Boolean validateDimensions, String rollupby) {
         return listWithResponseAsync(resourceUri, timespan, interval, metricnames, aggregation, top, orderBy, filter,
             resultType, metricnamespace, autoAdjustTimegrain, validateDimensions, rollupby)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -979,7 +984,7 @@ public final class MetricsImpl {
         Boolean autoAdjustTimegrain, Boolean validateDimensions, String rollupby, Context context) {
         return listWithResponseAsync(resourceUri, timespan, interval, metricnames, aggregation, top, orderBy, filter,
             resultType, metricnamespace, autoAdjustTimegrain, validateDimensions, rollupby, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

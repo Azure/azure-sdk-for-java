@@ -116,9 +116,6 @@ public final class MetadataApplication implements JsonSerializable<MetadataAppli
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
