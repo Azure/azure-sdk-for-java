@@ -105,8 +105,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
         primaryFileAsyncClient = fileBuilderHelper(shareName, filePath).buildFileAsyncClient();
         testMetadata = Collections.singletonMap("testmetadata", "value");
         httpHeaders = new ShareFileHttpHeaders().setContentLanguage("en").setContentType("application/octet-stream");
-        smbProperties
-            = new FileSmbProperties().setNtfsFileAttributes(EnumSet.<NtfsFileAttributes>of(NtfsFileAttributes.NORMAL));
+        smbProperties = new FileSmbProperties().setNtfsFileAttributes(EnumSet.of(NtfsFileAttributes.NORMAL));
     }
 
     @Test
@@ -276,7 +275,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
         ShareFileAsyncClient fileClient
             = shareServiceAsyncClient.getShareAsyncClient(shareName).createFile(filePath, fileSize).block();
 
-        File file = FileShareTestHelper.getRandomFile(fileSize);
+        File file = getRandomFile(fileSize);
         assertNotNull(fileClient);
         fileClient.uploadFromFile(file.toPath().toString()).block();
         File outFile = new File(generatePathName() + ".txt");
@@ -285,7 +284,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
         }
 
         fileClient.downloadToFile(outFile.toPath().toString()).block();
-        assertTrue(FileShareTestHelper.compareFiles(file, outFile, 0, fileSize));
+        assertTrue(compareFiles(file, outFile, 0, fileSize));
 
         //cleanup
         shareServiceAsyncClient.deleteShare(shareName).block();
@@ -408,7 +407,8 @@ public class FileAsyncApiTests extends FileShareTestBase {
         StepVerifier
             .create(primaryFileAsyncClient.downloadWithResponse(null, null,
                 new ShareRequestConditions().setLeaseId(leaseId)))
-            .expectNextCount(1);
+            .expectNextCount(1)
+            .verifyComplete();
     }
 
     @Test
@@ -435,7 +435,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
         StepVerifier.create(primaryFileAsyncClient.downloadWithResponse(new ShareFileRange(0, 6L), false))
             .assertNext(it -> FluxUtil.collectBytesInByteBufferStream(it.getValue()).flatMap(data -> {
                 for (byte b : data) {
-                    assertEquals(b, 0);
+                    assertEquals(0, b);
                 }
                 return Mono.empty();
             }))
@@ -455,7 +455,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
         StepVerifier.create(primaryFileAsyncClient.downloadWithResponse(new ShareFileRange(1, 7L), false))
             .assertNext(it -> FluxUtil.collectBytesInByteBufferStream(it.getValue()).flatMap(data -> {
                 for (byte b : data) {
-                    assertEquals(b, 0);
+                    assertEquals(0, b);
                 }
                 return Mono.empty();
             }))
@@ -813,7 +813,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
         StepVerifier
             .create(fileClientDest.uploadRangeFromUrlWithResponse(length, destinationOffset, sourceOffset,
                 fileClient.getFileUrl() + "?" + sasToken))
-            .assertNext(r -> assertEquals(r.getStatusCode(), 201))
+            .assertNext(r -> assertEquals(201, r.getStatusCode()))
             .verifyComplete();
 
         StepVerifier.create(fileClientDest.downloadWithResponse(null).flatMap(r -> {
@@ -833,7 +833,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
             return FluxUtil.collectBytesInByteBufferStream(r.getValue());
         })).assertNext(bytes -> {
             //u
-            assertEquals(bytes[0], 117);
+            assertEquals(117, bytes[0]);
         }).verifyComplete();
     }
 
@@ -894,7 +894,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
         createLeaseClient(client).acquireLease().block();
         StepVerifier
             .create(client.uploadRangeFromUrlWithResponse(length, destinationOffset, sourceOffset,
-                primaryFileAsyncClient.getFileUrl().toString() + "?" + sasToken,
+                primaryFileAsyncClient.getFileUrl() + "?" + sasToken,
                 new ShareRequestConditions().setLeaseId(testResourceNamer.randomUuid())))
             .verifyError(ShareStorageException.class);
     }
@@ -984,9 +984,10 @@ public class FileAsyncApiTests extends FileShareTestBase {
         PollerFlux<ShareFileCopyInfo, Void> poller
             = setPlaybackPollerFluxPollInterval(primaryFileAsyncClient.beginCopy(sourceURL, null, null, null, false,
                 false, null, null, new ShareRequestConditions().setLeaseId(leaseId)));
-        StepVerifier.create(poller).assertNext(it -> {
-            assertNotNull(it.getValue().getCopyId());
-        }).expectComplete().verify(Duration.ofMinutes(1));
+        StepVerifier.create(poller)
+            .assertNext(it -> assertNotNull(it.getValue().getCopyId()))
+            .expectComplete()
+            .verify(Duration.ofMinutes(1));
     }
 
     @Disabled("There is a race condition in Poller where it misses the first observed event if there is a gap "
@@ -1100,7 +1101,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
         Mono<ShareFileProperties> response = primaryFileAsyncClient.create(1024)
             .then(setPlaybackPollerFluxPollInterval(primaryFileAsyncClient.beginCopy(sourceURL, options, null)).last())
             .flatMap(r -> {
-                assertEquals(r.getStatus(), LongRunningOperationStatus.SUCCESSFULLY_COMPLETED);
+                assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, r.getStatus());
                 return primaryFileAsyncClient.getProperties();
             });
 
@@ -1335,7 +1336,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
         Response<Boolean> response = client.deleteIfExistsWithResponse(null, null).block();
         assertNotNull(response);
         assertFalse(response.getValue());
-        assertEquals(response.getStatusCode(), 404);
+        assertEquals(404, response.getStatusCode());
         assertNotEquals(Boolean.TRUE, client.exists().block());
     }
 
@@ -1629,8 +1630,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
     public void listRangesDiff(List<FileRange> rangesToUpdate, List<FileRange> rangesToClear,
         List<FileRange> expectedRanges, List<ClearRange> expectedClearRanges) {
         String snapshotId = primaryFileAsyncClient.create(4 * Constants.MB)
-            .then(primaryFileAsyncClient.upload(Flux.just(FileShareTestHelper.getRandomByteBuffer(4 * Constants.MB)),
-                4 * Constants.MB))
+            .then(primaryFileAsyncClient.upload(Flux.just(getRandomByteBuffer(4 * Constants.MB)), 4 * Constants.MB))
             .then(primaryFileServiceAsyncClient.getShareAsyncClient(primaryFileAsyncClient.getShareName())
                 .createSnapshot()
                 .map(ShareSnapshotInfo::getSnapshot))
@@ -1638,8 +1638,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
 
         Flux.fromIterable(rangesToUpdate).flatMap(it -> {
             int size = (int) (it.getEnd() - it.getStart() + 1);
-            return primaryFileAsyncClient.uploadWithResponse(Flux.just(FileShareTestHelper.getRandomByteBuffer(size)),
-                size, it.getStart());
+            return primaryFileAsyncClient.uploadWithResponse(Flux.just(getRandomByteBuffer(size)), size, it.getStart());
         }).blockLast();
 
         Flux.fromIterable(rangesToClear)
@@ -1677,8 +1676,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
         ShareSnapshotInfo previousSnapshot = primaryFileAsyncClient.create(Constants.MB)
             .then(primaryFileAsyncClient
                 .uploadFromFile(FileShareTestHelper.createRandomFileWithLength(Constants.KB, testFolder, fileName)))
-            .then(primaryFileAsyncClient.uploadRange(Flux.just(FileShareTestHelper.getRandomByteBuffer(Constants.KB)),
-                Constants.KB))
+            .then(primaryFileAsyncClient.uploadRange(Flux.just(getRandomByteBuffer(Constants.KB)), Constants.KB))
             .then(primaryFileServiceAsyncClient.getShareAsyncClient(primaryFileAsyncClient.getShareName())
                 .createSnapshot())
             .block();
@@ -1733,8 +1731,8 @@ public class FileAsyncApiTests extends FileShareTestBase {
     public void forceCloseHandleMin() {
         primaryFileAsyncClient.create(512).block();
         StepVerifier.create(primaryFileAsyncClient.forceCloseHandle("1")).assertNext(it -> {
-            assertEquals(it.getClosedHandles(), 0);
-            assertEquals(it.getFailedHandles(), 0);
+            assertEquals(0, it.getClosedHandles());
+            assertEquals(0, it.getFailedHandles());
         }).verifyComplete();
     }
 
@@ -1751,8 +1749,8 @@ public class FileAsyncApiTests extends FileShareTestBase {
         primaryFileAsyncClient.create(512).block();
 
         StepVerifier.create(primaryFileAsyncClient.forceCloseAllHandles()).assertNext(it -> {
-            assertEquals(it.getClosedHandles(), 0);
-            assertEquals(it.getFailedHandles(), 0);
+            assertEquals(0, it.getClosedHandles());
+            assertEquals(0, it.getFailedHandles());
         }).verifyComplete();
     }
 
@@ -1771,9 +1769,9 @@ public class FileAsyncApiTests extends FileShareTestBase {
                 return r.getValue().getProperties();
             });
 
-        StepVerifier.create(response).assertNext(r -> {
-            assertNotNull(r.getSmbProperties().getFilePermissionKey());
-        }).verifyComplete();
+        StepVerifier.create(response)
+            .assertNext(r -> assertNotNull(r.getSmbProperties().getFilePermissionKey()))
+            .verifyComplete();
     }
 
     @Test
