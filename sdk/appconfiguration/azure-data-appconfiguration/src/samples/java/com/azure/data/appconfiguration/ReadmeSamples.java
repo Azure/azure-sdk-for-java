@@ -375,7 +375,7 @@ public class ReadmeSamples {
 
     public void troubleshootingExceptions() {
         ConfigurationClient client = new ConfigurationClientBuilder()
-            .connectionString(connectionString)
+            .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient();
         // BEGIN: readme-sample-troubleshootingExceptions
         try {
@@ -388,7 +388,7 @@ public class ReadmeSamples {
         // END: readme-sample-troubleshootingExceptions
 
         ConfigurationAsyncClient asyncClient = new ConfigurationClientBuilder()
-            .connectionString(connectionString)
+            .credential(new DefaultAzureCredentialBuilder().build())
             .buildAsyncClient();
         // BEGIN: readme-sample-troubleshootingExceptions-async
         ConfigurationSetting setting = new ConfigurationSetting().setKey("myKey").setValue("myValue");
