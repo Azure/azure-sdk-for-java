@@ -154,7 +154,7 @@ class AppConfigurationReplicaClient {
         }
     }
 
-    List<ConfigurationSetting> listSettingSnapshot(String snapshotName, Boolean isRefresh) {
+    List<ConfigurationSetting> listSettingSnapshot(String snapshotName, boolean isRefresh) {
         List<ConfigurationSetting> configurationSettings = new ArrayList<>();
         try {
             Context context = new Context("refresh", false);
@@ -174,7 +174,7 @@ class AppConfigurationReplicaClient {
         }
     }
 
-    Boolean checkWatchKeys(SettingSelector settingSelector, Boolean isRefresh) {
+    boolean checkWatchKeys(SettingSelector settingSelector, boolean isRefresh) {
         Context context = new Context("refresh", false);
         List<PagedResponse<ConfigurationSetting>> results = client.listConfigurationSettings(settingSelector, context)
             .streamByPage().filter(pagedResponse -> pagedResponse.getStatusCode() != 304).toList();
