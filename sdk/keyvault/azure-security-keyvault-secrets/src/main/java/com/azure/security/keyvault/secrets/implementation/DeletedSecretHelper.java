@@ -11,9 +11,7 @@ public final class DeletedSecretHelper {
 
     public interface DeletedSecretAccessor {
         void setRecoveryId(DeletedSecret deletedSecret, String recoveryId);
-
         void setScheduledPurgeDate(DeletedSecret deletedSecret, OffsetDateTime scheduledPurgeDate);
-
         void setDeletedOn(DeletedSecret deletedSecret, OffsetDateTime deletedOn);
     }
 
