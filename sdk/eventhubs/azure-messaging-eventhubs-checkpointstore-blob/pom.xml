@@ -17,7 +17,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-messaging-eventhubs-checkpointstore-blob</artifactId>
-  <version>1.21.0-beta.1</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs-checkpointstore-blob;current} -->
+  <version>1.20.1</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs-checkpointstore-blob;current} -->
 
   <name>Microsoft Azure client library for storing checkpoints in Storage Blobs</name>
   <description>Library for using storing checkpoints in Storage Blobs</description>
@@ -43,35 +43,37 @@
 
       --add-reads com.azure.messaging.eventhubs=ALL-UNNAMED
     </javaModulesSurefireArgLine>
-
-    <checkstyle.suppressionsLocation>checkstyle-suppressions.xml</checkstyle.suppressionsLocation>
-    <spotbugs.skip>false</spotbugs.skip>
-    <spotbugs.excludeFilterFile>spotbugs-exclude.xml</spotbugs.excludeFilterFile>
   </properties>
 
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-eventhubs</artifactId>
-      <version>5.19.2</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;current} -->
+      <version>5.19.1</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob</artifactId>
-      <version>12.29.0</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
+      <version>12.28.1</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
     </dependency>
 
     <!-- Test dependencies -->
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.27.0-beta.4</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <version>1.27.0-beta.2</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-core-http-jdk-httpclient</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.14.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.14.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -95,4 +97,21 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+
+  <profiles>
+    <profile>
+      <id>java12plus</id>
+      <activation>
+        <jdk>[12,)</jdk>
+      </activation>
+      <dependencies>
+        <dependency>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-core-http-jdk-httpclient</artifactId>
+          <version>1.0.0-beta.17</version> <!-- {x-version-update;com.azure:azure-core-http-jdk-httpclient;dependency} -->
+          <scope>test</scope>
+        </dependency>
+      </dependencies>
+    </profile>
+  </profiles>
 </project>
