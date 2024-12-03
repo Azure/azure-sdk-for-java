@@ -5,42 +5,46 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.apimanagement.models.OperationEntityBaseContract;
 import com.azure.resourcemanager.apimanagement.models.ParameterContract;
 import com.azure.resourcemanager.apimanagement.models.RequestContract;
 import com.azure.resourcemanager.apimanagement.models.ResponseContract;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Operation Update Contract Properties. */
+/**
+ * Operation Update Contract Properties.
+ */
 @Fluent
 public final class OperationUpdateContractProperties extends OperationEntityBaseContract {
     /*
      * Operation Name.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * A Valid HTTP Operation Method. Typical Http Methods like GET, PUT, POST but not limited by only them.
      */
-    @JsonProperty(value = "method")
     private String method;
 
     /*
      * Relative URL template identifying the target resource for this operation. May include parameters. Example:
      * /customers/{cid}/orders/{oid}/?date={date}
      */
-    @JsonProperty(value = "urlTemplate")
     private String urlTemplate;
 
-    /** Creates an instance of OperationUpdateContractProperties class. */
+    /**
+     * Creates an instance of OperationUpdateContractProperties class.
+     */
     public OperationUpdateContractProperties() {
     }
 
     /**
      * Get the displayName property: Operation Name.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -49,7 +53,7 @@ public final class OperationUpdateContractProperties extends OperationEntityBase
 
     /**
      * Set the displayName property: Operation Name.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the OperationUpdateContractProperties object itself.
      */
@@ -61,7 +65,7 @@ public final class OperationUpdateContractProperties extends OperationEntityBase
     /**
      * Get the method property: A Valid HTTP Operation Method. Typical Http Methods like GET, PUT, POST but not limited
      * by only them.
-     *
+     * 
      * @return the method value.
      */
     public String method() {
@@ -71,7 +75,7 @@ public final class OperationUpdateContractProperties extends OperationEntityBase
     /**
      * Set the method property: A Valid HTTP Operation Method. Typical Http Methods like GET, PUT, POST but not limited
      * by only them.
-     *
+     * 
      * @param method the method value to set.
      * @return the OperationUpdateContractProperties object itself.
      */
@@ -83,7 +87,7 @@ public final class OperationUpdateContractProperties extends OperationEntityBase
     /**
      * Get the urlTemplate property: Relative URL template identifying the target resource for this operation. May
      * include parameters. Example: /customers/{cid}/orders/{oid}/?date={date}.
-     *
+     * 
      * @return the urlTemplate value.
      */
     public String urlTemplate() {
@@ -93,7 +97,7 @@ public final class OperationUpdateContractProperties extends OperationEntityBase
     /**
      * Set the urlTemplate property: Relative URL template identifying the target resource for this operation. May
      * include parameters. Example: /customers/{cid}/orders/{oid}/?date={date}.
-     *
+     * 
      * @param urlTemplate the urlTemplate value to set.
      * @return the OperationUpdateContractProperties object itself.
      */
@@ -102,35 +106,45 @@ public final class OperationUpdateContractProperties extends OperationEntityBase
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OperationUpdateContractProperties withTemplateParameters(List<ParameterContract> templateParameters) {
         super.withTemplateParameters(templateParameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OperationUpdateContractProperties withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OperationUpdateContractProperties withRequest(RequestContract request) {
         super.withRequest(request);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OperationUpdateContractProperties withResponses(List<ResponseContract> responses) {
         super.withResponses(responses);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OperationUpdateContractProperties withPolicies(String policies) {
         super.withPolicies(policies);
@@ -139,11 +153,81 @@ public final class OperationUpdateContractProperties extends OperationEntityBase
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+        if (templateParameters() != null) {
+            templateParameters().forEach(e -> e.validate());
+        }
+        if (request() != null) {
+            request().validate();
+        }
+        if (responses() != null) {
+            responses().forEach(e -> e.validate());
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("templateParameters", templateParameters(),
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("description", description());
+        jsonWriter.writeJsonField("request", request());
+        jsonWriter.writeArrayField("responses", responses(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("policies", policies());
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("method", this.method);
+        jsonWriter.writeStringField("urlTemplate", this.urlTemplate);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OperationUpdateContractProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OperationUpdateContractProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OperationUpdateContractProperties.
+     */
+    public static OperationUpdateContractProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OperationUpdateContractProperties deserializedOperationUpdateContractProperties
+                = new OperationUpdateContractProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("templateParameters".equals(fieldName)) {
+                    List<ParameterContract> templateParameters
+                        = reader.readArray(reader1 -> ParameterContract.fromJson(reader1));
+                    deserializedOperationUpdateContractProperties.withTemplateParameters(templateParameters);
+                } else if ("description".equals(fieldName)) {
+                    deserializedOperationUpdateContractProperties.withDescription(reader.getString());
+                } else if ("request".equals(fieldName)) {
+                    deserializedOperationUpdateContractProperties.withRequest(RequestContract.fromJson(reader));
+                } else if ("responses".equals(fieldName)) {
+                    List<ResponseContract> responses = reader.readArray(reader1 -> ResponseContract.fromJson(reader1));
+                    deserializedOperationUpdateContractProperties.withResponses(responses);
+                } else if ("policies".equals(fieldName)) {
+                    deserializedOperationUpdateContractProperties.withPolicies(reader.getString());
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedOperationUpdateContractProperties.displayName = reader.getString();
+                } else if ("method".equals(fieldName)) {
+                    deserializedOperationUpdateContractProperties.method = reader.getString();
+                } else if ("urlTemplate".equals(fieldName)) {
+                    deserializedOperationUpdateContractProperties.urlTemplate = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOperationUpdateContractProperties;
+        });
     }
 }

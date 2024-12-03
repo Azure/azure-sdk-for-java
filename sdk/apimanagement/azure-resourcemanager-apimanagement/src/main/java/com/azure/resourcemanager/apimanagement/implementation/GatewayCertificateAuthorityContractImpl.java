@@ -115,10 +115,10 @@ public final class GatewayCertificateAuthorityContractImpl implements GatewayCer
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.serviceName = Utils.getValueFromIdByName(innerObject.id(), "service");
-        this.gatewayId = Utils.getValueFromIdByName(innerObject.id(), "gateways");
-        this.certificateId = Utils.getValueFromIdByName(innerObject.id(), "certificateAuthorities");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.serviceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "service");
+        this.gatewayId = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "gateways");
+        this.certificateId = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "certificateAuthorities");
     }
 
     public GatewayCertificateAuthorityContract refresh() {

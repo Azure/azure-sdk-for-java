@@ -5,54 +5,57 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.apimanagement.models.UserEntityBaseParameters;
 import com.azure.resourcemanager.apimanagement.models.UserState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-/** User profile. */
+/**
+ * User profile.
+ */
 @Fluent
 public final class UserContractProperties extends UserEntityBaseParameters {
     /*
      * First name.
      */
-    @JsonProperty(value = "firstName")
     private String firstName;
 
     /*
      * Last name.
      */
-    @JsonProperty(value = "lastName")
     private String lastName;
 
     /*
      * Email address.
      */
-    @JsonProperty(value = "email")
     private String email;
 
     /*
      * Date of user registration. The date conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the
      * ISO 8601 standard.
-     *
      */
-    @JsonProperty(value = "registrationDate")
     private OffsetDateTime registrationDate;
 
     /*
      * Collection of groups user is part of.
      */
-    @JsonProperty(value = "groups", access = JsonProperty.Access.WRITE_ONLY)
     private List<GroupContractProperties> groups;
 
-    /** Creates an instance of UserContractProperties class. */
+    /**
+     * Creates an instance of UserContractProperties class.
+     */
     public UserContractProperties() {
     }
 
     /**
      * Get the firstName property: First name.
-     *
+     * 
      * @return the firstName value.
      */
     public String firstName() {
@@ -61,7 +64,7 @@ public final class UserContractProperties extends UserEntityBaseParameters {
 
     /**
      * Set the firstName property: First name.
-     *
+     * 
      * @param firstName the firstName value to set.
      * @return the UserContractProperties object itself.
      */
@@ -72,7 +75,7 @@ public final class UserContractProperties extends UserEntityBaseParameters {
 
     /**
      * Get the lastName property: Last name.
-     *
+     * 
      * @return the lastName value.
      */
     public String lastName() {
@@ -81,7 +84,7 @@ public final class UserContractProperties extends UserEntityBaseParameters {
 
     /**
      * Set the lastName property: Last name.
-     *
+     * 
      * @param lastName the lastName value to set.
      * @return the UserContractProperties object itself.
      */
@@ -92,7 +95,7 @@ public final class UserContractProperties extends UserEntityBaseParameters {
 
     /**
      * Get the email property: Email address.
-     *
+     * 
      * @return the email value.
      */
     public String email() {
@@ -101,7 +104,7 @@ public final class UserContractProperties extends UserEntityBaseParameters {
 
     /**
      * Set the email property: Email address.
-     *
+     * 
      * @param email the email value to set.
      * @return the UserContractProperties object itself.
      */
@@ -113,7 +116,7 @@ public final class UserContractProperties extends UserEntityBaseParameters {
     /**
      * Get the registrationDate property: Date of user registration. The date conforms to the following format:
      * `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
-     *
+     * 
      * @return the registrationDate value.
      */
     public OffsetDateTime registrationDate() {
@@ -123,7 +126,7 @@ public final class UserContractProperties extends UserEntityBaseParameters {
     /**
      * Set the registrationDate property: Date of user registration. The date conforms to the following format:
      * `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
-     *
+     * 
      * @param registrationDate the registrationDate value to set.
      * @return the UserContractProperties object itself.
      */
@@ -134,28 +137,34 @@ public final class UserContractProperties extends UserEntityBaseParameters {
 
     /**
      * Get the groups property: Collection of groups user is part of.
-     *
+     * 
      * @return the groups value.
      */
     public List<GroupContractProperties> groups() {
         return this.groups;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public UserContractProperties withState(UserState state) {
         super.withState(state);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public UserContractProperties withNote(String note) {
         super.withNote(note);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public UserContractProperties withIdentities(List<UserIdentityContractInner> identities) {
         super.withIdentities(identities);
@@ -164,14 +173,80 @@ public final class UserContractProperties extends UserEntityBaseParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (groups() != null) {
             groups().forEach(e -> e.validate());
         }
+        if (identities() != null) {
+            identities().forEach(e -> e.validate());
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("state", state() == null ? null : state().toString());
+        jsonWriter.writeStringField("note", note());
+        jsonWriter.writeArrayField("identities", identities(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("firstName", this.firstName);
+        jsonWriter.writeStringField("lastName", this.lastName);
+        jsonWriter.writeStringField("email", this.email);
+        jsonWriter.writeStringField("registrationDate",
+            this.registrationDate == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.registrationDate));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UserContractProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UserContractProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the UserContractProperties.
+     */
+    public static UserContractProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UserContractProperties deserializedUserContractProperties = new UserContractProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("state".equals(fieldName)) {
+                    deserializedUserContractProperties.withState(UserState.fromString(reader.getString()));
+                } else if ("note".equals(fieldName)) {
+                    deserializedUserContractProperties.withNote(reader.getString());
+                } else if ("identities".equals(fieldName)) {
+                    List<UserIdentityContractInner> identities
+                        = reader.readArray(reader1 -> UserIdentityContractInner.fromJson(reader1));
+                    deserializedUserContractProperties.withIdentities(identities);
+                } else if ("firstName".equals(fieldName)) {
+                    deserializedUserContractProperties.firstName = reader.getString();
+                } else if ("lastName".equals(fieldName)) {
+                    deserializedUserContractProperties.lastName = reader.getString();
+                } else if ("email".equals(fieldName)) {
+                    deserializedUserContractProperties.email = reader.getString();
+                } else if ("registrationDate".equals(fieldName)) {
+                    deserializedUserContractProperties.registrationDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("groups".equals(fieldName)) {
+                    List<GroupContractProperties> groups
+                        = reader.readArray(reader1 -> GroupContractProperties.fromJson(reader1));
+                    deserializedUserContractProperties.groups = groups;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUserContractProperties;
+        });
     }
 }

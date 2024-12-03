@@ -5,37 +5,42 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Http message diagnostic settings. */
+/**
+ * Http message diagnostic settings.
+ */
 @Fluent
-public final class HttpMessageDiagnostic {
+public final class HttpMessageDiagnostic implements JsonSerializable<HttpMessageDiagnostic> {
     /*
      * Array of HTTP Headers to log.
      */
-    @JsonProperty(value = "headers")
     private List<String> headers;
 
     /*
      * Body logging settings.
      */
-    @JsonProperty(value = "body")
     private BodyDiagnosticSettings body;
 
     /*
      * Data masking settings.
      */
-    @JsonProperty(value = "dataMasking")
     private DataMasking dataMasking;
 
-    /** Creates an instance of HttpMessageDiagnostic class. */
+    /**
+     * Creates an instance of HttpMessageDiagnostic class.
+     */
     public HttpMessageDiagnostic() {
     }
 
     /**
      * Get the headers property: Array of HTTP Headers to log.
-     *
+     * 
      * @return the headers value.
      */
     public List<String> headers() {
@@ -44,7 +49,7 @@ public final class HttpMessageDiagnostic {
 
     /**
      * Set the headers property: Array of HTTP Headers to log.
-     *
+     * 
      * @param headers the headers value to set.
      * @return the HttpMessageDiagnostic object itself.
      */
@@ -55,7 +60,7 @@ public final class HttpMessageDiagnostic {
 
     /**
      * Get the body property: Body logging settings.
-     *
+     * 
      * @return the body value.
      */
     public BodyDiagnosticSettings body() {
@@ -64,7 +69,7 @@ public final class HttpMessageDiagnostic {
 
     /**
      * Set the body property: Body logging settings.
-     *
+     * 
      * @param body the body value to set.
      * @return the HttpMessageDiagnostic object itself.
      */
@@ -75,7 +80,7 @@ public final class HttpMessageDiagnostic {
 
     /**
      * Get the dataMasking property: Data masking settings.
-     *
+     * 
      * @return the dataMasking value.
      */
     public DataMasking dataMasking() {
@@ -84,7 +89,7 @@ public final class HttpMessageDiagnostic {
 
     /**
      * Set the dataMasking property: Data masking settings.
-     *
+     * 
      * @param dataMasking the dataMasking value to set.
      * @return the HttpMessageDiagnostic object itself.
      */
@@ -95,7 +100,7 @@ public final class HttpMessageDiagnostic {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -105,5 +110,48 @@ public final class HttpMessageDiagnostic {
         if (dataMasking() != null) {
             dataMasking().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("headers", this.headers, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("body", this.body);
+        jsonWriter.writeJsonField("dataMasking", this.dataMasking);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HttpMessageDiagnostic from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HttpMessageDiagnostic if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the HttpMessageDiagnostic.
+     */
+    public static HttpMessageDiagnostic fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HttpMessageDiagnostic deserializedHttpMessageDiagnostic = new HttpMessageDiagnostic();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("headers".equals(fieldName)) {
+                    List<String> headers = reader.readArray(reader1 -> reader1.getString());
+                    deserializedHttpMessageDiagnostic.headers = headers;
+                } else if ("body".equals(fieldName)) {
+                    deserializedHttpMessageDiagnostic.body = BodyDiagnosticSettings.fromJson(reader);
+                } else if ("dataMasking".equals(fieldName)) {
+                    deserializedHttpMessageDiagnostic.dataMasking = DataMasking.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHttpMessageDiagnostic;
+        });
     }
 }

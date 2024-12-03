@@ -5,24 +5,32 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Authorization login response contract. */
+/**
+ * Authorization login response contract.
+ */
 @Fluent
-public final class AuthorizationLoginResponseContractInner {
+public final class AuthorizationLoginResponseContractInner
+    implements JsonSerializable<AuthorizationLoginResponseContractInner> {
     /*
      * The login link
      */
-    @JsonProperty(value = "loginLink")
     private String loginLink;
 
-    /** Creates an instance of AuthorizationLoginResponseContractInner class. */
+    /**
+     * Creates an instance of AuthorizationLoginResponseContractInner class.
+     */
     public AuthorizationLoginResponseContractInner() {
     }
 
     /**
      * Get the loginLink property: The login link.
-     *
+     * 
      * @return the loginLink value.
      */
     public String loginLink() {
@@ -31,7 +39,7 @@ public final class AuthorizationLoginResponseContractInner {
 
     /**
      * Set the loginLink property: The login link.
-     *
+     * 
      * @param loginLink the loginLink value to set.
      * @return the AuthorizationLoginResponseContractInner object itself.
      */
@@ -42,9 +50,46 @@ public final class AuthorizationLoginResponseContractInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("loginLink", this.loginLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AuthorizationLoginResponseContractInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AuthorizationLoginResponseContractInner if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AuthorizationLoginResponseContractInner.
+     */
+    public static AuthorizationLoginResponseContractInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AuthorizationLoginResponseContractInner deserializedAuthorizationLoginResponseContractInner
+                = new AuthorizationLoginResponseContractInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("loginLink".equals(fieldName)) {
+                    deserializedAuthorizationLoginResponseContractInner.loginLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAuthorizationLoginResponseContractInner;
+        });
     }
 }

@@ -6,25 +6,46 @@ package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.apimanagement.models.PolicyContentFormat;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Policy Contract details. */
+/**
+ * Policy Contract details.
+ */
 @Fluent
 public final class PolicyContractInner extends ProxyResource {
     /*
      * Properties of the Policy.
      */
-    @JsonProperty(value = "properties")
     private PolicyContractProperties innerProperties;
 
-    /** Creates an instance of PolicyContractInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of PolicyContractInner class.
+     */
     public PolicyContractInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of the Policy.
-     *
+     * 
      * @return the innerProperties value.
      */
     private PolicyContractProperties innerProperties() {
@@ -32,8 +53,38 @@ public final class PolicyContractInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the value property: Contents of the Policy as defined by the format.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -42,7 +93,7 @@ public final class PolicyContractInner extends ProxyResource {
 
     /**
      * Set the value property: Contents of the Policy as defined by the format.
-     *
+     * 
      * @param value the value value to set.
      * @return the PolicyContractInner object itself.
      */
@@ -56,7 +107,7 @@ public final class PolicyContractInner extends ProxyResource {
 
     /**
      * Get the format property: Format of the policyContent.
-     *
+     * 
      * @return the format value.
      */
     public PolicyContentFormat format() {
@@ -65,7 +116,7 @@ public final class PolicyContractInner extends ProxyResource {
 
     /**
      * Set the format property: Format of the policyContent.
-     *
+     * 
      * @param format the format value to set.
      * @return the PolicyContractInner object itself.
      */
@@ -79,12 +130,55 @@ public final class PolicyContractInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PolicyContractInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PolicyContractInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PolicyContractInner.
+     */
+    public static PolicyContractInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PolicyContractInner deserializedPolicyContractInner = new PolicyContractInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedPolicyContractInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedPolicyContractInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedPolicyContractInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedPolicyContractInner.innerProperties = PolicyContractProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPolicyContractInner;
+        });
     }
 }

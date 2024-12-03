@@ -39,17 +39,23 @@ import com.azure.resourcemanager.apimanagement.models.PolicyExportFormat;
 import com.azure.resourcemanager.apimanagement.models.PolicyIdName;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in GraphQLApiResolverPoliciesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in GraphQLApiResolverPoliciesClient.
+ */
 public final class GraphQLApiResolverPoliciesClientImpl implements GraphQLApiResolverPoliciesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final GraphQLApiResolverPoliciesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ApiManagementClientImpl client;
 
     /**
      * Initializes an instance of GraphQLApiResolverPoliciesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     GraphQLApiResolverPoliciesClientImpl(ApiManagementClientImpl client) {
@@ -130,18 +136,18 @@ public final class GraphQLApiResolverPoliciesClientImpl implements GraphQLApiRes
 
     /**
      * Get the list of policy configuration at the GraphQL API Resolver level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param resolverId Resolver identifier within a GraphQL API. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of policy configuration at the GraphQL API Resolver level along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PolicyContractInner>> listByResolverSinglePageAsync(String resourceGroupName,
@@ -178,19 +184,19 @@ public final class GraphQLApiResolverPoliciesClientImpl implements GraphQLApiRes
 
     /**
      * Get the list of policy configuration at the GraphQL API Resolver level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param resolverId Resolver identifier within a GraphQL API. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of policy configuration at the GraphQL API Resolver level along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PolicyContractInner>> listByResolverSinglePageAsync(String resourceGroupName,
@@ -227,18 +233,18 @@ public final class GraphQLApiResolverPoliciesClientImpl implements GraphQLApiRes
 
     /**
      * Get the list of policy configuration at the GraphQL API Resolver level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param resolverId Resolver identifier within a GraphQL API. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of policy configuration at the GraphQL API Resolver level as paginated response with {@link
-     *     PagedFlux}.
+     * @return the list of policy configuration at the GraphQL API Resolver level as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PolicyContractInner> listByResolverAsync(String resourceGroupName, String serviceName,
@@ -249,19 +255,19 @@ public final class GraphQLApiResolverPoliciesClientImpl implements GraphQLApiRes
 
     /**
      * Get the list of policy configuration at the GraphQL API Resolver level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param resolverId Resolver identifier within a GraphQL API. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of policy configuration at the GraphQL API Resolver level as paginated response with {@link
-     *     PagedFlux}.
+     * @return the list of policy configuration at the GraphQL API Resolver level as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PolicyContractInner> listByResolverAsync(String resourceGroupName, String serviceName,
@@ -273,18 +279,18 @@ public final class GraphQLApiResolverPoliciesClientImpl implements GraphQLApiRes
 
     /**
      * Get the list of policy configuration at the GraphQL API Resolver level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param resolverId Resolver identifier within a GraphQL API. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of policy configuration at the GraphQL API Resolver level as paginated response with {@link
-     *     PagedIterable}.
+     * @return the list of policy configuration at the GraphQL API Resolver level as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PolicyContractInner> listByResolver(String resourceGroupName, String serviceName, String apiId,
@@ -294,19 +300,19 @@ public final class GraphQLApiResolverPoliciesClientImpl implements GraphQLApiRes
 
     /**
      * Get the list of policy configuration at the GraphQL API Resolver level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param resolverId Resolver identifier within a GraphQL API. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of policy configuration at the GraphQL API Resolver level as paginated response with {@link
-     *     PagedIterable}.
+     * @return the list of policy configuration at the GraphQL API Resolver level as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PolicyContractInner> listByResolver(String resourceGroupName, String serviceName, String apiId,
@@ -316,19 +322,19 @@ public final class GraphQLApiResolverPoliciesClientImpl implements GraphQLApiRes
 
     /**
      * Gets the entity state (Etag) version of the GraphQL API resolver policy specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param resolverId Resolver identifier within a GraphQL API. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param policyId The identifier of the Policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity state (Etag) version of the GraphQL API resolver policy specified by its identifier on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<GraphQLApiResolverPoliciesGetEntityTagResponse> getEntityTagWithResponseAsync(String resourceGroupName,
@@ -367,20 +373,20 @@ public final class GraphQLApiResolverPoliciesClientImpl implements GraphQLApiRes
 
     /**
      * Gets the entity state (Etag) version of the GraphQL API resolver policy specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param resolverId Resolver identifier within a GraphQL API. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param policyId The identifier of the Policy.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity state (Etag) version of the GraphQL API resolver policy specified by its identifier on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<GraphQLApiResolverPoliciesGetEntityTagResponse> getEntityTagWithResponseAsync(String resourceGroupName,
@@ -417,19 +423,19 @@ public final class GraphQLApiResolverPoliciesClientImpl implements GraphQLApiRes
 
     /**
      * Gets the entity state (Etag) version of the GraphQL API resolver policy specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param resolverId Resolver identifier within a GraphQL API. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param policyId The identifier of the Policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity state (Etag) version of the GraphQL API resolver policy specified by its identifier on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> getEntityTagAsync(String resourceGroupName, String serviceName, String apiId, String resolverId,
@@ -440,13 +446,13 @@ public final class GraphQLApiResolverPoliciesClientImpl implements GraphQLApiRes
 
     /**
      * Gets the entity state (Etag) version of the GraphQL API resolver policy specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param resolverId Resolver identifier within a GraphQL API. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param policyId The identifier of the Policy.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -463,13 +469,13 @@ public final class GraphQLApiResolverPoliciesClientImpl implements GraphQLApiRes
 
     /**
      * Gets the entity state (Etag) version of the GraphQL API resolver policy specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param resolverId Resolver identifier within a GraphQL API. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param policyId The identifier of the Policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -483,13 +489,13 @@ public final class GraphQLApiResolverPoliciesClientImpl implements GraphQLApiRes
 
     /**
      * Get the policy configuration at the GraphQL API Resolver level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param resolverId Resolver identifier within a GraphQL API. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param policyId The identifier of the Policy.
      * @param format Policy Export Format.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -534,13 +540,13 @@ public final class GraphQLApiResolverPoliciesClientImpl implements GraphQLApiRes
 
     /**
      * Get the policy configuration at the GraphQL API Resolver level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param resolverId Resolver identifier within a GraphQL API. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param policyId The identifier of the Policy.
      * @param format Policy Export Format.
      * @param context The context to associate with this operation.
@@ -585,13 +591,13 @@ public final class GraphQLApiResolverPoliciesClientImpl implements GraphQLApiRes
 
     /**
      * Get the policy configuration at the GraphQL API Resolver level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param resolverId Resolver identifier within a GraphQL API. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param policyId The identifier of the Policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -608,13 +614,13 @@ public final class GraphQLApiResolverPoliciesClientImpl implements GraphQLApiRes
 
     /**
      * Get the policy configuration at the GraphQL API Resolver level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param resolverId Resolver identifier within a GraphQL API. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param policyId The identifier of the Policy.
      * @param format Policy Export Format.
      * @param context The context to associate with this operation.
@@ -632,13 +638,13 @@ public final class GraphQLApiResolverPoliciesClientImpl implements GraphQLApiRes
 
     /**
      * Get the policy configuration at the GraphQL API Resolver level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param resolverId Resolver identifier within a GraphQL API. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param policyId The identifier of the Policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -655,13 +661,13 @@ public final class GraphQLApiResolverPoliciesClientImpl implements GraphQLApiRes
 
     /**
      * Creates or updates policy configuration for the GraphQL API Resolver level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param resolverId Resolver identifier within a GraphQL API. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param policyId The identifier of the Policy.
      * @param parameters The policy contents to apply.
      * @param ifMatch ETag of the Entity. Not required when creating an entity, but required when updating an entity.
@@ -713,13 +719,13 @@ public final class GraphQLApiResolverPoliciesClientImpl implements GraphQLApiRes
 
     /**
      * Creates or updates policy configuration for the GraphQL API Resolver level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param resolverId Resolver identifier within a GraphQL API. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param policyId The identifier of the Policy.
      * @param parameters The policy contents to apply.
      * @param ifMatch ETag of the Entity. Not required when creating an entity, but required when updating an entity.
@@ -771,13 +777,13 @@ public final class GraphQLApiResolverPoliciesClientImpl implements GraphQLApiRes
 
     /**
      * Creates or updates policy configuration for the GraphQL API Resolver level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param resolverId Resolver identifier within a GraphQL API. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param policyId The identifier of the Policy.
      * @param parameters The policy contents to apply.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -795,13 +801,13 @@ public final class GraphQLApiResolverPoliciesClientImpl implements GraphQLApiRes
 
     /**
      * Creates or updates policy configuration for the GraphQL API Resolver level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param resolverId Resolver identifier within a GraphQL API. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param policyId The identifier of the Policy.
      * @param parameters The policy contents to apply.
      * @param ifMatch ETag of the Entity. Not required when creating an entity, but required when updating an entity.
@@ -821,13 +827,13 @@ public final class GraphQLApiResolverPoliciesClientImpl implements GraphQLApiRes
 
     /**
      * Creates or updates policy configuration for the GraphQL API Resolver level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param resolverId Resolver identifier within a GraphQL API. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param policyId The identifier of the Policy.
      * @param parameters The policy contents to apply.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -845,16 +851,16 @@ public final class GraphQLApiResolverPoliciesClientImpl implements GraphQLApiRes
 
     /**
      * Deletes the policy configuration at the GraphQL Api Resolver.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param resolverId Resolver identifier within a GraphQL API. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param policyId The identifier of the Policy.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -900,16 +906,16 @@ public final class GraphQLApiResolverPoliciesClientImpl implements GraphQLApiRes
 
     /**
      * Deletes the policy configuration at the GraphQL Api Resolver.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param resolverId Resolver identifier within a GraphQL API. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param policyId The identifier of the Policy.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -954,16 +960,16 @@ public final class GraphQLApiResolverPoliciesClientImpl implements GraphQLApiRes
 
     /**
      * Deletes the policy configuration at the GraphQL Api Resolver.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param resolverId Resolver identifier within a GraphQL API. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param policyId The identifier of the Policy.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -978,16 +984,16 @@ public final class GraphQLApiResolverPoliciesClientImpl implements GraphQLApiRes
 
     /**
      * Deletes the policy configuration at the GraphQL Api Resolver.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param resolverId Resolver identifier within a GraphQL API. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param policyId The identifier of the Policy.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1003,16 +1009,16 @@ public final class GraphQLApiResolverPoliciesClientImpl implements GraphQLApiRes
 
     /**
      * Deletes the policy configuration at the GraphQL Api Resolver.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param resolverId Resolver identifier within a GraphQL API. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param policyId The identifier of the Policy.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1025,14 +1031,13 @@ public final class GraphQLApiResolverPoliciesClientImpl implements GraphQLApiRes
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of the list policy operation along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PolicyContractInner>> listByResolverNextSinglePageAsync(String nextLink) {
@@ -1053,15 +1058,14 @@ public final class GraphQLApiResolverPoliciesClientImpl implements GraphQLApiRes
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of the list policy operation along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PolicyContractInner>> listByResolverNextSinglePageAsync(String nextLink,

@@ -4,27 +4,38 @@
 
 package com.azure.resourcemanager.apimanagement.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Defines values for PolicyScopeContract. */
+/**
+ * Defines values for PolicyScopeContract.
+ */
 public enum PolicyScopeContract {
-    /** Enum value Tenant. */
+    /**
+     * Enum value Tenant.
+     */
     TENANT("Tenant"),
 
-    /** Enum value Product. */
+    /**
+     * Enum value Product.
+     */
     PRODUCT("Product"),
 
-    /** Enum value Api. */
+    /**
+     * Enum value Api.
+     */
     API("Api"),
 
-    /** Enum value Operation. */
+    /**
+     * Enum value Operation.
+     */
     OPERATION("Operation"),
 
-    /** Enum value All. */
+    /**
+     * Enum value All.
+     */
     ALL("All");
 
-    /** The actual serialized value for a PolicyScopeContract instance. */
+    /**
+     * The actual serialized value for a PolicyScopeContract instance.
+     */
     private final String value;
 
     PolicyScopeContract(String value) {
@@ -33,11 +44,10 @@ public enum PolicyScopeContract {
 
     /**
      * Parses a serialized value to a PolicyScopeContract instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed PolicyScopeContract object, or null if unable to parse.
      */
-    @JsonCreator
     public static PolicyScopeContract fromString(String value) {
         if (value == null) {
             return null;
@@ -51,8 +61,9 @@ public enum PolicyScopeContract {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

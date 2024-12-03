@@ -5,25 +5,32 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.apimanagement.fluent.models.SubscriptionCreateParameterProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Subscription create details. */
+/**
+ * Subscription create details.
+ */
 @Fluent
-public final class SubscriptionCreateParameters {
+public final class SubscriptionCreateParameters implements JsonSerializable<SubscriptionCreateParameters> {
     /*
      * Subscription contract properties.
      */
-    @JsonProperty(value = "properties")
     private SubscriptionCreateParameterProperties innerProperties;
 
-    /** Creates an instance of SubscriptionCreateParameters class. */
+    /**
+     * Creates an instance of SubscriptionCreateParameters class.
+     */
     public SubscriptionCreateParameters() {
     }
 
     /**
      * Get the innerProperties property: Subscription contract properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SubscriptionCreateParameterProperties innerProperties() {
@@ -32,7 +39,7 @@ public final class SubscriptionCreateParameters {
 
     /**
      * Get the ownerId property: User (user id path) for whom subscription is being created in form /users/{userId}.
-     *
+     * 
      * @return the ownerId value.
      */
     public String ownerId() {
@@ -41,7 +48,7 @@ public final class SubscriptionCreateParameters {
 
     /**
      * Set the ownerId property: User (user id path) for whom subscription is being created in form /users/{userId}.
-     *
+     * 
      * @param ownerId the ownerId value to set.
      * @return the SubscriptionCreateParameters object itself.
      */
@@ -55,7 +62,7 @@ public final class SubscriptionCreateParameters {
 
     /**
      * Get the scope property: Scope like /products/{productId} or /apis or /apis/{apiId}.
-     *
+     * 
      * @return the scope value.
      */
     public String scope() {
@@ -64,7 +71,7 @@ public final class SubscriptionCreateParameters {
 
     /**
      * Set the scope property: Scope like /products/{productId} or /apis or /apis/{apiId}.
-     *
+     * 
      * @param scope the scope value to set.
      * @return the SubscriptionCreateParameters object itself.
      */
@@ -78,7 +85,7 @@ public final class SubscriptionCreateParameters {
 
     /**
      * Get the displayName property: Subscription name.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -87,7 +94,7 @@ public final class SubscriptionCreateParameters {
 
     /**
      * Set the displayName property: Subscription name.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the SubscriptionCreateParameters object itself.
      */
@@ -102,7 +109,7 @@ public final class SubscriptionCreateParameters {
     /**
      * Get the primaryKey property: Primary subscription key. If not specified during request key will be generated
      * automatically.
-     *
+     * 
      * @return the primaryKey value.
      */
     public String primaryKey() {
@@ -112,7 +119,7 @@ public final class SubscriptionCreateParameters {
     /**
      * Set the primaryKey property: Primary subscription key. If not specified during request key will be generated
      * automatically.
-     *
+     * 
      * @param primaryKey the primaryKey value to set.
      * @return the SubscriptionCreateParameters object itself.
      */
@@ -127,7 +134,7 @@ public final class SubscriptionCreateParameters {
     /**
      * Get the secondaryKey property: Secondary subscription key. If not specified during request key will be generated
      * automatically.
-     *
+     * 
      * @return the secondaryKey value.
      */
     public String secondaryKey() {
@@ -137,7 +144,7 @@ public final class SubscriptionCreateParameters {
     /**
      * Set the secondaryKey property: Secondary subscription key. If not specified during request key will be generated
      * automatically.
-     *
+     * 
      * @param secondaryKey the secondaryKey value to set.
      * @return the SubscriptionCreateParameters object itself.
      */
@@ -156,7 +163,7 @@ public final class SubscriptionCreateParameters {
      * made by the developer, but has not yet been approved or rejected, * rejected – the subscription request has been
      * denied by an administrator, * cancelled – the subscription has been cancelled by the developer or administrator,
      * * expired – the subscription reached its expiration date and was deactivated.
-     *
+     * 
      * @return the state value.
      */
     public SubscriptionState state() {
@@ -170,7 +177,7 @@ public final class SubscriptionCreateParameters {
      * made by the developer, but has not yet been approved or rejected, * rejected – the subscription request has been
      * denied by an administrator, * cancelled – the subscription has been cancelled by the developer or administrator,
      * * expired – the subscription reached its expiration date and was deactivated.
-     *
+     * 
      * @param state the state value to set.
      * @return the SubscriptionCreateParameters object itself.
      */
@@ -184,7 +191,7 @@ public final class SubscriptionCreateParameters {
 
     /**
      * Get the allowTracing property: Determines whether tracing can be enabled.
-     *
+     * 
      * @return the allowTracing value.
      */
     public Boolean allowTracing() {
@@ -193,7 +200,7 @@ public final class SubscriptionCreateParameters {
 
     /**
      * Set the allowTracing property: Determines whether tracing can be enabled.
-     *
+     * 
      * @param allowTracing the allowTracing value to set.
      * @return the SubscriptionCreateParameters object itself.
      */
@@ -207,12 +214,49 @@ public final class SubscriptionCreateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SubscriptionCreateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SubscriptionCreateParameters if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SubscriptionCreateParameters.
+     */
+    public static SubscriptionCreateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SubscriptionCreateParameters deserializedSubscriptionCreateParameters = new SubscriptionCreateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedSubscriptionCreateParameters.innerProperties
+                        = SubscriptionCreateParameterProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSubscriptionCreateParameters;
+        });
     }
 }

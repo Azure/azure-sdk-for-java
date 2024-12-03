@@ -5,17 +5,20 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ConfigurationIdName. */
+/**
+ * Defines values for ConfigurationIdName.
+ */
 public final class ConfigurationIdName extends ExpandableStringEnum<ConfigurationIdName> {
-    /** Static value configuration for ConfigurationIdName. */
+    /**
+     * Static value configuration for ConfigurationIdName.
+     */
     public static final ConfigurationIdName CONFIGURATION = fromString("configuration");
 
     /**
      * Creates a new instance of ConfigurationIdName value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -24,18 +27,17 @@ public final class ConfigurationIdName extends ExpandableStringEnum<Configuratio
 
     /**
      * Creates or finds a ConfigurationIdName from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ConfigurationIdName.
      */
-    @JsonCreator
     public static ConfigurationIdName fromString(String name) {
         return fromString(name, ConfigurationIdName.class);
     }
 
     /**
      * Gets known ConfigurationIdName values.
-     *
+     * 
      * @return known ConfigurationIdName values.
      */
     public static Collection<ConfigurationIdName> values() {

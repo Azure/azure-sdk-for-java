@@ -8,39 +8,41 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.fluent.models.ApiContractInner;
 import java.util.List;
 
-/** An immutable client-side representation of ApiContract. */
+/**
+ * An immutable client-side representation of ApiContract.
+ */
 public interface ApiContract {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the sourceApiId property: API identifier of the source API.
-     *
+     * 
      * @return the sourceApiId value.
      */
     String sourceApiId();
 
     /**
      * Gets the displayName property: API name. Must be 1 to 300 characters long.
-     *
+     * 
      * @return the displayName value.
      */
     String displayName();
@@ -48,7 +50,7 @@ public interface ApiContract {
     /**
      * Gets the serviceUrl property: Absolute URL of the backend service implementing this API. Cannot be more than 2000
      * characters long.
-     *
+     * 
      * @return the serviceUrl value.
      */
     String serviceUrl();
@@ -57,49 +59,49 @@ public interface ApiContract {
      * Gets the path property: Relative URL uniquely identifying this API and all of its resource paths within the API
      * Management service instance. It is appended to the API endpoint base URL specified during the service instance
      * creation to form a public URL for this API.
-     *
+     * 
      * @return the path value.
      */
     String path();
 
     /**
      * Gets the protocols property: Describes on which protocols the operations in this API can be invoked.
-     *
+     * 
      * @return the protocols value.
      */
     List<Protocol> protocols();
 
     /**
      * Gets the apiVersionSet property: Version set details.
-     *
+     * 
      * @return the apiVersionSet value.
      */
     ApiVersionSetContractDetails apiVersionSet();
 
     /**
      * Gets the description property: Description of the API. May include HTML formatting tags.
-     *
+     * 
      * @return the description value.
      */
     String description();
 
     /**
      * Gets the authenticationSettings property: Collection of authentication settings included into this API.
-     *
+     * 
      * @return the authenticationSettings value.
      */
     AuthenticationSettingsContract authenticationSettings();
 
     /**
      * Gets the subscriptionKeyParameterNames property: Protocols over which API is made available.
-     *
+     * 
      * @return the subscriptionKeyParameterNames value.
      */
     SubscriptionKeyParameterNamesContract subscriptionKeyParameterNames();
 
     /**
      * Gets the apiType property: Type of API.
-     *
+     * 
      * @return the apiType value.
      */
     ApiType apiType();
@@ -107,49 +109,49 @@ public interface ApiContract {
     /**
      * Gets the apiRevision property: Describes the revision of the API. If no value is provided, default revision 1 is
      * created.
-     *
+     * 
      * @return the apiRevision value.
      */
     String apiRevision();
 
     /**
      * Gets the apiVersion property: Indicates the version identifier of the API if the API is versioned.
-     *
+     * 
      * @return the apiVersion value.
      */
     String apiVersion();
 
     /**
      * Gets the isCurrent property: Indicates if API revision is current api revision.
-     *
+     * 
      * @return the isCurrent value.
      */
     Boolean isCurrent();
 
     /**
      * Gets the isOnline property: Indicates if API revision is accessible via the gateway.
-     *
+     * 
      * @return the isOnline value.
      */
     Boolean isOnline();
 
     /**
      * Gets the apiRevisionDescription property: Description of the API Revision.
-     *
+     * 
      * @return the apiRevisionDescription value.
      */
     String apiRevisionDescription();
 
     /**
      * Gets the apiVersionDescription property: Description of the API Version.
-     *
+     * 
      * @return the apiVersionDescription value.
      */
     String apiVersionDescription();
 
     /**
      * Gets the apiVersionSetId property: A resource identifier for the related ApiVersionSet.
-     *
+     * 
      * @return the apiVersionSetId value.
      */
     String apiVersionSetId();
@@ -157,62 +159,70 @@ public interface ApiContract {
     /**
      * Gets the subscriptionRequired property: Specifies whether an API or Product subscription is required for
      * accessing the API.
-     *
+     * 
      * @return the subscriptionRequired value.
      */
     Boolean subscriptionRequired();
 
     /**
      * Gets the termsOfServiceUrl property: A URL to the Terms of Service for the API. MUST be in the format of a URL.
-     *
+     * 
      * @return the termsOfServiceUrl value.
      */
     String termsOfServiceUrl();
 
     /**
      * Gets the contact property: Contact information for the API.
-     *
+     * 
      * @return the contact value.
      */
     ApiContactInformation contact();
 
     /**
      * Gets the license property: License information for the API.
-     *
+     * 
      * @return the license value.
      */
     ApiLicenseInformation license();
 
     /**
      * Gets the name of the resource group.
-     *
+     * 
      * @return the name of the resource group.
      */
     String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.apimanagement.fluent.models.ApiContractInner object.
-     *
+     * 
      * @return the inner object.
      */
     ApiContractInner innerModel();
 
-    /** The entirety of the ApiContract definition. */
+    /**
+     * The entirety of the ApiContract definition.
+     */
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
 
-    /** The ApiContract definition stages. */
+    /**
+     * The ApiContract definition stages.
+     */
     interface DefinitionStages {
-        /** The first stage of the ApiContract definition. */
+        /**
+         * The first stage of the ApiContract definition.
+         */
         interface Blank extends WithParentResource {
         }
 
-        /** The stage of the ApiContract definition allowing to specify parent resource. */
+        /**
+         * The stage of the ApiContract definition allowing to specify parent resource.
+         */
         interface WithParentResource {
             /**
              * Specifies resourceGroupName, serviceName.
-             *
+             * 
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @param serviceName The name of the API Management service.
              * @return the next definition stage.
@@ -237,181 +247,215 @@ public interface ApiContract {
             DefinitionStages.WithContact, DefinitionStages.WithLicense, DefinitionStages.WithIfMatch {
             /**
              * Executes the create request.
-             *
+             * 
              * @return the created resource.
              */
             ApiContract create();
 
             /**
              * Executes the create request.
-             *
+             * 
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
             ApiContract create(Context context);
         }
 
-        /** The stage of the ApiContract definition allowing to specify value. */
+        /**
+         * The stage of the ApiContract definition allowing to specify value.
+         */
         interface WithValue {
             /**
              * Specifies the value property: Content value when Importing an API..
-             *
+             * 
              * @param value Content value when Importing an API.
              * @return the next definition stage.
              */
             WithCreate withValue(String value);
         }
 
-        /** The stage of the ApiContract definition allowing to specify format. */
+        /**
+         * The stage of the ApiContract definition allowing to specify format.
+         */
         interface WithFormat {
             /**
              * Specifies the format property: Format of the Content in which the API is getting imported..
-             *
+             * 
              * @param format Format of the Content in which the API is getting imported.
              * @return the next definition stage.
              */
             WithCreate withFormat(ContentFormat format);
         }
 
-        /** The stage of the ApiContract definition allowing to specify wsdlSelector. */
+        /**
+         * The stage of the ApiContract definition allowing to specify wsdlSelector.
+         */
         interface WithWsdlSelector {
             /**
              * Specifies the wsdlSelector property: Criteria to limit import of WSDL to a subset of the document..
-             *
+             * 
              * @param wsdlSelector Criteria to limit import of WSDL to a subset of the document.
              * @return the next definition stage.
              */
             WithCreate withWsdlSelector(ApiCreateOrUpdatePropertiesWsdlSelector wsdlSelector);
         }
 
-        /** The stage of the ApiContract definition allowing to specify soapApiType. */
+        /**
+         * The stage of the ApiContract definition allowing to specify soapApiType.
+         */
         interface WithSoapApiType {
             /**
-             * Specifies the soapApiType property: Type of API to create. * `http` creates a REST API * `soap` creates a
-             * SOAP pass-through API * `websocket` creates websocket API * `graphql` creates GraphQL API..
-             *
-             * @param soapApiType Type of API to create. * `http` creates a REST API * `soap` creates a SOAP
-             *     pass-through API * `websocket` creates websocket API * `graphql` creates GraphQL API.
+             * Specifies the soapApiType property: Type of API to create.
+             * * `http` creates a REST API
+             * * `soap` creates a SOAP pass-through API
+             * * `websocket` creates websocket API
+             * * `graphql` creates GraphQL API..
+             * 
+             * @param soapApiType Type of API to create.
+             * * `http` creates a REST API
+             * * `soap` creates a SOAP pass-through API
+             * * `websocket` creates websocket API
+             * * `graphql` creates GraphQL API.
              * @return the next definition stage.
              */
             WithCreate withSoapApiType(SoapApiType soapApiType);
         }
 
-        /** The stage of the ApiContract definition allowing to specify translateRequiredQueryParametersConduct. */
+        /**
+         * The stage of the ApiContract definition allowing to specify translateRequiredQueryParametersConduct.
+         */
         interface WithTranslateRequiredQueryParametersConduct {
             /**
              * Specifies the translateRequiredQueryParametersConduct property: Strategy of translating required query
              * parameters to template ones. By default has value 'template'. Possible values: 'template', 'query'.
-             *
+             * 
              * @param translateRequiredQueryParametersConduct Strategy of translating required query parameters to
-             *     template ones. By default has value 'template'. Possible values: 'template', 'query'.
+             * template ones. By default has value 'template'. Possible values: 'template', 'query'.
              * @return the next definition stage.
              */
             WithCreate withTranslateRequiredQueryParametersConduct(
                 TranslateRequiredQueryParametersConduct translateRequiredQueryParametersConduct);
         }
 
-        /** The stage of the ApiContract definition allowing to specify sourceApiId. */
+        /**
+         * The stage of the ApiContract definition allowing to specify sourceApiId.
+         */
         interface WithSourceApiId {
             /**
              * Specifies the sourceApiId property: API identifier of the source API..
-             *
+             * 
              * @param sourceApiId API identifier of the source API.
              * @return the next definition stage.
              */
             WithCreate withSourceApiId(String sourceApiId);
         }
 
-        /** The stage of the ApiContract definition allowing to specify displayName. */
+        /**
+         * The stage of the ApiContract definition allowing to specify displayName.
+         */
         interface WithDisplayName {
             /**
              * Specifies the displayName property: API name. Must be 1 to 300 characters long..
-             *
+             * 
              * @param displayName API name. Must be 1 to 300 characters long.
              * @return the next definition stage.
              */
             WithCreate withDisplayName(String displayName);
         }
 
-        /** The stage of the ApiContract definition allowing to specify serviceUrl. */
+        /**
+         * The stage of the ApiContract definition allowing to specify serviceUrl.
+         */
         interface WithServiceUrl {
             /**
              * Specifies the serviceUrl property: Absolute URL of the backend service implementing this API. Cannot be
              * more than 2000 characters long..
-             *
+             * 
              * @param serviceUrl Absolute URL of the backend service implementing this API. Cannot be more than 2000
-             *     characters long.
+             * characters long.
              * @return the next definition stage.
              */
             WithCreate withServiceUrl(String serviceUrl);
         }
 
-        /** The stage of the ApiContract definition allowing to specify path. */
+        /**
+         * The stage of the ApiContract definition allowing to specify path.
+         */
         interface WithPath {
             /**
              * Specifies the path property: Relative URL uniquely identifying this API and all of its resource paths
              * within the API Management service instance. It is appended to the API endpoint base URL specified during
              * the service instance creation to form a public URL for this API..
-             *
+             * 
              * @param path Relative URL uniquely identifying this API and all of its resource paths within the API
-             *     Management service instance. It is appended to the API endpoint base URL specified during the service
-             *     instance creation to form a public URL for this API.
+             * Management service instance. It is appended to the API endpoint base URL specified during the service
+             * instance creation to form a public URL for this API.
              * @return the next definition stage.
              */
             WithCreate withPath(String path);
         }
 
-        /** The stage of the ApiContract definition allowing to specify protocols. */
+        /**
+         * The stage of the ApiContract definition allowing to specify protocols.
+         */
         interface WithProtocols {
             /**
              * Specifies the protocols property: Describes on which protocols the operations in this API can be
              * invoked..
-             *
+             * 
              * @param protocols Describes on which protocols the operations in this API can be invoked.
              * @return the next definition stage.
              */
             WithCreate withProtocols(List<Protocol> protocols);
         }
 
-        /** The stage of the ApiContract definition allowing to specify apiVersionSet. */
+        /**
+         * The stage of the ApiContract definition allowing to specify apiVersionSet.
+         */
         interface WithApiVersionSet {
             /**
              * Specifies the apiVersionSet property: Version set details.
-             *
+             * 
              * @param apiVersionSet Version set details.
              * @return the next definition stage.
              */
             WithCreate withApiVersionSet(ApiVersionSetContractDetails apiVersionSet);
         }
 
-        /** The stage of the ApiContract definition allowing to specify description. */
+        /**
+         * The stage of the ApiContract definition allowing to specify description.
+         */
         interface WithDescription {
             /**
              * Specifies the description property: Description of the API. May include HTML formatting tags..
-             *
+             * 
              * @param description Description of the API. May include HTML formatting tags.
              * @return the next definition stage.
              */
             WithCreate withDescription(String description);
         }
 
-        /** The stage of the ApiContract definition allowing to specify authenticationSettings. */
+        /**
+         * The stage of the ApiContract definition allowing to specify authenticationSettings.
+         */
         interface WithAuthenticationSettings {
             /**
              * Specifies the authenticationSettings property: Collection of authentication settings included into this
              * API..
-             *
+             * 
              * @param authenticationSettings Collection of authentication settings included into this API.
              * @return the next definition stage.
              */
             WithCreate withAuthenticationSettings(AuthenticationSettingsContract authenticationSettings);
         }
 
-        /** The stage of the ApiContract definition allowing to specify subscriptionKeyParameterNames. */
+        /**
+         * The stage of the ApiContract definition allowing to specify subscriptionKeyParameterNames.
+         */
         interface WithSubscriptionKeyParameterNames {
             /**
              * Specifies the subscriptionKeyParameterNames property: Protocols over which API is made available..
-             *
+             * 
              * @param subscriptionKeyParameterNames Protocols over which API is made available.
              * @return the next definition stage.
              */
@@ -419,140 +463,164 @@ public interface ApiContract {
                 withSubscriptionKeyParameterNames(SubscriptionKeyParameterNamesContract subscriptionKeyParameterNames);
         }
 
-        /** The stage of the ApiContract definition allowing to specify apiType. */
+        /**
+         * The stage of the ApiContract definition allowing to specify apiType.
+         */
         interface WithApiType {
             /**
              * Specifies the apiType property: Type of API..
-             *
+             * 
              * @param apiType Type of API.
              * @return the next definition stage.
              */
             WithCreate withApiType(ApiType apiType);
         }
 
-        /** The stage of the ApiContract definition allowing to specify apiRevision. */
+        /**
+         * The stage of the ApiContract definition allowing to specify apiRevision.
+         */
         interface WithApiRevision {
             /**
              * Specifies the apiRevision property: Describes the revision of the API. If no value is provided, default
              * revision 1 is created.
-             *
+             * 
              * @param apiRevision Describes the revision of the API. If no value is provided, default revision 1 is
-             *     created.
+             * created.
              * @return the next definition stage.
              */
             WithCreate withApiRevision(String apiRevision);
         }
 
-        /** The stage of the ApiContract definition allowing to specify apiVersion. */
+        /**
+         * The stage of the ApiContract definition allowing to specify apiVersion.
+         */
         interface WithApiVersion {
             /**
              * Specifies the apiVersion property: Indicates the version identifier of the API if the API is versioned.
-             *
+             * 
              * @param apiVersion Indicates the version identifier of the API if the API is versioned.
              * @return the next definition stage.
              */
             WithCreate withApiVersion(String apiVersion);
         }
 
-        /** The stage of the ApiContract definition allowing to specify isCurrent. */
+        /**
+         * The stage of the ApiContract definition allowing to specify isCurrent.
+         */
         interface WithIsCurrent {
             /**
              * Specifies the isCurrent property: Indicates if API revision is current api revision..
-             *
+             * 
              * @param isCurrent Indicates if API revision is current api revision.
              * @return the next definition stage.
              */
             WithCreate withIsCurrent(Boolean isCurrent);
         }
 
-        /** The stage of the ApiContract definition allowing to specify apiRevisionDescription. */
+        /**
+         * The stage of the ApiContract definition allowing to specify apiRevisionDescription.
+         */
         interface WithApiRevisionDescription {
             /**
              * Specifies the apiRevisionDescription property: Description of the API Revision..
-             *
+             * 
              * @param apiRevisionDescription Description of the API Revision.
              * @return the next definition stage.
              */
             WithCreate withApiRevisionDescription(String apiRevisionDescription);
         }
 
-        /** The stage of the ApiContract definition allowing to specify apiVersionDescription. */
+        /**
+         * The stage of the ApiContract definition allowing to specify apiVersionDescription.
+         */
         interface WithApiVersionDescription {
             /**
              * Specifies the apiVersionDescription property: Description of the API Version..
-             *
+             * 
              * @param apiVersionDescription Description of the API Version.
              * @return the next definition stage.
              */
             WithCreate withApiVersionDescription(String apiVersionDescription);
         }
 
-        /** The stage of the ApiContract definition allowing to specify apiVersionSetId. */
+        /**
+         * The stage of the ApiContract definition allowing to specify apiVersionSetId.
+         */
         interface WithApiVersionSetId {
             /**
              * Specifies the apiVersionSetId property: A resource identifier for the related ApiVersionSet..
-             *
+             * 
              * @param apiVersionSetId A resource identifier for the related ApiVersionSet.
              * @return the next definition stage.
              */
             WithCreate withApiVersionSetId(String apiVersionSetId);
         }
 
-        /** The stage of the ApiContract definition allowing to specify subscriptionRequired. */
+        /**
+         * The stage of the ApiContract definition allowing to specify subscriptionRequired.
+         */
         interface WithSubscriptionRequired {
             /**
              * Specifies the subscriptionRequired property: Specifies whether an API or Product subscription is required
              * for accessing the API..
-             *
+             * 
              * @param subscriptionRequired Specifies whether an API or Product subscription is required for accessing
-             *     the API.
+             * the API.
              * @return the next definition stage.
              */
             WithCreate withSubscriptionRequired(Boolean subscriptionRequired);
         }
 
-        /** The stage of the ApiContract definition allowing to specify termsOfServiceUrl. */
+        /**
+         * The stage of the ApiContract definition allowing to specify termsOfServiceUrl.
+         */
         interface WithTermsOfServiceUrl {
             /**
              * Specifies the termsOfServiceUrl property: A URL to the Terms of Service for the API. MUST be in the
              * format of a URL..
-             *
+             * 
              * @param termsOfServiceUrl A URL to the Terms of Service for the API. MUST be in the format of a URL.
              * @return the next definition stage.
              */
             WithCreate withTermsOfServiceUrl(String termsOfServiceUrl);
         }
 
-        /** The stage of the ApiContract definition allowing to specify contact. */
+        /**
+         * The stage of the ApiContract definition allowing to specify contact.
+         */
         interface WithContact {
             /**
              * Specifies the contact property: Contact information for the API..
-             *
+             * 
              * @param contact Contact information for the API.
              * @return the next definition stage.
              */
             WithCreate withContact(ApiContactInformation contact);
         }
 
-        /** The stage of the ApiContract definition allowing to specify license. */
+        /**
+         * The stage of the ApiContract definition allowing to specify license.
+         */
         interface WithLicense {
             /**
              * Specifies the license property: License information for the API..
-             *
+             * 
              * @param license License information for the API.
              * @return the next definition stage.
              */
             WithCreate withLicense(ApiLicenseInformation license);
         }
 
-        /** The stage of the ApiContract definition allowing to specify ifMatch. */
+        /**
+         * The stage of the ApiContract definition allowing to specify ifMatch.
+         */
         interface WithIfMatch {
             /**
              * Specifies the ifMatch property: ETag of the Entity. Not required when creating an entity, but required
              * when updating an entity..
-             *
+             * 
              * @param ifMatch ETag of the Entity. Not required when creating an entity, but required when updating an
-             *     entity.
+             * entity.
              * @return the next definition stage.
              */
             WithCreate withIfMatch(String ifMatch);
@@ -561,12 +629,14 @@ public interface ApiContract {
 
     /**
      * Begins update for the ApiContract resource.
-     *
+     * 
      * @return the stage of resource update.
      */
     ApiContract.Update update();
 
-    /** The template for ApiContract update. */
+    /**
+     * The template for ApiContract update.
+     */
     interface Update extends UpdateStages.WithDisplayName, UpdateStages.WithServiceUrl, UpdateStages.WithPath,
         UpdateStages.WithProtocols, UpdateStages.WithDescription, UpdateStages.WithAuthenticationSettings,
         UpdateStages.WithSubscriptionKeyParameterNames, UpdateStages.WithApiType, UpdateStages.WithApiRevision,
@@ -576,99 +646,115 @@ public interface ApiContract {
         UpdateStages.WithIfMatch {
         /**
          * Executes the update request.
-         *
+         * 
          * @return the updated resource.
          */
         ApiContract apply();
 
         /**
          * Executes the update request.
-         *
+         * 
          * @param context The context to associate with this operation.
          * @return the updated resource.
          */
         ApiContract apply(Context context);
     }
 
-    /** The ApiContract update stages. */
+    /**
+     * The ApiContract update stages.
+     */
     interface UpdateStages {
-        /** The stage of the ApiContract update allowing to specify displayName. */
+        /**
+         * The stage of the ApiContract update allowing to specify displayName.
+         */
         interface WithDisplayName {
             /**
              * Specifies the displayName property: API name..
-             *
+             * 
              * @param displayName API name.
              * @return the next definition stage.
              */
             Update withDisplayName(String displayName);
         }
 
-        /** The stage of the ApiContract update allowing to specify serviceUrl. */
+        /**
+         * The stage of the ApiContract update allowing to specify serviceUrl.
+         */
         interface WithServiceUrl {
             /**
              * Specifies the serviceUrl property: Absolute URL of the backend service implementing this API..
-             *
+             * 
              * @param serviceUrl Absolute URL of the backend service implementing this API.
              * @return the next definition stage.
              */
             Update withServiceUrl(String serviceUrl);
         }
 
-        /** The stage of the ApiContract update allowing to specify path. */
+        /**
+         * The stage of the ApiContract update allowing to specify path.
+         */
         interface WithPath {
             /**
              * Specifies the path property: Relative URL uniquely identifying this API and all of its resource paths
              * within the API Management service instance. It is appended to the API endpoint base URL specified during
              * the service instance creation to form a public URL for this API..
-             *
+             * 
              * @param path Relative URL uniquely identifying this API and all of its resource paths within the API
-             *     Management service instance. It is appended to the API endpoint base URL specified during the service
-             *     instance creation to form a public URL for this API.
+             * Management service instance. It is appended to the API endpoint base URL specified during the service
+             * instance creation to form a public URL for this API.
              * @return the next definition stage.
              */
             Update withPath(String path);
         }
 
-        /** The stage of the ApiContract update allowing to specify protocols. */
+        /**
+         * The stage of the ApiContract update allowing to specify protocols.
+         */
         interface WithProtocols {
             /**
              * Specifies the protocols property: Describes on which protocols the operations in this API can be
              * invoked..
-             *
+             * 
              * @param protocols Describes on which protocols the operations in this API can be invoked.
              * @return the next definition stage.
              */
             Update withProtocols(List<Protocol> protocols);
         }
 
-        /** The stage of the ApiContract update allowing to specify description. */
+        /**
+         * The stage of the ApiContract update allowing to specify description.
+         */
         interface WithDescription {
             /**
              * Specifies the description property: Description of the API. May include HTML formatting tags..
-             *
+             * 
              * @param description Description of the API. May include HTML formatting tags.
              * @return the next definition stage.
              */
             Update withDescription(String description);
         }
 
-        /** The stage of the ApiContract update allowing to specify authenticationSettings. */
+        /**
+         * The stage of the ApiContract update allowing to specify authenticationSettings.
+         */
         interface WithAuthenticationSettings {
             /**
              * Specifies the authenticationSettings property: Collection of authentication settings included into this
              * API..
-             *
+             * 
              * @param authenticationSettings Collection of authentication settings included into this API.
              * @return the next definition stage.
              */
             Update withAuthenticationSettings(AuthenticationSettingsContract authenticationSettings);
         }
 
-        /** The stage of the ApiContract update allowing to specify subscriptionKeyParameterNames. */
+        /**
+         * The stage of the ApiContract update allowing to specify subscriptionKeyParameterNames.
+         */
         interface WithSubscriptionKeyParameterNames {
             /**
              * Specifies the subscriptionKeyParameterNames property: Protocols over which API is made available..
-             *
+             * 
              * @param subscriptionKeyParameterNames Protocols over which API is made available.
              * @return the next definition stage.
              */
@@ -676,140 +762,164 @@ public interface ApiContract {
                 withSubscriptionKeyParameterNames(SubscriptionKeyParameterNamesContract subscriptionKeyParameterNames);
         }
 
-        /** The stage of the ApiContract update allowing to specify apiType. */
+        /**
+         * The stage of the ApiContract update allowing to specify apiType.
+         */
         interface WithApiType {
             /**
              * Specifies the apiType property: Type of API..
-             *
+             * 
              * @param apiType Type of API.
              * @return the next definition stage.
              */
             Update withApiType(ApiType apiType);
         }
 
-        /** The stage of the ApiContract update allowing to specify apiRevision. */
+        /**
+         * The stage of the ApiContract update allowing to specify apiRevision.
+         */
         interface WithApiRevision {
             /**
              * Specifies the apiRevision property: Describes the revision of the API. If no value is provided, default
              * revision 1 is created.
-             *
+             * 
              * @param apiRevision Describes the revision of the API. If no value is provided, default revision 1 is
-             *     created.
+             * created.
              * @return the next definition stage.
              */
             Update withApiRevision(String apiRevision);
         }
 
-        /** The stage of the ApiContract update allowing to specify apiVersion. */
+        /**
+         * The stage of the ApiContract update allowing to specify apiVersion.
+         */
         interface WithApiVersion {
             /**
              * Specifies the apiVersion property: Indicates the version identifier of the API if the API is versioned.
-             *
+             * 
              * @param apiVersion Indicates the version identifier of the API if the API is versioned.
              * @return the next definition stage.
              */
             Update withApiVersion(String apiVersion);
         }
 
-        /** The stage of the ApiContract update allowing to specify isCurrent. */
+        /**
+         * The stage of the ApiContract update allowing to specify isCurrent.
+         */
         interface WithIsCurrent {
             /**
              * Specifies the isCurrent property: Indicates if API revision is current api revision..
-             *
+             * 
              * @param isCurrent Indicates if API revision is current api revision.
              * @return the next definition stage.
              */
             Update withIsCurrent(Boolean isCurrent);
         }
 
-        /** The stage of the ApiContract update allowing to specify apiRevisionDescription. */
+        /**
+         * The stage of the ApiContract update allowing to specify apiRevisionDescription.
+         */
         interface WithApiRevisionDescription {
             /**
              * Specifies the apiRevisionDescription property: Description of the API Revision..
-             *
+             * 
              * @param apiRevisionDescription Description of the API Revision.
              * @return the next definition stage.
              */
             Update withApiRevisionDescription(String apiRevisionDescription);
         }
 
-        /** The stage of the ApiContract update allowing to specify apiVersionDescription. */
+        /**
+         * The stage of the ApiContract update allowing to specify apiVersionDescription.
+         */
         interface WithApiVersionDescription {
             /**
              * Specifies the apiVersionDescription property: Description of the API Version..
-             *
+             * 
              * @param apiVersionDescription Description of the API Version.
              * @return the next definition stage.
              */
             Update withApiVersionDescription(String apiVersionDescription);
         }
 
-        /** The stage of the ApiContract update allowing to specify apiVersionSetId. */
+        /**
+         * The stage of the ApiContract update allowing to specify apiVersionSetId.
+         */
         interface WithApiVersionSetId {
             /**
              * Specifies the apiVersionSetId property: A resource identifier for the related ApiVersionSet..
-             *
+             * 
              * @param apiVersionSetId A resource identifier for the related ApiVersionSet.
              * @return the next definition stage.
              */
             Update withApiVersionSetId(String apiVersionSetId);
         }
 
-        /** The stage of the ApiContract update allowing to specify subscriptionRequired. */
+        /**
+         * The stage of the ApiContract update allowing to specify subscriptionRequired.
+         */
         interface WithSubscriptionRequired {
             /**
              * Specifies the subscriptionRequired property: Specifies whether an API or Product subscription is required
              * for accessing the API..
-             *
+             * 
              * @param subscriptionRequired Specifies whether an API or Product subscription is required for accessing
-             *     the API.
+             * the API.
              * @return the next definition stage.
              */
             Update withSubscriptionRequired(Boolean subscriptionRequired);
         }
 
-        /** The stage of the ApiContract update allowing to specify termsOfServiceUrl. */
+        /**
+         * The stage of the ApiContract update allowing to specify termsOfServiceUrl.
+         */
         interface WithTermsOfServiceUrl {
             /**
              * Specifies the termsOfServiceUrl property: A URL to the Terms of Service for the API. MUST be in the
              * format of a URL..
-             *
+             * 
              * @param termsOfServiceUrl A URL to the Terms of Service for the API. MUST be in the format of a URL.
              * @return the next definition stage.
              */
             Update withTermsOfServiceUrl(String termsOfServiceUrl);
         }
 
-        /** The stage of the ApiContract update allowing to specify contact. */
+        /**
+         * The stage of the ApiContract update allowing to specify contact.
+         */
         interface WithContact {
             /**
              * Specifies the contact property: Contact information for the API..
-             *
+             * 
              * @param contact Contact information for the API.
              * @return the next definition stage.
              */
             Update withContact(ApiContactInformation contact);
         }
 
-        /** The stage of the ApiContract update allowing to specify license. */
+        /**
+         * The stage of the ApiContract update allowing to specify license.
+         */
         interface WithLicense {
             /**
              * Specifies the license property: License information for the API..
-             *
+             * 
              * @param license License information for the API.
              * @return the next definition stage.
              */
             Update withLicense(ApiLicenseInformation license);
         }
 
-        /** The stage of the ApiContract update allowing to specify ifMatch. */
+        /**
+         * The stage of the ApiContract update allowing to specify ifMatch.
+         */
         interface WithIfMatch {
             /**
              * Specifies the ifMatch property: ETag of the Entity. ETag should match the current entity state from the
              * header response of the GET request or it should be * for unconditional update..
-             *
+             * 
              * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of
-             *     the GET request or it should be * for unconditional update.
+             * the GET request or it should be * for unconditional update.
              * @return the next definition stage.
              */
             Update withIfMatch(String ifMatch);
@@ -818,14 +928,14 @@ public interface ApiContract {
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @return the refreshed resource.
      */
     ApiContract refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */

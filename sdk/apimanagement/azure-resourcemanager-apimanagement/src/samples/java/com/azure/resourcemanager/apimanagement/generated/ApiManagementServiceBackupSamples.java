@@ -7,25 +7,25 @@ package com.azure.resourcemanager.apimanagement.generated;
 import com.azure.resourcemanager.apimanagement.models.AccessType;
 import com.azure.resourcemanager.apimanagement.models.ApiManagementServiceBackupRestoreParameters;
 
-/** Samples for ApiManagementService Backup. */
+/**
+ * Samples for ApiManagementService Backup.
+ */
 public final class ApiManagementServiceBackupSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementBackupWithAccessKey.json
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * ApiManagementBackupWithAccessKey.json
      */
     /**
      * Sample code: ApiManagementBackupWithAccessKey.
-     *
+     * 
      * @param manager Entry point to ApiManagementManager.
      */
-    public static void apiManagementBackupWithAccessKey(
-        com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
-        manager
-            .apiManagementServices()
-            .backup(
-                "rg1",
-                "apimService1",
-                new ApiManagementServiceBackupRestoreParameters()
-                    .withStorageAccount("teststorageaccount")
+    public static void
+        apiManagementBackupWithAccessKey(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.apiManagementServices()
+            .backup("rg1", "apimService1",
+                new ApiManagementServiceBackupRestoreParameters().withStorageAccount("teststorageaccount")
                     .withContainerName("backupContainer")
                     .withBackupName("apimService1backup_2017_03_19")
                     .withAccessType(AccessType.ACCESS_KEY)
@@ -34,22 +34,20 @@ public final class ApiManagementServiceBackupSamples {
     }
 
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementBackupWithUserAssignedManagedIdentity.json
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * ApiManagementBackupWithUserAssignedManagedIdentity.json
      */
     /**
      * Sample code: ApiManagementBackupWithUserAssignedManagedIdentity.
-     *
+     * 
      * @param manager Entry point to ApiManagementManager.
      */
     public static void apiManagementBackupWithUserAssignedManagedIdentity(
         com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
-        manager
-            .apiManagementServices()
-            .backup(
-                "rg1",
-                "apimService1",
-                new ApiManagementServiceBackupRestoreParameters()
-                    .withStorageAccount("contosorpstorage")
+        manager.apiManagementServices()
+            .backup("rg1", "apimService1",
+                new ApiManagementServiceBackupRestoreParameters().withStorageAccount("contosorpstorage")
                     .withContainerName("apim-backups")
                     .withBackupName("backup5")
                     .withAccessType(AccessType.USER_ASSIGNED_MANAGED_IDENTITY)
@@ -58,22 +56,20 @@ public final class ApiManagementServiceBackupSamples {
     }
 
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementBackupWithSystemManagedIdentity.json
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * ApiManagementBackupWithSystemManagedIdentity.json
      */
     /**
      * Sample code: ApiManagementBackupWithSystemManagedIdentity.
-     *
+     * 
      * @param manager Entry point to ApiManagementManager.
      */
     public static void apiManagementBackupWithSystemManagedIdentity(
         com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
-        manager
-            .apiManagementServices()
-            .backup(
-                "rg1",
-                "apimService1",
-                new ApiManagementServiceBackupRestoreParameters()
-                    .withStorageAccount("contosorpstorage")
+        manager.apiManagementServices()
+            .backup("rg1", "apimService1",
+                new ApiManagementServiceBackupRestoreParameters().withStorageAccount("contosorpstorage")
                     .withContainerName("apim-backups")
                     .withBackupName("backup5")
                     .withAccessType(AccessType.SYSTEM_ASSIGNED_MANAGED_IDENTITY),

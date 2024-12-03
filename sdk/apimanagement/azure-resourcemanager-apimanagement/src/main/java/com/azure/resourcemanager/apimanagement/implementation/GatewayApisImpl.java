@@ -32,14 +32,14 @@ public final class GatewayApisImpl implements GatewayApis {
     public PagedIterable<ApiContract> listByService(String resourceGroupName, String serviceName, String gatewayId) {
         PagedIterable<ApiContractInner> inner
             = this.serviceClient().listByService(resourceGroupName, serviceName, gatewayId);
-        return Utils.mapPage(inner, inner1 -> new ApiContractImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ApiContractImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ApiContract> listByService(String resourceGroupName, String serviceName, String gatewayId,
         String filter, Integer top, Integer skip, Context context) {
         PagedIterable<ApiContractInner> inner
             = this.serviceClient().listByService(resourceGroupName, serviceName, gatewayId, filter, top, skip, context);
-        return Utils.mapPage(inner, inner1 -> new ApiContractImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ApiContractImpl(inner1, this.manager()));
     }
 
     public GatewayApisGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,

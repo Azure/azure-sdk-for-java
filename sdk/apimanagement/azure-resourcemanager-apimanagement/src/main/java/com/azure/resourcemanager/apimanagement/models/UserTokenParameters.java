@@ -5,26 +5,33 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.apimanagement.fluent.models.UserTokenParameterProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** Get User Token parameters. */
+/**
+ * Get User Token parameters.
+ */
 @Fluent
-public final class UserTokenParameters {
+public final class UserTokenParameters implements JsonSerializable<UserTokenParameters> {
     /*
      * User Token Parameter contract properties.
      */
-    @JsonProperty(value = "properties")
     private UserTokenParameterProperties innerProperties;
 
-    /** Creates an instance of UserTokenParameters class. */
+    /**
+     * Creates an instance of UserTokenParameters class.
+     */
     public UserTokenParameters() {
     }
 
     /**
      * Get the innerProperties property: User Token Parameter contract properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private UserTokenParameterProperties innerProperties() {
@@ -33,7 +40,7 @@ public final class UserTokenParameters {
 
     /**
      * Get the keyType property: The Key to be used to generate token for user.
-     *
+     * 
      * @return the keyType value.
      */
     public KeyType keyType() {
@@ -42,7 +49,7 @@ public final class UserTokenParameters {
 
     /**
      * Set the keyType property: The Key to be used to generate token for user.
-     *
+     * 
      * @param keyType the keyType value to set.
      * @return the UserTokenParameters object itself.
      */
@@ -57,7 +64,7 @@ public final class UserTokenParameters {
     /**
      * Get the expiry property: The Expiry time of the Token. Maximum token expiry time is set to 30 days. The date
      * conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
-     *
+     * 
      * @return the expiry value.
      */
     public OffsetDateTime expiry() {
@@ -67,7 +74,7 @@ public final class UserTokenParameters {
     /**
      * Set the expiry property: The Expiry time of the Token. Maximum token expiry time is set to 30 days. The date
      * conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
-     *
+     * 
      * @param expiry the expiry value to set.
      * @return the UserTokenParameters object itself.
      */
@@ -81,12 +88,48 @@ public final class UserTokenParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UserTokenParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UserTokenParameters if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the UserTokenParameters.
+     */
+    public static UserTokenParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UserTokenParameters deserializedUserTokenParameters = new UserTokenParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedUserTokenParameters.innerProperties = UserTokenParameterProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUserTokenParameters;
+        });
     }
 }

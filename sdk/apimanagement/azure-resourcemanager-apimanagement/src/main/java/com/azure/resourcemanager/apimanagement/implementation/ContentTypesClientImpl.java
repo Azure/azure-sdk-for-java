@@ -35,17 +35,23 @@ import com.azure.resourcemanager.apimanagement.models.ContentTypesCreateOrUpdate
 import com.azure.resourcemanager.apimanagement.models.ContentTypesGetResponse;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ContentTypesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ContentTypesClient.
+ */
 public final class ContentTypesClientImpl implements ContentTypesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ContentTypesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ApiManagementClientImpl client;
 
     /**
      * Initializes an instance of ContentTypesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ContentTypesClientImpl(ApiManagementClientImpl client) {
@@ -112,7 +118,7 @@ public final class ContentTypesClientImpl implements ContentTypesClient {
     /**
      * Lists the developer portal's content types. Content types describe content items' properties, validation rules,
      * and constraints.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -150,7 +156,7 @@ public final class ContentTypesClientImpl implements ContentTypesClient {
     /**
      * Lists the developer portal's content types. Content types describe content items' properties, validation rules,
      * and constraints.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param context The context to associate with this operation.
@@ -189,7 +195,7 @@ public final class ContentTypesClientImpl implements ContentTypesClient {
     /**
      * Lists the developer portal's content types. Content types describe content items' properties, validation rules,
      * and constraints.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -206,7 +212,7 @@ public final class ContentTypesClientImpl implements ContentTypesClient {
     /**
      * Lists the developer portal's content types. Content types describe content items' properties, validation rules,
      * and constraints.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param context The context to associate with this operation.
@@ -225,7 +231,7 @@ public final class ContentTypesClientImpl implements ContentTypesClient {
     /**
      * Lists the developer portal's content types. Content types describe content items' properties, validation rules,
      * and constraints.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -241,7 +247,7 @@ public final class ContentTypesClientImpl implements ContentTypesClient {
     /**
      * Lists the developer portal's content types. Content types describe content items' properties, validation rules,
      * and constraints.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param context The context to associate with this operation.
@@ -259,7 +265,7 @@ public final class ContentTypesClientImpl implements ContentTypesClient {
     /**
      * Gets the details of the developer portal's content type. Content types describe content items' properties,
      * validation rules, and constraints.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param contentTypeId Content type identifier.
@@ -299,7 +305,7 @@ public final class ContentTypesClientImpl implements ContentTypesClient {
     /**
      * Gets the details of the developer portal's content type. Content types describe content items' properties,
      * validation rules, and constraints.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param contentTypeId Content type identifier.
@@ -339,7 +345,7 @@ public final class ContentTypesClientImpl implements ContentTypesClient {
     /**
      * Gets the details of the developer portal's content type. Content types describe content items' properties,
      * validation rules, and constraints.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param contentTypeId Content type identifier.
@@ -358,7 +364,7 @@ public final class ContentTypesClientImpl implements ContentTypesClient {
     /**
      * Gets the details of the developer portal's content type. Content types describe content items' properties,
      * validation rules, and constraints.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param contentTypeId Content type identifier.
@@ -377,7 +383,7 @@ public final class ContentTypesClientImpl implements ContentTypesClient {
     /**
      * Gets the details of the developer portal's content type. Content types describe content items' properties,
      * validation rules, and constraints.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param contentTypeId Content type identifier.
@@ -395,7 +401,7 @@ public final class ContentTypesClientImpl implements ContentTypesClient {
      * Creates or updates the developer portal's content type. Content types describe content items' properties,
      * validation rules, and constraints. Custom content types' identifiers need to start with the `c-` prefix. Built-in
      * content types can't be modified.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param contentTypeId Content type identifier.
@@ -444,7 +450,7 @@ public final class ContentTypesClientImpl implements ContentTypesClient {
      * Creates or updates the developer portal's content type. Content types describe content items' properties,
      * validation rules, and constraints. Custom content types' identifiers need to start with the `c-` prefix. Built-in
      * content types can't be modified.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param contentTypeId Content type identifier.
@@ -493,7 +499,7 @@ public final class ContentTypesClientImpl implements ContentTypesClient {
      * Creates or updates the developer portal's content type. Content types describe content items' properties,
      * validation rules, and constraints. Custom content types' identifiers need to start with the `c-` prefix. Built-in
      * content types can't be modified.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param contentTypeId Content type identifier.
@@ -515,7 +521,7 @@ public final class ContentTypesClientImpl implements ContentTypesClient {
      * Creates or updates the developer portal's content type. Content types describe content items' properties,
      * validation rules, and constraints. Custom content types' identifiers need to start with the `c-` prefix. Built-in
      * content types can't be modified.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param contentTypeId Content type identifier.
@@ -538,7 +544,7 @@ public final class ContentTypesClientImpl implements ContentTypesClient {
      * Creates or updates the developer portal's content type. Content types describe content items' properties,
      * validation rules, and constraints. Custom content types' identifiers need to start with the `c-` prefix. Built-in
      * content types can't be modified.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param contentTypeId Content type identifier.
@@ -560,12 +566,12 @@ public final class ContentTypesClientImpl implements ContentTypesClient {
      * Removes the specified developer portal's content type. Content types describe content items' properties,
      * validation rules, and constraints. Built-in content types (with identifiers starting with the `c-` prefix) can't
      * be removed.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param contentTypeId Content type identifier.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -606,12 +612,12 @@ public final class ContentTypesClientImpl implements ContentTypesClient {
      * Removes the specified developer portal's content type. Content types describe content items' properties,
      * validation rules, and constraints. Built-in content types (with identifiers starting with the `c-` prefix) can't
      * be removed.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param contentTypeId Content type identifier.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -652,12 +658,12 @@ public final class ContentTypesClientImpl implements ContentTypesClient {
      * Removes the specified developer portal's content type. Content types describe content items' properties,
      * validation rules, and constraints. Built-in content types (with identifiers starting with the `c-` prefix) can't
      * be removed.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param contentTypeId Content type identifier.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -673,12 +679,12 @@ public final class ContentTypesClientImpl implements ContentTypesClient {
      * Removes the specified developer portal's content type. Content types describe content items' properties,
      * validation rules, and constraints. Built-in content types (with identifiers starting with the `c-` prefix) can't
      * be removed.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param contentTypeId Content type identifier.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -695,12 +701,12 @@ public final class ContentTypesClientImpl implements ContentTypesClient {
      * Removes the specified developer portal's content type. Content types describe content items' properties,
      * validation rules, and constraints. Built-in content types (with identifiers starting with the `c-` prefix) can't
      * be removed.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param contentTypeId Content type identifier.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -712,9 +718,8 @@ public final class ContentTypesClientImpl implements ContentTypesClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -739,9 +744,8 @@ public final class ContentTypesClientImpl implements ContentTypesClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

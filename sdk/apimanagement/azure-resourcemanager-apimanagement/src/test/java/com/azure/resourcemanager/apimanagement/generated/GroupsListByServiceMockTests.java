@@ -6,58 +6,38 @@ package com.azure.resourcemanager.apimanagement.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apimanagement.ApiManagementManager;
 import com.azure.resourcemanager.apimanagement.models.GroupContract;
 import com.azure.resourcemanager.apimanagement.models.GroupType;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class GroupsListByServiceMockTests {
     @Test
     public void testListByService() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"value\":[{\"properties\":{\"displayName\":\"rslwknrdvvmbj\",\"description\":\"ndzzywx\",\"builtIn\":false,\"type\":\"system\",\"externalId\":\"kdeetnne\"},\"id\":\"putl\",\"name\":\"szuxjmrzsxwas\",\"type\":\"wqjz\"}]}";
+            = "{\"value\":[{\"properties\":{\"displayName\":\"wsr\",\"description\":\"b\",\"builtIn\":false,\"type\":\"external\",\"externalId\":\"zfbvexrvnh\"},\"id\":\"mfsnqpvjtshl\",\"name\":\"vrsksdzmhwt\",\"type\":\"yppwfbwoet\"}]}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApiManagementManager manager = ApiManagementManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<GroupContract> response = manager.groups()
-            .listByService("tkqiymmddslwnlg", "dlhmks", "ybnnnlpqdnnska", 1332593691, 470020656,
-                com.azure.core.util.Context.NONE);
+            .listByService("tdzzvhbujkah", "p", "qwojdz", 756033048, 77774144, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("rslwknrdvvmbj", response.iterator().next().displayName());
-        Assertions.assertEquals("ndzzywx", response.iterator().next().description());
-        Assertions.assertEquals(GroupType.SYSTEM, response.iterator().next().typePropertiesType());
-        Assertions.assertEquals("kdeetnne", response.iterator().next().externalId());
+        Assertions.assertEquals("wsr", response.iterator().next().displayName());
+        Assertions.assertEquals("b", response.iterator().next().description());
+        Assertions.assertEquals(GroupType.EXTERNAL, response.iterator().next().typePropertiesType());
+        Assertions.assertEquals("zfbvexrvnh", response.iterator().next().externalId());
     }
 }
