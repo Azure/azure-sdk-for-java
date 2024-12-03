@@ -6,30 +6,36 @@ package com.azure.resourcemanager.recoveryservicesdatareplication.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Policy model properties. */
+/**
+ * Policy model properties.
+ */
 @Fluent
-public final class PolicyModelProperties {
+public final class PolicyModelProperties implements JsonSerializable<PolicyModelProperties> {
     /*
      * Gets or sets the provisioning state of the policy.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * Policy model custom properties.
      */
-    @JsonProperty(value = "customProperties", required = true)
     private PolicyModelCustomProperties customProperties;
 
-    /** Creates an instance of PolicyModelProperties class. */
+    /**
+     * Creates an instance of PolicyModelProperties class.
+     */
     public PolicyModelProperties() {
     }
 
     /**
      * Get the provisioningState property: Gets or sets the provisioning state of the policy.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -38,7 +44,7 @@ public final class PolicyModelProperties {
 
     /**
      * Get the customProperties property: Policy model custom properties.
-     *
+     * 
      * @return the customProperties value.
      */
     public PolicyModelCustomProperties customProperties() {
@@ -47,7 +53,7 @@ public final class PolicyModelProperties {
 
     /**
      * Set the customProperties property: Policy model custom properties.
-     *
+     * 
      * @param customProperties the customProperties value to set.
      * @return the PolicyModelProperties object itself.
      */
@@ -58,17 +64,58 @@ public final class PolicyModelProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (customProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property customProperties in model PolicyModelProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property customProperties in model PolicyModelProperties"));
         } else {
             customProperties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(PolicyModelProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("customProperties", this.customProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PolicyModelProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PolicyModelProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PolicyModelProperties.
+     */
+    public static PolicyModelProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PolicyModelProperties deserializedPolicyModelProperties = new PolicyModelProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("customProperties".equals(fieldName)) {
+                    deserializedPolicyModelProperties.customProperties = PolicyModelCustomProperties.fromJson(reader);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedPolicyModelProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPolicyModelProperties;
+        });
+    }
 }

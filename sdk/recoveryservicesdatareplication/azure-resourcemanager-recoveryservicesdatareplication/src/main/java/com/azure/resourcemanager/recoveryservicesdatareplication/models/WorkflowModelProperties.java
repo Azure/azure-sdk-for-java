@@ -5,123 +5,115 @@
 package com.azure.resourcemanager.recoveryservicesdatareplication.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Workflow model properties. */
+/**
+ * Workflow model properties.
+ */
 @Fluent
-public final class WorkflowModelProperties {
+public final class WorkflowModelProperties implements JsonSerializable<WorkflowModelProperties> {
     /*
      * Gets or sets the friendly display name.
      */
-    @JsonProperty(value = "displayName", access = JsonProperty.Access.WRITE_ONLY)
     private String displayName;
 
     /*
      * Gets or sets the workflow state.
      */
-    @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
     private WorkflowState state;
 
     /*
      * Gets or sets the start time.
      */
-    @JsonProperty(value = "startTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime startTime;
 
     /*
      * Gets or sets the end time.
      */
-    @JsonProperty(value = "endTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime endTime;
 
     /*
      * Gets or sets the affected object Id.
      */
-    @JsonProperty(value = "objectId", access = JsonProperty.Access.WRITE_ONLY)
     private String objectId;
 
     /*
      * Gets or sets the affected object name.
      */
-    @JsonProperty(value = "objectName", access = JsonProperty.Access.WRITE_ONLY)
     private String objectName;
 
     /*
      * Gets or sets the affected object internal Id.
      */
-    @JsonProperty(value = "objectInternalId", access = JsonProperty.Access.WRITE_ONLY)
     private String objectInternalId;
 
     /*
      * Gets or sets the affected object internal name.
      */
-    @JsonProperty(value = "objectInternalName", access = JsonProperty.Access.WRITE_ONLY)
     private String objectInternalName;
 
     /*
      * Gets or sets the object type.
      */
-    @JsonProperty(value = "objectType", access = JsonProperty.Access.WRITE_ONLY)
     private WorkflowObjectType objectType;
 
     /*
      * Gets or sets the replication provider.
      */
-    @JsonProperty(value = "replicationProviderId", access = JsonProperty.Access.WRITE_ONLY)
     private String replicationProviderId;
 
     /*
      * Gets or sets the source fabric provider.
      */
-    @JsonProperty(value = "sourceFabricProviderId", access = JsonProperty.Access.WRITE_ONLY)
     private String sourceFabricProviderId;
 
     /*
      * Gets or sets the target fabric provider.
      */
-    @JsonProperty(value = "targetFabricProviderId", access = JsonProperty.Access.WRITE_ONLY)
     private String targetFabricProviderId;
 
     /*
      * Gets or sets the list of allowed actions on the workflow.
      */
-    @JsonProperty(value = "allowedActions", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> allowedActions;
 
     /*
      * Gets or sets the workflow activity id.
      */
-    @JsonProperty(value = "activityId", access = JsonProperty.Access.WRITE_ONLY)
     private String activityId;
 
     /*
      * Gets or sets the list of tasks.
      */
-    @JsonProperty(value = "tasks", access = JsonProperty.Access.WRITE_ONLY)
     private List<TaskModel> tasks;
 
     /*
      * Gets or sets the list of errors.
      */
-    @JsonProperty(value = "errors", access = JsonProperty.Access.WRITE_ONLY)
     private List<ErrorModel> errors;
 
     /*
      * Workflow model custom properties.
      */
-    @JsonProperty(value = "customProperties", required = true)
     private WorkflowModelCustomProperties customProperties;
 
-    /** Creates an instance of WorkflowModelProperties class. */
+    /**
+     * Creates an instance of WorkflowModelProperties class.
+     */
     public WorkflowModelProperties() {
     }
 
     /**
      * Get the displayName property: Gets or sets the friendly display name.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -130,7 +122,7 @@ public final class WorkflowModelProperties {
 
     /**
      * Get the state property: Gets or sets the workflow state.
-     *
+     * 
      * @return the state value.
      */
     public WorkflowState state() {
@@ -139,7 +131,7 @@ public final class WorkflowModelProperties {
 
     /**
      * Get the startTime property: Gets or sets the start time.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -148,7 +140,7 @@ public final class WorkflowModelProperties {
 
     /**
      * Get the endTime property: Gets or sets the end time.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -157,7 +149,7 @@ public final class WorkflowModelProperties {
 
     /**
      * Get the objectId property: Gets or sets the affected object Id.
-     *
+     * 
      * @return the objectId value.
      */
     public String objectId() {
@@ -166,7 +158,7 @@ public final class WorkflowModelProperties {
 
     /**
      * Get the objectName property: Gets or sets the affected object name.
-     *
+     * 
      * @return the objectName value.
      */
     public String objectName() {
@@ -175,7 +167,7 @@ public final class WorkflowModelProperties {
 
     /**
      * Get the objectInternalId property: Gets or sets the affected object internal Id.
-     *
+     * 
      * @return the objectInternalId value.
      */
     public String objectInternalId() {
@@ -184,7 +176,7 @@ public final class WorkflowModelProperties {
 
     /**
      * Get the objectInternalName property: Gets or sets the affected object internal name.
-     *
+     * 
      * @return the objectInternalName value.
      */
     public String objectInternalName() {
@@ -193,7 +185,7 @@ public final class WorkflowModelProperties {
 
     /**
      * Get the objectType property: Gets or sets the object type.
-     *
+     * 
      * @return the objectType value.
      */
     public WorkflowObjectType objectType() {
@@ -202,7 +194,7 @@ public final class WorkflowModelProperties {
 
     /**
      * Get the replicationProviderId property: Gets or sets the replication provider.
-     *
+     * 
      * @return the replicationProviderId value.
      */
     public String replicationProviderId() {
@@ -211,7 +203,7 @@ public final class WorkflowModelProperties {
 
     /**
      * Get the sourceFabricProviderId property: Gets or sets the source fabric provider.
-     *
+     * 
      * @return the sourceFabricProviderId value.
      */
     public String sourceFabricProviderId() {
@@ -220,7 +212,7 @@ public final class WorkflowModelProperties {
 
     /**
      * Get the targetFabricProviderId property: Gets or sets the target fabric provider.
-     *
+     * 
      * @return the targetFabricProviderId value.
      */
     public String targetFabricProviderId() {
@@ -229,7 +221,7 @@ public final class WorkflowModelProperties {
 
     /**
      * Get the allowedActions property: Gets or sets the list of allowed actions on the workflow.
-     *
+     * 
      * @return the allowedActions value.
      */
     public List<String> allowedActions() {
@@ -238,7 +230,7 @@ public final class WorkflowModelProperties {
 
     /**
      * Get the activityId property: Gets or sets the workflow activity id.
-     *
+     * 
      * @return the activityId value.
      */
     public String activityId() {
@@ -247,7 +239,7 @@ public final class WorkflowModelProperties {
 
     /**
      * Get the tasks property: Gets or sets the list of tasks.
-     *
+     * 
      * @return the tasks value.
      */
     public List<TaskModel> tasks() {
@@ -256,7 +248,7 @@ public final class WorkflowModelProperties {
 
     /**
      * Get the errors property: Gets or sets the list of errors.
-     *
+     * 
      * @return the errors value.
      */
     public List<ErrorModel> errors() {
@@ -265,7 +257,7 @@ public final class WorkflowModelProperties {
 
     /**
      * Get the customProperties property: Workflow model custom properties.
-     *
+     * 
      * @return the customProperties value.
      */
     public WorkflowModelCustomProperties customProperties() {
@@ -274,7 +266,7 @@ public final class WorkflowModelProperties {
 
     /**
      * Set the customProperties property: Workflow model custom properties.
-     *
+     * 
      * @param customProperties the customProperties value to set.
      * @return the WorkflowModelProperties object itself.
      */
@@ -285,7 +277,7 @@ public final class WorkflowModelProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -296,12 +288,88 @@ public final class WorkflowModelProperties {
             errors().forEach(e -> e.validate());
         }
         if (customProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property customProperties in model WorkflowModelProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property customProperties in model WorkflowModelProperties"));
         } else {
             customProperties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(WorkflowModelProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("customProperties", this.customProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WorkflowModelProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WorkflowModelProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the WorkflowModelProperties.
+     */
+    public static WorkflowModelProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WorkflowModelProperties deserializedWorkflowModelProperties = new WorkflowModelProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("customProperties".equals(fieldName)) {
+                    deserializedWorkflowModelProperties.customProperties
+                        = WorkflowModelCustomProperties.fromJson(reader);
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedWorkflowModelProperties.displayName = reader.getString();
+                } else if ("state".equals(fieldName)) {
+                    deserializedWorkflowModelProperties.state = WorkflowState.fromString(reader.getString());
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedWorkflowModelProperties.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("endTime".equals(fieldName)) {
+                    deserializedWorkflowModelProperties.endTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("objectId".equals(fieldName)) {
+                    deserializedWorkflowModelProperties.objectId = reader.getString();
+                } else if ("objectName".equals(fieldName)) {
+                    deserializedWorkflowModelProperties.objectName = reader.getString();
+                } else if ("objectInternalId".equals(fieldName)) {
+                    deserializedWorkflowModelProperties.objectInternalId = reader.getString();
+                } else if ("objectInternalName".equals(fieldName)) {
+                    deserializedWorkflowModelProperties.objectInternalName = reader.getString();
+                } else if ("objectType".equals(fieldName)) {
+                    deserializedWorkflowModelProperties.objectType = WorkflowObjectType.fromString(reader.getString());
+                } else if ("replicationProviderId".equals(fieldName)) {
+                    deserializedWorkflowModelProperties.replicationProviderId = reader.getString();
+                } else if ("sourceFabricProviderId".equals(fieldName)) {
+                    deserializedWorkflowModelProperties.sourceFabricProviderId = reader.getString();
+                } else if ("targetFabricProviderId".equals(fieldName)) {
+                    deserializedWorkflowModelProperties.targetFabricProviderId = reader.getString();
+                } else if ("allowedActions".equals(fieldName)) {
+                    List<String> allowedActions = reader.readArray(reader1 -> reader1.getString());
+                    deserializedWorkflowModelProperties.allowedActions = allowedActions;
+                } else if ("activityId".equals(fieldName)) {
+                    deserializedWorkflowModelProperties.activityId = reader.getString();
+                } else if ("tasks".equals(fieldName)) {
+                    List<TaskModel> tasks = reader.readArray(reader1 -> TaskModel.fromJson(reader1));
+                    deserializedWorkflowModelProperties.tasks = tasks;
+                } else if ("errors".equals(fieldName)) {
+                    List<ErrorModel> errors = reader.readArray(reader1 -> ErrorModel.fromJson(reader1));
+                    deserializedWorkflowModelProperties.errors = errors;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWorkflowModelProperties;
+        });
+    }
 }

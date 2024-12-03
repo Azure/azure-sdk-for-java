@@ -40,17 +40,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in VaultsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in VaultsClient.
+ */
 public final class VaultsClientImpl implements VaultsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final VaultsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final DataReplicationMgmtClientImpl client;
 
     /**
      * Initializes an instance of VaultsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     VaultsClientImpl(DataReplicationMgmtClientImpl client) {
@@ -140,9 +146,9 @@ public final class VaultsClientImpl implements VaultsClient {
 
     /**
      * Gets the vault.
-     *
-     * <p>Gets the details of the vault.
-     *
+     * 
+     * Gets the details of the vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -178,9 +184,9 @@ public final class VaultsClientImpl implements VaultsClient {
 
     /**
      * Gets the vault.
-     *
-     * <p>Gets the details of the vault.
-     *
+     * 
+     * Gets the details of the vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param context The context to associate with this operation.
@@ -215,9 +221,9 @@ public final class VaultsClientImpl implements VaultsClient {
 
     /**
      * Gets the vault.
-     *
-     * <p>Gets the details of the vault.
-     *
+     * 
+     * Gets the details of the vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -233,9 +239,9 @@ public final class VaultsClientImpl implements VaultsClient {
 
     /**
      * Gets the vault.
-     *
-     * <p>Gets the details of the vault.
-     *
+     * 
+     * Gets the details of the vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param context The context to associate with this operation.
@@ -252,9 +258,9 @@ public final class VaultsClientImpl implements VaultsClient {
 
     /**
      * Gets the vault.
-     *
-     * <p>Gets the details of the vault.
-     *
+     * 
+     * Gets the details of the vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -269,9 +275,9 @@ public final class VaultsClientImpl implements VaultsClient {
 
     /**
      * Puts the vault.
-     *
-     * <p>Creates the vault.
-     *
+     * 
+     * Creates the vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param body Vault properties.
@@ -310,9 +316,9 @@ public final class VaultsClientImpl implements VaultsClient {
 
     /**
      * Puts the vault.
-     *
-     * <p>Creates the vault.
-     *
+     * 
+     * Creates the vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param body Vault properties.
@@ -351,9 +357,9 @@ public final class VaultsClientImpl implements VaultsClient {
 
     /**
      * Puts the vault.
-     *
-     * <p>Creates the vault.
-     *
+     * 
+     * Creates the vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param body Vault properties.
@@ -372,9 +378,9 @@ public final class VaultsClientImpl implements VaultsClient {
 
     /**
      * Puts the vault.
-     *
-     * <p>Creates the vault.
-     *
+     * 
+     * Creates the vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -393,9 +399,9 @@ public final class VaultsClientImpl implements VaultsClient {
 
     /**
      * Puts the vault.
-     *
-     * <p>Creates the vault.
-     *
+     * 
+     * Creates the vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param body Vault properties.
@@ -416,9 +422,9 @@ public final class VaultsClientImpl implements VaultsClient {
 
     /**
      * Puts the vault.
-     *
-     * <p>Creates the vault.
-     *
+     * 
+     * Creates the vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -435,9 +441,9 @@ public final class VaultsClientImpl implements VaultsClient {
 
     /**
      * Puts the vault.
-     *
-     * <p>Creates the vault.
-     *
+     * 
+     * Creates the vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param body Vault properties.
@@ -455,9 +461,9 @@ public final class VaultsClientImpl implements VaultsClient {
 
     /**
      * Puts the vault.
-     *
-     * <p>Creates the vault.
-     *
+     * 
+     * Creates the vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param body Vault properties.
@@ -474,9 +480,9 @@ public final class VaultsClientImpl implements VaultsClient {
 
     /**
      * Puts the vault.
-     *
-     * <p>Creates the vault.
-     *
+     * 
+     * Creates the vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -493,9 +499,9 @@ public final class VaultsClientImpl implements VaultsClient {
 
     /**
      * Puts the vault.
-     *
-     * <p>Creates the vault.
-     *
+     * 
+     * Creates the vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param body Vault properties.
@@ -514,9 +520,9 @@ public final class VaultsClientImpl implements VaultsClient {
 
     /**
      * Puts the vault.
-     *
-     * <p>Creates the vault.
-     *
+     * 
+     * Creates the vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -532,9 +538,9 @@ public final class VaultsClientImpl implements VaultsClient {
 
     /**
      * Puts the vault.
-     *
-     * <p>Creates the vault.
-     *
+     * 
+     * Creates the vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param body Vault properties.
@@ -551,9 +557,9 @@ public final class VaultsClientImpl implements VaultsClient {
 
     /**
      * Updates the vault.
-     *
-     * <p>Performs update on the vault.
-     *
+     * 
+     * Performs update on the vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param body Vault properties.
@@ -592,9 +598,9 @@ public final class VaultsClientImpl implements VaultsClient {
 
     /**
      * Updates the vault.
-     *
-     * <p>Performs update on the vault.
-     *
+     * 
+     * Performs update on the vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param body Vault properties.
@@ -633,9 +639,9 @@ public final class VaultsClientImpl implements VaultsClient {
 
     /**
      * Updates the vault.
-     *
-     * <p>Performs update on the vault.
-     *
+     * 
+     * Performs update on the vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param body Vault properties.
@@ -654,9 +660,9 @@ public final class VaultsClientImpl implements VaultsClient {
 
     /**
      * Updates the vault.
-     *
-     * <p>Performs update on the vault.
-     *
+     * 
+     * Performs update on the vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -675,9 +681,9 @@ public final class VaultsClientImpl implements VaultsClient {
 
     /**
      * Updates the vault.
-     *
-     * <p>Performs update on the vault.
-     *
+     * 
+     * Performs update on the vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param body Vault properties.
@@ -698,9 +704,9 @@ public final class VaultsClientImpl implements VaultsClient {
 
     /**
      * Updates the vault.
-     *
-     * <p>Performs update on the vault.
-     *
+     * 
+     * Performs update on the vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -717,9 +723,9 @@ public final class VaultsClientImpl implements VaultsClient {
 
     /**
      * Updates the vault.
-     *
-     * <p>Performs update on the vault.
-     *
+     * 
+     * Performs update on the vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param body Vault properties.
@@ -737,9 +743,9 @@ public final class VaultsClientImpl implements VaultsClient {
 
     /**
      * Updates the vault.
-     *
-     * <p>Performs update on the vault.
-     *
+     * 
+     * Performs update on the vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param body Vault properties.
@@ -756,9 +762,9 @@ public final class VaultsClientImpl implements VaultsClient {
 
     /**
      * Updates the vault.
-     *
-     * <p>Performs update on the vault.
-     *
+     * 
+     * Performs update on the vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -775,9 +781,9 @@ public final class VaultsClientImpl implements VaultsClient {
 
     /**
      * Updates the vault.
-     *
-     * <p>Performs update on the vault.
-     *
+     * 
+     * Performs update on the vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param body Vault properties.
@@ -796,9 +802,9 @@ public final class VaultsClientImpl implements VaultsClient {
 
     /**
      * Updates the vault.
-     *
-     * <p>Performs update on the vault.
-     *
+     * 
+     * Performs update on the vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -814,9 +820,9 @@ public final class VaultsClientImpl implements VaultsClient {
 
     /**
      * Updates the vault.
-     *
-     * <p>Performs update on the vault.
-     *
+     * 
+     * Performs update on the vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param body Vault properties.
@@ -833,9 +839,9 @@ public final class VaultsClientImpl implements VaultsClient {
 
     /**
      * Deletes the vault.
-     *
-     * <p>Removes the vault.
-     *
+     * 
+     * Removes the vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -869,9 +875,9 @@ public final class VaultsClientImpl implements VaultsClient {
 
     /**
      * Deletes the vault.
-     *
-     * <p>Removes the vault.
-     *
+     * 
+     * Removes the vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param context The context to associate with this operation.
@@ -906,9 +912,9 @@ public final class VaultsClientImpl implements VaultsClient {
 
     /**
      * Deletes the vault.
-     *
-     * <p>Removes the vault.
-     *
+     * 
+     * Removes the vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -925,9 +931,9 @@ public final class VaultsClientImpl implements VaultsClient {
 
     /**
      * Deletes the vault.
-     *
-     * <p>Removes the vault.
-     *
+     * 
+     * Removes the vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param context The context to associate with this operation.
@@ -947,9 +953,9 @@ public final class VaultsClientImpl implements VaultsClient {
 
     /**
      * Deletes the vault.
-     *
-     * <p>Removes the vault.
-     *
+     * 
+     * Removes the vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -964,9 +970,9 @@ public final class VaultsClientImpl implements VaultsClient {
 
     /**
      * Deletes the vault.
-     *
-     * <p>Removes the vault.
-     *
+     * 
+     * Removes the vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param context The context to associate with this operation.
@@ -982,9 +988,9 @@ public final class VaultsClientImpl implements VaultsClient {
 
     /**
      * Deletes the vault.
-     *
-     * <p>Removes the vault.
-     *
+     * 
+     * Removes the vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -999,9 +1005,9 @@ public final class VaultsClientImpl implements VaultsClient {
 
     /**
      * Deletes the vault.
-     *
-     * <p>Removes the vault.
-     *
+     * 
+     * Removes the vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param context The context to associate with this operation.
@@ -1018,9 +1024,9 @@ public final class VaultsClientImpl implements VaultsClient {
 
     /**
      * Deletes the vault.
-     *
-     * <p>Removes the vault.
-     *
+     * 
+     * Removes the vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1034,9 +1040,9 @@ public final class VaultsClientImpl implements VaultsClient {
 
     /**
      * Deletes the vault.
-     *
-     * <p>Removes the vault.
-     *
+     * 
+     * Removes the vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param context The context to associate with this operation.
@@ -1051,15 +1057,15 @@ public final class VaultsClientImpl implements VaultsClient {
 
     /**
      * Lists the vaults.
-     *
-     * <p>Gets the list of vaults in the given subscription.
-     *
+     * 
+     * Gets the list of vaults in the given subscription.
+     * 
      * @param continuationToken Continuation token from the previous call.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of vaults in the given subscription along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VaultModelInner>> listSinglePageAsync(String continuationToken) {
@@ -1082,16 +1088,16 @@ public final class VaultsClientImpl implements VaultsClient {
 
     /**
      * Lists the vaults.
-     *
-     * <p>Gets the list of vaults in the given subscription.
-     *
+     * 
+     * Gets the list of vaults in the given subscription.
+     * 
      * @param continuationToken Continuation token from the previous call.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of vaults in the given subscription along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VaultModelInner>> listSinglePageAsync(String continuationToken, Context context) {
@@ -1114,9 +1120,9 @@ public final class VaultsClientImpl implements VaultsClient {
 
     /**
      * Lists the vaults.
-     *
-     * <p>Gets the list of vaults in the given subscription.
-     *
+     * 
+     * Gets the list of vaults in the given subscription.
+     * 
      * @param continuationToken Continuation token from the previous call.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1131,9 +1137,9 @@ public final class VaultsClientImpl implements VaultsClient {
 
     /**
      * Lists the vaults.
-     *
-     * <p>Gets the list of vaults in the given subscription.
-     *
+     * 
+     * Gets the list of vaults in the given subscription.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of vaults in the given subscription as paginated response with {@link PagedFlux}.
@@ -1147,9 +1153,9 @@ public final class VaultsClientImpl implements VaultsClient {
 
     /**
      * Lists the vaults.
-     *
-     * <p>Gets the list of vaults in the given subscription.
-     *
+     * 
+     * Gets the list of vaults in the given subscription.
+     * 
      * @param continuationToken Continuation token from the previous call.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1165,9 +1171,9 @@ public final class VaultsClientImpl implements VaultsClient {
 
     /**
      * Lists the vaults.
-     *
-     * <p>Gets the list of vaults in the given subscription.
-     *
+     * 
+     * Gets the list of vaults in the given subscription.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of vaults in the given subscription as paginated response with {@link PagedIterable}.
@@ -1180,9 +1186,9 @@ public final class VaultsClientImpl implements VaultsClient {
 
     /**
      * Lists the vaults.
-     *
-     * <p>Gets the list of vaults in the given subscription.
-     *
+     * 
+     * Gets the list of vaults in the given subscription.
+     * 
      * @param continuationToken Continuation token from the previous call.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1197,16 +1203,16 @@ public final class VaultsClientImpl implements VaultsClient {
 
     /**
      * Lists the vaults.
-     *
-     * <p>Gets the list of vaults in the given subscription and resource group.
-     *
+     * 
+     * Gets the list of vaults in the given subscription and resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param continuationToken Continuation token from the previous call.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of vaults in the given subscription and resource group along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VaultModelInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
@@ -1235,9 +1241,9 @@ public final class VaultsClientImpl implements VaultsClient {
 
     /**
      * Lists the vaults.
-     *
-     * <p>Gets the list of vaults in the given subscription and resource group.
-     *
+     * 
+     * Gets the list of vaults in the given subscription and resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param continuationToken Continuation token from the previous call.
      * @param context The context to associate with this operation.
@@ -1245,7 +1251,7 @@ public final class VaultsClientImpl implements VaultsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of vaults in the given subscription and resource group along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VaultModelInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
@@ -1273,16 +1279,16 @@ public final class VaultsClientImpl implements VaultsClient {
 
     /**
      * Lists the vaults.
-     *
-     * <p>Gets the list of vaults in the given subscription and resource group.
-     *
+     * 
+     * Gets the list of vaults in the given subscription and resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param continuationToken Continuation token from the previous call.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of vaults in the given subscription and resource group as paginated response with {@link
-     *     PagedFlux}.
+     * @return the list of vaults in the given subscription and resource group as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<VaultModelInner> listByResourceGroupAsync(String resourceGroupName, String continuationToken) {
@@ -1292,15 +1298,15 @@ public final class VaultsClientImpl implements VaultsClient {
 
     /**
      * Lists the vaults.
-     *
-     * <p>Gets the list of vaults in the given subscription and resource group.
-     *
+     * 
+     * Gets the list of vaults in the given subscription and resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of vaults in the given subscription and resource group as paginated response with {@link
-     *     PagedFlux}.
+     * @return the list of vaults in the given subscription and resource group as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<VaultModelInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -1311,17 +1317,17 @@ public final class VaultsClientImpl implements VaultsClient {
 
     /**
      * Lists the vaults.
-     *
-     * <p>Gets the list of vaults in the given subscription and resource group.
-     *
+     * 
+     * Gets the list of vaults in the given subscription and resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param continuationToken Continuation token from the previous call.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of vaults in the given subscription and resource group as paginated response with {@link
-     *     PagedFlux}.
+     * @return the list of vaults in the given subscription and resource group as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<VaultModelInner> listByResourceGroupAsync(String resourceGroupName, String continuationToken,
@@ -1332,15 +1338,15 @@ public final class VaultsClientImpl implements VaultsClient {
 
     /**
      * Lists the vaults.
-     *
-     * <p>Gets the list of vaults in the given subscription and resource group.
-     *
+     * 
+     * Gets the list of vaults in the given subscription and resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of vaults in the given subscription and resource group as paginated response with {@link
-     *     PagedIterable}.
+     * @return the list of vaults in the given subscription and resource group as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VaultModelInner> listByResourceGroup(String resourceGroupName) {
@@ -1350,17 +1356,17 @@ public final class VaultsClientImpl implements VaultsClient {
 
     /**
      * Lists the vaults.
-     *
-     * <p>Gets the list of vaults in the given subscription and resource group.
-     *
+     * 
+     * Gets the list of vaults in the given subscription and resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param continuationToken Continuation token from the previous call.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of vaults in the given subscription and resource group as paginated response with {@link
-     *     PagedIterable}.
+     * @return the list of vaults in the given subscription and resource group as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VaultModelInner> listByResourceGroup(String resourceGroupName, String continuationToken,
@@ -1370,9 +1376,8 @@ public final class VaultsClientImpl implements VaultsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1398,9 +1403,8 @@ public final class VaultsClientImpl implements VaultsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1426,9 +1430,8 @@ public final class VaultsClientImpl implements VaultsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1452,9 +1455,8 @@ public final class VaultsClientImpl implements VaultsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

@@ -11,6 +11,7 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -19,7 +20,6 @@ import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
-import com.azure.core.management.http.policy.ArmChallengeAuthenticationPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
@@ -68,7 +68,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-/** Entry point to RecoveryServicesDataReplicationManager. A first party Azure service enabling the data replication. */
+/**
+ * Entry point to RecoveryServicesDataReplicationManager.
+ * A first party Azure service enabling the data replication.
+ */
 public final class RecoveryServicesDataReplicationManager {
     private Dras dras;
 
@@ -121,7 +124,7 @@ public final class RecoveryServicesDataReplicationManager {
 
     /**
      * Creates an instance of Recovery Services Data Replication service API entry point.
-     *
+     * 
      * @param credential the credential to use.
      * @param profile the Azure profile for client.
      * @return the Recovery Services Data Replication service API instance.
@@ -135,7 +138,7 @@ public final class RecoveryServicesDataReplicationManager {
 
     /**
      * Creates an instance of Recovery Services Data Replication service API entry point.
-     *
+     * 
      * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
      * @param profile the Azure profile for client.
      * @return the Recovery Services Data Replication service API instance.
@@ -149,14 +152,16 @@ public final class RecoveryServicesDataReplicationManager {
     /**
      * Gets a Configurable instance that can be used to create RecoveryServicesDataReplicationManager with optional
      * configuration.
-     *
+     * 
      * @return the Configurable instance allowing configurations.
      */
     public static Configurable configure() {
         return new RecoveryServicesDataReplicationManager.Configurable();
     }
 
-    /** The Configurable allowing configurations to be set. */
+    /**
+     * The Configurable allowing configurations to be set.
+     */
     public static final class Configurable {
         private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
 
@@ -228,8 +233,8 @@ public final class RecoveryServicesDataReplicationManager {
 
         /**
          * Sets the retry options for the HTTP pipeline retry policy.
-         *
-         * <p>This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
+         * <p>
+         * This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
          *
          * @param retryOptions the retry options for the HTTP pipeline retry policy.
          * @return the configurable object itself.
@@ -271,7 +276,7 @@ public final class RecoveryServicesDataReplicationManager {
                 .append("-")
                 .append("com.azure.resourcemanager.recoveryservicesdatareplication")
                 .append("/")
-                .append("1.0.0-beta.1");
+                .append("1.0.0-beta.2");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
@@ -304,7 +309,7 @@ public final class RecoveryServicesDataReplicationManager {
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
-            policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
+            policies.add(new BearerTokenAuthenticationPolicy(credential, scopes.toArray(new String[0])));
             policies.addAll(this.policies.stream()
                 .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
                 .collect(Collectors.toList()));
@@ -319,7 +324,7 @@ public final class RecoveryServicesDataReplicationManager {
 
     /**
      * Gets the resource collection API of Dras. It manages DraModel.
-     *
+     * 
      * @return Resource collection API of Dras.
      */
     public Dras dras() {
@@ -331,7 +336,7 @@ public final class RecoveryServicesDataReplicationManager {
 
     /**
      * Gets the resource collection API of DraOperationStatus.
-     *
+     * 
      * @return Resource collection API of DraOperationStatus.
      */
     public DraOperationStatus draOperationStatus() {
@@ -343,7 +348,7 @@ public final class RecoveryServicesDataReplicationManager {
 
     /**
      * Gets the resource collection API of EmailConfigurations. It manages EmailConfigurationModel.
-     *
+     * 
      * @return Resource collection API of EmailConfigurations.
      */
     public EmailConfigurations emailConfigurations() {
@@ -355,7 +360,7 @@ public final class RecoveryServicesDataReplicationManager {
 
     /**
      * Gets the resource collection API of Events.
-     *
+     * 
      * @return Resource collection API of Events.
      */
     public Events events() {
@@ -367,7 +372,7 @@ public final class RecoveryServicesDataReplicationManager {
 
     /**
      * Gets the resource collection API of Fabrics. It manages FabricModel.
-     *
+     * 
      * @return Resource collection API of Fabrics.
      */
     public Fabrics fabrics() {
@@ -379,7 +384,7 @@ public final class RecoveryServicesDataReplicationManager {
 
     /**
      * Gets the resource collection API of FabricOperationsStatus.
-     *
+     * 
      * @return Resource collection API of FabricOperationsStatus.
      */
     public FabricOperationsStatus fabricOperationsStatus() {
@@ -392,7 +397,7 @@ public final class RecoveryServicesDataReplicationManager {
 
     /**
      * Gets the resource collection API of Policies. It manages PolicyModel.
-     *
+     * 
      * @return Resource collection API of Policies.
      */
     public Policies policies() {
@@ -404,7 +409,7 @@ public final class RecoveryServicesDataReplicationManager {
 
     /**
      * Gets the resource collection API of PolicyOperationStatus.
-     *
+     * 
      * @return Resource collection API of PolicyOperationStatus.
      */
     public PolicyOperationStatus policyOperationStatus() {
@@ -416,7 +421,7 @@ public final class RecoveryServicesDataReplicationManager {
 
     /**
      * Gets the resource collection API of ProtectedItems. It manages ProtectedItemModel.
-     *
+     * 
      * @return Resource collection API of ProtectedItems.
      */
     public ProtectedItems protectedItems() {
@@ -428,7 +433,7 @@ public final class RecoveryServicesDataReplicationManager {
 
     /**
      * Gets the resource collection API of ProtectedItemOperationStatus.
-     *
+     * 
      * @return Resource collection API of ProtectedItemOperationStatus.
      */
     public ProtectedItemOperationStatus protectedItemOperationStatus() {
@@ -441,7 +446,7 @@ public final class RecoveryServicesDataReplicationManager {
 
     /**
      * Gets the resource collection API of RecoveryPoints.
-     *
+     * 
      * @return Resource collection API of RecoveryPoints.
      */
     public RecoveryPoints recoveryPoints() {
@@ -453,7 +458,7 @@ public final class RecoveryServicesDataReplicationManager {
 
     /**
      * Gets the resource collection API of ReplicationExtensions. It manages ReplicationExtensionModel.
-     *
+     * 
      * @return Resource collection API of ReplicationExtensions.
      */
     public ReplicationExtensions replicationExtensions() {
@@ -465,7 +470,7 @@ public final class RecoveryServicesDataReplicationManager {
 
     /**
      * Gets the resource collection API of ResourceProviders.
-     *
+     * 
      * @return Resource collection API of ResourceProviders.
      */
     public ResourceProviders resourceProviders() {
@@ -477,7 +482,7 @@ public final class RecoveryServicesDataReplicationManager {
 
     /**
      * Gets the resource collection API of Operations.
-     *
+     * 
      * @return Resource collection API of Operations.
      */
     public Operations operations() {
@@ -489,7 +494,7 @@ public final class RecoveryServicesDataReplicationManager {
 
     /**
      * Gets the resource collection API of Vaults. It manages VaultModel.
-     *
+     * 
      * @return Resource collection API of Vaults.
      */
     public Vaults vaults() {
@@ -501,7 +506,7 @@ public final class RecoveryServicesDataReplicationManager {
 
     /**
      * Gets the resource collection API of VaultOperationStatus.
-     *
+     * 
      * @return Resource collection API of VaultOperationStatus.
      */
     public VaultOperationStatus vaultOperationStatus() {
@@ -513,7 +518,7 @@ public final class RecoveryServicesDataReplicationManager {
 
     /**
      * Gets the resource collection API of Workflows.
-     *
+     * 
      * @return Resource collection API of Workflows.
      */
     public Workflows workflows() {
@@ -525,7 +530,7 @@ public final class RecoveryServicesDataReplicationManager {
 
     /**
      * Gets the resource collection API of WorkflowOperationStatus.
-     *
+     * 
      * @return Resource collection API of WorkflowOperationStatus.
      */
     public WorkflowOperationStatus workflowOperationStatus() {
@@ -539,7 +544,7 @@ public final class RecoveryServicesDataReplicationManager {
     /**
      * Gets wrapped service client DataReplicationMgmtClient providing direct access to the underlying auto-generated
      * API implementation, based on Azure REST API.
-     *
+     * 
      * @return Wrapped service client DataReplicationMgmtClient.
      */
     public DataReplicationMgmtClient serviceClient() {
