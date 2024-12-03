@@ -12,6 +12,7 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.maps.geolocation.models.IpAddressToLocationResult;
+import java.net.InetAddress;
 
 /**
  * {@link GeolocationClient} instances are created via the {@link GeolocationClientBuilder}, as shown below.
@@ -46,7 +47,7 @@ public final class GeolocationClient {
      *
      * <!-- src_embed com.azure.maps.geolocation.sync.get_ip_to_location -->
      * <pre>
-     * client.getLocation&#40;&quot;131.107.0.89&quot;&#41;;
+     * client.getLocation&#40;InetAddress.getByName&#40;&quot;131.107.0.89&quot;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.maps.geolocation.sync.get_ip_to_location -->
      *
@@ -62,7 +63,7 @@ public final class GeolocationClient {
      * @return this object is returned from a successful call to IP Address to country/region API.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public IpAddressToLocationResult getLocation(String ipAddress) {
+    public IpAddressToLocationResult getLocation(InetAddress ipAddress) {
         return this.asyncClient.getLocation(ipAddress).block();
     }
 
@@ -71,7 +72,7 @@ public final class GeolocationClient {
      *
      * <!-- src_embed com.azure.maps.geolocation.sync.get_ip_to_location -->
      * <pre>
-     * client.getLocation&#40;&quot;131.107.0.89&quot;&#41;;
+     * client.getLocation&#40;InetAddress.getByName&#40;&quot;131.107.0.89&quot;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.maps.geolocation.sync.get_ip_to_location -->
      *
@@ -88,7 +89,7 @@ public final class GeolocationClient {
      * @return this object is returned from a successful call to IP Address to country/region API.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<IpAddressToLocationResult> getLocationWithResponse(String ipAddress, Context context) {
-        return this.asyncClient.getLocationWithResponse(ipAddress, context).block();
+    public Response<IpAddressToLocationResult> getLocationWithResponse(InetAddress ipAddress, Context context) {
+        return this.asyncClient.getLocationWithResponse(ipAddress.getHostAddress(), context).block();
     }
 }
