@@ -35,6 +35,8 @@ public final class CreateSnapshotHeaders {
 
     private static final HttpHeaderName SYNC_TOKEN = HttpHeaderName.fromString("Sync-Token");
 
+    private static final HttpHeaderName OPERATION_LOCATION = HttpHeaderName.fromString("Operation-Location");
+
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of CreateSnapshotHeaders class.
@@ -44,7 +46,7 @@ public final class CreateSnapshotHeaders {
     public CreateSnapshotHeaders(HttpHeaders rawHeaders) {
         this.eTag = rawHeaders.getValue(HttpHeaderName.ETAG);
         this.syncToken = rawHeaders.getValue(SYNC_TOKEN);
-        this.operationLocation = rawHeaders.getValue(HttpHeaderName.OPERATION_LOCATION);
+        this.operationLocation = rawHeaders.getValue(OPERATION_LOCATION);
         this.link = rawHeaders.getValue(HttpHeaderName.LINK);
     }
 
