@@ -19,12 +19,9 @@ public final class BlockBlobStageBlockOptions {
     private byte[] contentMd5;
 
     /**
-     * Creates a new instance of {@link BlockBlobStageBlockOptions}.
-     *
      * @param base64BlockId The block ID to assign the new block.
      * @param data The data to write to the block. Note that this {@code BinaryData} must have defined length
      * and must be replayable if retries are enabled (the default), see {@link BinaryData#isReplayable()}.
-     * @throws NullPointerException If {@code base64BlockId} or {@code data} is null.
      */
     public BlockBlobStageBlockOptions(String base64BlockId, BinaryData data) {
         StorageImplUtils.assertNotNull("base64BlockId must not be null", base64BlockId);
@@ -35,8 +32,6 @@ public final class BlockBlobStageBlockOptions {
     }
 
     /**
-     * Gets the block ID to assign the new block.
-     *
      * @return The block ID to assign the new block.
      */
     public String getBase64BlockId() {
@@ -44,8 +39,6 @@ public final class BlockBlobStageBlockOptions {
     }
 
     /**
-     * Gets the data to write to the blob.
-     *
      * @return The data to write to the blob.
      */
     public BinaryData getData() {
@@ -53,8 +46,6 @@ public final class BlockBlobStageBlockOptions {
     }
 
     /**
-     * Gets the lease ID for accessing source content.
-     *
      * @return Lease ID for accessing source content.
      */
     public String getLeaseId() {
@@ -62,8 +53,6 @@ public final class BlockBlobStageBlockOptions {
     }
 
     /**
-     * Sets the lease ID for accessing source content.
-     *
      * @param leaseId Lease ID for accessing source content.
      * @return The updated options.
      */
@@ -73,8 +62,6 @@ public final class BlockBlobStageBlockOptions {
     }
 
     /**
-     * Gets the MD5 of the block content.
-     *
      * @return An MD5 hash of the content. This hash is used to verify the integrity of the content during
      * transport. When this header is specified, the storage service compares the hash of the content that has arrived
      * with this header value. Note that this MD5 hash is not stored with the blob. If the two hashes do not match, the
@@ -85,8 +72,6 @@ public final class BlockBlobStageBlockOptions {
     }
 
     /**
-     * Sets the MD5 of the block content.
-     *
      * @param contentMd5 An MD5 hash of the block content. This hash is used to verify the integrity of the block during
      * transport. When this header is specified, the storage service compares the hash of the content that has arrived
      * with this header value. Note that this MD5 hash is not stored with the blob. If the two hashes do not match, the

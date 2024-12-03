@@ -22,14 +22,6 @@ public class BlockBlobOutputStreamOptions {
     private BlobRequestConditions requestConditions;
 
     /**
-     * Creates a new instance of {@link BlockBlobOutputStreamOptions}.
-     */
-    public BlockBlobOutputStreamOptions() {
-    }
-
-    /**
-     * Gets the {@link ParallelTransferOptions}.
-     *
      * @return {@link ParallelTransferOptions}
      */
     public ParallelTransferOptions getParallelTransferOptions() {
@@ -37,8 +29,6 @@ public class BlockBlobOutputStreamOptions {
     }
 
     /**
-     * Sets the {@link ParallelTransferOptions}.
-     *
      * @param parallelTransferOptions {@link ParallelTransferOptions}
      * @return The updated options.
      */
@@ -48,8 +38,6 @@ public class BlockBlobOutputStreamOptions {
     }
 
     /**
-     * Gets the {@link BlobHttpHeaders}.
-     *
      * @return {@link BlobHttpHeaders}
      */
     public BlobHttpHeaders getHeaders() {
@@ -57,8 +45,6 @@ public class BlockBlobOutputStreamOptions {
     }
 
     /**
-     * Sets the {@link BlobHttpHeaders}.
-     *
      * @param headers {@link BlobHttpHeaders}
      * @return The updated {@code AppendBlobCreateOptions}
      */
@@ -68,8 +54,6 @@ public class BlockBlobOutputStreamOptions {
     }
 
     /**
-     * Gets the metadata to associate with the blob.
-     *
      * @return The metadata to associate with the blob.
      */
     public Map<String, String> getMetadata() {
@@ -77,8 +61,6 @@ public class BlockBlobOutputStreamOptions {
     }
 
     /**
-     * Sets the metadata to associate with the blob.
-     *
      * @param metadata The metadata to associate with the blob.
      * @return The updated options
      */
@@ -88,8 +70,6 @@ public class BlockBlobOutputStreamOptions {
     }
 
     /**
-     * Gets the tags to associate with the blob.
-     *
      * @return The tags to associate with the blob.
      */
     public Map<String, String> getTags() {
@@ -97,8 +77,6 @@ public class BlockBlobOutputStreamOptions {
     }
 
     /**
-     * Sets the tags to associate with the blob.
-     *
      * @param tags The tags to associate with the blob.
      * @return The updated options.
      */
@@ -108,8 +86,6 @@ public class BlockBlobOutputStreamOptions {
     }
 
     /**
-     * Gets the {@link AccessTier}.
-     *
      * @return {@link AccessTier}
      */
     public AccessTier getTier() {
@@ -117,8 +93,6 @@ public class BlockBlobOutputStreamOptions {
     }
 
     /**
-     * Sets the {@link AccessTier}.
-     *
      * @param tier {@link AccessTier}
      * @return The updated options.
      */
@@ -128,8 +102,6 @@ public class BlockBlobOutputStreamOptions {
     }
 
     /**
-     * Gets the {@link BlobRequestConditions}.
-     *
      * @return {@link BlobRequestConditions}
      */
     public BlobRequestConditions getRequestConditions() {
@@ -137,8 +109,6 @@ public class BlockBlobOutputStreamOptions {
     }
 
     /**
-     * Sets the {@link BlobRequestConditions}.
-     *
      * @param requestConditions {@link BlobRequestConditions}
      * @return The updated options.
      */

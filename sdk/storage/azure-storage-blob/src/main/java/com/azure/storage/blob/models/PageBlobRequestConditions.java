@@ -21,12 +21,6 @@ public final class PageBlobRequestConditions extends BlobRequestConditions {
     private Long ifSequenceNumberEqualTo;
 
     /**
-     * Creates a new instance of {@link PageBlobRequestConditions}.
-     */
-    public PageBlobRequestConditions() {
-    }
-
-    /**
      * Optionally limit requests to resources that match the passed ETag.
      *
      * @param ifMatch ETag that resources must match.
