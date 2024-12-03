@@ -5,7 +5,12 @@
 package com.azure.resourcemanager.playwrighttesting.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 
@@ -13,47 +18,40 @@ import java.time.OffsetDateTime;
  * The free-trial properties.
  */
 @Immutable
-public final class FreeTrialProperties {
+public final class FreeTrialProperties implements JsonSerializable<FreeTrialProperties> {
     /*
      * The playwright account id.
      */
-    @JsonProperty(value = "accountId", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private String accountId;
 
     /*
      * The free-trial createdAt utcDateTime.
      */
-    @JsonProperty(value = "createdAt", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime createdAt;
 
     /*
      * The free-trial expiryAt utcDateTime.
      */
-    @JsonProperty(value = "expiryAt", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime expiryAt;
 
     /*
      * The free-trial allocated limit value eg. allocated free minutes.
      */
-    @JsonProperty(value = "allocatedValue", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private int allocatedValue;
 
     /*
      * The free-trial used value eg. used free minutes.
      */
-    @JsonProperty(value = "usedValue", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private int usedValue;
 
     /*
      * The free-trial percentage used.
      */
-    @JsonProperty(value = "percentageUsed", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private BigDecimal percentageUsed;
 
     /*
      * The free-trial state.
      */
-    @JsonProperty(value = "state", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private FreeTrialState state;
 
     /**
@@ -131,5 +129,56 @@ public final class FreeTrialProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FreeTrialProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FreeTrialProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the FreeTrialProperties.
+     */
+    public static FreeTrialProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FreeTrialProperties deserializedFreeTrialProperties = new FreeTrialProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("accountId".equals(fieldName)) {
+                    deserializedFreeTrialProperties.accountId = reader.getString();
+                } else if ("createdAt".equals(fieldName)) {
+                    deserializedFreeTrialProperties.createdAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("expiryAt".equals(fieldName)) {
+                    deserializedFreeTrialProperties.expiryAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("allocatedValue".equals(fieldName)) {
+                    deserializedFreeTrialProperties.allocatedValue = reader.getInt();
+                } else if ("usedValue".equals(fieldName)) {
+                    deserializedFreeTrialProperties.usedValue = reader.getInt();
+                } else if ("percentageUsed".equals(fieldName)) {
+                    deserializedFreeTrialProperties.percentageUsed
+                        = reader.getNullable(nonNullReader -> new BigDecimal(nonNullReader.getString()));
+                } else if ("state".equals(fieldName)) {
+                    deserializedFreeTrialProperties.state = FreeTrialState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFreeTrialProperties;
+        });
     }
 }
