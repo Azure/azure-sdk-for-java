@@ -1,6 +1,6 @@
 # Release History
 
-## 5.19.2 (2024-11-26)
+## 5.19.2 (2024-12-04)
 
 ### Other Changes
 
