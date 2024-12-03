@@ -37,9 +37,11 @@ import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import reactor.core.publisher.EmitterProcessor;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
-import reactor.core.publisher.Sinks;
+import reactor.core.publisher.ReplayProcessor;
 import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 import reactor.test.publisher.TestPublisher;
@@ -84,9 +86,10 @@ class ServiceBusSessionManagerTest {
     private static final String CLIENT_IDENTIFIER = "my-client-identifier";
     private static final ServiceBusTracer NOOP_TRACER = new ServiceBusTracer(null, NAMESPACE, ENTITY_PATH);
     private static final ClientLogger LOGGER = new ClientLogger(ServiceBusReceiverAsyncClientTest.class);
-    private final Sinks.Many<AmqpEndpointState> endpointStates
-        = Sinks.many().replay().latestOrDefault(AmqpEndpointState.UNINITIALIZED);
-    private final Sinks.Many<Message> messages = Sinks.many().multicast().onBackpressureBuffer();
+    private final ReplayProcessor<AmqpEndpointState> endpointProcessor = ReplayProcessor.cacheLast();
+    private final FluxSink<AmqpEndpointState> endpointSink = endpointProcessor.sink(FluxSink.OverflowStrategy.BUFFER);
+    private final EmitterProcessor<Message> messageProcessor = EmitterProcessor.create();
+    private final FluxSink<Message> messageSink = messageProcessor.sink(FluxSink.OverflowStrategy.BUFFER);
 
     private ServiceBusConnectionProcessor connectionProcessor;
     private ConnectionCacheWrapper connectionCacheWrapper;
@@ -114,11 +117,11 @@ class ServiceBusSessionManagerTest {
 
         // Forcing us to publish the messages we receive on the AMQP link on single. Similar to how it is done
         // in ReactorExecutor.
-        when(amqpReceiveLink.receive()).thenReturn(messages.asFlux().publishOn(Schedulers.single()));
+        when(amqpReceiveLink.receive()).thenReturn(messageProcessor.publishOn(Schedulers.single()));
 
         when(amqpReceiveLink.getHostname()).thenReturn(NAMESPACE);
         when(amqpReceiveLink.getEntityPath()).thenReturn(ENTITY_PATH);
-        when(amqpReceiveLink.getEndpointStates()).thenReturn(endpointStates.asFlux());
+        when(amqpReceiveLink.getEndpointStates()).thenReturn(endpointProcessor);
         when(amqpReceiveLink.closeAsync()).thenReturn(Mono.empty());
 
         ConnectionOptions connectionOptions = new ConnectionOptions(NAMESPACE, tokenCredential,
@@ -127,8 +130,8 @@ class ServiceBusSessionManagerTest {
             Schedulers.boundedElastic(), CLIENT_OPTIONS, SslDomain.VerifyMode.VERIFY_PEER_NAME, "test-product",
             "test-version");
 
-        when(connection.getEndpointStates()).thenReturn(endpointStates.asFlux());
-        endpointStates.emitNext(AmqpEndpointState.ACTIVE, Sinks.EmitFailureHandler.FAIL_FAST);
+        when(connection.getEndpointStates()).thenReturn(endpointProcessor);
+        endpointSink.next(AmqpEndpointState.ACTIVE);
 
         when(connection.getManagementNode(ENTITY_PATH, ENTITY_TYPE)).thenReturn(Mono.just(managementNode));
 
@@ -225,7 +228,7 @@ class ServiceBusSessionManagerTest {
         // Act & Assert
         StepVerifier.create(sessionManager.receive()).then(() -> {
             for (int i = 0; i < numberOfMessages; i++) {
-                messages.emitNext(message, Sinks.EmitFailureHandler.FAIL_FAST);
+                messageSink.next(message);
             }
         })
             .assertNext(context -> assertMessageEquals(sessionId, receivedMessage, context))
@@ -279,7 +282,7 @@ class ServiceBusSessionManagerTest {
         }));
         StepVerifier.create(sessionManager.receive()).then(() -> {
             for (int i = 0; i < numberOfMessages; i++) {
-                messages.emitNext(message, Sinks.EmitFailureHandler.FAIL_FAST);
+                messageSink.next(message);
             }
         })
             .assertNext(context -> assertMessageEquals(sessionId, receivedMessage, context))
@@ -339,7 +342,7 @@ class ServiceBusSessionManagerTest {
         when(amqpReceiveLink2.receive()).thenReturn(messageFlux2);
         when(amqpReceiveLink2.getHostname()).thenReturn(NAMESPACE);
         when(amqpReceiveLink2.getEntityPath()).thenReturn(ENTITY_PATH);
-        when(amqpReceiveLink2.getEndpointStates()).thenReturn(endpointStates.asFlux());
+        when(amqpReceiveLink2.getEndpointStates()).thenReturn(endpointProcessor);
         when(amqpReceiveLink2.getLinkName()).thenReturn(linkName2);
         when(amqpReceiveLink2.getSessionId()).thenReturn(Mono.just(sessionId2));
         when(amqpReceiveLink2.getSessionLockedUntil()).thenReturn(Mono.fromCallable(onRenewal));
@@ -372,7 +375,7 @@ class ServiceBusSessionManagerTest {
         // Act & Assert
         StepVerifier.create(sessionManager.receive().publishOn(Schedulers.parallel())).then(() -> {
             for (int i = 0; i < numberOfMessages; i++) {
-                messages.emitNext(message, Sinks.EmitFailureHandler.FAIL_FAST);
+                messageSink.next(message);
             }
         }).assertNext(context -> {
             LOGGER.log(LogLevel.VERBOSE, () -> "1");
@@ -438,7 +441,7 @@ class ServiceBusSessionManagerTest {
         when(amqpReceiveLink2.receive()).thenReturn(messageFlux2);
         when(amqpReceiveLink2.getHostname()).thenReturn(NAMESPACE);
         when(amqpReceiveLink2.getEntityPath()).thenReturn(ENTITY_PATH);
-        when(amqpReceiveLink2.getEndpointStates()).thenReturn(endpointStates.asFlux());
+        when(amqpReceiveLink2.getEndpointStates()).thenReturn(endpointProcessor);
         when(amqpReceiveLink2.getLinkName()).thenReturn(linkName2);
         when(amqpReceiveLink2.getSessionId()).thenReturn(Mono.just(sessionId2));
         when(amqpReceiveLink2.getSessionLockedUntil()).thenReturn(Mono.fromCallable(onRenewal));
@@ -515,7 +518,7 @@ class ServiceBusSessionManagerTest {
 
         // Act & Assert
         StepVerifier.create(sessionManager.receive().publishOn(Schedulers.parallel())).then(() -> {
-            messages.emitNext(message, Sinks.EmitFailureHandler.FAIL_FAST);
+            messageSink.next(message);
         }).assertNext(context -> {
             assertMessageEquals(sessionId, receivedMessage, context);
             assertNotNull(sessionManager.getLinkName(sessionId));
