@@ -26,7 +26,6 @@ import com.azure.storage.file.share.models.ShareTokenIntent;
 import com.azure.storage.file.share.options.ShareCreateOptions;
 import com.azure.storage.file.share.options.ShareDirectoryCreateOptions;
 import com.azure.storage.file.share.options.ShareSetPropertiesOptions;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -67,7 +66,8 @@ public class ShareAsyncApiTests extends FileShareTestBase {
         primaryFileServiceAsyncClient = fileServiceBuilderHelper().buildAsyncClient();
         primaryShareAsyncClient = primaryFileServiceAsyncClient.getShareAsyncClient(shareName);
         testMetadata = Collections.singletonMap("testmetadata", "value");
-        smbProperties = new FileSmbProperties().setNtfsFileAttributes(EnumSet.of(NtfsFileAttributes.NORMAL));
+        smbProperties
+            = new FileSmbProperties().setNtfsFileAttributes(EnumSet.<NtfsFileAttributes>of(NtfsFileAttributes.NORMAL));
     }
 
     @Test
@@ -308,7 +308,7 @@ public class ShareAsyncApiTests extends FileShareTestBase {
         StepVerifier.create(primaryShareAsyncClient.getPropertiesWithResponse()).assertNext(it -> {
             FileShareTestHelper.assertResponseStatusCode(it, 200);
             assertEquals(testMetadata, it.getValue().getMetadata());
-            assertEquals(1, it.getValue().getQuota());
+            assertEquals(it.getValue().getQuota(), 1);
         }).verifyComplete();
     }
 
@@ -325,7 +325,7 @@ public class ShareAsyncApiTests extends FileShareTestBase {
             .assertNext(it -> {
                 FileShareTestHelper.assertResponseStatusCode(it, 200);
                 assertEquals(testMetadata, it.getValue().getMetadata());
-                assertEquals(1, it.getValue().getQuota());
+                assertEquals(it.getValue().getQuota(), 1);
             })
             .verifyComplete();
     }
@@ -424,13 +424,13 @@ public class ShareAsyncApiTests extends FileShareTestBase {
     public void setQuota() {
         primaryShareAsyncClient.createWithResponse(null, 1).block();
         StepVerifier.create(primaryShareAsyncClient.getProperties())
-            .assertNext(it -> assertEquals(1, it.getQuota()))
+            .assertNext(it -> assertEquals(it.getQuota(), 1))
             .verifyComplete();
         StepVerifier.create(primaryShareAsyncClient.setQuotaWithResponse(2))
             .assertNext(it -> FileShareTestHelper.assertResponseStatusCode(it, 200))
             .verifyComplete();
         StepVerifier.create(primaryShareAsyncClient.getProperties())
-            .assertNext(it -> assertEquals(2, it.getQuota()))
+            .assertNext(it -> assertEquals(it.getQuota(), 2))
             .verifyComplete();
     }
 
@@ -890,7 +890,9 @@ public class ShareAsyncApiTests extends FileShareTestBase {
             .then(primaryShareAsyncClient.createPermission(filePermission))
             .flatMap(r -> primaryShareAsyncClient.getPermission(r, filePermissionFormat));
 
-        StepVerifier.create(response).assertNext(r -> assertEquals(r, permission)).verifyComplete();
+        StepVerifier.create(response).assertNext(r -> {
+            assertEquals(r, permission);
+        }).verifyComplete();
 
     }
 
@@ -936,7 +938,7 @@ public class ShareAsyncApiTests extends FileShareTestBase {
             + "188441444-3053964)S:NO_ACCESS_CONTROL";
 
         StepVerifier.create(aadShareClient.createPermission(permission))
-            .assertNext(Assertions::assertNotNull)
+            .assertNext(r -> assertNotNull(r))
             .verifyComplete();
     }
 
@@ -953,7 +955,7 @@ public class ShareAsyncApiTests extends FileShareTestBase {
             + "188441444-3053964)S:NO_ACCESS_CONTROL";
 
         StepVerifier.create(aadShareClient.createPermission(permission))
-            .assertNext(Assertions::assertNotNull)
+            .assertNext(r -> assertNotNull(r))
             .verifyComplete();
     }
 
@@ -991,7 +993,7 @@ public class ShareAsyncApiTests extends FileShareTestBase {
             + "188441444-3053964)S:NO_ACCESS_CONTROL";
 
         StepVerifier.create(aadShareClient.createPermission(permission))
-            .assertNext(Assertions::assertNotNull)
+            .assertNext(r -> assertNotNull(r))
             .verifyComplete();
     }
 

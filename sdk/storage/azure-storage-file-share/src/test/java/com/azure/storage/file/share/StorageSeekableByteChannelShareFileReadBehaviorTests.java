@@ -159,8 +159,8 @@ public class StorageSeekableByteChannelShareFileReadBehaviorTests extends FileSh
         int read = behavior.read(buffer, 0);
 
         //then: "channel state as expected"
-        assertEquals(length, read);
-        assertEquals(length, behavior.getResourceLength());
+        assertEquals(read, length);
+        assertEquals(behavior.getResourceLength(), length);
 
         //and: "buffer correctly filled"
         assertEquals(buffer.position(), buffer.capacity());
@@ -171,11 +171,11 @@ public class StorageSeekableByteChannelShareFileReadBehaviorTests extends FileSh
         read = behavior.read(buffer, length);
 
         //then: "gracefully signal end of file"
-        assertEquals(-1, read);
-        assertEquals(length, behavior.getResourceLength());
+        assertEquals(read, -1);
+        assertEquals(behavior.getResourceLength(), length);
 
         //and: "buffer unfilled"
-        assertEquals(0, buffer.position());
+        assertEquals(buffer.position(), 0);
 
         //when: "file augmented to full size"
         primaryFileClient.setProperties(2 * length, null, null, null);
@@ -189,8 +189,8 @@ public class StorageSeekableByteChannelShareFileReadBehaviorTests extends FileSh
         read = behavior.read(buffer, behavior.getResourceLength());
 
         //then: "channel state has updated length"
-        assertEquals(length, read);
-        assertEquals(2 * length, behavior.getResourceLength());
+        assertEquals(read, length);
+        assertEquals(behavior.getResourceLength(), 2 * length);
 
         //and: "buffer correctly filled"
         assertEquals(buffer.position(), buffer.capacity());

@@ -28,8 +28,6 @@ public final class ShareFileSeekableByteChannelWriteOptions {
     }
 
     /**
-     * Gets whether the channel is in write mode.
-     *
      * @return Whether the channel is in write mode.
      */
     public boolean isOverwriteMode() {
@@ -45,8 +43,6 @@ public final class ShareFileSeekableByteChannelWriteOptions {
     }
 
     /**
-     * Gets the size of individual writes to the service.
-     *
      * @param fileSize New size of the target file.
      * @return The updated instance.
      * @throws UnsupportedOperationException When setting a file size on options that don't create a new file.
@@ -66,8 +62,6 @@ public final class ShareFileSeekableByteChannelWriteOptions {
     }
 
     /**
-     * Gets the size of individual writes to the service.
-     *
      * @return The size of individual writes to the service.
      */
     public Long getChunkSizeInBytes() {
@@ -75,8 +69,6 @@ public final class ShareFileSeekableByteChannelWriteOptions {
     }
 
     /**
-     * Sets the size of individual writes to the service.
-     *
      * @param chunkSizeInBytes The size of individual writes to the service.
      * @return The updated instance.
      */
@@ -86,8 +78,6 @@ public final class ShareFileSeekableByteChannelWriteOptions {
     }
 
     /**
-     * Gets the request conditions to be used by the resulting channel.
-     *
      * @return Request conditions to be used by the resulting channel.
      */
     public ShareRequestConditions getRequestConditions() {
@@ -95,8 +85,6 @@ public final class ShareFileSeekableByteChannelWriteOptions {
     }
 
     /**
-     * Sets the request conditions to be used by the resulting channel.
-     *
      * @param requestConditions Request conditions to be used by the resulting channel.
      * @return The updated instance.
      */
@@ -106,18 +94,14 @@ public final class ShareFileSeekableByteChannelWriteOptions {
     }
 
     /**
-     * Gets the last written mode to be used by the resulting channel.
-     *
-     * @return The last written mode to be used by the resulting channel.
+     * @return The last wriiten mode to be used by the resulting channel.
      */
     public FileLastWrittenMode getFileLastWrittenMode() {
         return fileLastWrittenMode;
     }
 
     /**
-     * Sets the last written mode to be used by the resulting channel.
-     *
-     * @param fileLastWrittenMode The last written mode to be used by the resulting channel.
+     * @param fileLastWrittenMode The last wriiten mode to be used by the resulting channel.
      * @return The updated instance.
      */
     public ShareFileSeekableByteChannelWriteOptions setFileLastWrittenMode(FileLastWrittenMode fileLastWrittenMode) {

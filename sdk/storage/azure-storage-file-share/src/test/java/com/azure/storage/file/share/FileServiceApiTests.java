@@ -520,7 +520,7 @@ public class FileServiceApiTests extends FileShareTestBase {
         ShareServiceClient serviceClient = getServiceClientBuilder(ENVIRONMENT.getPrimaryAccount().getCredential(),
             primaryFileServiceClient.getFileServiceUrl(), getPerCallVersionPolicy()).buildClient();
         Response<ShareServiceProperties> response = serviceClient.getPropertiesWithResponse(null, null);
-        assertEquals("2017-11-09", response.getHeaders().getValue(X_MS_VERSION));
+        assertEquals(response.getHeaders().getValue(X_MS_VERSION), "2017-11-09");
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-08-04")

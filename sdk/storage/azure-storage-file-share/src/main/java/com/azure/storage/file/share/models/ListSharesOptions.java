@@ -41,12 +41,6 @@ public final class ListSharesOptions {
     private boolean includeDeleted;
 
     /**
-     * Creates a new instance of {@link ListSharesOptions}.
-     */
-    public ListSharesOptions() {
-    }
-
-    /**
      * Sets the prefix that a share must match to be included in the listing.
      *
      * @param prefix The prefix that shares must start with to pass the filter

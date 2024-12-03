@@ -87,12 +87,6 @@ public final class ShareLeaseClientBuilder {
     private boolean allowTrailingDot;
 
     /**
-     * Creates a new instance of {@link ShareLeaseClientBuilder}.
-     */
-    public ShareLeaseClientBuilder() {
-    }
-
-    /**
      * Creates a {@link ShareLeaseClient} based on the configurations set in the builder.
      *
      * @return a {@link ShareLeaseClient} based on the configurations in this builder.
