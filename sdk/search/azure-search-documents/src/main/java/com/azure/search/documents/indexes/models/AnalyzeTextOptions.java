@@ -91,6 +91,7 @@ public final class AnalyzeTextOptions {
         return this.tokenizerName;
     }
 
+
     /**
      * Get the tokenFilters property: An optional list of token filters to use when breaking the given text.
      *

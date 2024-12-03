@@ -3,6 +3,7 @@
 
 package com.azure.search.documents.models;
 
+
 import com.azure.core.annotation.Immutable;
 
 /**
