@@ -4,7 +4,6 @@
 package com.azure.spring.cloud.feature.management.implementation;
 
 import java.math.BigInteger;
-import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -27,7 +26,7 @@ public class FeatureFilterUtils {
      * @param key key of object int the parameters map
      */
     @SuppressWarnings("unchecked")
-    public static void updateValueFromMapToList(Map<String, Object> parameters, String key, Boolean fixNull) {
+    public static void updateValueFromMapToList(Map<String, Object> parameters, String key, boolean fixNull) {
         Object objectMap = parameters.get(key);
         if (objectMap instanceof Map) {
             Collection<Object> toType = ((Map<String, Object>) objectMap).values();

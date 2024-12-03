@@ -24,7 +24,7 @@ import com.azure.spring.cloud.feature.management.targeting.TargetingEvaluationOp
 @EnableConfigurationProperties({ FeatureManagementConfigProperties.class, FeatureManagementProperties.class })
 class FeatureManagementConfiguration implements ApplicationContextAware {
 
-    private transient ApplicationContext appContext;
+    private ApplicationContext appContext;
 
     /**
      * Creates Feature Manager
