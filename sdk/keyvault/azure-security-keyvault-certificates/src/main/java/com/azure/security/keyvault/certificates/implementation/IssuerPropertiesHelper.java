@@ -25,6 +25,5 @@ public final class IssuerPropertiesHelper {
         IssuerPropertiesHelper.accessor = accessor;
     }
 
-    private IssuerPropertiesHelper() {
-    }
+    private IssuerPropertiesHelper() { }
 }

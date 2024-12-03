@@ -11,9 +11,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 
-/**
- * The certificate issuer update parameters.
- */
+/** The certificate issuer update parameters. */
 @Fluent
 public final class CertificateIssuerUpdateParameters implements JsonSerializable<CertificateIssuerUpdateParameters> {
     /*
@@ -36,15 +34,12 @@ public final class CertificateIssuerUpdateParameters implements JsonSerializable
      */
     private IssuerAttributes attributes;
 
-    /**
-     * Creates an instance of CertificateIssuerUpdateParameters class.
-     */
-    public CertificateIssuerUpdateParameters() {
-    }
+    /** Creates an instance of CertificateIssuerUpdateParameters class. */
+    public CertificateIssuerUpdateParameters() {}
 
     /**
      * Get the provider property: The issuer provider.
-     * 
+     *
      * @return the provider value.
      */
     public String getProvider() {
@@ -53,7 +48,7 @@ public final class CertificateIssuerUpdateParameters implements JsonSerializable
 
     /**
      * Set the provider property: The issuer provider.
-     * 
+     *
      * @param provider the provider value to set.
      * @return the CertificateIssuerUpdateParameters object itself.
      */
@@ -64,7 +59,7 @@ public final class CertificateIssuerUpdateParameters implements JsonSerializable
 
     /**
      * Get the credentials property: The credentials to be used for the issuer.
-     * 
+     *
      * @return the credentials value.
      */
     public IssuerCredentials getCredentials() {
@@ -73,7 +68,7 @@ public final class CertificateIssuerUpdateParameters implements JsonSerializable
 
     /**
      * Set the credentials property: The credentials to be used for the issuer.
-     * 
+     *
      * @param credentials the credentials value to set.
      * @return the CertificateIssuerUpdateParameters object itself.
      */
@@ -84,7 +79,7 @@ public final class CertificateIssuerUpdateParameters implements JsonSerializable
 
     /**
      * Get the organizationDetails property: Details of the organization as provided to the issuer.
-     * 
+     *
      * @return the organizationDetails value.
      */
     public OrganizationDetails getOrganizationDetails() {
@@ -93,7 +88,7 @@ public final class CertificateIssuerUpdateParameters implements JsonSerializable
 
     /**
      * Set the organizationDetails property: Details of the organization as provided to the issuer.
-     * 
+     *
      * @param organizationDetails the organizationDetails value to set.
      * @return the CertificateIssuerUpdateParameters object itself.
      */
@@ -104,7 +99,7 @@ public final class CertificateIssuerUpdateParameters implements JsonSerializable
 
     /**
      * Get the attributes property: Attributes of the issuer object.
-     * 
+     *
      * @return the attributes value.
      */
     public IssuerAttributes getAttributes() {
@@ -113,7 +108,7 @@ public final class CertificateIssuerUpdateParameters implements JsonSerializable
 
     /**
      * Set the attributes property: Attributes of the issuer object.
-     * 
+     *
      * @param attributes the attributes value to set.
      * @return the CertificateIssuerUpdateParameters object itself.
      */
@@ -122,9 +117,6 @@ public final class CertificateIssuerUpdateParameters implements JsonSerializable
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -137,35 +129,38 @@ public final class CertificateIssuerUpdateParameters implements JsonSerializable
 
     /**
      * Reads an instance of CertificateIssuerUpdateParameters from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of CertificateIssuerUpdateParameters if the JsonReader was pointing to an instance of it, or
-     * null if it was pointing to JSON null.
+     *     null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the CertificateIssuerUpdateParameters.
      */
     public static CertificateIssuerUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            CertificateIssuerUpdateParameters deserializedCertificateIssuerUpdateParameters
-                = new CertificateIssuerUpdateParameters();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
+        return jsonReader.readObject(
+                reader -> {
+                    CertificateIssuerUpdateParameters deserializedCertificateIssuerUpdateParameters =
+                            new CertificateIssuerUpdateParameters();
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
 
-                if ("provider".equals(fieldName)) {
-                    deserializedCertificateIssuerUpdateParameters.provider = reader.getString();
-                } else if ("credentials".equals(fieldName)) {
-                    deserializedCertificateIssuerUpdateParameters.credentials = IssuerCredentials.fromJson(reader);
-                } else if ("org_details".equals(fieldName)) {
-                    deserializedCertificateIssuerUpdateParameters.organizationDetails
-                        = OrganizationDetails.fromJson(reader);
-                } else if ("attributes".equals(fieldName)) {
-                    deserializedCertificateIssuerUpdateParameters.attributes = IssuerAttributes.fromJson(reader);
-                } else {
-                    reader.skipChildren();
-                }
-            }
+                        if ("provider".equals(fieldName)) {
+                            deserializedCertificateIssuerUpdateParameters.provider = reader.getString();
+                        } else if ("credentials".equals(fieldName)) {
+                            deserializedCertificateIssuerUpdateParameters.credentials =
+                                    IssuerCredentials.fromJson(reader);
+                        } else if ("org_details".equals(fieldName)) {
+                            deserializedCertificateIssuerUpdateParameters.organizationDetails =
+                                    OrganizationDetails.fromJson(reader);
+                        } else if ("attributes".equals(fieldName)) {
+                            deserializedCertificateIssuerUpdateParameters.attributes =
+                                    IssuerAttributes.fromJson(reader);
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
 
-            return deserializedCertificateIssuerUpdateParameters;
-        });
+                    return deserializedCertificateIssuerUpdateParameters;
+                });
     }
 }
