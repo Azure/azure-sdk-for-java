@@ -154,7 +154,8 @@ public final class CallMediaRecognizeDtmfOptions extends CallMediaRecognizeOptio
      * @return the CallMediaRecognizeDtmfOptions object itself.
      */
     @Override
-    public CallMediaRecognizeDtmfOptions setInterruptPrompt(Boolean interruptPrompt) {
+    public CallMediaRecognizeDtmfOptions setInterruptPrompt(
+        Boolean interruptPrompt) {
         super.setInterruptPrompt(interruptPrompt);
         return this;
     }
@@ -192,15 +193,13 @@ public final class CallMediaRecognizeDtmfOptions extends CallMediaRecognizeOptio
         // write properties of base class.
         jsonWriter.writeStringField("recognizeInputType", "dtmf");
         jsonWriter.writeJsonField("playPrompt", getPlayPrompt());
+        jsonWriter.writeArrayField("playPrompts", this.getPlayPrompts(), (writer, playPrompt) -> playPrompt.toJson(writer));
         jsonWriter.writeBooleanField("interruptCallMediaOperation", isInterruptCallMediaOperation());
         jsonWriter.writeBooleanField("stopCurrentOperations", isStopCurrentOperations());
         jsonWriter.writeStringField("operationContext", getOperationContext());
         jsonWriter.writeBooleanField("interruptPrompt", isInterruptPrompt());
-        jsonWriter.writeStringField("initialSilenceTimeout",
-            CoreUtils.durationToStringWithDays(getInitialSilenceTimeout()));
-        jsonWriter.writeStringField("speechModelEndpointId", getSpeechModelEndpointId());
-        final CommunicationIdentifierModel participant
-            = CommunicationIdentifierConverter.convert(getTargetParticipant());
+        jsonWriter.writeStringField("initialSilenceTimeout", CoreUtils.durationToStringWithDays(getInitialSilenceTimeout()));
+        final CommunicationIdentifierModel participant = CommunicationIdentifierConverter.convert(getTargetParticipant());
         jsonWriter.writeJsonField("targetParticipant", participant);
         jsonWriter.writeStringField("operationCallbackUrl", getOperationCallbackUrl());
         // write properties specific to this class.
@@ -208,8 +207,7 @@ public final class CallMediaRecognizeDtmfOptions extends CallMediaRecognizeOptio
         if (this.maxTonesToCollect != null) {
             jsonWriter.writeNumberField("maxTonesToCollect", this.maxTonesToCollect);
         }
-        jsonWriter.writeArrayField("stopTones", this.stopDtmfTones,
-            (writer, element) -> writer.writeString(element.toString()));
+        jsonWriter.writeArrayField("stopTones", this.stopDtmfTones, (writer, element) -> writer.writeString(element.toString()));
         return jsonWriter.writeEndObject();
     }
 
@@ -234,7 +232,6 @@ public final class CallMediaRecognizeDtmfOptions extends CallMediaRecognizeOptio
             String operationContext = null;
             Boolean interruptPrompt = null;
             Duration initialSilenceTimeout = null;
-            String speechModelEndpointId = null;
             String operationCallbackUrl = null;
             CommunicationIdentifier targetParticipant = null;
 
@@ -262,8 +259,6 @@ public final class CallMediaRecognizeDtmfOptions extends CallMediaRecognizeOptio
                 } else if ("initialSilenceTimeout".equals(fieldName)) {
                     final String value = reader.getString();
                     initialSilenceTimeout = value != null ? Duration.parse(value) : null;
-                } else if ("speechModelEndpointId".equals(fieldName)) {
-                    speechModelEndpointId = reader.getString();
                 } else if ("operationCallbackUrl".equals(fieldName)) {
                     operationCallbackUrl = reader.getString();
                 } else if ("targetParticipant".equals(fieldName)) {
@@ -273,8 +268,7 @@ public final class CallMediaRecognizeDtmfOptions extends CallMediaRecognizeOptio
                     reader.skipChildren();
                 }
             }
-            final CallMediaRecognizeDtmfOptions options
-                = new CallMediaRecognizeDtmfOptions(targetParticipant, maxTonesToCollect);
+            final CallMediaRecognizeDtmfOptions options = new CallMediaRecognizeDtmfOptions(targetParticipant, maxTonesToCollect);
             options.interToneTimeout = interToneTimeout;
             options.stopDtmfTones = stopDtmfTones;
             // set properties of base class.
@@ -284,7 +278,6 @@ public final class CallMediaRecognizeDtmfOptions extends CallMediaRecognizeOptio
             options.setOperationContext(operationContext);
             options.setInterruptPrompt(interruptPrompt);
             options.setInitialSilenceTimeout(initialSilenceTimeout);
-            options.setSpeechModelEndpointId(speechModelEndpointId);
             options.setOperationCallbackUrl(operationCallbackUrl);
 
             return options;

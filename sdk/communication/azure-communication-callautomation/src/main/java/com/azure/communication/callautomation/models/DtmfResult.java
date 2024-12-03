@@ -22,12 +22,6 @@ public final class DtmfResult extends RecognizeResult {
     private List<DtmfTone> dtmfTones;
 
     /**
-     * Creates an instance of {@link DtmfResult}.
-     */
-    public DtmfResult() {
-    }
-
-    /**
      * Get the tones property: The tones property.
      *
      * @return the tones value.
@@ -57,14 +51,15 @@ public final class DtmfResult extends RecognizeResult {
             return "";
         }
 
-        return this.dtmfTones.stream().map(x -> x.convertToString()).collect(Collectors.joining());
+        return this.dtmfTones.stream()
+                    .map(x -> x.convertToString())
+                    .collect(Collectors.joining());
     }
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeArrayField("tones", this.dtmfTones,
-            (writer, element) -> writer.writeString(element.toString()));
+        jsonWriter.writeArrayField("tones", this.dtmfTones, (writer, element) -> writer.writeString(element.toString()));
         return jsonWriter.writeEndObject();
     }
 

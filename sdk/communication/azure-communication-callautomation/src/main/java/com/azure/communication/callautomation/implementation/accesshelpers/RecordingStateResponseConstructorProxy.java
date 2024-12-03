@@ -12,8 +12,7 @@ import com.azure.communication.callautomation.models.RecordingStateResult;
 public final class RecordingStateResponseConstructorProxy {
     private static RecordingStateResponseConstructorAccessor accessor;
 
-    private RecordingStateResponseConstructorProxy() {
-    }
+    private RecordingStateResponseConstructorProxy() { }
 
     /**
      * Type defining the methods to set the non-public properties of a {@link RecordingStateResponseConstructorAccessor}

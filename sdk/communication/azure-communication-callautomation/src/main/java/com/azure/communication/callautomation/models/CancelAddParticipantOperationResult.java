@@ -6,19 +6,13 @@ package com.azure.communication.callautomation.models;
 import com.azure.communication.callautomation.implementation.accesshelpers.CancelAddParticipantResponseConstructorProxy;
 import com.azure.communication.callautomation.implementation.accesshelpers.CancelAddParticipantResponseConstructorProxy.CancelAddParticipantResponseConstructorAccessor;
 import com.azure.communication.callautomation.implementation.models.CancelAddParticipantResponse;
-import com.azure.communication.callautomation.models.events.CancelAddParticipantSucceeded;
-import com.azure.communication.callautomation.models.events.CallAutomationEventBase;
-import com.azure.communication.callautomation.models.events.CancelAddParticipantFailed;
 import com.azure.core.annotation.Immutable;
-import reactor.core.publisher.Mono;
 
-import java.time.Duration;
 import java.util.Objects;
 
 /** The CancelAddParticipantResult model. */
 @Immutable
-public final class CancelAddParticipantOperationResult
-    extends ResultWithEventHandling<CancelAddParticipantEventResult> {
+public final class CancelAddParticipantOperationResult {
 
     /**
      * The invitation ID used to cancel the add participant request.
@@ -31,12 +25,13 @@ public final class CancelAddParticipantOperationResult
     private final String operationContext;
 
     static {
-        CancelAddParticipantResponseConstructorProxy.setAccessor(new CancelAddParticipantResponseConstructorAccessor() {
-            @Override
-            public CancelAddParticipantOperationResult create(CancelAddParticipantResponse internalHeaders) {
-                return new CancelAddParticipantOperationResult(internalHeaders);
-            }
-        });
+        CancelAddParticipantResponseConstructorProxy.setAccessor(
+                new CancelAddParticipantResponseConstructorAccessor() {
+                    @Override
+                    public CancelAddParticipantOperationResult create(CancelAddParticipantResponse internalHeaders) {
+                        return new CancelAddParticipantOperationResult(internalHeaders);
+                    }
+                });
     }
 
     /**
@@ -54,7 +49,7 @@ public final class CancelAddParticipantOperationResult
      */
     CancelAddParticipantOperationResult(CancelAddParticipantResponse cancelAddParticipantResponseInternal) {
         Objects.requireNonNull(cancelAddParticipantResponseInternal,
-            "cancelAddParticipantResponseInternal must not be null");
+                "cancelAddParticipantResponseInternal must not be null");
 
         invitationId = cancelAddParticipantResponseInternal.getInvitationId();
         operationContext = cancelAddParticipantResponseInternal.getOperationContext();
@@ -77,40 +72,5 @@ public final class CancelAddParticipantOperationResult
      */
     public String getOperationContext() {
         return operationContext;
-    }
-
-    @Override
-    public Mono<CancelAddParticipantEventResult> waitForEventProcessorAsync(Duration timeout) {
-        if (eventProcessor == null) {
-            return Mono.empty();
-        }
-
-        return (timeout == null
-            ? eventProcessor
-                .waitForEventProcessorAsync(event -> Objects.equals(event.getCallConnectionId(), callConnectionId)
-                    && (Objects.equals(event.getOperationContext(), operationContextFromRequest)
-                        || operationContextFromRequest == null)
-                    && (event.getClass() == CancelAddParticipantSucceeded.class
-                        || event.getClass() == CancelAddParticipantFailed.class))
-            : eventProcessor
-                .waitForEventProcessorAsync(event -> Objects.equals(event.getCallConnectionId(), callConnectionId)
-                    && (Objects.equals(event.getOperationContext(), operationContextFromRequest)
-                        || operationContextFromRequest == null)
-                    && (event.getClass() == CancelAddParticipantSucceeded.class
-                        || event.getClass() == CancelAddParticipantFailed.class),
-                    timeout)).flatMap(event -> Mono.just(getReturnedEvent(event)));
-    }
-
-    @Override
-    protected CancelAddParticipantEventResult getReturnedEvent(CallAutomationEventBase event) {
-        CancelAddParticipantEventResult result = null;
-        if (event.getClass() == CancelAddParticipantSucceeded.class) {
-            result = new CancelAddParticipantEventResult(true, (CancelAddParticipantSucceeded) event, null,
-                ((CancelAddParticipantSucceeded) event).getInvitationId());
-        } else if (event.getClass() == CancelAddParticipantFailed.class) {
-            result = new CancelAddParticipantEventResult(false, null, (CancelAddParticipantFailed) event,
-                ((CancelAddParticipantFailed) event).getInvitationId());
-        }
-        return result;
     }
 }

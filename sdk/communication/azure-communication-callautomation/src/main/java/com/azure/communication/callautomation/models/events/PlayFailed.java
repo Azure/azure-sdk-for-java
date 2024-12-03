@@ -13,22 +13,22 @@ import java.io.IOException;
 /** The PlayFailed model. */
 @Immutable
 public final class PlayFailed extends CallAutomationEventBaseWithReasonCode {
-    /*
-     * Contains the resulting SIP code, sub-code and message.
-     */
-    private ResultInformation resultInformation;
 
     private PlayFailed() {
-        this.resultInformation = null;
     }
 
-    /**
-     * Get the resultInformation property: Contains the resulting SIP code, sub-code and message.
-     *
-     * @return the resultInformation value.
+    /*
+     * Contains the index of the failed play source.
      */
-    public ResultInformation getResultInformation() {
-        return this.resultInformation;
+    private Integer failedPlaySourceIndex;
+
+    /**
+     * Get the failedPlaySourceIndex property: Contains the index of the failed play source.
+     * 
+     * @return the failedPlaySourceIndex value.
+     */
+    public Integer getFailedPlaySourceIndex() {
+        return this.failedPlaySourceIndex;
     }
 
     /**
@@ -37,7 +37,7 @@ public final class PlayFailed extends CallAutomationEventBaseWithReasonCode {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("resultInformation", resultInformation);
+        jsonWriter.writeIntField("failedPlaySourceIndex", failedPlaySourceIndex);
         super.writeFields(jsonWriter);
         return jsonWriter.writeEndObject();
     }
@@ -56,8 +56,8 @@ public final class PlayFailed extends CallAutomationEventBaseWithReasonCode {
             while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("resultInformation".equals(fieldName)) {
-                    event.resultInformation = ResultInformation.fromJson(reader);
+                if ("failedPlaySourceIndex".equals(fieldName)) {
+                    event.failedPlaySourceIndex = reader.getInt();
                 } else {
                     if (!event.readField(fieldName, reader)) {
                         reader.skipChildren();
