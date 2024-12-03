@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.notificationhubs.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class PolicyKeyType extends ExpandableStringEnum<PolicyKeyType> {
      * @param name a name to look for.
      * @return the corresponding PolicyKeyType.
      */
-    @JsonCreator
     public static PolicyKeyType fromString(String name) {
         return fromString(name, PolicyKeyType.class);
     }

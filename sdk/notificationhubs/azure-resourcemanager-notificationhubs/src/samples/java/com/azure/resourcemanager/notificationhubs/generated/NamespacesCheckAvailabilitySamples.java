@@ -22,7 +22,8 @@ public final class NamespacesCheckAvailabilitySamples {
      */
     public static void
         namespacesCheckAvailability(com.azure.resourcemanager.notificationhubs.NotificationHubsManager manager) {
-        manager.namespaces().checkAvailabilityWithResponse(
-            new CheckAvailabilityParameters().withName("sdk-Namespace-2924"), com.azure.core.util.Context.NONE);
+        manager.namespaces()
+            .checkAvailabilityWithResponse(new CheckAvailabilityParameters().withName("sdk-Namespace-2924"),
+                com.azure.core.util.Context.NONE);
     }
 }
