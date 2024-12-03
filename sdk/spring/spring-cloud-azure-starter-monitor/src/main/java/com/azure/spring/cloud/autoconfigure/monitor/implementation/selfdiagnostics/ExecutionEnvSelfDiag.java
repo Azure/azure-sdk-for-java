@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.autoconfigure.monitor.selfdiagnostics.implementation;
+package com.azure.spring.cloud.autoconfigure.monitor.implementation.selfdiagnostics;
 
 import org.slf4j.Logger;
 import org.springframework.boot.CommandLineRunner;

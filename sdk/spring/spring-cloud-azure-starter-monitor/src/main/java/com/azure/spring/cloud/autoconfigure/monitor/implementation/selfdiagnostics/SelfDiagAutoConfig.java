@@ -1,9 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.autoconfigure.monitor.selfdiagnostics.implementation;
+package com.azure.spring.cloud.autoconfigure.monitor.implementation.selfdiagnostics;
 
-import com.azure.spring.cloud.autoconfigure.monitor.selfdiagnostics.SelfDiagnosticsLevel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -14,19 +13,20 @@ import org.springframework.context.annotation.Import;
 
 import java.util.Locale;
 
-/**
- * Main configuration entry point of the self-diagnostics
- **/
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnProperty(name = "otel.sdk.disabled", havingValue = "false", matchIfMissing = true)
 @Import({DefaultLogConfig.class, LogbackSelfDiagConfig.class})
-public class SelfDiagAutoConfig {
+class SelfDiagAutoConfig {
+
     private static final Logger LOG = LoggerFactory.getLogger(SelfDiagAutoConfig.class);
+
     static final String SELF_DIAGNOSTICS_LEVEL_ENV_VAR = "APPLICATIONINSIGHTS_SELF_DIAGNOSTICS_LEVEL";
 
+    // Bean to remove
     @Bean
     SelfDiagnosticsLevel selfDiagnosticsLevel() {
         String selfDiagLevelEnvVar = System.getenv(SELF_DIAGNOSTICS_LEVEL_ENV_VAR);
+
         if (selfDiagLevelEnvVar == null) {
             return SelfDiagnosticsLevel.INFO;
         }
@@ -48,5 +48,4 @@ public class SelfDiagAutoConfig {
     ExecutionEnvSelfDiag executionEnvSelfDiag(Logger selfDiagnosticsLogger) {
         return new ExecutionEnvSelfDiag(selfDiagnosticsLogger);
     }
-
 }
