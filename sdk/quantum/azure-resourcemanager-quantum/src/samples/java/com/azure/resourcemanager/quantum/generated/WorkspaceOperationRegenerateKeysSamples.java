@@ -22,8 +22,9 @@ public final class WorkspaceOperationRegenerateKeysSamples {
      * @param manager Entry point to AzureQuantumManager.
      */
     public static void regenerateKey(com.azure.resourcemanager.quantum.AzureQuantumManager manager) {
-        manager.workspaceOperations().regenerateKeysWithResponse("quantumResourcegroup", "quantumworkspace1",
-            new ApiKeys().withKeys(Arrays.asList(KeyType.PRIMARY, KeyType.SECONDARY)),
-            com.azure.core.util.Context.NONE);
+        manager.workspaceOperations()
+            .regenerateKeysWithResponse("quantumResourcegroup", "quantumworkspace1",
+                new ApiKeys().withKeys(Arrays.asList(KeyType.PRIMARY, KeyType.SECONDARY)),
+                com.azure.core.util.Context.NONE);
     }
 }
