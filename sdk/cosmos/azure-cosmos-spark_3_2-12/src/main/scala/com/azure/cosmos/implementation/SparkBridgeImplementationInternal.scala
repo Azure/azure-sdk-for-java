@@ -210,7 +210,7 @@ private[cosmos] object SparkBridgeImplementationInternal extends BasicLoggingTra
     partitionKeyDefinitionJson: String
   ): NormalizedRange = {
     val pkDefinition = SparkModelBridgeInternal.createPartitionKeyDefinitionFromJson(partitionKeyDefinitionJson)
-    partitionKeyToNormalizedRange(new PartitionKey(partitionKeyValue), pkDefinition)
+    partitionKeyToNormalizedRange(getPartitionKeyValue(pkDefinition, partitionKeyValue), pkDefinition)
   }
 
   private[cosmos] def partitionKeyToNormalizedRange(
@@ -226,27 +226,13 @@ private[cosmos] object SparkBridgeImplementationInternal extends BasicLoggingTra
       partitionKeyValueJsonArray: Object,
       partitionKeyDefinitionJson: String
   ): NormalizedRange = {
-
-      val partitionKey = new PartitionKeyBuilder()
-      val objectMapper = new ObjectMapper()
-      val json = partitionKeyValueJsonArray.toString
-      try {
-          val partitionKeyValues = objectMapper.readValue(json, classOf[Array[String]])
-          for (value <- partitionKeyValues) {
-              partitionKey.add(value.trim)
-          }
-          partitionKey.build()
-      } catch {
-          case e: Exception =>
-              logInfo("Invalid partition key paths: " + json, e)
-      }
-
-      val feedRange = FeedRange
-          .forLogicalPartition(partitionKey.build())
+    val pkDefinition = SparkModelBridgeInternal.createPartitionKeyDefinitionFromJson(partitionKeyDefinitionJson)
+    val partitionKey = getPartitionKeyValue(pkDefinition, partitionKeyValueJsonArray)
+    val feedRange = FeedRange
+          .forLogicalPartition(partitionKey)
           .asInstanceOf[FeedRangePartitionKeyImpl]
 
-      val pkDefinition = SparkModelBridgeInternal.createPartitionKeyDefinitionFromJson(partitionKeyDefinitionJson)
-      val effectiveRange = feedRange.getEffectiveRange(pkDefinition)
+    val effectiveRange = feedRange.getEffectiveRange(pkDefinition)
       rangeToNormalizedRange(effectiveRange)
   }
 
@@ -268,10 +254,23 @@ private[cosmos] object SparkBridgeImplementationInternal extends BasicLoggingTra
   }
 
   def findBucket(feedRanges: Array[String], pkValue: Object, pkDefinition: PartitionKeyDefinition):Int = {
+    val pk = getPartitionKeyValue(pkDefinition, pkValue)
+    val feedRangeFromPk = FeedRange.forLogicalPartition(pk).asInstanceOf[FeedRangePartitionKeyImpl]
+    val effectiveRangeFromPk = feedRangeFromPk.getEffectiveRange(pkDefinition)
+
+    for (i <- feedRanges.indices) {
+      val range = SparkBridgeImplementationInternal.toCosmosRange(feedRanges(i))
+      if (range.contains(effectiveRangeFromPk.getMin)) {
+        return i
+      }
+    }
+    throw new IllegalArgumentException("The partition key value does not belong to any of the feed ranges")
+  }
+
+  private def getPartitionKeyValue(pkDefinition: PartitionKeyDefinition, pkValue: Object): PartitionKey = {
     val partitionKey = new PartitionKeyBuilder()
     var pk: PartitionKey = null
-    // refactor this
-    if (pkDefinition.getKind == PartitionKind.MULTI_HASH) {
+    if (pkDefinition.getKind.equals(PartitionKind.MULTI_HASH)) {
       val objectMapper = new ObjectMapper()
       val json = pkValue.toString
       try {
@@ -284,21 +283,10 @@ private[cosmos] object SparkBridgeImplementationInternal extends BasicLoggingTra
         case e: Exception =>
           logInfo("Invalid partition key paths: " + json, e)
       }
-    } else if (pkDefinition.getKind == PartitionKind.HASH) {
+    } else if (pkDefinition.getKind.equals(PartitionKind.HASH)) {
       pk = new PartitionKey(pkValue)
     }
-    val feedRangeFromPk = FeedRange.forLogicalPartition(pk).asInstanceOf[FeedRangePartitionKeyImpl]
-    val effectiveRangeFromPk = feedRangeFromPk.getEffectiveRange(pkDefinition)
-
-    for (i <- feedRanges.indices) {
-      val range = SparkBridgeImplementationInternal.toCosmosRange(feedRanges(i))
-      if (range.contains(effectiveRangeFromPk.getMin)) {
-        return i
-      }
-
-    }
-    -1
-
+    pk
   }
 
   def setIoThreadCountPerCoreFactor
