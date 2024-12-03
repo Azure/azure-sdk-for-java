@@ -57,6 +57,7 @@ public final class SuppressCondition {
         return this;
     }
 
+
     /**
      * Sets the percentage of the {@code minNumber} data points to be anomalies before reporting,
      * the value should be in the range : (0, 100].

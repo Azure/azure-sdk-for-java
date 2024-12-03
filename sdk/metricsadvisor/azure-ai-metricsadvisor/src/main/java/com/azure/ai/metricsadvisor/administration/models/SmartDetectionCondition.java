@@ -33,8 +33,9 @@ public final class SmartDetectionCondition {
      *     suppressing the reporting of individual anomalies helps to avoid noises, especially
      *     if the metrics have fine granularity.
      */
-    public SmartDetectionCondition(double sensitivity, AnomalyDetectorDirection detectorDirection,
-        SuppressCondition suppressCondition) {
+    public SmartDetectionCondition(double sensitivity,
+                                   AnomalyDetectorDirection detectorDirection,
+                                   SuppressCondition suppressCondition) {
         this.sensitivity = sensitivity;
         this.anomalyDetectorDirection = detectorDirection;
         this.suppressCondition = suppressCondition;
@@ -62,6 +63,7 @@ public final class SmartDetectionCondition {
         return this.anomalyDetectorDirection;
     }
 
+
     /**
      * Gets the suppress condition.
      *
@@ -70,6 +72,7 @@ public final class SmartDetectionCondition {
     public SuppressCondition getSuppressCondition() {
         return this.suppressCondition;
     }
+
 
     /**
      * Sets the sensitivity value, it should be in the range (0, 100].

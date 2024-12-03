@@ -10,7 +10,8 @@ import java.util.Collection;
 /**
  * The logical operator to apply across anomaly detection conditions.
  */
-public final class DetectionConditionOperator extends ExpandableStringEnum<DetectionConditionOperator> {
+public final class DetectionConditionOperator
+    extends ExpandableStringEnum<DetectionConditionOperator> {
 
     /**
      * Constructs a {@link DetectionConditionOperator} object.

@@ -22,12 +22,13 @@ public final class MySqlDataFeedSource extends DataFeedSource {
     private final String query;
 
     static {
-        MySqlDataFeedSourceAccessor.setAccessor(new MySqlDataFeedSourceAccessor.Accessor() {
-            @Override
-            public String getConnectionString(MySqlDataFeedSource feedSource) {
-                return feedSource.getConnectionString();
-            }
-        });
+        MySqlDataFeedSourceAccessor.setAccessor(
+            new MySqlDataFeedSourceAccessor.Accessor() {
+                @Override
+                public String getConnectionString(MySqlDataFeedSource feedSource) {
+                    return feedSource.getConnectionString();
+                }
+            });
     }
 
     /**

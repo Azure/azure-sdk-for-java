@@ -56,17 +56,20 @@ public final class AlertConfigurationTransforms {
      *
      * @return the service level alert configuration model.
      */
-    public static AnomalyAlertingConfiguration toInnerForCreate(AnomalyAlertConfiguration alertConfiguration) {
+    public static AnomalyAlertingConfiguration toInnerForCreate(
+        AnomalyAlertConfiguration alertConfiguration) {
         AnomalyAlertingConfiguration innerAlertConfiguration = new AnomalyAlertingConfiguration();
 
         innerAlertConfiguration.setName(alertConfiguration.getName());
         innerAlertConfiguration.setDescription(alertConfiguration.getDescription());
-        innerAlertConfiguration.setCrossMetricsOperator(AnomalyAlertingConfigurationLogicType
-            .fromString(toStringOrNull(alertConfiguration.getCrossMetricsOperator())));
+        innerAlertConfiguration.setCrossMetricsOperator(AnomalyAlertingConfigurationLogicType.fromString(
+            toStringOrNull(alertConfiguration.getCrossMetricsOperator())));
 
         List<String> rawIds = AnomalyAlertConfigurationHelper.getHookIdsToAlertRaw(alertConfiguration);
         if (rawIds != null) {
-            innerAlertConfiguration.setHookIds(rawIds.stream().map(UUID::fromString).collect(Collectors.toList()));
+            innerAlertConfiguration.setHookIds(rawIds
+                .stream()
+                .map(UUID::fromString).collect(Collectors.toList()));
         }
 
         List<String> dimensions = AnomalyAlertConfigurationHelper.getDimensionsToSplitAlertRaw(alertConfiguration);
@@ -74,8 +77,8 @@ public final class AlertConfigurationTransforms {
             innerAlertConfiguration.setSplitAlertByDimensions(dimensions);
         }
 
-        List<MetricAlertingConfiguration> innerMetricAlertConfigurations
-            = getMetricAlertConfigList(alertConfiguration.getMetricAlertConfigurations());
+        List<MetricAlertingConfiguration> innerMetricAlertConfigurations =
+            getMetricAlertConfigList(alertConfiguration.getMetricAlertConfigurations());
 
         innerAlertConfiguration.setMetricAlertingConfigurations(innerMetricAlertConfigurations);
         return innerAlertConfiguration;
@@ -88,17 +91,20 @@ public final class AlertConfigurationTransforms {
      *
      * @return the service level alert configuration model.
      */
-    public static AnomalyAlertingConfigurationPatch toInnerForUpdate(AnomalyAlertConfiguration alertConfiguration) {
+    public static AnomalyAlertingConfigurationPatch toInnerForUpdate(
+        AnomalyAlertConfiguration alertConfiguration) {
         AnomalyAlertingConfigurationPatch innerAlertConfiguration = new AnomalyAlertingConfigurationPatch();
 
         innerAlertConfiguration.setName(alertConfiguration.getName());
         innerAlertConfiguration.setDescription(alertConfiguration.getDescription());
-        innerAlertConfiguration.setCrossMetricsOperator(AnomalyAlertingConfigurationLogicType
-            .fromString(toStringOrNull(alertConfiguration.getCrossMetricsOperator())));
+        innerAlertConfiguration.setCrossMetricsOperator(AnomalyAlertingConfigurationLogicType.fromString(
+            toStringOrNull(alertConfiguration.getCrossMetricsOperator())));
 
         List<String> rawIds = AnomalyAlertConfigurationHelper.getHookIdsToAlertRaw(alertConfiguration);
         if (rawIds != null) {
-            innerAlertConfiguration.setHookIds(rawIds.stream().map(UUID::fromString).collect(Collectors.toList()));
+            innerAlertConfiguration.setHookIds(rawIds
+                .stream()
+                .map(UUID::fromString).collect(Collectors.toList()));
         }
 
         List<String> dimensions = AnomalyAlertConfigurationHelper.getDimensionsToSplitAlertRaw(alertConfiguration);
@@ -106,8 +112,8 @@ public final class AlertConfigurationTransforms {
             innerAlertConfiguration.setSplitAlertByDimensions(dimensions);
         }
 
-        List<MetricAlertingConfiguration> innerMetricAlertConfigurations
-            = getMetricAlertConfigList(alertConfiguration.getMetricAlertConfigurations());
+        List<MetricAlertingConfiguration> innerMetricAlertConfigurations =
+            getMetricAlertConfigList(alertConfiguration.getMetricAlertConfigurations());
 
         innerAlertConfiguration.setMetricAlertingConfigurations(innerMetricAlertConfigurations);
         return innerAlertConfiguration;
@@ -120,13 +126,14 @@ public final class AlertConfigurationTransforms {
      *
      * @return the service required DataFeedMetric alert configurations list.
      */
-    private static List<MetricAlertingConfiguration>
-        getMetricAlertConfigList(List<MetricAlertConfiguration> metricAlertConfigurations) {
+    private static List<MetricAlertingConfiguration> getMetricAlertConfigList(
+        List<MetricAlertConfiguration> metricAlertConfigurations) {
         List<MetricAlertingConfiguration> innerMetricAlertConfigurations = new ArrayList<>();
         for (MetricAlertConfiguration metricAnomalyAlertConfiguration : metricAlertConfigurations) {
             MetricAlertingConfiguration innerMetricAlertConfiguration = new MetricAlertingConfiguration();
-            innerMetricAlertConfiguration.setAnomalyDetectionConfigurationId(
-                UUID.fromString(metricAnomalyAlertConfiguration.getDetectionConfigurationId()));
+            innerMetricAlertConfiguration
+                .setAnomalyDetectionConfigurationId(UUID
+                    .fromString(metricAnomalyAlertConfiguration.getDetectionConfigurationId()));
             innerMetricAlertConfiguration
                 .setNegationOperation(metricAnomalyAlertConfiguration.isNegationOperationEnabled());
 
@@ -137,12 +144,15 @@ public final class AlertConfigurationTransforms {
             } else if (alertScope.getScopeType() == MetricAnomalyAlertScopeType.SERIES_GROUP) {
                 innerMetricAlertConfiguration.setAnomalyScopeType(AnomalyScope.DIMENSION);
                 DimensionGroupIdentity innerId = new DimensionGroupIdentity()
-                    .setDimension(metricAnomalyAlertConfiguration.getAlertScope().getSeriesGroupInScope().asMap());
+                        .setDimension(metricAnomalyAlertConfiguration
+                            .getAlertScope()
+                            .getSeriesGroupInScope()
+                            .asMap());
                 innerMetricAlertConfiguration.setDimensionAnomalyScope(innerId);
             } else if (alertScope.getScopeType() == MetricAnomalyAlertScopeType.TOP_N) {
                 innerMetricAlertConfiguration.setAnomalyScopeType(AnomalyScope.TOPN);
-                com.azure.ai.metricsadvisor.implementation.models.TopNGroupScope innerTopNGroupScope
-                    = new com.azure.ai.metricsadvisor.implementation.models.TopNGroupScope()
+                com.azure.ai.metricsadvisor.implementation.models.TopNGroupScope innerTopNGroupScope =
+                    new com.azure.ai.metricsadvisor.implementation.models.TopNGroupScope()
                         .setTop(alertScope.getTopNGroupInScope().getTop())
                         .setPeriod(alertScope.getTopNGroupInScope().getPeriod())
                         .setMinTopCount(alertScope.getTopNGroupInScope().getMinTopCount());
@@ -157,10 +167,8 @@ public final class AlertConfigurationTransforms {
                     = alertConditions.getSeverityCondition();
                 if (severityCondition != null) {
                     innerMetricAlertConfiguration.setSeverityFilter(new SeverityCondition()
-                        .setMaxAlertSeverity(
-                            Severity.fromString(toStringOrNull(severityCondition.getMinAlertSeverity())))
-                        .setMaxAlertSeverity(
-                            Severity.fromString(toStringOrNull(severityCondition.getMaxAlertSeverity()))));
+                        .setMaxAlertSeverity(Severity.fromString(toStringOrNull(severityCondition.getMinAlertSeverity())))
+                        .setMaxAlertSeverity(Severity.fromString(toStringOrNull(severityCondition.getMaxAlertSeverity()))));
                 }
                 final MetricBoundaryCondition boundaryConditions = alertConditions.getMetricBoundaryCondition();
                 ValueCondition innerValueCondition = new ValueCondition();
@@ -173,28 +181,31 @@ public final class AlertConfigurationTransforms {
                     } else if (direction == BoundaryDirection.BOTH) {
                         innerValueCondition.setDirection(Direction.BOTH);
                     } else {
-                        throw LOGGER.logExceptionAsError(new IllegalStateException("Unexpected value: " + direction));
+                        throw LOGGER.logExceptionAsError(new IllegalStateException("Unexpected value: "
+                            + direction));
                     }
                     innerValueCondition.setLower(boundaryConditions.getLowerBoundary());
                     innerValueCondition.setUpper(boundaryConditions.getUpperBoundary());
                     if (boundaryConditions.getCompanionMetricId() != null) {
-                        innerValueCondition.setMetricId(UUID.fromString(boundaryConditions.getCompanionMetricId()));
+                        innerValueCondition
+                            .setMetricId(UUID.fromString(boundaryConditions.getCompanionMetricId()));
                         innerValueCondition.setTriggerForMissing(boundaryConditions.shouldAlertIfDataPointMissing());
                     }
-                    innerValueCondition
-                        .setType(ValueType.fromString(toStringOrNull(boundaryConditions.getMeasureType())));
+                    innerValueCondition.setType(
+                        ValueType.fromString(toStringOrNull(boundaryConditions.getMeasureType())));
                     innerMetricAlertConfiguration.setValueFilter(innerValueCondition);
                 }
             }
 
             // 3. Set alert snooze conditions
-            MetricAnomalyAlertSnoozeCondition alertSnoozeCondition
-                = metricAnomalyAlertConfiguration.getAlertSnoozeCondition();
+            MetricAnomalyAlertSnoozeCondition alertSnoozeCondition =
+                metricAnomalyAlertConfiguration.getAlertSnoozeCondition();
             if (alertSnoozeCondition != null) {
                 com.azure.ai.metricsadvisor.implementation.models.MetricAnomalyAlertSnoozeCondition innerSnoozeCondition
                     = new com.azure.ai.metricsadvisor.implementation.models.MetricAnomalyAlertSnoozeCondition();
 
-                innerSnoozeCondition.setAutoSnooze(alertSnoozeCondition.getAutoSnooze())
+                innerSnoozeCondition
+                    .setAutoSnooze(alertSnoozeCondition.getAutoSnooze())
                     .setSnoozeScope(SnoozeScope.fromString(toStringOrNull(alertSnoozeCondition.getSnoozeScope())))
                     .setOnlyForSuccessive(alertSnoozeCondition.isOnlyForSuccessive());
 
@@ -205,20 +216,26 @@ public final class AlertConfigurationTransforms {
         return innerMetricAlertConfigurations;
     }
 
-    public static PagedResponse<AnomalyAlertConfiguration>
-        fromInnerPagedResponse(PagedResponse<AnomalyAlertingConfiguration> innerResponse) {
-        final List<AnomalyAlertingConfiguration> innerConfigurationList = innerResponse.getValue();
+    public static PagedResponse<AnomalyAlertConfiguration> fromInnerPagedResponse(
+        PagedResponse<AnomalyAlertingConfiguration> innerResponse) {
+        final List<AnomalyAlertingConfiguration>
+            innerConfigurationList = innerResponse.getValue();
         List<AnomalyAlertConfiguration> configurationList;
         if (innerConfigurationList != null) {
-            configurationList = innerConfigurationList.stream()
+            configurationList = innerConfigurationList
+                .stream()
                 .map(innerConfiguration -> fromInner(innerConfiguration))
                 .collect(Collectors.toList());
         } else {
             configurationList = new ArrayList<>();
         }
-        return new PagedResponseBase<Void, AnomalyAlertConfiguration>(innerResponse.getRequest(),
-            innerResponse.getStatusCode(), innerResponse.getHeaders(), configurationList,
-            innerResponse.getContinuationToken(), null);
+        return new PagedResponseBase<Void, AnomalyAlertConfiguration>(
+            innerResponse.getRequest(),
+            innerResponse.getStatusCode(),
+            innerResponse.getHeaders(),
+            configurationList,
+            innerResponse.getContinuationToken(),
+            null);
     }
 
     /**
@@ -229,24 +246,28 @@ public final class AlertConfigurationTransforms {
      *
      * @return the mapped {@link AnomalyAlertConfiguration}.
      */
-    public static AnomalyAlertConfiguration fromInner(AnomalyAlertingConfiguration innerAlertConfiguration) {
+    public static AnomalyAlertConfiguration fromInner(
+        AnomalyAlertingConfiguration innerAlertConfiguration) {
         AnomalyAlertConfiguration alertConfiguration;
         if (innerAlertConfiguration.getCrossMetricsOperator() == null) {
             alertConfiguration = new AnomalyAlertConfiguration(innerAlertConfiguration.getName());
         } else {
-            alertConfiguration
-                = new AnomalyAlertConfiguration(innerAlertConfiguration.getName(), MetricAlertConfigurationsOperator
-                    .fromString(innerAlertConfiguration.getCrossMetricsOperator().toString()));
+            alertConfiguration = new AnomalyAlertConfiguration(innerAlertConfiguration.getName(),
+                MetricAlertConfigurationsOperator.fromString(innerAlertConfiguration
+                    .getCrossMetricsOperator()
+                    .toString()));
         }
         AnomalyAlertConfigurationHelper.setId(alertConfiguration,
             innerAlertConfiguration.getAnomalyAlertingConfigurationId().toString());
 
         alertConfiguration.setDescription(innerAlertConfiguration.getDescription());
-        alertConfiguration.setHookIdsToAlert(
-            innerAlertConfiguration.getHookIds().stream().map(UUID::toString).collect(Collectors.toList()));
+        alertConfiguration.setHookIdsToAlert(innerAlertConfiguration
+            .getHookIds()
+            .stream()
+            .map(UUID::toString).collect(Collectors.toList()));
 
-        List<MetricAlertingConfiguration> innerMetricAlertConfigurations
-            = innerAlertConfiguration.getMetricAlertingConfigurations();
+        List<MetricAlertingConfiguration> innerMetricAlertConfigurations =
+            innerAlertConfiguration.getMetricAlertingConfigurations();
         if (innerMetricAlertConfigurations != null) {
             List<MetricAlertConfiguration> metricAlertConfigurations = new ArrayList<>();
             for (MetricAlertingConfiguration innerMetricAlertConfiguration : innerMetricAlertConfigurations) {
@@ -255,9 +276,8 @@ public final class AlertConfigurationTransforms {
                     alertScope = MetricAnomalyAlertScope.forWholeSeries();
                 } else if (innerMetricAlertConfiguration.getAnomalyScopeType() == AnomalyScope.DIMENSION) {
                     DimensionKey seriesGroupId = new DimensionKey();
-                    for (Map.Entry<String, String> entry : innerMetricAlertConfiguration.getDimensionAnomalyScope()
-                        .getDimension()
-                        .entrySet()) {
+                    for (Map.Entry<String, String> entry
+                        : innerMetricAlertConfiguration.getDimensionAnomalyScope().getDimension().entrySet()) {
                         seriesGroupId.put(entry.getKey(), entry.getValue());
                     }
                     alertScope = MetricAnomalyAlertScope.forSeriesGroup(seriesGroupId);
@@ -265,15 +285,19 @@ public final class AlertConfigurationTransforms {
                     com.azure.ai.metricsadvisor.implementation.models.TopNGroupScope innerTopNGroupScope
                         = innerMetricAlertConfiguration.getTopNAnomalyScope();
 
-                    alertScope = MetricAnomalyAlertScope.forTopNGroup(new TopNGroupScope(innerTopNGroupScope.getTop(),
-                        innerTopNGroupScope.getPeriod(), innerTopNGroupScope.getMinTopCount()));
+                    alertScope =
+                        MetricAnomalyAlertScope.forTopNGroup(new TopNGroupScope(innerTopNGroupScope.getTop(),
+                            innerTopNGroupScope.getPeriod(),
+                            innerTopNGroupScope.getMinTopCount()));
                 }
-                MetricAlertConfiguration metricAlertConfiguration = new MetricAlertConfiguration(
-                    innerMetricAlertConfiguration.getAnomalyDetectionConfigurationId().toString(), alertScope,
-                    innerMetricAlertConfiguration.isNegationOperation());
+                MetricAlertConfiguration metricAlertConfiguration
+                    = new MetricAlertConfiguration(
+                    innerMetricAlertConfiguration.getAnomalyDetectionConfigurationId().toString(),
+                    alertScope, innerMetricAlertConfiguration.isNegationOperation());
                 // Set alert condition
                 SeverityCondition severityFilter = innerMetricAlertConfiguration.getSeverityFilter();
-                if (severityFilter != null || innerMetricAlertConfiguration.getValueFilter() != null) {
+                if (severityFilter != null
+                    || innerMetricAlertConfiguration.getValueFilter() != null) {
                     MetricAnomalyAlertConditions alertConditions = new MetricAnomalyAlertConditions();
                     // Set severity based condition.
                     if (severityFilter != null) {
@@ -315,15 +339,14 @@ public final class AlertConfigurationTransforms {
                     metricAlertConfiguration.setAlertConditions(alertConditions);
                 }
 
-                com.azure.ai.metricsadvisor.implementation.models.MetricAnomalyAlertSnoozeCondition innerSnoozeCondition
-                    = innerMetricAlertConfiguration.getSnoozeFilter();
+                com.azure.ai.metricsadvisor.implementation.models.MetricAnomalyAlertSnoozeCondition
+                    innerSnoozeCondition = innerMetricAlertConfiguration.getSnoozeFilter();
 
                 if (innerSnoozeCondition != null) {
-                    metricAlertConfiguration.setAlertSnoozeCondition(
-                        new MetricAnomalyAlertSnoozeCondition(innerSnoozeCondition.getAutoSnooze(),
-                            com.azure.ai.metricsadvisor.administration.models.SnoozeScope
-                                .fromString(toStringOrNull(innerSnoozeCondition.getSnoozeScope())),
-                            innerSnoozeCondition.isOnlyForSuccessive()));
+                    metricAlertConfiguration.setAlertSnoozeCondition(new MetricAnomalyAlertSnoozeCondition(
+                        innerSnoozeCondition.getAutoSnooze(),
+                        com.azure.ai.metricsadvisor.administration.models.SnoozeScope.fromString(toStringOrNull(innerSnoozeCondition.getSnoozeScope())),
+                        innerSnoozeCondition.isOnlyForSuccessive()));
                 }
                 metricAlertConfigurations.add(metricAlertConfiguration);
             }
