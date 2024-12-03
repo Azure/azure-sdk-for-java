@@ -79,8 +79,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 public final class TestUtils {
     private static final ClientLogger LOGGER = new ClientLogger(TestUtils.class);
 
-    private static final String AZURE_EVENTHUBS_FULLY_QUALIFIED_DOMAIN_NAME
-        = "AZURE_EVENTHUBS_FULLY_QUALIFIED_DOMAIN_NAME";
+    private static final String AZURE_EVENTHUBS_FULLY_QUALIFIED_DOMAIN_NAME = "AZURE_EVENTHUBS_FULLY_QUALIFIED_DOMAIN_NAME";
     private static final String AZURE_EVENTHUBS_EVENT_HUB_NAME = "AZURE_EVENTHUBS_EVENT_HUB_NAME";
     private static final String AZURE_EVENTHUBS_CONNECTION_STRING = "AZURE_EVENTHUBS_CONNECTION_STRING";
     private static final Configuration GLOBAL_CONFIGURATION = Configuration.getGlobalConfiguration();
@@ -170,7 +169,7 @@ public final class TestUtils {
      * Creates a message with the required system properties set.
      */
     static Message getMessage(byte[] contents, String messageTrackingValue, Long sequenceNumber, Long offsetNumber,
-        Date enqueuedTime) {
+                              Date enqueuedTime) {
 
         final Map<Symbol, Object> systemProperties = new HashMap<>();
         systemProperties.put(getSymbol(OFFSET_ANNOTATION_NAME), offsetNumber);
@@ -230,8 +229,7 @@ public final class TestUtils {
             .addKeyValue("MESSAGE_ID", event.getProperties() == null ? null : event.getProperties().get(MESSAGE_ID))
             .log("isMatchingEvent");
 
-        return event.getProperties() != null
-            && event.getProperties().containsKey(MESSAGE_ID)
+        return event.getProperties() != null && event.getProperties().containsKey(MESSAGE_ID)
             && expectedValue.equals(event.getProperties().get(MESSAGE_ID));
     }
 
@@ -243,19 +241,18 @@ public final class TestUtils {
      *   configured with service connections federated identity, {@code null} otherwise.
      */
     private static TokenCredential getPipelineCredential() {
-        final String serviceConnectionId = getPropertyValue("AZURESUBSCRIPTION_SERVICE_CONNECTION_ID");
+        final String serviceConnectionId  = getPropertyValue("AZURESUBSCRIPTION_SERVICE_CONNECTION_ID");
         final String clientId = getPropertyValue("AZURESUBSCRIPTION_CLIENT_ID");
         final String tenantId = getPropertyValue("AZURESUBSCRIPTION_TENANT_ID");
         final String systemAccessToken = getPropertyValue("SYSTEM_ACCESSTOKEN");
 
-        if (CoreUtils.isNullOrEmpty(serviceConnectionId)
-            || CoreUtils.isNullOrEmpty(clientId)
-            || CoreUtils.isNullOrEmpty(tenantId)
-            || CoreUtils.isNullOrEmpty(systemAccessToken)) {
+        if (CoreUtils.isNullOrEmpty(serviceConnectionId) || CoreUtils.isNullOrEmpty(clientId)
+            || CoreUtils.isNullOrEmpty(tenantId) || CoreUtils.isNullOrEmpty(systemAccessToken)) {
             return null;
         }
 
-        return new AzurePipelinesCredentialBuilder().systemAccessToken(systemAccessToken)
+        return new AzurePipelinesCredentialBuilder()
+            .systemAccessToken(systemAccessToken)
             .clientId(clientId)
             .tenantId(tenantId)
             .serviceConnectionId(serviceConnectionId)
@@ -275,8 +272,7 @@ public final class TestUtils {
 
             final TokenCredential tokenCredential = TestUtils.getPipelineCredential();
 
-            assumeTrue(tokenCredential != null,
-                "Test required to run on Azure Pipelines that is configured with service connections federated identity.");
+            assumeTrue(tokenCredential != null, "Test required to run on Azure Pipelines that is configured with service connections federated identity.");
 
             return request -> Mono.defer(() -> tokenCredential.getToken(request))
                 .subscribeOn(Schedulers.boundedElastic());
@@ -294,8 +290,7 @@ public final class TestUtils {
             URI endpoint = properties.getEndpoint();
             String entityPath = properties.getEntityPath();
             String resourceUrl = entityPath == null || entityPath.trim().length() == 0
-                ? endpoint.toString()
-                : endpoint.toString() + entityPath;
+                ? endpoint.toString() : endpoint.toString() +  entityPath;
 
             String utf8Encoding = UTF_8.name();
             OffsetDateTime expiresOn = OffsetDateTime.now(ZoneOffset.UTC).plus(Duration.ofHours(2L));
@@ -312,8 +307,10 @@ public final class TestUtils {
                 byte[] signatureBytes = hmacsha256.doFinal(secretToSign.getBytes(utf8Encoding));
                 String signature = Base64.getEncoder().encodeToString(signatureBytes);
 
-                String signatureValue = String.format(Locale.US, shareAccessSignatureFormat, audienceUri,
-                    URLEncoder.encode(signature, utf8Encoding), URLEncoder.encode(expiresOnEpochSeconds, utf8Encoding),
+                String signatureValue = String.format(Locale.US, shareAccessSignatureFormat,
+                    audienceUri,
+                    URLEncoder.encode(signature, utf8Encoding),
+                    URLEncoder.encode(expiresOnEpochSeconds, utf8Encoding),
                     URLEncoder.encode(properties.getSharedAccessKeyName(), utf8Encoding));
 
                 if (entityPath == null) {
@@ -331,24 +328,21 @@ public final class TestUtils {
         return Configuration.getGlobalConfiguration().get(propertyName, System.getenv(propertyName));
     }
 
-    public static void assertAttributes(String hostname, String entityName, OperationName operationName,
-        Map<String, Object> attributes) {
+    public static void assertAttributes(String hostname, String entityName, OperationName operationName, Map<String, Object> attributes) {
         assertAllAttributes(hostname, entityName, null, null, null, operationName, attributes);
     }
 
     public static Map<String, Object> attributesToMap(Attributes attributes) {
-        return attributes.asMap()
-            .entrySet()
-            .stream()
-            .collect(Collectors.toMap(e -> e.getKey().getKey(), e -> e.getValue()));
+        return attributes.asMap().entrySet().stream()
+                .collect(Collectors.toMap(e -> e.getKey().getKey(), e -> e.getValue()));
     }
 
     public static String getSpanName(OperationName operation, String eventHubName) {
         return String.format("%s %s", operation, eventHubName);
     }
 
-    public static void assertAllAttributes(String hostname, String entityName, String partitionId, String consumerGroup,
-        String errorType, OperationName operationName, Map<String, Object> attributes) {
+    public static void assertAllAttributes(String hostname, String entityName, String partitionId,
+        String consumerGroup, String errorType, OperationName operationName, Map<String, Object> attributes) {
         assertEquals(MESSAGING_SYSTEM_VALUE, attributes.get(MESSAGING_SYSTEM));
         assertEquals(hostname, attributes.get(SERVER_ADDRESS));
         assertEquals(entityName, attributes.get(MESSAGING_DESTINATION_NAME));
@@ -373,16 +367,16 @@ public final class TestUtils {
         }
     }
 
-    public static EventData createEventData(AmqpAnnotatedMessage amqpAnnotatedMessage, long offset, long sequenceNumber,
-        Instant enqueuedTime) {
-        amqpAnnotatedMessage.getMessageAnnotations().put(AmqpMessageConstant.OFFSET_ANNOTATION_NAME.getValue(), offset);
+    public static EventData createEventData(AmqpAnnotatedMessage amqpAnnotatedMessage, long offset,
+                                                                   long sequenceNumber, Instant enqueuedTime) {
         amqpAnnotatedMessage.getMessageAnnotations()
-            .put(AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(), sequenceNumber);
+                .put(AmqpMessageConstant.OFFSET_ANNOTATION_NAME.getValue(), offset);
         amqpAnnotatedMessage.getMessageAnnotations()
-            .put(AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue(), enqueuedTime);
+                .put(AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(), sequenceNumber);
+        amqpAnnotatedMessage.getMessageAnnotations()
+                .put(AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue(), enqueuedTime);
 
-        SystemProperties systemProperties
-            = new SystemProperties(amqpAnnotatedMessage, offset, enqueuedTime, sequenceNumber, null);
+        SystemProperties systemProperties = new SystemProperties(amqpAnnotatedMessage, offset, enqueuedTime, sequenceNumber, null);
         return new EventData(amqpAnnotatedMessage, systemProperties, Context.NONE);
     }
 

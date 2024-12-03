@@ -3,6 +3,7 @@
 
 package com.azure.messaging.eventhubs;
 
+
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;

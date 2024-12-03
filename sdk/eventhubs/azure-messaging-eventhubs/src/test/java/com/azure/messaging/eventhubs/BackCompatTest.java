@@ -75,8 +75,7 @@ public class BackCompatTest extends IntegrationTestBase {
         final PartitionProperties properties = consumer.getPartitionProperties(PARTITION_ID).block(timeout);
 
         Assertions.assertNotNull(properties);
-        final EventPosition position
-            = EventPosition.fromSequenceNumber(properties.getLastEnqueuedSequenceNumber(), true);
+        final EventPosition position = EventPosition.fromSequenceNumber(properties.getLastEnqueuedSequenceNumber(), true);
 
         // until version 0.10.0 - we used to have Properties as HashMap<String,String>
         // This specific combination is intended to test the back compat - with the new Properties type as HashMap<String, Object>
@@ -102,10 +101,8 @@ public class BackCompatTest extends IntegrationTestBase {
         // Act & Assert
         producer.send(eventData, sendOptions).block(TIMEOUT);
 
-        StepVerifier
-            .create(consumer.receiveFromPartition(PARTITION_ID, position)
-                .filter(received -> isMatchingEvent(received, messageTrackingValue))
-                .take(1))
+        StepVerifier.create(consumer.receiveFromPartition(PARTITION_ID, position)
+            .filter(received -> isMatchingEvent(received, messageTrackingValue)).take(1))
             .assertNext(event -> validateAmqpProperties(applicationProperties, event.getData()))
             .expectComplete()
             .verify(timeout);

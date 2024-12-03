@@ -70,10 +70,10 @@ public class PartitionPumpManagerTest {
     private static final String EVENTHUB_NAME = "eventhub-name";
     private static final String OWNER_ID = "owner-id1";
     private static final String ETAG = "etag1";
-    private static final PartitionContext PARTITION_CONTEXT
-        = new PartitionContext(FULLY_QUALIFIED_NAME, EVENTHUB_NAME, CONSUMER_GROUP, PARTITION_ID);
-    private static final EventHubsConsumerInstrumentation DEFAULT_INSTRUMENTATION
-        = new EventHubsConsumerInstrumentation(null, null, FULLY_QUALIFIED_NAME, EVENTHUB_NAME, CONSUMER_GROUP, false);
+    private static final PartitionContext PARTITION_CONTEXT = new PartitionContext(FULLY_QUALIFIED_NAME, EVENTHUB_NAME,
+        CONSUMER_GROUP, PARTITION_ID);
+    private static final EventHubsConsumerInstrumentation DEFAULT_INSTRUMENTATION = new EventHubsConsumerInstrumentation(null, null,
+        FULLY_QUALIFIED_NAME, EVENTHUB_NAME, CONSUMER_GROUP, false);
     @Mock
     private CheckpointStore checkpointStore;
     @Mock
@@ -100,16 +100,20 @@ public class PartitionPumpManagerTest {
         when(builder.buildAsyncClient()).thenReturn(asyncClient);
 
         // Consumer group and partition id don't change.
-        when(asyncClient.createConsumer(eq(CONSUMER_GROUP), eq(prefetch), eq(true))).thenReturn(consumerAsyncClient);
+        when(asyncClient.createConsumer(eq(CONSUMER_GROUP), eq(prefetch), eq(true)))
+            .thenReturn(consumerAsyncClient);
         when(consumerAsyncClient.receiveFromPartition(eq(PARTITION_ID), any(EventPosition.class),
-            any(ReceiveOptions.class))).thenReturn(receivePublisher.flux());
+            any(ReceiveOptions.class)))
+            .thenReturn(receivePublisher.flux());
 
         // Pre-populating variables with information that is always the same.
-        this.checkpoint = new Checkpoint().setPartitionId(PARTITION_ID)
+        this.checkpoint = new Checkpoint()
+            .setPartitionId(PARTITION_ID)
             .setConsumerGroup(CONSUMER_GROUP)
             .setEventHubName(EVENTHUB_NAME)
             .setFullyQualifiedNamespace(FULLY_QUALIFIED_NAME);
-        this.partitionOwnership = new PartitionOwnership().setPartitionId(PARTITION_ID)
+        this.partitionOwnership = new PartitionOwnership()
+            .setPartitionId(PARTITION_ID)
             .setConsumerGroup(CONSUMER_GROUP)
             .setEventHubName(EVENTHUB_NAME)
             .setFullyQualifiedNamespace(FULLY_QUALIFIED_NAME)
@@ -139,7 +143,8 @@ public class PartitionPumpManagerTest {
             // if both are null, then use the initial Map position is used.
             Arguments.of(null, null, mapPosition, mapPosition),
             // Fallback to start listening from the latest part of the stream.
-            Arguments.of(null, null, null, EventPosition.latest()));
+            Arguments.of(null, null, null, EventPosition.latest())
+        );
     }
 
     /**
@@ -155,15 +160,18 @@ public class PartitionPumpManagerTest {
             initialPartitionPositions.put(PARTITION_ID, initialPosition);
         }
 
-        checkpoint.setOffset(offset).setSequenceNumber(sequenceNumber);
-        partitionOwnership.setLastModifiedTime(OffsetDateTime.now().toEpochSecond());
+        checkpoint.setOffset(offset)
+            .setSequenceNumber(sequenceNumber);
+        partitionOwnership
+            .setLastModifiedTime(OffsetDateTime.now().toEpochSecond());
 
         final Supplier<PartitionProcessor> supplier = () -> partitionProcessor;
         final boolean trackLastEnqueuedEventProperties = false;
         final int maxBatchSize = 4;
         final Duration maxWaitTime = Duration.ofSeconds(5);
         final boolean batchReceiveMode = true;
-        final EventProcessorClientOptions options = new EventProcessorClientOptions().setConsumerGroup("test-consumer")
+        final EventProcessorClientOptions options = new EventProcessorClientOptions()
+            .setConsumerGroup("test-consumer")
             .setTrackLastEnqueuedEventProperties(trackLastEnqueuedEventProperties)
             .setInitialEventPositionProvider(id -> initialPartitionPositions.get(id))
             .setMaxBatchSize(maxBatchSize)
@@ -173,15 +181,16 @@ public class PartitionPumpManagerTest {
             .setPartitionOwnershipExpirationInterval(Duration.ofMinutes(1))
             .setLoadBalancingStrategy(LoadBalancingStrategy.BALANCED);
 
-        final PartitionPumpManager manager
-            = new PartitionPumpManager(checkpointStore, supplier, builder, DEFAULT_INSTRUMENTATION, options);
+        final PartitionPumpManager manager = new PartitionPumpManager(checkpointStore, supplier, builder,
+            DEFAULT_INSTRUMENTATION, options);
 
         try {
             // Act
             manager.startPartitionPump(partitionOwnership, checkpoint);
 
             // Assert
-            verify(consumerAsyncClient).receiveFromPartition(eq(PARTITION_ID), argThat(x -> expectedPosition.equals(x)),
+            verify(consumerAsyncClient).receiveFromPartition(eq(PARTITION_ID),
+                argThat(x -> expectedPosition.equals(x)),
                 argThat(x -> x.getTrackLastEnqueuedEventProperties() == trackLastEnqueuedEventProperties));
 
             final PartitionPump actualPump = manager.getPartitionPumps().get(PARTITION_ID);
@@ -189,7 +198,8 @@ public class PartitionPumpManagerTest {
 
             // Verify that the correct position was used.
             verify(consumerAsyncClient).receiveFromPartition(eq(PARTITION_ID),
-                argThat(position -> expectedPosition.equals(position)), argThat(option -> option != null
+                argThat(position -> expectedPosition.equals(position)),
+                argThat(option -> option != null
                     && option.getTrackLastEnqueuedEventProperties() == trackLastEnqueuedEventProperties));
 
             // Verify that initializeContext() was called.
@@ -224,7 +234,8 @@ public class PartitionPumpManagerTest {
         final int maxBatchSize = 4;
         final Duration maxWaitTime = Duration.ofSeconds(5);
         final boolean batchReceiveMode = true;
-        final EventProcessorClientOptions options = new EventProcessorClientOptions().setConsumerGroup("test-consumer")
+        final EventProcessorClientOptions options = new EventProcessorClientOptions()
+            .setConsumerGroup("test-consumer")
             .setTrackLastEnqueuedEventProperties(trackLastEnqueuedEventProperties)
             .setInitialEventPositionProvider(id -> initialPartitionPositions.get(id))
             .setMaxBatchSize(maxBatchSize)
@@ -234,8 +245,8 @@ public class PartitionPumpManagerTest {
             .setPartitionOwnershipExpirationInterval(Duration.ofMinutes(1))
             .setLoadBalancingStrategy(LoadBalancingStrategy.BALANCED);
 
-        final PartitionPumpManager manager
-            = new PartitionPumpManager(checkpointStore, supplier, builder, DEFAULT_INSTRUMENTATION, options);
+        final PartitionPumpManager manager = new PartitionPumpManager(checkpointStore, supplier, builder,
+            DEFAULT_INSTRUMENTATION, options);
 
         checkpoint.setOffset(1L).setSequenceNumber(10L);
         partitionOwnership.setLastModifiedTime(OffsetDateTime.now().toEpochSecond());
@@ -266,7 +277,8 @@ public class PartitionPumpManagerTest {
         final int maxBatchSize = 4;
         final Duration maxWaitTime = Duration.ofSeconds(5);
         final boolean batchReceiveMode = true;
-        final EventProcessorClientOptions options = new EventProcessorClientOptions().setConsumerGroup("test-consumer")
+        final EventProcessorClientOptions options = new EventProcessorClientOptions()
+            .setConsumerGroup("test-consumer")
             .setTrackLastEnqueuedEventProperties(trackLastEnqueuedEventProperties)
             .setInitialEventPositionProvider(id -> initialPartitionPositions.get(id))
             .setMaxBatchSize(maxBatchSize)
@@ -276,16 +288,17 @@ public class PartitionPumpManagerTest {
             .setPartitionOwnershipExpirationInterval(Duration.ofMinutes(1))
             .setLoadBalancingStrategy(LoadBalancingStrategy.BALANCED);
 
-        final PartitionPumpManager manager
-            = new PartitionPumpManager(checkpointStore, supplier, builder, DEFAULT_INSTRUMENTATION, options);
+        final PartitionPumpManager manager = new PartitionPumpManager(checkpointStore, supplier, builder,
+            DEFAULT_INSTRUMENTATION, options);
 
         final Exception testException = new IllegalStateException("Dummy exception.");
-        when(consumerAsyncClient.receiveFromPartition(eq(PARTITION_ID),
+        when(consumerAsyncClient.receiveFromPartition(
+            eq(PARTITION_ID),
             argThat(position -> EventPosition.latest().equals(position)),
             argThat(option -> option.getTrackLastEnqueuedEventProperties() == trackLastEnqueuedEventProperties)))
-                .thenAnswer(invocation -> {
-                    throw testException;
-                });
+            .thenAnswer(invocation -> {
+                throw testException;
+            });
 
         // Act
         final PartitionProcessorException error = assertThrows(PartitionProcessorException.class,
@@ -313,7 +326,8 @@ public class PartitionPumpManagerTest {
         final int maxBatchSize = 4;
         final Duration maxWaitTime = Duration.ofSeconds(5);
         final boolean batchReceiveMode = true;
-        final EventProcessorClientOptions options = new EventProcessorClientOptions().setConsumerGroup("test-consumer")
+        final EventProcessorClientOptions options = new EventProcessorClientOptions()
+            .setConsumerGroup("test-consumer")
             .setTrackLastEnqueuedEventProperties(trackLastEnqueuedEventProperties)
             .setInitialEventPositionProvider(id -> initialPartitionPositions.get(id))
             .setMaxBatchSize(maxBatchSize)
@@ -323,8 +337,8 @@ public class PartitionPumpManagerTest {
             .setPartitionOwnershipExpirationInterval(Duration.ofMinutes(1))
             .setLoadBalancingStrategy(LoadBalancingStrategy.BALANCED);
 
-        final PartitionPumpManager manager
-            = new PartitionPumpManager(checkpointStore, supplier, builder, DEFAULT_INSTRUMENTATION, options);
+        final PartitionPumpManager manager = new PartitionPumpManager(checkpointStore, supplier, builder,
+            DEFAULT_INSTRUMENTATION, options);
 
         final String partition1 = "01";
         final EventHubConsumerAsyncClient client1 = mock(EventHubConsumerAsyncClient.class);
@@ -366,7 +380,8 @@ public class PartitionPumpManagerTest {
         final int maxBatchSize = 2;
         final Duration maxWaitTime = Duration.ofSeconds(1);
         final boolean batchReceiveMode = true;
-        final EventProcessorClientOptions options = new EventProcessorClientOptions().setConsumerGroup("test-consumer")
+        final EventProcessorClientOptions options = new EventProcessorClientOptions()
+            .setConsumerGroup("test-consumer")
             .setTrackLastEnqueuedEventProperties(trackLastEnqueuedEventProperties)
             .setInitialEventPositionProvider(id -> initialPartitionPositions.get(id))
             .setMaxBatchSize(maxBatchSize)
@@ -376,8 +391,8 @@ public class PartitionPumpManagerTest {
             .setPartitionOwnershipExpirationInterval(Duration.ofMinutes(1))
             .setLoadBalancingStrategy(LoadBalancingStrategy.BALANCED);
 
-        final PartitionPumpManager manager
-            = new PartitionPumpManager(checkpointStore, supplier, builder, DEFAULT_INSTRUMENTATION, options);
+        final PartitionPumpManager manager = new PartitionPumpManager(checkpointStore, supplier, builder,
+            DEFAULT_INSTRUMENTATION, options);
 
         // Mock events to add.
         final Instant retrievalTime = Instant.now();
@@ -417,11 +432,13 @@ public class PartitionPumpManagerTest {
             // We want to have invoked a couple of empty windowTimeout frames and actually received the 3 events.
             verify(partitionProcessor, atLeastOnce())
                 .processEventBatch(argThat(context -> context.getEvents().isEmpty()));
-            verify(partitionProcessor, atMost(3)).processEventBatch(argThat(context -> !context.getEvents().isEmpty()));
+            verify(partitionProcessor, atMost(3))
+                .processEventBatch(argThat(context -> !context.getEvents().isEmpty()));
 
             // Verify that we have at least seen this as the last enqueued event.
-            verify(partitionProcessor).processEventBatch(argThat(context -> !context.getEvents().isEmpty()
-                && partitionEvent3.getLastEnqueuedEventProperties().equals(context.getLastEnqueuedEventProperties())));
+            verify(partitionProcessor).processEventBatch(
+                argThat(context -> !context.getEvents().isEmpty()
+                    && partitionEvent3.getLastEnqueuedEventProperties().equals(context.getLastEnqueuedEventProperties())));
 
             assertEquals(3, eventCounter.get());
         } finally {
@@ -433,7 +450,7 @@ public class PartitionPumpManagerTest {
      * Checks that number of prefetched events stays under allowed maximum.
      */
     @ParameterizedTest
-    @ValueSource(ints = { 1, 16, 64, 128 })
+    @ValueSource(ints = {1, 16, 64, 128})
     public void processBatchPrefetch(int maxBatchSize) throws InterruptedException {
         // Arrange
         final int batches = 5;
@@ -441,12 +458,13 @@ public class PartitionPumpManagerTest {
 
         final CountDownLatch receiveCounter = new CountDownLatch(batches);
 
-        final EventProcessorClientOptions options = new EventProcessorClientOptions().setConsumerGroup("test-consumer")
+        final EventProcessorClientOptions options = new EventProcessorClientOptions()
+            .setConsumerGroup("test-consumer")
             .setMaxBatchSize(maxBatchSize)
             .setBatchReceiveMode(true);
 
-        final PartitionPumpManager manager = new PartitionPumpManager(checkpointStore, () -> partitionProcessor,
-            builder, DEFAULT_INSTRUMENTATION, options);
+        final PartitionPumpManager manager = new PartitionPumpManager(checkpointStore, () -> partitionProcessor, builder,
+            DEFAULT_INSTRUMENTATION, options);
 
         final AtomicInteger publishedCounter = new AtomicInteger();
         final Instant retrievalTime = Instant.now();
@@ -483,8 +501,8 @@ public class PartitionPumpManagerTest {
             manager.startPartitionPump(partitionOwnership, checkpoint);
             assertTrue(receiveCounter.await(10, TimeUnit.SECONDS));
             verify(partitionProcessor, never()).processError(any(ErrorContext.class));
-            assertTrue(maxPrefetched.get() <= maxExpectedPrefetched, String.format(
-                "Expected at most %s events to be prefetched, got %s", maxExpectedPrefetched, maxPrefetched.get()));
+            assertTrue(maxPrefetched.get() <= maxExpectedPrefetched,
+                String.format("Expected at most %s events to be prefetched, got %s", maxExpectedPrefetched, maxPrefetched.get()));
         } finally {
             manager.stopAllPartitionPumps().block();
         }
@@ -499,13 +517,14 @@ public class PartitionPumpManagerTest {
         final CountDownLatch receiveCounter = new CountDownLatch(1);
 
         final int maxBatchSize = 16;
-        final EventProcessorClientOptions options = new EventProcessorClientOptions().setConsumerGroup("test-consumer")
+        final EventProcessorClientOptions options = new EventProcessorClientOptions()
+            .setConsumerGroup("test-consumer")
             .setMaxBatchSize(maxBatchSize)
             .setMaxWaitTime(Duration.ofSeconds(3))
             .setBatchReceiveMode(true);
 
-        final PartitionPumpManager manager = new PartitionPumpManager(checkpointStore, () -> partitionProcessor,
-            builder, DEFAULT_INSTRUMENTATION, options);
+        final PartitionPumpManager manager = new PartitionPumpManager(checkpointStore, () -> partitionProcessor, builder,
+            DEFAULT_INSTRUMENTATION, options);
 
         final Instant retrievalTime = Instant.now();
 
@@ -538,13 +557,14 @@ public class PartitionPumpManagerTest {
         final CountDownLatch receiveCounter = new CountDownLatch(1);
 
         final int maxBatchSize = 16;
-        final EventProcessorClientOptions options = new EventProcessorClientOptions().setConsumerGroup("test-consumer")
+        final EventProcessorClientOptions options = new EventProcessorClientOptions()
+            .setConsumerGroup("test-consumer")
             .setMaxBatchSize(maxBatchSize)
             .setMaxWaitTime(null)
             .setBatchReceiveMode(true);
 
-        final PartitionPumpManager manager = new PartitionPumpManager(checkpointStore, () -> partitionProcessor,
-            builder, DEFAULT_INSTRUMENTATION, options);
+        final PartitionPumpManager manager = new PartitionPumpManager(checkpointStore, () -> partitionProcessor, builder,
+            DEFAULT_INSTRUMENTATION, options);
 
         final Instant retrievalTime = Instant.now();
 
@@ -579,7 +599,8 @@ public class PartitionPumpManagerTest {
         final int maxBatchSize = 2;
         final Duration maxWaitTime = Duration.ofSeconds(1);
         final boolean batchReceiveMode = true;
-        final EventProcessorClientOptions options = new EventProcessorClientOptions().setConsumerGroup("test-consumer")
+        final EventProcessorClientOptions options = new EventProcessorClientOptions()
+            .setConsumerGroup("test-consumer")
             .setTrackLastEnqueuedEventProperties(trackLastEnqueuedEventProperties)
             .setInitialEventPositionProvider(null)
             .setMaxBatchSize(maxBatchSize)
@@ -591,8 +612,8 @@ public class PartitionPumpManagerTest {
 
         final EventPosition expected = EventPosition.latest();
 
-        final PartitionPumpManager manager
-            = new PartitionPumpManager(checkpointStore, supplier, builder, DEFAULT_INSTRUMENTATION, options);
+        final PartitionPumpManager manager = new PartitionPumpManager(checkpointStore, supplier, builder,
+            DEFAULT_INSTRUMENTATION, options);
 
         // Act
         final EventPosition actual = manager.getInitialEventPosition(partitionId, null);
@@ -613,7 +634,8 @@ public class PartitionPumpManagerTest {
 
         final long offset = 242343;
         final long sequenceNumber = 150;
-        checkpoint.setOffset(offset).setSequenceNumber(sequenceNumber);
+        checkpoint.setOffset(offset)
+            .setSequenceNumber(sequenceNumber);
 
         final EventPosition expected = EventPosition.fromOffset(offset);
 
@@ -623,7 +645,8 @@ public class PartitionPumpManagerTest {
         final Duration maxWaitTime = Duration.ofSeconds(1);
         final boolean batchReceiveMode = true;
 
-        final EventProcessorClientOptions options = new EventProcessorClientOptions().setConsumerGroup("test-consumer")
+        final EventProcessorClientOptions options = new EventProcessorClientOptions()
+            .setConsumerGroup("test-consumer")
             .setTrackLastEnqueuedEventProperties(trackLastEnqueuedEventProperties)
             .setInitialEventPositionProvider(
                 unused -> EventPosition.fromEnqueuedTime(Instant.ofEpochMilli(1692830454030L)))
@@ -634,8 +657,9 @@ public class PartitionPumpManagerTest {
             .setPartitionOwnershipExpirationInterval(Duration.ofMinutes(1))
             .setLoadBalancingStrategy(LoadBalancingStrategy.BALANCED);
 
-        final PartitionPumpManager manager
-            = new PartitionPumpManager(checkpointStore, supplier, builder, DEFAULT_INSTRUMENTATION, options);
+
+        final PartitionPumpManager manager = new PartitionPumpManager(checkpointStore, supplier, builder,
+            DEFAULT_INSTRUMENTATION, options);
 
         // Act
         final EventPosition actual = manager.getInitialEventPosition(partitionId, checkpoint);
@@ -662,7 +686,8 @@ public class PartitionPumpManagerTest {
         final int maxBatchSize = 2;
         final Duration maxWaitTime = Duration.ofSeconds(1);
         final boolean batchReceiveMode = true;
-        final EventProcessorClientOptions options = new EventProcessorClientOptions().setConsumerGroup("test-consumer")
+        final EventProcessorClientOptions options = new EventProcessorClientOptions()
+            .setConsumerGroup("test-consumer")
             .setTrackLastEnqueuedEventProperties(trackLastEnqueuedEventProperties)
             .setInitialEventPositionProvider(id -> initialPartitionPositions.get(id))
             .setMaxBatchSize(maxBatchSize)
@@ -674,8 +699,8 @@ public class PartitionPumpManagerTest {
 
         final EventPosition expected = EventPosition.fromSequenceNumber(sequenceNumber);
 
-        final PartitionPumpManager manager
-            = new PartitionPumpManager(checkpointStore, supplier, builder, DEFAULT_INSTRUMENTATION, options);
+        final PartitionPumpManager manager = new PartitionPumpManager(checkpointStore, supplier, builder,
+            DEFAULT_INSTRUMENTATION, options);
 
         // Act
         final EventPosition actual = manager.getInitialEventPosition(partitionId, checkpoint);
@@ -700,7 +725,8 @@ public class PartitionPumpManagerTest {
         final int maxBatchSize = 2;
         final Duration maxWaitTime = Duration.ofSeconds(1);
         final boolean batchReceiveMode = true;
-        final EventProcessorClientOptions options = new EventProcessorClientOptions().setConsumerGroup("test-consumer")
+        final EventProcessorClientOptions options = new EventProcessorClientOptions()
+            .setConsumerGroup("test-consumer")
             .setTrackLastEnqueuedEventProperties(trackLastEnqueuedEventProperties)
             .setInitialEventPositionProvider(id -> initialPartitionPositions.get(id))
             .setMaxBatchSize(maxBatchSize)
@@ -710,8 +736,8 @@ public class PartitionPumpManagerTest {
             .setPartitionOwnershipExpirationInterval(Duration.ofMinutes(1))
             .setLoadBalancingStrategy(LoadBalancingStrategy.BALANCED);
 
-        final PartitionPumpManager manager
-            = new PartitionPumpManager(checkpointStore, supplier, builder, DEFAULT_INSTRUMENTATION, options);
+        final PartitionPumpManager manager = new PartitionPumpManager(checkpointStore, supplier, builder,
+            DEFAULT_INSTRUMENTATION, options);
 
         // Act
         final EventPosition actual = manager.getInitialEventPosition(partitionId, checkpoint);
@@ -734,7 +760,8 @@ public class PartitionPumpManagerTest {
         final int maxBatchSize = 2;
         final Duration maxWaitTime = Duration.ofSeconds(1);
         final boolean batchReceiveMode = true;
-        final EventProcessorClientOptions options = new EventProcessorClientOptions().setConsumerGroup("test-consumer")
+        final EventProcessorClientOptions options = new EventProcessorClientOptions()
+            .setConsumerGroup("test-consumer")
             .setTrackLastEnqueuedEventProperties(trackLastEnqueuedEventProperties)
             .setInitialEventPositionProvider(unused -> defaultEventPosition)
             .setMaxBatchSize(maxBatchSize)
@@ -744,8 +771,8 @@ public class PartitionPumpManagerTest {
             .setPartitionOwnershipExpirationInterval(Duration.ofMinutes(1))
             .setLoadBalancingStrategy(LoadBalancingStrategy.BALANCED);
 
-        final PartitionPumpManager manager
-            = new PartitionPumpManager(checkpointStore, supplier, builder, DEFAULT_INSTRUMENTATION, options);
+        final PartitionPumpManager manager = new PartitionPumpManager(checkpointStore, supplier, builder,
+            DEFAULT_INSTRUMENTATION, options);
 
         // Act
         final EventPosition actual = manager.getInitialEventPosition(partitionId, checkpoint);
@@ -767,7 +794,8 @@ public class PartitionPumpManagerTest {
         final int maxBatchSize = 2;
         final Duration maxWaitTime = Duration.ofSeconds(1);
         final boolean batchReceiveMode = true;
-        final EventProcessorClientOptions options = new EventProcessorClientOptions().setConsumerGroup("test-consumer")
+        final EventProcessorClientOptions options = new EventProcessorClientOptions()
+            .setConsumerGroup("test-consumer")
             .setTrackLastEnqueuedEventProperties(trackLastEnqueuedEventProperties)
             .setInitialEventPositionProvider(id -> initialPartitionPositions.get(id))
             .setMaxBatchSize(maxBatchSize)
@@ -777,8 +805,8 @@ public class PartitionPumpManagerTest {
             .setPartitionOwnershipExpirationInterval(Duration.ofMinutes(1))
             .setLoadBalancingStrategy(LoadBalancingStrategy.BALANCED);
 
-        final PartitionPumpManager manager
-            = new PartitionPumpManager(checkpointStore, supplier, builder, DEFAULT_INSTRUMENTATION, options);
+        final PartitionPumpManager manager = new PartitionPumpManager(checkpointStore, supplier, builder,
+            DEFAULT_INSTRUMENTATION, options);
 
         // Mock events to add.
         final EventData eventData1 = new EventData("1");
@@ -826,7 +854,8 @@ public class PartitionPumpManagerTest {
 
             // The window is 2 events, we publish 3 events before throwing an error, it should only have been called
             // at most 1 time.
-            verify(partitionProcessor, atMost(1)).processEventBatch(argThat(context -> !context.getEvents().isEmpty()));
+            verify(partitionProcessor, atMost(1))
+                .processEventBatch(argThat(context -> !context.getEvents().isEmpty()));
 
             // Assert that we cleaned up the code.
             assertFalse(manager.getPartitionPumps().containsKey(PARTITION_ID));
@@ -851,7 +880,8 @@ public class PartitionPumpManagerTest {
         final int maxBatchSize = 2;
         final Duration maxWaitTime = Duration.ofSeconds(1);
         final boolean batchReceiveMode = true;
-        final EventProcessorClientOptions options = new EventProcessorClientOptions().setConsumerGroup("test-consumer")
+        final EventProcessorClientOptions options = new EventProcessorClientOptions()
+            .setConsumerGroup("test-consumer")
             .setTrackLastEnqueuedEventProperties(trackLastEnqueuedEventProperties)
             .setInitialEventPositionProvider(id -> initialPartitionPositions.get(id))
             .setMaxBatchSize(maxBatchSize)
@@ -861,8 +891,8 @@ public class PartitionPumpManagerTest {
             .setPartitionOwnershipExpirationInterval(Duration.ofMinutes(1))
             .setLoadBalancingStrategy(LoadBalancingStrategy.BALANCED);
 
-        final PartitionPumpManager manager
-            = new PartitionPumpManager(checkpointStore, supplier, builder, DEFAULT_INSTRUMENTATION, options);
+        final PartitionPumpManager manager = new PartitionPumpManager(checkpointStore, supplier, builder,
+            DEFAULT_INSTRUMENTATION, options);
 
         // Mock events to add.
         final EventData eventData1 = new EventData("1");
@@ -907,7 +937,8 @@ public class PartitionPumpManagerTest {
             // Verify
             // The window is 2 events, we publish 3 events before throwing an error, it should only have been called
             // at most 1 time.
-            verify(partitionProcessor, atMost(1)).processEventBatch(argThat(context -> !context.getEvents().isEmpty()));
+            verify(partitionProcessor, atMost(1))
+                .processEventBatch(argThat(context -> !context.getEvents().isEmpty()));
 
             // We called the user processError
             verify(partitionProcessor).processError(argThat(error -> testException.equals(error.getThrowable())));
@@ -939,7 +970,8 @@ public class PartitionPumpManagerTest {
         final int maxBatchSize = 2;
         final Duration maxWaitTime = Duration.ofSeconds(1);
         final boolean batchReceiveMode = true;
-        final EventProcessorClientOptions options = new EventProcessorClientOptions().setConsumerGroup("test-consumer")
+        final EventProcessorClientOptions options = new EventProcessorClientOptions()
+            .setConsumerGroup("test-consumer")
             .setTrackLastEnqueuedEventProperties(trackLastEnqueuedEventProperties)
             .setInitialEventPositionProvider(id -> initialPartitionPositions.get(id))
             .setMaxBatchSize(maxBatchSize)
@@ -949,8 +981,8 @@ public class PartitionPumpManagerTest {
             .setPartitionOwnershipExpirationInterval(Duration.ofMinutes(1))
             .setLoadBalancingStrategy(LoadBalancingStrategy.BALANCED);
 
-        final PartitionPumpManager manager
-            = new PartitionPumpManager(checkpointStore, supplier, builder, DEFAULT_INSTRUMENTATION, options);
+        final PartitionPumpManager manager = new PartitionPumpManager(checkpointStore, supplier, builder,
+            DEFAULT_INSTRUMENTATION, options);
 
         // Mock events to add.
         final EventData eventData1 = new EventData("1");
@@ -993,7 +1025,8 @@ public class PartitionPumpManagerTest {
 
             // Verify
             // The window is 2 events, we publish 3 events before completing. We expect the last window emits on close.
-            verify(partitionProcessor, times(2)).processEventBatch(argThat(context -> !context.getEvents().isEmpty()));
+            verify(partitionProcessor, times(2))
+                .processEventBatch(argThat(context -> !context.getEvents().isEmpty()));
 
             // We called the user processError
             verify(partitionProcessor, never()).processError(any());
@@ -1013,8 +1046,8 @@ public class PartitionPumpManagerTest {
 
     private PartitionEvent createEvent(Instant retrievalTime, int index) {
         Instant lastEnqueuedTime = retrievalTime.minusSeconds(60);
-        LastEnqueuedEventProperties lastEnqueuedProperties = new LastEnqueuedEventProperties((long) index, (long) index,
-            retrievalTime, lastEnqueuedTime.plusSeconds(index));
+        LastEnqueuedEventProperties lastEnqueuedProperties =
+            new LastEnqueuedEventProperties((long) index, (long) index, retrievalTime, lastEnqueuedTime.plusSeconds(index));
         return new PartitionEvent(PARTITION_CONTEXT, new EventData(String.valueOf(index)), lastEnqueuedProperties);
     }
 }

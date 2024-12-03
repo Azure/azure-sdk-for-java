@@ -29,8 +29,9 @@ public class EventHubClientMetadataIntegrationTest extends IntegrationTestBase {
     public EventHubClientMetadataIntegrationTest() {
         super(new ClientLogger(EventHubClientMetadataIntegrationTest.class));
 
-        expectedPartitionIds
-            = IntStream.range(0, NUMBER_OF_PARTITIONS).mapToObj(String::valueOf).collect(Collectors.toList());
+        expectedPartitionIds = IntStream.range(0, NUMBER_OF_PARTITIONS)
+            .mapToObj(String::valueOf)
+            .collect(Collectors.toList());
     }
 
     @Override
@@ -50,11 +51,14 @@ public class EventHubClientMetadataIntegrationTest extends IntegrationTestBase {
     @Test
     public void getEventHubProperties() {
         // Act & Assert
-        StepVerifier.create(client.getProperties()).assertNext(properties -> {
-            Assertions.assertNotNull(properties);
-            Assertions.assertEquals(eventHubName, properties.getName());
-            Assertions.assertEquals(expectedPartitionIds.size(), properties.getPartitionIds().stream().count());
-        }).expectComplete().verify(TIMEOUT);
+        StepVerifier.create(client.getProperties())
+            .assertNext(properties -> {
+                Assertions.assertNotNull(properties);
+                Assertions.assertEquals(eventHubName, properties.getName());
+                Assertions.assertEquals(expectedPartitionIds.size(), properties.getPartitionIds().stream().count());
+            })
+            .expectComplete()
+            .verify(TIMEOUT);
     }
 
     /**
@@ -76,10 +80,13 @@ public class EventHubClientMetadataIntegrationTest extends IntegrationTestBase {
     public void getPartitionProperties() {
         // Act & Assert
         for (String partitionId : expectedPartitionIds) {
-            StepVerifier.create(client.getPartitionProperties(partitionId)).assertNext(properties -> {
-                Assertions.assertEquals(eventHubName, properties.getEventHubName());
-                Assertions.assertEquals(partitionId, properties.getId());
-            }).expectComplete().verify(TIMEOUT);
+            StepVerifier.create(client.getPartitionProperties(partitionId))
+                .assertNext(properties -> {
+                    Assertions.assertEquals(eventHubName, properties.getEventHubName());
+                    Assertions.assertEquals(partitionId, properties.getId());
+                })
+                .expectComplete()
+                .verify(TIMEOUT);
         }
     }
 
@@ -91,8 +98,8 @@ public class EventHubClientMetadataIntegrationTest extends IntegrationTestBase {
     @Test
     public void getPartitionPropertiesMultipleCalls() {
         // Act
-        final Flux<PartitionProperties> partitionProperties
-            = client.getPartitionIds().flatMap(partitionId -> client.getPartitionProperties(partitionId));
+        final Flux<PartitionProperties> partitionProperties = client.getPartitionIds()
+            .flatMap(partitionId -> client.getPartitionProperties(partitionId));
 
         // Assert
         StepVerifier.create(partitionProperties)

@@ -146,7 +146,9 @@ public class EventProcessorClientTest {
         when(eventHubAsyncClient.getEventHubName()).thenReturn(EVENT_HUB_NAME);
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.just(PARTITION_ID));
         when(eventHubAsyncClient.getIdentifier()).thenReturn("my-client-identifier");
-        when(eventHubAsyncClient.createConsumer(anyString(), anyInt(), anyBoolean())).thenReturn(consumer1);
+        when(eventHubAsyncClient
+            .createConsumer(anyString(), anyInt(), anyBoolean()))
+            .thenReturn(consumer1);
         when(consumer1.receiveFromPartition(anyString(), any(EventPosition.class), any(ReceiveOptions.class)))
             .thenReturn(Flux.just(getEvent(eventData1), getEvent(eventData2)));
 
@@ -171,9 +173,9 @@ public class EventProcessorClientTest {
             .setLoadBalancingStrategy(LoadBalancingStrategy.BALANCED);
 
         // Act
-        final EventProcessorClient eventProcessorClient
-            = new EventProcessorClient(eventHubClientBuilder, () -> testPartitionProcessor, checkpointStore,
-                EventProcessorClientTest::noopConsumer, null, null, processorOptions);
+        final EventProcessorClient eventProcessorClient = new EventProcessorClient(eventHubClientBuilder,
+            () -> testPartitionProcessor, checkpointStore, EventProcessorClientTest::noopConsumer, null, null,
+            processorOptions);
 
         eventProcessorClient.start();
         TimeUnit.SECONDS.sleep(10);
@@ -182,8 +184,7 @@ public class EventProcessorClientTest {
         assertNotNull(eventProcessorClient.getIdentifier());
 
         StepVerifier.create(checkpointStore.listOwnership(HOSTNAME, EVENT_HUB_NAME, CONSUMER_GROUP))
-            .expectNextCount(1)
-            .verifyComplete();
+            .expectNextCount(1).verifyComplete();
 
         StepVerifier.create(checkpointStore.listOwnership(HOSTNAME, EVENT_HUB_NAME, CONSUMER_GROUP))
             .assertNext(partitionOwnership -> {
@@ -194,11 +195,11 @@ public class EventProcessorClientTest {
                 assertTrue(partitionOwnership.getLastModifiedTime() >= beforeTest, "LastModifiedTime");
                 assertTrue(partitionOwnership.getLastModifiedTime() <= System.currentTimeMillis(), "LastModifiedTime");
                 assertNotNull(partitionOwnership.getETag());
-            })
-            .verifyComplete();
+            }).verifyComplete();
 
         verify(eventHubAsyncClient, atLeastOnce()).getPartitionIds();
-        verify(eventHubAsyncClient, atLeastOnce()).createConsumer(anyString(), anyInt(), eq(true));
+        verify(eventHubAsyncClient, atLeastOnce())
+            .createConsumer(anyString(), anyInt(), eq(true));
         verify(consumer1, atLeastOnce()).receiveFromPartition(anyString(), any(EventPosition.class),
             any(ReceiveOptions.class));
         verify(consumer1, atLeastOnce()).close();
@@ -214,8 +215,7 @@ public class EventProcessorClientTest {
                 assertTrue(partitionOwnership.getLastModifiedTime() >= beforeTest, "LastModifiedTime");
                 assertTrue(partitionOwnership.getLastModifiedTime() <= System.currentTimeMillis(), "LastModifiedTime");
                 assertNotNull(partitionOwnership.getETag());
-            })
-            .verifyComplete();
+            }).verifyComplete();
     }
 
     /**
@@ -237,7 +237,9 @@ public class EventProcessorClientTest {
         when(eventHubAsyncClient.getFullyQualifiedNamespace()).thenReturn(HOSTNAME);
         when(eventHubAsyncClient.getEventHubName()).thenReturn(EVENT_HUB_NAME);
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.just(PARTITION_ID));
-        when(eventHubAsyncClient.createConsumer(anyString(), anyInt(), eq(true))).thenReturn(consumer1);
+        when(eventHubAsyncClient
+            .createConsumer(anyString(), anyInt(), eq(true)))
+            .thenReturn(consumer1);
         when(eventHubAsyncClient.getIdentifier()).thenReturn("my-client-identifier");
         when(eventData1.getSequenceNumber()).thenReturn(1L);
         when(eventData1.getOffset()).thenReturn(1L);
@@ -258,21 +260,22 @@ public class EventProcessorClientTest {
             return new Context(SPAN_CONTEXT_KEY, "value");
         });
         final String expectedProcessSpanName = getSpanName(PROCESS, EVENT_HUB_NAME);
-        when(tracer.start(eq(expectedProcessSpanName), any(StartSpanOptions.class), any(Context.class)))
-            .thenAnswer(invocation -> {
+        when(tracer.start(eq(expectedProcessSpanName), any(StartSpanOptions.class), any(Context.class))).thenAnswer(
+            invocation -> {
                 assertStartOptions(PROCESS, invocation.getArgument(1, StartSpanOptions.class), 1);
                 return invocation.getArgument(2, Context.class).addData(PARENT_TRACE_CONTEXT_KEY, "value2");
-            });
+            }
+        );
 
         final String expectedSettleSpanName = getSpanName(CHECKPOINT, EVENT_HUB_NAME);
-        when(tracer.start(eq(expectedSettleSpanName), any(StartSpanOptions.class), any(Context.class)))
-            .thenAnswer(invocation -> {
-                assertCheckpointStartOptions(invocation.getArgument(1, StartSpanOptions.class));
-                return invocation.getArgument(2, Context.class).addData(PARENT_TRACE_CONTEXT_KEY, "value2");
-            });
+        when(tracer.start(eq(expectedSettleSpanName), any(StartSpanOptions.class), any(Context.class))).thenAnswer(
+                invocation -> {
+                    assertCheckpointStartOptions(invocation.getArgument(1, StartSpanOptions.class));
+                    return invocation.getArgument(2, Context.class).addData(PARENT_TRACE_CONTEXT_KEY, "value2");
+                }
+        );
 
-        when(tracer.makeSpanCurrent(any())).thenReturn(() -> {
-        });
+        when(tracer.makeSpanCurrent(any())).thenReturn(() -> { });
         // processor span ends after TestPartitionProcessor latch counts down
         CountDownLatch latch = new CountDownLatch(2);
         doAnswer(invocation -> {
@@ -293,9 +296,9 @@ public class EventProcessorClientTest {
             .setLoadBalancingStrategy(LoadBalancingStrategy.BALANCED);
 
         //Act
-        EventProcessorClient eventProcessorClient
-            = new EventProcessorClient(eventHubClientBuilder, TestPartitionProcessor::new, checkpointStore,
-                EventProcessorClientTest::noopConsumer, tracer, meter, processorOptions);
+        EventProcessorClient eventProcessorClient = new EventProcessorClient(eventHubClientBuilder,
+            TestPartitionProcessor::new, checkpointStore, EventProcessorClientTest::noopConsumer, tracer, meter,
+            processorOptions);
 
         eventProcessorClient.start();
         assertTrue(latch.await(10, TimeUnit.SECONDS));
@@ -328,7 +331,9 @@ public class EventProcessorClientTest {
         when(eventHubAsyncClient.getFullyQualifiedNamespace()).thenReturn(HOSTNAME);
         when(eventHubAsyncClient.getEventHubName()).thenReturn(EVENT_HUB_NAME);
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.just(PARTITION_ID));
-        when(eventHubAsyncClient.createConsumer(anyString(), anyInt(), eq(true))).thenReturn(consumer1);
+        when(eventHubAsyncClient
+            .createConsumer(anyString(), anyInt(), eq(true)))
+            .thenReturn(consumer1);
         when(eventHubAsyncClient.getIdentifier()).thenReturn("my-client-identifier");
         when(eventData1.getSequenceNumber()).thenReturn(1L);
         when(eventData1.getOffset()).thenReturn(100L);
@@ -361,21 +366,22 @@ public class EventProcessorClientTest {
         });
 
         final String expectedProcessSpanName = getSpanName(PROCESS, EVENT_HUB_NAME);
-        when(tracer.start(eq(expectedProcessSpanName), any(StartSpanOptions.class), any(Context.class)))
-            .thenAnswer(invocation -> {
+        when(tracer.start(eq(expectedProcessSpanName), any(StartSpanOptions.class), any(Context.class))).thenAnswer(
+            invocation -> {
                 assertStartOptions(PROCESS, invocation.getArgument(1, StartSpanOptions.class), 2);
                 return invocation.getArgument(2, Context.class).addData(PARENT_TRACE_CONTEXT_KEY, "value2");
-            });
+            }
+        );
 
         final String expectedCheckpointSpanName = getSpanName(CHECKPOINT, EVENT_HUB_NAME);
-        when(tracer.start(eq(expectedCheckpointSpanName), any(StartSpanOptions.class), any(Context.class)))
-            .thenAnswer(invocation -> {
-                assertCheckpointStartOptions(invocation.getArgument(1, StartSpanOptions.class));
-                return invocation.getArgument(2, Context.class).addData(PARENT_TRACE_CONTEXT_KEY, "value3");
-            });
+        when(tracer.start(eq(expectedCheckpointSpanName), any(StartSpanOptions.class), any(Context.class))).thenAnswer(
+                invocation -> {
+                    assertCheckpointStartOptions(invocation.getArgument(1, StartSpanOptions.class));
+                    return invocation.getArgument(2, Context.class).addData(PARENT_TRACE_CONTEXT_KEY, "value3");
+                }
+        );
 
-        when(tracer.makeSpanCurrent(any())).thenReturn(() -> {
-        });
+        when(tracer.makeSpanCurrent(any())).thenReturn(() -> { });
 
         // processor span ends after TestPartitionProcessor latch counts down
         CountDownLatch latch = new CountDownLatch(2);
@@ -397,9 +403,9 @@ public class EventProcessorClientTest {
             .setLoadBalancingStrategy(LoadBalancingStrategy.BALANCED);
 
         //Act
-        EventProcessorClient eventProcessorClient
-            = new EventProcessorClient(eventHubClientBuilder, TestPartitionProcessor::new, checkpointStore,
-                EventProcessorClientTest::noopConsumer, tracer, meter, processorOptions);
+        EventProcessorClient eventProcessorClient = new EventProcessorClient(eventHubClientBuilder,
+            TestPartitionProcessor::new, checkpointStore, EventProcessorClientTest::noopConsumer, tracer, meter,
+            processorOptions);
 
         eventProcessorClient.start();
         assertTrue(latch.await(10, TimeUnit.SECONDS));
@@ -424,8 +430,7 @@ public class EventProcessorClientTest {
     @ParameterizedTest
     @MethodSource("errorSource")
     @SuppressWarnings("unchecked")
-    public void testProcessWithErrorTracesAndMetrics(RuntimeException error, String expectedErrorType)
-        throws Exception {
+    public void testProcessWithErrorTracesAndMetrics(RuntimeException error, String expectedErrorType) throws Exception {
         //Arrange
         final Tracer tracer = mock(Tracer.class);
         final TestMeter meter = new TestMeter();
@@ -437,7 +442,9 @@ public class EventProcessorClientTest {
         when(eventHubAsyncClient.getFullyQualifiedNamespace()).thenReturn(HOSTNAME);
         when(eventHubAsyncClient.getEventHubName()).thenReturn(EVENT_HUB_NAME);
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.just(PARTITION_ID));
-        when(eventHubAsyncClient.createConsumer(anyString(), anyInt(), eq(true))).thenReturn(consumer1);
+        when(eventHubAsyncClient
+            .createConsumer(anyString(), anyInt(), eq(true)))
+            .thenReturn(consumer1);
         when(eventHubAsyncClient.getIdentifier()).thenReturn("my-client-identifier");
         when(eventData1.getSequenceNumber()).thenReturn(1L);
         when(eventData1.getOffset()).thenReturn(100L);
@@ -462,8 +469,7 @@ public class EventProcessorClientTest {
         final String expectedProcessSpanName = getSpanName(PROCESS, EVENT_HUB_NAME);
         when(tracer.start(eq(expectedProcessSpanName), any(StartSpanOptions.class), any(Context.class)))
             .thenReturn(new Context(PARENT_TRACE_CONTEXT_KEY, "span"));
-        when(tracer.makeSpanCurrent(any())).thenReturn(() -> {
-        });
+        when(tracer.makeSpanCurrent(any())).thenReturn(() -> { });
 
         // processor span ends after TestPartitionProcessor latch counts down
         CountDownLatch latch = new CountDownLatch(1);
@@ -485,8 +491,9 @@ public class EventProcessorClientTest {
             .setLoadBalancingStrategy(LoadBalancingStrategy.BALANCED);
 
         //Act
-        EventProcessorClient eventProcessorClient = new EventProcessorClient(eventHubClientBuilder, () -> processor,
-            checkpointStore, EventProcessorClientTest::noopConsumer, tracer, meter, processorOptions);
+        EventProcessorClient eventProcessorClient = new EventProcessorClient(eventHubClientBuilder,
+            () -> processor, checkpointStore, EventProcessorClientTest::noopConsumer, tracer, meter,
+            processorOptions);
 
         eventProcessorClient.start();
         assertTrue(latch.await(10, TimeUnit.SECONDS));
@@ -514,13 +521,13 @@ public class EventProcessorClientTest {
         when(eventHubAsyncClient.getFullyQualifiedNamespace()).thenReturn(HOSTNAME);
         when(eventHubAsyncClient.getEventHubName()).thenReturn(EVENT_HUB_NAME);
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.just(PARTITION_ID));
-        when(eventHubAsyncClient.createConsumer(anyString(), anyInt(), eq(true))).thenReturn(consumer1);
+        when(eventHubAsyncClient
+            .createConsumer(anyString(), anyInt(), eq(true)))
+            .thenReturn(consumer1);
         when(eventHubAsyncClient.getIdentifier()).thenReturn("my-client-identifier");
         when(consumer1.receiveFromPartition(anyString(), any(EventPosition.class), any(ReceiveOptions.class)))
-            .thenReturn(Flux.generate(sync -> {
-            }));
-        when(tracer.makeSpanCurrent(any())).thenReturn(() -> {
-        });
+            .thenReturn(Flux.generate(sync -> { }));
+        when(tracer.makeSpanCurrent(any())).thenReturn(() -> { });
         // processor span ends after TestPartitionProcessor latch counts down
         CountDownLatch latch = new CountDownLatch(1);
         doAnswer(invocation -> {
@@ -541,9 +548,9 @@ public class EventProcessorClientTest {
             .setLoadBalancingStrategy(LoadBalancingStrategy.BALANCED);
 
         //Act
-        EventProcessorClient eventProcessorClient
-            = new EventProcessorClient(eventHubClientBuilder, TestPartitionProcessor::new, checkpointStore,
-                EventProcessorClientTest::noopConsumer, tracer, meter, processorOptions);
+        EventProcessorClient eventProcessorClient = new EventProcessorClient(eventHubClientBuilder,
+            TestPartitionProcessor::new, checkpointStore, EventProcessorClientTest::noopConsumer, tracer, meter,
+            processorOptions);
 
         eventProcessorClient.start();
         assertFalse(latch.await(2, TimeUnit.SECONDS));
@@ -572,7 +579,9 @@ public class EventProcessorClientTest {
         when(eventHubAsyncClient.getEventHubName()).thenReturn(EVENT_HUB_NAME);
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.just(PARTITION_ID));
         when(eventHubAsyncClient.getIdentifier()).thenReturn("my-client-identifier");
-        when(eventHubAsyncClient.createConsumer(anyString(), anyInt(), eq(true))).thenReturn(consumer1);
+        when(eventHubAsyncClient
+            .createConsumer(anyString(), anyInt(), eq(true)))
+            .thenReturn(consumer1);
         when(eventData1.getSequenceNumber()).thenReturn(1L);
         when(eventData1.getOffset()).thenReturn(1L);
         when(eventData1.getEnqueuedTime()).thenReturn(Instant.ofEpochSecond(1560639208));
@@ -591,18 +600,20 @@ public class EventProcessorClientTest {
             .thenReturn(Flux.just(getEvent(eventData1), getEvent(eventData2), getEvent(eventData3)));
 
         final String expectedProcessSpanName = getSpanName(PROCESS, EVENT_HUB_NAME);
-        when(tracer.start(eq(expectedProcessSpanName), any(StartSpanOptions.class), any(Context.class)))
-            .thenAnswer(invocation -> {
+        when(tracer.start(eq(expectedProcessSpanName), any(StartSpanOptions.class), any(Context.class))).thenAnswer(
+            invocation -> {
                 assertStartOptions(PROCESS, invocation.getArgument(1, StartSpanOptions.class), 1);
                 return invocation.getArgument(2, Context.class).addData(PARENT_TRACE_CONTEXT_KEY, "value2");
-            });
+            }
+        );
 
         final String expectedSettleSpanName = getSpanName(CHECKPOINT, EVENT_HUB_NAME);
-        when(tracer.start(eq(expectedSettleSpanName), any(StartSpanOptions.class), any(Context.class)))
-            .thenAnswer(invocation -> {
-                assertCheckpointStartOptions(invocation.getArgument(1, StartSpanOptions.class));
-                return invocation.getArgument(2, Context.class).addData(PARENT_TRACE_CONTEXT_KEY, "value2");
-            });
+        when(tracer.start(eq(expectedSettleSpanName), any(StartSpanOptions.class), any(Context.class))).thenAnswer(
+                invocation -> {
+                    assertCheckpointStartOptions(invocation.getArgument(1, StartSpanOptions.class));
+                    return invocation.getArgument(2, Context.class).addData(PARENT_TRACE_CONTEXT_KEY, "value2");
+                }
+        );
 
         AtomicBoolean closed = new AtomicBoolean(false);
         when(tracer.makeSpanCurrent(any())).thenReturn(() -> closed.set(true));
@@ -622,9 +633,9 @@ public class EventProcessorClientTest {
             .setLoadBalancingStrategy(LoadBalancingStrategy.BALANCED);
 
         //Act
-        EventProcessorClient eventProcessorClient
-            = new EventProcessorClient(eventHubClientBuilder, () -> testPartitionProcessor, checkpointStore,
-                EventProcessorClientTest::noopConsumer, tracer, null, processorOptions);
+        EventProcessorClient eventProcessorClient = new EventProcessorClient(eventHubClientBuilder,
+            () -> testPartitionProcessor, checkpointStore, EventProcessorClientTest::noopConsumer, tracer, null,
+            processorOptions);
 
         eventProcessorClient.start();
         boolean success = testPartitionProcessor.countDownLatch.await(10, TimeUnit.SECONDS);
@@ -663,16 +674,16 @@ public class EventProcessorClientTest {
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.just("1", "2", "3"));
         when(eventHubAsyncClient.getFullyQualifiedNamespace()).thenReturn(HOSTNAME);
         when(eventHubAsyncClient.getEventHubName()).thenReturn(EVENT_HUB_NAME);
-        when(
-            eventHubAsyncClient.createConsumer(anyString(), eq(EventHubClientBuilder.DEFAULT_PREFETCH_COUNT), eq(true)))
-                .thenReturn(consumer1, consumer2, consumer3);
+        when(eventHubAsyncClient.createConsumer(anyString(), eq(EventHubClientBuilder.DEFAULT_PREFETCH_COUNT), eq(true)))
+            .thenReturn(consumer1, consumer2, consumer3);
 
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.fromIterable(identifiers));
         when(eventHubAsyncClient.getEventHubName()).thenReturn(EVENT_HUB_NAME);
         when(eventHubAsyncClient.getIdentifier()).thenReturn("my-client-identifier");
 
-        when(consumer1.receiveFromPartition(argThat(arg -> identifiers.remove(arg)), eq(position), any())).thenReturn(
-            Mono.fromRunnable(() -> count.countDown()).thenMany(Flux.just(getEvent(eventData1), getEvent(eventData2))));
+        when(consumer1.receiveFromPartition(argThat(arg -> identifiers.remove(arg)), eq(position), any()))
+            .thenReturn(Mono.fromRunnable(() -> count.countDown())
+                .thenMany(Flux.just(getEvent(eventData1), getEvent(eventData2))));
         when(eventData1.getSequenceNumber()).thenReturn(1L);
         when(eventData2.getSequenceNumber()).thenReturn(2L);
         when(eventData1.getOffset()).thenReturn(1L);
@@ -701,9 +712,9 @@ public class EventProcessorClientTest {
             .setLoadBalancingStrategy(LoadBalancingStrategy.BALANCED);
 
         // Act
-        final EventProcessorClient eventProcessorClient
-            = new EventProcessorClient(eventHubClientBuilder, TestPartitionProcessor::new, checkpointStore,
-                EventProcessorClientTest::noopConsumer, null, null, processorOptions);
+        final EventProcessorClient eventProcessorClient = new EventProcessorClient(eventHubClientBuilder,
+            TestPartitionProcessor::new, checkpointStore, EventProcessorClientTest::noopConsumer, null, null,
+            processorOptions);
 
         eventProcessorClient.start();
         final boolean completed = count.await(10, TimeUnit.SECONDS);
@@ -712,19 +723,20 @@ public class EventProcessorClientTest {
         // Assert
         Assertions.assertTrue(completed);
         StepVerifier.create(checkpointStore.listOwnership(HOSTNAME, EVENT_HUB_NAME, CONSUMER_GROUP))
-            .expectNextCount(1)
-            .verifyComplete();
+            .expectNextCount(1).verifyComplete();
 
         verify(eventHubAsyncClient, atLeast(1)).getPartitionIds();
-        verify(eventHubAsyncClient, times(1)).createConsumer(anyString(), anyInt(), eq(true));
+        verify(eventHubAsyncClient, times(1))
+            .createConsumer(anyString(), anyInt(), eq(true));
 
         // We expected one to be removed.
         Assertions.assertEquals(2, identifiers.size());
 
-        StepVerifier.create(checkpointStore.listOwnership(HOSTNAME, EVENT_HUB_NAME, CONSUMER_GROUP)).assertNext(po -> {
-            String partitionId = po.getPartitionId();
-            verify(consumer1, atLeastOnce()).receiveFromPartition(eq(partitionId), any(EventPosition.class), any());
-        }).verifyComplete();
+        StepVerifier.create(checkpointStore.listOwnership(HOSTNAME, EVENT_HUB_NAME, CONSUMER_GROUP))
+            .assertNext(po -> {
+                String partitionId = po.getPartitionId();
+                verify(consumer1, atLeastOnce()).receiveFromPartition(eq(partitionId), any(EventPosition.class), any());
+            }).verifyComplete();
     }
 
     @Test
@@ -739,7 +751,9 @@ public class EventProcessorClientTest {
         when(eventHubAsyncClient.getEventHubName()).thenReturn(EVENT_HUB_NAME);
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.just(PARTITION_ID));
         when(eventHubAsyncClient.getIdentifier()).thenReturn("my-client-identifier");
-        when(eventHubAsyncClient.createConsumer(eq(consumerGroup), eq(prefetch), eq(true))).thenReturn(consumer1);
+        when(eventHubAsyncClient
+            .createConsumer(eq(consumerGroup), eq(prefetch), eq(true)))
+            .thenReturn(consumer1);
         when(consumer1.receiveFromPartition(anyString(), any(EventPosition.class), any(ReceiveOptions.class)))
             .thenReturn(Flux.just(getEvent(eventData1), getEvent(eventData2), getEvent(eventData3)));
         when(eventData1.getSequenceNumber()).thenReturn(1L);
@@ -762,9 +776,9 @@ public class EventProcessorClientTest {
             .setPartitionOwnershipExpirationInterval(Duration.ofMinutes(1))
             .setLoadBalancingStrategy(LoadBalancingStrategy.BALANCED);
 
-        final EventProcessorClient eventProcessorClient
-            = new EventProcessorClient(eventHubClientBuilder, () -> testPartitionProcessor, checkpointStore,
-                EventProcessorClientTest::noopConsumer, null, null, processorOptions);
+        final EventProcessorClient eventProcessorClient = new EventProcessorClient(eventHubClientBuilder,
+            () -> testPartitionProcessor, checkpointStore, EventProcessorClientTest::noopConsumer, null, null,
+            processorOptions);
 
         // Act
         eventProcessorClient.start();
@@ -789,8 +803,9 @@ public class EventProcessorClientTest {
         when(eventHubAsyncClient.getEventHubName()).thenReturn(EVENT_HUB_NAME);
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.just(PARTITION_ID));
         when(eventHubAsyncClient.getIdentifier()).thenReturn("my-client-identifier");
-        when(eventHubAsyncClient.createConsumer(eq(consumerGroup), eq(EventHubClientBuilder.DEFAULT_PREFETCH_COUNT),
-            eq(true))).thenReturn(consumer1);
+        when(eventHubAsyncClient
+            .createConsumer(eq(consumerGroup), eq(EventHubClientBuilder.DEFAULT_PREFETCH_COUNT), eq(true)))
+            .thenReturn(consumer1);
         when(consumer1.receiveFromPartition(anyString(), any(EventPosition.class), any(ReceiveOptions.class)))
             .thenReturn(Flux.just(getEvent(eventData1), getEvent(eventData2), getEvent(eventData3)));
         when(eventData1.getSequenceNumber()).thenReturn(1L);
@@ -813,9 +828,9 @@ public class EventProcessorClientTest {
             .setPartitionOwnershipExpirationInterval(Duration.ofMinutes(1))
             .setLoadBalancingStrategy(LoadBalancingStrategy.BALANCED);
 
-        final EventProcessorClient eventProcessorClient
-            = new EventProcessorClient(eventHubClientBuilder, () -> testPartitionProcessor, checkpointStore,
-                EventProcessorClientTest::noopConsumer, null, null, processorOptions);
+        final EventProcessorClient eventProcessorClient = new EventProcessorClient(eventHubClientBuilder,
+            () -> testPartitionProcessor, checkpointStore, EventProcessorClientTest::noopConsumer, null, null,
+            processorOptions);
 
         // Act
         eventProcessorClient.start();
@@ -826,8 +841,7 @@ public class EventProcessorClientTest {
         assertTrue(completed);
         assertIterableEquals(testPartitionProcessor.receivedEventsCount, Arrays.asList(2, 1));
 
-        verify(eventHubAsyncClient).createConsumer(eq(consumerGroup), eq(EventHubClientBuilder.DEFAULT_PREFETCH_COUNT),
-            eq(true));
+        verify(eventHubAsyncClient).createConsumer(eq(consumerGroup), eq(EventHubClientBuilder.DEFAULT_PREFETCH_COUNT), eq(true));
     }
 
     @Test
@@ -839,7 +853,9 @@ public class EventProcessorClientTest {
         when(eventHubAsyncClient.getEventHubName()).thenReturn(EVENT_HUB_NAME);
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.just(PARTITION_ID));
         when(eventHubAsyncClient.getIdentifier()).thenReturn("my-client-identifier");
-        when(eventHubAsyncClient.createConsumer(anyString(), anyInt(), eq(true))).thenReturn(consumer1);
+        when(eventHubAsyncClient
+            .createConsumer(anyString(), anyInt(), eq(true)))
+            .thenReturn(consumer1);
         when(consumer1.receiveFromPartition(anyString(), any(EventPosition.class), any(ReceiveOptions.class)))
             .thenReturn(Flux.just(getEvent(eventData1), getEvent(eventData2), getEvent(eventData3)));
         when(eventData1.getSequenceNumber()).thenReturn(1L);
@@ -862,9 +878,9 @@ public class EventProcessorClientTest {
             .setPartitionOwnershipExpirationInterval(Duration.ofMinutes(1))
             .setLoadBalancingStrategy(LoadBalancingStrategy.BALANCED);
 
-        final EventProcessorClient eventProcessorClient
-            = new EventProcessorClient(eventHubClientBuilder, () -> testPartitionProcessor, checkpointStore,
-                EventProcessorClientTest::noopConsumer, null, null, processorOptions);
+        final EventProcessorClient eventProcessorClient = new EventProcessorClient(eventHubClientBuilder,
+            () -> testPartitionProcessor, checkpointStore, EventProcessorClientTest::noopConsumer, null, null,
+            processorOptions);
 
         // Act
         eventProcessorClient.start();
@@ -885,7 +901,9 @@ public class EventProcessorClientTest {
         when(eventHubAsyncClient.getEventHubName()).thenReturn(EVENT_HUB_NAME);
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.just(PARTITION_ID));
         when(eventHubAsyncClient.getIdentifier()).thenReturn("my-client-identifier");
-        when(eventHubAsyncClient.createConsumer(anyString(), anyInt(), eq(true))).thenReturn(consumer1);
+        when(eventHubAsyncClient
+            .createConsumer(anyString(), anyInt(), eq(true)))
+            .thenReturn(consumer1);
         when(consumer1.receiveFromPartition(anyString(), any(EventPosition.class), any(ReceiveOptions.class)))
             .thenReturn(Flux.just(getEvent(eventData1), getEvent(eventData2)).delayElements(Duration.ofSeconds(3)));
         when(eventData1.getSequenceNumber()).thenReturn(1L);
@@ -908,9 +926,9 @@ public class EventProcessorClientTest {
             .setPartitionOwnershipExpirationInterval(Duration.ofMinutes(1))
             .setLoadBalancingStrategy(LoadBalancingStrategy.BALANCED);
 
-        final EventProcessorClient eventProcessorClient
-            = new EventProcessorClient(eventHubClientBuilder, () -> testPartitionProcessor, checkpointStore,
-                EventProcessorClientTest::noopConsumer, null, null, processorOptions);
+        final EventProcessorClient eventProcessorClient = new EventProcessorClient(eventHubClientBuilder,
+            () -> testPartitionProcessor, checkpointStore, EventProcessorClientTest::noopConsumer, null, null,
+            processorOptions);
 
         // Act
         eventProcessorClient.start();
@@ -934,7 +952,9 @@ public class EventProcessorClientTest {
         when(eventHubAsyncClient.getEventHubName()).thenReturn(EVENT_HUB_NAME);
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.just(PARTITION_ID));
         when(eventHubAsyncClient.getIdentifier()).thenReturn("my-client-identifier");
-        when(eventHubAsyncClient.createConsumer(anyString(), anyInt(), eq(true))).thenReturn(consumer1);
+        when(eventHubAsyncClient
+            .createConsumer(anyString(), anyInt(), eq(true)))
+            .thenReturn(consumer1);
         when(consumer1.receiveFromPartition(anyString(), any(EventPosition.class), any(ReceiveOptions.class)))
             .thenReturn(Flux.just(getEvent(eventData1), getEvent(eventData2)).delayElements(Duration.ofSeconds(3)));
         when(eventData1.getSequenceNumber()).thenReturn(1L);
@@ -964,9 +984,9 @@ public class EventProcessorClientTest {
             .setPartitionOwnershipExpirationInterval(Duration.ofMinutes(1))
             .setLoadBalancingStrategy(LoadBalancingStrategy.BALANCED);
 
-        final EventProcessorClient eventProcessorClient
-            = new EventProcessorClient(eventHubClientBuilder, () -> testPartitionProcessor, checkpointStore,
-                EventProcessorClientTest::noopConsumer, null, null, processorOptions);
+        final EventProcessorClient eventProcessorClient = new EventProcessorClient(eventHubClientBuilder,
+            () -> testPartitionProcessor, checkpointStore, EventProcessorClientTest::noopConsumer, null, null,
+            processorOptions);
 
         eventProcessorClient.start();
         boolean completed = testPartitionProcessor.countDownLatch.await(20, TimeUnit.SECONDS);
@@ -975,6 +995,7 @@ public class EventProcessorClientTest {
         assertTrue(testPartitionProcessor.receivedEventsCount.contains(0));
         assertTrue(testPartitionProcessor.receivedEventsCount.contains(1));
     }
+
 
     @Test
     @SuppressWarnings("unchecked")
@@ -987,7 +1008,9 @@ public class EventProcessorClientTest {
         when(eventHubAsyncClient.getEventHubName()).thenReturn(EVENT_HUB_NAME);
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.just(PARTITION_ID));
         when(eventHubAsyncClient.getIdentifier()).thenReturn("my-client-identifier");
-        when(eventHubAsyncClient.createConsumer(anyString(), anyInt(), eq(true))).thenReturn(consumer1);
+        when(eventHubAsyncClient
+            .createConsumer(anyString(), anyInt(), eq(true)))
+            .thenReturn(consumer1);
         when(consumer1.receiveFromPartition(anyString(), any(EventPosition.class), any(ReceiveOptions.class)))
             .thenReturn(Flux.just(getEvent(eventData1), getEvent(eventData2)).delayElements(Duration.ofSeconds(3)));
         when(eventData1.getSequenceNumber()).thenReturn(1L);
@@ -1017,9 +1040,9 @@ public class EventProcessorClientTest {
             .setPartitionOwnershipExpirationInterval(Duration.ofMinutes(1))
             .setLoadBalancingStrategy(LoadBalancingStrategy.BALANCED);
 
-        final EventProcessorClient eventProcessorClient
-            = new EventProcessorClient(eventHubClientBuilder, () -> testPartitionProcessor, checkpointStore,
-                EventProcessorClientTest::noopConsumer, null, null, processorOptions);
+        final EventProcessorClient eventProcessorClient = new EventProcessorClient(eventHubClientBuilder,
+            () -> testPartitionProcessor, checkpointStore, EventProcessorClientTest::noopConsumer, null, null,
+            processorOptions);
 
         eventProcessorClient.start();
         boolean completed = testPartitionProcessor.countDownLatch.await(20, TimeUnit.SECONDS);
@@ -1039,8 +1062,8 @@ public class EventProcessorClientTest {
 
     private void assertStartOptions(OperationName operationName, StartSpanOptions startOpts, int linkCount) {
         assertEquals(SpanKind.CONSUMER, startOpts.getSpanKind());
-        assertAllAttributes(HOSTNAME, EVENT_HUB_NAME, PARTITION_ID, CONSUMER_GROUP, null, operationName,
-            startOpts.getAttributes());
+        assertAllAttributes(HOSTNAME, EVENT_HUB_NAME, PARTITION_ID, CONSUMER_GROUP, null,
+            operationName, startOpts.getAttributes());
 
         if (linkCount == 0) {
             assertTrue(startOpts.getAttributes().containsKey(MESSAGING_EVENTHUBS_MESSAGE_ENQUEUED_TIME));
@@ -1059,8 +1082,8 @@ public class EventProcessorClientTest {
 
     private void assertCheckpointStartOptions(StartSpanOptions startOpts) {
         assertEquals(SpanKind.INTERNAL, startOpts.getSpanKind());
-        assertAllAttributes(HOSTNAME, EVENT_HUB_NAME, PARTITION_ID, CONSUMER_GROUP, null, CHECKPOINT,
-            startOpts.getAttributes());
+        assertAllAttributes(HOSTNAME, EVENT_HUB_NAME, PARTITION_ID, CONSUMER_GROUP, null,
+            CHECKPOINT, startOpts.getAttributes());
         assertNull(startOpts.getLinks());
     }
 
@@ -1069,23 +1092,23 @@ public class EventProcessorClientTest {
         assertNotNull(eventCounter);
         assertEquals(1, eventCounter.getMeasurements().size());
         assertEquals(batchSize, eventCounter.getMeasurements().get(0).getValue());
-        assertAllAttributes(HOSTNAME, EVENT_HUB_NAME, PARTITION_ID, CONSUMER_GROUP, expectedErrorType, PROCESS,
-            eventCounter.getMeasurements().get(0).getAttributes());
+        assertAllAttributes(HOSTNAME, EVENT_HUB_NAME, PARTITION_ID, CONSUMER_GROUP, expectedErrorType,
+            PROCESS, eventCounter.getMeasurements().get(0).getAttributes());
 
         TestHistogram processDuration = meter.getHistograms().get("messaging.process.duration");
         assertNotNull(processDuration);
         assertEquals(1, processDuration.getMeasurements().size());
         assertNotNull(processDuration.getMeasurements().get(0).getValue());
-        assertAllAttributes(HOSTNAME, EVENT_HUB_NAME, PARTITION_ID, CONSUMER_GROUP, expectedErrorType, PROCESS,
-            processDuration.getMeasurements().get(0).getAttributes());
+        assertAllAttributes(HOSTNAME, EVENT_HUB_NAME, PARTITION_ID, CONSUMER_GROUP, expectedErrorType,
+            PROCESS, processDuration.getMeasurements().get(0).getAttributes());
 
         if (expectedErrorType == null) {
             TestHistogram checkpointDuration = meter.getHistograms().get("messaging.client.operation.duration");
             assertNotNull(checkpointDuration);
             assertEquals(1, checkpointDuration.getMeasurements().size());
             assertNotNull(checkpointDuration.getMeasurements().get(0).getValue());
-            assertAllAttributes(HOSTNAME, EVENT_HUB_NAME, PARTITION_ID, CONSUMER_GROUP, null, CHECKPOINT,
-                checkpointDuration.getMeasurements().get(0).getAttributes());
+            assertAllAttributes(HOSTNAME, EVENT_HUB_NAME, PARTITION_ID, CONSUMER_GROUP, null,
+                CHECKPOINT, checkpointDuration.getMeasurements().get(0).getAttributes());
         }
     }
 
