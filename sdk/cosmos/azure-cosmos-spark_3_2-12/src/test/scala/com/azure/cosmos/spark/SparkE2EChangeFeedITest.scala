@@ -5,11 +5,9 @@ package com.azure.cosmos.spark
 import com.azure.cosmos.SparkBridgeInternal
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState
 import com.azure.cosmos.implementation.{TestConfigurations, Utils}
-import com.azure.cosmos.models.PartitionKey
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.azure.cosmos.spark.udf.{CreateChangeFeedOffsetFromSpark2, CreateSpark2ContinuationsFromChangeFeedOffset, GetFeedRangeForPartitionKeyValue}
 import org.apache.hadoop.fs.{FileSystem, Path}
-import org.apache.spark.sql.functions
 import org.apache.spark.sql.types._
 
 import java.io.{BufferedReader, InputStreamReader}
@@ -22,7 +20,7 @@ class SparkE2EChangeFeedITest
   extends IntegrationSpec
     with SparkWithDropwizardAndSlf4jMetrics
     with CosmosClient
-    with CosmosContainer
+    with CosmosContainerWithRetention
     with BasicLoggingTrait
     with MetricAssertions {
 
