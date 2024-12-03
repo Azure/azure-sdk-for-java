@@ -161,16 +161,6 @@ public final class StorageTaskImpl implements StorageTask, StorageTask.Definitio
         return this;
     }
 
-    public StorageTaskImpl withTags(Map<String, String> tags) {
-        if (isInCreateMode()) {
-            this.innerModel().withTags(tags);
-            return this;
-        } else {
-            this.updateParameters.withTags(tags);
-            return this;
-        }
-    }
-
     public StorageTaskImpl withIdentity(ManagedServiceIdentity identity) {
         if (isInCreateMode()) {
             this.innerModel().withIdentity(identity);
@@ -187,6 +177,16 @@ public final class StorageTaskImpl implements StorageTask, StorageTask.Definitio
             return this;
         } else {
             this.updateParameters.withProperties(properties);
+            return this;
+        }
+    }
+
+    public StorageTaskImpl withTags(Map<String, String> tags) {
+        if (isInCreateMode()) {
+            this.innerModel().withTags(tags);
+            return this;
+        } else {
+            this.updateParameters.withTags(tags);
             return this;
         }
     }

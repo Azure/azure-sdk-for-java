@@ -5,26 +5,28 @@
 package com.azure.resourcemanager.storageactions.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.storageactions.fluent.models.StorageTaskAssignmentInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The response from the List Storage Tasks operation.
  */
 @Immutable
-public final class StorageTaskAssignmentsListResult {
+public final class StorageTaskAssignmentsListResult implements JsonSerializable<StorageTaskAssignmentsListResult> {
     /*
-     * Gets the list of storage task assignment Ids.
+     * List of Storage Task Assignment Resource IDs associated with this Storage Task.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<StorageTaskAssignmentInner> value;
 
     /*
-     * Request URL that can be used to query next page of storage task assignment Ids. Returned when total number of
-     * requested storage task assignment Ids exceed maximum page size.
+     * Request URL that can be used to query next page of Resource IDs. Returned when total number of requested Resource
+     * IDs exceed maximum page size.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
     /**
@@ -34,7 +36,7 @@ public final class StorageTaskAssignmentsListResult {
     }
 
     /**
-     * Get the value property: Gets the list of storage task assignment Ids.
+     * Get the value property: List of Storage Task Assignment Resource IDs associated with this Storage Task.
      * 
      * @return the value value.
      */
@@ -43,8 +45,8 @@ public final class StorageTaskAssignmentsListResult {
     }
 
     /**
-     * Get the nextLink property: Request URL that can be used to query next page of storage task assignment Ids.
-     * Returned when total number of requested storage task assignment Ids exceed maximum page size.
+     * Get the nextLink property: Request URL that can be used to query next page of Resource IDs. Returned when total
+     * number of requested Resource IDs exceed maximum page size.
      * 
      * @return the nextLink value.
      */
@@ -61,5 +63,45 @@ public final class StorageTaskAssignmentsListResult {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StorageTaskAssignmentsListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StorageTaskAssignmentsListResult if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the StorageTaskAssignmentsListResult.
+     */
+    public static StorageTaskAssignmentsListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StorageTaskAssignmentsListResult deserializedStorageTaskAssignmentsListResult
+                = new StorageTaskAssignmentsListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<StorageTaskAssignmentInner> value
+                        = reader.readArray(reader1 -> StorageTaskAssignmentInner.fromJson(reader1));
+                    deserializedStorageTaskAssignmentsListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedStorageTaskAssignmentsListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStorageTaskAssignmentsListResult;
+        });
     }
 }
