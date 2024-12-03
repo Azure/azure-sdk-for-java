@@ -100,3 +100,4 @@
  * <!-- end com.azure.data.schemaregistry.apacheavro.schemaregistryapacheavroserializer.deserialize-eventdata -->
  */
 package com.azure.data.schemaregistry.apacheavro;
+
