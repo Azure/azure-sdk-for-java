@@ -86,7 +86,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudHsmClusterName The name of the Cloud HSM Cluster within the specified resource group. Cloud HSM
-     * Cluster names must be between 3 and 24 characters in length.
+     * Cluster names must be between 3 and 23 characters in length.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -112,11 +112,11 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             return Mono
                 .error(new IllegalArgumentException("Parameter cloudHsmClusterName is required and cannot be null."));
         }
-        final String apiVersion = "2023-12-10-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listByCloudHsmCluster(this.client.getEndpoint(),
-                this.client.getSubscriptionId(), resourceGroupName, cloudHsmClusterName, apiVersion, accept, context))
+            .withContext(
+                context -> service.listByCloudHsmCluster(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    resourceGroupName, cloudHsmClusterName, this.client.getApiVersion(), accept, context))
             .<PagedResponse<PrivateEndpointConnectionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -127,7 +127,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudHsmClusterName The name of the Cloud HSM Cluster within the specified resource group. Cloud HSM
-     * Cluster names must be between 3 and 24 characters in length.
+     * Cluster names must be between 3 and 23 characters in length.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -154,12 +154,11 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             return Mono
                 .error(new IllegalArgumentException("Parameter cloudHsmClusterName is required and cannot be null."));
         }
-        final String apiVersion = "2023-12-10-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByCloudHsmCluster(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-                cloudHsmClusterName, apiVersion, accept, context)
+                cloudHsmClusterName, this.client.getApiVersion(), accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -169,7 +168,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudHsmClusterName The name of the Cloud HSM Cluster within the specified resource group. Cloud HSM
-     * Cluster names must be between 3 and 24 characters in length.
+     * Cluster names must be between 3 and 23 characters in length.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -188,7 +187,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudHsmClusterName The name of the Cloud HSM Cluster within the specified resource group. Cloud HSM
-     * Cluster names must be between 3 and 24 characters in length.
+     * Cluster names must be between 3 and 23 characters in length.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -209,7 +208,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudHsmClusterName The name of the Cloud HSM Cluster within the specified resource group. Cloud HSM
-     * Cluster names must be between 3 and 24 characters in length.
+     * Cluster names must be between 3 and 23 characters in length.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -227,7 +226,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudHsmClusterName The name of the Cloud HSM Cluster within the specified resource group. Cloud HSM
-     * Cluster names must be between 3 and 24 characters in length.
+     * Cluster names must be between 3 and 23 characters in length.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -244,9 +243,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -275,9 +272,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

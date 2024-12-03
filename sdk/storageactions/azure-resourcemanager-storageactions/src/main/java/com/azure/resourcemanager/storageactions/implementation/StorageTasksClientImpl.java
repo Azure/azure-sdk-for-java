@@ -1012,7 +1012,7 @@ public final class StorageTasksClientImpl implements StorageTasksClient {
      * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the List Storage Tasks operation along with {@link PagedResponse} on successful
+     * @return the response from the List Storage Task operation along with {@link PagedResponse} on successful
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1041,7 +1041,7 @@ public final class StorageTasksClientImpl implements StorageTasksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the List Storage Tasks operation along with {@link PagedResponse} on successful
+     * @return the response from the List Storage Task operation along with {@link PagedResponse} on successful
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1068,7 +1068,7 @@ public final class StorageTasksClientImpl implements StorageTasksClient {
      * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the List Storage Tasks operation as paginated response with {@link PagedFlux}.
+     * @return the response from the List Storage Task operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<StorageTaskInner> listAsync() {
@@ -1083,7 +1083,7 @@ public final class StorageTasksClientImpl implements StorageTasksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the List Storage Tasks operation as paginated response with {@link PagedFlux}.
+     * @return the response from the List Storage Task operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<StorageTaskInner> listAsync(Context context) {
@@ -1096,7 +1096,7 @@ public final class StorageTasksClientImpl implements StorageTasksClient {
      * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the List Storage Tasks operation as paginated response with {@link PagedIterable}.
+     * @return the response from the List Storage Task operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StorageTaskInner> list() {
@@ -1110,7 +1110,7 @@ public final class StorageTasksClientImpl implements StorageTasksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the List Storage Tasks operation as paginated response with {@link PagedIterable}.
+     * @return the response from the List Storage Task operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StorageTaskInner> list(Context context) {
@@ -1124,7 +1124,7 @@ public final class StorageTasksClientImpl implements StorageTasksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the List Storage Tasks operation along with {@link PagedResponse} on successful
+     * @return the response from the List Storage Task operation along with {@link PagedResponse} on successful
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1158,7 +1158,7 @@ public final class StorageTasksClientImpl implements StorageTasksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the List Storage Tasks operation along with {@link PagedResponse} on successful
+     * @return the response from the List Storage Task operation along with {@link PagedResponse} on successful
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1192,7 +1192,7 @@ public final class StorageTasksClientImpl implements StorageTasksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the List Storage Tasks operation as paginated response with {@link PagedFlux}.
+     * @return the response from the List Storage Task operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<StorageTaskInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -1208,7 +1208,7 @@ public final class StorageTasksClientImpl implements StorageTasksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the List Storage Tasks operation as paginated response with {@link PagedFlux}.
+     * @return the response from the List Storage Task operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<StorageTaskInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
@@ -1223,7 +1223,7 @@ public final class StorageTasksClientImpl implements StorageTasksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the List Storage Tasks operation as paginated response with {@link PagedIterable}.
+     * @return the response from the List Storage Task operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StorageTaskInner> listByResourceGroup(String resourceGroupName) {
@@ -1238,7 +1238,7 @@ public final class StorageTasksClientImpl implements StorageTasksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the List Storage Tasks operation as paginated response with {@link PagedIterable}.
+     * @return the response from the List Storage Task operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StorageTaskInner> listByResourceGroup(String resourceGroupName, Context context) {
@@ -1368,13 +1368,11 @@ public final class StorageTasksClientImpl implements StorageTasksClient {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the List Storage Tasks operation along with {@link PagedResponse} on successful
+     * @return the response from the List Storage Task operation along with {@link PagedResponse} on successful
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1398,14 +1396,12 @@ public final class StorageTasksClientImpl implements StorageTasksClient {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the List Storage Tasks operation along with {@link PagedResponse} on successful
+     * @return the response from the List Storage Task operation along with {@link PagedResponse} on successful
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1428,13 +1424,11 @@ public final class StorageTasksClientImpl implements StorageTasksClient {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the List Storage Tasks operation along with {@link PagedResponse} on successful
+     * @return the response from the List Storage Task operation along with {@link PagedResponse} on successful
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1458,14 +1452,12 @@ public final class StorageTasksClientImpl implements StorageTasksClient {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response from the List Storage Tasks operation along with {@link PagedResponse} on successful
+     * @return the response from the List Storage Task operation along with {@link PagedResponse} on successful
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)

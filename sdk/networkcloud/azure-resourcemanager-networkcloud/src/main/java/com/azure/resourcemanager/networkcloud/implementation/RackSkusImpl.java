@@ -29,12 +29,12 @@ public final class RackSkusImpl implements RackSkus {
 
     public PagedIterable<RackSku> list() {
         PagedIterable<RackSkuInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new RackSkuImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new RackSkuImpl(inner1, this.manager()));
     }
 
     public PagedIterable<RackSku> list(Context context) {
         PagedIterable<RackSkuInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new RackSkuImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new RackSkuImpl(inner1, this.manager()));
     }
 
     public Response<RackSku> getWithResponse(String rackSkuName, Context context) {

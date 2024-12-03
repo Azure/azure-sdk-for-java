@@ -6,6 +6,8 @@ package com.azure.resourcemanager.storageactions.generated;
 
 import com.azure.resourcemanager.storageactions.models.ElseCondition;
 import com.azure.resourcemanager.storageactions.models.IfCondition;
+import com.azure.resourcemanager.storageactions.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.storageactions.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.storageactions.models.OnFailure;
 import com.azure.resourcemanager.storageactions.models.OnSuccess;
 import com.azure.resourcemanager.storageactions.models.StorageTask;
@@ -13,6 +15,7 @@ import com.azure.resourcemanager.storageactions.models.StorageTaskAction;
 import com.azure.resourcemanager.storageactions.models.StorageTaskOperation;
 import com.azure.resourcemanager.storageactions.models.StorageTaskOperationName;
 import com.azure.resourcemanager.storageactions.models.StorageTaskProperties;
+import com.azure.resourcemanager.storageactions.models.UserAssignedIdentity;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -33,17 +36,27 @@ public final class StorageTasksUpdateSamples {
      */
     public static void patchStorageTask(com.azure.resourcemanager.storageactions.StorageActionsManager manager) {
         StorageTask resource = manager.storageTasks()
-            .getByResourceGroupWithResponse("res4228", "mytask1", com.azure.core.util.Context.NONE).getValue();
+            .getByResourceGroupWithResponse("res4228", "mytask1", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update()
-            .withProperties(new StorageTaskProperties().withEnabled(true).withDescription("My Storage task")
-                .withAction(new StorageTaskAction()
-                    .withIfProperty(new IfCondition().withCondition("[[equals(AccessTier, 'Cool')]]")
-                        .withOperations(Arrays.asList(new StorageTaskOperation()
-                            .withName(StorageTaskOperationName.SET_BLOB_TIER).withParameters(mapOf("tier", "Hot"))
-                            .withOnSuccess(OnSuccess.CONTINUE).withOnFailure(OnFailure.BREAK))))
-                    .withElseProperty(new ElseCondition().withOperations(
-                        Arrays.asList(new StorageTaskOperation().withName(StorageTaskOperationName.DELETE_BLOB)
-                            .withOnSuccess(OnSuccess.CONTINUE).withOnFailure(OnFailure.BREAK))))))
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
+                .withUserAssignedIdentities(mapOf(
+                    "/subscriptions/1f31ba14-ce16-4281-b9b4-3e78da6e1616/resourceGroups/res4228/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myUserAssignedIdentity",
+                    new UserAssignedIdentity())))
+            .withProperties(
+                new StorageTaskProperties().withEnabled(true)
+                    .withDescription("My Storage task")
+                    .withAction(new StorageTaskAction()
+                        .withIfProperty(new IfCondition().withCondition("[[equals(AccessTier, 'Cool')]]")
+                            .withOperations(Arrays
+                                .asList(new StorageTaskOperation().withName(StorageTaskOperationName.SET_BLOB_TIER)
+                                    .withParameters(mapOf("tier", "Hot"))
+                                    .withOnSuccess(OnSuccess.CONTINUE)
+                                    .withOnFailure(OnFailure.BREAK))))
+                        .withElseProperty(new ElseCondition().withOperations(
+                            Arrays.asList(new StorageTaskOperation().withName(StorageTaskOperationName.DELETE_BLOB)
+                                .withOnSuccess(OnSuccess.CONTINUE)
+                                .withOnFailure(OnFailure.BREAK))))))
             .apply();
     }
 

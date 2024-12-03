@@ -29,24 +29,24 @@ class EventHubPartitionAsyncConsumer implements AutoCloseable {
     private static final ClientLogger LOGGER = new ClientLogger(EventHubPartitionAsyncConsumer.class);
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final AtomicReference<LastEnqueuedEventProperties> lastEnqueuedEventProperties = new AtomicReference<>();
-    private final MessageFluxWrapper amqpReceiveLinkProcessor;
+    private final MessageFluxWrapper messageFlux;
     private final MessageSerializer messageSerializer;
     private final String fullyQualifiedNamespace;
     private final String eventHubName;
     private final String consumerGroup;
     private final String partitionId;
     private final boolean trackLastEnqueuedEventProperties;
-    private final Flux<PartitionEvent> emitterProcessor;
+    private final Flux<PartitionEvent> partitionEvents;
     private final EventPosition initialPosition;
 
     private volatile Long currentOffset;
 
-    EventHubPartitionAsyncConsumer(MessageFluxWrapper amqpReceiveLinkProcessor, MessageSerializer messageSerializer,
+    EventHubPartitionAsyncConsumer(MessageFluxWrapper messageFlux, MessageSerializer messageSerializer,
         String fullyQualifiedNamespace, String eventHubName, String consumerGroup, String partitionId,
         AtomicReference<Supplier<EventPosition>> currentEventPosition, boolean trackLastEnqueuedEventProperties) {
         this.initialPosition = Objects.requireNonNull(currentEventPosition.get().get(),
             "'currentEventPosition.get().get()' cannot be null.");
-        this.amqpReceiveLinkProcessor = amqpReceiveLinkProcessor;
+        this.messageFlux = messageFlux;
         this.messageSerializer = messageSerializer;
         this.fullyQualifiedNamespace = fullyQualifiedNamespace;
         this.eventHubName = eventHubName;
@@ -63,7 +63,7 @@ class EventHubPartitionAsyncConsumer implements AutoCloseable {
             return offset == null ? initialPosition : EventPosition.fromOffset(offset);
         });
 
-        this.emitterProcessor = amqpReceiveLinkProcessor.flux().map(this::onMessageReceived).doOnNext(event -> {
+        this.partitionEvents = messageFlux.flux().map(this::onMessageReceived).doOnNext(event -> {
             // Keep track of the last position so if the link goes down, we don't start from the original location.
             final Long offset = event.getData().getOffset();
             if (offset != null) {
@@ -84,9 +84,9 @@ class EventHubPartitionAsyncConsumer implements AutoCloseable {
     @Override
     public void close() {
         if (!isDisposed.getAndSet(true)) {
-            if (!amqpReceiveLinkProcessor.isTerminated()) {
+            if (!messageFlux.isTerminated()) {
                 // cancel only if the processor is not already terminated.
-                amqpReceiveLinkProcessor.cancel();
+                messageFlux.cancel();
             }
             LOGGER.atInfo().addKeyValue(PARTITION_ID_KEY, this.partitionId).log("Closed consumer.");
         }
@@ -98,7 +98,7 @@ class EventHubPartitionAsyncConsumer implements AutoCloseable {
      * @return A stream of events received from the partition.
      */
     Flux<PartitionEvent> receive() {
-        return emitterProcessor;
+        return partitionEvents;
     }
 
     /**

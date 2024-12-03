@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.query;
 
+import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.DiagnosticsInstantSerializer;
 import com.azure.cosmos.implementation.query.aggregation.AggregateOperator;
@@ -240,6 +241,21 @@ public final class QueryInfo extends JsonSerializable {
         public RequestTimeline getRequestTimeline() {
             return requestTimeline;
         }
+    }
+
+    public void setOrderByExpressions(List<String> orderByExpressions) {
+        this.orderByExpressions = orderByExpressions;
+        super.set("orderByExpressions", orderByExpressions, CosmosItemSerializer.DEFAULT_SERIALIZER);
+    }
+
+    public void setRewrittenQuery(String rewrittenQuery) {
+        this.rewrittenQuery = rewrittenQuery;
+        super.set("rewrittenQuery", rewrittenQuery, CosmosItemSerializer.DEFAULT_SERIALIZER);
+    }
+
+    public void setOrderBy(List<SortOrder> orderBy) {
+        this.orderBy = orderBy;
+        super.set("orderBy", orderBy, CosmosItemSerializer.DEFAULT_SERIALIZER);
     }
 
     @Override

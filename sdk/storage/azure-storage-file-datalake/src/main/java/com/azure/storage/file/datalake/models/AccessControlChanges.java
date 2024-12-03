@@ -7,13 +7,19 @@ import java.util.List;
 
 /**
  * AccessControlChanges contains batch and cumulative counts of operations that change Access Control Lists recursively.
- * Additionally it exposes path entries that failed to update while these operations progress.
+ * Additionally, it exposes path entries that failed to update while these operations progress.
  */
 public class AccessControlChanges {
     private List<AccessControlChangeFailure> batchFailures;
     private AccessControlChangeCounters batchCounters;
     private AccessControlChangeCounters aggregateCounters;
     private String continuationToken;
+
+    /**
+     * Creates a new instance of {@link AccessControlChanges}.
+     */
+    public AccessControlChanges() {
+    }
 
     /**
      * Returns a list of path entries that failed to update Access Control List within a single batch.

@@ -1,17 +1,21 @@
 # Release History
 
-## 2.10.0-beta.1 (Unreleased)
+## 2.11.0-beta.1 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
 
 ### Bugs Fixed
-- Fixed bug: Intermediate certificate not loaded. [#39715](https://github.com/Azure/azure-sdk-for-java/issues/39715).
-- Fixed bug: Failed to get cert name when key vault name include "certificates". [#42162](https://github.com/Azure/azure-sdk-for-java/issues/42162).
 
 ### Other Changes
 
+## 2.10.0 (2024-11-26)
+
+### Bugs Fixed
+- Fixed bug: Intermediate certificate not loaded. [#39715](https://github.com/Azure/azure-sdk-for-java/issues/39715).
+- Fixed bug: Failed to get cert name when key vault name include "certificates". [#42162](https://github.com/Azure/azure-sdk-for-java/issues/42162).
+- Fixed bug: `JsonParseException` and `ServiceConfigurationError` exceptions when acquiring access token. [#42860](https://github.com/Azure/azure-sdk-for-java/pull/42860).
 
 ## 2.9.0 (2024-10-15)
 

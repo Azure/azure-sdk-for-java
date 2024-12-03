@@ -5,39 +5,38 @@
 package com.azure.resourcemanager.networkcloud.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.networkcloud.fluent.models.VirtualMachinePatchProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** VirtualMachinePatchParameters represents the body of the request to patch the virtual machine. */
+/**
+ * VirtualMachinePatchParameters represents the body of the request to patch the virtual machine.
+ */
 @Fluent
-public final class VirtualMachinePatchParameters {
+public final class VirtualMachinePatchParameters implements JsonSerializable<VirtualMachinePatchParameters> {
     /*
-     * VirtualMachinePatchProperties represents the properties of the virtual machine that can be patched.
-     *
      * The list of the resource properties.
      */
-    @JsonProperty(value = "properties")
     private VirtualMachinePatchProperties innerProperties;
 
     /*
      * The Azure resource tags that will replace the existing ones.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
-    /** Creates an instance of VirtualMachinePatchParameters class. */
+    /**
+     * Creates an instance of VirtualMachinePatchParameters class.
+     */
     public VirtualMachinePatchParameters() {
     }
 
     /**
-     * Get the innerProperties property: VirtualMachinePatchProperties represents the properties of the virtual machine
-     * that can be patched.
-     *
-     * <p>The list of the resource properties.
-     *
+     * Get the innerProperties property: The list of the resource properties.
+     * 
      * @return the innerProperties value.
      */
     private VirtualMachinePatchProperties innerProperties() {
@@ -46,7 +45,7 @@ public final class VirtualMachinePatchParameters {
 
     /**
      * Get the tags property: The Azure resource tags that will replace the existing ones.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -55,7 +54,7 @@ public final class VirtualMachinePatchParameters {
 
     /**
      * Set the tags property: The Azure resource tags that will replace the existing ones.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the VirtualMachinePatchParameters object itself.
      */
@@ -65,11 +64,9 @@ public final class VirtualMachinePatchParameters {
     }
 
     /**
-     * Get the vmImageRepositoryCredentials property: ImageRepositoryCredentials represents the credentials used to
-     * login to the image repository.
-     *
-     * <p>The credentials used to login to the image repository that has access to the specified image.
-     *
+     * Get the vmImageRepositoryCredentials property: The credentials used to login to the image repository that has
+     * access to the specified image.
+     * 
      * @return the vmImageRepositoryCredentials value.
      */
     public ImageRepositoryCredentials vmImageRepositoryCredentials() {
@@ -77,11 +74,9 @@ public final class VirtualMachinePatchParameters {
     }
 
     /**
-     * Set the vmImageRepositoryCredentials property: ImageRepositoryCredentials represents the credentials used to
-     * login to the image repository.
-     *
-     * <p>The credentials used to login to the image repository that has access to the specified image.
-     *
+     * Set the vmImageRepositoryCredentials property: The credentials used to login to the image repository that has
+     * access to the specified image.
+     * 
      * @param vmImageRepositoryCredentials the vmImageRepositoryCredentials value to set.
      * @return the VirtualMachinePatchParameters object itself.
      */
@@ -96,12 +91,54 @@ public final class VirtualMachinePatchParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualMachinePatchParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualMachinePatchParameters if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualMachinePatchParameters.
+     */
+    public static VirtualMachinePatchParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualMachinePatchParameters deserializedVirtualMachinePatchParameters
+                = new VirtualMachinePatchParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedVirtualMachinePatchParameters.innerProperties
+                        = VirtualMachinePatchProperties.fromJson(reader);
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedVirtualMachinePatchParameters.tags = tags;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualMachinePatchParameters;
+        });
     }
 }

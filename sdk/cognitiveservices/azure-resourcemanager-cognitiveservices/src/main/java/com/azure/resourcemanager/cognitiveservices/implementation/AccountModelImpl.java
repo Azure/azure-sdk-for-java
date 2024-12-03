@@ -27,6 +27,10 @@ public final class AccountModelImpl implements AccountModel {
         this.serviceManager = serviceManager;
     }
 
+    public String publisher() {
+        return this.innerModel().publisher();
+    }
+
     public String format() {
         return this.innerModel().format();
     }
@@ -41,6 +45,10 @@ public final class AccountModelImpl implements AccountModel {
 
     public String source() {
         return this.innerModel().source();
+    }
+
+    public String sourceAccount() {
+        return this.innerModel().sourceAccount();
     }
 
     public CallRateLimit callRateLimit() {

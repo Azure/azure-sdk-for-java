@@ -19,6 +19,7 @@ import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import com.azure.storage.common.test.shared.policy.MockFailureResponsePolicy;
+import com.azure.storage.common.test.shared.policy.MockPartialResponsePolicy;
 import com.azure.storage.common.test.shared.policy.MockRetryRangeResponsePolicy;
 import com.azure.storage.common.test.shared.policy.TransientFailureInjectingHttpPipelinePolicy;
 import com.azure.storage.file.share.models.ClearRange;
@@ -62,6 +63,7 @@ import com.azure.storage.file.share.options.ShareFileSetPropertiesOptions;
 import com.azure.storage.file.share.options.ShareFileUploadRangeFromUrlOptions;
 import com.azure.storage.file.share.sas.ShareFileSasPermission;
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -78,6 +80,7 @@ import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.FileAlreadyExistsException;
+import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
@@ -635,6 +638,93 @@ class FileApiTests extends FileShareTestBase {
         String bodyStr = outStream.toString();
 
         assertEquals(bodyStr, DATA.getDefaultText());
+    }
+
+    @Test
+    public void downloadToFileWithPartialDownloads() throws Exception {
+        File uploadFile = File.createTempFile(CoreUtils.randomUuid().toString(), ".txt");
+        uploadFile.deleteOnExit();
+        Files.write(uploadFile.toPath(), DATA.getDefaultBytes());
+
+        File outFile = new File(generatePathName() + ".txt");
+        if (outFile.exists()) {
+            assertTrue(outFile.delete());
+        }
+        outFile.deleteOnExit();
+
+        MockPartialResponsePolicy policy = new MockPartialResponsePolicy(5);
+
+        // Create a ShareFileClient for download using the custom pipeline
+        ShareFileClient downloadClient
+            = getFileClient(ENVIRONMENT.getPrimaryAccount().getCredential(), primaryFileClient.getFileUrl(), policy);
+
+        // Upload the test data
+        primaryFileClient.create(DATA.getDefaultDataSize());
+        primaryFileClient.uploadFromFile(uploadFile.toString());
+
+        downloadClient.downloadToFile(outFile.toString());
+
+        byte[] downloadedData = Files.readAllBytes(outFile.toPath());
+        Assertions.assertArrayEquals(DATA.getDefaultBytes(), downloadedData);
+
+        // Assert that we retried the correct number of times (5)
+        assertEquals(0, policy.getTriesRemaining());
+
+        // Assert that the range headers that were retried match what was returned from MockPartialResponsePolicy
+        List<String> expectedRanges = expectedHeaderRanges();
+        List<String> actualRanges = policy.getRangeHeaders();
+        assertEquals(expectedRanges, actualRanges);
+
+        // Clean up
+        Files.deleteIfExists(outFile.toPath());
+        Files.deleteIfExists(uploadFile.toPath());
+    }
+
+    private List<String> expectedHeaderRanges() {
+        List<String> expectedRanges = new ArrayList<>();
+        for (int i = 0; i < 6; i++) {
+            expectedRanges.add("bytes=" + i + "-" + (DATA.getDefaultDataSize() - 1));
+        }
+        return expectedRanges;
+    }
+
+    @Test
+    public void downloadToFileRetryExhausted() throws Exception {
+        File uploadFile = File.createTempFile(CoreUtils.randomUuid().toString(), ".txt");
+        uploadFile.deleteOnExit();
+        Files.write(uploadFile.toPath(), DATA.getDefaultBytes());
+
+        File outFile = new File(generatePathName() + ".txt");
+        if (outFile.exists()) {
+            assertTrue(outFile.delete());
+        }
+        outFile.deleteOnExit();
+
+        MockPartialResponsePolicy policy = new MockPartialResponsePolicy(6);
+
+        // Create a ShareFileClient for download using the custom pipeline
+        ShareFileClient downloadClient
+            = getFileClient(ENVIRONMENT.getPrimaryAccount().getCredential(), primaryFileClient.getFileUrl(), policy);
+
+        // Upload the test data
+        primaryFileClient.create(DATA.getDefaultDataSize());
+        primaryFileClient.uploadFromFile(uploadFile.toString());
+
+        // Throws a Exceptions.ReactiveException.class because of Flux.error
+        Throwable thrown = assertThrows(Throwable.class, () -> downloadClient.downloadToFile(outFile.toString()));
+        assertInstanceOf(IOException.class, thrown.getCause());
+
+        // Assert that we retried the correct number of times (5) even though the retry policy allowed for 6 retries
+        assertEquals(0, policy.getTriesRemaining());
+
+        // Assert that the range headers that were retried match what was returned from MockPartialResponsePolicy
+        List<String> expectedRanges = expectedHeaderRanges();
+        List<String> actualRanges = policy.getRangeHeaders();
+        assertEquals(expectedRanges, actualRanges);
+
+        // Clean up
+        Files.deleteIfExists(outFile.toPath());
+        Files.deleteIfExists(uploadFile.toPath());
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2022-11-02")

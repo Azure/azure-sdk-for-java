@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.largeinstance.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -253,7 +252,6 @@ public final class AzureLargeInstanceSizeNamesEnum extends ExpandableStringEnum<
      * @param name a name to look for.
      * @return the corresponding AzureLargeInstanceSizeNamesEnum.
      */
-    @JsonCreator
     public static AzureLargeInstanceSizeNamesEnum fromString(String name) {
         return fromString(name, AzureLargeInstanceSizeNamesEnum.class);
     }

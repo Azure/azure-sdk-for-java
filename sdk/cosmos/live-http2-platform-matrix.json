@@ -1,0 +1,27 @@
+{
+  "displayNames": {
+    "-Pfast": "Fast",
+    "-Pquery": "Query",
+    "-Pcircuit-breaker-misc-gateway": "CircuitBreakerMiscGateway",
+    "Session": "",
+    "ubuntu": "",
+    "@{ enableMultipleWriteLocations = $true; defaultConsistencyLevel = 'Session'; enableMultipleRegions = $true }": "http2"
+  },
+  "include": [
+    {
+      "DESIRED_CONSISTENCIES": "[\"Session\"]",
+      "ACCOUNT_CONSISTENCY": "Session",
+      "ArmConfig": {
+        "MultiMaster_MultiRegion": {
+          "ArmTemplateParameters": "@{ enableMultipleWriteLocations = $true; defaultConsistencyLevel = 'Session'; enableMultipleRegions = $true }",
+          "PREFERRED_LOCATIONS": "[\"East US 2\"]"
+        }
+      },
+      "PROTOCOLS": "[\"Tcp\"]",
+      "ProfileFlag": [ "-Pquery", "-Pcircuit-breaker-misc-gateway", "-Pfast" ],
+      "Agent": {
+        "ubuntu": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
+      }
+    }
+  ]
+}

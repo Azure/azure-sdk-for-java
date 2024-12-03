@@ -4,20 +4,23 @@
 
 package com.azure.resourcemanager.networkcloud.generated;
 
-/** Samples for BmcKeySets Get. */
+/**
+ * Samples for BmcKeySets Get.
+ */
 public final class BmcKeySetsGetSamples {
     /*
-     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2023-07-01/examples/BmcKeySets_Get.json
+     * x-ms-original-file:
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-06-01-preview/examples/
+     * BmcKeySets_Get.json
      */
     /**
      * Sample code: Get baseboard management controller key set of cluster.
-     *
+     * 
      * @param manager Entry point to NetworkCloudManager.
      */
     public static void getBaseboardManagementControllerKeySetOfCluster(
         com.azure.resourcemanager.networkcloud.NetworkCloudManager manager) {
-        manager
-            .bmcKeySets()
+        manager.bmcKeySets()
             .getWithResponse("resourceGroupName", "clusterName", "bmcKeySetName", com.azure.core.util.Context.NONE);
     }
 }

@@ -5,29 +5,40 @@
 package com.azure.resourcemanager.networkcloud.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The provisioning state of the storage appliance. */
+/**
+ * The provisioning state of the storage appliance.
+ */
 public final class StorageApplianceProvisioningState extends ExpandableStringEnum<StorageApplianceProvisioningState> {
-    /** Static value Succeeded for StorageApplianceProvisioningState. */
+    /**
+     * Static value Succeeded for StorageApplianceProvisioningState.
+     */
     public static final StorageApplianceProvisioningState SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Failed for StorageApplianceProvisioningState. */
+    /**
+     * Static value Failed for StorageApplianceProvisioningState.
+     */
     public static final StorageApplianceProvisioningState FAILED = fromString("Failed");
 
-    /** Static value Canceled for StorageApplianceProvisioningState. */
+    /**
+     * Static value Canceled for StorageApplianceProvisioningState.
+     */
     public static final StorageApplianceProvisioningState CANCELED = fromString("Canceled");
 
-    /** Static value Provisioning for StorageApplianceProvisioningState. */
+    /**
+     * Static value Provisioning for StorageApplianceProvisioningState.
+     */
     public static final StorageApplianceProvisioningState PROVISIONING = fromString("Provisioning");
 
-    /** Static value Accepted for StorageApplianceProvisioningState. */
+    /**
+     * Static value Accepted for StorageApplianceProvisioningState.
+     */
     public static final StorageApplianceProvisioningState ACCEPTED = fromString("Accepted");
 
     /**
      * Creates a new instance of StorageApplianceProvisioningState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -36,18 +47,17 @@ public final class StorageApplianceProvisioningState extends ExpandableStringEnu
 
     /**
      * Creates or finds a StorageApplianceProvisioningState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding StorageApplianceProvisioningState.
      */
-    @JsonCreator
     public static StorageApplianceProvisioningState fromString(String name) {
         return fromString(name, StorageApplianceProvisioningState.class);
     }
 
     /**
      * Gets known StorageApplianceProvisioningState values.
-     *
+     * 
      * @return known StorageApplianceProvisioningState values.
      */
     public static Collection<StorageApplianceProvisioningState> values() {

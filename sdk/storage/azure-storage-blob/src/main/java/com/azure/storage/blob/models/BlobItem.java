@@ -43,11 +43,8 @@ public final class BlobItem {
     }
 
     private String convertedName;
-
     private BlobItemProperties convertedProperties;
-
     private Map<String, String> convertedTags;
-
     private List<ObjectReplicationPolicy> convertedObjectReplicationSourcePolicies;
 
     /**

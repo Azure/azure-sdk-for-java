@@ -22,6 +22,15 @@ public final class PublicAccessType extends ExpandableStringEnum<PublicAccessTyp
     public static final PublicAccessType BLOB = fromString("blob");
 
     /**
+     * Creates a new instance of {@link PublicAccessType} with no string value.
+     *
+     * @deprecated Please use {@link #fromString(String)} to create an instance of PublicAccessType.
+     */
+    @Deprecated
+    public PublicAccessType() {
+    }
+
+    /**
      * Creates or finds a PublicAccessType from its string representation.
      *
      * @param name a name to look for.
@@ -32,6 +41,8 @@ public final class PublicAccessType extends ExpandableStringEnum<PublicAccessTyp
     }
 
     /**
+     * Gets known PublicAccessType values.
+     *
      * @return known PublicAccessType values.
      */
     public static Collection<PublicAccessType> values() {

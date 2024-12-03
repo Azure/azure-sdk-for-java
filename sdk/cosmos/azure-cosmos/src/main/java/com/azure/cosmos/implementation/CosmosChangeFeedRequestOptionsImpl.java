@@ -49,6 +49,7 @@ public final class CosmosChangeFeedRequestOptionsImpl implements OverridableRequ
     private String collectionRid;
     private Set<String> keywordIdentifiers;
     private boolean completeAfterAllCurrentChangesRetrieved;
+    private Long endLSN;
 
     public CosmosChangeFeedRequestOptionsImpl(CosmosChangeFeedRequestOptionsImpl toBeCloned) {
         this.continuationState = toBeCloned.continuationState;
@@ -70,6 +71,7 @@ public final class CosmosChangeFeedRequestOptionsImpl implements OverridableRequ
         this.partitionKeyDefinition = toBeCloned.partitionKeyDefinition;
         this.keywordIdentifiers = toBeCloned.keywordIdentifiers;
         this.completeAfterAllCurrentChangesRetrieved = toBeCloned.completeAfterAllCurrentChangesRetrieved;
+        this.endLSN = toBeCloned.endLSN;
     }
 
     public CosmosChangeFeedRequestOptionsImpl(
@@ -361,6 +363,14 @@ public final class CosmosChangeFeedRequestOptionsImpl implements OverridableRequ
     @Override
     public Set<String> getKeywordIdentifiers() {
         return this.keywordIdentifiers;
+    }
+
+    public void setEndLSN(Long endLSN) {
+        this.endLSN = endLSN;
+    }
+
+    public Long getEndLSN() {
+        return endLSN;
     }
 
     public boolean isCompleteAfterAllCurrentChangesRetrieved() {

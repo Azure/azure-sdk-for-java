@@ -103,6 +103,20 @@ public interface CognitiveServicesManagementClient {
     ModelsClient getModels();
 
     /**
+     * Gets the LocationBasedModelCapacitiesClient object to access its operations.
+     * 
+     * @return the LocationBasedModelCapacitiesClient object.
+     */
+    LocationBasedModelCapacitiesClient getLocationBasedModelCapacities();
+
+    /**
+     * Gets the ModelCapacitiesClient object to access its operations.
+     * 
+     * @return the ModelCapacitiesClient object.
+     */
+    ModelCapacitiesClient getModelCapacities();
+
+    /**
      * Gets the PrivateEndpointConnectionsClient object to access its operations.
      * 
      * @return the PrivateEndpointConnectionsClient object.
@@ -129,4 +143,53 @@ public interface CognitiveServicesManagementClient {
      * @return the CommitmentPlansClient object.
      */
     CommitmentPlansClient getCommitmentPlans();
+
+    /**
+     * Gets the EncryptionScopesClient object to access its operations.
+     * 
+     * @return the EncryptionScopesClient object.
+     */
+    EncryptionScopesClient getEncryptionScopes();
+
+    /**
+     * Gets the RaiPoliciesClient object to access its operations.
+     * 
+     * @return the RaiPoliciesClient object.
+     */
+    RaiPoliciesClient getRaiPolicies();
+
+    /**
+     * Gets the RaiBlocklistsClient object to access its operations.
+     * 
+     * @return the RaiBlocklistsClient object.
+     */
+    RaiBlocklistsClient getRaiBlocklists();
+
+    /**
+     * Gets the RaiBlocklistItemsClient object to access its operations.
+     * 
+     * @return the RaiBlocklistItemsClient object.
+     */
+    RaiBlocklistItemsClient getRaiBlocklistItems();
+
+    /**
+     * Gets the RaiContentFiltersClient object to access its operations.
+     * 
+     * @return the RaiContentFiltersClient object.
+     */
+    RaiContentFiltersClient getRaiContentFilters();
+
+    /**
+     * Gets the NetworkSecurityPerimeterConfigurationsClient object to access its operations.
+     * 
+     * @return the NetworkSecurityPerimeterConfigurationsClient object.
+     */
+    NetworkSecurityPerimeterConfigurationsClient getNetworkSecurityPerimeterConfigurations();
+
+    /**
+     * Gets the DefenderForAISettingsClient object to access its operations.
+     * 
+     * @return the DefenderForAISettingsClient object.
+     */
+    DefenderForAISettingsClient getDefenderForAISettings();
 }

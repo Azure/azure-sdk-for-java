@@ -24,11 +24,8 @@ import java.util.Locale;
  */
 public final class ShareFileSasPermission {
     private boolean readPermission;
-
     private boolean createPermission;
-
     private boolean writePermission;
-
     private boolean deletePermission;
 
     /**

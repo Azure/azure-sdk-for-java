@@ -4,9 +4,7 @@
 
 package com.azure.resourcemanager.hardwaresecuritymodules.generated;
 
-import com.azure.resourcemanager.hardwaresecuritymodules.models.BackupProperties;
 import com.azure.resourcemanager.hardwaresecuritymodules.models.CloudHsmCluster;
-import com.azure.resourcemanager.hardwaresecuritymodules.models.CloudHsmClusterPatchParametersProperties;
 import com.azure.resourcemanager.hardwaresecuritymodules.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.hardwaresecuritymodules.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.hardwaresecuritymodules.models.UserAssignedIdentity;
@@ -19,7 +17,7 @@ import java.util.Map;
 public final class CloudHsmClustersUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/hardwaresecuritymodules/resource-manager/Microsoft.HardwareSecurityModules/preview/2023-12-10-
+     * specification/hardwaresecuritymodules/resource-manager/Microsoft.HardwareSecurityModules/preview/2024-06-30-
      * preview/examples/CloudHsmCluster_Update_MaximumSet_Gen.json
      */
     /**
@@ -30,14 +28,14 @@ public final class CloudHsmClustersUpdateSamples {
     public static void cloudHsmClusterUpdateMaximumSetGen(
         com.azure.resourcemanager.hardwaresecuritymodules.HardwareSecurityModulesManager manager) {
         CloudHsmCluster resource = manager.cloudHsmClusters()
-            .getByResourceGroupWithResponse("rgcloudhsm", "chsm1", com.azure.core.util.Context.NONE).getValue();
-        resource.update().withTags(mapOf("Dept", "hsm", "Environment", "dogfood", "Slice", "A"))
+            .getByResourceGroupWithResponse("rgcloudhsm", "chsm1", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withTags(mapOf("Dept", "hsm", "Environment", "dogfood", "Slice", "A"))
             .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
                 .withUserAssignedIdentities(mapOf(
                     "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/contoso-resources/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity-1",
                     new UserAssignedIdentity())))
-            .withProperties(new CloudHsmClusterPatchParametersProperties()
-                .withBackupProperties(new BackupProperties().withAzureStorageResourceUri("testStorageResourceUri")))
             .apply();
     }
 
