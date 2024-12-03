@@ -41,8 +41,7 @@ public class SearchClientBuilderTests {
 
     @Test
     public void buildSyncClientTest() {
-        SearchClient client = new SearchClientBuilder()
-            .endpoint(SEARCH_ENDPOINT)
+        SearchClient client = new SearchClientBuilder().endpoint(SEARCH_ENDPOINT)
             .credential(SEARCH_API_KEY_CREDENTIAL)
             .indexName(INDEX_NAME)
             .serviceVersion(API_VERSION)
@@ -54,8 +53,7 @@ public class SearchClientBuilderTests {
 
     @Test
     public void buildSyncClientUsingDefaultApiVersionTest() {
-        SearchClient client = new SearchClientBuilder()
-            .endpoint(SEARCH_ENDPOINT)
+        SearchClient client = new SearchClientBuilder().endpoint(SEARCH_ENDPOINT)
             .credential(SEARCH_API_KEY_CREDENTIAL)
             .indexName(INDEX_NAME)
             .buildClient();
@@ -66,8 +64,7 @@ public class SearchClientBuilderTests {
 
     @Test
     public void buildAsyncClientTest() {
-        SearchAsyncClient client = new SearchClientBuilder()
-            .endpoint(SEARCH_ENDPOINT)
+        SearchAsyncClient client = new SearchClientBuilder().endpoint(SEARCH_ENDPOINT)
             .credential(SEARCH_API_KEY_CREDENTIAL)
             .indexName(INDEX_NAME)
             .serviceVersion(API_VERSION)
@@ -79,8 +76,7 @@ public class SearchClientBuilderTests {
 
     @Test
     public void buildAsyncClientUsingDefaultApiVersionTest() {
-        SearchAsyncClient client = new SearchClientBuilder()
-            .endpoint(SEARCH_ENDPOINT)
+        SearchAsyncClient client = new SearchClientBuilder().endpoint(SEARCH_ENDPOINT)
             .credential(SEARCH_API_KEY_CREDENTIAL)
             .indexName(INDEX_NAME)
             .buildAsyncClient();
@@ -91,8 +87,7 @@ public class SearchClientBuilderTests {
 
     @Test
     public void whenBuildClientAndVerifyPropertiesThenSuccess() {
-        SearchClient client = new SearchClientBuilder()
-            .endpoint(SEARCH_ENDPOINT)
+        SearchClient client = new SearchClientBuilder().endpoint(SEARCH_ENDPOINT)
             .credential(SEARCH_API_KEY_CREDENTIAL)
             .indexName(INDEX_NAME)
             .buildClient();
@@ -100,8 +95,7 @@ public class SearchClientBuilderTests {
         assertEquals(SEARCH_ENDPOINT, client.getEndpoint());
         assertEquals(INDEX_NAME, client.getIndexName());
 
-        SearchAsyncClient asyncClient = new SearchClientBuilder()
-            .endpoint(SEARCH_ENDPOINT)
+        SearchAsyncClient asyncClient = new SearchClientBuilder().endpoint(SEARCH_ENDPOINT)
             .credential(SEARCH_API_KEY_CREDENTIAL)
             .indexName(INDEX_NAME)
             .buildAsyncClient();
@@ -127,24 +121,22 @@ public class SearchClientBuilderTests {
 
     @Test
     public void credentialWithEmptyApiKeyThrowsIllegalArgumentException() {
-        assertThrows(IllegalArgumentException.class, () -> new SearchClientBuilder()
-            .credential(new AzureKeyCredential("")));
+        assertThrows(IllegalArgumentException.class,
+            () -> new SearchClientBuilder().credential(new AzureKeyCredential("")));
     }
 
     @Test
     public void indexClientFreshDateOnRetry() throws MalformedURLException {
         byte[] randomData = new byte[256];
         new SecureRandom().nextBytes(randomData);
-        SearchAsyncClient searchAsyncClient = new SearchClientBuilder()
-            .endpoint(SEARCH_ENDPOINT)
+        SearchAsyncClient searchAsyncClient = new SearchClientBuilder().endpoint(SEARCH_ENDPOINT)
             .credential(SEARCH_API_KEY_CREDENTIAL)
             .indexName("test_builder")
             .retryOptions(new RetryOptions(new FixedDelayOptions(3, Duration.ofSeconds(1))))
             .httpClient(new SearchIndexClientBuilderTests.FreshDateTestClient())
             .buildAsyncClient();
 
-        StepVerifier.create(searchAsyncClient.getHttpPipeline().send(
-            request(searchAsyncClient.getEndpoint())))
+        StepVerifier.create(searchAsyncClient.getHttpPipeline().send(request(searchAsyncClient.getEndpoint())))
             .assertNext(response -> assertEquals(200, response.getStatusCode()))
             .verifyComplete();
     }
@@ -152,8 +144,7 @@ public class SearchClientBuilderTests {
     @SuppressWarnings("deprecation")
     @Test
     public void clientOptionsIsPreferredOverLogOptions() {
-        SearchClient searchClient = new SearchClientBuilder()
-            .endpoint(SEARCH_ENDPOINT)
+        SearchClient searchClient = new SearchClientBuilder().endpoint(SEARCH_ENDPOINT)
             .credential(SEARCH_API_KEY_CREDENTIAL)
             .indexName("test_builder")
             .httpLogOptions(new HttpLogOptions().setApplicationId("anOldApplication"))
@@ -171,8 +162,7 @@ public class SearchClientBuilderTests {
     @SuppressWarnings("deprecation")
     @Test
     public void applicationIdFallsBackToLogOptions() {
-        SearchClient searchClient = new SearchClientBuilder()
-            .endpoint(SEARCH_ENDPOINT)
+        SearchClient searchClient = new SearchClientBuilder().endpoint(SEARCH_ENDPOINT)
             .credential(SEARCH_API_KEY_CREDENTIAL)
             .indexName("test_builder")
             .httpLogOptions(new HttpLogOptions().setApplicationId("anOldApplication"))
@@ -188,12 +178,11 @@ public class SearchClientBuilderTests {
 
     @Test
     public void clientOptionHeadersAreAddedLast() {
-        SearchClient searchClient = new SearchClientBuilder()
-            .endpoint(SEARCH_ENDPOINT)
+        SearchClient searchClient = new SearchClientBuilder().endpoint(SEARCH_ENDPOINT)
             .credential(SEARCH_API_KEY_CREDENTIAL)
             .indexName("test_builder")
-            .clientOptions(new ClientOptions()
-                .setHeaders(Collections.singletonList(new Header("User-Agent", "custom"))))
+            .clientOptions(
+                new ClientOptions().setHeaders(Collections.singletonList(new Header("User-Agent", "custom"))))
             .retryPolicy(new RetryPolicy(new FixedDelay(3, Duration.ofMillis(1))))
             .httpClient(httpRequest -> {
                 assertEquals("custom", httpRequest.getHeaders().getValue("User-Agent"));
@@ -206,13 +195,13 @@ public class SearchClientBuilderTests {
 
     @Test
     public void bothRetryOptionsAndRetryPolicySet() {
-        assertThrows(IllegalStateException.class, () -> new SearchClientBuilder()
-            .endpoint(SEARCH_ENDPOINT)
-            .credential(SEARCH_API_KEY_CREDENTIAL)
-            .indexName(INDEX_NAME)
-            .serviceVersion(API_VERSION)
-            .retryOptions(new RetryOptions(new ExponentialBackoffOptions()))
-            .retryPolicy(new RetryPolicy())
-            .buildClient());
+        assertThrows(IllegalStateException.class,
+            () -> new SearchClientBuilder().endpoint(SEARCH_ENDPOINT)
+                .credential(SEARCH_API_KEY_CREDENTIAL)
+                .indexName(INDEX_NAME)
+                .serviceVersion(API_VERSION)
+                .retryOptions(new RetryOptions(new ExponentialBackoffOptions()))
+                .retryPolicy(new RetryPolicy())
+                .buildClient());
     }
 }

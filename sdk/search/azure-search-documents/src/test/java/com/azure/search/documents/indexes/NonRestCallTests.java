@@ -25,25 +25,18 @@ public class NonRestCallTests {
     }
 
     static Stream<Publisher<?>> apiCallReturnsErrorSupplier() {
-        SearchIndexerAsyncClient client = new SearchIndexerClientBuilder()
-            .endpoint("https://fake.com")
+        SearchIndexerAsyncClient client = new SearchIndexerClientBuilder().endpoint("https://fake.com")
             .credential(new AzureKeyCredential("fake"))
             .buildAsyncClient();
 
-        return Stream.of(
-            client.createOrUpdateDataSourceConnection(null),
+        return Stream.of(client.createOrUpdateDataSourceConnection(null),
             client.createOrUpdateDataSourceConnectionWithResponse(null, true),
             client.deleteDataSourceConnectionWithResponse(null, true),
 
-            client.createOrUpdateIndexer(null),
-            client.createOrUpdateIndexerWithResponse(null, true),
+            client.createOrUpdateIndexer(null), client.createOrUpdateIndexerWithResponse(null, true),
             client.deleteIndexerWithResponse(null, true),
 
-            client.createSkillset(null),
-            client.createSkillsetWithResponse(null),
-            client.createOrUpdateSkillset(null),
-            client.createOrUpdateSkillsetWithResponse(null, true),
-            client.deleteSkillsetWithResponse(null, true)
-        );
+            client.createSkillset(null), client.createSkillsetWithResponse(null), client.createOrUpdateSkillset(null),
+            client.createOrUpdateSkillsetWithResponse(null, true), client.deleteSkillsetWithResponse(null, true));
     }
 }

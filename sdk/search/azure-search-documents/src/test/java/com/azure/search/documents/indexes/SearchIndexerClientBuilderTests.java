@@ -48,8 +48,7 @@ public class SearchIndexerClientBuilderTests {
 
     @Test
     public void buildSyncClientTest() {
-        SearchIndexerClient client = new SearchIndexerClientBuilder()
-            .endpoint(searchEndpoint)
+        SearchIndexerClient client = new SearchIndexerClientBuilder().endpoint(searchEndpoint)
             .credential(searchApiKeyCredential)
             .serviceVersion(apiVersion)
             .buildClient();
@@ -60,8 +59,7 @@ public class SearchIndexerClientBuilderTests {
 
     @Test
     public void buildSyncClientUsingDefaultApiVersionTest() {
-        SearchIndexerClient client = new SearchIndexerClientBuilder()
-            .endpoint(searchEndpoint)
+        SearchIndexerClient client = new SearchIndexerClientBuilder().endpoint(searchEndpoint)
             .credential(searchApiKeyCredential)
             .buildClient();
 
@@ -71,8 +69,7 @@ public class SearchIndexerClientBuilderTests {
 
     @Test
     public void buildAsyncClientTest() {
-        SearchIndexerAsyncClient client = new SearchIndexerClientBuilder()
-            .endpoint(searchEndpoint)
+        SearchIndexerAsyncClient client = new SearchIndexerClientBuilder().endpoint(searchEndpoint)
             .credential(searchApiKeyCredential)
             .serviceVersion(apiVersion)
             .buildAsyncClient();
@@ -83,8 +80,7 @@ public class SearchIndexerClientBuilderTests {
 
     @Test
     public void buildAsyncClientUsingDefaultApiVersionTest() {
-        SearchIndexerAsyncClient client = new SearchIndexerClientBuilder()
-            .endpoint(searchEndpoint)
+        SearchIndexerAsyncClient client = new SearchIndexerClientBuilder().endpoint(searchEndpoint)
             .credential(searchApiKeyCredential)
             .buildAsyncClient();
 
@@ -94,15 +90,13 @@ public class SearchIndexerClientBuilderTests {
 
     @Test
     public void whenBuildClientAndVerifyPropertiesThenSuccess() {
-        SearchIndexerClient client = new SearchIndexerClientBuilder()
-            .endpoint(searchEndpoint)
+        SearchIndexerClient client = new SearchIndexerClientBuilder().endpoint(searchEndpoint)
             .credential(searchApiKeyCredential)
             .buildClient();
 
         assertEquals(searchEndpoint, client.getEndpoint());
 
-        SearchIndexerAsyncClient asyncClient = new SearchIndexerClientBuilder()
-            .endpoint(searchEndpoint)
+        SearchIndexerAsyncClient asyncClient = new SearchIndexerClientBuilder().endpoint(searchEndpoint)
             .credential(searchApiKeyCredential)
             .serviceVersion(apiVersion)
             .buildAsyncClient();
@@ -117,31 +111,28 @@ public class SearchIndexerClientBuilderTests {
 
     @Test
     public void credentialWithEmptyApiKeyThrowsIllegalArgumentException() {
-        assertThrows(IllegalArgumentException.class, () -> new SearchIndexerClientBuilder()
-            .credential(new AzureKeyCredential("")));
+        assertThrows(IllegalArgumentException.class,
+            () -> new SearchIndexerClientBuilder().credential(new AzureKeyCredential("")));
     }
 
     @Test
     public void serviceClientFreshDateOnRetry() throws MalformedURLException {
         byte[] randomData = new byte[256];
         new SecureRandom().nextBytes(randomData);
-        SearchIndexerAsyncClient searchIndexerAsyncClient = new SearchIndexerClientBuilder()
-            .endpoint(searchEndpoint)
+        SearchIndexerAsyncClient searchIndexerAsyncClient = new SearchIndexerClientBuilder().endpoint(searchEndpoint)
             .credential(searchApiKeyCredential)
             .retryOptions(new RetryOptions(new FixedDelayOptions(3, Duration.ofSeconds(1))))
             .httpClient(new FreshDateTestClient())
             .buildAsyncClient();
 
-
-        StepVerifier.create(searchIndexerAsyncClient.getHttpPipeline().send(
-            request(searchIndexerAsyncClient.getEndpoint())))
+        StepVerifier
+            .create(searchIndexerAsyncClient.getHttpPipeline().send(request(searchIndexerAsyncClient.getEndpoint())))
             .assertNext(response -> assertEquals(200, response.getStatusCode()))
             .verifyComplete();
     }
 
     static HttpRequest request(String url) throws MalformedURLException {
-        return new HttpRequest(HttpMethod.HEAD,
-            new URL(url), new HttpHeaders().set("Content-Length", "0"),
+        return new HttpRequest(HttpMethod.HEAD, new URL(url), new HttpHeaders().set("Content-Length", "0"),
             Flux.empty());
     }
 
@@ -171,8 +162,7 @@ public class SearchIndexerClientBuilderTests {
     @SuppressWarnings("deprecation")
     @Test
     public void clientOptionsIsPreferredOverLogOptions() {
-        SearchIndexerClient searchIndexerClient = new SearchIndexerClientBuilder()
-            .endpoint(searchEndpoint)
+        SearchIndexerClient searchIndexerClient = new SearchIndexerClientBuilder().endpoint(searchEndpoint)
             .credential(searchApiKeyCredential)
             .httpLogOptions(new HttpLogOptions().setApplicationId("anOldApplication"))
             .clientOptions(new ClientOptions().setApplicationId("aNewApplication"))
@@ -189,8 +179,7 @@ public class SearchIndexerClientBuilderTests {
     @SuppressWarnings("deprecation")
     @Test
     public void applicationIdFallsBackToLogOptions() {
-        SearchIndexerClient searchIndexerClient = new SearchIndexerClientBuilder()
-            .endpoint(searchEndpoint)
+        SearchIndexerClient searchIndexerClient = new SearchIndexerClientBuilder().endpoint(searchEndpoint)
             .credential(searchApiKeyCredential)
             .httpLogOptions(new HttpLogOptions().setApplicationId("anOldApplication"))
             .retryPolicy(new RetryPolicy(new FixedDelay(3, Duration.ofMillis(1))))
@@ -205,11 +194,10 @@ public class SearchIndexerClientBuilderTests {
 
     @Test
     public void clientOptionHeadersAreAddedLast() {
-        SearchIndexerClient searchIndexerClient = new SearchIndexerClientBuilder()
-            .endpoint(searchEndpoint)
+        SearchIndexerClient searchIndexerClient = new SearchIndexerClientBuilder().endpoint(searchEndpoint)
             .credential(searchApiKeyCredential)
-            .clientOptions(new ClientOptions()
-                .setHeaders(Collections.singletonList(new Header("User-Agent", "custom"))))
+            .clientOptions(
+                new ClientOptions().setHeaders(Collections.singletonList(new Header("User-Agent", "custom"))))
             .retryPolicy(new RetryPolicy(new FixedDelay(3, Duration.ofMillis(1))))
             .httpClient(httpRequest -> {
                 assertEquals("custom", httpRequest.getHeaders().getValue("User-Agent"));
@@ -222,12 +210,12 @@ public class SearchIndexerClientBuilderTests {
 
     @Test
     public void bothRetryOptionsAndRetryPolicySet() {
-        assertThrows(IllegalStateException.class, () -> new SearchIndexerClientBuilder()
-            .endpoint(searchEndpoint)
-            .credential(searchApiKeyCredential)
-            .serviceVersion(apiVersion)
-            .retryOptions(new RetryOptions(new ExponentialBackoffOptions()))
-            .retryPolicy(new RetryPolicy())
-            .buildClient());
+        assertThrows(IllegalStateException.class,
+            () -> new SearchIndexerClientBuilder().endpoint(searchEndpoint)
+                .credential(searchApiKeyCredential)
+                .serviceVersion(apiVersion)
+                .retryOptions(new RetryOptions(new ExponentialBackoffOptions()))
+                .retryPolicy(new RetryPolicy())
+                .buildClient());
     }
 }

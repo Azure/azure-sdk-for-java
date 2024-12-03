@@ -54,7 +54,7 @@ import static com.azure.search.documents.implementation.batching.SearchBatchingU
  */
 public final class SearchIndexingPublisher<T> {
     private static final ClientLogger LOGGER = new ClientLogger(SearchIndexingPublisher.class);
-    private static final ExecutorService EXECUTOR =  getThreadPoolWithShutdownHook();
+    private static final ExecutorService EXECUTOR = getThreadPoolWithShutdownHook();
 
     private final SearchIndexClientImpl restClient;
     private final JsonSerializer serializer;
@@ -84,8 +84,8 @@ public final class SearchIndexingPublisher<T> {
         int maxRetriesPerAction, Duration throttlingDelay, Duration maxThrottlingDelay,
         Consumer<OnActionAddedOptions<T>> onActionAdded, Consumer<OnActionSucceededOptions<T>> onActionSucceeded,
         Consumer<OnActionErrorOptions<T>> onActionError, Consumer<OnActionSentOptions<T>> onActionSent) {
-        this.documentKeyRetriever = Objects.requireNonNull(documentKeyRetriever,
-            "'documentKeyRetriever' cannot be null");
+        this.documentKeyRetriever
+            = Objects.requireNonNull(documentKeyRetriever, "'documentKeyRetriever' cannot be null");
 
         this.restClient = restClient;
         this.serializer = serializer;
@@ -220,7 +220,7 @@ public final class SearchIndexingPublisher<T> {
      * split it.
      */
     private IndexBatchResponse sendBatch(List<com.azure.search.documents.implementation.models.IndexAction> actions,
-                                         List<TryTrackingIndexAction<T>> batchActions, Context context) {
+        List<TryTrackingIndexAction<T>> batchActions, Context context) {
         LOGGER.verbose("Sending a batch of size {}.", batchActions.size());
 
         if (onActionSent != null) {
@@ -232,8 +232,8 @@ public final class SearchIndexingPublisher<T> {
         }
 
         try {
-            Response<IndexDocumentsResult> batchCall = Utility.indexDocumentsWithResponse(restClient, actions, true,
-                context, LOGGER);
+            Response<IndexDocumentsResult> batchCall
+                = Utility.indexDocumentsWithResponse(restClient, actions, true, context, LOGGER);
             return new IndexBatchResponse(batchCall.getStatusCode(), batchCall.getValue().getResults(), actions.size(),
                 false);
         } catch (IndexBatchException exception) {
@@ -265,8 +265,8 @@ public final class SearchIndexingPublisher<T> {
                 }
 
                 int splitOffset = Math.min(actions.size(), batchSize);
-                List<TryTrackingIndexAction<T>> batchActionsToRemove = batchActions.subList(splitOffset,
-                    batchActions.size());
+                List<TryTrackingIndexAction<T>> batchActionsToRemove
+                    = batchActions.subList(splitOffset, batchActions.size());
                 documentManager.reinsertFailedActions(batchActionsToRemove);
                 batchActionsToRemove.clear();
 
@@ -287,8 +287,8 @@ public final class SearchIndexingPublisher<T> {
         if (batchResponse.getStatusCode() == HttpURLConnection.HTTP_ENTITY_TOO_LARGE && batchResponse.getCount() == 1) {
             IndexAction<T> action = actions.get(0).getAction();
             if (onActionError != null) {
-                onActionError.accept(new OnActionErrorOptions<>(action)
-                    .setThrowable(createDocumentTooLargeException()));
+                onActionError
+                    .accept(new OnActionErrorOptions<>(action).setThrowable(createDocumentTooLargeException()));
             }
             return;
         }
@@ -307,10 +307,8 @@ public final class SearchIndexingPublisher<T> {
              */
             for (IndexingResult result : batchResponse.getResults()) {
                 String key = result.getKey();
-                TryTrackingIndexAction<T> action = actions.stream()
-                    .filter(a -> key.equals(a.getKey()))
-                    .findFirst()
-                    .orElse(null);
+                TryTrackingIndexAction<T> action
+                    = actions.stream().filter(a -> key.equals(a.getKey())).findFirst().orElse(null);
 
                 if (action == null) {
                     LOGGER.warning("Unable to correlate result key {} to initial document.", key);
@@ -335,16 +333,15 @@ public final class SearchIndexingPublisher<T> {
                     }
                 } else {
                     if (onActionError != null) {
-                        onActionError.accept(new OnActionErrorOptions<>(action.getAction())
-                            .setIndexingResult(result));
+                        onActionError.accept(new OnActionErrorOptions<>(action.getAction()).setIndexingResult(result));
                     }
                 }
             }
         }
 
         if (has503) {
-            currentRetryDelay = calculateRetryDelay(backoffCount.getAndIncrement(), throttlingDelayNanos,
-                maxThrottlingDelayNanos);
+            currentRetryDelay
+                = calculateRetryDelay(backoffCount.getAndIncrement(), throttlingDelayNanos, maxThrottlingDelayNanos);
         } else {
             backoffCount.set(0);
             currentRetryDelay = Duration.ZERO;

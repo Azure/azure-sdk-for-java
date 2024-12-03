@@ -62,8 +62,6 @@ public final class TestHelpers {
 
     public static final String HOTEL_INDEX_NAME = "hotels";
 
-
-
     public static final String BLOB_DATASOURCE_NAME = "azs-java-live-blob";
     public static final String BLOB_DATASOURCE_TEST_NAME = "azs-java-test-blob";
     public static final String SQL_DATASOURCE_NAME = "azs-java-test-sql";
@@ -91,14 +89,13 @@ public final class TestHelpers {
      */
     public static void assertObjectEquals(Object expected, Object actual, boolean ignoreDefaults,
         String... ignoredFields) {
-        Set<String> ignored = (ignoredFields == null)
-            ? Collections.emptySet()
-            : new HashSet<>(Arrays.asList(ignoredFields));
+        Set<String> ignored
+            = (ignoredFields == null) ? Collections.emptySet() : new HashSet<>(Arrays.asList(ignoredFields));
 
         assertObjectEqualsInternal(expected, actual, ignoreDefaults, ignored);
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes", "UseOfObsoleteDateTimeApi"})
+    @SuppressWarnings({ "unchecked", "rawtypes", "UseOfObsoleteDateTimeApi" })
     private static void assertObjectEqualsInternal(Object expected, Object actual, boolean ignoredDefaults,
         Set<String> ignoredFields) {
         if (expected == null) {
@@ -129,7 +126,7 @@ public final class TestHelpers {
             }
 
             try (JsonReader expectedReader = JsonProviders.createReader(expectedJson);
-                 JsonReader actualReader = JsonProviders.createReader(actualJson)) {
+                JsonReader actualReader = JsonProviders.createReader(actualJson)) {
 
                 assertMapEqualsInternal(expectedReader.readMap(JsonReader::readUntyped),
                     actualReader.readMap(JsonReader::readUntyped), ignoredDefaults, ignoredFields);
@@ -187,14 +184,13 @@ public final class TestHelpers {
      */
     public static void assertMapEquals(Map<String, Object> expectedMap, Map<String, Object> actualMap,
         boolean ignoreDefaults, String... ignoredFields) {
-        Set<String> ignored = (ignoredFields == null)
-            ? Collections.emptySet()
-            : new HashSet<>(Arrays.asList(ignoredFields));
+        Set<String> ignored
+            = (ignoredFields == null) ? Collections.emptySet() : new HashSet<>(Arrays.asList(ignoredFields));
 
         assertMapEqualsInternal(expectedMap, actualMap, ignoreDefaults, ignored);
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     private static void assertMapEqualsInternal(Map<String, Object> expectedMap, Map<String, Object> actualMap,
         boolean ignoreDefaults, Set<String> ignoredFields) {
         for (Map.Entry<String, Object> entry : expectedMap.entrySet()) {
@@ -227,8 +223,8 @@ public final class TestHelpers {
 
     @SuppressWarnings("UseOfObsoleteDateTimeApi")
     private static void assertDateEquals(Date expect, Date actual) {
-        assertEquals(0, expect.toInstant().atOffset(ZoneOffset.UTC)
-            .compareTo(actual.toInstant().atOffset(ZoneOffset.UTC)));
+        assertEquals(0,
+            expect.toInstant().atOffset(ZoneOffset.UTC).compareTo(actual.toInstant().atOffset(ZoneOffset.UTC)));
     }
 
     private static void assertListEquals(List<Object> expected, List<Object> actual, boolean ignoreDefaults,
@@ -387,8 +383,7 @@ public final class TestHelpers {
         try (JsonReader jsonReader = JsonProviders.createReader(loadResource(indexDefinition))) {
             SearchIndex baseIndex = SearchIndex.fromJson(jsonReader);
 
-            SearchIndexClient searchIndexClient = new SearchIndexClientBuilder()
-                .endpoint(ENDPOINT)
+            SearchIndexClient searchIndexClient = new SearchIndexClientBuilder().endpoint(ENDPOINT)
                 .credential(new AzureKeyCredential(API_KEY))
                 .retryPolicy(SERVICE_THROTTLE_SAFE_RETRY_POLICY)
                 .buildClient();
@@ -406,8 +401,7 @@ public final class TestHelpers {
     }
 
     static SearchIndex createTestIndex(String testIndexName, SearchIndex baseIndex) {
-        return new SearchIndex(testIndexName)
-            .setFields(baseIndex.getFields())
+        return new SearchIndex(testIndexName).setFields(baseIndex.getFields())
             .setScoringProfiles(baseIndex.getScoringProfiles())
             .setDefaultScoringProfile(baseIndex.getDefaultScoringProfile())
             .setCorsOptions(baseIndex.getCorsOptions())
@@ -423,15 +417,13 @@ public final class TestHelpers {
     }
 
     public static HttpClient buildSyncAssertingClient(HttpClient httpClient) {
-        return new AssertingHttpClientBuilder(httpClient)
-            .skipRequest((httpRequest, context) -> false)
+        return new AssertingHttpClientBuilder(httpClient).skipRequest((httpRequest, context) -> false)
             .assertSync()
             .build();
     }
 
     public static SearchIndexClient createSharedSearchIndexClient() {
-        return new SearchIndexClientBuilder()
-            .endpoint(ENDPOINT)
+        return new SearchIndexClientBuilder().endpoint(ENDPOINT)
             .credential(new AzureKeyCredential(API_KEY))
             .retryPolicy(SERVICE_THROTTLE_SAFE_RETRY_POLICY)
             .httpClient(buildSyncAssertingClient(HttpClient.createDefault()))
@@ -450,9 +442,7 @@ public final class TestHelpers {
                 builder.append(',');
             }
 
-            builder.append(coordinates[i])
-                .append(' ')
-                .append(coordinates[i + 1]);
+            builder.append(coordinates[i]).append(' ').append(coordinates[i + 1]);
         }
 
         return builder.append("))'").toString();
@@ -461,9 +451,7 @@ public final class TestHelpers {
     static byte[] loadResource(String fileName) {
         return LOADED_FILE_DATA.computeIfAbsent(fileName, fName -> {
             try {
-                URI fileUri = AutocompleteTests.class.getClassLoader()
-                    .getResource(fileName)
-                    .toURI();
+                URI fileUri = AutocompleteTests.class.getClassLoader().getResource(fileName).toURI();
 
                 return Files.readAllBytes(Paths.get(fileUri));
             } catch (Exception ex) {
