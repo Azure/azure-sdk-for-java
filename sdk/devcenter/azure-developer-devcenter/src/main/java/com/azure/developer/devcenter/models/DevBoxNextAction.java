@@ -21,7 +21,7 @@ import java.time.format.DateTimeFormatter;
 public final class DevBoxNextAction implements JsonSerializable<DevBoxNextAction> {
 
     /*
-     * The time the action will be triggered (UTC), in RFC3339 format.
+     * The time the action will be triggered (UTC).
      */
     @Generated
     private final OffsetDateTime scheduledTime;
@@ -37,7 +37,7 @@ public final class DevBoxNextAction implements JsonSerializable<DevBoxNextAction
     }
 
     /**
-     * Get the scheduledTime property: The time the action will be triggered (UTC), in RFC3339 format.
+     * Get the scheduledTime property: The time the action will be triggered (UTC).
      *
      * @return the scheduledTime value.
      */
