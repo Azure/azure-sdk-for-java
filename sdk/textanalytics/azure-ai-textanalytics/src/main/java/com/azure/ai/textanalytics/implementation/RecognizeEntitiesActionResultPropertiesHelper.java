@@ -12,8 +12,7 @@ import com.azure.ai.textanalytics.util.RecognizeEntitiesResultCollection;
 public final class RecognizeEntitiesActionResultPropertiesHelper {
     private static RecognizeEntitiesActionResultAccessor accessor;
 
-    private RecognizeEntitiesActionResultPropertiesHelper() {
-    }
+    private RecognizeEntitiesActionResultPropertiesHelper() { }
 
     /**
      * Type defining the methods to set the non-public properties of an {@link RecognizeEntitiesActionResult}

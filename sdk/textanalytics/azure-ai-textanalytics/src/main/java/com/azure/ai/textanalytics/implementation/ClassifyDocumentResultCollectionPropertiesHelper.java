@@ -12,8 +12,7 @@ import com.azure.ai.textanalytics.util.ClassifyDocumentResultCollection;
 public final class ClassifyDocumentResultCollectionPropertiesHelper {
     private static ClassifyDocumentResultCollectionAccessor accessor;
 
-    private ClassifyDocumentResultCollectionPropertiesHelper() {
-    }
+    private ClassifyDocumentResultCollectionPropertiesHelper() { }
 
     /**
      * Type defining the methods to set the non-public properties of an {@link ClassifyDocumentResultCollection}
@@ -21,10 +20,9 @@ public final class ClassifyDocumentResultCollectionPropertiesHelper {
      */
     public interface ClassifyDocumentResultCollectionAccessor {
         void setProjectName(ClassifyDocumentResultCollection resultCollection, String projectName);
-
         void setDeploymentName(ClassifyDocumentResultCollection resultCollection, String deploymentName);
-
-        void setStatistics(ClassifyDocumentResultCollection resultCollection, TextDocumentBatchStatistics statistics);
+        void setStatistics(ClassifyDocumentResultCollection resultCollection,
+            TextDocumentBatchStatistics statistics);
     }
 
     /**
@@ -32,8 +30,8 @@ public final class ClassifyDocumentResultCollectionPropertiesHelper {
      *
      * @param classifyDocumentResultCollectionAccessor The accessor.
      */
-    public static void
-        setAccessor(final ClassifyDocumentResultCollectionAccessor classifyDocumentResultCollectionAccessor) {
+    public static void setAccessor(
+        final ClassifyDocumentResultCollectionAccessor classifyDocumentResultCollectionAccessor) {
         accessor = classifyDocumentResultCollectionAccessor;
     }
 
@@ -41,7 +39,8 @@ public final class ClassifyDocumentResultCollectionPropertiesHelper {
         accessor.setProjectName(resultCollection, projectName);
     }
 
-    public static void setDeploymentName(ClassifyDocumentResultCollection resultCollection, String deploymentName) {
+    public static void setDeploymentName(ClassifyDocumentResultCollection resultCollection,
+        String deploymentName) {
         accessor.setDeploymentName(resultCollection, deploymentName);
     }
 

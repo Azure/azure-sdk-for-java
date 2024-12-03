@@ -21,7 +21,8 @@ public final class AnalyzeHealthcareEntitiesOperationDetail {
 
     static {
         AnalyzeHealthcareEntitiesOperationDetailPropertiesHelper.setAccessor(
-            new AnalyzeHealthcareEntitiesOperationDetailPropertiesHelper.AnalyzeHealthcareEntitiesOperationDetailAccessor() {
+            new AnalyzeHealthcareEntitiesOperationDetailPropertiesHelper
+                    .AnalyzeHealthcareEntitiesOperationDetailAccessor() {
                 @Override
                 public void setOperationId(AnalyzeHealthcareEntitiesOperationDetail operationResult,
                     String operationId) {
@@ -50,7 +51,8 @@ public final class AnalyzeHealthcareEntitiesOperationDetail {
                     OffsetDateTime lastModifiedAt) {
                     operationDetail.setLastModifiedAt(lastModifiedAt);
                 }
-            });
+            }
+        );
     }
 
     /**

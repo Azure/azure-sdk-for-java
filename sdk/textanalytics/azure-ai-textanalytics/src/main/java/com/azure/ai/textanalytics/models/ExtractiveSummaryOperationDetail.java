@@ -23,7 +23,8 @@ public final class ExtractiveSummaryOperationDetail {
         ExtractiveSummaryOperationDetailPropertiesHelper.setAccessor(
             new ExtractiveSummaryOperationDetailPropertiesHelper.ExtractiveSummaryOperationDetailAccessor() {
                 @Override
-                public void setOperationId(ExtractiveSummaryOperationDetail operationResult, String operationId) {
+                public void setOperationId(ExtractiveSummaryOperationDetail operationResult,
+                                           String operationId) {
                     operationResult.setOperationId(operationId);
                 }
 
@@ -33,21 +34,24 @@ public final class ExtractiveSummaryOperationDetail {
                 }
 
                 @Override
-                public void setExpiresAt(ExtractiveSummaryOperationDetail operationDetail, OffsetDateTime expiresAt) {
+                public void setExpiresAt(ExtractiveSummaryOperationDetail operationDetail,
+                                         OffsetDateTime expiresAt) {
                     operationDetail.setExpiresAt(expiresAt);
                 }
 
                 @Override
-                public void setCreatedAt(ExtractiveSummaryOperationDetail operationDetail, OffsetDateTime createdAt) {
+                public void setCreatedAt(ExtractiveSummaryOperationDetail operationDetail,
+                                         OffsetDateTime createdAt) {
                     operationDetail.setCreatedAt(createdAt);
                 }
 
                 @Override
                 public void setLastModifiedAt(ExtractiveSummaryOperationDetail operationDetail,
-                    OffsetDateTime lastModifiedAt) {
+                                              OffsetDateTime lastModifiedAt) {
                     operationDetail.setLastModifiedAt(lastModifiedAt);
                 }
-            });
+            }
+        );
     }
 
     /**

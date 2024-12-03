@@ -11,8 +11,7 @@ import com.azure.ai.textanalytics.models.AbstractiveSummaryContext;
 public final class AbstractiveSummaryContextPropertiesHelper {
     private static AbstractiveSummaryContextAccessor accessor;
 
-    private AbstractiveSummaryContextPropertiesHelper() {
-    }
+    private AbstractiveSummaryContextPropertiesHelper() { }
 
     /**
      * Type defining the methods to set the non-public properties of an {@link AbstractiveSummaryContext}
@@ -20,7 +19,6 @@ public final class AbstractiveSummaryContextPropertiesHelper {
      */
     public interface AbstractiveSummaryContextAccessor {
         void setOffset(AbstractiveSummaryContext abstractiveSummaryContext, int offset);
-
         void setLength(AbstractiveSummaryContext abstractiveSummaryContext, int length);
     }
 
@@ -29,7 +27,8 @@ public final class AbstractiveSummaryContextPropertiesHelper {
      *
      * @param abstractiveSummaryContextAccessor The accessor.
      */
-    public static void setAccessor(final AbstractiveSummaryContextAccessor abstractiveSummaryContextAccessor) {
+    public static void setAccessor(
+        final AbstractiveSummaryContextAccessor abstractiveSummaryContextAccessor) {
         accessor = abstractiveSummaryContextAccessor;
     }
 

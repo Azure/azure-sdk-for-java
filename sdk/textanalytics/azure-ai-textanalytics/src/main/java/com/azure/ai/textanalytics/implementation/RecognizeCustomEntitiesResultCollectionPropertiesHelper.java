@@ -12,8 +12,7 @@ import com.azure.ai.textanalytics.util.RecognizeCustomEntitiesResultCollection;
 public final class RecognizeCustomEntitiesResultCollectionPropertiesHelper {
     private static RecognizeCustomEntitiesResultCollectionAccessor accessor;
 
-    private RecognizeCustomEntitiesResultCollectionPropertiesHelper() {
-    }
+    private RecognizeCustomEntitiesResultCollectionPropertiesHelper() { }
 
     /**
      * Type defining the methods to set the non-public properties of an {@link RecognizeCustomEntitiesResultCollection}
@@ -21,9 +20,7 @@ public final class RecognizeCustomEntitiesResultCollectionPropertiesHelper {
      */
     public interface RecognizeCustomEntitiesResultCollectionAccessor {
         void setProjectName(RecognizeCustomEntitiesResultCollection resultCollection, String projectName);
-
         void setDeploymentName(RecognizeCustomEntitiesResultCollection resultCollection, String deploymentName);
-
         void setStatistics(RecognizeCustomEntitiesResultCollection resultCollection,
             TextDocumentBatchStatistics statistics);
     }
