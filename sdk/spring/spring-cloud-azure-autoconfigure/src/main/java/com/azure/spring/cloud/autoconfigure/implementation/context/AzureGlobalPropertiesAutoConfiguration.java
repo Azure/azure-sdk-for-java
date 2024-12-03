@@ -79,7 +79,7 @@ public class AzureGlobalPropertiesAutoConfiguration {
                         PropertySource<?> firstPropertySource = propertySources.iterator().next();
                         if (firstPropertySource instanceof MapPropertySource mapPropertySource
                             && mapPropertySource.getSource() instanceof HashMap<String, Object> maybeBinderProperties) {
-                            if (maybeBinderProperties != null && maybeBinderProperties.isEmpty() && beanFactory.getParentBeanFactory() != null) {
+                            if (maybeBinderProperties.isEmpty() && beanFactory.getParentBeanFactory() != null) {
                                 return false;
                             }
                         }
@@ -89,10 +89,8 @@ public class AzureGlobalPropertiesAutoConfiguration {
                             return false;
                         }
 
-                        if (!firstPropertySource.getName().equals("defaultBinderFactoryProperties")
-                            && propertySources.stream().anyMatch(src -> src.getName().equals("configurationProperties"))) {
-                            return true;
-                        }
+                        return !firstPropertySource.getName().equals("defaultBinderFactoryProperties")
+                            && propertySources.stream().anyMatch(src -> src.getName().equals("configurationProperties"));
                     }
                 }
             }
