@@ -10,6 +10,7 @@ import java.time.OffsetDateTime;
  * operations.
  */
 public class PathInfo {
+
     private final String eTag;
     private final OffsetDateTime lastModified;
     private final boolean isServerEncrypted;
@@ -57,8 +58,6 @@ public class PathInfo {
     }
 
     /**
-     * Gets the encryption status of the block blob on the server.
-     *
      * @return the encryption status of the block blob on the server
      */
     public Boolean isServerEncrypted() {
@@ -66,8 +65,6 @@ public class PathInfo {
     }
 
     /**
-     * Gets the key used to encrypt the block blob.
-     *
      * @return the key used to encrypt the block blob
      */
     public String getEncryptionKeySha256() {

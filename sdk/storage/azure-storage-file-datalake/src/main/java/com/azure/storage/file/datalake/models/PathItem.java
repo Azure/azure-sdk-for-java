@@ -39,7 +39,7 @@ public class PathItem {
      * @param lastModified Datetime when the path was last modified.
      * @param contentLength The content length of the path.
      * @param group The group the path belongs to.
-     * @param isDirectory Whether the path is a directory.
+     * @param isDirectory Whether or not the path is a directory.
      * @param name The name of the path.
      * @param owner The owner the path belongs to.
      * @param permissions The permissions set on the path.
@@ -55,7 +55,7 @@ public class PathItem {
      * @param lastModified Datetime when the path was last modified.
      * @param contentLength The content length of the path.
      * @param group The group the path belongs to.
-     * @param isDirectory Whether the path is a directory.
+     * @param isDirectory Whether or not the path is a directory.
      * @param name The name of the path.
      * @param owner The owner the path belongs to.
      * @param permissions The permissions set on the path.
