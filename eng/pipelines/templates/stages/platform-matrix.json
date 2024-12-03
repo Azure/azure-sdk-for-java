@@ -1,6 +1,9 @@
 {
   "displayNames": {
-    "true": "TestFromSource"
+    "netty": "NettyAsyncHttpClient",
+    "okhttp": "OkHttpAsyncHttpClient",
+    "JdkHttpClientProvider": "JdkHttpClient",
+    "VertxHttpClientProvider": "VertxHttpClient"
   },
   "matrix": {
     "Agent": {
@@ -10,14 +13,22 @@
     },
     "JavaTestVersion": [ "1.8", "1.21" ],
     "AZURE_TEST_HTTP_CLIENTS": [ "okhttp", "netty" ],
-    "TestFromSource": false,
-    "RunAggregateReports": false,
-    "TestGoals": "surefire:test failsafe:integration-test failsafe:verify",
-    "TestOptions": ""
+    "TestFromSource": {
+      "NotFromSource": { "TestFromSource": false }
+    },
+    "RunAggregateReports": {
+      "$": { "RunAggregateReports": false }
+    },
+    "TestOptions": {
+      "$": { "TestOptions": "" }
+    },
+    "TestGoals": {
+      "TestsOnly": { "TestGoals": "surefire:test failsafe:integration-test failsafe:verify" }
+    }
   },
   "exclude": [
     {
-      "Pool": "env:WINDOWSPOOL",
+      "Pool": "env:LINUXPOOL",
       "JavaTestVersion": "1.21"
     }
   ],
@@ -28,21 +39,37 @@
       },
       "JavaTestVersion": "1.21",
       "AZURE_TEST_HTTP_CLIENTS": "netty",
-      "TestFromSource": true,
-      "RunAggregateReports": false,
-      "TestGoals": "verify",
-      "TestOptions": "-DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false"
+      "TestFromSource": {
+        "FromSource": { "TestFromSource": true }
+      },
+      "RunAggregateReports": {
+        "$": { "RunAggregateReports": false }
+      },
+      "TestOptions": {
+        "SkipRebuild": { "TestOptions": "-DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false" }
+      },
+      "TestGoals": {
+        "Verify": { "TestGoals": "verify" }
+      }
     },
     {
       "Agent": {
-        "windows-2022": { "OSVmImage": "env:WINDOWSVMIMAGE", "Pool": "env:WINDOWSPOOL" }
+        "ubuntu-20.04": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
       },
       "JavaTestVersion": "1.21",
       "AZURE_TEST_HTTP_CLIENTS": "netty",
-      "TestFromSource": false,
-      "RunAggregateReports": true,
-      "TestGoals": "verify",
-      "TestOptions": "-DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false"
+      "TestFromSource": {
+        "NotFromSource": { "TestFromSource": false }
+      },
+      "RunAggregateReports": {
+        "AggregateReports": { "RunAggregateReports": true }
+      },
+      "TestOptions": {
+        "SkipRebuild": { "TestOptions": "-DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false" }
+      },
+      "TestGoals": {
+        "Verify": { "TestGoals": "verify" }
+      }
     },
     {
       "Agent": {
@@ -50,10 +77,18 @@
       },
       "JavaTestVersion": "1.11",
       "AZURE_TEST_HTTP_CLIENTS": "netty",
-      "TestFromSource": false,
-      "RunAggregateReports": false,
-      "TestGoals": "surefire:test failsafe:integration-test failsafe:verify",
-      "TestOptions": ""
+      "TestFromSource": {
+        "NotFromSource": { "TestFromSource": false }
+      },
+      "RunAggregateReports": {
+        "$": { "RunAggregateReports": false }
+      },
+      "TestOptions": {
+        "$": { "TestOptions": "" }
+      },
+      "TestGoals": {
+        "TestsOnly": { "TestGoals": "surefire:test failsafe:integration-test failsafe:verify" }
+      }
     },
     {
       "Agent": {
@@ -61,10 +96,18 @@
       },
       "JavaTestVersion": "1.17",
       "AZURE_TEST_HTTP_CLIENTS": "netty",
-      "TestFromSource": false,
-      "RunAggregateReports": false,
-      "TestGoals": "surefire:test failsafe:integration-test failsafe:verify",
-      "TestOptions": ""
+      "TestFromSource": {
+        "NotFromSource": { "TestFromSource": false }
+      },
+      "RunAggregateReports": {
+        "$": { "RunAggregateReports": false }
+      },
+      "TestOptions": {
+        "$": { "TestOptions": "" }
+      },
+      "TestGoals": {
+        "TestsOnly": { "TestGoals": "surefire:test failsafe:integration-test failsafe:verify" }
+      }
     },
     {
       "Agent": {
@@ -72,7 +115,18 @@
       },
       "JavaTestVersion": "1.17",
       "AZURE_TEST_HTTP_CLIENTS": "JdkHttpClientProvider",
-      "TestFromSource": false
+      "TestFromSource": {
+        "NotFromSource": { "TestFromSource": false }
+      },
+      "RunAggregateReports": {
+        "$": { "RunAggregateReports": false }
+      },
+      "TestOptions": {
+        "$": { "TestOptions": "" }
+      },
+      "TestGoals": {
+        "TestsOnly": { "TestGoals": "surefire:test failsafe:integration-test failsafe:verify" }
+      }
     },
     {
       "Agent": {
@@ -80,7 +134,18 @@
       },
       "JavaTestVersion": "1.17",
       "AZURE_TEST_HTTP_CLIENTS": "VertxHttpClientProvider",
-      "TestFromSource": false
+      "TestFromSource": {
+        "NotFromSource": { "TestFromSource": false }
+      },
+      "RunAggregateReports": {
+        "$": { "RunAggregateReports": false }
+      },
+      "TestOptions": {
+        "$": { "TestOptions": "" }
+      },
+      "TestGoals": {
+        "TestsOnly": { "TestGoals": "surefire:test failsafe:integration-test failsafe:verify" }
+      }
     }
   ]
 }
