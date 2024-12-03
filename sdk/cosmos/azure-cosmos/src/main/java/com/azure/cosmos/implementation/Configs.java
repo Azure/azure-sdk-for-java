@@ -363,6 +363,7 @@ public class Configs {
         return getJVMConfigAsInt(GLOBAL_ENDPOINT_MANAGER_INITIALIZATION_TIME_IN_SECONDS, DEFAULT_GLOBAL_ENDPOINT_MANAGER_INITIALIZATION_TIME_IN_SECONDS);
     }
 
+    // Temporary. Thinclient endpoint discovery to be done through GetDatabaseAccount API
     public URI getThinclientEndpoint() {
         String uriString = System.getProperty("COSMOS.THINCLIENT_ENDPOINT");
         try {
