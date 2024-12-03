@@ -19,9 +19,9 @@ import reactor.core.publisher.Sinks;
     TestServiceBusMultiBinders.TestQueueConfig.class,
     TestServiceBusMultiBinders.TestTopicConfig.class
 })
-class ServiceBusMultiBindersIT extends TestServiceBusMultiBinders {
+class ServiceBusMultiBindersQueueAndTopicIT extends TestServiceBusMultiBinders {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ServiceBusMultiBindersIT.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ServiceBusMultiBindersQueueAndTopicIT.class);
 
     @Autowired
     private Sinks.Many<Message<String>> manyQueue;

@@ -23,7 +23,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class TestServiceBusSingleBinder {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ServiceBusSingleBinderIT.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(TestServiceBusSingleBinder.class);
 
     private static final String MESSAGE = UUID.randomUUID().toString();
 
