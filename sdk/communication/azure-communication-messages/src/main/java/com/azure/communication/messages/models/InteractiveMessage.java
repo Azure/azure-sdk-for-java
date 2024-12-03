@@ -158,13 +158,13 @@ public final class InteractiveMessage implements JsonSerializable<InteractiveMes
     }
 
     /**
-     * Set the headerProperty property: Gets or Sets Header content. Supports the following types:text, images etc.
+     * Set the header property: Gets or Sets Header content. Supports the following types:text, images etc.
      *
-     * @param headerProperty the headerProperty value to set.
+     * @param header the header value to set.
      * @return the InteractiveMessage object itself.
      */
-    public InteractiveMessage setHeader(MessageContent headerProperty) {
-        this.headerProperty = headerProperty;
+    public InteractiveMessage setHeader(MessageContent header) {
+        this.headerProperty = header;
         return this;
     }
 }

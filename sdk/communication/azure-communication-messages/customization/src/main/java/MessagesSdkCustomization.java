@@ -8,12 +8,17 @@ import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.Modifier;
 import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.NodeList;
+import com.github.javaparser.ast.body.MethodDeclaration;
+import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import com.github.javaparser.javadoc.Javadoc;
 import com.github.javaparser.javadoc.description.JavadocDescription;
 import com.github.javaparser.javadoc.description.JavadocSnippet;
 import org.slf4j.Logger;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class MessagesSdkCustomization extends Customization {
 
@@ -189,11 +194,29 @@ public class MessagesSdkCustomization extends Customization {
 
                 clazz.getMethodsByName("getHeaderProperty").forEach(Node::remove);
 
+                MethodDeclaration setHeaderMethodDeclaration = clazz.getMethodsByName("setHeaderProperty").get(0);
+                List<Parameter> parameters = setHeaderMethodDeclaration
+                    .getParameters()
+                    .stream()
+                    .map(p -> p.setName("header"))
+                    .collect(Collectors.toList());
+                String methodBodyContent = setHeaderMethodDeclaration
+                    .getBody()
+                    .get()
+                    .toString()
+                    .replace("headerProperty;", "header;");
+
+                String docComment = setHeaderMethodDeclaration
+                    .getJavadocComment()
+                    .get()
+                    .getContent()
+                    .replace("headerProperty", "header");
+
                 clazz.addMethod("setHeader", Modifier.Keyword.PUBLIC)
-                    .setParameters(clazz.getMethodsByName("setHeaderProperty").get(0).getParameters())
-                    .setType(clazz.getMethodsByName("setHeaderProperty").get(0).getType())
-                    .setBody(clazz.getMethodsByName("setHeaderProperty").get(0).getBody().get())
-                    .setJavadocComment(clazz.getMethodsByName("setHeaderProperty").get(0).getJavadocComment().get());
+                    .setParameters(new NodeList<Parameter>(parameters))
+                    .setType(setHeaderMethodDeclaration.getType())
+                    .setBody(StaticJavaParser.parseBlock(methodBodyContent))
+                    .setJavadocComment(new Javadoc(JavadocDescription.parseText(docComment)));
 
                 clazz.getMethodsByName("setHeaderProperty").forEach(Node::remove);
             });
