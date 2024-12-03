@@ -24,7 +24,8 @@ final class TestUtils {
 
     static String getConnectionString() {
         return Configuration.getGlobalConfiguration()
-            .get("WEB_PUB_SUB_CONNECTION_STRING", "Endpoint=https://testendpoint.webpubsubdev.azure.com;AccessKey=LoremIpsumDolorSitAmetConsectetur;Version=1.0;");
+            .get("WEB_PUB_SUB_CONNECTION_STRING",
+                "Endpoint=https://testendpoint.webpubsubdev.azure.com;AccessKey=LoremIpsumDolorSitAmetConsectetur;Version=1.0;");
     }
 
     static RetryOptions getRetryOptions() {
@@ -32,8 +33,7 @@ final class TestUtils {
     }
 
     static HttpClient buildAsyncAssertingClient(HttpClient httpClient) {
-        return new AssertingHttpClientBuilder(httpClient)
-            .assertAsync()
+        return new AssertingHttpClientBuilder(httpClient).assertAsync()
             .skipRequest((httpRequest, context) -> false)
             .build();
     }

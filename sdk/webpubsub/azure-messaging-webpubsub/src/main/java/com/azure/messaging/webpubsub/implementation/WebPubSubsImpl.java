@@ -578,7 +578,8 @@ public final class WebPubSubsImpl {
     public Mono<Response<Void>> addConnectionsToGroupsWithResponseAsync(String hub, BinaryData groupsToAdd,
         RequestOptions requestOptions) {
         if (hub == null) {
-            return Mono.error(LOGGER.atError().log(new IllegalArgumentException("Parameter hub is required and cannot be null.")));
+            return Mono.error(
+                LOGGER.atError().log(new IllegalArgumentException("Parameter hub is required and cannot be null.")));
         }
         if (groupsToAdd == null) {
             return Mono.error(LOGGER.atError()
