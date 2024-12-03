@@ -13,9 +13,9 @@ import org.springframework.test.context.ActiveProfiles;
 import reactor.core.publisher.Sinks;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
-@ActiveProfiles("servicebus-binder-multi")
+@ActiveProfiles("servicebus-multi-binders")
 @Import({
-    ServiceBusClientConfiguration.class,
+    TestServiceBusClientConfiguration.class,
     TestServiceBusMultiBinders.TestQueueConfig.class,
     TestServiceBusMultiBinders.TestTopicConfig.class
 })
@@ -30,10 +30,10 @@ class ServiceBusMultiBindersQueueAndTopicIT extends TestServiceBusMultiBinders {
     private Sinks.Many<Message<String>> manyTopic;
 
     @Test
-    void testMultiServiceBusSendAndReceiveMessage() throws InterruptedException {
-        LOGGER.info("MultiServiceBusQueueAndTopicBinderIT begin.");
+    void useMultiBindersQueueAndTopic() throws InterruptedException {
+        LOGGER.info("ServiceBusMultiBindersQueueAndTopicIT begin.");
         exchangeMessageAndVerify(manyQueue, manyTopic);
-        LOGGER.info("MultiServiceBusQueueAndTopicBinderIT end.");
+        LOGGER.info("ServiceBusMultiBindersQueueAndTopicIT end.");
     }
 
 }

@@ -18,7 +18,7 @@ import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 
 @TestConfiguration
-public class EventHubsClientConfiguration {
+public class TestEventHubsClientConfiguration {
 
     @Bean
     EventHubsProcessorFactoryCustomizer processorFactoryCustomizer(@Qualifier("integrationTestTokenCredential") TokenCredential integrationTestTokenCredential,

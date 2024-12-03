@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.integration.tests.eventhubs.binder;
 
-import com.azure.spring.cloud.integration.tests.eventhubs.EventHubsClientConfiguration;
+import com.azure.spring.cloud.integration.tests.eventhubs.TestEventHubsClientConfiguration;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -30,7 +30,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @ActiveProfiles(value = { "eventhubs-binder", "produceerror" })
-@Import(EventHubsClientConfiguration.class)
+@Import(TestEventHubsClientConfiguration.class)
 class EventHubsBinderProduceErrorIT {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EventHubsBinderProduceErrorIT.class);

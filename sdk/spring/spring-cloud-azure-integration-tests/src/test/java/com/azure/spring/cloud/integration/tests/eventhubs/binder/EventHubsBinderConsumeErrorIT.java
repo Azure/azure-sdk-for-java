@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.integration.tests.eventhubs.binder;
 
-import com.azure.spring.cloud.integration.tests.eventhubs.EventHubsClientConfiguration;
+import com.azure.spring.cloud.integration.tests.eventhubs.TestEventHubsClientConfiguration;
 import com.azure.spring.messaging.AzureHeaders;
 import com.azure.spring.messaging.checkpoint.Checkpointer;
 import org.junit.jupiter.api.Assertions;
@@ -28,7 +28,7 @@ import java.util.function.Supplier;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @ActiveProfiles(value = { "eventhubs-binder", "message" })
-@Import(EventHubsClientConfiguration.class)
+@Import(TestEventHubsClientConfiguration.class)
 class EventHubsBinderConsumeErrorIT {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EventHubsBinderConsumeErrorIT.class);

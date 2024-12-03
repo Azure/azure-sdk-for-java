@@ -15,7 +15,7 @@ import reactor.core.publisher.Sinks;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @ActiveProfiles("servicebus-multi-binders-no-inherit")
 @Import({
-    ServiceBusClientConfiguration.class,
+    TestServiceBusClientConfiguration.class,
     TestServiceBusMultiBinders.TestQueueConfig.class,
     TestServiceBusMultiBinders.TestTopicConfig.class
 })

@@ -13,9 +13,9 @@ import org.springframework.test.context.ActiveProfiles;
 import reactor.core.publisher.Sinks;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
-@ActiveProfiles("servicebus-binder-single")
+@ActiveProfiles("servicebus-single-binder")
 @Import({
-    ServiceBusClientConfiguration.class,
+    TestServiceBusClientConfiguration.class,
     TestServiceBusSingleBinder.TestQueueConfig.class,
     TestServiceBusSingleBinder.TestTopicConfig.class
 })
@@ -30,10 +30,10 @@ class ServiceBusSingleBinderQueueAndTopicIT extends TestServiceBusSingleBinder {
     private Sinks.Many<Message<String>> manyTopic;
 
     @Test
-    void testSingleServiceBusSendAndReceiveMessage() throws InterruptedException {
-        LOGGER.info("SingleServiceBusQueueAndTopicBinderIT begin.");
+    void useSingleBinderQueueAndTopic() throws InterruptedException {
+        LOGGER.info("ServiceBusSingleBinderQueueAndTopicIT begin.");
         exchangeMessageAndVerify(manyQueue, manyTopic);
-        LOGGER.info("SingleServiceBusQueueAndTopicBinderIT end.");
+        LOGGER.info("ServiceBusSingleBinderQueueAndTopicIT end.");
     }
 
 }

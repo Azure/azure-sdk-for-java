@@ -29,12 +29,6 @@ public class TestServiceBusSingleBinder {
 
     private static final CountDownLatch LATCH = new CountDownLatch(2);
 
-    @Autowired
-    private Sinks.Many<Message<String>> manyQueue;
-
-    @Autowired
-    private Sinks.Many<Message<String>> manyTopic;
-
     @TestConfiguration
     static class TestQueueConfig {
 
