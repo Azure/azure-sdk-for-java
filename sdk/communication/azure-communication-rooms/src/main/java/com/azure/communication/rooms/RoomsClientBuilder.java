@@ -3,6 +3,7 @@
 
 package com.azure.communication.rooms;
 
+
 import com.azure.communication.common.implementation.CommunicationConnectionString;
 import com.azure.communication.common.implementation.HmacAuthenticationPolicy;
 import com.azure.communication.rooms.implementation.AzureCommunicationRoomServiceImpl;
@@ -70,10 +71,8 @@ import java.util.Objects;
  *
  * <!-- end readme-sample-createRoomsClientUsingAzureKeyCredential -->
  */
-@ServiceClientBuilder(serviceClients = { RoomsClient.class, RoomsAsyncClient.class })
-public final class RoomsClientBuilder implements HttpTrait<RoomsClientBuilder>, ConfigurationTrait<RoomsClientBuilder>,
-    ConnectionStringTrait<RoomsClientBuilder>, TokenCredentialTrait<RoomsClientBuilder>,
-    AzureKeyCredentialTrait<RoomsClientBuilder>, EndpointTrait<RoomsClientBuilder> {
+@ServiceClientBuilder(serviceClients = {RoomsClient.class, RoomsAsyncClient.class})
+public final class RoomsClientBuilder implements HttpTrait<RoomsClientBuilder>, ConfigurationTrait<RoomsClientBuilder>, ConnectionStringTrait<RoomsClientBuilder>, TokenCredentialTrait<RoomsClientBuilder>, AzureKeyCredentialTrait<RoomsClientBuilder>, EndpointTrait<RoomsClientBuilder> {
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
     private static final String APP_CONFIG_PROPERTIES = "azure-communication-rooms.properties";
@@ -92,12 +91,6 @@ public final class RoomsClientBuilder implements HttpTrait<RoomsClientBuilder>, 
     private RetryPolicy retryPolicy;
     private RetryOptions retryOptions;
     private RoomsServiceVersion serviceVersion;
-
-    /**
-     * Creates a new instance of the {@link RoomsClientBuilder}.
-     */
-    public RoomsClientBuilder() {
-    }
 
     /**
      * Set endpoint of the service
@@ -145,7 +138,7 @@ public final class RoomsClientBuilder implements HttpTrait<RoomsClientBuilder>, 
      * @throws NullPointerException If {@code keyCredential} is null.
      */
     @Override
-    public RoomsClientBuilder credential(AzureKeyCredential keyCredential) {
+    public RoomsClientBuilder credential(AzureKeyCredential keyCredential)  {
         this.azureKeyCredential = Objects.requireNonNull(keyCredential, "'keyCredential' cannot be null.");
         return this;
     }
@@ -162,19 +155,21 @@ public final class RoomsClientBuilder implements HttpTrait<RoomsClientBuilder>, 
         return this;
     }
 
-    /**
-    * Set endpoint and credential to use
-    *
-    * @param connectionString connection string for setting endpoint and initalizing AzureKeyCredential
-    * @return RoomsClientBuilder
-    */
+     /**
+     * Set endpoint and credential to use
+     *
+     * @param connectionString connection string for setting endpoint and initalizing AzureKeyCredential
+     * @return RoomsClientBuilder
+     */
     @Override
     public RoomsClientBuilder connectionString(String connectionString) {
         Objects.requireNonNull(connectionString, "'connectionString' cannot be null.");
         CommunicationConnectionString connectionStringObject = new CommunicationConnectionString(connectionString);
         String endpoint = connectionStringObject.getEndpoint();
         String accessKey = connectionStringObject.getAccessKey();
-        this.endpoint(endpoint).credential(new AzureKeyCredential(accessKey));
+        this
+            .endpoint(endpoint)
+            .credential(new AzureKeyCredential(accessKey));
         return this;
     }
 
@@ -290,7 +285,9 @@ public final class RoomsClientBuilder implements HttpTrait<RoomsClientBuilder>, 
         RoomsServiceVersion apiVersion = serviceVersion != null ? serviceVersion : RoomsServiceVersion.getLatest();
 
         AzureCommunicationRoomServiceImplBuilder clientBuilder = new AzureCommunicationRoomServiceImplBuilder();
-        clientBuilder.endpoint(endpoint).apiVersion(apiVersion.getVersion()).pipeline(builderPipeline);
+        clientBuilder.endpoint(endpoint)
+            .apiVersion(apiVersion.getVersion())
+            .pipeline(builderPipeline);
 
         return clientBuilder.buildClient();
     }
@@ -313,8 +310,8 @@ public final class RoomsClientBuilder implements HttpTrait<RoomsClientBuilder>, 
                 new IllegalArgumentException("Both 'credential' and 'keyCredential' are set. Just one may be used."));
         }
         if (this.tokenCredential != null) {
-            return new BearerTokenAuthenticationPolicy(this.tokenCredential,
-                "https://communication.azure.com//.default");
+            return new BearerTokenAuthenticationPolicy(
+                this.tokenCredential, "https://communication.azure.com//.default");
         } else if (this.azureKeyCredential != null) {
             return new HmacAuthenticationPolicy(this.azureKeyCredential);
         } else {
@@ -356,10 +353,11 @@ public final class RoomsClientBuilder implements HttpTrait<RoomsClientBuilder>, 
             policyList.addAll(this.customPolicies);
         }
 
-        // Add logging policy
+         // Add logging policy
         policyList.add(this.createHttpLoggingPolicy(this.getHttpLogOptions()));
 
-        return new HttpPipelineBuilder().policies(policyList.toArray(new HttpPipelinePolicy[0]))
+        return new HttpPipelineBuilder()
+            .policies(policyList.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
             .build();
     }
