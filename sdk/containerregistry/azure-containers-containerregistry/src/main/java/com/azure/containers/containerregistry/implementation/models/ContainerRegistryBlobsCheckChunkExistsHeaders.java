@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 
-/**
- * The ContainerRegistryBlobsCheckChunkExistsHeaders model.
- */
+/** The ContainerRegistryBlobsCheckChunkExistsHeaders model. */
 @Fluent
 public final class ContainerRegistryBlobsCheckChunkExistsHeaders {
     /*
@@ -26,7 +24,7 @@ public final class ContainerRegistryBlobsCheckChunkExistsHeaders {
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of ContainerRegistryBlobsCheckChunkExistsHeaders class.
-     * 
+     *
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public ContainerRegistryBlobsCheckChunkExistsHeaders(HttpHeaders rawHeaders) {
@@ -39,7 +37,7 @@ public final class ContainerRegistryBlobsCheckChunkExistsHeaders {
 
     /**
      * Get the contentRange property: The Content-Range property.
-     * 
+     *
      * @return the contentRange value.
      */
     public String getContentRange() {
@@ -48,7 +46,7 @@ public final class ContainerRegistryBlobsCheckChunkExistsHeaders {
 
     /**
      * Set the contentRange property: The Content-Range property.
-     * 
+     *
      * @param contentRange the contentRange value to set.
      * @return the ContainerRegistryBlobsCheckChunkExistsHeaders object itself.
      */
@@ -59,7 +57,7 @@ public final class ContainerRegistryBlobsCheckChunkExistsHeaders {
 
     /**
      * Get the contentLength property: The Content-Length property.
-     * 
+     *
      * @return the contentLength value.
      */
     public Long getContentLength() {
@@ -68,7 +66,7 @@ public final class ContainerRegistryBlobsCheckChunkExistsHeaders {
 
     /**
      * Set the contentLength property: The Content-Length property.
-     * 
+     *
      * @param contentLength the contentLength value to set.
      * @return the ContainerRegistryBlobsCheckChunkExistsHeaders object itself.
      */

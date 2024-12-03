@@ -11,9 +11,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 
-/**
- * Tag.
- */
+/** Tag. */
 @Fluent
 public final class TagAttributesTag implements JsonSerializable<TagAttributesTag> {
     /*
@@ -21,15 +19,12 @@ public final class TagAttributesTag implements JsonSerializable<TagAttributesTag
      */
     private String signatureRecord;
 
-    /**
-     * Creates an instance of TagAttributesTag class.
-     */
-    public TagAttributesTag() {
-    }
+    /** Creates an instance of TagAttributesTag class. */
+    public TagAttributesTag() {}
 
     /**
      * Get the signatureRecord property: SignatureRecord value.
-     * 
+     *
      * @return the signatureRecord value.
      */
     public String getSignatureRecord() {
@@ -38,7 +33,7 @@ public final class TagAttributesTag implements JsonSerializable<TagAttributesTag
 
     /**
      * Set the signatureRecord property: SignatureRecord value.
-     * 
+     *
      * @param signatureRecord the signatureRecord value to set.
      * @return the TagAttributesTag object itself.
      */
@@ -47,9 +42,6 @@ public final class TagAttributesTag implements JsonSerializable<TagAttributesTag
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -59,27 +51,28 @@ public final class TagAttributesTag implements JsonSerializable<TagAttributesTag
 
     /**
      * Reads an instance of TagAttributesTag from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of TagAttributesTag if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
+     *     pointing to JSON null.
      * @throws IOException If an error occurs while reading the TagAttributesTag.
      */
     public static TagAttributesTag fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            TagAttributesTag deserializedTagAttributesTag = new TagAttributesTag();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
+        return jsonReader.readObject(
+                reader -> {
+                    TagAttributesTag deserializedTagAttributesTag = new TagAttributesTag();
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
 
-                if ("signatureRecord".equals(fieldName)) {
-                    deserializedTagAttributesTag.signatureRecord = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
+                        if ("signatureRecord".equals(fieldName)) {
+                            deserializedTagAttributesTag.signatureRecord = reader.getString();
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
 
-            return deserializedTagAttributesTag;
-        });
+                    return deserializedTagAttributesTag;
+                });
     }
 }
