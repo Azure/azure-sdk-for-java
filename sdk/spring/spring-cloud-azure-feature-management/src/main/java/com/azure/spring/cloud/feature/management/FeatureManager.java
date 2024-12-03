@@ -4,6 +4,7 @@ package com.azure.spring.cloud.feature.management;
 
 import static com.azure.spring.cloud.feature.management.implementation.FeatureManagementConstants.ALL_REQUIREMENT_TYPE;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -105,7 +106,7 @@ public class FeatureManager {
      * @throws FilterNotFoundException file not found
      */
     public Boolean isEnabled(String feature) throws FilterNotFoundException {
-        return checkFeature(feature, null).map(event -> event.isEnabled()).block();
+        return checkFeature(feature, null).map(event -> event.isEnabled()).block(Duration.ofSeconds(100));
     }
 
     /**
@@ -133,7 +134,7 @@ public class FeatureManager {
      * @throws FilterNotFoundException file not found
      */
     public Boolean isEnabled(String feature, Object featureContext) throws FilterNotFoundException {
-        return checkFeature(feature, featureContext).map(event -> event.isEnabled()).block();
+        return checkFeature(feature, featureContext).map(event -> event.isEnabled()).block(Duration.ofSeconds(100));
     }
 
     /**
