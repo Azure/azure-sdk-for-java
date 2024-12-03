@@ -4,6 +4,7 @@
 package com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering;
 
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.RemoteDependencyData;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.FilterInfo;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.FormattedDuration;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -51,10 +52,6 @@ public class DependencyDataColumns implements TelemetryColumns {
         return type.cast(mapping.get(fieldName));
     }
 
-    public Map<String, String> getCustomDimensions() {
-        return this.customDims.getCustomDimensions();
-    }
-
     public List<String> getAllFieldValuesAsString() {
         List<String> result = new ArrayList<>();
         for (Object value : mapping.values()) {
@@ -71,4 +68,11 @@ public class DependencyDataColumns implements TelemetryColumns {
         return result;
     }
 
+    public boolean checkAllCustomDims(FilterInfo filter, TelemetryColumns data) {
+        return customDims.checkAllCustomDims(filter, data);
+    }
+
+    public boolean checkCustomDimFilter(FilterInfo filter, TelemetryColumns data, String trimmedFieldName) {
+        return customDims.checkCustomDimFilter(filter, data, trimmedFieldName);
+    }
 }

@@ -70,6 +70,7 @@
       <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.DocumentStreamInfo" />
       <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.FilterConjunctionGroupInfo" />
       <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.MonitoringDataPoint" />
+      <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.FilteringConfiguration" />
     </Or>
   </Match>
   <Match>
@@ -101,7 +102,17 @@
   </Match>
   <Match>
     <Bug pattern="DM_CONVERT_CASE" />
-    <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.Filter" />
+    <Or>
+      <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.Filter" />
+      <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.FilteringConfiguration$Validator" />
+    </Or>
+  </Match>
+  <Match>
+    <Bug pattern="MS_MUTABLE_COLLECTION_PKGPROTECT" />
+    <Or>
+      <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.KnownDependencyColumns" />
+      <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.KnownRequestColumns" />
+    </Or>
   </Match>
 
 </FindBugsFilter>

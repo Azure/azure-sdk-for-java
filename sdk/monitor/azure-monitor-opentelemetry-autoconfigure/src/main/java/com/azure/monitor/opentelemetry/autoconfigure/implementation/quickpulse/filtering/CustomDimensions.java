@@ -2,6 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering;
 
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.FilterInfo;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,7 +27,22 @@ public class CustomDimensions {
         this.customDimensions = resultMap;
     }
 
-    public Map<String, String> getCustomDimensions() {
-        return this.customDimensions;
+    public boolean checkAllCustomDims(FilterInfo filter, TelemetryColumns data) {
+        for (String value : customDimensions.values()) {
+            if (Filter.stringCompare(value, filter.getComparand(), filter.getPredicate())) {
+                return true;
+            }
+        }
+        return false;
     }
+
+    public boolean checkCustomDimFilter(FilterInfo filter, TelemetryColumns data, String trimmedFieldName) {
+        if (customDimensions.containsKey(trimmedFieldName)) {
+            String value = customDimensions.get(trimmedFieldName);
+            return Filter.stringCompare(value, filter.getComparand(), filter.getPredicate());
+        } else {
+            return false; // the asked for field is not present in the custom dimensions
+        }
+    }
+
 }

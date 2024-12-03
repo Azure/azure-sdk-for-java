@@ -49,10 +49,9 @@ class QuickPulsePingSender {
     private IsSubscribedHeaders responseHeaders;
     private static final HttpHeaderName QPS_STATUS_HEADER = HttpHeaderName.fromString("x-ms-qps-subscribed");
 
-
     QuickPulsePingSender(LiveMetricsRestAPIsForClientSDKs liveMetricsRestAPIsForClientSDKs, Supplier<URL> endpointUrl,
-                         Supplier<String> instrumentationKey, String roleName, String instanceName, String machineName,
-                         String quickPulseId, String sdkVersion, FilteringConfiguration configuration) {
+        Supplier<String> instrumentationKey, String roleName, String instanceName, String machineName,
+        String quickPulseId, String sdkVersion, FilteringConfiguration configuration) {
         this.liveMetricsRestAPIsForClientSDKs = liveMetricsRestAPIsForClientSDKs;
         this.endpointUrl = endpointUrl;
         this.instrumentationKey = instrumentationKey;
@@ -103,7 +102,7 @@ class QuickPulsePingSender {
             }
 
             CollectionConfigurationInfo body = responseMono.getValue();
-            if (body != null && !configuration.getEtag().equals(body.getETag())) {
+            if (body != null && !configuration.getETag().equals(body.getETag())) {
                 configuration.updateConfiguration(body);
             }
 

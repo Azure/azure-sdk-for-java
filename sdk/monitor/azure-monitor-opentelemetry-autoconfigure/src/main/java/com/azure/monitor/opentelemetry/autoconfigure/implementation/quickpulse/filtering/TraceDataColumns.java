@@ -4,6 +4,7 @@
 package com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering;
 
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.MessageData;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.FilterInfo;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,8 +29,12 @@ public class TraceDataColumns implements TelemetryColumns {
         mapping.put(KnownTraceColumns.MESSAGE, message);
     }
 
-    public Map<String, String> getCustomDimensions() {
-        return this.customDims.getCustomDimensions();
+    public boolean checkAllCustomDims(FilterInfo filter, TelemetryColumns data) {
+        return customDims.checkAllCustomDims(filter, data);
+    }
+
+    public boolean checkCustomDimFilter(FilterInfo filter, TelemetryColumns data, String trimmedFieldName) {
+        return customDims.checkCustomDimFilter(filter, data, trimmedFieldName);
     }
 
     public <T> T getFieldValue(String fieldName, Class<T> type) {

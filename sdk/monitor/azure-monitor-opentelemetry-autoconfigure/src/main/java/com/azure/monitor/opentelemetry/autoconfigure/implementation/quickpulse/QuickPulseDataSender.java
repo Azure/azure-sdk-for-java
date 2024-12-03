@@ -6,7 +6,6 @@ package com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse;
 import com.azure.core.http.rest.Response;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.Filter;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.FilteringConfiguration;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.LiveMetricsRestAPIsForClientSDKs;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.CollectionConfigurationInfo;
@@ -44,8 +43,8 @@ class QuickPulseDataSender implements Runnable {
     private volatile FilteringConfiguration configuration;
 
     QuickPulseDataSender(LiveMetricsRestAPIsForClientSDKs liveMetricsRestAPIsForClientSDKs,
-                         ArrayBlockingQueue<MonitoringDataPoint> sendQueue, Supplier<URL> endpointUrl,
-                         Supplier<String> instrumentationKey, FilteringConfiguration configuration) {
+        ArrayBlockingQueue<MonitoringDataPoint> sendQueue, Supplier<URL> endpointUrl,
+        Supplier<String> instrumentationKey, FilteringConfiguration configuration) {
         this.sendQueue = sendQueue;
         this.liveMetricsRestAPIsForClientSDKs = liveMetricsRestAPIsForClientSDKs;
         this.endpointUrl = endpointUrl;
@@ -80,8 +79,8 @@ class QuickPulseDataSender implements Runnable {
             long transmissionTimeInTicks = currentDate.getTime() * 10000 + TICKS_AT_EPOCH;
             try {
                 Response<CollectionConfigurationInfo> responseMono = liveMetricsRestAPIsForClientSDKs
-                    .publishNoCustomHeadersWithResponseAsync(endpointPrefix, instrumentationKey.get(), configuration.getEtag(),
-                        transmissionTimeInTicks, dataPointList)
+                    .publishNoCustomHeadersWithResponseAsync(endpointPrefix, instrumentationKey.get(),
+                        configuration.getETag(), transmissionTimeInTicks, dataPointList)
                     .block();
                 if (responseMono == null) {
                     // this shouldn't happen, the mono should complete with a response or a failure
@@ -101,7 +100,7 @@ class QuickPulseDataSender implements Runnable {
 
                 lastValidRequestTimeNs = sendTime;
                 CollectionConfigurationInfo body = responseMono.getValue();
-                if (body != null && !configuration.getEtag().equals(body.getETag())) {
+                if (body != null && !configuration.getETag().equals(body.getETag())) {
                     configuration.updateConfiguration(body);
                 }
 

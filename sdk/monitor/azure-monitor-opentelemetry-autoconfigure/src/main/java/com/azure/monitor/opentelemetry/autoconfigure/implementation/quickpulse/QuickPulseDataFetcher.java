@@ -36,7 +36,8 @@ class QuickPulseDataFetcher {
     private volatile ErrorTracker errorTracker;
 
     public QuickPulseDataFetcher(QuickPulseDataCollector collector, ArrayBlockingQueue<MonitoringDataPoint> sendQueue,
-                                 String roleName, String instanceName, String machineName, String quickPulseId, String sdkVersion, ErrorTracker errorTracker) {
+        String roleName, String instanceName, String machineName, String quickPulseId, String sdkVersion,
+        ErrorTracker errorTracker) {
         this.collector = collector;
         this.sendQueue = sendQueue;
         this.roleName = roleName;

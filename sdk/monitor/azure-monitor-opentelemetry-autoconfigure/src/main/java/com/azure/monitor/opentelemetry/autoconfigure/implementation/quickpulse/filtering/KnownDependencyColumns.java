@@ -17,13 +17,6 @@ public class KnownDependencyColumns {
     public static final String DATA = "Data";
     public static final String NAME = "Name";
 
-    public static final Set<String> allColumns = new HashSet<>(asList(
-        TARGET,
-        DURATION,
-        RESULT_CODE,
-        SUCCESS,
-        TYPE,
-        DATA,
-        NAME
-    ));
+    public static final Set<String> ALL_COLUMNS
+        = new HashSet<>(asList(TARGET, DURATION, RESULT_CODE, SUCCESS, TYPE, DATA, NAME));
 }

@@ -9,6 +9,8 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.MockHttpResponse;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.NoopTracer;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.configuration.ConnectionString;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.ErrorTracker;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.FilteringConfiguration;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.LiveMetricsRestAPIsForClientSDKs;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.LiveMetricsRestAPIsForClientSDKsBuilder;
 
@@ -38,9 +40,11 @@ class QuickPulseDataFetcherTests {
         LiveMetricsRestAPIsForClientSDKsBuilder builder = new LiveMetricsRestAPIsForClientSDKsBuilder();
         LiveMetricsRestAPIsForClientSDKs liveMetricsRestAPIsForClientSDKs
             = builder.pipeline(httpPipeline).buildClient();
-        QuickPulsePingSender quickPulsePingSender
-            = new QuickPulsePingSender(liveMetricsRestAPIsForClientSDKs, connectionString::getLiveEndpoint,
-                connectionString::getInstrumentationKey, null, "instance1", "machine1", "qpid123", "testSdkVersion", configuration);
+        ErrorTracker tracker = new ErrorTracker();
+        FilteringConfiguration configuration = new FilteringConfiguration(tracker);
+        QuickPulsePingSender quickPulsePingSender = new QuickPulsePingSender(liveMetricsRestAPIsForClientSDKs,
+            connectionString::getLiveEndpoint, connectionString::getInstrumentationKey, null, "instance1", "machine1",
+            "qpid123", "testSdkVersion", configuration);
         IsSubscribedHeaders pingHeaders = quickPulsePingSender.ping(null);
         assertThat("true").isEqualTo(pingHeaders.getXMsQpsSubscribed());
         assertThat("1000").isEqualTo(pingHeaders.getXMsQpsServicePollingIntervalHint());

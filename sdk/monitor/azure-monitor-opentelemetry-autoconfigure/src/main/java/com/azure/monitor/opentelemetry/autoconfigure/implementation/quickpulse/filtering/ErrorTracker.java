@@ -14,14 +14,14 @@ public class ErrorTracker {
      * The errors in this list are expected to stay the same across multiple post requests of the same configuration
      * id, and so will only be changed when a new configuration gets parsed.
      */
-    private List<CollectionConfigurationError> validationTimeErrors;
+    private final List<CollectionConfigurationError> validationTimeErrors;
 
     /**
      * This list represents errors that can't be caught while parsing the response - such as validation errors that would occur when
      * analyzing customDimensions present in incoming spans/logs, or when creating a projection. These errors aren't expected to be the
      * same across post requests of the same configuration id and so is expected to be regenerated for every post request.
      */
-    private List<CollectionConfigurationError> runTimeErrors;
+    private final List<CollectionConfigurationError> runTimeErrors;
 
     public ErrorTracker() {
         validationTimeErrors = new ArrayList<>();
@@ -37,7 +37,7 @@ public class ErrorTracker {
     }
 
     public synchronized List<CollectionConfigurationError> getErrors() {
-        List<CollectionConfigurationError> result =  new ArrayList<>(validationTimeErrors);
+        List<CollectionConfigurationError> result = new ArrayList<>(validationTimeErrors);
         result.addAll(runTimeErrors);
         return result;
     }

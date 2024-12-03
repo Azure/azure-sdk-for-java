@@ -5,6 +5,7 @@ package com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.
 
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.TelemetryExceptionData;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.TelemetryExceptionDetails;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.FilterInfo;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,8 +37,12 @@ public class ExceptionDataColumns implements TelemetryColumns {
         mapping.put(KnownExceptionColumns.STACK, stackTrace);
     }
 
-    public Map<String, String> getCustomDimensions() {
-        return this.customDims.getCustomDimensions();
+    public boolean checkAllCustomDims(FilterInfo filter, TelemetryColumns data) {
+        return customDims.checkAllCustomDims(filter, data);
+    }
+
+    public boolean checkCustomDimFilter(FilterInfo filter, TelemetryColumns data, String trimmedFieldName) {
+        return customDims.checkCustomDimFilter(filter, data, trimmedFieldName);
     }
 
     public <T> T getFieldValue(String fieldName, Class<T> type) {
