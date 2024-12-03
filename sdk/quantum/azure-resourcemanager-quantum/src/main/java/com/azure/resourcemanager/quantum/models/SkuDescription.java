@@ -5,66 +5,61 @@
 package com.azure.resourcemanager.quantum.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Information about a specific sku.
  */
 @Fluent
-public final class SkuDescription {
+public final class SkuDescription implements JsonSerializable<SkuDescription> {
     /*
      * Unique sku id.
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * Display name of this sku.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Display name of this sku.
      */
-    @JsonProperty(value = "version")
     private String version;
 
     /*
      * Description about this sku.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * Uri to subscribe to the restricted access sku.
      */
-    @JsonProperty(value = "restrictedAccessUri")
     private String restrictedAccessUri;
 
     /*
      * Flag to indicate whether the sku should be automatically added during workspace creation.
      */
-    @JsonProperty(value = "autoAdd")
     private Boolean autoAdd;
 
     /*
      * The list of targets available for this sku.
      */
-    @JsonProperty(value = "targets")
     private List<String> targets;
 
     /*
      * The list of quota dimensions for this sku.
      */
-    @JsonProperty(value = "quotaDimensions")
     private List<QuotaDimension> quotaDimensions;
 
     /*
      * The list of pricing details for the sku.
      */
-    @JsonProperty(value = "pricingDetails")
     private List<PricingDetail> pricingDetails;
 
     /**
@@ -267,5 +262,71 @@ public final class SkuDescription {
         if (pricingDetails() != null) {
             pricingDetails().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("version", this.version);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("restrictedAccessUri", this.restrictedAccessUri);
+        jsonWriter.writeBooleanField("autoAdd", this.autoAdd);
+        jsonWriter.writeArrayField("targets", this.targets, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("quotaDimensions", this.quotaDimensions,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("pricingDetails", this.pricingDetails,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SkuDescription from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SkuDescription if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SkuDescription.
+     */
+    public static SkuDescription fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SkuDescription deserializedSkuDescription = new SkuDescription();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedSkuDescription.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedSkuDescription.name = reader.getString();
+                } else if ("version".equals(fieldName)) {
+                    deserializedSkuDescription.version = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedSkuDescription.description = reader.getString();
+                } else if ("restrictedAccessUri".equals(fieldName)) {
+                    deserializedSkuDescription.restrictedAccessUri = reader.getString();
+                } else if ("autoAdd".equals(fieldName)) {
+                    deserializedSkuDescription.autoAdd = reader.getNullable(JsonReader::getBoolean);
+                } else if ("targets".equals(fieldName)) {
+                    List<String> targets = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSkuDescription.targets = targets;
+                } else if ("quotaDimensions".equals(fieldName)) {
+                    List<QuotaDimension> quotaDimensions
+                        = reader.readArray(reader1 -> QuotaDimension.fromJson(reader1));
+                    deserializedSkuDescription.quotaDimensions = quotaDimensions;
+                } else if ("pricingDetails".equals(fieldName)) {
+                    List<PricingDetail> pricingDetails = reader.readArray(reader1 -> PricingDetail.fromJson(reader1));
+                    deserializedSkuDescription.pricingDetails = pricingDetails;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSkuDescription;
+        });
     }
 }
