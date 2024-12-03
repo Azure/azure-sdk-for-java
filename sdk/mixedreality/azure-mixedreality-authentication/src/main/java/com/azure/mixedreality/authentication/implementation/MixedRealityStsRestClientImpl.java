@@ -90,13 +90,8 @@ public final class MixedRealityStsRestClientImpl {
      * @param apiVersion Api Version.
      */
     MixedRealityStsRestClientImpl(String host, String apiVersion) {
-        this(
-                new HttpPipelineBuilder()
-                        .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
-                        .build(),
-                JacksonAdapter.createDefaultSerializerAdapter(),
-                host,
-                apiVersion);
+        this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build(),
+            JacksonAdapter.createDefaultSerializerAdapter(), host, apiVersion);
     }
 
     /**
@@ -118,15 +113,14 @@ public final class MixedRealityStsRestClientImpl {
      * @param host server parameter.
      * @param apiVersion Api Version.
      */
-    MixedRealityStsRestClientImpl(
-            HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String host, String apiVersion) {
+    MixedRealityStsRestClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String host,
+        String apiVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.host = host;
         this.apiVersion = apiVersion;
-        this.service =
-                RestProxy.create(
-                        MixedRealityStsRestClientService.class, this.httpPipeline, this.getSerializerAdapter());
+        this.service
+            = RestProxy.create(MixedRealityStsRestClientService.class, this.httpPipeline, this.getSerializerAdapter());
     }
 
     /**
@@ -137,15 +131,11 @@ public final class MixedRealityStsRestClientImpl {
     @ServiceInterface(name = "MixedRealityStsRestC")
     public interface MixedRealityStsRestClientService {
         @Get("/Accounts/{accountId}/token")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<GetTokenResponse> getToken(
-                @HostParam("$host") String host,
-                @PathParam("accountId") UUID accountId,
-                @HeaderParam("X-MRC-CV") String clientRequestId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<GetTokenResponse> getToken(@HostParam("$host") String host, @PathParam("accountId") UUID accountId,
+            @HeaderParam("X-MRC-CV") String clientRequestId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -160,8 +150,8 @@ public final class MixedRealityStsRestClientImpl {
      * @return an access token to be used with Mixed Reality services.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<GetTokenResponse> getTokenWithResponseAsync(
-            UUID accountId, TokenRequestOptions tokenRequestOptions, Context context) {
+    public Mono<GetTokenResponse> getTokenWithResponseAsync(UUID accountId, TokenRequestOptions tokenRequestOptions,
+        Context context) {
         final String accept = "application/json";
         String clientRequestIdInternal = null;
         if (tokenRequestOptions != null) {

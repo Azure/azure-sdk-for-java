@@ -19,8 +19,7 @@ public class MixedRealityStsClientBuilderTests {
     @Test
     public void buildClient() {
 
-        MixedRealityStsClient client = new MixedRealityStsClientBuilder()
-            .accountDomain(this.accountDomain)
+        MixedRealityStsClient client = new MixedRealityStsClientBuilder().accountDomain(this.accountDomain)
             .accountId(this.accountId)
             .credential(new AzureKeyCredential(accountKey))
             .buildClient();
@@ -31,8 +30,7 @@ public class MixedRealityStsClientBuilderTests {
     @Test
     public void buildClientMissingAccountDomain() {
 
-        MixedRealityStsClientBuilder builder = new MixedRealityStsClientBuilder()
-            .accountId(this.accountId)
+        MixedRealityStsClientBuilder builder = new MixedRealityStsClientBuilder().accountId(this.accountId)
             .credential(new AzureKeyCredential(accountKey));
 
         NullPointerException exception = assertThrows(NullPointerException.class, () -> builder.buildClient());
@@ -43,8 +41,7 @@ public class MixedRealityStsClientBuilderTests {
     @Test
     public void buildClientMissingAccountId() {
 
-        MixedRealityStsClientBuilder builder = new MixedRealityStsClientBuilder()
-            .accountDomain(this.accountDomain)
+        MixedRealityStsClientBuilder builder = new MixedRealityStsClientBuilder().accountDomain(this.accountDomain)
             .credential(new AzureKeyCredential(accountKey));
 
         NullPointerException exception = assertThrows(NullPointerException.class, () -> builder.buildClient());
@@ -55,9 +52,8 @@ public class MixedRealityStsClientBuilderTests {
     @Test
     public void buildClientMissingCredential() {
 
-        MixedRealityStsClientBuilder builder = new MixedRealityStsClientBuilder()
-            .accountId(this.accountId)
-            .accountDomain(this.accountDomain);
+        MixedRealityStsClientBuilder builder
+            = new MixedRealityStsClientBuilder().accountId(this.accountId).accountDomain(this.accountDomain);
 
         NullPointerException exception = assertThrows(NullPointerException.class, () -> builder.buildClient());
 
@@ -66,12 +62,12 @@ public class MixedRealityStsClientBuilderTests {
 
     @Test
     public void bothRetryOptionsAndRetryPolicySet() {
-        assertThrows(IllegalStateException.class, () -> new MixedRealityStsClientBuilder()
-            .accountDomain(this.accountDomain)
-            .accountId(this.accountId)
-            .credential(new AzureKeyCredential(accountKey))
-            .retryOptions(new RetryOptions(new ExponentialBackoffOptions()))
-            .retryPolicy(new RetryPolicy())
-            .buildClient());
+        assertThrows(IllegalStateException.class,
+            () -> new MixedRealityStsClientBuilder().accountDomain(this.accountDomain)
+                .accountId(this.accountId)
+                .credential(new AzureKeyCredential(accountKey))
+                .retryOptions(new RetryOptions(new ExponentialBackoffOptions()))
+                .retryPolicy(new RetryPolicy())
+                .buildClient());
     }
 }

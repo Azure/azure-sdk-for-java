@@ -57,8 +57,7 @@ public final class MixedRealityStsAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AccessToken> getToken() {
         try {
-            return this.getTokenWithResponse()
-                .map(response -> response.getValue());
+            return this.getTokenWithResponse().map(response -> response.getValue());
         } catch (RuntimeException exception) {
             return monoError(this.logger, exception);
         }
@@ -84,8 +83,9 @@ public final class MixedRealityStsAsyncClient {
             TokenRequestOptions requestOptions = new TokenRequestOptions();
             requestOptions.setClientRequestId(CorrelationVector.generateCvBase());
 
-            return serviceClient.getTokenWithResponseAsync(this.accountId, requestOptions, context
-                .addData(Tracer.AZ_TRACING_NAMESPACE_KEY, MIXED_REALITY_TRACING_NAMESPACE_VALUE))
+            return serviceClient
+                .getTokenWithResponseAsync(this.accountId, requestOptions,
+                    context.addData(Tracer.AZ_TRACING_NAMESPACE_KEY, MIXED_REALITY_TRACING_NAMESPACE_VALUE))
                 .map(originalResponse -> {
                     AccessToken accessToken = toAccessToken(originalResponse.getValue());
                     return new ResponseBase<>(originalResponse.getRequest(), originalResponse.getStatusCode(),

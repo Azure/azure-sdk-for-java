@@ -44,8 +44,7 @@ public class MixedRealityStsClientTestBase extends TestBase {
             policies.add(interceptorManager.getRecordPolicy());
         }
 
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+        HttpPipeline pipeline = new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
             .build();
 
@@ -53,23 +52,17 @@ public class MixedRealityStsClientTestBase extends TestBase {
     }
 
     String getAccountDomain() {
-        return interceptorManager.isPlaybackMode()
-            ? this.playbackAccountDomain
-            : this.accountDomain;
+        return interceptorManager.isPlaybackMode() ? this.playbackAccountDomain : this.accountDomain;
     }
 
     String getAccountId() {
-        String accountIdValue = interceptorManager.isPlaybackMode()
-            ? this.playbackAccountId
-            : this.accountId;
+        String accountIdValue = interceptorManager.isPlaybackMode() ? this.playbackAccountId : this.accountId;
 
         return accountIdValue;
     }
 
     AzureKeyCredential getAccountKey() {
-        String accountKeyValue = interceptorManager.isPlaybackMode()
-            ? this.playbackAccountKey
-            : this.accountKey;
+        String accountKeyValue = interceptorManager.isPlaybackMode() ? this.playbackAccountKey : this.accountKey;
 
         return new AzureKeyCredential(accountKeyValue);
     }
