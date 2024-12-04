@@ -1,9 +1,9 @@
 {
   "displayNames": {
-    "netty": "NettyAsyncHttpClient",
-    "okhttp": "OkHttpAsyncHttpClient",
-    "JdkHttpClientProvider": "JdkHttpClient",
-    "VertxHttpClientProvider": "VertxHttpClient"
+    "netty": "nettyhttp",
+    "okhttp": "okhttp",
+    "JdkHttpClientProvider": "jdkhttp",
+    "VertxHttpClientProvider": "vertxhttp"
   },
   "matrix": {
     "Agent": {
