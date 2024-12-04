@@ -129,7 +129,7 @@ class AppConfigurationReplicaClient {
         }
     }
 
-    FeatureFlags listFeatureFlags(SettingSelector settingSelector, Boolean isRefresh) throws HttpResponseException {
+    FeatureFlags listFeatureFlags(SettingSelector settingSelector, boolean isRefresh) throws HttpResponseException {
         List<ConfigurationSetting> configurationSettings = new ArrayList<>();
         List<MatchConditions> checks = new ArrayList<>();
         try {
