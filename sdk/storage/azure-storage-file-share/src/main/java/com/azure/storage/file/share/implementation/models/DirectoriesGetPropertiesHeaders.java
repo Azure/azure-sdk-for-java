@@ -9,6 +9,7 @@ import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.DateTimeRfc1123;
+import com.azure.storage.file.share.models.NfsFileType;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;

@@ -14,6 +14,7 @@ import com.azure.storage.file.share.models.CopyStatusType;
 import com.azure.storage.file.share.models.LeaseDurationType;
 import com.azure.storage.file.share.models.LeaseStateType;
 import com.azure.storage.file.share.models.LeaseStatusType;
+import com.azure.storage.file.share.models.NfsFileType;
 import java.time.OffsetDateTime;
 import java.util.Base64;
 import java.util.HashMap;
