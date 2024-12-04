@@ -39,17 +39,23 @@ import com.azure.resourcemanager.apimanagement.models.DiagnosticsGetResponse;
 import com.azure.resourcemanager.apimanagement.models.DiagnosticsUpdateResponse;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in DiagnosticsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DiagnosticsClient.
+ */
 public final class DiagnosticsClientImpl implements DiagnosticsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final DiagnosticsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ApiManagementClientImpl client;
 
     /**
      * Initializes an instance of DiagnosticsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     DiagnosticsClientImpl(ApiManagementClientImpl client) {
@@ -136,19 +142,19 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Lists all diagnostics of the API Management service instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter | Field | Usage | Supported operators | Supported functions
-     *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq,
-     *     ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;.
+     * |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq, ne,
+     * gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;.
      * @param top Number of records to return.
      * @param skip Number of records to skip.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Diagnostic list representation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return paged Diagnostic list representation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DiagnosticContractInner>> listByServiceSinglePageAsync(String resourceGroupName,
@@ -179,20 +185,20 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Lists all diagnostics of the API Management service instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter | Field | Usage | Supported operators | Supported functions
-     *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq,
-     *     ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;.
+     * |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq, ne,
+     * gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;.
      * @param top Number of records to return.
      * @param skip Number of records to skip.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Diagnostic list representation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return paged Diagnostic list representation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DiagnosticContractInner>> listByServiceSinglePageAsync(String resourceGroupName,
@@ -223,12 +229,12 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Lists all diagnostics of the API Management service instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter | Field | Usage | Supported operators | Supported functions
-     *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq,
-     *     ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;.
+     * |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq, ne,
+     * gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;.
      * @param top Number of records to return.
      * @param skip Number of records to skip.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -245,7 +251,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Lists all diagnostics of the API Management service instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -264,12 +270,12 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Lists all diagnostics of the API Management service instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter | Field | Usage | Supported operators | Supported functions
-     *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq,
-     *     ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;.
+     * |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq, ne,
+     * gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;.
      * @param top Number of records to return.
      * @param skip Number of records to skip.
      * @param context The context to associate with this operation.
@@ -288,7 +294,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Lists all diagnostics of the API Management service instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -306,12 +312,12 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Lists all diagnostics of the API Management service instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter | Field | Usage | Supported operators | Supported functions
-     *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq,
-     *     ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;.
+     * |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq, ne,
+     * gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;.
      * @param top Number of records to return.
      * @param skip Number of records to skip.
      * @param context The context to associate with this operation.
@@ -328,7 +334,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Gets the entity state (Etag) version of the Diagnostic specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param diagnosticId Diagnostic identifier. Must be unique in the current API Management service instance.
@@ -336,7 +342,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity state (Etag) version of the Diagnostic specified by its identifier on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DiagnosticsGetEntityTagResponse> getEntityTagWithResponseAsync(String resourceGroupName,
@@ -368,7 +374,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Gets the entity state (Etag) version of the Diagnostic specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param diagnosticId Diagnostic identifier. Must be unique in the current API Management service instance.
@@ -377,7 +383,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity state (Etag) version of the Diagnostic specified by its identifier on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DiagnosticsGetEntityTagResponse> getEntityTagWithResponseAsync(String resourceGroupName,
@@ -408,7 +414,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Gets the entity state (Etag) version of the Diagnostic specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param diagnosticId Diagnostic identifier. Must be unique in the current API Management service instance.
@@ -416,7 +422,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity state (Etag) version of the Diagnostic specified by its identifier on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> getEntityTagAsync(String resourceGroupName, String serviceName, String diagnosticId) {
@@ -426,7 +432,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Gets the entity state (Etag) version of the Diagnostic specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param diagnosticId Diagnostic identifier. Must be unique in the current API Management service instance.
@@ -444,7 +450,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Gets the entity state (Etag) version of the Diagnostic specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param diagnosticId Diagnostic identifier. Must be unique in the current API Management service instance.
@@ -459,7 +465,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Gets the details of the Diagnostic specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param diagnosticId Diagnostic identifier. Must be unique in the current API Management service instance.
@@ -498,7 +504,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Gets the details of the Diagnostic specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param diagnosticId Diagnostic identifier. Must be unique in the current API Management service instance.
@@ -537,7 +543,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Gets the details of the Diagnostic specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param diagnosticId Diagnostic identifier. Must be unique in the current API Management service instance.
@@ -554,7 +560,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Gets the details of the Diagnostic specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param diagnosticId Diagnostic identifier. Must be unique in the current API Management service instance.
@@ -572,7 +578,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Gets the details of the Diagnostic specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param diagnosticId Diagnostic identifier. Must be unique in the current API Management service instance.
@@ -588,7 +594,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Creates a new Diagnostic or updates an existing one.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param diagnosticId Diagnostic identifier. Must be unique in the current API Management service instance.
@@ -635,7 +641,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Creates a new Diagnostic or updates an existing one.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param diagnosticId Diagnostic identifier. Must be unique in the current API Management service instance.
@@ -681,7 +687,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Creates a new Diagnostic or updates an existing one.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param diagnosticId Diagnostic identifier. Must be unique in the current API Management service instance.
@@ -701,7 +707,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Creates a new Diagnostic or updates an existing one.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param diagnosticId Diagnostic identifier. Must be unique in the current API Management service instance.
@@ -722,7 +728,7 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Creates a new Diagnostic or updates an existing one.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param diagnosticId Diagnostic identifier. Must be unique in the current API Management service instance.
@@ -742,12 +748,12 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Updates the details of the Diagnostic specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param diagnosticId Diagnostic identifier. Must be unique in the current API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param parameters Diagnostic Update parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -793,12 +799,12 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Updates the details of the Diagnostic specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param diagnosticId Diagnostic identifier. Must be unique in the current API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param parameters Diagnostic Update parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -843,12 +849,12 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Updates the details of the Diagnostic specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param diagnosticId Diagnostic identifier. Must be unique in the current API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param parameters Diagnostic Update parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -864,12 +870,12 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Updates the details of the Diagnostic specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param diagnosticId Diagnostic identifier. Must be unique in the current API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param parameters Diagnostic Update parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -886,12 +892,12 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Updates the details of the Diagnostic specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param diagnosticId Diagnostic identifier. Must be unique in the current API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param parameters Diagnostic Update parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -907,12 +913,12 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Deletes the specified Diagnostic.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param diagnosticId Diagnostic identifier. Must be unique in the current API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -951,12 +957,12 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Deletes the specified Diagnostic.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param diagnosticId Diagnostic identifier. Must be unique in the current API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -995,12 +1001,12 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Deletes the specified Diagnostic.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param diagnosticId Diagnostic identifier. Must be unique in the current API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1014,12 +1020,12 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Deletes the specified Diagnostic.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param diagnosticId Diagnostic identifier. Must be unique in the current API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1034,12 +1040,12 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Deletes the specified Diagnostic.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param diagnosticId Diagnostic identifier. Must be unique in the current API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1051,14 +1057,13 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Diagnostic list representation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return paged Diagnostic list representation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DiagnosticContractInner>> listByServiceNextSinglePageAsync(String nextLink) {
@@ -1079,15 +1084,14 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Diagnostic list representation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return paged Diagnostic list representation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DiagnosticContractInner>> listByServiceNextSinglePageAsync(String nextLink,

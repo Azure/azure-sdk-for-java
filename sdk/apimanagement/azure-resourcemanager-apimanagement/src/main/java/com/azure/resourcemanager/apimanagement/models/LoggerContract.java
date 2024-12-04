@@ -8,39 +8,41 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.fluent.models.LoggerContractInner;
 import java.util.Map;
 
-/** An immutable client-side representation of LoggerContract. */
+/**
+ * An immutable client-side representation of LoggerContract.
+ */
 public interface LoggerContract {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the loggerType property: Logger type.
-     *
+     * 
      * @return the loggerType value.
      */
     LoggerType loggerType();
 
     /**
      * Gets the description property: Logger description.
-     *
+     * 
      * @return the description value.
      */
     String description();
@@ -48,7 +50,7 @@ public interface LoggerContract {
     /**
      * Gets the credentials property: The name and SendRule connection string of the event hub for azureEventHub logger.
      * Instrumentation key for applicationInsights logger.
-     *
+     * 
      * @return the credentials value.
      */
     Map<String, String> credentials();
@@ -56,7 +58,7 @@ public interface LoggerContract {
     /**
      * Gets the isBuffered property: Whether records are buffered in the logger before publishing. Default is assumed to
      * be true.
-     *
+     * 
      * @return the isBuffered value.
      */
     Boolean isBuffered();
@@ -64,41 +66,49 @@ public interface LoggerContract {
     /**
      * Gets the resourceId property: Azure Resource Id of a log target (either Azure Event Hub resource or Azure
      * Application Insights resource).
-     *
+     * 
      * @return the resourceId value.
      */
     String resourceId();
 
     /**
      * Gets the name of the resource group.
-     *
+     * 
      * @return the name of the resource group.
      */
     String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.apimanagement.fluent.models.LoggerContractInner object.
-     *
+     * 
      * @return the inner object.
      */
     LoggerContractInner innerModel();
 
-    /** The entirety of the LoggerContract definition. */
+    /**
+     * The entirety of the LoggerContract definition.
+     */
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
 
-    /** The LoggerContract definition stages. */
+    /**
+     * The LoggerContract definition stages.
+     */
     interface DefinitionStages {
-        /** The first stage of the LoggerContract definition. */
+        /**
+         * The first stage of the LoggerContract definition.
+         */
         interface Blank extends WithParentResource {
         }
 
-        /** The stage of the LoggerContract definition allowing to specify parent resource. */
+        /**
+         * The stage of the LoggerContract definition allowing to specify parent resource.
+         */
         interface WithParentResource {
             /**
              * Specifies resourceGroupName, serviceName.
-             *
+             * 
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @param serviceName The name of the API Management service.
              * @return the next definition stage.
@@ -115,89 +125,102 @@ public interface LoggerContract {
             DefinitionStages.WithIsBuffered, DefinitionStages.WithResourceId, DefinitionStages.WithIfMatch {
             /**
              * Executes the create request.
-             *
+             * 
              * @return the created resource.
              */
             LoggerContract create();
 
             /**
              * Executes the create request.
-             *
+             * 
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
             LoggerContract create(Context context);
         }
 
-        /** The stage of the LoggerContract definition allowing to specify loggerType. */
+        /**
+         * The stage of the LoggerContract definition allowing to specify loggerType.
+         */
         interface WithLoggerType {
             /**
              * Specifies the loggerType property: Logger type..
-             *
+             * 
              * @param loggerType Logger type.
              * @return the next definition stage.
              */
             WithCreate withLoggerType(LoggerType loggerType);
         }
 
-        /** The stage of the LoggerContract definition allowing to specify description. */
+        /**
+         * The stage of the LoggerContract definition allowing to specify description.
+         */
         interface WithDescription {
             /**
              * Specifies the description property: Logger description..
-             *
+             * 
              * @param description Logger description.
              * @return the next definition stage.
              */
             WithCreate withDescription(String description);
         }
 
-        /** The stage of the LoggerContract definition allowing to specify credentials. */
+        /**
+         * The stage of the LoggerContract definition allowing to specify credentials.
+         */
         interface WithCredentials {
             /**
              * Specifies the credentials property: The name and SendRule connection string of the event hub for
-             * azureEventHub logger. Instrumentation key for applicationInsights logger..
-             *
+             * azureEventHub logger.
+             * Instrumentation key for applicationInsights logger..
+             * 
              * @param credentials The name and SendRule connection string of the event hub for azureEventHub logger.
-             *     Instrumentation key for applicationInsights logger.
+             * Instrumentation key for applicationInsights logger.
              * @return the next definition stage.
              */
             WithCreate withCredentials(Map<String, String> credentials);
         }
 
-        /** The stage of the LoggerContract definition allowing to specify isBuffered. */
+        /**
+         * The stage of the LoggerContract definition allowing to specify isBuffered.
+         */
         interface WithIsBuffered {
             /**
              * Specifies the isBuffered property: Whether records are buffered in the logger before publishing. Default
              * is assumed to be true..
-             *
+             * 
              * @param isBuffered Whether records are buffered in the logger before publishing. Default is assumed to be
-             *     true.
+             * true.
              * @return the next definition stage.
              */
             WithCreate withIsBuffered(Boolean isBuffered);
         }
 
-        /** The stage of the LoggerContract definition allowing to specify resourceId. */
+        /**
+         * The stage of the LoggerContract definition allowing to specify resourceId.
+         */
         interface WithResourceId {
             /**
              * Specifies the resourceId property: Azure Resource Id of a log target (either Azure Event Hub resource or
              * Azure Application Insights resource)..
-             *
+             * 
              * @param resourceId Azure Resource Id of a log target (either Azure Event Hub resource or Azure Application
-             *     Insights resource).
+             * Insights resource).
              * @return the next definition stage.
              */
             WithCreate withResourceId(String resourceId);
         }
 
-        /** The stage of the LoggerContract definition allowing to specify ifMatch. */
+        /**
+         * The stage of the LoggerContract definition allowing to specify ifMatch.
+         */
         interface WithIfMatch {
             /**
              * Specifies the ifMatch property: ETag of the Entity. Not required when creating an entity, but required
              * when updating an entity..
-             *
+             * 
              * @param ifMatch ETag of the Entity. Not required when creating an entity, but required when updating an
-             *     entity.
+             * entity.
              * @return the next definition stage.
              */
             WithCreate withIfMatch(String ifMatch);
@@ -206,86 +229,100 @@ public interface LoggerContract {
 
     /**
      * Begins update for the LoggerContract resource.
-     *
+     * 
      * @return the stage of resource update.
      */
     LoggerContract.Update update();
 
-    /** The template for LoggerContract update. */
+    /**
+     * The template for LoggerContract update.
+     */
     interface Update extends UpdateStages.WithLoggerType, UpdateStages.WithDescription, UpdateStages.WithCredentials,
         UpdateStages.WithIsBuffered, UpdateStages.WithIfMatch {
         /**
          * Executes the update request.
-         *
+         * 
          * @return the updated resource.
          */
         LoggerContract apply();
 
         /**
          * Executes the update request.
-         *
+         * 
          * @param context The context to associate with this operation.
          * @return the updated resource.
          */
         LoggerContract apply(Context context);
     }
 
-    /** The LoggerContract update stages. */
+    /**
+     * The LoggerContract update stages.
+     */
     interface UpdateStages {
-        /** The stage of the LoggerContract update allowing to specify loggerType. */
+        /**
+         * The stage of the LoggerContract update allowing to specify loggerType.
+         */
         interface WithLoggerType {
             /**
              * Specifies the loggerType property: Logger type..
-             *
+             * 
              * @param loggerType Logger type.
              * @return the next definition stage.
              */
             Update withLoggerType(LoggerType loggerType);
         }
 
-        /** The stage of the LoggerContract update allowing to specify description. */
+        /**
+         * The stage of the LoggerContract update allowing to specify description.
+         */
         interface WithDescription {
             /**
              * Specifies the description property: Logger description..
-             *
+             * 
              * @param description Logger description.
              * @return the next definition stage.
              */
             Update withDescription(String description);
         }
 
-        /** The stage of the LoggerContract update allowing to specify credentials. */
+        /**
+         * The stage of the LoggerContract update allowing to specify credentials.
+         */
         interface WithCredentials {
             /**
              * Specifies the credentials property: Logger credentials..
-             *
+             * 
              * @param credentials Logger credentials.
              * @return the next definition stage.
              */
             Update withCredentials(Map<String, String> credentials);
         }
 
-        /** The stage of the LoggerContract update allowing to specify isBuffered. */
+        /**
+         * The stage of the LoggerContract update allowing to specify isBuffered.
+         */
         interface WithIsBuffered {
             /**
              * Specifies the isBuffered property: Whether records are buffered in the logger before publishing. Default
              * is assumed to be true..
-             *
+             * 
              * @param isBuffered Whether records are buffered in the logger before publishing. Default is assumed to be
-             *     true.
+             * true.
              * @return the next definition stage.
              */
             Update withIsBuffered(Boolean isBuffered);
         }
 
-        /** The stage of the LoggerContract update allowing to specify ifMatch. */
+        /**
+         * The stage of the LoggerContract update allowing to specify ifMatch.
+         */
         interface WithIfMatch {
             /**
              * Specifies the ifMatch property: ETag of the Entity. ETag should match the current entity state from the
              * header response of the GET request or it should be * for unconditional update..
-             *
+             * 
              * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of
-             *     the GET request or it should be * for unconditional update.
+             * the GET request or it should be * for unconditional update.
              * @return the next definition stage.
              */
             Update withIfMatch(String ifMatch);
@@ -294,14 +331,14 @@ public interface LoggerContract {
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @return the refreshed resource.
      */
     LoggerContract refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */

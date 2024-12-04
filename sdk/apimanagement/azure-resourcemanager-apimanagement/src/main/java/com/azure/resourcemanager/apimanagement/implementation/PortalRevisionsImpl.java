@@ -32,14 +32,14 @@ public final class PortalRevisionsImpl implements PortalRevisions {
     public PagedIterable<PortalRevisionContract> listByService(String resourceGroupName, String serviceName) {
         PagedIterable<PortalRevisionContractInner> inner
             = this.serviceClient().listByService(resourceGroupName, serviceName);
-        return Utils.mapPage(inner, inner1 -> new PortalRevisionContractImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PortalRevisionContractImpl(inner1, this.manager()));
     }
 
     public PagedIterable<PortalRevisionContract> listByService(String resourceGroupName, String serviceName,
         String filter, Integer top, Integer skip, Context context) {
         PagedIterable<PortalRevisionContractInner> inner
             = this.serviceClient().listByService(resourceGroupName, serviceName, filter, top, skip, context);
-        return Utils.mapPage(inner, inner1 -> new PortalRevisionContractImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PortalRevisionContractImpl(inner1, this.manager()));
     }
 
     public PortalRevisionsGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,
@@ -73,17 +73,17 @@ public final class PortalRevisionsImpl implements PortalRevisions {
     }
 
     public PortalRevisionContract getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String serviceName = Utils.getValueFromIdByName(id, "service");
+        String serviceName = ResourceManagerUtils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
-        String portalRevisionId = Utils.getValueFromIdByName(id, "portalRevisions");
+        String portalRevisionId = ResourceManagerUtils.getValueFromIdByName(id, "portalRevisions");
         if (portalRevisionId == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'portalRevisions'.", id)));
@@ -92,17 +92,17 @@ public final class PortalRevisionsImpl implements PortalRevisions {
     }
 
     public Response<PortalRevisionContract> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String serviceName = Utils.getValueFromIdByName(id, "service");
+        String serviceName = ResourceManagerUtils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
-        String portalRevisionId = Utils.getValueFromIdByName(id, "portalRevisions");
+        String portalRevisionId = ResourceManagerUtils.getValueFromIdByName(id, "portalRevisions");
         if (portalRevisionId == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'portalRevisions'.", id)));

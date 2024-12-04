@@ -6,50 +6,53 @@ package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.apimanagement.models.GroupType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Group contract Properties. */
+/**
+ * Group contract Properties.
+ */
 @Fluent
-public final class GroupContractProperties {
+public final class GroupContractProperties implements JsonSerializable<GroupContractProperties> {
     /*
      * Group name.
      */
-    @JsonProperty(value = "displayName", required = true)
     private String displayName;
 
     /*
      * Group description. Can contain HTML formatting tags.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * true if the group is one of the three system groups (Administrators, Developers, or Guests); otherwise false.
      */
-    @JsonProperty(value = "builtIn", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean builtIn;
 
     /*
      * Group type.
      */
-    @JsonProperty(value = "type")
     private GroupType type;
 
     /*
      * For external groups, this property contains the id of the group from the external identity provider, e.g. for
      * Azure Active Directory `aad://<tenant>.onmicrosoft.com/groups/<group object id>`; otherwise the value is null.
      */
-    @JsonProperty(value = "externalId")
     private String externalId;
 
-    /** Creates an instance of GroupContractProperties class. */
+    /**
+     * Creates an instance of GroupContractProperties class.
+     */
     public GroupContractProperties() {
     }
 
     /**
      * Get the displayName property: Group name.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -58,7 +61,7 @@ public final class GroupContractProperties {
 
     /**
      * Set the displayName property: Group name.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the GroupContractProperties object itself.
      */
@@ -69,7 +72,7 @@ public final class GroupContractProperties {
 
     /**
      * Get the description property: Group description. Can contain HTML formatting tags.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -78,7 +81,7 @@ public final class GroupContractProperties {
 
     /**
      * Set the description property: Group description. Can contain HTML formatting tags.
-     *
+     * 
      * @param description the description value to set.
      * @return the GroupContractProperties object itself.
      */
@@ -90,7 +93,7 @@ public final class GroupContractProperties {
     /**
      * Get the builtIn property: true if the group is one of the three system groups (Administrators, Developers, or
      * Guests); otherwise false.
-     *
+     * 
      * @return the builtIn value.
      */
     public Boolean builtIn() {
@@ -99,7 +102,7 @@ public final class GroupContractProperties {
 
     /**
      * Get the type property: Group type.
-     *
+     * 
      * @return the type value.
      */
     public GroupType type() {
@@ -108,7 +111,7 @@ public final class GroupContractProperties {
 
     /**
      * Set the type property: Group type.
-     *
+     * 
      * @param type the type value to set.
      * @return the GroupContractProperties object itself.
      */
@@ -121,7 +124,7 @@ public final class GroupContractProperties {
      * Get the externalId property: For external groups, this property contains the id of the group from the external
      * identity provider, e.g. for Azure Active Directory `aad://&lt;tenant&gt;.onmicrosoft.com/groups/&lt;group object
      * id&gt;`; otherwise the value is null.
-     *
+     * 
      * @return the externalId value.
      */
     public String externalId() {
@@ -132,7 +135,7 @@ public final class GroupContractProperties {
      * Set the externalId property: For external groups, this property contains the id of the group from the external
      * identity provider, e.g. for Azure Active Directory `aad://&lt;tenant&gt;.onmicrosoft.com/groups/&lt;group object
      * id&gt;`; otherwise the value is null.
-     *
+     * 
      * @param externalId the externalId value to set.
      * @return the GroupContractProperties object itself.
      */
@@ -143,15 +146,64 @@ public final class GroupContractProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (displayName() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property displayName in model GroupContractProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property displayName in model GroupContractProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(GroupContractProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("externalId", this.externalId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GroupContractProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GroupContractProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the GroupContractProperties.
+     */
+    public static GroupContractProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GroupContractProperties deserializedGroupContractProperties = new GroupContractProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("displayName".equals(fieldName)) {
+                    deserializedGroupContractProperties.displayName = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedGroupContractProperties.description = reader.getString();
+                } else if ("builtIn".equals(fieldName)) {
+                    deserializedGroupContractProperties.builtIn = reader.getNullable(JsonReader::getBoolean);
+                } else if ("type".equals(fieldName)) {
+                    deserializedGroupContractProperties.type = GroupType.fromString(reader.getString());
+                } else if ("externalId".equals(fieldName)) {
+                    deserializedGroupContractProperties.externalId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGroupContractProperties;
+        });
+    }
 }

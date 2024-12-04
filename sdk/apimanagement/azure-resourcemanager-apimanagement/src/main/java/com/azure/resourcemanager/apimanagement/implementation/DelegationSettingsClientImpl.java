@@ -33,17 +33,23 @@ import com.azure.resourcemanager.apimanagement.models.DelegationSettingsGetEntit
 import com.azure.resourcemanager.apimanagement.models.DelegationSettingsGetResponse;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in DelegationSettingsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DelegationSettingsClient.
+ */
 public final class DelegationSettingsClientImpl implements DelegationSettingsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final DelegationSettingsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ApiManagementClientImpl client;
 
     /**
      * Initializes an instance of DelegationSettingsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     DelegationSettingsClientImpl(ApiManagementClientImpl client) {
@@ -111,7 +117,7 @@ public final class DelegationSettingsClientImpl implements DelegationSettingsCli
 
     /**
      * Gets the entity state (Etag) version of the DelegationSettings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -146,7 +152,7 @@ public final class DelegationSettingsClientImpl implements DelegationSettingsCli
 
     /**
      * Gets the entity state (Etag) version of the DelegationSettings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param context The context to associate with this operation.
@@ -181,7 +187,7 @@ public final class DelegationSettingsClientImpl implements DelegationSettingsCli
 
     /**
      * Gets the entity state (Etag) version of the DelegationSettings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -196,7 +202,7 @@ public final class DelegationSettingsClientImpl implements DelegationSettingsCli
 
     /**
      * Gets the entity state (Etag) version of the DelegationSettings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param context The context to associate with this operation.
@@ -213,7 +219,7 @@ public final class DelegationSettingsClientImpl implements DelegationSettingsCli
 
     /**
      * Gets the entity state (Etag) version of the DelegationSettings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -227,7 +233,7 @@ public final class DelegationSettingsClientImpl implements DelegationSettingsCli
 
     /**
      * Get Delegation Settings for the Portal.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -261,7 +267,7 @@ public final class DelegationSettingsClientImpl implements DelegationSettingsCli
 
     /**
      * Get Delegation Settings for the Portal.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param context The context to associate with this operation.
@@ -296,7 +302,7 @@ public final class DelegationSettingsClientImpl implements DelegationSettingsCli
 
     /**
      * Get Delegation Settings for the Portal.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -311,7 +317,7 @@ public final class DelegationSettingsClientImpl implements DelegationSettingsCli
 
     /**
      * Get Delegation Settings for the Portal.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param context The context to associate with this operation.
@@ -328,7 +334,7 @@ public final class DelegationSettingsClientImpl implements DelegationSettingsCli
 
     /**
      * Get Delegation Settings for the Portal.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -343,11 +349,11 @@ public final class DelegationSettingsClientImpl implements DelegationSettingsCli
 
     /**
      * Update Delegation settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param parameters Update Delegation settings.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -389,11 +395,11 @@ public final class DelegationSettingsClientImpl implements DelegationSettingsCli
 
     /**
      * Update Delegation settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param parameters Update Delegation settings.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -435,11 +441,11 @@ public final class DelegationSettingsClientImpl implements DelegationSettingsCli
 
     /**
      * Update Delegation settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param parameters Update Delegation settings.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -455,11 +461,11 @@ public final class DelegationSettingsClientImpl implements DelegationSettingsCli
 
     /**
      * Update Delegation settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param parameters Update Delegation settings.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -475,11 +481,11 @@ public final class DelegationSettingsClientImpl implements DelegationSettingsCli
 
     /**
      * Update Delegation settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param parameters Update Delegation settings.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -493,7 +499,7 @@ public final class DelegationSettingsClientImpl implements DelegationSettingsCli
 
     /**
      * Create or Update Delegation settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param parameters Create or update parameters.
@@ -501,8 +507,8 @@ public final class DelegationSettingsClientImpl implements DelegationSettingsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return delegation settings for a developer portal along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return delegation settings for a developer portal along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PortalDelegationSettingsInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
@@ -536,7 +542,7 @@ public final class DelegationSettingsClientImpl implements DelegationSettingsCli
 
     /**
      * Create or Update Delegation settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param parameters Create or update parameters.
@@ -545,8 +551,8 @@ public final class DelegationSettingsClientImpl implements DelegationSettingsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return delegation settings for a developer portal along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return delegation settings for a developer portal along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PortalDelegationSettingsInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
@@ -579,7 +585,7 @@ public final class DelegationSettingsClientImpl implements DelegationSettingsCli
 
     /**
      * Create or Update Delegation settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param parameters Create or update parameters.
@@ -598,7 +604,7 @@ public final class DelegationSettingsClientImpl implements DelegationSettingsCli
 
     /**
      * Create or Update Delegation settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param parameters Create or update parameters.
@@ -617,7 +623,7 @@ public final class DelegationSettingsClientImpl implements DelegationSettingsCli
 
     /**
      * Create or Update Delegation settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param parameters Create or update parameters.
@@ -635,14 +641,14 @@ public final class DelegationSettingsClientImpl implements DelegationSettingsCli
 
     /**
      * Gets the secret validation key of the DelegationSettings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the secret validation key of the DelegationSettings along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PortalSettingValidationKeyContractInner>>
@@ -671,7 +677,7 @@ public final class DelegationSettingsClientImpl implements DelegationSettingsCli
 
     /**
      * Gets the secret validation key of the DelegationSettings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param context The context to associate with this operation.
@@ -679,7 +685,7 @@ public final class DelegationSettingsClientImpl implements DelegationSettingsCli
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the secret validation key of the DelegationSettings along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PortalSettingValidationKeyContractInner>>
@@ -707,7 +713,7 @@ public final class DelegationSettingsClientImpl implements DelegationSettingsCli
 
     /**
      * Gets the secret validation key of the DelegationSettings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -724,7 +730,7 @@ public final class DelegationSettingsClientImpl implements DelegationSettingsCli
 
     /**
      * Gets the secret validation key of the DelegationSettings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param context The context to associate with this operation.
@@ -741,7 +747,7 @@ public final class DelegationSettingsClientImpl implements DelegationSettingsCli
 
     /**
      * Gets the secret validation key of the DelegationSettings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

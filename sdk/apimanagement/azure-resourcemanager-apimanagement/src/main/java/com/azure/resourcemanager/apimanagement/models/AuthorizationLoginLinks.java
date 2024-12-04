@@ -7,11 +7,13 @@ package com.azure.resourcemanager.apimanagement.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of AuthorizationLoginLinks. */
+/**
+ * Resource collection API of AuthorizationLoginLinks.
+ */
 public interface AuthorizationLoginLinks {
     /**
      * Gets authorization login links.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param authorizationProviderId Identifier of the authorization provider.
@@ -29,7 +31,7 @@ public interface AuthorizationLoginLinks {
 
     /**
      * Gets authorization login links.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param authorizationProviderId Identifier of the authorization provider.

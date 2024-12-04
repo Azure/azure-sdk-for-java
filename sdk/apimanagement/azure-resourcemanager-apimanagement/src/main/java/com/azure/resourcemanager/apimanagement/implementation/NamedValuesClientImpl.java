@@ -47,17 +47,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in NamedValuesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in NamedValuesClient.
+ */
 public final class NamedValuesClientImpl implements NamedValuesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final NamedValuesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ApiManagementClientImpl client;
 
     /**
      * Initializes an instance of NamedValuesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     NamedValuesClientImpl(ApiManagementClientImpl client) {
@@ -163,22 +169,22 @@ public final class NamedValuesClientImpl implements NamedValuesClient {
 
     /**
      * Lists a collection of named values defined within a service instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter | Field | Usage | Supported operators | Supported functions
-     *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| tags | filter | ge, le, eq,
-     *     ne, gt, lt | substringof, contains, startswith, endswith, any, all |&lt;/br&gt;| displayName | filter | ge,
-     *     le, eq, ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;.
+     * |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| tags | filter | ge, le, eq, ne,
+     * gt, lt | substringof, contains, startswith, endswith, any, all |&lt;/br&gt;| displayName | filter | ge, le, eq,
+     * ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;.
      * @param top Number of records to return.
      * @param skip Number of records to skip.
      * @param isKeyVaultRefreshFailed When set to true, the response contains only named value entities which failed
-     *     refresh.
+     * refresh.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged NamedValue list representation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return paged NamedValue list representation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NamedValueContractInner>> listByServiceSinglePageAsync(String resourceGroupName,
@@ -210,23 +216,23 @@ public final class NamedValuesClientImpl implements NamedValuesClient {
 
     /**
      * Lists a collection of named values defined within a service instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter | Field | Usage | Supported operators | Supported functions
-     *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| tags | filter | ge, le, eq,
-     *     ne, gt, lt | substringof, contains, startswith, endswith, any, all |&lt;/br&gt;| displayName | filter | ge,
-     *     le, eq, ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;.
+     * |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| tags | filter | ge, le, eq, ne,
+     * gt, lt | substringof, contains, startswith, endswith, any, all |&lt;/br&gt;| displayName | filter | ge, le, eq,
+     * ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;.
      * @param top Number of records to return.
      * @param skip Number of records to skip.
      * @param isKeyVaultRefreshFailed When set to true, the response contains only named value entities which failed
-     *     refresh.
+     * refresh.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged NamedValue list representation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return paged NamedValue list representation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NamedValueContractInner>> listByServiceSinglePageAsync(String resourceGroupName,
@@ -258,17 +264,17 @@ public final class NamedValuesClientImpl implements NamedValuesClient {
 
     /**
      * Lists a collection of named values defined within a service instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter | Field | Usage | Supported operators | Supported functions
-     *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| tags | filter | ge, le, eq,
-     *     ne, gt, lt | substringof, contains, startswith, endswith, any, all |&lt;/br&gt;| displayName | filter | ge,
-     *     le, eq, ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;.
+     * |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| tags | filter | ge, le, eq, ne,
+     * gt, lt | substringof, contains, startswith, endswith, any, all |&lt;/br&gt;| displayName | filter | ge, le, eq,
+     * ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;.
      * @param top Number of records to return.
      * @param skip Number of records to skip.
      * @param isKeyVaultRefreshFailed When set to true, the response contains only named value entities which failed
-     *     refresh.
+     * refresh.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -283,7 +289,7 @@ public final class NamedValuesClientImpl implements NamedValuesClient {
 
     /**
      * Lists a collection of named values defined within a service instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -303,17 +309,17 @@ public final class NamedValuesClientImpl implements NamedValuesClient {
 
     /**
      * Lists a collection of named values defined within a service instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter | Field | Usage | Supported operators | Supported functions
-     *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| tags | filter | ge, le, eq,
-     *     ne, gt, lt | substringof, contains, startswith, endswith, any, all |&lt;/br&gt;| displayName | filter | ge,
-     *     le, eq, ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;.
+     * |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| tags | filter | ge, le, eq, ne,
+     * gt, lt | substringof, contains, startswith, endswith, any, all |&lt;/br&gt;| displayName | filter | ge, le, eq,
+     * ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;.
      * @param top Number of records to return.
      * @param skip Number of records to skip.
      * @param isKeyVaultRefreshFailed When set to true, the response contains only named value entities which failed
-     *     refresh.
+     * refresh.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -329,7 +335,7 @@ public final class NamedValuesClientImpl implements NamedValuesClient {
 
     /**
      * Lists a collection of named values defined within a service instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -349,17 +355,17 @@ public final class NamedValuesClientImpl implements NamedValuesClient {
 
     /**
      * Lists a collection of named values defined within a service instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter | Field | Usage | Supported operators | Supported functions
-     *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| tags | filter | ge, le, eq,
-     *     ne, gt, lt | substringof, contains, startswith, endswith, any, all |&lt;/br&gt;| displayName | filter | ge,
-     *     le, eq, ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;.
+     * |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| tags | filter | ge, le, eq, ne,
+     * gt, lt | substringof, contains, startswith, endswith, any, all |&lt;/br&gt;| displayName | filter | ge, le, eq,
+     * ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;.
      * @param top Number of records to return.
      * @param skip Number of records to skip.
      * @param isKeyVaultRefreshFailed When set to true, the response contains only named value entities which failed
-     *     refresh.
+     * refresh.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -375,7 +381,7 @@ public final class NamedValuesClientImpl implements NamedValuesClient {
 
     /**
      * Gets the entity state (Etag) version of the named value specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param namedValueId Identifier of the NamedValue.
@@ -383,7 +389,7 @@ public final class NamedValuesClientImpl implements NamedValuesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity state (Etag) version of the named value specified by its identifier on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<NamedValuesGetEntityTagResponse> getEntityTagWithResponseAsync(String resourceGroupName,
@@ -415,7 +421,7 @@ public final class NamedValuesClientImpl implements NamedValuesClient {
 
     /**
      * Gets the entity state (Etag) version of the named value specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param namedValueId Identifier of the NamedValue.
@@ -424,7 +430,7 @@ public final class NamedValuesClientImpl implements NamedValuesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity state (Etag) version of the named value specified by its identifier on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<NamedValuesGetEntityTagResponse> getEntityTagWithResponseAsync(String resourceGroupName,
@@ -455,7 +461,7 @@ public final class NamedValuesClientImpl implements NamedValuesClient {
 
     /**
      * Gets the entity state (Etag) version of the named value specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param namedValueId Identifier of the NamedValue.
@@ -463,7 +469,7 @@ public final class NamedValuesClientImpl implements NamedValuesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity state (Etag) version of the named value specified by its identifier on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> getEntityTagAsync(String resourceGroupName, String serviceName, String namedValueId) {
@@ -473,7 +479,7 @@ public final class NamedValuesClientImpl implements NamedValuesClient {
 
     /**
      * Gets the entity state (Etag) version of the named value specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param namedValueId Identifier of the NamedValue.
@@ -491,7 +497,7 @@ public final class NamedValuesClientImpl implements NamedValuesClient {
 
     /**
      * Gets the entity state (Etag) version of the named value specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param namedValueId Identifier of the NamedValue.
@@ -506,7 +512,7 @@ public final class NamedValuesClientImpl implements NamedValuesClient {
 
     /**
      * Gets the details of the named value specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param namedValueId Identifier of the NamedValue.
@@ -545,7 +551,7 @@ public final class NamedValuesClientImpl implements NamedValuesClient {
 
     /**
      * Gets the details of the named value specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param namedValueId Identifier of the NamedValue.
@@ -584,7 +590,7 @@ public final class NamedValuesClientImpl implements NamedValuesClient {
 
     /**
      * Gets the details of the named value specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param namedValueId Identifier of the NamedValue.
@@ -601,7 +607,7 @@ public final class NamedValuesClientImpl implements NamedValuesClient {
 
     /**
      * Gets the details of the named value specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param namedValueId Identifier of the NamedValue.
@@ -619,7 +625,7 @@ public final class NamedValuesClientImpl implements NamedValuesClient {
 
     /**
      * Gets the details of the named value specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param namedValueId Identifier of the NamedValue.
@@ -635,7 +641,7 @@ public final class NamedValuesClientImpl implements NamedValuesClient {
 
     /**
      * Creates or updates named value.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param namedValueId Identifier of the NamedValue.
@@ -682,7 +688,7 @@ public final class NamedValuesClientImpl implements NamedValuesClient {
 
     /**
      * Creates or updates named value.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param namedValueId Identifier of the NamedValue.
@@ -728,7 +734,7 @@ public final class NamedValuesClientImpl implements NamedValuesClient {
 
     /**
      * Creates or updates named value.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param namedValueId Identifier of the NamedValue.
@@ -752,7 +758,7 @@ public final class NamedValuesClientImpl implements NamedValuesClient {
 
     /**
      * Creates or updates named value.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param namedValueId Identifier of the NamedValue.
@@ -775,7 +781,7 @@ public final class NamedValuesClientImpl implements NamedValuesClient {
 
     /**
      * Creates or updates named value.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param namedValueId Identifier of the NamedValue.
@@ -800,7 +806,7 @@ public final class NamedValuesClientImpl implements NamedValuesClient {
 
     /**
      * Creates or updates named value.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param namedValueId Identifier of the NamedValue.
@@ -820,7 +826,7 @@ public final class NamedValuesClientImpl implements NamedValuesClient {
 
     /**
      * Creates or updates named value.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param namedValueId Identifier of the NamedValue.
@@ -842,7 +848,7 @@ public final class NamedValuesClientImpl implements NamedValuesClient {
 
     /**
      * Creates or updates named value.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param namedValueId Identifier of the NamedValue.
@@ -862,7 +868,7 @@ public final class NamedValuesClientImpl implements NamedValuesClient {
 
     /**
      * Creates or updates named value.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param namedValueId Identifier of the NamedValue.
@@ -882,7 +888,7 @@ public final class NamedValuesClientImpl implements NamedValuesClient {
 
     /**
      * Creates or updates named value.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param namedValueId Identifier of the NamedValue.
@@ -904,7 +910,7 @@ public final class NamedValuesClientImpl implements NamedValuesClient {
 
     /**
      * Creates or updates named value.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param namedValueId Identifier of the NamedValue.
@@ -923,7 +929,7 @@ public final class NamedValuesClientImpl implements NamedValuesClient {
 
     /**
      * Creates or updates named value.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param namedValueId Identifier of the NamedValue.
@@ -943,12 +949,12 @@ public final class NamedValuesClientImpl implements NamedValuesClient {
 
     /**
      * Updates the specific named value.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param namedValueId Identifier of the NamedValue.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param parameters Update parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -994,12 +1000,12 @@ public final class NamedValuesClientImpl implements NamedValuesClient {
 
     /**
      * Updates the specific named value.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param namedValueId Identifier of the NamedValue.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param parameters Update parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1044,12 +1050,12 @@ public final class NamedValuesClientImpl implements NamedValuesClient {
 
     /**
      * Updates the specific named value.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param namedValueId Identifier of the NamedValue.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param parameters Update parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1069,12 +1075,12 @@ public final class NamedValuesClientImpl implements NamedValuesClient {
 
     /**
      * Updates the specific named value.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param namedValueId Identifier of the NamedValue.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param parameters Update parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1095,12 +1101,12 @@ public final class NamedValuesClientImpl implements NamedValuesClient {
 
     /**
      * Updates the specific named value.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param namedValueId Identifier of the NamedValue.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param parameters Update parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1116,12 +1122,12 @@ public final class NamedValuesClientImpl implements NamedValuesClient {
 
     /**
      * Updates the specific named value.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param namedValueId Identifier of the NamedValue.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param parameters Update parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1139,12 +1145,12 @@ public final class NamedValuesClientImpl implements NamedValuesClient {
 
     /**
      * Updates the specific named value.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param namedValueId Identifier of the NamedValue.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param parameters Update parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1160,12 +1166,12 @@ public final class NamedValuesClientImpl implements NamedValuesClient {
 
     /**
      * Updates the specific named value.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param namedValueId Identifier of the NamedValue.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param parameters Update parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1182,12 +1188,12 @@ public final class NamedValuesClientImpl implements NamedValuesClient {
 
     /**
      * Updates the specific named value.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param namedValueId Identifier of the NamedValue.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param parameters Update parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1202,12 +1208,12 @@ public final class NamedValuesClientImpl implements NamedValuesClient {
 
     /**
      * Updates the specific named value.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param namedValueId Identifier of the NamedValue.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param parameters Update parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1223,12 +1229,12 @@ public final class NamedValuesClientImpl implements NamedValuesClient {
 
     /**
      * Deletes specific named value from the API Management service instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param namedValueId Identifier of the NamedValue.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1267,12 +1273,12 @@ public final class NamedValuesClientImpl implements NamedValuesClient {
 
     /**
      * Deletes specific named value from the API Management service instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param namedValueId Identifier of the NamedValue.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1311,12 +1317,12 @@ public final class NamedValuesClientImpl implements NamedValuesClient {
 
     /**
      * Deletes specific named value from the API Management service instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param namedValueId Identifier of the NamedValue.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1330,12 +1336,12 @@ public final class NamedValuesClientImpl implements NamedValuesClient {
 
     /**
      * Deletes specific named value from the API Management service instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param namedValueId Identifier of the NamedValue.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1350,12 +1356,12 @@ public final class NamedValuesClientImpl implements NamedValuesClient {
 
     /**
      * Deletes specific named value from the API Management service instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param namedValueId Identifier of the NamedValue.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1367,7 +1373,7 @@ public final class NamedValuesClientImpl implements NamedValuesClient {
 
     /**
      * Gets the secret of the named value specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param namedValueId Identifier of the NamedValue.
@@ -1406,7 +1412,7 @@ public final class NamedValuesClientImpl implements NamedValuesClient {
 
     /**
      * Gets the secret of the named value specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param namedValueId Identifier of the NamedValue.
@@ -1445,7 +1451,7 @@ public final class NamedValuesClientImpl implements NamedValuesClient {
 
     /**
      * Gets the secret of the named value specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param namedValueId Identifier of the NamedValue.
@@ -1463,7 +1469,7 @@ public final class NamedValuesClientImpl implements NamedValuesClient {
 
     /**
      * Gets the secret of the named value specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param namedValueId Identifier of the NamedValue.
@@ -1481,7 +1487,7 @@ public final class NamedValuesClientImpl implements NamedValuesClient {
 
     /**
      * Gets the secret of the named value specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param namedValueId Identifier of the NamedValue.
@@ -1497,7 +1503,7 @@ public final class NamedValuesClientImpl implements NamedValuesClient {
 
     /**
      * Refresh the secret of the named value specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param namedValueId Identifier of the NamedValue.
@@ -1536,7 +1542,7 @@ public final class NamedValuesClientImpl implements NamedValuesClient {
 
     /**
      * Refresh the secret of the named value specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param namedValueId Identifier of the NamedValue.
@@ -1575,7 +1581,7 @@ public final class NamedValuesClientImpl implements NamedValuesClient {
 
     /**
      * Refresh the secret of the named value specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param namedValueId Identifier of the NamedValue.
@@ -1596,7 +1602,7 @@ public final class NamedValuesClientImpl implements NamedValuesClient {
 
     /**
      * Refresh the secret of the named value specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param namedValueId Identifier of the NamedValue.
@@ -1618,7 +1624,7 @@ public final class NamedValuesClientImpl implements NamedValuesClient {
 
     /**
      * Refresh the secret of the named value specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param namedValueId Identifier of the NamedValue.
@@ -1635,7 +1641,7 @@ public final class NamedValuesClientImpl implements NamedValuesClient {
 
     /**
      * Refresh the secret of the named value specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param namedValueId Identifier of the NamedValue.
@@ -1653,7 +1659,7 @@ public final class NamedValuesClientImpl implements NamedValuesClient {
 
     /**
      * Refresh the secret of the named value specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param namedValueId Identifier of the NamedValue.
@@ -1671,7 +1677,7 @@ public final class NamedValuesClientImpl implements NamedValuesClient {
 
     /**
      * Refresh the secret of the named value specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param namedValueId Identifier of the NamedValue.
@@ -1690,7 +1696,7 @@ public final class NamedValuesClientImpl implements NamedValuesClient {
 
     /**
      * Refresh the secret of the named value specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param namedValueId Identifier of the NamedValue.
@@ -1706,7 +1712,7 @@ public final class NamedValuesClientImpl implements NamedValuesClient {
 
     /**
      * Refresh the secret of the named value specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param namedValueId Identifier of the NamedValue.
@@ -1724,14 +1730,13 @@ public final class NamedValuesClientImpl implements NamedValuesClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged NamedValue list representation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return paged NamedValue list representation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NamedValueContractInner>> listByServiceNextSinglePageAsync(String nextLink) {
@@ -1752,15 +1757,14 @@ public final class NamedValuesClientImpl implements NamedValuesClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged NamedValue list representation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return paged NamedValue list representation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NamedValueContractInner>> listByServiceNextSinglePageAsync(String nextLink,

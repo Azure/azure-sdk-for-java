@@ -7,32 +7,34 @@ package com.azure.resourcemanager.apimanagement.models;
 import com.azure.resourcemanager.apimanagement.fluent.models.PolicyCollectionInner;
 import java.util.List;
 
-/** An immutable client-side representation of PolicyCollection. */
+/**
+ * An immutable client-side representation of PolicyCollection.
+ */
 public interface PolicyCollection {
     /**
      * Gets the value property: Policy Contract value.
-     *
+     * 
      * @return the value value.
      */
     List<PolicyContract> value();
 
     /**
      * Gets the count property: Total record count number.
-     *
+     * 
      * @return the count value.
      */
     Long count();
 
     /**
      * Gets the nextLink property: Next page link if any.
-     *
+     * 
      * @return the nextLink value.
      */
     String nextLink();
 
     /**
      * Gets the inner com.azure.resourcemanager.apimanagement.fluent.models.PolicyCollectionInner object.
-     *
+     * 
      * @return the inner object.
      */
     PolicyCollectionInner innerModel();
