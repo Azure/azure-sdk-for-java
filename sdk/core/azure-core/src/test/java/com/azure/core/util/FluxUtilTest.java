@@ -212,6 +212,40 @@ public class FluxUtilTest {
     }
 
     @Test
+    public void testWriteFileWithReSubscription() throws Exception {
+        String initialContent = "hello there";
+        String firstWrite = "test";
+        String secondWrite = "again";
+        String expectedContent = "hello testagain";
+
+        byte[] firstBytes = firstWrite.getBytes(StandardCharsets.UTF_8);
+        byte[] secondBytes = secondWrite.getBytes(StandardCharsets.UTF_8);
+
+        Flux<ByteBuffer> firstBody = Flux.just(ByteBuffer.wrap(firstBytes));
+        Flux<ByteBuffer> secondBody = Flux.just(ByteBuffer.wrap(secondBytes));
+
+        File file = createFileIfNotExist();
+
+        try (FileOutputStream stream = new FileOutputStream(file)) {
+            stream.write(initialContent.getBytes(StandardCharsets.UTF_8));
+        }
+
+        // Handle error
+        Mono.fromCallable(() -> AsynchronousFileChannel.open(file.toPath(), StandardOpenOption.WRITE))
+            .flatMap(channel -> FluxUtil.writeFile(firstBody, channel, 6)
+                .then(FluxUtil.writeFile(secondBody, channel, 10))
+                .then(Mono.fromCallable(() -> Files.readAllBytes(file.toPath())).doFinally(signalType -> {
+                    try {
+                        channel.close();
+                    } catch (IOException e) {
+                        throw new UncheckedIOException(e);
+                    }
+                })))
+            .subscribe(
+                outputStream -> assertArraysEqual(outputStream, expectedContent.getBytes(StandardCharsets.UTF_8)));
+    }
+
+    @Test
     public void testWriteWritableChannel() {
         String content = "test";
 
