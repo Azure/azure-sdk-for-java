@@ -6,8 +6,8 @@ package com.azure.resourcemanager.postgresqlflexibleserver.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.VirtualEndpointResourceInner;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.VirtualEndpointsListResult;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.VirtualEndpointType;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.VirtualEndpointsListResult;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 

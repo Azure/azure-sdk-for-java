@@ -13,10 +13,10 @@ import java.time.OffsetDateTime;
 public final class LtrServerBackupOperationImpl implements LtrServerBackupOperation {
     private LtrServerBackupOperationInner innerObject;
 
-    private final com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager;
+    private final com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlServerManager serviceManager;
 
     LtrServerBackupOperationImpl(LtrServerBackupOperationInner innerObject,
-        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager) {
+        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlServerManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -81,7 +81,7 @@ public final class LtrServerBackupOperationImpl implements LtrServerBackupOperat
         return this.innerObject;
     }
 
-    private com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager() {
+    private com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlServerManager manager() {
         return this.serviceManager;
     }
 }

@@ -9,14 +9,17 @@ package com.azure.resourcemanager.postgresqlflexibleserver.generated;
  */
 public final class DatabasesCreateSamples {
     /*
-     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/DatabaseCreate.json
+     * x-ms-original-file:
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/
+     * DatabaseCreate.json
      */
     /**
      * Sample code: Create a database.
      * 
-     * @param manager Entry point to PostgreSqlManager.
+     * @param manager Entry point to PostgreSqlServerManager.
      */
-    public static void createADatabase(com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
+    public static void
+        createADatabase(com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlServerManager manager) {
         manager.databases()
             .define("db1")
             .withExistingFlexibleServer("TestGroup", "testserver")

@@ -37,7 +37,7 @@ import java.util.stream.Collectors;
 public final class ServerImpl implements Server, Server.Definition, Server.Update {
     private ServerInner innerObject;
 
-    private final com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager;
+    private final com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlServerManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -183,7 +183,7 @@ public final class ServerImpl implements Server, Server.Definition, Server.Updat
         return this.innerObject;
     }
 
-    private com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager() {
+    private com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlServerManager manager() {
         return this.serviceManager;
     }
 
@@ -212,7 +212,7 @@ public final class ServerImpl implements Server, Server.Definition, Server.Updat
         return this;
     }
 
-    ServerImpl(String name, com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager) {
+    ServerImpl(String name, com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlServerManager serviceManager) {
         this.innerObject = new ServerInner();
         this.serviceManager = serviceManager;
         this.serverName = name;
@@ -238,7 +238,7 @@ public final class ServerImpl implements Server, Server.Definition, Server.Updat
     }
 
     ServerImpl(ServerInner innerObject,
-        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager) {
+        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlServerManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");

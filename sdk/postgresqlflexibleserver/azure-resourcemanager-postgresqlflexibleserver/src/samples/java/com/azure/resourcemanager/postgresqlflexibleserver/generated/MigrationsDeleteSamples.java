@@ -9,14 +9,17 @@ package com.azure.resourcemanager.postgresqlflexibleserver.generated;
  */
 public final class MigrationsDeleteSamples {
     /*
-     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/Migrations_Delete.json
+     * x-ms-original-file:
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/
+     * Migrations_Delete.json
      */
     /**
      * Sample code: Migrations_Delete.
      * 
-     * @param manager Entry point to PostgreSqlManager.
+     * @param manager Entry point to PostgreSqlServerManager.
      */
-    public static void migrationsDelete(com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
+    public static void
+        migrationsDelete(com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlServerManager manager) {
         manager.migrations()
             .deleteWithResponse("ffffffff-ffff-ffff-ffff-ffffffffffff", "testrg", "testtarget", "testmigration",
                 com.azure.core.util.Context.NONE);

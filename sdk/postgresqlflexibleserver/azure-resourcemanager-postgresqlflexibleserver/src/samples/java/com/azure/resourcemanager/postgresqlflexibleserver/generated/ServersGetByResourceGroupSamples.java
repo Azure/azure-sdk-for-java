@@ -9,39 +9,46 @@ package com.azure.resourcemanager.postgresqlflexibleserver.generated;
  */
 public final class ServersGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/ServerGetWithPrivateEndpoints.json
+     * x-ms-original-file:
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/
+     * ServerGetWithPrivateEndpoints.json
      */
     /**
      * Sample code: ServerGetWithPrivateEndpoints.
      * 
-     * @param manager Entry point to PostgreSqlManager.
+     * @param manager Entry point to PostgreSqlServerManager.
      */
-    public static void
-        serverGetWithPrivateEndpoints(com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
+    public static void serverGetWithPrivateEndpoints(
+        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlServerManager manager) {
         manager.servers().getByResourceGroupWithResponse("testrg", "pgtestsvc2", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/ServerGet.json
+     * x-ms-original-file:
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/ServerGet
+     * .json
      */
     /**
      * Sample code: ServerGet.
      * 
-     * @param manager Entry point to PostgreSqlManager.
+     * @param manager Entry point to PostgreSqlServerManager.
      */
-    public static void serverGet(com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
+    public static void serverGet(com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlServerManager manager) {
         manager.servers().getByResourceGroupWithResponse("testrg", "pgtestsvc1", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/ServerGetWithVnet.json
+     * x-ms-original-file:
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/
+     * ServerGetWithVnet.json
      */
     /**
      * Sample code: ServerGetWithVnet.
      * 
-     * @param manager Entry point to PostgreSqlManager.
+     * @param manager Entry point to PostgreSqlServerManager.
      */
-    public static void serverGetWithVnet(com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
+    public static void
+        serverGetWithVnet(com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlServerManager manager) {
         manager.servers().getByResourceGroupWithResponse("testrg", "pgtestsvc4", com.azure.core.util.Context.NONE);
     }
 }

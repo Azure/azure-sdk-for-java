@@ -39,25 +39,25 @@ public final class CheckNameAvailabilityWithLocationsClientImpl implements Check
     /**
      * The service client containing this operation class.
      */
-    private final PostgreSqlManagementClientImpl client;
+    private final PostgreSqlServerManagementClientImpl client;
 
     /**
      * Initializes an instance of CheckNameAvailabilityWithLocationsClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    CheckNameAvailabilityWithLocationsClientImpl(PostgreSqlManagementClientImpl client) {
+    CheckNameAvailabilityWithLocationsClientImpl(PostgreSqlServerManagementClientImpl client) {
         this.service = RestProxy.create(CheckNameAvailabilityWithLocationsService.class, client.getHttpPipeline(),
             client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for PostgreSqlManagementClientCheckNameAvailabilityWithLocations to be
-     * used by the proxy service to perform REST calls.
+     * The interface defining all the services for PostgreSqlServerManagementClientCheckNameAvailabilityWithLocations to
+     * be used by the proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "PostgreSqlManagement")
+    @ServiceInterface(name = "PostgreSqlServerMana")
     public interface CheckNameAvailabilityWithLocationsService {
         @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.DBforPostgreSQL/locations/{locationName}/checkNameAvailability")

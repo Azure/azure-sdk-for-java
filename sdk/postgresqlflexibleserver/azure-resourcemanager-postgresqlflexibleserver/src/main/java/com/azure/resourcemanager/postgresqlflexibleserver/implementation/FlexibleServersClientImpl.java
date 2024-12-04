@@ -47,25 +47,25 @@ public final class FlexibleServersClientImpl implements FlexibleServersClient {
     /**
      * The service client containing this operation class.
      */
-    private final PostgreSqlManagementClientImpl client;
+    private final PostgreSqlServerManagementClientImpl client;
 
     /**
      * Initializes an instance of FlexibleServersClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    FlexibleServersClientImpl(PostgreSqlManagementClientImpl client) {
+    FlexibleServersClientImpl(PostgreSqlServerManagementClientImpl client) {
         this.service
             = RestProxy.create(FlexibleServersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for PostgreSqlManagementClientFlexibleServers to be used by the proxy
-     * service to perform REST calls.
+     * The interface defining all the services for PostgreSqlServerManagementClientFlexibleServers to be used by the
+     * proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "PostgreSqlManagement")
+    @ServiceInterface(name = "PostgreSqlServerMana")
     public interface FlexibleServersService {
         @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/ltrPreBackup")

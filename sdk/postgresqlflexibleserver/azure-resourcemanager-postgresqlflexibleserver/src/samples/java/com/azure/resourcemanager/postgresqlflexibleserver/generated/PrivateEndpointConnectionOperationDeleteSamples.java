@@ -9,15 +9,17 @@ package com.azure.resourcemanager.postgresqlflexibleserver.generated;
  */
 public final class PrivateEndpointConnectionOperationDeleteSamples {
     /*
-     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/PrivateEndpointConnectionDelete.json
+     * x-ms-original-file:
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/
+     * PrivateEndpointConnectionDelete.json
      */
     /**
      * Sample code: Deletes a private endpoint connection with a given name.
      * 
-     * @param manager Entry point to PostgreSqlManager.
+     * @param manager Entry point to PostgreSqlServerManager.
      */
     public static void deletesAPrivateEndpointConnectionWithAGivenName(
-        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
+        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlServerManager manager) {
         manager.privateEndpointConnectionOperations()
             .delete("Default", "test-svr", "private-endpoint-connection-name.1fa229cd-bf3f-47f0-8c49-afb36723997e",
                 com.azure.core.util.Context.NONE);

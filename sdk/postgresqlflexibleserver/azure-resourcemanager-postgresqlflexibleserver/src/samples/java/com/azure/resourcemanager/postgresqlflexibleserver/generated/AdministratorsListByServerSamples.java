@@ -9,15 +9,17 @@ package com.azure.resourcemanager.postgresqlflexibleserver.generated;
  */
 public final class AdministratorsListByServerSamples {
     /*
-     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/AdministratorsListByServer.json
+     * x-ms-original-file:
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/
+     * AdministratorsListByServer.json
      */
     /**
      * Sample code: AdministratorsListByServer.
      * 
-     * @param manager Entry point to PostgreSqlManager.
+     * @param manager Entry point to PostgreSqlServerManager.
      */
     public static void
-        administratorsListByServer(com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
+        administratorsListByServer(com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlServerManager manager) {
         manager.administrators().listByServer("testrg", "pgtestsvc1", com.azure.core.util.Context.NONE);
     }
 }

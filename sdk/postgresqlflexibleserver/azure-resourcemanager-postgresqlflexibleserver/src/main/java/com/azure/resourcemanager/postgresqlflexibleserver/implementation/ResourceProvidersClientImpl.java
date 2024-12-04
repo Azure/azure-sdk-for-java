@@ -38,25 +38,25 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     /**
      * The service client containing this operation class.
      */
-    private final PostgreSqlManagementClientImpl client;
+    private final PostgreSqlServerManagementClientImpl client;
 
     /**
      * Initializes an instance of ResourceProvidersClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    ResourceProvidersClientImpl(PostgreSqlManagementClientImpl client) {
+    ResourceProvidersClientImpl(PostgreSqlServerManagementClientImpl client) {
         this.service
             = RestProxy.create(ResourceProvidersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for PostgreSqlManagementClientResourceProviders to be used by the proxy
-     * service to perform REST calls.
+     * The interface defining all the services for PostgreSqlServerManagementClientResourceProviders to be used by the
+     * proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "PostgreSqlManagement")
+    @ServiceInterface(name = "PostgreSqlServerMana")
     public interface ResourceProvidersService {
         @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{targetDbServerName}/checkMigrationNameAvailability")

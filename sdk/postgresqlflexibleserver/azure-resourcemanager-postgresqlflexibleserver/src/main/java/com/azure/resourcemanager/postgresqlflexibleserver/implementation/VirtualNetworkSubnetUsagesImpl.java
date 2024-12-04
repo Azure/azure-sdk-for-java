@@ -19,10 +19,10 @@ public final class VirtualNetworkSubnetUsagesImpl implements VirtualNetworkSubne
 
     private final VirtualNetworkSubnetUsagesClient innerClient;
 
-    private final com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager;
+    private final com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlServerManager serviceManager;
 
     public VirtualNetworkSubnetUsagesImpl(VirtualNetworkSubnetUsagesClient innerClient,
-        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager) {
+        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlServerManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -52,7 +52,7 @@ public final class VirtualNetworkSubnetUsagesImpl implements VirtualNetworkSubne
         return this.innerClient;
     }
 
-    private com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager() {
+    private com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlServerManager manager() {
         return this.serviceManager;
     }
 }

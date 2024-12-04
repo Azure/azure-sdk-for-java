@@ -13,10 +13,10 @@ import java.util.List;
 public final class VirtualNetworkSubnetUsageResultImpl implements VirtualNetworkSubnetUsageResult {
     private VirtualNetworkSubnetUsageResultInner innerObject;
 
-    private final com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager;
+    private final com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlServerManager serviceManager;
 
     VirtualNetworkSubnetUsageResultImpl(VirtualNetworkSubnetUsageResultInner innerObject,
-        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager) {
+        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlServerManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -42,7 +42,7 @@ public final class VirtualNetworkSubnetUsageResultImpl implements VirtualNetwork
         return this.innerObject;
     }
 
-    private com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager() {
+    private com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlServerManager manager() {
         return this.serviceManager;
     }
 }

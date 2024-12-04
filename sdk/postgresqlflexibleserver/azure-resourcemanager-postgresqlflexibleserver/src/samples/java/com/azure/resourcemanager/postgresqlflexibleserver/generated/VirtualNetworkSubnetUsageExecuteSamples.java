@@ -11,15 +11,17 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.VirtualNetworkS
  */
 public final class VirtualNetworkSubnetUsageExecuteSamples {
     /*
-     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/VirtualNetworkSubnetUsage.json
+     * x-ms-original-file:
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/
+     * VirtualNetworkSubnetUsage.json
      */
     /**
      * Sample code: VirtualNetworkSubnetUsageList.
      * 
-     * @param manager Entry point to PostgreSqlManager.
+     * @param manager Entry point to PostgreSqlServerManager.
      */
-    public static void
-        virtualNetworkSubnetUsageList(com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
+    public static void virtualNetworkSubnetUsageList(
+        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlServerManager manager) {
         manager.virtualNetworkSubnetUsages()
             .executeWithResponse("westus", new VirtualNetworkSubnetUsageParameter().withVirtualNetworkArmResourceId(
                 "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.Network/virtualNetworks/testvnet"),

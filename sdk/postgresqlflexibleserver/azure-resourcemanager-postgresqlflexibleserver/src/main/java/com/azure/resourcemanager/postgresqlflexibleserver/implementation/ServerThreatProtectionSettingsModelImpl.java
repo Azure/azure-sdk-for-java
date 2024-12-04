@@ -16,7 +16,7 @@ public final class ServerThreatProtectionSettingsModelImpl implements ServerThre
     ServerThreatProtectionSettingsModel.Definition, ServerThreatProtectionSettingsModel.Update {
     private ServerThreatProtectionSettingsModelInner innerObject;
 
-    private final com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager;
+    private final com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlServerManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -50,7 +50,7 @@ public final class ServerThreatProtectionSettingsModelImpl implements ServerThre
         return this.innerObject;
     }
 
-    private com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager() {
+    private com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlServerManager manager() {
         return this.serviceManager;
     }
 
@@ -82,7 +82,7 @@ public final class ServerThreatProtectionSettingsModelImpl implements ServerThre
     }
 
     ServerThreatProtectionSettingsModelImpl(ThreatProtectionName name,
-        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager) {
+        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlServerManager serviceManager) {
         this.innerObject = new ServerThreatProtectionSettingsModelInner();
         this.serviceManager = serviceManager;
         this.threatProtectionName = name;
@@ -107,7 +107,7 @@ public final class ServerThreatProtectionSettingsModelImpl implements ServerThre
     }
 
     ServerThreatProtectionSettingsModelImpl(ServerThreatProtectionSettingsModelInner innerObject,
-        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager) {
+        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlServerManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");

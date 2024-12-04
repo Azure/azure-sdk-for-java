@@ -32,7 +32,7 @@ public final class MigrationResourceImpl
     implements MigrationResource, MigrationResource.Definition, MigrationResource.Update {
     private MigrationResourceInner innerObject;
 
-    private final com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager;
+    private final com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlServerManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -194,7 +194,7 @@ public final class MigrationResourceImpl
         return this.innerObject;
     }
 
-    private com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager() {
+    private com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlServerManager manager() {
         return this.serviceManager;
     }
 
@@ -235,7 +235,7 @@ public final class MigrationResourceImpl
     }
 
     MigrationResourceImpl(String name,
-        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager) {
+        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlServerManager serviceManager) {
         this.innerObject = new MigrationResourceInner();
         this.serviceManager = serviceManager;
         this.migrationName = name;
@@ -265,7 +265,7 @@ public final class MigrationResourceImpl
     }
 
     MigrationResourceImpl(MigrationResourceInner innerObject,
-        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager) {
+        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlServerManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.subscriptionId = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "subscriptions");

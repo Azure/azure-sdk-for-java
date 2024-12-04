@@ -9,15 +9,17 @@ package com.azure.resourcemanager.postgresqlflexibleserver.generated;
  */
 public final class QuotaUsagesListSamples {
     /*
-     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/QuotaUsagesForFlexibleServers.json
+     * x-ms-original-file:
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/
+     * QuotaUsagesForFlexibleServers.json
      */
     /**
      * Sample code: List of quota usages for flexible servers.
      * 
-     * @param manager Entry point to PostgreSqlManager.
+     * @param manager Entry point to PostgreSqlServerManager.
      */
     public static void listOfQuotaUsagesForFlexibleServers(
-        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
+        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlServerManager manager) {
         manager.quotaUsages().list("westus", com.azure.core.util.Context.NONE);
     }
 }

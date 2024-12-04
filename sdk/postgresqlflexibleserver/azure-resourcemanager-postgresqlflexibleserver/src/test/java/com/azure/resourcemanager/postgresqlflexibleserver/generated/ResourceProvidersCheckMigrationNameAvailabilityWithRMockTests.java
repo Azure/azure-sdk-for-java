@@ -10,19 +10,19 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlServerManager;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.Origin;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.ServerBackup;
+import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.MigrationNameAvailabilityResourceInner;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.MigrationNameAvailabilityResource;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
-public final class BackupsGetWithResponseMockTests {
+public final class ResourceProvidersCheckMigrationNameAvailabilityWithRMockTests {
     @Test
-    public void testGetWithResponse() throws Exception {
+    public void testCheckMigrationNameAvailabilityWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"backupType\":\"Full\",\"completedTime\":\"2021-04-12T21:20:45Z\",\"source\":\"lyoupfgfbkju\"},\"id\":\"yhgk\",\"name\":\"minsgowzf\",\"type\":\"tsttktlahbq\"}";
+            = "{\"name\":\"fa\",\"type\":\"owa\",\"nameAvailable\":false,\"reason\":\"AlreadyExists\",\"message\":\"lqwzdvpiwhxqsz\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,12 +31,13 @@ public final class BackupsGetWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        ServerBackup response = manager.backups()
-            .getWithResponse("ksbpimlqoljx", "cgxxlxs", "fgcviz", com.azure.core.util.Context.NONE)
+        MigrationNameAvailabilityResource response = manager.resourceProviders()
+            .checkMigrationNameAvailabilityWithResponse("uyilflqoiquvrehm", "njhvsujztc", "ytqj",
+                new MigrationNameAvailabilityResourceInner().withName("w").withType("auunfprnjletlx"),
+                com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(Origin.FULL, response.backupType());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-12T21:20:45Z"), response.completedTime());
-        Assertions.assertEquals("lyoupfgfbkju", response.source());
+        Assertions.assertEquals("fa", response.name());
+        Assertions.assertEquals("owa", response.type());
     }
 }

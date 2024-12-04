@@ -17,8 +17,8 @@
   <version>1.1.0-beta.4</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-postgresqlflexibleserver;current} -->
   <packaging>jar</packaging>
 
-  <name>Microsoft Azure SDK for PostgreSql Management</name>
-  <description>This package contains Microsoft Azure SDK for PostgreSql Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. The Microsoft Azure management API provides create, read, update, and delete functionality for Azure PostgreSQL resources including servers, databases, firewall rules, VNET rules, security alert policies, log files and configurations with new business model. Package tag package-flexibleserver-2023-12-01-preview.</description>
+  <name>Microsoft Azure SDK for PostgreSqlServer Management</name>
+  <description>This package contains Microsoft Azure SDK for PostgreSqlServer Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. The Microsoft Azure management API provides create, read, update, and delete functionality for Azure PostgreSQL resources including servers, databases, firewall rules, VNET rules, security alert policies, log files and configurations with new business model. Package tag package-flexibleserver-2023-12-01-preview.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <licenses>
@@ -46,6 +46,7 @@
     <jacoco.min.linecoverage>0</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0</jacoco.min.branchcoverage>
     <revapi.skip>true</revapi.skip>
+    <spotless.skip>false</spotless.skip>
   </properties>
   <dependencies>
     <dependency>

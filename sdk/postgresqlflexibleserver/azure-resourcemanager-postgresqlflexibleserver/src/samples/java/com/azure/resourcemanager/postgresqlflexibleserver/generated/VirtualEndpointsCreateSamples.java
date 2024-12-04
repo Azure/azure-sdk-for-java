@@ -12,15 +12,17 @@ import java.util.Arrays;
  */
 public final class VirtualEndpointsCreateSamples {
     /*
-     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/VirtualEndpointCreate.json
+     * x-ms-original-file:
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/
+     * VirtualEndpointCreate.json
      */
     /**
      * Sample code: Create a new virtual endpoint for a flexible server.
      * 
-     * @param manager Entry point to PostgreSqlManager.
+     * @param manager Entry point to PostgreSqlServerManager.
      */
     public static void createANewVirtualEndpointForAFlexibleServer(
-        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
+        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlServerManager manager) {
         manager.virtualEndpoints()
             .define("pgVirtualEndpoint1")
             .withExistingFlexibleServer("testrg", "pgtestsvc4")

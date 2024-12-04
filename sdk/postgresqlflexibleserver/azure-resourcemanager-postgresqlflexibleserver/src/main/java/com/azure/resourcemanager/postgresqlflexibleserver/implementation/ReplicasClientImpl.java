@@ -42,24 +42,24 @@ public final class ReplicasClientImpl implements ReplicasClient {
     /**
      * The service client containing this operation class.
      */
-    private final PostgreSqlManagementClientImpl client;
+    private final PostgreSqlServerManagementClientImpl client;
 
     /**
      * Initializes an instance of ReplicasClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    ReplicasClientImpl(PostgreSqlManagementClientImpl client) {
+    ReplicasClientImpl(PostgreSqlServerManagementClientImpl client) {
         this.service = RestProxy.create(ReplicasService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for PostgreSqlManagementClientReplicas to be used by the proxy service to
-     * perform REST calls.
+     * The interface defining all the services for PostgreSqlServerManagementClientReplicas to be used by the proxy
+     * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "PostgreSqlManagement")
+    @ServiceInterface(name = "PostgreSqlServerMana")
     public interface ReplicasService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/replicas")

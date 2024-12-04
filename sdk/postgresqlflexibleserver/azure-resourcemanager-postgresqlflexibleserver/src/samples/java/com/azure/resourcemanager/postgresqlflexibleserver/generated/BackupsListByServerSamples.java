@@ -9,15 +9,17 @@ package com.azure.resourcemanager.postgresqlflexibleserver.generated;
  */
 public final class BackupsListByServerSamples {
     /*
-     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/BackupListByServer.json
+     * x-ms-original-file:
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/
+     * BackupListByServer.json
      */
     /**
      * Sample code: List backups for a server.
      * 
-     * @param manager Entry point to PostgreSqlManager.
+     * @param manager Entry point to PostgreSqlServerManager.
      */
     public static void
-        listBackupsForAServer(com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
+        listBackupsForAServer(com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlServerManager manager) {
         manager.backups().listByServer("TestGroup", "postgresqltestserver", com.azure.core.util.Context.NONE);
     }
 }

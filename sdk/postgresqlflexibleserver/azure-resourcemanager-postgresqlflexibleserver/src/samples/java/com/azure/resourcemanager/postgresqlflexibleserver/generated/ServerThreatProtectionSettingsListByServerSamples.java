@@ -9,15 +9,17 @@ package com.azure.resourcemanager.postgresqlflexibleserver.generated;
  */
 public final class ServerThreatProtectionSettingsListByServerSamples {
     /*
-     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/ServerThreatProtectionSettingsListByServer.json
+     * x-ms-original-file:
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/
+     * ServerThreatProtectionSettingsListByServer.json
      */
     /**
      * Sample code: Get a server's Advanced Threat Protection settings.
      * 
-     * @param manager Entry point to PostgreSqlManager.
+     * @param manager Entry point to PostgreSqlServerManager.
      */
     public static void getAServerSAdvancedThreatProtectionSettings(
-        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
+        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlServerManager manager) {
         manager.serverThreatProtectionSettings()
             .listByServer("threatprotection-6852", "threatprotection-2080", com.azure.core.util.Context.NONE);
     }

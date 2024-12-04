@@ -14,7 +14,7 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.ConfigurationFo
 public final class ConfigurationImpl implements Configuration, Configuration.Definition, Configuration.Update {
     private ConfigurationInner innerObject;
 
-    private final com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager;
+    private final com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlServerManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -84,7 +84,7 @@ public final class ConfigurationImpl implements Configuration, Configuration.Def
         return this.innerObject;
     }
 
-    private com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager() {
+    private com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlServerManager manager() {
         return this.serviceManager;
     }
 
@@ -117,7 +117,7 @@ public final class ConfigurationImpl implements Configuration, Configuration.Def
     }
 
     ConfigurationImpl(String name,
-        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager) {
+        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlServerManager serviceManager) {
         this.innerObject = new ConfigurationInner();
         this.serviceManager = serviceManager;
         this.configurationName = name;
@@ -143,7 +143,7 @@ public final class ConfigurationImpl implements Configuration, Configuration.Def
     }
 
     ConfigurationImpl(ConfigurationInner innerObject,
-        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager) {
+        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlServerManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");

@@ -10,10 +10,10 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.LtrPreBackupRes
 public final class LtrPreBackupResponseImpl implements LtrPreBackupResponse {
     private LtrPreBackupResponseInner innerObject;
 
-    private final com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager;
+    private final com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlServerManager serviceManager;
 
     LtrPreBackupResponseImpl(LtrPreBackupResponseInner innerObject,
-        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager) {
+        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlServerManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -26,7 +26,7 @@ public final class LtrPreBackupResponseImpl implements LtrPreBackupResponse {
         return this.innerObject;
     }
 
-    private com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager() {
+    private com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlServerManager manager() {
         return this.serviceManager;
     }
 }

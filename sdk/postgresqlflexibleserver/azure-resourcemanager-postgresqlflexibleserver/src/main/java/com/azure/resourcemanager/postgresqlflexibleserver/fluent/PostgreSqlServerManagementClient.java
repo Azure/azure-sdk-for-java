@@ -8,9 +8,9 @@ import com.azure.core.http.HttpPipeline;
 import java.time.Duration;
 
 /**
- * The interface for PostgreSqlManagementClient class.
+ * The interface for PostgreSqlServerManagementClient class.
  */
-public interface PostgreSqlManagementClient {
+public interface PostgreSqlServerManagementClient {
     /**
      * Gets The ID of the target subscription. The value must be an UUID.
      * 

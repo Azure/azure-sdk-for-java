@@ -13,8 +13,8 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.exception.ManagementError;
 import com.azure.core.management.exception.ManagementException;
-import com.azure.core.management.polling.PollerFactory;
 import com.azure.core.management.polling.PollResult;
+import com.azure.core.management.polling.PollerFactory;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -37,7 +37,7 @@ import com.azure.resourcemanager.postgresqlflexibleserver.fluent.LogFilesClient;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.LtrBackupOperationsClient;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.MigrationsClient;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.OperationsClient;
-import com.azure.resourcemanager.postgresqlflexibleserver.fluent.PostgreSqlManagementClient;
+import com.azure.resourcemanager.postgresqlflexibleserver.fluent.PostgreSqlServerManagementClient;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.PrivateEndpointConnectionOperationsClient;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.PrivateEndpointConnectionsClient;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.PrivateLinkResourcesClient;
@@ -45,8 +45,8 @@ import com.azure.resourcemanager.postgresqlflexibleserver.fluent.QuotaUsagesClie
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.ReplicasClient;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.ResourceProvidersClient;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.ServerCapabilitiesClient;
-import com.azure.resourcemanager.postgresqlflexibleserver.fluent.ServersClient;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.ServerThreatProtectionSettingsClient;
+import com.azure.resourcemanager.postgresqlflexibleserver.fluent.ServersClient;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.VirtualEndpointsClient;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.VirtualNetworkSubnetUsagesClient;
 import java.io.IOException;
@@ -59,10 +59,10 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
- * Initializes a new instance of the PostgreSqlManagementClientImpl type.
+ * Initializes a new instance of the PostgreSqlServerManagementClientImpl type.
  */
-@ServiceClient(builder = PostgreSqlManagementClientBuilder.class)
-public final class PostgreSqlManagementClientImpl implements PostgreSqlManagementClient {
+@ServiceClient(builder = PostgreSqlServerManagementClientBuilder.class)
+public final class PostgreSqlServerManagementClientImpl implements PostgreSqlServerManagementClient {
     /**
      * The ID of the target subscription. The value must be an UUID.
      */
@@ -498,7 +498,7 @@ public final class PostgreSqlManagementClientImpl implements PostgreSqlManagemen
     }
 
     /**
-     * Initializes an instance of PostgreSqlManagementClient client.
+     * Initializes an instance of PostgreSqlServerManagementClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
@@ -507,7 +507,7 @@ public final class PostgreSqlManagementClientImpl implements PostgreSqlManagemen
      * @param subscriptionId The ID of the target subscription. The value must be an UUID.
      * @param endpoint server parameter.
      */
-    PostgreSqlManagementClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
+    PostgreSqlServerManagementClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
         Duration defaultPollInterval, AzureEnvironment environment, String subscriptionId, String endpoint) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
@@ -668,5 +668,5 @@ public final class PostgreSqlManagementClientImpl implements PostgreSqlManagemen
         }
     }
 
-    private static final ClientLogger LOGGER = new ClientLogger(PostgreSqlManagementClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(PostgreSqlServerManagementClientImpl.class);
 }

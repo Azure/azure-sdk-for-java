@@ -11,10 +11,10 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.MigrationNameAv
 public final class MigrationNameAvailabilityResourceImpl implements MigrationNameAvailabilityResource {
     private MigrationNameAvailabilityResourceInner innerObject;
 
-    private final com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager;
+    private final com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlServerManager serviceManager;
 
     MigrationNameAvailabilityResourceImpl(MigrationNameAvailabilityResourceInner innerObject,
-        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager) {
+        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlServerManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -43,7 +43,7 @@ public final class MigrationNameAvailabilityResourceImpl implements MigrationNam
         return this.innerObject;
     }
 
-    private com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager() {
+    private com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlServerManager manager() {
         return this.serviceManager;
     }
 }

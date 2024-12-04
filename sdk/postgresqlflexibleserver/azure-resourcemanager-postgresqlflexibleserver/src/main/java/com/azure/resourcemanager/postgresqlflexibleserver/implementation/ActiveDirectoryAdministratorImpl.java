@@ -15,10 +15,10 @@ public final class ActiveDirectoryAdministratorImpl
     implements ActiveDirectoryAdministrator, ActiveDirectoryAdministrator.Definition {
     private ActiveDirectoryAdministratorInner innerObject;
 
-    private final com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager;
+    private final com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlServerManager serviceManager;
 
     ActiveDirectoryAdministratorImpl(ActiveDirectoryAdministratorInner innerObject,
-        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager) {
+        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlServerManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -59,7 +59,7 @@ public final class ActiveDirectoryAdministratorImpl
         return this.innerObject;
     }
 
-    private com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager() {
+    private com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlServerManager manager() {
         return this.serviceManager;
     }
 
@@ -92,7 +92,7 @@ public final class ActiveDirectoryAdministratorImpl
     }
 
     ActiveDirectoryAdministratorImpl(String name,
-        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager) {
+        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlServerManager serviceManager) {
         this.innerObject = new ActiveDirectoryAdministratorInner();
         this.serviceManager = serviceManager;
         this.objectId = name;

@@ -13,14 +13,17 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.MigrationResour
  */
 public final class MigrationsUpdateSamples {
     /*
-     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/Migrations_Cancel.json
+     * x-ms-original-file:
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/
+     * Migrations_Cancel.json
      */
     /**
      * Sample code: Cancel migration.
      * 
-     * @param manager Entry point to PostgreSqlManager.
+     * @param manager Entry point to PostgreSqlServerManager.
      */
-    public static void cancelMigration(com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
+    public static void
+        cancelMigration(com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlServerManager manager) {
         MigrationResource resource = manager.migrations()
             .getWithResponse("ffffffff-ffff-ffff-ffff-ffffffffffff", "testrg", "testtarget", "testmigration",
                 com.azure.core.util.Context.NONE)
@@ -29,14 +32,17 @@ public final class MigrationsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/Migrations_Update.json
+     * x-ms-original-file:
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/
+     * Migrations_Update.json
      */
     /**
      * Sample code: Migrations_Update.
      * 
-     * @param manager Entry point to PostgreSqlManager.
+     * @param manager Entry point to PostgreSqlServerManager.
      */
-    public static void migrationsUpdate(com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
+    public static void
+        migrationsUpdate(com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlServerManager manager) {
         MigrationResource resource = manager.migrations()
             .getWithResponse("ffffffff-ffff-ffff-ffff-ffffffffffff", "testrg", "testtarget", "testmigration",
                 com.azure.core.util.Context.NONE)

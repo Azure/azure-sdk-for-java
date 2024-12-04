@@ -39,25 +39,25 @@ public final class CheckNameAvailabilitiesClientImpl implements CheckNameAvailab
     /**
      * The service client containing this operation class.
      */
-    private final PostgreSqlManagementClientImpl client;
+    private final PostgreSqlServerManagementClientImpl client;
 
     /**
      * Initializes an instance of CheckNameAvailabilitiesClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    CheckNameAvailabilitiesClientImpl(PostgreSqlManagementClientImpl client) {
+    CheckNameAvailabilitiesClientImpl(PostgreSqlServerManagementClientImpl client) {
         this.service = RestProxy.create(CheckNameAvailabilitiesService.class, client.getHttpPipeline(),
             client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for PostgreSqlManagementClientCheckNameAvailabilities to be used by the
-     * proxy service to perform REST calls.
+     * The interface defining all the services for PostgreSqlServerManagementClientCheckNameAvailabilities to be used by
+     * the proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "PostgreSqlManagement")
+    @ServiceInterface(name = "PostgreSqlServerMana")
     public interface CheckNameAvailabilitiesService {
         @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.DBforPostgreSQL/checkNameAvailability")

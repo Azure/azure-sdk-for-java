@@ -9,7 +9,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.http.MockHttpResponse;
-import com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager;
+import com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlServerManager;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.ServerThreatProtectionSettingsModel;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.ThreatProtectionName;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.ThreatProtectionState;
@@ -27,7 +27,7 @@ public final class ServerThreatProtectionSettingsCreateOrUpdateMockTests {
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
-        PostgreSqlManager manager = PostgreSqlManager.configure()
+        PostgreSqlServerManager manager = PostgreSqlServerManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));

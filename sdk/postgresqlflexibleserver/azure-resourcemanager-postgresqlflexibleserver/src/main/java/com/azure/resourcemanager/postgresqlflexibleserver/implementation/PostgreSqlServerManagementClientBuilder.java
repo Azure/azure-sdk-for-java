@@ -15,10 +15,10 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import java.time.Duration;
 
 /**
- * A builder for creating a new instance of the PostgreSqlManagementClientImpl type.
+ * A builder for creating a new instance of the PostgreSqlServerManagementClientImpl type.
  */
-@ServiceClientBuilder(serviceClients = { PostgreSqlManagementClientImpl.class })
-public final class PostgreSqlManagementClientBuilder {
+@ServiceClientBuilder(serviceClients = { PostgreSqlServerManagementClientImpl.class })
+public final class PostgreSqlServerManagementClientBuilder {
     /*
      * The ID of the target subscription. The value must be an UUID.
      */
@@ -28,9 +28,9 @@ public final class PostgreSqlManagementClientBuilder {
      * Sets The ID of the target subscription. The value must be an UUID.
      * 
      * @param subscriptionId the subscriptionId value.
-     * @return the PostgreSqlManagementClientBuilder.
+     * @return the PostgreSqlServerManagementClientBuilder.
      */
-    public PostgreSqlManagementClientBuilder subscriptionId(String subscriptionId) {
+    public PostgreSqlServerManagementClientBuilder subscriptionId(String subscriptionId) {
         this.subscriptionId = subscriptionId;
         return this;
     }
@@ -44,9 +44,9 @@ public final class PostgreSqlManagementClientBuilder {
      * Sets server parameter.
      * 
      * @param endpoint the endpoint value.
-     * @return the PostgreSqlManagementClientBuilder.
+     * @return the PostgreSqlServerManagementClientBuilder.
      */
-    public PostgreSqlManagementClientBuilder endpoint(String endpoint) {
+    public PostgreSqlServerManagementClientBuilder endpoint(String endpoint) {
         this.endpoint = endpoint;
         return this;
     }
@@ -60,9 +60,9 @@ public final class PostgreSqlManagementClientBuilder {
      * Sets The environment to connect to.
      * 
      * @param environment the environment value.
-     * @return the PostgreSqlManagementClientBuilder.
+     * @return the PostgreSqlServerManagementClientBuilder.
      */
-    public PostgreSqlManagementClientBuilder environment(AzureEnvironment environment) {
+    public PostgreSqlServerManagementClientBuilder environment(AzureEnvironment environment) {
         this.environment = environment;
         return this;
     }
@@ -76,9 +76,9 @@ public final class PostgreSqlManagementClientBuilder {
      * Sets The HTTP pipeline to send requests through.
      * 
      * @param pipeline the pipeline value.
-     * @return the PostgreSqlManagementClientBuilder.
+     * @return the PostgreSqlServerManagementClientBuilder.
      */
-    public PostgreSqlManagementClientBuilder pipeline(HttpPipeline pipeline) {
+    public PostgreSqlServerManagementClientBuilder pipeline(HttpPipeline pipeline) {
         this.pipeline = pipeline;
         return this;
     }
@@ -92,9 +92,9 @@ public final class PostgreSqlManagementClientBuilder {
      * Sets The default poll interval for long-running operation.
      * 
      * @param defaultPollInterval the defaultPollInterval value.
-     * @return the PostgreSqlManagementClientBuilder.
+     * @return the PostgreSqlServerManagementClientBuilder.
      */
-    public PostgreSqlManagementClientBuilder defaultPollInterval(Duration defaultPollInterval) {
+    public PostgreSqlServerManagementClientBuilder defaultPollInterval(Duration defaultPollInterval) {
         this.defaultPollInterval = defaultPollInterval;
         return this;
     }
@@ -108,19 +108,19 @@ public final class PostgreSqlManagementClientBuilder {
      * Sets The serializer to serialize an object into a string.
      * 
      * @param serializerAdapter the serializerAdapter value.
-     * @return the PostgreSqlManagementClientBuilder.
+     * @return the PostgreSqlServerManagementClientBuilder.
      */
-    public PostgreSqlManagementClientBuilder serializerAdapter(SerializerAdapter serializerAdapter) {
+    public PostgreSqlServerManagementClientBuilder serializerAdapter(SerializerAdapter serializerAdapter) {
         this.serializerAdapter = serializerAdapter;
         return this;
     }
 
     /**
-     * Builds an instance of PostgreSqlManagementClientImpl with the provided parameters.
+     * Builds an instance of PostgreSqlServerManagementClientImpl with the provided parameters.
      * 
-     * @return an instance of PostgreSqlManagementClientImpl.
+     * @return an instance of PostgreSqlServerManagementClientImpl.
      */
-    public PostgreSqlManagementClientImpl buildClient() {
+    public PostgreSqlServerManagementClientImpl buildClient() {
         String localEndpoint = (endpoint != null) ? endpoint : "https://management.azure.com";
         AzureEnvironment localEnvironment = (environment != null) ? environment : AzureEnvironment.AZURE;
         HttpPipeline localPipeline = (pipeline != null)
@@ -131,7 +131,7 @@ public final class PostgreSqlManagementClientBuilder {
         SerializerAdapter localSerializerAdapter = (serializerAdapter != null)
             ? serializerAdapter
             : SerializerFactory.createDefaultManagementSerializerAdapter();
-        PostgreSqlManagementClientImpl client = new PostgreSqlManagementClientImpl(localPipeline,
+        PostgreSqlServerManagementClientImpl client = new PostgreSqlServerManagementClientImpl(localPipeline,
             localSerializerAdapter, localDefaultPollInterval, localEnvironment, this.subscriptionId, localEndpoint);
         return client;
     }

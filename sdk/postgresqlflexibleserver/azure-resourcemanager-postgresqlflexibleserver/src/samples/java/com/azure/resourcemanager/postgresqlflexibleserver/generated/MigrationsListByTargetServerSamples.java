@@ -11,15 +11,17 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.MigrationListFi
  */
 public final class MigrationsListByTargetServerSamples {
     /*
-     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/Migrations_ListByTargetServer.json
+     * x-ms-original-file:
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/
+     * Migrations_ListByTargetServer.json
      */
     /**
      * Sample code: Migrations_ListByTargetServer.
      * 
-     * @param manager Entry point to PostgreSqlManager.
+     * @param manager Entry point to PostgreSqlServerManager.
      */
-    public static void
-        migrationsListByTargetServer(com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
+    public static void migrationsListByTargetServer(
+        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlServerManager manager) {
         manager.migrations()
             .listByTargetServer("ffffffff-ffff-ffff-ffff-ffffffffffff", "testrg", "testtarget", MigrationListFilter.ALL,
                 com.azure.core.util.Context.NONE);

@@ -44,25 +44,25 @@ public final class PrivateEndpointConnectionOperationsClientImpl implements Priv
     /**
      * The service client containing this operation class.
      */
-    private final PostgreSqlManagementClientImpl client;
+    private final PostgreSqlServerManagementClientImpl client;
 
     /**
      * Initializes an instance of PrivateEndpointConnectionOperationsClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    PrivateEndpointConnectionOperationsClientImpl(PostgreSqlManagementClientImpl client) {
+    PrivateEndpointConnectionOperationsClientImpl(PostgreSqlServerManagementClientImpl client) {
         this.service = RestProxy.create(PrivateEndpointConnectionOperationsService.class, client.getHttpPipeline(),
             client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for PostgreSqlManagementClientPrivateEndpointConnectionOperations to be
-     * used by the proxy service to perform REST calls.
+     * The interface defining all the services for PostgreSqlServerManagementClientPrivateEndpointConnectionOperations
+     * to be used by the proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "PostgreSqlManagement")
+    @ServiceInterface(name = "PostgreSqlServerMana")
     public interface PrivateEndpointConnectionOperationsService {
         @Headers({ "Content-Type: application/json" })
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/privateEndpointConnections/{privateEndpointConnectionName}")

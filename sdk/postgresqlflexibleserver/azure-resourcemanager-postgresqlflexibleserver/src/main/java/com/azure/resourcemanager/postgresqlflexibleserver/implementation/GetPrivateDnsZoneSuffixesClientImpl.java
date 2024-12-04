@@ -35,25 +35,25 @@ public final class GetPrivateDnsZoneSuffixesClientImpl implements GetPrivateDnsZ
     /**
      * The service client containing this operation class.
      */
-    private final PostgreSqlManagementClientImpl client;
+    private final PostgreSqlServerManagementClientImpl client;
 
     /**
      * Initializes an instance of GetPrivateDnsZoneSuffixesClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    GetPrivateDnsZoneSuffixesClientImpl(PostgreSqlManagementClientImpl client) {
+    GetPrivateDnsZoneSuffixesClientImpl(PostgreSqlServerManagementClientImpl client) {
         this.service = RestProxy.create(GetPrivateDnsZoneSuffixesService.class, client.getHttpPipeline(),
             client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for PostgreSqlManagementClientGetPrivateDnsZoneSuffixes to be used by the
-     * proxy service to perform REST calls.
+     * The interface defining all the services for PostgreSqlServerManagementClientGetPrivateDnsZoneSuffixes to be used
+     * by the proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "PostgreSqlManagement")
+    @ServiceInterface(name = "PostgreSqlServerMana")
     public interface GetPrivateDnsZoneSuffixesService {
         @Headers({ "Content-Type: application/json" })
         @Post("/providers/Microsoft.DBforPostgreSQL/getPrivateDnsZoneSuffix")

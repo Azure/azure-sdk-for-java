@@ -14,15 +14,17 @@ import java.util.Arrays;
  */
 public final class FlexibleServerStartLtrBackupSamples {
     /*
-     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/LongTermRetentionBackup.json
+     * x-ms-original-file:
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/
+     * LongTermRetentionBackup.json
      */
     /**
      * Sample code: Sample_ExecuteBackup.
      * 
-     * @param manager Entry point to PostgreSqlManager.
+     * @param manager Entry point to PostgreSqlServerManager.
      */
     public static void
-        sampleExecuteBackup(com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
+        sampleExecuteBackup(com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlServerManager manager) {
         manager.flexibleServers()
             .startLtrBackup("rgLongTermRetention", "pgsqlltrtestserver",
                 new LtrBackupRequest().withBackupSettings(new BackupSettings().withBackupName("backup1"))

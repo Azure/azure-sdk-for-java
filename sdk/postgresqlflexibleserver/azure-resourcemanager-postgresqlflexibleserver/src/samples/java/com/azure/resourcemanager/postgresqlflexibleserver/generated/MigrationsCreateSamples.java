@@ -19,15 +19,17 @@ import java.util.Arrays;
  */
 public final class MigrationsCreateSamples {
     /*
-     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/Migrations_Create_With_PrivateEndpoint_Servers.json
+     * x-ms-original-file:
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/
+     * Migrations_Create_With_PrivateEndpoint_Servers.json
      */
     /**
      * Sample code: Migrations Create with private endpoint.
      * 
-     * @param manager Entry point to PostgreSqlManager.
+     * @param manager Entry point to PostgreSqlServerManager.
      */
     public static void migrationsCreateWithPrivateEndpoint(
-        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
+        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlServerManager manager) {
         manager.migrations()
             .define("testmigration")
             .withRegion("westus")
@@ -46,15 +48,17 @@ public final class MigrationsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/Migrations_Create_With_Roles.json
+     * x-ms-original-file:
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/
+     * Migrations_Create_With_Roles.json
      */
     /**
      * Sample code: Migrations Create with roles.
      * 
-     * @param manager Entry point to PostgreSqlManager.
+     * @param manager Entry point to PostgreSqlServerManager.
      */
     public static void
-        migrationsCreateWithRoles(com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
+        migrationsCreateWithRoles(com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlServerManager manager) {
         manager.migrations()
             .define("testmigration")
             .withRegion("westus")
@@ -72,15 +76,17 @@ public final class MigrationsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/Migrations_Create_Validate_Only.json
+     * x-ms-original-file:
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/
+     * Migrations_Create_Validate_Only.json
      */
     /**
      * Sample code: Create Pre-migration Validation.
      * 
-     * @param manager Entry point to PostgreSqlManager.
+     * @param manager Entry point to PostgreSqlServerManager.
      */
-    public static void
-        createPreMigrationValidation(com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
+    public static void createPreMigrationValidation(
+        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlServerManager manager) {
         manager.migrations()
             .define("testmigration")
             .withRegion("westus")
@@ -98,15 +104,17 @@ public final class MigrationsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/Migrations_Create_With_Other_Users.json
+     * x-ms-original-file:
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/
+     * Migrations_Create_With_Other_Users.json
      */
     /**
      * Sample code: Migrations Create by passing user names.
      * 
-     * @param manager Entry point to PostgreSqlManager.
+     * @param manager Entry point to PostgreSqlServerManager.
      */
     public static void migrationsCreateByPassingUserNames(
-        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
+        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlServerManager manager) {
         manager.migrations()
             .define("testmigration")
             .withRegion("westus")
@@ -124,14 +132,17 @@ public final class MigrationsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/Migrations_Create.json
+     * x-ms-original-file:
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/
+     * Migrations_Create.json
      */
     /**
      * Sample code: Migrations_Create.
      * 
-     * @param manager Entry point to PostgreSqlManager.
+     * @param manager Entry point to PostgreSqlServerManager.
      */
-    public static void migrationsCreate(com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
+    public static void
+        migrationsCreate(com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlServerManager manager) {
         manager.migrations()
             .define("testmigration")
             .withRegion("westus")
@@ -150,15 +161,17 @@ public final class MigrationsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/Migrations_Create_Other_SourceTypes_Validate_Migrate.json
+     * x-ms-original-file:
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/
+     * Migrations_Create_Other_SourceTypes_Validate_Migrate.json
      */
     /**
      * Sample code: Create Migration with other source types for Validate and Migrate.
      * 
-     * @param manager Entry point to PostgreSqlManager.
+     * @param manager Entry point to PostgreSqlServerManager.
      */
     public static void createMigrationWithOtherSourceTypesForValidateAndMigrate(
-        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
+        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlServerManager manager) {
         manager.migrations()
             .define("testmigration")
             .withRegion("westus")

@@ -17,7 +17,7 @@ public final class VirtualEndpointResourceImpl
     implements VirtualEndpointResource, VirtualEndpointResource.Definition, VirtualEndpointResource.Update {
     private VirtualEndpointResourceInner innerObject;
 
-    private final com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager;
+    private final com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlServerManager serviceManager;
 
     public VirtualEndpointType endpointType() {
         return this.innerModel().endpointType();
@@ -65,7 +65,7 @@ public final class VirtualEndpointResourceImpl
         return this.innerObject;
     }
 
-    private com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager() {
+    private com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlServerManager manager() {
         return this.serviceManager;
     }
 
@@ -98,7 +98,7 @@ public final class VirtualEndpointResourceImpl
     }
 
     VirtualEndpointResourceImpl(String name,
-        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager) {
+        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlServerManager serviceManager) {
         this.innerObject = new VirtualEndpointResourceInner();
         this.serviceManager = serviceManager;
         this.virtualEndpointName = name;
@@ -124,7 +124,7 @@ public final class VirtualEndpointResourceImpl
     }
 
     VirtualEndpointResourceImpl(VirtualEndpointResourceInner innerObject,
-        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager) {
+        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlServerManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
