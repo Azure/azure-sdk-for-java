@@ -4,6 +4,9 @@
 
 ### Dependency Updates
 
+- Added a new library entry to the BOM:
+  - `azure-ai-translation-document`
+
 - Updated Azure SDK dependency versions to the latest releases.
 
 ## 1.2.29 (2024-10-28)
