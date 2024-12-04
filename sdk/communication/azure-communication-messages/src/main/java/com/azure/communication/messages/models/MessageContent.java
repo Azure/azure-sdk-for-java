@@ -88,9 +88,9 @@ public abstract class MessageContent implements JsonSerializable<MessageContent>
                 } else if ("buttonSet".equals(discriminatorValue)) {
                     return ButtonSetContent.fromJson(readerToUse.reset());
                 } else if ("url".equals(discriminatorValue)) {
-                    return UrlContent.fromJson(readerToUse.reset());
-                } else if ("actionSet".equals(discriminatorValue)) {
-                    return ActionSetContent.fromJson(readerToUse.reset());
+                    return LinkContent.fromJson(readerToUse.reset());
+                } else if ("group".equals(discriminatorValue)) {
+                    return ActionGroupContent.fromJson(readerToUse.reset());
                 } else {
                     throw new IllegalStateException("Invalid Kind value - " + discriminatorValue);
                 }

@@ -39,18 +39,18 @@ public final class InteractiveMessage implements JsonSerializable<InteractiveMes
      * The binding object to get or set Action which describes options user have to respond to message.
      */
     @Generated
-    private final ActionBindings actionBindings;
+    private final ActionBindings action;
 
     /**
      * Creates an instance of InteractiveMessage class.
      *
      * @param body the body value to set.
-     * @param actionBindings the actionBindings value to set.
+     * @param action the action value to set.
      */
     @Generated
-    public InteractiveMessage(TextMessageContent body, ActionBindings actionBindings) {
+    public InteractiveMessage(TextMessageContent body, ActionBindings action) {
         this.body = body;
-        this.actionBindings = actionBindings;
+        this.action = action;
     }
 
     /**
@@ -86,14 +86,14 @@ public final class InteractiveMessage implements JsonSerializable<InteractiveMes
     }
 
     /**
-     * Get the actionBindings property: The binding object to get or set Action which describes options user have to
-     * respond to message.
+     * Get the action property: The binding object to get or set Action which describes options user have to respond to
+     * message.
      *
-     * @return the actionBindings value.
+     * @return the action value.
      */
     @Generated
-    public ActionBindings getActionBindings() {
-        return this.actionBindings;
+    public ActionBindings getAction() {
+        return this.action;
     }
 
     /**
@@ -104,7 +104,7 @@ public final class InteractiveMessage implements JsonSerializable<InteractiveMes
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("body", this.body);
-        jsonWriter.writeJsonField("actionBindings", this.actionBindings);
+        jsonWriter.writeJsonField("action", this.action);
         jsonWriter.writeJsonField("header", this.headerProperty);
         jsonWriter.writeJsonField("footer", this.footer);
         return jsonWriter.writeEndObject();
@@ -123,7 +123,7 @@ public final class InteractiveMessage implements JsonSerializable<InteractiveMes
     public static InteractiveMessage fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             TextMessageContent body = null;
-            ActionBindings actionBindings = null;
+            ActionBindings action = null;
             MessageContent headerProperty = null;
             TextMessageContent footer = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -131,8 +131,8 @@ public final class InteractiveMessage implements JsonSerializable<InteractiveMes
                 reader.nextToken();
                 if ("body".equals(fieldName)) {
                     body = TextMessageContent.fromJson(reader);
-                } else if ("actionBindings".equals(fieldName)) {
-                    actionBindings = ActionBindings.fromJson(reader);
+                } else if ("action".equals(fieldName)) {
+                    action = ActionBindings.fromJson(reader);
                 } else if ("header".equals(fieldName)) {
                     headerProperty = MessageContent.fromJson(reader);
                 } else if ("footer".equals(fieldName)) {
@@ -141,7 +141,7 @@ public final class InteractiveMessage implements JsonSerializable<InteractiveMes
                     reader.skipChildren();
                 }
             }
-            InteractiveMessage deserializedInteractiveMessage = new InteractiveMessage(body, actionBindings);
+            InteractiveMessage deserializedInteractiveMessage = new InteractiveMessage(body, action);
             deserializedInteractiveMessage.headerProperty = headerProperty;
             deserializedInteractiveMessage.footer = footer;
             return deserializedInteractiveMessage;
