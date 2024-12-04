@@ -88,7 +88,7 @@ class AppConfigurationReplicaClient {
      * @param label String value of the watch key, use \0 for null.
      * @return The first returned configuration.
      */
-    ConfigurationSetting getWatchKey(String key, String label, Boolean isRefresh)
+    ConfigurationSetting getWatchKey(String key, String label, boolean isRefresh)
         throws HttpResponseException {
         try {
             Context context = new Context("refresh", isRefresh);
