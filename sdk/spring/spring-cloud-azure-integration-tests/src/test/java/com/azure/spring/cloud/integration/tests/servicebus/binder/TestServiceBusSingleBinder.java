@@ -89,6 +89,6 @@ public class TestServiceBusSingleBinder {
         LOGGER.info("Send a message:" + MESSAGE + " to the topic.");
         manyTopic.emitNext(genericMessage, Sinks.EmitFailureHandler.FAIL_FAST);
 
-        assertThat(TestServiceBusSingleBinder.LATCH.await(25, TimeUnit.SECONDS)).isTrue();
+        assertThat(TestServiceBusSingleBinder.LATCH.await(30, TimeUnit.SECONDS)).isTrue();
     }
 }

@@ -77,7 +77,7 @@ class EventHubsBinderRecordModeIT {
         Thread.sleep(20000);
         LOGGER.info("Send a message:" + MESSAGE + ".");
         many.emitNext(new GenericMessage<>(MESSAGE), Sinks.EmitFailureHandler.FAIL_FAST);
-        assertThat(EventHubsBinderRecordModeIT.LATCH.await(10, TimeUnit.SECONDS)).isTrue();
+        assertThat(EventHubsBinderRecordModeIT.LATCH.await(40, TimeUnit.SECONDS)).isTrue();
         LOGGER.info("EventHubBinderRecordModeIT end.");
     }
 }

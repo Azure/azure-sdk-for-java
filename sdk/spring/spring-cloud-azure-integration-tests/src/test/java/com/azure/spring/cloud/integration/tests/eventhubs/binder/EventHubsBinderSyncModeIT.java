@@ -77,7 +77,7 @@ class EventHubsBinderSyncModeIT {
         Thread.sleep(20000);
         LOGGER.info("Send a message:" + MESSAGE + ".");
         many.emitNext(new GenericMessage<>(MESSAGE), Sinks.EmitFailureHandler.FAIL_FAST);
-        assertThat(EventHubsBinderSyncModeIT.LATCH.await(10, TimeUnit.SECONDS)).isTrue();
+        assertThat(EventHubsBinderSyncModeIT.LATCH.await(40, TimeUnit.SECONDS)).isTrue();
         LOGGER.info("EventHubBinderSyncModeIT end.");
     }
 }

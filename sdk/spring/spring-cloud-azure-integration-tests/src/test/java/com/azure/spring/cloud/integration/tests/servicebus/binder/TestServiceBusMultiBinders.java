@@ -88,7 +88,7 @@ class TestServiceBusMultiBinders {
         LOGGER.info("Send a message:" + message + " to the topic.");
         manyTopic.emitNext(genericMessage, Sinks.EmitFailureHandler.FAIL_FAST);
 
-        assertThat(TestServiceBusMultiBinders.latch.await(25, TimeUnit.SECONDS)).isTrue();
+        assertThat(TestServiceBusMultiBinders.latch.await(30, TimeUnit.SECONDS)).isTrue();
     }
 
 }

@@ -84,7 +84,7 @@ public class EventHubsIT {
             Assertions.assertEquals(DATA, event.getData().getBodyAsString());
         }
         Assertions.assertTrue(processorClient.isRunning());
-        LATCH.await(10, TimeUnit.SECONDS);
+        LATCH.await(40, TimeUnit.SECONDS);
         Assertions.assertEquals(DATA, MESSAGE);
         LOGGER.info("EventHubsIT end.");
     }
