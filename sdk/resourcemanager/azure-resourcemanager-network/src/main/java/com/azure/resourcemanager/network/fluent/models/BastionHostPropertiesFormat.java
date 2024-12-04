@@ -86,6 +86,11 @@ public final class BastionHostPropertiesFormat implements JsonSerializable<Basti
      */
     private Boolean enableSessionRecording;
 
+    /*
+     * Enable/Disable Private Only feature of the Bastion Host resource.
+     */
+    private Boolean enablePrivateOnlyBastion;
+
     /**
      * Creates an instance of BastionHostPropertiesFormat class.
      */
@@ -344,6 +349,26 @@ public final class BastionHostPropertiesFormat implements JsonSerializable<Basti
     }
 
     /**
+     * Get the enablePrivateOnlyBastion property: Enable/Disable Private Only feature of the Bastion Host resource.
+     * 
+     * @return the enablePrivateOnlyBastion value.
+     */
+    public Boolean enablePrivateOnlyBastion() {
+        return this.enablePrivateOnlyBastion;
+    }
+
+    /**
+     * Set the enablePrivateOnlyBastion property: Enable/Disable Private Only feature of the Bastion Host resource.
+     * 
+     * @param enablePrivateOnlyBastion the enablePrivateOnlyBastion value to set.
+     * @return the BastionHostPropertiesFormat object itself.
+     */
+    public BastionHostPropertiesFormat withEnablePrivateOnlyBastion(Boolean enablePrivateOnlyBastion) {
+        this.enablePrivateOnlyBastion = enablePrivateOnlyBastion;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -376,6 +401,7 @@ public final class BastionHostPropertiesFormat implements JsonSerializable<Basti
         jsonWriter.writeBooleanField("enableTunneling", this.enableTunneling);
         jsonWriter.writeBooleanField("enableKerberos", this.enableKerberos);
         jsonWriter.writeBooleanField("enableSessionRecording", this.enableSessionRecording);
+        jsonWriter.writeBooleanField("enablePrivateOnlyBastion", this.enablePrivateOnlyBastion);
         return jsonWriter.writeEndObject();
     }
 
@@ -428,6 +454,9 @@ public final class BastionHostPropertiesFormat implements JsonSerializable<Basti
                     deserializedBastionHostPropertiesFormat.enableKerberos = reader.getNullable(JsonReader::getBoolean);
                 } else if ("enableSessionRecording".equals(fieldName)) {
                     deserializedBastionHostPropertiesFormat.enableSessionRecording
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("enablePrivateOnlyBastion".equals(fieldName)) {
+                    deserializedBastionHostPropertiesFormat.enablePrivateOnlyBastion
                         = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();

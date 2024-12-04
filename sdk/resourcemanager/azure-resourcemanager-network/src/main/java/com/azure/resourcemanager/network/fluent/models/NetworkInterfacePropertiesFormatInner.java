@@ -71,6 +71,11 @@ public final class NetworkInterfacePropertiesFormatInner
     private Boolean vnetEncryptionSupported;
 
     /*
+     * Whether default outbound connectivity for nic was configured or not.
+     */
+    private Boolean defaultOutboundConnectivityEnabled;
+
+    /*
      * If the network interface is configured for accelerated networking. Not applicable to VM sizes which require
      * accelerated networking.
      */
@@ -257,6 +262,16 @@ public final class NetworkInterfacePropertiesFormatInner
      */
     public Boolean vnetEncryptionSupported() {
         return this.vnetEncryptionSupported;
+    }
+
+    /**
+     * Get the defaultOutboundConnectivityEnabled property: Whether default outbound connectivity for nic was configured
+     * or not.
+     * 
+     * @return the defaultOutboundConnectivityEnabled value.
+     */
+    public Boolean defaultOutboundConnectivityEnabled() {
+        return this.defaultOutboundConnectivityEnabled;
     }
 
     /**
@@ -569,6 +584,9 @@ public final class NetworkInterfacePropertiesFormatInner
                         = reader.getNullable(JsonReader::getBoolean);
                 } else if ("vnetEncryptionSupported".equals(fieldName)) {
                     deserializedNetworkInterfacePropertiesFormatInner.vnetEncryptionSupported
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("defaultOutboundConnectivityEnabled".equals(fieldName)) {
+                    deserializedNetworkInterfacePropertiesFormatInner.defaultOutboundConnectivityEnabled
                         = reader.getNullable(JsonReader::getBoolean);
                 } else if ("enableAcceleratedNetworking".equals(fieldName)) {
                     deserializedNetworkInterfacePropertiesFormatInner.enableAcceleratedNetworking

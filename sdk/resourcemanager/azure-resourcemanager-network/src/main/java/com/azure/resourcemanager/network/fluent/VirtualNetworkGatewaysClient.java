@@ -14,11 +14,14 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.models.BgpPeerStatusListResultInner;
+import com.azure.resourcemanager.network.fluent.models.ExpressRouteFailoverSingleTestDetailsInner;
+import com.azure.resourcemanager.network.fluent.models.ExpressRouteFailoverTestDetailsInner;
 import com.azure.resourcemanager.network.fluent.models.GatewayRouteListResultInner;
 import com.azure.resourcemanager.network.fluent.models.VirtualNetworkGatewayConnectionListEntityInner;
 import com.azure.resourcemanager.network.fluent.models.VirtualNetworkGatewayInner;
 import com.azure.resourcemanager.network.fluent.models.VpnClientConnectionHealthDetailListResultInner;
 import com.azure.resourcemanager.network.fluent.models.VpnClientIPsecParametersInner;
+import com.azure.resourcemanager.network.models.ExpressRouteFailoverStopApiParameters;
 import com.azure.resourcemanager.network.models.P2SVpnConnectionRequest;
 import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.network.models.VpnClientParameters;
@@ -28,6 +31,7 @@ import com.azure.resourcemanager.network.models.VpnPacketCaptureStopParameters;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import java.nio.ByteBuffer;
+import java.util.List;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -1986,6 +1990,476 @@ public interface VirtualNetworkGatewaysClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     String stopPacketCapture(String resourceGroupName, String virtualNetworkGatewayName,
         VpnPacketCaptureStopParameters parameters, Context context);
+
+    /**
+     * This operation retrieves the details of all the failover tests performed on the gateway for different peering
+     * locations.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param type The type of failover test.
+     * @param fetchLatest Fetch only the latest tests for each peering location.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return gateway Failover All Test Details along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> getFailoverAllTestDetailsWithResponseAsync(String resourceGroupName,
+        String virtualNetworkGatewayName, String type, boolean fetchLatest);
+
+    /**
+     * This operation retrieves the details of all the failover tests performed on the gateway for different peering
+     * locations.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param type The type of failover test.
+     * @param fetchLatest Fetch only the latest tests for each peering location.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of gateway Failover All Test Details.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<List<ExpressRouteFailoverTestDetailsInner>>, List<ExpressRouteFailoverTestDetailsInner>>
+        beginGetFailoverAllTestDetailsAsync(String resourceGroupName, String virtualNetworkGatewayName, String type,
+            boolean fetchLatest);
+
+    /**
+     * This operation retrieves the details of all the failover tests performed on the gateway for different peering
+     * locations.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param type The type of failover test.
+     * @param fetchLatest Fetch only the latest tests for each peering location.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of gateway Failover All Test Details.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<List<ExpressRouteFailoverTestDetailsInner>>, List<ExpressRouteFailoverTestDetailsInner>>
+        beginGetFailoverAllTestDetails(String resourceGroupName, String virtualNetworkGatewayName, String type,
+            boolean fetchLatest);
+
+    /**
+     * This operation retrieves the details of all the failover tests performed on the gateway for different peering
+     * locations.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param type The type of failover test.
+     * @param fetchLatest Fetch only the latest tests for each peering location.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of gateway Failover All Test Details.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<List<ExpressRouteFailoverTestDetailsInner>>, List<ExpressRouteFailoverTestDetailsInner>>
+        beginGetFailoverAllTestDetails(String resourceGroupName, String virtualNetworkGatewayName, String type,
+            boolean fetchLatest, Context context);
+
+    /**
+     * This operation retrieves the details of all the failover tests performed on the gateway for different peering
+     * locations.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param type The type of failover test.
+     * @param fetchLatest Fetch only the latest tests for each peering location.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return gateway Failover All Test Details on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<List<ExpressRouteFailoverTestDetailsInner>> getFailoverAllTestDetailsAsync(String resourceGroupName,
+        String virtualNetworkGatewayName, String type, boolean fetchLatest);
+
+    /**
+     * This operation retrieves the details of all the failover tests performed on the gateway for different peering
+     * locations.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param type The type of failover test.
+     * @param fetchLatest Fetch only the latest tests for each peering location.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return gateway Failover All Test Details.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    List<ExpressRouteFailoverTestDetailsInner> getFailoverAllTestDetails(String resourceGroupName,
+        String virtualNetworkGatewayName, String type, boolean fetchLatest);
+
+    /**
+     * This operation retrieves the details of all the failover tests performed on the gateway for different peering
+     * locations.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param type The type of failover test.
+     * @param fetchLatest Fetch only the latest tests for each peering location.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return gateway Failover All Test Details.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    List<ExpressRouteFailoverTestDetailsInner> getFailoverAllTestDetails(String resourceGroupName,
+        String virtualNetworkGatewayName, String type, boolean fetchLatest, Context context);
+
+    /**
+     * This operation retrieves the details of a particular failover test performed on the gateway based on the test
+     * Guid.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param peeringLocation Peering location of the test.
+     * @param failoverTestId The unique Guid value which identifies the test.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return gateway Failover Single Test Details Object along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> getFailoverSingleTestDetailsWithResponseAsync(String resourceGroupName,
+        String virtualNetworkGatewayName, String peeringLocation, String failoverTestId);
+
+    /**
+     * This operation retrieves the details of a particular failover test performed on the gateway based on the test
+     * Guid.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param peeringLocation Peering location of the test.
+     * @param failoverTestId The unique Guid value which identifies the test.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of gateway Failover Single Test Details Object.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<List<ExpressRouteFailoverSingleTestDetailsInner>>, List<ExpressRouteFailoverSingleTestDetailsInner>>
+        beginGetFailoverSingleTestDetailsAsync(String resourceGroupName, String virtualNetworkGatewayName,
+            String peeringLocation, String failoverTestId);
+
+    /**
+     * This operation retrieves the details of a particular failover test performed on the gateway based on the test
+     * Guid.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param peeringLocation Peering location of the test.
+     * @param failoverTestId The unique Guid value which identifies the test.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of gateway Failover Single Test Details Object.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<List<ExpressRouteFailoverSingleTestDetailsInner>>, List<ExpressRouteFailoverSingleTestDetailsInner>>
+        beginGetFailoverSingleTestDetails(String resourceGroupName, String virtualNetworkGatewayName,
+            String peeringLocation, String failoverTestId);
+
+    /**
+     * This operation retrieves the details of a particular failover test performed on the gateway based on the test
+     * Guid.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param peeringLocation Peering location of the test.
+     * @param failoverTestId The unique Guid value which identifies the test.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of gateway Failover Single Test Details Object.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<List<ExpressRouteFailoverSingleTestDetailsInner>>, List<ExpressRouteFailoverSingleTestDetailsInner>>
+        beginGetFailoverSingleTestDetails(String resourceGroupName, String virtualNetworkGatewayName,
+            String peeringLocation, String failoverTestId, Context context);
+
+    /**
+     * This operation retrieves the details of a particular failover test performed on the gateway based on the test
+     * Guid.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param peeringLocation Peering location of the test.
+     * @param failoverTestId The unique Guid value which identifies the test.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return gateway Failover Single Test Details Object on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<List<ExpressRouteFailoverSingleTestDetailsInner>> getFailoverSingleTestDetailsAsync(String resourceGroupName,
+        String virtualNetworkGatewayName, String peeringLocation, String failoverTestId);
+
+    /**
+     * This operation retrieves the details of a particular failover test performed on the gateway based on the test
+     * Guid.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param peeringLocation Peering location of the test.
+     * @param failoverTestId The unique Guid value which identifies the test.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return gateway Failover Single Test Details Object.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    List<ExpressRouteFailoverSingleTestDetailsInner> getFailoverSingleTestDetails(String resourceGroupName,
+        String virtualNetworkGatewayName, String peeringLocation, String failoverTestId);
+
+    /**
+     * This operation retrieves the details of a particular failover test performed on the gateway based on the test
+     * Guid.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param peeringLocation Peering location of the test.
+     * @param failoverTestId The unique Guid value which identifies the test.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return gateway Failover Single Test Details Object.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    List<ExpressRouteFailoverSingleTestDetailsInner> getFailoverSingleTestDetails(String resourceGroupName,
+        String virtualNetworkGatewayName, String peeringLocation, String failoverTestId, Context context);
+
+    /**
+     * This operation starts failover simulation on the gateway for the specified peering location.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param peeringLocation Peering location of the test.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> startExpressRouteSiteFailoverSimulationWithResponseAsync(String resourceGroupName,
+        String virtualNetworkGatewayName, String peeringLocation);
+
+    /**
+     * This operation starts failover simulation on the gateway for the specified peering location.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param peeringLocation Peering location of the test.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<String>, String> beginStartExpressRouteSiteFailoverSimulationAsync(String resourceGroupName,
+        String virtualNetworkGatewayName, String peeringLocation);
+
+    /**
+     * This operation starts failover simulation on the gateway for the specified peering location.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param peeringLocation Peering location of the test.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<String>, String> beginStartExpressRouteSiteFailoverSimulation(String resourceGroupName,
+        String virtualNetworkGatewayName, String peeringLocation);
+
+    /**
+     * This operation starts failover simulation on the gateway for the specified peering location.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param peeringLocation Peering location of the test.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<String>, String> beginStartExpressRouteSiteFailoverSimulation(String resourceGroupName,
+        String virtualNetworkGatewayName, String peeringLocation, Context context);
+
+    /**
+     * This operation starts failover simulation on the gateway for the specified peering location.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param peeringLocation Peering location of the test.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<String> startExpressRouteSiteFailoverSimulationAsync(String resourceGroupName,
+        String virtualNetworkGatewayName, String peeringLocation);
+
+    /**
+     * This operation starts failover simulation on the gateway for the specified peering location.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param peeringLocation Peering location of the test.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    String startExpressRouteSiteFailoverSimulation(String resourceGroupName, String virtualNetworkGatewayName,
+        String peeringLocation);
+
+    /**
+     * This operation starts failover simulation on the gateway for the specified peering location.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param peeringLocation Peering location of the test.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    String startExpressRouteSiteFailoverSimulation(String resourceGroupName, String virtualNetworkGatewayName,
+        String peeringLocation, Context context);
+
+    /**
+     * This operation stops failover simulation on the gateway for the specified peering location.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param stopParameters Virtual network gateway stop simulation parameters supplied to stop failover simulation on
+     * gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> stopExpressRouteSiteFailoverSimulationWithResponseAsync(String resourceGroupName,
+        String virtualNetworkGatewayName, ExpressRouteFailoverStopApiParameters stopParameters);
+
+    /**
+     * This operation stops failover simulation on the gateway for the specified peering location.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param stopParameters Virtual network gateway stop simulation parameters supplied to stop failover simulation on
+     * gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<String>, String> beginStopExpressRouteSiteFailoverSimulationAsync(String resourceGroupName,
+        String virtualNetworkGatewayName, ExpressRouteFailoverStopApiParameters stopParameters);
+
+    /**
+     * This operation stops failover simulation on the gateway for the specified peering location.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param stopParameters Virtual network gateway stop simulation parameters supplied to stop failover simulation on
+     * gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<String>, String> beginStopExpressRouteSiteFailoverSimulation(String resourceGroupName,
+        String virtualNetworkGatewayName, ExpressRouteFailoverStopApiParameters stopParameters);
+
+    /**
+     * This operation stops failover simulation on the gateway for the specified peering location.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param stopParameters Virtual network gateway stop simulation parameters supplied to stop failover simulation on
+     * gateway.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<String>, String> beginStopExpressRouteSiteFailoverSimulation(String resourceGroupName,
+        String virtualNetworkGatewayName, ExpressRouteFailoverStopApiParameters stopParameters, Context context);
+
+    /**
+     * This operation stops failover simulation on the gateway for the specified peering location.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param stopParameters Virtual network gateway stop simulation parameters supplied to stop failover simulation on
+     * gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<String> stopExpressRouteSiteFailoverSimulationAsync(String resourceGroupName, String virtualNetworkGatewayName,
+        ExpressRouteFailoverStopApiParameters stopParameters);
+
+    /**
+     * This operation stops failover simulation on the gateway for the specified peering location.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param stopParameters Virtual network gateway stop simulation parameters supplied to stop failover simulation on
+     * gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    String stopExpressRouteSiteFailoverSimulation(String resourceGroupName, String virtualNetworkGatewayName,
+        ExpressRouteFailoverStopApiParameters stopParameters);
+
+    /**
+     * This operation stops failover simulation on the gateway for the specified peering location.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param stopParameters Virtual network gateway stop simulation parameters supplied to stop failover simulation on
+     * gateway.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    String stopExpressRouteSiteFailoverSimulation(String resourceGroupName, String virtualNetworkGatewayName,
+        ExpressRouteFailoverStopApiParameters stopParameters, Context context);
 
     /**
      * Get VPN client connection health detail per P2S client connection of the virtual network gateway in the specified

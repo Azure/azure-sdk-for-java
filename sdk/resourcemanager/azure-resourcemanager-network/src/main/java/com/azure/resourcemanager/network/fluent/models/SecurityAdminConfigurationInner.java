@@ -9,6 +9,7 @@ import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.network.models.AddressSpaceAggregationOption;
 import com.azure.resourcemanager.network.models.ChildResource;
 import com.azure.resourcemanager.network.models.NetworkIntentPolicyBasedService;
 import com.azure.resourcemanager.network.models.ProvisioningState;
@@ -158,6 +159,34 @@ public final class SecurityAdminConfigurationInner extends ChildResource {
             this.innerProperties = new SecurityAdminConfigurationPropertiesFormat();
         }
         this.innerProperties().withApplyOnNetworkIntentPolicyBasedServices(applyOnNetworkIntentPolicyBasedServices);
+        return this;
+    }
+
+    /**
+     * Get the networkGroupAddressSpaceAggregationOption property: Determine update behavior for changes to network
+     * groups referenced within the rules in this configuration.
+     * 
+     * @return the networkGroupAddressSpaceAggregationOption value.
+     */
+    public AddressSpaceAggregationOption networkGroupAddressSpaceAggregationOption() {
+        return this.innerProperties() == null
+            ? null
+            : this.innerProperties().networkGroupAddressSpaceAggregationOption();
+    }
+
+    /**
+     * Set the networkGroupAddressSpaceAggregationOption property: Determine update behavior for changes to network
+     * groups referenced within the rules in this configuration.
+     * 
+     * @param networkGroupAddressSpaceAggregationOption the networkGroupAddressSpaceAggregationOption value to set.
+     * @return the SecurityAdminConfigurationInner object itself.
+     */
+    public SecurityAdminConfigurationInner withNetworkGroupAddressSpaceAggregationOption(
+        AddressSpaceAggregationOption networkGroupAddressSpaceAggregationOption) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SecurityAdminConfigurationPropertiesFormat();
+        }
+        this.innerProperties().withNetworkGroupAddressSpaceAggregationOption(networkGroupAddressSpaceAggregationOption);
         return this;
     }
 

@@ -33,14 +33,18 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
+import com.azure.core.util.serializer.TypeReference;
 import com.azure.resourcemanager.network.fluent.VirtualNetworkGatewaysClient;
 import com.azure.resourcemanager.network.fluent.models.BgpPeerStatusListResultInner;
+import com.azure.resourcemanager.network.fluent.models.ExpressRouteFailoverSingleTestDetailsInner;
+import com.azure.resourcemanager.network.fluent.models.ExpressRouteFailoverTestDetailsInner;
 import com.azure.resourcemanager.network.fluent.models.GatewayRouteListResultInner;
 import com.azure.resourcemanager.network.fluent.models.VirtualNetworkGatewayConnectionListEntityInner;
 import com.azure.resourcemanager.network.fluent.models.VirtualNetworkGatewayInner;
 import com.azure.resourcemanager.network.fluent.models.VpnClientConnectionHealthDetailListResultInner;
 import com.azure.resourcemanager.network.fluent.models.VpnClientIPsecParametersInner;
 import com.azure.resourcemanager.network.models.ErrorException;
+import com.azure.resourcemanager.network.models.ExpressRouteFailoverStopApiParameters;
 import com.azure.resourcemanager.network.models.P2SVpnConnectionRequest;
 import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayListConnectionsResult;
@@ -52,6 +56,7 @@ import com.azure.resourcemanager.network.models.VpnPacketCaptureStopParameters;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import java.nio.ByteBuffer;
+import java.util.List;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -295,6 +300,48 @@ public final class VirtualNetworkGatewaysClientImpl
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworkGateways/{virtualNetworkGatewayName}/getFailoverAllTestsDetails")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> getFailoverAllTestDetails(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("virtualNetworkGatewayName") String virtualNetworkGatewayName, @QueryParam("type") String type,
+            @QueryParam("fetchLatest") boolean fetchLatest, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworkGateways/{virtualNetworkGatewayName}/getFailoverSingleTestDetails")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> getFailoverSingleTestDetails(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("virtualNetworkGatewayName") String virtualNetworkGatewayName,
+            @QueryParam("peeringLocation") String peeringLocation, @QueryParam("failoverTestId") String failoverTestId,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworkGateways/{virtualNetworkGatewayName}/startSiteFailoverTest")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> startExpressRouteSiteFailoverSimulation(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("virtualNetworkGatewayName") String virtualNetworkGatewayName,
+            @QueryParam("peeringLocation") String peeringLocation, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworkGateways/{virtualNetworkGatewayName}/stopSiteFailoverTest")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> stopExpressRouteSiteFailoverSimulation(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("virtualNetworkGatewayName") String virtualNetworkGatewayName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @BodyParam("application/json") ExpressRouteFailoverStopApiParameters stopParameters,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworkGateways/{virtualNetworkGatewayName}/getVpnClientConnectionHealth")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -369,7 +416,7 @@ public final class VirtualNetworkGatewaysClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName,
@@ -414,7 +461,7 @@ public final class VirtualNetworkGatewaysClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, virtualNetworkGatewayName,
@@ -604,7 +651,7 @@ public final class VirtualNetworkGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName,
@@ -643,7 +690,7 @@ public final class VirtualNetworkGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, virtualNetworkGatewayName,
@@ -728,7 +775,7 @@ public final class VirtualNetworkGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName,
@@ -766,7 +813,7 @@ public final class VirtualNetworkGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), resourceGroupName, virtualNetworkGatewayName, apiVersion,
@@ -942,7 +989,7 @@ public final class VirtualNetworkGatewaysClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.updateTags(this.client.getEndpoint(), resourceGroupName,
@@ -987,7 +1034,7 @@ public final class VirtualNetworkGatewaysClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.updateTags(this.client.getEndpoint(), resourceGroupName, virtualNetworkGatewayName, apiVersion,
@@ -1170,7 +1217,7 @@ public final class VirtualNetworkGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), resourceGroupName,
@@ -1206,7 +1253,7 @@ public final class VirtualNetworkGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1306,7 +1353,7 @@ public final class VirtualNetworkGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listConnections(this.client.getEndpoint(), resourceGroupName,
@@ -1348,7 +1395,7 @@ public final class VirtualNetworkGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1459,7 +1506,7 @@ public final class VirtualNetworkGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.reset(this.client.getEndpoint(), resourceGroupName,
@@ -1500,7 +1547,7 @@ public final class VirtualNetworkGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.reset(this.client.getEndpoint(), resourceGroupName, virtualNetworkGatewayName, gatewayVip,
@@ -1729,7 +1776,7 @@ public final class VirtualNetworkGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.resetVpnClientSharedKey(this.client.getEndpoint(), resourceGroupName,
@@ -1767,7 +1814,7 @@ public final class VirtualNetworkGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.resetVpnClientSharedKey(this.client.getEndpoint(), resourceGroupName, virtualNetworkGatewayName,
@@ -1946,7 +1993,7 @@ public final class VirtualNetworkGatewaysClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.generatevpnclientpackage(this.client.getEndpoint(), resourceGroupName,
@@ -1990,7 +2037,7 @@ public final class VirtualNetworkGatewaysClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.generatevpnclientpackage(this.client.getEndpoint(), resourceGroupName, virtualNetworkGatewayName,
@@ -2186,7 +2233,7 @@ public final class VirtualNetworkGatewaysClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.generateVpnProfile(this.client.getEndpoint(), resourceGroupName,
@@ -2231,7 +2278,7 @@ public final class VirtualNetworkGatewaysClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.generateVpnProfile(this.client.getEndpoint(), resourceGroupName, virtualNetworkGatewayName,
@@ -2428,7 +2475,7 @@ public final class VirtualNetworkGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getVpnProfilePackageUrl(this.client.getEndpoint(), resourceGroupName,
@@ -2468,7 +2515,7 @@ public final class VirtualNetworkGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getVpnProfilePackageUrl(this.client.getEndpoint(), resourceGroupName, virtualNetworkGatewayName,
@@ -2659,7 +2706,7 @@ public final class VirtualNetworkGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getBgpPeerStatus(this.client.getEndpoint(), resourceGroupName,
@@ -2699,7 +2746,7 @@ public final class VirtualNetworkGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getBgpPeerStatus(this.client.getEndpoint(), resourceGroupName, virtualNetworkGatewayName, peer,
@@ -2927,7 +2974,7 @@ public final class VirtualNetworkGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.supportedVpnDevices(this.client.getEndpoint(), resourceGroupName,
@@ -2966,7 +3013,7 @@ public final class VirtualNetworkGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.supportedVpnDevices(this.client.getEndpoint(), resourceGroupName, virtualNetworkGatewayName,
@@ -3052,7 +3099,7 @@ public final class VirtualNetworkGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getLearnedRoutes(this.client.getEndpoint(), resourceGroupName,
@@ -3092,7 +3139,7 @@ public final class VirtualNetworkGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getLearnedRoutes(this.client.getEndpoint(), resourceGroupName, virtualNetworkGatewayName,
@@ -3283,7 +3330,7 @@ public final class VirtualNetworkGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getAdvertisedRoutes(this.client.getEndpoint(), resourceGroupName,
@@ -3326,7 +3373,7 @@ public final class VirtualNetworkGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getAdvertisedRoutes(this.client.getEndpoint(), resourceGroupName, virtualNetworkGatewayName,
@@ -3525,7 +3572,7 @@ public final class VirtualNetworkGatewaysClientImpl
         } else {
             vpnclientIpsecParams.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.setVpnclientIpsecParameters(this.client.getEndpoint(), resourceGroupName,
@@ -3574,7 +3621,7 @@ public final class VirtualNetworkGatewaysClientImpl
         } else {
             vpnclientIpsecParams.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.setVpnclientIpsecParameters(this.client.getEndpoint(), resourceGroupName,
@@ -3794,7 +3841,7 @@ public final class VirtualNetworkGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getVpnclientIpsecParameters(this.client.getEndpoint(), resourceGroupName,
@@ -3834,7 +3881,7 @@ public final class VirtualNetworkGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getVpnclientIpsecParameters(this.client.getEndpoint(), resourceGroupName,
@@ -4033,7 +4080,7 @@ public final class VirtualNetworkGatewaysClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.vpnDeviceConfigurationScript(this.client.getEndpoint(), resourceGroupName,
@@ -4080,7 +4127,7 @@ public final class VirtualNetworkGatewaysClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.vpnDeviceConfigurationScript(this.client.getEndpoint(), resourceGroupName,
@@ -4179,7 +4226,7 @@ public final class VirtualNetworkGatewaysClientImpl
         if (parameters != null) {
             parameters.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.startPacketCapture(this.client.getEndpoint(), resourceGroupName,
@@ -4221,7 +4268,7 @@ public final class VirtualNetworkGatewaysClientImpl
         if (parameters != null) {
             parameters.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.startPacketCapture(this.client.getEndpoint(), resourceGroupName, virtualNetworkGatewayName,
@@ -4450,7 +4497,7 @@ public final class VirtualNetworkGatewaysClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.stopPacketCapture(this.client.getEndpoint(), resourceGroupName,
@@ -4494,7 +4541,7 @@ public final class VirtualNetworkGatewaysClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.stopPacketCapture(this.client.getEndpoint(), resourceGroupName, virtualNetworkGatewayName,
@@ -4653,6 +4700,1066 @@ public final class VirtualNetworkGatewaysClientImpl
     }
 
     /**
+     * This operation retrieves the details of all the failover tests performed on the gateway for different peering
+     * locations.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param type The type of failover test.
+     * @param fetchLatest Fetch only the latest tests for each peering location.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return gateway Failover All Test Details along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> getFailoverAllTestDetailsWithResponseAsync(String resourceGroupName,
+        String virtualNetworkGatewayName, String type, boolean fetchLatest) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (virtualNetworkGatewayName == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter virtualNetworkGatewayName is required and cannot be null."));
+        }
+        if (type == null) {
+            return Mono.error(new IllegalArgumentException("Parameter type is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2024-05-01";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.getFailoverAllTestDetails(this.client.getEndpoint(), resourceGroupName,
+                virtualNetworkGatewayName, type, fetchLatest, apiVersion, this.client.getSubscriptionId(), accept,
+                context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * This operation retrieves the details of all the failover tests performed on the gateway for different peering
+     * locations.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param type The type of failover test.
+     * @param fetchLatest Fetch only the latest tests for each peering location.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return gateway Failover All Test Details along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> getFailoverAllTestDetailsWithResponseAsync(String resourceGroupName,
+        String virtualNetworkGatewayName, String type, boolean fetchLatest, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (virtualNetworkGatewayName == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter virtualNetworkGatewayName is required and cannot be null."));
+        }
+        if (type == null) {
+            return Mono.error(new IllegalArgumentException("Parameter type is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2024-05-01";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.getFailoverAllTestDetails(this.client.getEndpoint(), resourceGroupName,
+            virtualNetworkGatewayName, type, fetchLatest, apiVersion, this.client.getSubscriptionId(), accept, context);
+    }
+
+    /**
+     * This operation retrieves the details of all the failover tests performed on the gateway for different peering
+     * locations.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param type The type of failover test.
+     * @param fetchLatest Fetch only the latest tests for each peering location.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of gateway Failover All Test Details.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public
+        PollerFlux<PollResult<List<ExpressRouteFailoverTestDetailsInner>>, List<ExpressRouteFailoverTestDetailsInner>>
+        beginGetFailoverAllTestDetailsAsync(String resourceGroupName, String virtualNetworkGatewayName, String type,
+            boolean fetchLatest) {
+        Mono<Response<Flux<ByteBuffer>>> mono = getFailoverAllTestDetailsWithResponseAsync(resourceGroupName,
+            virtualNetworkGatewayName, type, fetchLatest);
+        return this.client
+            .<List<ExpressRouteFailoverTestDetailsInner>, List<ExpressRouteFailoverTestDetailsInner>>getLroResult(mono,
+                this.client.getHttpPipeline(), new TypeReference<List<ExpressRouteFailoverTestDetailsInner>>() {
+                }.getJavaType(), new TypeReference<List<ExpressRouteFailoverTestDetailsInner>>() {
+                }.getJavaType(), this.client.getContext());
+    }
+
+    /**
+     * This operation retrieves the details of all the failover tests performed on the gateway for different peering
+     * locations.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param type The type of failover test.
+     * @param fetchLatest Fetch only the latest tests for each peering location.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of gateway Failover All Test Details.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private
+        PollerFlux<PollResult<List<ExpressRouteFailoverTestDetailsInner>>, List<ExpressRouteFailoverTestDetailsInner>>
+        beginGetFailoverAllTestDetailsAsync(String resourceGroupName, String virtualNetworkGatewayName, String type,
+            boolean fetchLatest, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono = getFailoverAllTestDetailsWithResponseAsync(resourceGroupName,
+            virtualNetworkGatewayName, type, fetchLatest, context);
+        return this.client
+            .<List<ExpressRouteFailoverTestDetailsInner>, List<ExpressRouteFailoverTestDetailsInner>>getLroResult(mono,
+                this.client.getHttpPipeline(), new TypeReference<List<ExpressRouteFailoverTestDetailsInner>>() {
+                }.getJavaType(), new TypeReference<List<ExpressRouteFailoverTestDetailsInner>>() {
+                }.getJavaType(), context);
+    }
+
+    /**
+     * This operation retrieves the details of all the failover tests performed on the gateway for different peering
+     * locations.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param type The type of failover test.
+     * @param fetchLatest Fetch only the latest tests for each peering location.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of gateway Failover All Test Details.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public
+        SyncPoller<PollResult<List<ExpressRouteFailoverTestDetailsInner>>, List<ExpressRouteFailoverTestDetailsInner>>
+        beginGetFailoverAllTestDetails(String resourceGroupName, String virtualNetworkGatewayName, String type,
+            boolean fetchLatest) {
+        return this.beginGetFailoverAllTestDetailsAsync(resourceGroupName, virtualNetworkGatewayName, type, fetchLatest)
+            .getSyncPoller();
+    }
+
+    /**
+     * This operation retrieves the details of all the failover tests performed on the gateway for different peering
+     * locations.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param type The type of failover test.
+     * @param fetchLatest Fetch only the latest tests for each peering location.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of gateway Failover All Test Details.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public
+        SyncPoller<PollResult<List<ExpressRouteFailoverTestDetailsInner>>, List<ExpressRouteFailoverTestDetailsInner>>
+        beginGetFailoverAllTestDetails(String resourceGroupName, String virtualNetworkGatewayName, String type,
+            boolean fetchLatest, Context context) {
+        return this
+            .beginGetFailoverAllTestDetailsAsync(resourceGroupName, virtualNetworkGatewayName, type, fetchLatest,
+                context)
+            .getSyncPoller();
+    }
+
+    /**
+     * This operation retrieves the details of all the failover tests performed on the gateway for different peering
+     * locations.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param type The type of failover test.
+     * @param fetchLatest Fetch only the latest tests for each peering location.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return gateway Failover All Test Details on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<List<ExpressRouteFailoverTestDetailsInner>> getFailoverAllTestDetailsAsync(String resourceGroupName,
+        String virtualNetworkGatewayName, String type, boolean fetchLatest) {
+        return beginGetFailoverAllTestDetailsAsync(resourceGroupName, virtualNetworkGatewayName, type, fetchLatest)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * This operation retrieves the details of all the failover tests performed on the gateway for different peering
+     * locations.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param type The type of failover test.
+     * @param fetchLatest Fetch only the latest tests for each peering location.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return gateway Failover All Test Details on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<List<ExpressRouteFailoverTestDetailsInner>> getFailoverAllTestDetailsAsync(String resourceGroupName,
+        String virtualNetworkGatewayName, String type, boolean fetchLatest, Context context) {
+        return beginGetFailoverAllTestDetailsAsync(resourceGroupName, virtualNetworkGatewayName, type, fetchLatest,
+            context).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * This operation retrieves the details of all the failover tests performed on the gateway for different peering
+     * locations.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param type The type of failover test.
+     * @param fetchLatest Fetch only the latest tests for each peering location.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return gateway Failover All Test Details.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public List<ExpressRouteFailoverTestDetailsInner> getFailoverAllTestDetails(String resourceGroupName,
+        String virtualNetworkGatewayName, String type, boolean fetchLatest) {
+        return getFailoverAllTestDetailsAsync(resourceGroupName, virtualNetworkGatewayName, type, fetchLatest).block();
+    }
+
+    /**
+     * This operation retrieves the details of all the failover tests performed on the gateway for different peering
+     * locations.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param type The type of failover test.
+     * @param fetchLatest Fetch only the latest tests for each peering location.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return gateway Failover All Test Details.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public List<ExpressRouteFailoverTestDetailsInner> getFailoverAllTestDetails(String resourceGroupName,
+        String virtualNetworkGatewayName, String type, boolean fetchLatest, Context context) {
+        return getFailoverAllTestDetailsAsync(resourceGroupName, virtualNetworkGatewayName, type, fetchLatest, context)
+            .block();
+    }
+
+    /**
+     * This operation retrieves the details of a particular failover test performed on the gateway based on the test
+     * Guid.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param peeringLocation Peering location of the test.
+     * @param failoverTestId The unique Guid value which identifies the test.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return gateway Failover Single Test Details Object along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> getFailoverSingleTestDetailsWithResponseAsync(String resourceGroupName,
+        String virtualNetworkGatewayName, String peeringLocation, String failoverTestId) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (virtualNetworkGatewayName == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter virtualNetworkGatewayName is required and cannot be null."));
+        }
+        if (peeringLocation == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter peeringLocation is required and cannot be null."));
+        }
+        if (failoverTestId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter failoverTestId is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2024-05-01";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.getFailoverSingleTestDetails(this.client.getEndpoint(), resourceGroupName,
+                virtualNetworkGatewayName, peeringLocation, failoverTestId, apiVersion, this.client.getSubscriptionId(),
+                accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * This operation retrieves the details of a particular failover test performed on the gateway based on the test
+     * Guid.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param peeringLocation Peering location of the test.
+     * @param failoverTestId The unique Guid value which identifies the test.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return gateway Failover Single Test Details Object along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> getFailoverSingleTestDetailsWithResponseAsync(String resourceGroupName,
+        String virtualNetworkGatewayName, String peeringLocation, String failoverTestId, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (virtualNetworkGatewayName == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter virtualNetworkGatewayName is required and cannot be null."));
+        }
+        if (peeringLocation == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter peeringLocation is required and cannot be null."));
+        }
+        if (failoverTestId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter failoverTestId is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2024-05-01";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.getFailoverSingleTestDetails(this.client.getEndpoint(), resourceGroupName,
+            virtualNetworkGatewayName, peeringLocation, failoverTestId, apiVersion, this.client.getSubscriptionId(),
+            accept, context);
+    }
+
+    /**
+     * This operation retrieves the details of a particular failover test performed on the gateway based on the test
+     * Guid.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param peeringLocation Peering location of the test.
+     * @param failoverTestId The unique Guid value which identifies the test.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of gateway Failover Single Test Details Object.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public
+        PollerFlux<PollResult<List<ExpressRouteFailoverSingleTestDetailsInner>>, List<ExpressRouteFailoverSingleTestDetailsInner>>
+        beginGetFailoverSingleTestDetailsAsync(String resourceGroupName, String virtualNetworkGatewayName,
+            String peeringLocation, String failoverTestId) {
+        Mono<Response<Flux<ByteBuffer>>> mono = getFailoverSingleTestDetailsWithResponseAsync(resourceGroupName,
+            virtualNetworkGatewayName, peeringLocation, failoverTestId);
+        return this.client
+            .<List<ExpressRouteFailoverSingleTestDetailsInner>, List<ExpressRouteFailoverSingleTestDetailsInner>>getLroResult(
+                mono, this.client.getHttpPipeline(),
+                new TypeReference<List<ExpressRouteFailoverSingleTestDetailsInner>>() {
+                }.getJavaType(), new TypeReference<List<ExpressRouteFailoverSingleTestDetailsInner>>() {
+                }.getJavaType(), this.client.getContext());
+    }
+
+    /**
+     * This operation retrieves the details of a particular failover test performed on the gateway based on the test
+     * Guid.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param peeringLocation Peering location of the test.
+     * @param failoverTestId The unique Guid value which identifies the test.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of gateway Failover Single Test Details Object.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private
+        PollerFlux<PollResult<List<ExpressRouteFailoverSingleTestDetailsInner>>, List<ExpressRouteFailoverSingleTestDetailsInner>>
+        beginGetFailoverSingleTestDetailsAsync(String resourceGroupName, String virtualNetworkGatewayName,
+            String peeringLocation, String failoverTestId, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono = getFailoverSingleTestDetailsWithResponseAsync(resourceGroupName,
+            virtualNetworkGatewayName, peeringLocation, failoverTestId, context);
+        return this.client
+            .<List<ExpressRouteFailoverSingleTestDetailsInner>, List<ExpressRouteFailoverSingleTestDetailsInner>>getLroResult(
+                mono, this.client.getHttpPipeline(),
+                new TypeReference<List<ExpressRouteFailoverSingleTestDetailsInner>>() {
+                }.getJavaType(), new TypeReference<List<ExpressRouteFailoverSingleTestDetailsInner>>() {
+                }.getJavaType(), context);
+    }
+
+    /**
+     * This operation retrieves the details of a particular failover test performed on the gateway based on the test
+     * Guid.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param peeringLocation Peering location of the test.
+     * @param failoverTestId The unique Guid value which identifies the test.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of gateway Failover Single Test Details Object.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public
+        SyncPoller<PollResult<List<ExpressRouteFailoverSingleTestDetailsInner>>, List<ExpressRouteFailoverSingleTestDetailsInner>>
+        beginGetFailoverSingleTestDetails(String resourceGroupName, String virtualNetworkGatewayName,
+            String peeringLocation, String failoverTestId) {
+        return this
+            .beginGetFailoverSingleTestDetailsAsync(resourceGroupName, virtualNetworkGatewayName, peeringLocation,
+                failoverTestId)
+            .getSyncPoller();
+    }
+
+    /**
+     * This operation retrieves the details of a particular failover test performed on the gateway based on the test
+     * Guid.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param peeringLocation Peering location of the test.
+     * @param failoverTestId The unique Guid value which identifies the test.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of gateway Failover Single Test Details Object.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public
+        SyncPoller<PollResult<List<ExpressRouteFailoverSingleTestDetailsInner>>, List<ExpressRouteFailoverSingleTestDetailsInner>>
+        beginGetFailoverSingleTestDetails(String resourceGroupName, String virtualNetworkGatewayName,
+            String peeringLocation, String failoverTestId, Context context) {
+        return this
+            .beginGetFailoverSingleTestDetailsAsync(resourceGroupName, virtualNetworkGatewayName, peeringLocation,
+                failoverTestId, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * This operation retrieves the details of a particular failover test performed on the gateway based on the test
+     * Guid.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param peeringLocation Peering location of the test.
+     * @param failoverTestId The unique Guid value which identifies the test.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return gateway Failover Single Test Details Object on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<List<ExpressRouteFailoverSingleTestDetailsInner>> getFailoverSingleTestDetailsAsync(
+        String resourceGroupName, String virtualNetworkGatewayName, String peeringLocation, String failoverTestId) {
+        return beginGetFailoverSingleTestDetailsAsync(resourceGroupName, virtualNetworkGatewayName, peeringLocation,
+            failoverTestId).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * This operation retrieves the details of a particular failover test performed on the gateway based on the test
+     * Guid.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param peeringLocation Peering location of the test.
+     * @param failoverTestId The unique Guid value which identifies the test.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return gateway Failover Single Test Details Object on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<List<ExpressRouteFailoverSingleTestDetailsInner>> getFailoverSingleTestDetailsAsync(
+        String resourceGroupName, String virtualNetworkGatewayName, String peeringLocation, String failoverTestId,
+        Context context) {
+        return beginGetFailoverSingleTestDetailsAsync(resourceGroupName, virtualNetworkGatewayName, peeringLocation,
+            failoverTestId, context).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * This operation retrieves the details of a particular failover test performed on the gateway based on the test
+     * Guid.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param peeringLocation Peering location of the test.
+     * @param failoverTestId The unique Guid value which identifies the test.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return gateway Failover Single Test Details Object.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public List<ExpressRouteFailoverSingleTestDetailsInner> getFailoverSingleTestDetails(String resourceGroupName,
+        String virtualNetworkGatewayName, String peeringLocation, String failoverTestId) {
+        return getFailoverSingleTestDetailsAsync(resourceGroupName, virtualNetworkGatewayName, peeringLocation,
+            failoverTestId).block();
+    }
+
+    /**
+     * This operation retrieves the details of a particular failover test performed on the gateway based on the test
+     * Guid.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param peeringLocation Peering location of the test.
+     * @param failoverTestId The unique Guid value which identifies the test.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return gateway Failover Single Test Details Object.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public List<ExpressRouteFailoverSingleTestDetailsInner> getFailoverSingleTestDetails(String resourceGroupName,
+        String virtualNetworkGatewayName, String peeringLocation, String failoverTestId, Context context) {
+        return getFailoverSingleTestDetailsAsync(resourceGroupName, virtualNetworkGatewayName, peeringLocation,
+            failoverTestId, context).block();
+    }
+
+    /**
+     * This operation starts failover simulation on the gateway for the specified peering location.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param peeringLocation Peering location of the test.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> startExpressRouteSiteFailoverSimulationWithResponseAsync(
+        String resourceGroupName, String virtualNetworkGatewayName, String peeringLocation) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (virtualNetworkGatewayName == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter virtualNetworkGatewayName is required and cannot be null."));
+        }
+        if (peeringLocation == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter peeringLocation is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2024-05-01";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.startExpressRouteSiteFailoverSimulation(this.client.getEndpoint(),
+                resourceGroupName, virtualNetworkGatewayName, peeringLocation, apiVersion,
+                this.client.getSubscriptionId(), accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * This operation starts failover simulation on the gateway for the specified peering location.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param peeringLocation Peering location of the test.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> startExpressRouteSiteFailoverSimulationWithResponseAsync(
+        String resourceGroupName, String virtualNetworkGatewayName, String peeringLocation, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (virtualNetworkGatewayName == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter virtualNetworkGatewayName is required and cannot be null."));
+        }
+        if (peeringLocation == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter peeringLocation is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2024-05-01";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.startExpressRouteSiteFailoverSimulation(this.client.getEndpoint(), resourceGroupName,
+            virtualNetworkGatewayName, peeringLocation, apiVersion, this.client.getSubscriptionId(), accept, context);
+    }
+
+    /**
+     * This operation starts failover simulation on the gateway for the specified peering location.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param peeringLocation Peering location of the test.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<String>, String> beginStartExpressRouteSiteFailoverSimulationAsync(
+        String resourceGroupName, String virtualNetworkGatewayName, String peeringLocation) {
+        Mono<Response<Flux<ByteBuffer>>> mono = startExpressRouteSiteFailoverSimulationWithResponseAsync(
+            resourceGroupName, virtualNetworkGatewayName, peeringLocation);
+        return this.client.<String, String>getLroResult(mono, this.client.getHttpPipeline(), String.class, String.class,
+            this.client.getContext());
+    }
+
+    /**
+     * This operation starts failover simulation on the gateway for the specified peering location.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param peeringLocation Peering location of the test.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<String>, String> beginStartExpressRouteSiteFailoverSimulationAsync(
+        String resourceGroupName, String virtualNetworkGatewayName, String peeringLocation, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono = startExpressRouteSiteFailoverSimulationWithResponseAsync(
+            resourceGroupName, virtualNetworkGatewayName, peeringLocation, context);
+        return this.client.<String, String>getLroResult(mono, this.client.getHttpPipeline(), String.class, String.class,
+            context);
+    }
+
+    /**
+     * This operation starts failover simulation on the gateway for the specified peering location.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param peeringLocation Peering location of the test.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<String>, String> beginStartExpressRouteSiteFailoverSimulation(String resourceGroupName,
+        String virtualNetworkGatewayName, String peeringLocation) {
+        return this
+            .beginStartExpressRouteSiteFailoverSimulationAsync(resourceGroupName, virtualNetworkGatewayName,
+                peeringLocation)
+            .getSyncPoller();
+    }
+
+    /**
+     * This operation starts failover simulation on the gateway for the specified peering location.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param peeringLocation Peering location of the test.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<String>, String> beginStartExpressRouteSiteFailoverSimulation(String resourceGroupName,
+        String virtualNetworkGatewayName, String peeringLocation, Context context) {
+        return this
+            .beginStartExpressRouteSiteFailoverSimulationAsync(resourceGroupName, virtualNetworkGatewayName,
+                peeringLocation, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * This operation starts failover simulation on the gateway for the specified peering location.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param peeringLocation Peering location of the test.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<String> startExpressRouteSiteFailoverSimulationAsync(String resourceGroupName,
+        String virtualNetworkGatewayName, String peeringLocation) {
+        return beginStartExpressRouteSiteFailoverSimulationAsync(resourceGroupName, virtualNetworkGatewayName,
+            peeringLocation).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * This operation starts failover simulation on the gateway for the specified peering location.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param peeringLocation Peering location of the test.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<String> startExpressRouteSiteFailoverSimulationAsync(String resourceGroupName,
+        String virtualNetworkGatewayName, String peeringLocation, Context context) {
+        return beginStartExpressRouteSiteFailoverSimulationAsync(resourceGroupName, virtualNetworkGatewayName,
+            peeringLocation, context).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * This operation starts failover simulation on the gateway for the specified peering location.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param peeringLocation Peering location of the test.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public String startExpressRouteSiteFailoverSimulation(String resourceGroupName, String virtualNetworkGatewayName,
+        String peeringLocation) {
+        return startExpressRouteSiteFailoverSimulationAsync(resourceGroupName, virtualNetworkGatewayName,
+            peeringLocation).block();
+    }
+
+    /**
+     * This operation starts failover simulation on the gateway for the specified peering location.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param peeringLocation Peering location of the test.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public String startExpressRouteSiteFailoverSimulation(String resourceGroupName, String virtualNetworkGatewayName,
+        String peeringLocation, Context context) {
+        return startExpressRouteSiteFailoverSimulationAsync(resourceGroupName, virtualNetworkGatewayName,
+            peeringLocation, context).block();
+    }
+
+    /**
+     * This operation stops failover simulation on the gateway for the specified peering location.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param stopParameters Virtual network gateway stop simulation parameters supplied to stop failover simulation on
+     * gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> stopExpressRouteSiteFailoverSimulationWithResponseAsync(
+        String resourceGroupName, String virtualNetworkGatewayName,
+        ExpressRouteFailoverStopApiParameters stopParameters) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (virtualNetworkGatewayName == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter virtualNetworkGatewayName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (stopParameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter stopParameters is required and cannot be null."));
+        } else {
+            stopParameters.validate();
+        }
+        final String apiVersion = "2024-05-01";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.stopExpressRouteSiteFailoverSimulation(this.client.getEndpoint(),
+                resourceGroupName, virtualNetworkGatewayName, apiVersion, this.client.getSubscriptionId(),
+                stopParameters, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * This operation stops failover simulation on the gateway for the specified peering location.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param stopParameters Virtual network gateway stop simulation parameters supplied to stop failover simulation on
+     * gateway.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> stopExpressRouteSiteFailoverSimulationWithResponseAsync(
+        String resourceGroupName, String virtualNetworkGatewayName,
+        ExpressRouteFailoverStopApiParameters stopParameters, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (virtualNetworkGatewayName == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter virtualNetworkGatewayName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (stopParameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter stopParameters is required and cannot be null."));
+        } else {
+            stopParameters.validate();
+        }
+        final String apiVersion = "2024-05-01";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.stopExpressRouteSiteFailoverSimulation(this.client.getEndpoint(), resourceGroupName,
+            virtualNetworkGatewayName, apiVersion, this.client.getSubscriptionId(), stopParameters, accept, context);
+    }
+
+    /**
+     * This operation stops failover simulation on the gateway for the specified peering location.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param stopParameters Virtual network gateway stop simulation parameters supplied to stop failover simulation on
+     * gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<String>, String> beginStopExpressRouteSiteFailoverSimulationAsync(
+        String resourceGroupName, String virtualNetworkGatewayName,
+        ExpressRouteFailoverStopApiParameters stopParameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono = stopExpressRouteSiteFailoverSimulationWithResponseAsync(
+            resourceGroupName, virtualNetworkGatewayName, stopParameters);
+        return this.client.<String, String>getLroResult(mono, this.client.getHttpPipeline(), String.class, String.class,
+            this.client.getContext());
+    }
+
+    /**
+     * This operation stops failover simulation on the gateway for the specified peering location.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param stopParameters Virtual network gateway stop simulation parameters supplied to stop failover simulation on
+     * gateway.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<String>, String> beginStopExpressRouteSiteFailoverSimulationAsync(
+        String resourceGroupName, String virtualNetworkGatewayName,
+        ExpressRouteFailoverStopApiParameters stopParameters, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono = stopExpressRouteSiteFailoverSimulationWithResponseAsync(
+            resourceGroupName, virtualNetworkGatewayName, stopParameters, context);
+        return this.client.<String, String>getLroResult(mono, this.client.getHttpPipeline(), String.class, String.class,
+            context);
+    }
+
+    /**
+     * This operation stops failover simulation on the gateway for the specified peering location.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param stopParameters Virtual network gateway stop simulation parameters supplied to stop failover simulation on
+     * gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<String>, String> beginStopExpressRouteSiteFailoverSimulation(String resourceGroupName,
+        String virtualNetworkGatewayName, ExpressRouteFailoverStopApiParameters stopParameters) {
+        return this
+            .beginStopExpressRouteSiteFailoverSimulationAsync(resourceGroupName, virtualNetworkGatewayName,
+                stopParameters)
+            .getSyncPoller();
+    }
+
+    /**
+     * This operation stops failover simulation on the gateway for the specified peering location.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param stopParameters Virtual network gateway stop simulation parameters supplied to stop failover simulation on
+     * gateway.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<String>, String> beginStopExpressRouteSiteFailoverSimulation(String resourceGroupName,
+        String virtualNetworkGatewayName, ExpressRouteFailoverStopApiParameters stopParameters, Context context) {
+        return this
+            .beginStopExpressRouteSiteFailoverSimulationAsync(resourceGroupName, virtualNetworkGatewayName,
+                stopParameters, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * This operation stops failover simulation on the gateway for the specified peering location.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param stopParameters Virtual network gateway stop simulation parameters supplied to stop failover simulation on
+     * gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<String> stopExpressRouteSiteFailoverSimulationAsync(String resourceGroupName,
+        String virtualNetworkGatewayName, ExpressRouteFailoverStopApiParameters stopParameters) {
+        return beginStopExpressRouteSiteFailoverSimulationAsync(resourceGroupName, virtualNetworkGatewayName,
+            stopParameters).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * This operation stops failover simulation on the gateway for the specified peering location.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param stopParameters Virtual network gateway stop simulation parameters supplied to stop failover simulation on
+     * gateway.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<String> stopExpressRouteSiteFailoverSimulationAsync(String resourceGroupName,
+        String virtualNetworkGatewayName, ExpressRouteFailoverStopApiParameters stopParameters, Context context) {
+        return beginStopExpressRouteSiteFailoverSimulationAsync(resourceGroupName, virtualNetworkGatewayName,
+            stopParameters, context).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * This operation stops failover simulation on the gateway for the specified peering location.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param stopParameters Virtual network gateway stop simulation parameters supplied to stop failover simulation on
+     * gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public String stopExpressRouteSiteFailoverSimulation(String resourceGroupName, String virtualNetworkGatewayName,
+        ExpressRouteFailoverStopApiParameters stopParameters) {
+        return stopExpressRouteSiteFailoverSimulationAsync(resourceGroupName, virtualNetworkGatewayName, stopParameters)
+            .block();
+    }
+
+    /**
+     * This operation stops failover simulation on the gateway for the specified peering location.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayName The name of the virtual network gateway.
+     * @param stopParameters Virtual network gateway stop simulation parameters supplied to stop failover simulation on
+     * gateway.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public String stopExpressRouteSiteFailoverSimulation(String resourceGroupName, String virtualNetworkGatewayName,
+        ExpressRouteFailoverStopApiParameters stopParameters, Context context) {
+        return stopExpressRouteSiteFailoverSimulationAsync(resourceGroupName, virtualNetworkGatewayName, stopParameters,
+            context).block();
+    }
+
+    /**
      * Get VPN client connection health detail per P2S client connection of the virtual network gateway in the specified
      * resource group.
      * 
@@ -4683,7 +5790,7 @@ public final class VirtualNetworkGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getVpnclientConnectionHealth(this.client.getEndpoint(), resourceGroupName,
@@ -4723,7 +5830,7 @@ public final class VirtualNetworkGatewaysClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getVpnclientConnectionHealth(this.client.getEndpoint(), resourceGroupName,
@@ -4933,7 +6040,7 @@ public final class VirtualNetworkGatewaysClientImpl
         } else {
             request.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.disconnectVirtualNetworkGatewayVpnConnections(this.client.getEndpoint(),
@@ -4978,7 +6085,7 @@ public final class VirtualNetworkGatewaysClientImpl
         } else {
             request.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.disconnectVirtualNetworkGatewayVpnConnections(this.client.getEndpoint(),

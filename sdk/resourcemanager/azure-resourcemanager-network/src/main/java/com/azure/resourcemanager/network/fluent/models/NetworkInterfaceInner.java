@@ -283,6 +283,16 @@ public final class NetworkInterfaceInner extends Resource {
     }
 
     /**
+     * Get the defaultOutboundConnectivityEnabled property: Whether default outbound connectivity for nic was configured
+     * or not.
+     * 
+     * @return the defaultOutboundConnectivityEnabled value.
+     */
+    public Boolean defaultOutboundConnectivityEnabled() {
+        return this.innerProperties() == null ? null : this.innerProperties().defaultOutboundConnectivityEnabled();
+    }
+
+    /**
      * Get the enableAcceleratedNetworking property: If the network interface is configured for accelerated networking.
      * Not applicable to VM sizes which require accelerated networking.
      * 

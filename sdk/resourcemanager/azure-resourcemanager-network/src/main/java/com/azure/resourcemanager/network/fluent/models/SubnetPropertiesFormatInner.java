@@ -11,6 +11,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.Delegation;
+import com.azure.resourcemanager.network.models.IpamPoolPrefixAllocation;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.ResourceNavigationLink;
 import com.azure.resourcemanager.network.models.ServiceAssociationLink;
@@ -133,6 +134,11 @@ public final class SubnetPropertiesFormatInner implements JsonSerializable<Subne
      * only be set at the time of subnet creation and cannot be updated for an existing subnet.
      */
     private Boolean defaultOutboundAccess;
+
+    /*
+     * A list of IPAM Pools for allocating IP address prefixes.
+     */
+    private List<IpamPoolPrefixAllocation> ipamPoolPrefixAllocations;
 
     /**
      * Creates an instance of SubnetPropertiesFormatInner class.
@@ -504,6 +510,27 @@ public final class SubnetPropertiesFormatInner implements JsonSerializable<Subne
     }
 
     /**
+     * Get the ipamPoolPrefixAllocations property: A list of IPAM Pools for allocating IP address prefixes.
+     * 
+     * @return the ipamPoolPrefixAllocations value.
+     */
+    public List<IpamPoolPrefixAllocation> ipamPoolPrefixAllocations() {
+        return this.ipamPoolPrefixAllocations;
+    }
+
+    /**
+     * Set the ipamPoolPrefixAllocations property: A list of IPAM Pools for allocating IP address prefixes.
+     * 
+     * @param ipamPoolPrefixAllocations the ipamPoolPrefixAllocations value to set.
+     * @return the SubnetPropertiesFormatInner object itself.
+     */
+    public SubnetPropertiesFormatInner
+        withIpamPoolPrefixAllocations(List<IpamPoolPrefixAllocation> ipamPoolPrefixAllocations) {
+        this.ipamPoolPrefixAllocations = ipamPoolPrefixAllocations;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -542,6 +569,9 @@ public final class SubnetPropertiesFormatInner implements JsonSerializable<Subne
         if (applicationGatewayIpConfigurations() != null) {
             applicationGatewayIpConfigurations().forEach(e -> e.validate());
         }
+        if (ipamPoolPrefixAllocations() != null) {
+            ipamPoolPrefixAllocations().forEach(e -> e.validate());
+        }
     }
 
     /**
@@ -570,6 +600,8 @@ public final class SubnetPropertiesFormatInner implements JsonSerializable<Subne
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("sharingScope", this.sharingScope == null ? null : this.sharingScope.toString());
         jsonWriter.writeBooleanField("defaultOutboundAccess", this.defaultOutboundAccess);
+        jsonWriter.writeArrayField("ipamPoolPrefixAllocations", this.ipamPoolPrefixAllocations,
+            (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -655,6 +687,10 @@ public final class SubnetPropertiesFormatInner implements JsonSerializable<Subne
                 } else if ("defaultOutboundAccess".equals(fieldName)) {
                     deserializedSubnetPropertiesFormatInner.defaultOutboundAccess
                         = reader.getNullable(JsonReader::getBoolean);
+                } else if ("ipamPoolPrefixAllocations".equals(fieldName)) {
+                    List<IpamPoolPrefixAllocation> ipamPoolPrefixAllocations
+                        = reader.readArray(reader1 -> IpamPoolPrefixAllocation.fromJson(reader1));
+                    deserializedSubnetPropertiesFormatInner.ipamPoolPrefixAllocations = ipamPoolPrefixAllocations;
                 } else {
                     reader.skipChildren();
                 }

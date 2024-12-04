@@ -27,7 +27,7 @@ public final class BastionHostIpConfigurationPropertiesFormat
     private SubResource subnet;
 
     /*
-     * Reference of the PublicIP resource.
+     * Reference of the PublicIP resource. Null for private only bastion
      */
     private SubResource publicIpAddress;
 
@@ -68,7 +68,7 @@ public final class BastionHostIpConfigurationPropertiesFormat
     }
 
     /**
-     * Get the publicIpAddress property: Reference of the PublicIP resource.
+     * Get the publicIpAddress property: Reference of the PublicIP resource. Null for private only bastion.
      * 
      * @return the publicIpAddress value.
      */
@@ -77,7 +77,7 @@ public final class BastionHostIpConfigurationPropertiesFormat
     }
 
     /**
-     * Set the publicIpAddress property: Reference of the PublicIP resource.
+     * Set the publicIpAddress property: Reference of the PublicIP resource. Null for private only bastion.
      * 
      * @param publicIpAddress the publicIpAddress value to set.
      * @return the BastionHostIpConfigurationPropertiesFormat object itself.
@@ -127,11 +127,6 @@ public final class BastionHostIpConfigurationPropertiesFormat
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
                     "Missing required property subnet in model BastionHostIpConfigurationPropertiesFormat"));
-        }
-        if (publicIpAddress() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property publicIpAddress in model BastionHostIpConfigurationPropertiesFormat"));
         }
     }
 

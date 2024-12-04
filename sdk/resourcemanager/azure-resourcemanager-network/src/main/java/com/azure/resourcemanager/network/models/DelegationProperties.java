@@ -22,7 +22,7 @@ public final class DelegationProperties implements JsonSerializable<DelegationPr
     private String serviceName;
 
     /*
-     * The current provisioning state.
+     * Provisioning states of a resource.
      */
     private ProvisioningState provisioningState;
 
@@ -53,7 +53,7 @@ public final class DelegationProperties implements JsonSerializable<DelegationPr
     }
 
     /**
-     * Get the provisioningState property: The current provisioning state.
+     * Get the provisioningState property: Provisioning states of a resource.
      * 
      * @return the provisioningState value.
      */

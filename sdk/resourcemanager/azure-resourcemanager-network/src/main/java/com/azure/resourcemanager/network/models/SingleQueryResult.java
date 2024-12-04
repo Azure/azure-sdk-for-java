@@ -34,7 +34,7 @@ public final class SingleQueryResult implements JsonSerializable<SingleQueryResu
 
     /*
      * Describes in which direction signature is being enforced: 0 - OutBound, 1 - InBound, 2 - Any, 3 - Internal, 4 -
-     * InternalOutbound
+     * InternalOutbound, 5 - InternalInbound
      */
     private FirewallPolicyIdpsSignatureDirection direction;
 
@@ -141,7 +141,7 @@ public final class SingleQueryResult implements JsonSerializable<SingleQueryResu
 
     /**
      * Get the direction property: Describes in which direction signature is being enforced: 0 - OutBound, 1 - InBound,
-     * 2 - Any, 3 - Internal, 4 - InternalOutbound.
+     * 2 - Any, 3 - Internal, 4 - InternalOutbound, 5 - InternalInbound.
      * 
      * @return the direction value.
      */
@@ -151,7 +151,7 @@ public final class SingleQueryResult implements JsonSerializable<SingleQueryResu
 
     /**
      * Set the direction property: Describes in which direction signature is being enforced: 0 - OutBound, 1 - InBound,
-     * 2 - Any, 3 - Internal, 4 - InternalOutbound.
+     * 2 - Any, 3 - Internal, 4 - InternalOutbound, 5 - InternalInbound.
      * 
      * @param direction the direction value to set.
      * @return the SingleQueryResult object itself.

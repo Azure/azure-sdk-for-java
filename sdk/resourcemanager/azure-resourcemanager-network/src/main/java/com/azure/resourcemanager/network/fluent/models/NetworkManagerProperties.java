@@ -145,11 +145,6 @@ public final class NetworkManagerProperties implements JsonSerializable<NetworkM
         } else {
             networkManagerScopes().validate();
         }
-        if (networkManagerScopeAccesses() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property networkManagerScopeAccesses in model NetworkManagerProperties"));
-        }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(NetworkManagerProperties.class);
@@ -161,9 +156,9 @@ public final class NetworkManagerProperties implements JsonSerializable<NetworkM
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("networkManagerScopes", this.networkManagerScopes);
+        jsonWriter.writeStringField("description", this.description);
         jsonWriter.writeArrayField("networkManagerScopeAccesses", this.networkManagerScopeAccesses,
             (writer, element) -> writer.writeString(element == null ? null : element.toString()));
-        jsonWriter.writeStringField("description", this.description);
         return jsonWriter.writeEndObject();
     }
 
@@ -186,12 +181,12 @@ public final class NetworkManagerProperties implements JsonSerializable<NetworkM
                 if ("networkManagerScopes".equals(fieldName)) {
                     deserializedNetworkManagerProperties.networkManagerScopes
                         = NetworkManagerPropertiesNetworkManagerScopes.fromJson(reader);
+                } else if ("description".equals(fieldName)) {
+                    deserializedNetworkManagerProperties.description = reader.getString();
                 } else if ("networkManagerScopeAccesses".equals(fieldName)) {
                     List<ConfigurationType> networkManagerScopeAccesses
                         = reader.readArray(reader1 -> ConfigurationType.fromString(reader1.getString()));
                     deserializedNetworkManagerProperties.networkManagerScopeAccesses = networkManagerScopeAccesses;
-                } else if ("description".equals(fieldName)) {
-                    deserializedNetworkManagerProperties.description = reader.getString();
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedNetworkManagerProperties.provisioningState
                         = ProvisioningState.fromString(reader.getString());

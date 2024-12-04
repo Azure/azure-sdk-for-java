@@ -10,6 +10,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.Delegation;
+import com.azure.resourcemanager.network.models.IpamPoolPrefixAllocation;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.ResourceNavigationLink;
 import com.azure.resourcemanager.network.models.ServiceAssociationLink;
@@ -521,6 +522,29 @@ public final class SubnetInner extends SubResource {
             this.innerProperties = new SubnetPropertiesFormatInner();
         }
         this.innerProperties().withDefaultOutboundAccess(defaultOutboundAccess);
+        return this;
+    }
+
+    /**
+     * Get the ipamPoolPrefixAllocations property: A list of IPAM Pools for allocating IP address prefixes.
+     * 
+     * @return the ipamPoolPrefixAllocations value.
+     */
+    public List<IpamPoolPrefixAllocation> ipamPoolPrefixAllocations() {
+        return this.innerProperties() == null ? null : this.innerProperties().ipamPoolPrefixAllocations();
+    }
+
+    /**
+     * Set the ipamPoolPrefixAllocations property: A list of IPAM Pools for allocating IP address prefixes.
+     * 
+     * @param ipamPoolPrefixAllocations the ipamPoolPrefixAllocations value to set.
+     * @return the SubnetInner object itself.
+     */
+    public SubnetInner withIpamPoolPrefixAllocations(List<IpamPoolPrefixAllocation> ipamPoolPrefixAllocations) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SubnetPropertiesFormatInner();
+        }
+        this.innerProperties().withIpamPoolPrefixAllocations(ipamPoolPrefixAllocations);
         return this;
     }
 
