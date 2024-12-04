@@ -172,6 +172,6 @@ public class HttpClientConfig {
             maxIdleConnectionTimeout,
             connectionAcquireTimeout,
             proxy != null,
-            http2ConnectionConfig.toDiagnosticsString());
+            http2ConnectionConfig == null ? null : http2ConnectionConfig.toDiagnosticsString());
     }
 }
