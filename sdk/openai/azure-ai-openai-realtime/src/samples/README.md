@@ -6,7 +6,6 @@ products:
 - azure
 - azure-cognitive-services
 - azure-openai
-- azure-openai-realtime
 urlFragment: ai-openai-java-samples
 ---
 
