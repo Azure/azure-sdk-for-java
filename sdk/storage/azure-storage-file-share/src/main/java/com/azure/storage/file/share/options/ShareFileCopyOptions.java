@@ -27,7 +27,7 @@ public final class ShareFileCopyOptions {
     private Map<String, String> metadata;
     private ShareRequestConditions destinationRequestConditions;
     private CopyableFileSmbPropertiesList smbPropertiesToCopy;
-    private FilePosixProperties nfsProperties;
+    private FilePosixProperties posixProperties;
 
     /**
      * Creates a new instance of {@link ShareFileCopyOptions}.
@@ -238,19 +238,19 @@ public final class ShareFileCopyOptions {
      *
      * @return The NFS file properties.
      */
-    public FilePosixProperties getNfsProperties() {
-        return nfsProperties;
+    public FilePosixProperties getPosixProperties() {
+        return posixProperties;
     }
 
     /**
      *  Optional properties to set on NFS files.
      *  Note that this property is only applicable to files created in NFS shares.
      *
-     * @param nfsProperties the file permission format.
+     * @param posixProperties the file permission format.
      * @return The updated options.
      */
-    public ShareFileCopyOptions setNfsProperties(FilePosixProperties nfsProperties) {
-        this.nfsProperties = nfsProperties;
+    public ShareFileCopyOptions setPosixProperties(FilePosixProperties posixProperties) {
+        this.posixProperties = posixProperties;
         return this;
     }
 }

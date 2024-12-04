@@ -17,7 +17,7 @@ public final class ShareDirectoryInfo {
     private final String eTag;
     private final OffsetDateTime lastModified;
     private final FileSmbProperties smbProperties;
-    private final FilePosixProperties nfsProperties;
+    private final FilePosixProperties posixProperties;
 
     /**
      * Creates an instance of information about a specific Directory.
@@ -30,23 +30,23 @@ public final class ShareDirectoryInfo {
         this.eTag = eTag;
         this.lastModified = lastModified;
         this.smbProperties = smbProperties;
-        this.nfsProperties = null;
+        this.posixProperties = null;
     }
 
     private ShareDirectoryInfo(String eTag, OffsetDateTime lastModified, FileSmbProperties smbProperties,
-        FilePosixProperties nfsProperties) {
+        FilePosixProperties posixProperties) {
         this.eTag = eTag;
         this.lastModified = lastModified;
         this.smbProperties = smbProperties;
-        this.nfsProperties = nfsProperties;
+        this.posixProperties = posixProperties;
     }
 
     static {
         ShareDirectoryInfoHelper.setAccessor(new ShareDirectoryInfoHelper.ShareDirectoryInfoAccessor() {
             @Override
             public ShareDirectoryInfo create(String eTag, OffsetDateTime lastModified, FileSmbProperties smbProperties,
-                FilePosixProperties nfsProperties) {
-                return new ShareDirectoryInfo(eTag, lastModified, smbProperties, nfsProperties);
+                FilePosixProperties posixProperties) {
+                return new ShareDirectoryInfo(eTag, lastModified, smbProperties, posixProperties);
             }
         });
     }
@@ -84,7 +84,7 @@ public final class ShareDirectoryInfo {
      *
      * @return The NFS Properties of the file.
      */
-    public FilePosixProperties getNfsProperties() {
-        return nfsProperties;
+    public FilePosixProperties getPosixProperties() {
+        return posixProperties;
     }
 }

@@ -465,7 +465,7 @@ public class ShareFileAsyncClient {
         try {
             return withContext(context -> createWithResponse(options.getSize(), options.getShareFileHttpHeaders(),
                 options.getSmbProperties(), options.getFilePermission(), options.getFilePermissionFormat(),
-                options.getNfsProperties(), options.getMetadata(), options.getRequestConditions(), context));
+                options.getPosixProperties(), options.getMetadata(), options.getRequestConditions(), context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -473,12 +473,12 @@ public class ShareFileAsyncClient {
 
     Mono<Response<ShareFileInfo>> createWithResponse(long maxSize, ShareFileHttpHeaders httpHeaders,
         FileSmbProperties smbProperties, String filePermission, FilePermissionFormat filePermissionFormat,
-        FilePosixProperties fileNfsProperties, Map<String, String> metadata, ShareRequestConditions requestConditions,
+        FilePosixProperties fileposixProperties, Map<String, String> metadata, ShareRequestConditions requestConditions,
         Context context) {
         context = context == null ? Context.NONE : context;
         requestConditions = requestConditions == null ? new ShareRequestConditions() : requestConditions;
         smbProperties = smbProperties == null ? new FileSmbProperties() : smbProperties;
-        fileNfsProperties = fileNfsProperties == null ? new FilePosixProperties() : fileNfsProperties;
+        fileposixProperties = fileposixProperties == null ? new FilePosixProperties() : fileposixProperties;
 
         // Checks that file permission and file permission key are valid
         ModelHelper.validateFilePermissionAndKey(filePermission, smbProperties.getFilePermissionKey());
@@ -487,8 +487,8 @@ public class ShareFileAsyncClient {
             .createWithResponseAsync(shareName, filePath, maxSize, null, metadata, filePermission, filePermissionFormat,
                 smbProperties.getFilePermissionKey(), smbProperties.getNtfsFileAttributesString(),
                 smbProperties.getFileCreationTimeString(), smbProperties.getFileLastWriteTimeString(),
-                smbProperties.getFileChangeTimeString(), requestConditions.getLeaseId(), fileNfsProperties.getOwner(),
-                fileNfsProperties.getGroup(), fileNfsProperties.getFileMode(), fileNfsProperties.getFileType(),
+                smbProperties.getFileChangeTimeString(), requestConditions.getLeaseId(), fileposixProperties.getOwner(),
+                fileposixProperties.getGroup(), fileposixProperties.getFileMode(), fileposixProperties.getFileType(),
                 httpHeaders, context)
             .map(ModelHelper::createFileInfoResponse);
     }
@@ -722,15 +722,17 @@ public class ShareFileAsyncClient {
 
         final String copySource = Utility.encodeUrlPath(sourceUrl);
 
+        FilePosixProperties fileposixProperties
+            = options.getPosixProperties() == null ? new FilePosixProperties() : options.getPosixProperties();
         ModeCopyMode modeCopyMode;
-        if (options.getNfsProperties().getFileMode() != null) {
+        if (fileposixProperties.getFileMode() != null) {
             modeCopyMode = ModeCopyMode.OVERRIDE;
         } else {
             modeCopyMode = null;
         }
 
         OwnerCopyMode ownerCopyMode;
-        if (options.getNfsProperties().getOwner() != null || options.getNfsProperties().getGroup() != null) {
+        if (fileposixProperties.getOwner() != null || fileposixProperties.getGroup() != null) {
             ownerCopyMode = OwnerCopyMode.OVERRIDE;
         } else {
             ownerCopyMode = null;
@@ -742,16 +744,16 @@ public class ShareFileAsyncClient {
                     .startCopyWithResponseAsync(shareName, filePath, copySource, null, options.getMetadata(),
                         options.getFilePermission(), options.getFilePermissionFormat(),
                         tempSmbProperties.getFilePermissionKey(), finalRequestConditions.getLeaseId(),
-                        options.getNfsProperties().getOwner(), options.getNfsProperties().getGroup(),
-                        options.getNfsProperties().getFileMode(), modeCopyMode, ownerCopyMode, copyFileSmbInfo,
-                        context)).map(response -> {
-                            final FilesStartCopyHeaders headers = response.getDeserializedHeaders();
-                            copyId.set(headers.getXMsCopyId());
+                        fileposixProperties.getOwner(), fileposixProperties.getGroup(),
+                        fileposixProperties.getFileMode(), modeCopyMode, ownerCopyMode, copyFileSmbInfo, context))
+                            .map(response -> {
+                                final FilesStartCopyHeaders headers = response.getDeserializedHeaders();
+                                copyId.set(headers.getXMsCopyId());
 
-                            return new ShareFileCopyInfo(sourceUrl, headers.getXMsCopyId(), headers.getXMsCopyStatus(),
-                                headers.getETag(), headers.getLastModified(),
-                                response.getHeaders().getValue("x-ms-error-code"));
-                        });
+                                return new ShareFileCopyInfo(sourceUrl, headers.getXMsCopyId(),
+                                    headers.getXMsCopyStatus(), headers.getETag(), headers.getLastModified(),
+                                    response.getHeaders().getValue("x-ms-error-code"));
+                            });
             } catch (RuntimeException ex) {
                 return monoError(LOGGER, ex);
             }
@@ -1781,7 +1783,7 @@ public class ShareFileAsyncClient {
                 = options.getFilePermissions() == null ? new ShareFilePermission() : options.getFilePermissions();
             return withContext(context -> setPropertiesWithResponse(options.getSizeInBytes(), options.getHttpHeaders(),
                 options.getSmbProperties(), filePermission.getPermission(), filePermission.getPermissionFormat(),
-                options.getNfsProperties(), options.getRequestConditions(), context));
+                options.getPosixProperties(), options.getRequestConditions(), context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -1789,11 +1791,11 @@ public class ShareFileAsyncClient {
 
     Mono<Response<ShareFileInfo>> setPropertiesWithResponse(long newFileSize, ShareFileHttpHeaders httpHeaders,
         FileSmbProperties smbProperties, String filePermission, FilePermissionFormat filePermissionFormat,
-        FilePosixProperties fileNfsProperties, ShareRequestConditions requestConditions, Context context) {
+        FilePosixProperties fileposixProperties, ShareRequestConditions requestConditions, Context context) {
         context = context == null ? Context.NONE : context;
         requestConditions = requestConditions == null ? new ShareRequestConditions() : requestConditions;
         smbProperties = smbProperties == null ? new FileSmbProperties() : smbProperties;
-        fileNfsProperties = fileNfsProperties == null ? new FilePosixProperties() : fileNfsProperties;
+        fileposixProperties = fileposixProperties == null ? new FilePosixProperties() : fileposixProperties;
 
         // Checks that file permission and file permission key are valid
         ModelHelper.validateFilePermissionAndKey(filePermission, smbProperties.getFilePermissionKey());
@@ -1802,8 +1804,8 @@ public class ShareFileAsyncClient {
             .setHttpHeadersWithResponseAsync(shareName, filePath, null, newFileSize, filePermission,
                 filePermissionFormat, smbProperties.getFilePermissionKey(), smbProperties.getNtfsFileAttributesString(),
                 smbProperties.getFileCreationTimeString(), smbProperties.getFileLastWriteTimeString(),
-                smbProperties.getFileChangeTimeString(), requestConditions.getLeaseId(), fileNfsProperties.getOwner(),
-                fileNfsProperties.getGroup(), fileNfsProperties.getFileMode(), httpHeaders, context)
+                smbProperties.getFileChangeTimeString(), requestConditions.getLeaseId(), fileposixProperties.getOwner(),
+                fileposixProperties.getGroup(), fileposixProperties.getFileMode(), httpHeaders, context)
             .map(ModelHelper::setPropertiesResponse);
     }
 
@@ -3364,7 +3366,7 @@ public class ShareFileAsyncClient {
      * sourceClient.create&#40;1024&#41;.block&#40;&#41;;
      * hardLinkClient.createHardLink&#40;sourceClient.getFilePath&#40;&#41;&#41;
      *     .subscribe&#40;result -&gt; System.out.printf&#40;&quot;Link count is is %s.&quot;,
-     *         result.getNfsProperties&#40;&#41;.getLinkCount&#40;&#41;&#41;&#41;;
+     *         result.getPosixProperties&#40;&#41;.getLinkCount&#40;&#41;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.storage.file.share.ShareFileAsyncClient.createHardLink#String -->
      *
@@ -3386,7 +3388,7 @@ public class ShareFileAsyncClient {
      *     .setRequestConditions&#40;new ShareRequestConditions&#40;&#41;&#41;;
      * hardLinkClient.createHardLinkWithResponse&#40;options&#41;
      *     .subscribe&#40;result -&gt; System.out.printf&#40;&quot;Link count is is %s.&quot;,
-     *         result.getValue&#40;&#41;.getNfsProperties&#40;&#41;.getLinkCount&#40;&#41;&#41;&#41;;
+     *         result.getValue&#40;&#41;.getPosixProperties&#40;&#41;.getLinkCount&#40;&#41;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.storage.file.share.ShareFileAsyncClient.createHardLink#ShareFileCreateHardLinkOptions -->
      *

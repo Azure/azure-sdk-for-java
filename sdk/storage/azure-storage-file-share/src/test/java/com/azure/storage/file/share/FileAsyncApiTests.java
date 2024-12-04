@@ -1787,7 +1787,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
     public void createNFS() {
         ShareProtocols enabledProtocol = ModelHelper.parseShareProtocols("NFS");
         ShareFileCreateOptions options = new ShareFileCreateOptions(1024)
-            .setNfsProperties(new FilePosixProperties().setOwner("345").setGroup("123").setFileMode("7777"));
+            .setPosixProperties(new FilePosixProperties().setOwner("345").setGroup("123").setFileMode("7777"));
 
         String shareName = generateShareName();
         Mono<Response<ShareFileInfo>> create = premiumFileServiceAsyncClient
@@ -1800,10 +1800,10 @@ public class FileAsyncApiTests extends FileShareTestBase {
 
         StepVerifier.create(create).assertNext(r -> {
             ShareFileInfo response = r.getValue();
-            assertEquals(NfsFileType.REGULAR, response.getNfsProperties().getFileType());
-            assertEquals("345", response.getNfsProperties().getOwner());
-            assertEquals("123", response.getNfsProperties().getGroup());
-            assertEquals("7777", response.getNfsProperties().getFileMode());
+            assertEquals(NfsFileType.REGULAR, response.getPosixProperties().getFileType());
+            assertEquals("345", response.getPosixProperties().getOwner());
+            assertEquals("123", response.getPosixProperties().getGroup());
+            assertEquals("7777", response.getPosixProperties().getFileMode());
 
             assertNull(response.getSmbProperties().getFilePermissionKey());
             assertNull(response.getSmbProperties().getNtfsFileAttributes());
@@ -1818,7 +1818,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
     public void setPropertiesNFS() {
         ShareProtocols enabledProtocol = ModelHelper.parseShareProtocols("NFS");
         ShareFileSetPropertiesOptions options = new ShareFileSetPropertiesOptions(1024)
-            .setNfsProperties(new FilePosixProperties().setOwner("345").setGroup("123").setFileMode("7777"));
+            .setPosixProperties(new FilePosixProperties().setOwner("345").setGroup("123").setFileMode("7777"));
 
         String shareName = generateShareName();
         Mono<Response<ShareFileInfo>> create = premiumFileServiceAsyncClient
@@ -1831,10 +1831,10 @@ public class FileAsyncApiTests extends FileShareTestBase {
 
         StepVerifier.create(create).assertNext(r -> {
             ShareFileInfo response = r.getValue();
-            assertEquals("345", response.getNfsProperties().getOwner());
-            assertEquals("123", response.getNfsProperties().getGroup());
-            assertEquals("7777", response.getNfsProperties().getFileMode());
-            assertNotNull(response.getNfsProperties().getLinkCount());
+            assertEquals("345", response.getPosixProperties().getOwner());
+            assertEquals("123", response.getPosixProperties().getGroup());
+            assertEquals("7777", response.getPosixProperties().getFileMode());
+            assertNotNull(response.getPosixProperties().getLinkCount());
 
             assertNull(response.getSmbProperties().getFilePermissionKey());
             assertNull(response.getSmbProperties().getNtfsFileAttributes());
@@ -1861,11 +1861,11 @@ public class FileAsyncApiTests extends FileShareTestBase {
         StepVerifier.create(create).assertNext(r -> {
             ShareFileProperties response = r.getValue();
 
-            assertEquals(NfsFileType.REGULAR, response.getNfsProperties().getFileType());
-            assertEquals("0", response.getNfsProperties().getOwner());
-            assertEquals("0", response.getNfsProperties().getGroup());
-            assertEquals("0664", response.getNfsProperties().getFileMode());
-            assertEquals(1, response.getNfsProperties().getLinkCount());
+            assertEquals(NfsFileType.REGULAR, response.getPosixProperties().getFileType());
+            assertEquals("0", response.getPosixProperties().getOwner());
+            assertEquals("0", response.getPosixProperties().getGroup());
+            assertEquals("0664", response.getPosixProperties().getFileMode());
+            assertEquals(1, response.getPosixProperties().getLinkCount());
 
             assertNull(response.getSmbProperties().getFilePermissionKey());
             assertNull(response.getSmbProperties().getNtfsFileAttributes());
@@ -1903,19 +1903,19 @@ public class FileAsyncApiTests extends FileShareTestBase {
                         String mode;
 
                         ShareFileCopyOptions options
-                            = new ShareFileCopyOptions().setNfsProperties(new FilePosixProperties());
+                            = new ShareFileCopyOptions().setPosixProperties(new FilePosixProperties());
 
                         if (overwriteOwnerAndMode) {
                             owner = "54321";
                             group = "12345";
                             mode = "7777";
-                            options.getNfsProperties().setOwner(owner);
-                            options.getNfsProperties().setGroup(group);
-                            options.getNfsProperties().setFileMode(mode);
+                            options.getPosixProperties().setOwner(owner);
+                            options.getPosixProperties().setGroup(group);
+                            options.getPosixProperties().setFileMode(mode);
                         } else {
-                            owner = sourceProperties.getNfsProperties().getOwner();
-                            group = sourceProperties.getNfsProperties().getGroup();
-                            mode = sourceProperties.getNfsProperties().getFileMode();
+                            owner = sourceProperties.getPosixProperties().getOwner();
+                            group = sourceProperties.getPosixProperties().getGroup();
+                            mode = sourceProperties.getPosixProperties().getFileMode();
                         }
 
                         return setPlaybackPollerFluxPollInterval(
@@ -1927,9 +1927,9 @@ public class FileAsyncApiTests extends FileShareTestBase {
             });
 
         StepVerifier.create(setup).assertNext(r -> {
-            assertEquals(r.getT2(), r.getT1().getNfsProperties().getOwner());
-            assertEquals(r.getT3(), r.getT1().getNfsProperties().getGroup());
-            assertEquals(r.getT4(), r.getT1().getNfsProperties().getFileMode());
+            assertEquals(r.getT2(), r.getT1().getPosixProperties().getOwner());
+            assertEquals(r.getT3(), r.getT1().getPosixProperties().getGroup());
+            assertEquals(r.getT4(), r.getT1().getPosixProperties().getFileMode());
         }).verifyComplete();
 
         //cleanup
@@ -1957,11 +1957,11 @@ public class FileAsyncApiTests extends FileShareTestBase {
                         .setRequestConditions(new ShareRequestConditions().setLeaseId(lease));
                     return hardLink.createHardLinkWithResponse(options).flatMap(res -> {
                         ShareFileInfo info = res.getValue();
-                        assertEquals(NfsFileType.REGULAR, info.getNfsProperties().getFileType());
-                        assertEquals("0", info.getNfsProperties().getOwner());
-                        assertEquals("0", info.getNfsProperties().getGroup());
-                        assertEquals("0664", info.getNfsProperties().getFileMode());
-                        assertEquals(2, info.getNfsProperties().getLinkCount());
+                        assertEquals(NfsFileType.REGULAR, info.getPosixProperties().getFileType());
+                        assertEquals("0", info.getPosixProperties().getOwner());
+                        assertEquals("0", info.getPosixProperties().getGroup());
+                        assertEquals("0664", info.getPosixProperties().getFileMode());
+                        assertEquals(2, info.getPosixProperties().getLinkCount());
 
                         assertNotNull(info.getSmbProperties().getFileCreationTime());
                         assertNotNull(info.getSmbProperties().getFileLastWriteTime());

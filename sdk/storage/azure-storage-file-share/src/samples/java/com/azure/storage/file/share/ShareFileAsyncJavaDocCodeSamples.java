@@ -1282,7 +1282,7 @@ public class ShareFileAsyncJavaDocCodeSamples {
         sourceClient.create(1024).block();
         hardLinkClient.createHardLink(sourceClient.getFilePath())
             .subscribe(result -> System.out.printf("Link count is is %s.",
-                result.getNfsProperties().getLinkCount()));
+                result.getPosixProperties().getLinkCount()));
         // END: com.azure.storage.file.share.ShareFileAsyncClient.createHardLink#String
 
         // BEGIN: com.azure.storage.file.share.ShareFileAsyncClient.createHardLink#ShareFileCreateHardLinkOptions
@@ -1292,7 +1292,7 @@ public class ShareFileAsyncJavaDocCodeSamples {
             .setRequestConditions(new ShareRequestConditions());
         hardLinkClient.createHardLinkWithResponse(options)
             .subscribe(result -> System.out.printf("Link count is is %s.",
-                result.getValue().getNfsProperties().getLinkCount()));
+                result.getValue().getPosixProperties().getLinkCount()));
         // END: com.azure.storage.file.share.ShareFileAsyncClient.createHardLink#ShareFileCreateHardLinkOptions
     }
 }

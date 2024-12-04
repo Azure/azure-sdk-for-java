@@ -29,7 +29,7 @@ public final class ShareDirectoryInfoHelper {
          * @return A new instance of {@link ShareDirectoryInfo}.
          */
         ShareDirectoryInfo create(String eTag, OffsetDateTime lastModified, FileSmbProperties smbProperties,
-            FilePosixProperties nfsProperties);
+            FilePosixProperties posixProperties);
     }
 
     /**
@@ -47,11 +47,11 @@ public final class ShareDirectoryInfoHelper {
      * @param eTag Entity tag that corresponds to the directory.
      * @param lastModified Last time the directory was modified.
      * @param smbProperties The SMB properties of the directory.
-     * @param nfsProperties the POSIX properties of the directory.
+     * @param posixProperties the POSIX properties of the directory.
      * @return A new instance of {@link ShareDirectoryInfo}.
      */
     public static ShareDirectoryInfo create(String eTag, OffsetDateTime lastModified, FileSmbProperties smbProperties,
-        FilePosixProperties nfsProperties) {
+        FilePosixProperties posixProperties) {
         // This looks odd but is necessary, it is possible to engage the access helper before anywhere else in the
         // application accesses BlobDownloadHeaders which triggers the accessor to be configured. So, if the accessor
         // is null this effectively pokes the class to set up the accessor.
@@ -60,6 +60,6 @@ public final class ShareDirectoryInfoHelper {
         }
 
         assert accessor != null;
-        return accessor.create(eTag, lastModified, smbProperties, nfsProperties);
+        return accessor.create(eTag, lastModified, smbProperties, posixProperties);
     }
 }

@@ -19,7 +19,7 @@ public final class ShareDirectoryProperties {
     private final OffsetDateTime lastModified;
     private final boolean isServerEncrypted;
     private final FileSmbProperties smbProperties;
-    private final FilePosixProperties nfsProperties;
+    private final FilePosixProperties posixProperties;
 
     /**
      * Creates an instance of properties information about a specific Directory.
@@ -32,13 +32,13 @@ public final class ShareDirectoryProperties {
      * @param smbProperties The SMB properties of the directory.
      */
     public ShareDirectoryProperties(Map<String, String> metadata, String eTag, OffsetDateTime lastModified,
-        boolean isServerEncrypted, FileSmbProperties smbProperties, FilePosixProperties nfsProperties) {
+        boolean isServerEncrypted, FileSmbProperties smbProperties, FilePosixProperties posixProperties) {
         this.metadata = metadata;
         this.eTag = eTag;
         this.lastModified = lastModified;
         this.isServerEncrypted = isServerEncrypted;
         this.smbProperties = smbProperties;
-        this.nfsProperties = nfsProperties;
+        this.posixProperties = posixProperties;
     }
 
     /**
@@ -94,7 +94,7 @@ public final class ShareDirectoryProperties {
      *
      * @return The NFS Properties of the file.
      */
-    public FilePosixProperties getNfsProperties() {
-        return nfsProperties;
+    public FilePosixProperties getPosixProperties() {
+        return posixProperties;
     }
 }

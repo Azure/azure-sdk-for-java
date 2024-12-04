@@ -19,7 +19,7 @@ public class ShareFileSetPropertiesOptions {
     private FileSmbProperties smbProperties;
     private ShareFilePermission filePermissions;
     private ShareRequestConditions requestConditions;
-    private FilePosixProperties nfsProperties;
+    private FilePosixProperties posixProperties;
 
     /**
      * @param sizeInBytes Specifies the new size for the file share in bytes. If the specified byte value is less than the
@@ -119,19 +119,19 @@ public class ShareFileSetPropertiesOptions {
      *
      * @return The NFS file properties.
      */
-    public FilePosixProperties getNfsProperties() {
-        return nfsProperties;
+    public FilePosixProperties getPosixProperties() {
+        return posixProperties;
     }
 
     /**
      *  Optional properties to set on NFS files.
      *  Note that this property is only applicable to files created in NFS shares.
      *
-     * @param nfsProperties the file permission format.
+     * @param posixProperties the file permission format.
      * @return The updated options.
      */
-    public ShareFileSetPropertiesOptions setNfsProperties(FilePosixProperties nfsProperties) {
-        this.nfsProperties = nfsProperties;
+    public ShareFileSetPropertiesOptions setPosixProperties(FilePosixProperties posixProperties) {
+        this.posixProperties = posixProperties;
         return this;
     }
 }

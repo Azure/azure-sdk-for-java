@@ -19,7 +19,7 @@ public class ShareDirectoryCreateOptions {
     private String filePermission;
     private FilePermissionFormat filePermissionFormat;
     private Map<String, String> metadata;
-    private FilePosixProperties nfsProperties;
+    private FilePosixProperties posixProperties;
 
     /**
      * Creates a new instance of {@link ShareDirectoryCreateOptions}.
@@ -118,19 +118,19 @@ public class ShareDirectoryCreateOptions {
      *
      * @return The NFS file properties.
      */
-    public FilePosixProperties getNfsProperties() {
-        return nfsProperties;
+    public FilePosixProperties getPosixProperties() {
+        return posixProperties;
     }
 
     /**
      *  Optional properties to set on NFS files.
      *  Note that this property is only applicable to files created in NFS shares.
      *
-     * @param nfsProperties the file permission format.
+     * @param posixProperties the file permission format.
      * @return The updated options.
      */
-    public ShareDirectoryCreateOptions setNfsProperties(FilePosixProperties nfsProperties) {
-        this.nfsProperties = nfsProperties;
+    public ShareDirectoryCreateOptions setPosixProperties(FilePosixProperties posixProperties) {
+        this.posixProperties = posixProperties;
         return this;
     }
 }

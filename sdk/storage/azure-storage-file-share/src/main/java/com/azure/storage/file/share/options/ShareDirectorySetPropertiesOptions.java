@@ -14,7 +14,7 @@ import com.azure.storage.file.share.models.ShareFilePermission;
 public class ShareDirectorySetPropertiesOptions {
     private FileSmbProperties smbProperties;
     private ShareFilePermission filePermissions;
-    private FilePosixProperties nfsProperties;
+    private FilePosixProperties posixProperties;
 
     /**
      * @return Optional SMB properties to set on the destination file or directory. The only properties that are
@@ -62,19 +62,19 @@ public class ShareDirectorySetPropertiesOptions {
      *
      * @return The NFS file properties.
      */
-    public FilePosixProperties getNfsProperties() {
-        return nfsProperties;
+    public FilePosixProperties getPosixProperties() {
+        return posixProperties;
     }
 
     /**
      *  Optional properties to set on NFS files.
      *  Note that this property is only applicable to files created in NFS shares.
      *
-     * @param nfsProperties the file permission format.
+     * @param posixProperties the file permission format.
      * @return The updated options.
      */
-    public ShareDirectorySetPropertiesOptions setNfsProperties(FilePosixProperties nfsProperties) {
-        this.nfsProperties = nfsProperties;
+    public ShareDirectorySetPropertiesOptions setPosixProperties(FilePosixProperties posixProperties) {
+        this.posixProperties = posixProperties;
         return this;
     }
 

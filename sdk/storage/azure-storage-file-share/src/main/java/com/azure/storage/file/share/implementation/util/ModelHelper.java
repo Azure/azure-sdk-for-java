@@ -360,9 +360,9 @@ public class ModelHelper {
         OffsetDateTime lastModified = response.getDeserializedHeaders().getLastModified();
         boolean isServerEncrypted = response.getDeserializedHeaders().isXMsRequestServerEncrypted();
         FileSmbProperties smbProperties = FileSmbPropertiesHelper.create(response.getHeaders());
-        FilePosixProperties nfsProperties = FilePosixPropertiesHelper.create(response.getHeaders());
+        FilePosixProperties posixProperties = FilePosixPropertiesHelper.create(response.getHeaders());
         ShareFileInfo shareFileInfo
-            = new ShareFileInfo(eTag, lastModified, isServerEncrypted, smbProperties, nfsProperties);
+            = new ShareFileInfo(eTag, lastModified, isServerEncrypted, smbProperties, posixProperties);
         return new SimpleResponse<>(response, shareFileInfo);
     }
 
@@ -395,11 +395,11 @@ public class ModelHelper {
         CopyStatusType copyStatus = headers.getXMsCopyStatus();
         Boolean isServerEncrypted = headers.isXMsServerEncrypted();
         FileSmbProperties smbProperties = FileSmbPropertiesHelper.create(response.getHeaders());
-        FilePosixProperties nfsProperties = FilePosixPropertiesHelper.create(response.getHeaders());
+        FilePosixProperties posixProperties = FilePosixPropertiesHelper.create(response.getHeaders());
         ShareFileProperties shareFileProperties = new ShareFileProperties(eTag, lastModified, metadata, fileType,
             contentLength, contentType, contentMD5, contentEncoding, cacheControl, contentDisposition, leaseStatusType,
             leaseStateType, leaseDurationType, copyCompletionTime, copyStatusDescription, copyId, copyProgress,
-            copySource, copyStatus, isServerEncrypted, smbProperties, nfsProperties);
+            copySource, copyStatus, isServerEncrypted, smbProperties, posixProperties);
         return new SimpleResponse<>(response, shareFileProperties);
     }
 
@@ -409,9 +409,9 @@ public class ModelHelper {
         OffsetDateTime lastModified = response.getDeserializedHeaders().getLastModified();
         boolean isServerEncrypted = response.getDeserializedHeaders().isXMsRequestServerEncrypted();
         FileSmbProperties smbProperties = FileSmbPropertiesHelper.create(response.getHeaders());
-        FilePosixProperties nfsProperties = FilePosixPropertiesHelper.create(response.getHeaders());
+        FilePosixProperties posixProperties = FilePosixPropertiesHelper.create(response.getHeaders());
         ShareFileInfo shareFileInfo
-            = new ShareFileInfo(eTag, lastModified, isServerEncrypted, smbProperties, nfsProperties);
+            = new ShareFileInfo(eTag, lastModified, isServerEncrypted, smbProperties, posixProperties);
         return new SimpleResponse<>(response, shareFileInfo);
     }
 
@@ -550,9 +550,9 @@ public class ModelHelper {
         String eTag = response.getDeserializedHeaders().getETag();
         OffsetDateTime lastModified = response.getDeserializedHeaders().getLastModified();
         FileSmbProperties smbProperties = FileSmbPropertiesHelper.create(response.getHeaders());
-        FilePosixProperties nfsProperties = FilePosixPropertiesHelper.create(response.getHeaders());
+        FilePosixProperties posixProperties = FilePosixPropertiesHelper.create(response.getHeaders());
         ShareDirectoryInfo shareDirectoryInfo
-            = ShareDirectoryInfoHelper.create(eTag, lastModified, smbProperties, nfsProperties);
+            = ShareDirectoryInfoHelper.create(eTag, lastModified, smbProperties, posixProperties);
         return new SimpleResponse<>(response, shareDirectoryInfo);
     }
 
@@ -563,9 +563,9 @@ public class ModelHelper {
         OffsetDateTime offsetDateTime = response.getDeserializedHeaders().getLastModified();
         boolean isServerEncrypted = response.getDeserializedHeaders().isXMsServerEncrypted();
         FileSmbProperties smbProperties = FileSmbPropertiesHelper.create(response.getHeaders());
-        FilePosixProperties nfsProperties = FilePosixPropertiesHelper.create(response.getHeaders());
+        FilePosixProperties posixProperties = FilePosixPropertiesHelper.create(response.getHeaders());
         ShareDirectoryProperties shareDirectoryProperties = new ShareDirectoryProperties(metadata, eTag, offsetDateTime,
-            isServerEncrypted, smbProperties, nfsProperties);
+            isServerEncrypted, smbProperties, posixProperties);
         return new SimpleResponse<>(response, shareDirectoryProperties);
     }
 
@@ -574,9 +574,9 @@ public class ModelHelper {
         String eTag = response.getDeserializedHeaders().getETag();
         OffsetDateTime lastModified = response.getDeserializedHeaders().getLastModified();
         FileSmbProperties smbProperties = FileSmbPropertiesHelper.create(response.getHeaders());
-        FilePosixProperties nfsProperties = FilePosixPropertiesHelper.create(response.getHeaders());
+        FilePosixProperties posixProperties = FilePosixPropertiesHelper.create(response.getHeaders());
         ShareDirectoryInfo shareDirectoryInfo
-            = ShareDirectoryInfoHelper.create(eTag, lastModified, smbProperties, nfsProperties);
+            = ShareDirectoryInfoHelper.create(eTag, lastModified, smbProperties, posixProperties);
         return new SimpleResponse<>(response, shareDirectoryInfo);
     }
 
@@ -620,8 +620,8 @@ public class ModelHelper {
         String eTag = response.getDeserializedHeaders().getETag();
         OffsetDateTime lastModified = response.getDeserializedHeaders().getLastModified();
         FileSmbProperties smbProperties = FileSmbPropertiesHelper.create(response.getHeaders());
-        FilePosixProperties nfsProperties = FilePosixPropertiesHelper.create(response.getHeaders());
-        ShareFileInfo shareFileInfo = new ShareFileInfo(eTag, lastModified, null, smbProperties, nfsProperties);
+        FilePosixProperties posixProperties = FilePosixPropertiesHelper.create(response.getHeaders());
+        ShareFileInfo shareFileInfo = new ShareFileInfo(eTag, lastModified, null, smbProperties, posixProperties);
         return new SimpleResponse<>(response, shareFileInfo);
     }
 

@@ -24,7 +24,7 @@ public class ShareFileCreateOptions {
     private FilePermissionFormat filePermissionFormat;
     private Map<String, String> metadata;
     private ShareRequestConditions requestConditions;
-    private FilePosixProperties nfsProperties;
+    private FilePosixProperties posixProperties;
 
     /**
      * @param size Specifies the maximum size for the file share.
@@ -160,19 +160,19 @@ public class ShareFileCreateOptions {
      *
      * @return The NFS file properties.
      */
-    public FilePosixProperties getNfsProperties() {
-        return nfsProperties;
+    public FilePosixProperties getPosixProperties() {
+        return posixProperties;
     }
 
     /**
      *  Optional properties to set on NFS files.
      *  Note that this property is only applicable to files created in NFS shares.
      *
-     * @param nfsProperties the file permission format.
+     * @param posixProperties the file permission format.
      * @return The updated options.
      */
-    public ShareFileCreateOptions setNfsProperties(FilePosixProperties nfsProperties) {
-        this.nfsProperties = nfsProperties;
+    public ShareFileCreateOptions setPosixProperties(FilePosixProperties posixProperties) {
+        this.posixProperties = posixProperties;
         return this;
     }
 }

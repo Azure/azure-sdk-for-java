@@ -1268,7 +1268,7 @@ public class ShareFileJavaDocCodeSamples {
         sourceClient.create(1024);
         ShareFileInfo response = hardLinkClient.createHardLink(sourceClient.getFilePath());
 
-        System.out.printf("Link count is is %s.", response.getNfsProperties().getLinkCount());
+        System.out.printf("Link count is is %s.", response.getPosixProperties().getLinkCount());
         // END: com.azure.storage.file.share.ShareFileClient.createHardLink#String
 
         // BEGIN: com.azure.storage.file.share.ShareFileClient.createHardLink#ShareFileCreateHardLinkOptions-Duration-Context
@@ -1278,7 +1278,7 @@ public class ShareFileJavaDocCodeSamples {
             .setRequestConditions(new ShareRequestConditions());
         ShareFileInfo response2 = hardLinkClient.createHardLinkWithResponse(options, null, null).getValue();
 
-        System.out.printf("Link count is is %s.", response2.getNfsProperties().getLinkCount());
+        System.out.printf("Link count is is %s.", response2.getPosixProperties().getLinkCount());
         // END: com.azure.storage.file.share.ShareFileClient.createHardLink#ShareFileCreateHardLinkOptions-Duration-Context
     }
 }

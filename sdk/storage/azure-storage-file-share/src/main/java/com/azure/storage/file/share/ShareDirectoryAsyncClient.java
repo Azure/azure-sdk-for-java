@@ -353,20 +353,21 @@ public class ShareDirectoryAsyncClient {
     public Mono<Response<ShareDirectoryInfo>> createWithResponse(ShareDirectoryCreateOptions options) {
         try {
             return withContext(context -> createWithResponse(options.getSmbProperties(), options.getFilePermission(),
-                options.getFilePermissionFormat(), options.getNfsProperties(), options.getMetadata(), context));
+                options.getFilePermissionFormat(), options.getPosixProperties(), options.getMetadata(), context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
     }
 
     Mono<Response<ShareDirectoryInfo>> createWithResponse(FileSmbProperties smbProperties, String filePermission,
-        FilePermissionFormat filePermissionFormat, FilePosixProperties nfsProperties, Map<String, String> metadata,
+        FilePermissionFormat filePermissionFormat, FilePosixProperties posixProperties, Map<String, String> metadata,
         Context context) {
         context = context == null ? Context.NONE : context;
 
         FileSmbProperties finalSmbProperties = smbProperties == null ? new FileSmbProperties() : smbProperties;
 
-        FilePosixProperties finalFileNfsProperties = nfsProperties == null ? new FilePosixProperties() : nfsProperties;
+        FilePosixProperties finalFileposixProperties
+            = posixProperties == null ? new FilePosixProperties() : posixProperties;
 
         // Checks that file permission and file permission key are valid
         ModelHelper.validateFilePermissionAndKey(filePermission, finalSmbProperties.getFilePermissionKey());
@@ -375,8 +376,8 @@ public class ShareDirectoryAsyncClient {
             .createWithResponseAsync(shareName, directoryPath, null, metadata, filePermission, filePermissionFormat,
                 finalSmbProperties.getFilePermissionKey(), finalSmbProperties.getNtfsFileAttributesString(),
                 finalSmbProperties.getFileCreationTimeString(), finalSmbProperties.getFileLastWriteTimeString(),
-                finalSmbProperties.getFileChangeTimeString(), finalFileNfsProperties.getOwner(),
-                finalFileNfsProperties.getGroup(), finalFileNfsProperties.getFileMode(), context)
+                finalSmbProperties.getFileChangeTimeString(), finalFileposixProperties.getOwner(),
+                finalFileposixProperties.getGroup(), finalFileposixProperties.getFileMode(), context)
             .map(ModelHelper::mapShareDirectoryInfo);
     }
 
@@ -456,14 +457,15 @@ public class ShareDirectoryAsyncClient {
         Context context) {
         try {
             options = options == null ? new ShareDirectoryCreateOptions() : options;
-            return createWithResponse(options.getSmbProperties(), options.getFilePermission(), null,
-                options.getNfsProperties(), options.getMetadata(), context).onErrorResume(
-                    t -> t instanceof ShareStorageException && ((ShareStorageException) t).getStatusCode() == 409,
-                    t -> {
-                        HttpResponse response = ((ShareStorageException) t).getResponse();
-                        return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
-                            response.getHeaders(), null));
-                    });
+            return createWithResponse(options.getSmbProperties(), options.getFilePermission(),
+                options.getFilePermissionFormat(), options.getPosixProperties(), options.getMetadata(), context)
+                    .onErrorResume(
+                        t -> t instanceof ShareStorageException && ((ShareStorageException) t).getStatusCode() == 409,
+                        t -> {
+                            HttpResponse response = ((ShareStorageException) t).getResponse();
+                            return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                                response.getHeaders(), null));
+                        });
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -769,19 +771,20 @@ public class ShareDirectoryAsyncClient {
                 = options.getFilePermissions() == null ? new ShareFilePermission() : options.getFilePermissions();
             return withContext(
                 context -> setPropertiesWithResponse(options.getSmbProperties(), filePermission.getPermission(),
-                    filePermission.getPermissionFormat(), options.getNfsProperties(), context));
+                    filePermission.getPermissionFormat(), options.getPosixProperties(), context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
     }
 
     Mono<Response<ShareDirectoryInfo>> setPropertiesWithResponse(FileSmbProperties smbProperties, String filePermission,
-        FilePermissionFormat filePermissionFormat, FilePosixProperties nfsProperties, Context context) {
+        FilePermissionFormat filePermissionFormat, FilePosixProperties posixProperties, Context context) {
         context = context == null ? Context.NONE : context;
 
         FileSmbProperties finalSmbProperties = smbProperties == null ? new FileSmbProperties() : smbProperties;
 
-        FilePosixProperties finalFileNfsProperties = nfsProperties == null ? new FilePosixProperties() : nfsProperties;
+        FilePosixProperties finalFileposixProperties
+            = posixProperties == null ? new FilePosixProperties() : posixProperties;
 
         // Checks that file permission and file permission key are valid
         ModelHelper.validateFilePermissionAndKey(filePermission, finalSmbProperties.getFilePermissionKey());
@@ -790,8 +793,8 @@ public class ShareDirectoryAsyncClient {
             .setPropertiesWithResponseAsync(shareName, directoryPath, null, filePermission, filePermissionFormat,
                 finalSmbProperties.getFilePermissionKey(), finalSmbProperties.getNtfsFileAttributesString(),
                 finalSmbProperties.getFileCreationTimeString(), finalSmbProperties.getFileLastWriteTimeString(),
-                finalSmbProperties.getFileChangeTimeString(), finalFileNfsProperties.getOwner(),
-                finalFileNfsProperties.getGroup(), finalFileNfsProperties.getFileMode(), context)
+                finalSmbProperties.getFileChangeTimeString(), finalFileposixProperties.getOwner(),
+                finalFileposixProperties.getGroup(), finalFileposixProperties.getFileMode(), context)
             .map(ModelHelper::mapSetPropertiesResponse);
     }
 

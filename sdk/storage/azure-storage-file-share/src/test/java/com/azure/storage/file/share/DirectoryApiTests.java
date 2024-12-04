@@ -1766,13 +1766,13 @@ public class DirectoryApiTests extends FileShareTestBase {
         ShareDirectoryClient premiumDirectoryClient = premiumShareClient.getDirectoryClient(generatePathName());
 
         ShareDirectoryCreateOptions options = new ShareDirectoryCreateOptions()
-            .setNfsProperties(new FilePosixProperties().setOwner("345").setGroup("123").setFileMode("7777"));
+            .setPosixProperties(new FilePosixProperties().setOwner("345").setGroup("123").setFileMode("7777"));
         ShareDirectoryInfo response = premiumDirectoryClient.createWithResponse(options, null, null).getValue();
 
-        assertEquals(NfsFileType.DIRECTORY, response.getNfsProperties().getFileType());
-        assertEquals("345", response.getNfsProperties().getOwner());
-        assertEquals("123", response.getNfsProperties().getGroup());
-        assertEquals("7777", response.getNfsProperties().getFileMode());
+        assertEquals(NfsFileType.DIRECTORY, response.getPosixProperties().getFileType());
+        assertEquals("345", response.getPosixProperties().getOwner());
+        assertEquals("123", response.getPosixProperties().getGroup());
+        assertEquals("7777", response.getPosixProperties().getFileMode());
 
         assertNull(response.getSmbProperties().getFilePermissionKey());
         assertNull(response.getSmbProperties().getNtfsFileAttributes());
@@ -1795,13 +1795,13 @@ public class DirectoryApiTests extends FileShareTestBase {
         premiumDirectoryClient.create();
 
         ShareDirectorySetPropertiesOptions options = new ShareDirectorySetPropertiesOptions()
-            .setNfsProperties(new FilePosixProperties().setOwner("345").setGroup("123").setFileMode("7777"));
+            .setPosixProperties(new FilePosixProperties().setOwner("345").setGroup("123").setFileMode("7777"));
 
         ShareDirectoryInfo response = premiumDirectoryClient.setPropertiesWithResponse(options, null, null).getValue();
 
-        assertEquals("345", response.getNfsProperties().getOwner());
-        assertEquals("123", response.getNfsProperties().getGroup());
-        assertEquals("7777", response.getNfsProperties().getFileMode());
+        assertEquals("345", response.getPosixProperties().getOwner());
+        assertEquals("123", response.getPosixProperties().getGroup());
+        assertEquals("7777", response.getPosixProperties().getFileMode());
 
         assertNull(response.getSmbProperties().getFilePermissionKey());
         assertNull(response.getSmbProperties().getNtfsFileAttributes());
@@ -1825,10 +1825,10 @@ public class DirectoryApiTests extends FileShareTestBase {
 
         ShareDirectoryProperties response = premiumDirectoryClient.getPropertiesWithResponse(null, null).getValue();
 
-        assertEquals(NfsFileType.DIRECTORY, response.getNfsProperties().getFileType());
-        assertEquals("0", response.getNfsProperties().getOwner());
-        assertEquals("0", response.getNfsProperties().getGroup());
-        assertEquals("0755", response.getNfsProperties().getFileMode());
+        assertEquals(NfsFileType.DIRECTORY, response.getPosixProperties().getFileType());
+        assertEquals("0", response.getPosixProperties().getOwner());
+        assertEquals("0", response.getPosixProperties().getGroup());
+        assertEquals("0755", response.getPosixProperties().getFileMode());
 
         assertNull(response.getSmbProperties().getFilePermissionKey());
         assertNull(response.getSmbProperties().getNtfsFileAttributes());
