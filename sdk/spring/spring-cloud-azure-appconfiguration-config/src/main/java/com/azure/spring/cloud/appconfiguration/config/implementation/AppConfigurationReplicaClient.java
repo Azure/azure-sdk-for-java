@@ -110,7 +110,7 @@ class AppConfigurationReplicaClient {
      * @param settingSelector Information on which setting to pull. i.e. number of results, key value...
      * @return List of Configuration Settings.
      */
-    List<ConfigurationSetting> listSettings(SettingSelector settingSelector, Boolean isRefresh)
+    List<ConfigurationSetting> listSettings(SettingSelector settingSelector, boolean isRefresh)
         throws HttpResponseException {
         List<ConfigurationSetting> configurationSettings = new ArrayList<>();
         try {
