@@ -5,7 +5,6 @@ package com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.TelemetryItem;
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.ErrorTracker;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.FilteringConfiguration;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.LiveMetricsRestAPIsForClientSDKs;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.LiveMetricsRestAPIsForClientSDKsBuilder;
@@ -87,10 +86,9 @@ public class QuickPulse {
             instanceName = "Unknown host";
         }
 
-        ErrorTracker errorTracker = new ErrorTracker();
-        FilteringConfiguration configuration = new FilteringConfiguration(errorTracker);
+        FilteringConfiguration configuration = new FilteringConfiguration();
 
-        QuickPulseDataCollector collector = new QuickPulseDataCollector(errorTracker, configuration);
+        QuickPulseDataCollector collector = new QuickPulseDataCollector(configuration);
 
         QuickPulsePingSender quickPulsePingSender
             = new QuickPulsePingSender(liveMetricsRestAPIsForClientSDKs, endpointUrl, instrumentationKey, roleName,
@@ -98,7 +96,7 @@ public class QuickPulse {
         QuickPulseDataSender quickPulseDataSender = new QuickPulseDataSender(liveMetricsRestAPIsForClientSDKs,
             sendQueue, endpointUrl, instrumentationKey, configuration);
         QuickPulseDataFetcher quickPulseDataFetcher = new QuickPulseDataFetcher(collector, sendQueue, roleName,
-            instanceName, machineName, quickPulseId, sdkVersion, errorTracker);
+            instanceName, machineName, quickPulseId, sdkVersion);
 
         QuickPulseCoordinatorInitData coordinatorInitData
             = new QuickPulseCoordinatorInitDataBuilder().withPingSender(quickPulsePingSender)

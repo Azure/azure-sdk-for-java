@@ -5,7 +5,6 @@ package com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse;
 
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.ErrorTracker;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.FilteringConfiguration;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.IsSubscribedHeaders;
 import org.junit.jupiter.api.Disabled;
@@ -25,12 +24,11 @@ class QuickPulseCoordinatorTest {
 
     @Test
     void testOnlyPings() throws InterruptedException {
-        ErrorTracker tracker = new ErrorTracker();
-        FilteringConfiguration configuration = new FilteringConfiguration(tracker);
+        FilteringConfiguration configuration = new FilteringConfiguration();
         QuickPulseDataFetcher mockFetcher = mock(QuickPulseDataFetcher.class);
         QuickPulseDataSender mockSender = mock(QuickPulseDataSender.class);
         QuickPulsePingSender mockPingSender = mock(QuickPulsePingSender.class);
-        QuickPulseDataCollector collector = new QuickPulseDataCollector(tracker, configuration);
+        QuickPulseDataCollector collector = new QuickPulseDataCollector(configuration);
         HttpHeaders headers = new HttpHeaders();
         headers.add(QPS_STATUS_HEADER, "false");
         IsSubscribedHeaders pingHeaders = new IsSubscribedHeaders(headers);
@@ -67,8 +65,7 @@ class QuickPulseCoordinatorTest {
 
     @Test
     void testOnePingAndThenOnePost() throws InterruptedException {
-        ErrorTracker tracker = new ErrorTracker();
-        FilteringConfiguration configuration = new FilteringConfiguration(tracker);
+        FilteringConfiguration configuration = new FilteringConfiguration();
         QuickPulseDataFetcher mockFetcher = mock(QuickPulseDataFetcher.class);
         QuickPulseDataSender mockSender = mock(QuickPulseDataSender.class);
         Mockito.doReturn(QuickPulseStatus.QP_IS_OFF).when(mockSender).getQuickPulseStatus();
@@ -82,7 +79,7 @@ class QuickPulseCoordinatorTest {
         IsSubscribedHeaders pingHeadersOff = new IsSubscribedHeaders(rawHeadersPingOff);
         Mockito.when(mockPingSender.ping(null)).thenReturn(pingHeadersOn, pingHeadersOff);
 
-        QuickPulseDataCollector collector = new QuickPulseDataCollector(tracker, configuration);
+        QuickPulseDataCollector collector = new QuickPulseDataCollector(configuration);
         QuickPulseCoordinatorInitData initData = new QuickPulseCoordinatorInitDataBuilder().withDataFetcher(mockFetcher)
             .withDataSender(mockSender)
             .withPingSender(mockPingSender)
@@ -115,8 +112,7 @@ class QuickPulseCoordinatorTest {
     @Disabled("sporadically failing on CI")
     @Test
     void testOnePingAndThenOnePostWithRedirectedLink() throws InterruptedException {
-        ErrorTracker tracker = new ErrorTracker();
-        FilteringConfiguration configuration = new FilteringConfiguration(tracker);
+        FilteringConfiguration configuration = new FilteringConfiguration();
         QuickPulseDataFetcher mockFetcher = Mockito.mock(QuickPulseDataFetcher.class);
         QuickPulseDataSender mockSender = Mockito.mock(QuickPulseDataSender.class);
         QuickPulsePingSender mockPingSender = Mockito.mock(QuickPulsePingSender.class);
@@ -134,7 +130,7 @@ class QuickPulseCoordinatorTest {
         QuickPulseCoordinatorInitData initData = new QuickPulseCoordinatorInitDataBuilder().withDataFetcher(mockFetcher)
             .withDataSender(mockSender)
             .withPingSender(mockPingSender)
-            .withCollector(new QuickPulseDataCollector(tracker, configuration))
+            .withCollector(new QuickPulseDataCollector(configuration))
             .withWaitBetweenPingsInMillis(10L)
             .withWaitBetweenPostsInMillis(10L)
             .withWaitOnErrorInMillis(10L)

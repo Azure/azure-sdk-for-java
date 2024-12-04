@@ -4,7 +4,6 @@
 package com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.ErrorTracker;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.MetricPoint;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.MonitoringDataPoint;
 import org.slf4j.MDC;
@@ -33,11 +32,8 @@ class QuickPulseDataFetcher {
 
     private final String sdkVersion;
 
-    private volatile ErrorTracker errorTracker;
-
     public QuickPulseDataFetcher(QuickPulseDataCollector collector, ArrayBlockingQueue<MonitoringDataPoint> sendQueue,
-        String roleName, String instanceName, String machineName, String quickPulseId, String sdkVersion,
-        ErrorTracker errorTracker) {
+        String roleName, String instanceName, String machineName, String quickPulseId, String sdkVersion) {
         this.collector = collector;
         this.sendQueue = sendQueue;
         this.roleName = roleName;
@@ -45,7 +41,6 @@ class QuickPulseDataFetcher {
         this.machineName = machineName;
         this.quickPulseId = quickPulseId;
         this.sdkVersion = sdkVersion;
-        this.errorTracker = errorTracker;
     }
 
     /**
@@ -98,7 +93,6 @@ class QuickPulseDataFetcher {
         point.setVersion(sdkVersion);
         point.setTimestamp(OffsetDateTime.now());
         point.setMetrics(addMetricsToMonitoringDataPoint(counters));
-        point.setCollectionConfigurationErrors(errorTracker.getErrors());
         return point;
     }
 

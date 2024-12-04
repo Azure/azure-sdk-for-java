@@ -6,7 +6,6 @@ package com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.builders.ExceptionTelemetryBuilder;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.configuration.ConnectionString;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.TelemetryItem;
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.ErrorTracker;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.FilteringConfiguration;
 import org.junit.jupiter.api.Test;
 
@@ -25,16 +24,14 @@ class QuickPulseDataCollectorTests {
 
     @Test
     void initialStateIsDisabled() {
-        ErrorTracker tracker = new ErrorTracker();
-        FilteringConfiguration configuration = new FilteringConfiguration(tracker);
-        assertThat(new QuickPulseDataCollector(tracker, configuration).peek()).isNull();
+        FilteringConfiguration configuration = new FilteringConfiguration();
+        assertThat(new QuickPulseDataCollector(configuration).peek()).isNull();
     }
 
     @Test
     void emptyCountsAndDurationsAfterEnable() {
-        ErrorTracker tracker = new ErrorTracker();
-        FilteringConfiguration configuration = new FilteringConfiguration(tracker);
-        QuickPulseDataCollector collector = new QuickPulseDataCollector(tracker, configuration);
+        FilteringConfiguration configuration = new FilteringConfiguration();
+        QuickPulseDataCollector collector = new QuickPulseDataCollector(configuration);
 
         collector.enable(FAKE_CONNECTION_STRING::getInstrumentationKey);
         QuickPulseDataCollector.FinalCounters counters = collector.peek();
@@ -43,9 +40,8 @@ class QuickPulseDataCollectorTests {
 
     @Test
     void nullCountersAfterDisable() {
-        ErrorTracker tracker = new ErrorTracker();
-        FilteringConfiguration configuration = new FilteringConfiguration(tracker);
-        QuickPulseDataCollector collector = new QuickPulseDataCollector(tracker, configuration);
+        FilteringConfiguration configuration = new FilteringConfiguration();
+        QuickPulseDataCollector collector = new QuickPulseDataCollector(configuration);
 
         collector.enable(FAKE_CONNECTION_STRING::getInstrumentationKey);
         collector.disable();
@@ -54,9 +50,8 @@ class QuickPulseDataCollectorTests {
 
     @Test
     void requestTelemetryIsCounted_DurationIsSum() {
-        ErrorTracker tracker = new ErrorTracker();
-        FilteringConfiguration configuration = new FilteringConfiguration(tracker);
-        QuickPulseDataCollector collector = new QuickPulseDataCollector(tracker, configuration);
+        FilteringConfiguration configuration = new FilteringConfiguration();
+        QuickPulseDataCollector collector = new QuickPulseDataCollector(configuration);
 
         collector.setQuickPulseStatus(QuickPulseStatus.QP_IS_ON);
         collector.enable(FAKE_CONNECTION_STRING::getInstrumentationKey);
@@ -98,9 +93,8 @@ class QuickPulseDataCollectorTests {
 
     @Test
     void dependencyTelemetryIsCounted_DurationIsSum() {
-        ErrorTracker tracker = new ErrorTracker();
-        FilteringConfiguration configuration = new FilteringConfiguration(tracker);
-        QuickPulseDataCollector collector = new QuickPulseDataCollector(tracker, configuration);
+        FilteringConfiguration configuration = new FilteringConfiguration();
+        QuickPulseDataCollector collector = new QuickPulseDataCollector(configuration);
 
         collector.setQuickPulseStatus(QuickPulseStatus.QP_IS_ON);
         collector.enable(FAKE_CONNECTION_STRING::getInstrumentationKey);
@@ -142,9 +136,8 @@ class QuickPulseDataCollectorTests {
 
     @Test
     void exceptionTelemetryIsCounted() {
-        ErrorTracker tracker = new ErrorTracker();
-        FilteringConfiguration configuration = new FilteringConfiguration(tracker);
-        QuickPulseDataCollector collector = new QuickPulseDataCollector(tracker, configuration);
+        FilteringConfiguration configuration = new FilteringConfiguration();
+        QuickPulseDataCollector collector = new QuickPulseDataCollector(configuration);
 
         collector.setQuickPulseStatus(QuickPulseStatus.QP_IS_ON);
         collector.enable(FAKE_CONNECTION_STRING::getInstrumentationKey);
@@ -218,9 +211,8 @@ class QuickPulseDataCollectorTests {
 
     @Test
     void checkDocumentsListSize() {
-        ErrorTracker tracker = new ErrorTracker();
-        FilteringConfiguration configuration = new FilteringConfiguration(tracker);
-        QuickPulseDataCollector collector = new QuickPulseDataCollector(tracker, configuration);
+        FilteringConfiguration configuration = new FilteringConfiguration();
+        QuickPulseDataCollector collector = new QuickPulseDataCollector(configuration);
 
         collector.setQuickPulseStatus(QuickPulseStatus.QP_IS_ON);
         collector.enable(FAKE_CONNECTION_STRING::getInstrumentationKey);

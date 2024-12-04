@@ -9,7 +9,6 @@ import com.azure.monitor.opentelemetry.autoconfigure.implementation.builders.Exc
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.builders.ExceptionTelemetryBuilder;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.configuration.ConnectionString;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.TelemetryItem;
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.ErrorTracker;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.FilteringConfiguration;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.LiveMetricsRestAPIsForClientSDKs;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.LiveMetricsRestAPIsForClientSDKsBuilder;
@@ -32,8 +31,7 @@ public class QuickPulseIntegrationTests extends QuickPulseTestBase {
     private static final String instrumentationKey = "ikey123";
 
     private QuickPulsePingSender getQuickPulsePingSender() {
-        ErrorTracker tracker = new ErrorTracker();
-        FilteringConfiguration configuration = new FilteringConfiguration(tracker);
+        FilteringConfiguration configuration = new FilteringConfiguration();
         LiveMetricsRestAPIsForClientSDKsBuilder builder = new LiveMetricsRestAPIsForClientSDKsBuilder();
         HttpPipeline httpPipeline = getHttpPipeline();
         LiveMetricsRestAPIsForClientSDKs liveMetricsRestAPIsForClientSDKs
@@ -44,8 +42,7 @@ public class QuickPulseIntegrationTests extends QuickPulseTestBase {
     }
 
     private QuickPulsePingSender getQuickPulsePingSenderWithAuthentication() {
-        ErrorTracker tracker = new ErrorTracker();
-        FilteringConfiguration configuration = new FilteringConfiguration(tracker);
+        FilteringConfiguration configuration = new FilteringConfiguration();
         LiveMetricsRestAPIsForClientSDKsBuilder builder = new LiveMetricsRestAPIsForClientSDKsBuilder();
         HttpPipeline httpPipeline = getHttpPipelineWithAuthentication();
         LiveMetricsRestAPIsForClientSDKs liveMetricsRestAPIsForClientSDKs
@@ -56,8 +53,7 @@ public class QuickPulseIntegrationTests extends QuickPulseTestBase {
     }
 
     private QuickPulsePingSender getQuickPulsePingSenderWithValidator(HttpPipelinePolicy validator) {
-        ErrorTracker tracker = new ErrorTracker();
-        FilteringConfiguration configuration = new FilteringConfiguration(tracker);
+        FilteringConfiguration configuration = new FilteringConfiguration();
         LiveMetricsRestAPIsForClientSDKsBuilder builder = new LiveMetricsRestAPIsForClientSDKsBuilder();
         HttpPipeline httpPipeline = getHttpPipeline(validator);
         LiveMetricsRestAPIsForClientSDKs liveMetricsRestAPIsForClientSDKs
@@ -73,8 +69,7 @@ public class QuickPulseIntegrationTests extends QuickPulseTestBase {
         HttpPipeline httpPipeline = getHttpPipeline(validator);
         LiveMetricsRestAPIsForClientSDKs liveMetricsRestAPIsForClientSDKs
             = builder.pipeline(httpPipeline).buildClient();
-        ErrorTracker tracker = new ErrorTracker();
-        FilteringConfiguration configuration = new FilteringConfiguration(tracker);
+        FilteringConfiguration configuration = new FilteringConfiguration();
         return new QuickPulseDataSender(liveMetricsRestAPIsForClientSDKs, sendQueue, connectionString::getLiveEndpoint,
             connectionString::getInstrumentationKey, configuration);
     }
@@ -125,13 +120,12 @@ public class QuickPulseIntegrationTests extends QuickPulseTestBase {
             = getQuickPulsePingSenderWithValidator(new ValidationPolicy(pingCountDown, expectedPingRequestBody));
         IsSubscribedHeaders pingHeaders = pingSender.ping(null);
 
-        ErrorTracker tracker = new ErrorTracker();
-        FilteringConfiguration configuration = new FilteringConfiguration(tracker);
+        FilteringConfiguration configuration = new FilteringConfiguration();
         QuickPulseDataSender dataSender = getQuickPulseDataSenderWithValidator(
             new ValidationPolicy(postCountDown, expectedPostRequestBody), sendQueue);
-        QuickPulseDataCollector collector = new QuickPulseDataCollector(tracker, configuration);
-        QuickPulseDataFetcher dataFetcher = new QuickPulseDataFetcher(collector, sendQueue, null, "instance1",
-            "machine1", null, "testSdkVersion", tracker);
+        QuickPulseDataCollector collector = new QuickPulseDataCollector(configuration);
+        QuickPulseDataFetcher dataFetcher
+            = new QuickPulseDataFetcher(collector, sendQueue, null, "instance1", "machine1", null, "testSdkVersion");
 
         collector.setQuickPulseStatus(QuickPulseStatus.QP_IS_ON);
         collector.enable(connectionString::getInstrumentationKey);
