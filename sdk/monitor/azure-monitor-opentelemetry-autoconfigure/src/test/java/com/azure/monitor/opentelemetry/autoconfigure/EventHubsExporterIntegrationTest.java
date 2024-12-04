@@ -79,7 +79,7 @@ public class EventHubsExporterIntegrationTest extends MonitorExporterClientTestB
             span.end();
             scope.close();
         }
-        assertTrue(exporterCountDown.await(30, TimeUnit.SECONDS));
+        assertTrue(exporterCountDown.await(60, TimeUnit.SECONDS));
     }
 
     @Disabled("Processor integration tests require separate consumer group to not have partition contention in CI - https://github.com/Azure/azure-sdk-for-java/issues/23567")
