@@ -11,7 +11,7 @@ public final class ListUsagesResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ListUsagesResult model = BinaryData.fromString(
-            "{\"value\":[{\"currentValue\":3315527665591795528,\"limit\":1707025009474935054,\"unit\":\"Count\",\"name\":{\"localizedValue\":\"tiewdj\",\"value\":\"bquwrbehw\"},\"id\":\"o\"},{\"currentValue\":4445959478393833005,\"limit\":2445477372246079945,\"unit\":\"Count\",\"name\":{\"localizedValue\":\"vvhmxtdrj\",\"value\":\"tac\"},\"id\":\"bj\"}],\"nextLink\":\"wzcjznmwcpmgua\"}")
+            "{\"value\":[{\"currentValue\":6928961478611605886,\"limit\":5360902839879947019,\"unit\":\"Count\",\"name\":{\"localizedValue\":\"yijejvegrhbpnaix\",\"value\":\"ccbdre\"},\"id\":\"hcexdrrvqa\"},{\"currentValue\":1704091583579950228,\"limit\":6945893981350514667,\"unit\":\"Count\",\"name\":{\"localizedValue\":\"hyjsvfycx\",\"value\":\"fvoow\"},\"id\":\"vmtgjqppy\"}],\"nextLink\":\"tronzmyhgfi\"}")
             .toObject(ListUsagesResult.class);
     }
 
