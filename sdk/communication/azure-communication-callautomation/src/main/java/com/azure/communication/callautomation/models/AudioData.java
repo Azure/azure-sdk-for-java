@@ -6,9 +6,7 @@ package com.azure.communication.callautomation.models;
 import com.azure.communication.callautomation.implementation.accesshelpers.AudioDataContructorProxy;
 import com.azure.communication.callautomation.implementation.converters.AudioDataConverter;
 import com.azure.communication.common.CommunicationIdentifier;
-import com.azure.json.JsonReader;
 
-import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Base64;
@@ -16,17 +14,18 @@ import java.util.Base64;
 /** The MediaStreamingAudio model. */
 public final class AudioData extends StreamingData {
     /*
-     * The audio data.
+     * The audio data, encoded as a base64 string.
      */
     private final byte[] data;
 
     /*
-     * The timestamp of when the media was sourced.
+     * The timestamp indicating when the media content was received by the bot, or if the bot is sending media, 
+     * the timestamp of when the media was sourced. The format is ISO 8601 (yyyy-mm-ddThh:mm)
      */
     private final OffsetDateTime timestamp;
 
     /*
-     * The participantId.
+     * The raw ID of the participant.
      */
     private final CommunicationIdentifier participant;
 
@@ -121,16 +120,5 @@ public final class AudioData extends StreamingData {
      */
     public boolean isSilent() {
         return silent;
-    }
-
-    /**
-     * Parser for AudioData
-     */
-    public static class Parser implements StreamingDataParser<AudioData> {
-
-        @Override
-        public AudioData parse(JsonReader jsonReader) throws IOException {
-            return new AudioData(AudioDataConverter.fromJson(jsonReader));
-        }
     }
 }

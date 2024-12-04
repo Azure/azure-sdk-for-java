@@ -3,12 +3,9 @@
 
 package com.azure.communication.callautomation.models;
 
-import java.io.IOException;
-
 import com.azure.communication.callautomation.implementation.accesshelpers.AudioMetadataContructorProxy;
 import com.azure.communication.callautomation.implementation.converters.AudioMetadataConverter;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.json.JsonReader;
 
 /** The MediaStreamingMetadata model. */
 public final class AudioMetadata extends StreamingData {
@@ -16,27 +13,27 @@ public final class AudioMetadata extends StreamingData {
     private static final ClientLogger LOGGER = new ClientLogger(AudioMetadata.class);
 
     /*
-     * The mediaSubscriptionId.
+     * A unique identifier for the media subscription.
      */
     private final String mediaSubscriptionId;
 
     /*
-     * The encoding.
+     * The format used to encode the audio. Currently, only "pcm" (Pulse Code Modulation) is supported.
      */
     private final String encoding;
 
     /*
-     * The sampleRate.
+     * The number of samples per second in the audio. Supported values are 16kHz or 24kHz.
      */
     private final Integer sampleRate;
 
     /*
-     * The channels.
+     * Specifies the number of audio channels in the audio configuration. Currently, only "mono" (single channel) is supported.
      */
     private final Channels channels;
 
     /*
-     * The length.
+     * The size of the audio data being sent, based on the sample rate and duration.
      */
     private final Integer length;
 
@@ -117,17 +114,6 @@ public final class AudioMetadata extends StreamingData {
      */
     public int getLength() {
         return length;
-    }
-
-    /**
-     * Static class of the parser
-     */
-    public static class Parser implements StreamingDataParser<AudioMetadata> {
-
-        @Override
-        public AudioMetadata parse(JsonReader jsonReader) throws IOException {
-            return new AudioMetadata(AudioMetadataConverter.fromJson(jsonReader));
-        }
     }
 
     /**

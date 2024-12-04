@@ -252,6 +252,7 @@ public final class CallAutomationAsyncClient {
                 PhoneNumberIdentifierConverter.convert(createCallOptions.getCallInvite().getSourceCallerIdNumber()))
             .setSourceDisplayName(createCallOptions.getCallInvite().getSourceDisplayName())
             .setSource(sourceIdentity)
+            .setOpsSource(opsSourceIdentity)
             .setTargets(targetsModel)
             .setCallbackUri(createCallOptions.getCallbackUrl())
             .setCallIntelligenceOptions(callIntelligenceOptionsInternal)

@@ -8,7 +8,7 @@ import com.azure.communication.callautomation.models.events.ConnectFailed;
 import com.azure.core.annotation.Immutable;
 
 /**
- * The result of a create call event.
+ * The result of a connect call event.
  */
 @Immutable
 public final class ConnectCallEventResult {
@@ -17,9 +17,9 @@ public final class ConnectCallEventResult {
     private final ConnectFailed failureResult;
 
     /**
-     * Initializes a new instance of CreateCallEventResult.
+     * Initializes a new instance of ConnectCallEventResult.
      *
-     * @param isSuccess the success status of the create call operation.
+     * @param isSuccess the success status of the connect call operation.
      * @param successResult the call connected success event.
      */
     ConnectCallEventResult(boolean isSuccess, CallConnected successResult, ConnectFailed failureResult) {
@@ -29,9 +29,9 @@ public final class ConnectCallEventResult {
     }
 
     /**
-     * Gets the success status of the create call operation.
+     * Gets the success status of the connect call operation.
      *
-     * @return the success status of the create call operation.
+     * @return the success status of the connect call operation.
      */
     public boolean isSuccess() {
         return isSuccess;
@@ -47,8 +47,8 @@ public final class ConnectCallEventResult {
     }
 
     /**
-     * 
-     * @return the create call failure event.
+     * Gets the connect failed event.
+     * @return the connect call failure event.
      */
     public ConnectFailed getFailureResult() {
         return failureResult;

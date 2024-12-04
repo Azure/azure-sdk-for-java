@@ -32,9 +32,9 @@ public class WordData implements JsonSerializable<WordData> {
     private long duration;
 
     /**
-     * Creates a new instance of {@link Word}.
+     * Creates a new instance of {@link WordData}.
      */
-    public Word() {
+    public WordData() {
     }
 
     /**

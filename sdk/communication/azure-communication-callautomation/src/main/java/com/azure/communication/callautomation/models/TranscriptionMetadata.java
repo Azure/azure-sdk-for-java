@@ -3,11 +3,8 @@
 
 package com.azure.communication.callautomation.models;
 
-import java.io.IOException;
-
 import com.azure.communication.callautomation.implementation.accesshelpers.TranscriptionMetadataContructorProxy;
 import com.azure.communication.callautomation.implementation.converters.TranscriptionMetadataConverter;
-import com.azure.json.JsonReader;
 
 /**
  * Metadata for Transcription Streaming.
@@ -99,19 +96,5 @@ public final class TranscriptionMetadata extends StreamingData {
      */
     public String getCorrelationId() {
         return correlationId;
-    }
-
-    /**
-     * Parser for TranscriptionMetadata
-     */
-    public static class Parser implements StreamingDataParser<TranscriptionMetadata> {
-
-        /**
-         * parse the base64 json to transcription metadata
-         */
-        @Override
-        public TranscriptionMetadata parse(JsonReader jsonReader) throws IOException {
-            return new TranscriptionMetadata(TranscriptionMetadataConverter.fromJson(jsonReader));
-        }
     }
 }
