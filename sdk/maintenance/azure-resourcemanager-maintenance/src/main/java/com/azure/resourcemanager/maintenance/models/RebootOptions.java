@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.maintenance.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -43,7 +42,6 @@ public final class RebootOptions extends ExpandableStringEnum<RebootOptions> {
      * @param name a name to look for.
      * @return the corresponding RebootOptions.
      */
-    @JsonCreator
     public static RebootOptions fromString(String name) {
         return fromString(name, RebootOptions.class);
     }
