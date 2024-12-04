@@ -19,6 +19,9 @@ import java.util.Arrays;
  */
 public final class ConversationItem {
 
+    private ConversationItem() {        
+    }
+
     /**
      * Create a user message item.
      *
