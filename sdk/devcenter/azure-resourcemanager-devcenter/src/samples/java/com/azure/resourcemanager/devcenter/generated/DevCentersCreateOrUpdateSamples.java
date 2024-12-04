@@ -19,7 +19,8 @@ import java.util.Map;
  */
 public final class DevCentersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2024-02-01/examples/DevCenters_Create.json
+     * x-ms-original-file:
+     * specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2024-02-01/examples/DevCenters_Create.json
      */
     /**
      * Sample code: DevCenters_Create.
@@ -37,7 +38,8 @@ public final class DevCentersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2024-02-01/examples/DevCenters_CreateWithUserIdentity.json
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2024-02-01/examples/
+     * DevCenters_CreateWithUserIdentity.json
      */
     /**
      * Sample code: DevCenters_CreateWithUserIdentity.
@@ -59,7 +61,8 @@ public final class DevCentersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2024-02-01/examples/DevCenters_CreateWithEncryption.json
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2024-02-01/examples/
+     * DevCenters_CreateWithEncryption.json
      */
     /**
      * Sample code: DevCenters_CreateWithEncryption.

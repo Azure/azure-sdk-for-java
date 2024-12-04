@@ -20,7 +20,7 @@ public final class ProjectAllowedEnvironmentTypesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Updating\",\"displayName\":\"vvi\"},\"id\":\"cgx\",\"name\":\"fcsserxhtvsox\",\"type\":\"lwntsjgqrs\"}";
+            = "{\"properties\":{\"provisioningState\":\"MovingResources\",\"displayName\":\"pz\"},\"id\":\"kovmribiatt\",\"name\":\"plucfotangcfhnyk\",\"type\":\"cugswvxwlmzqw\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class ProjectAllowedEnvironmentTypesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         AllowedEnvironmentType response = manager.projectAllowedEnvironmentTypes()
-            .getWithResponse("qekewvnqvcd", "guaucmfdjwnla", "punj", com.azure.core.util.Context.NONE)
+            .getWithResponse("lwvsgm", "ohqfzizv", "xmmkjs", com.azure.core.util.Context.NONE)
             .getValue();
 
     }
