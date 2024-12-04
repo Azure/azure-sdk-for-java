@@ -79,4 +79,10 @@ public final class ConversationItem {
     public static ConversationItemCreateEvent createFunctionCallOutput(String callId, String functionOutput) {
         return new ConversationItemCreateEvent(new RealtimeRequestFunctionCallOutputItem(callId, functionOutput));
     }
+
+    /**
+     * Private ctr.
+     */
+    private ConversationItem() {
+    }
 }
