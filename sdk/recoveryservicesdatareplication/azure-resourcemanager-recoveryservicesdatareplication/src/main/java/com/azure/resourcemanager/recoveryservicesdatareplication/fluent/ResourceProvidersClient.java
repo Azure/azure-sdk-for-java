@@ -12,13 +12,15 @@ import com.azure.resourcemanager.recoveryservicesdatareplication.fluent.models.C
 import com.azure.resourcemanager.recoveryservicesdatareplication.fluent.models.DeploymentPreflightModelInner;
 import com.azure.resourcemanager.recoveryservicesdatareplication.models.CheckNameAvailabilityModel;
 
-/** An instance of this class provides access to all the operations defined in ResourceProvidersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ResourceProvidersClient.
+ */
 public interface ResourceProvidersClient {
     /**
      * Performs the resource name availability check.
-     *
-     * <p>Checks the resource name availability.
-     *
+     * 
+     * Checks the resource name availability.
+     * 
      * @param location The name of the Azure region.
      * @param body Resource details.
      * @param context The context to associate with this operation.
@@ -33,9 +35,9 @@ public interface ResourceProvidersClient {
 
     /**
      * Performs the resource name availability check.
-     *
-     * <p>Checks the resource name availability.
-     *
+     * 
+     * Checks the resource name availability.
+     * 
      * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -47,7 +49,7 @@ public interface ResourceProvidersClient {
 
     /**
      * Performs resource deployment validation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param deploymentId Deployment Id.
      * @param body Deployment preflight model.
@@ -63,7 +65,7 @@ public interface ResourceProvidersClient {
 
     /**
      * Performs resource deployment validation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param deploymentId Deployment Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

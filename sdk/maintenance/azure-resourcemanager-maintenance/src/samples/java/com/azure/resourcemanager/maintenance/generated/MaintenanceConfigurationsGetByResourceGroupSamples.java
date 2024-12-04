@@ -9,7 +9,9 @@ package com.azure.resourcemanager.maintenance.generated;
  */
 public final class MaintenanceConfigurationsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2023-10-01-preview/examples/MaintenanceConfigurations_GetForResource_GuestOSPatchWindows.json
+     * x-ms-original-file:
+     * specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2023-10-01-preview/examples/
+     * MaintenanceConfigurations_GetForResource_GuestOSPatchWindows.json
      */
     /**
      * Sample code: MaintenanceConfigurations_GetForResource_GuestOSPatchWindows.
@@ -23,7 +25,9 @@ public final class MaintenanceConfigurationsGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2023-10-01-preview/examples/MaintenanceConfigurations_GetForResource_GuestOSPatchLinux.json
+     * x-ms-original-file:
+     * specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2023-10-01-preview/examples/
+     * MaintenanceConfigurations_GetForResource_GuestOSPatchLinux.json
      */
     /**
      * Sample code: MaintenanceConfigurations_GetForResource_GuestOSPatchLinux.
@@ -37,7 +41,9 @@ public final class MaintenanceConfigurationsGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2023-10-01-preview/examples/MaintenanceConfigurations_GetForResource.json
+     * x-ms-original-file:
+     * specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2023-10-01-preview/examples/
+     * MaintenanceConfigurations_GetForResource.json
      */
     /**
      * Sample code: MaintenanceConfigurations_GetForResource.

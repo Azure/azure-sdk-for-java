@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -62,7 +61,6 @@ public final class ClientGroupProvisioningState extends ExpandableStringEnum<Cli
      * @param name a name to look for.
      * @return the corresponding ClientGroupProvisioningState.
      */
-    @JsonCreator
     public static ClientGroupProvisioningState fromString(String name) {
         return fromString(name, ClientGroupProvisioningState.class);
     }

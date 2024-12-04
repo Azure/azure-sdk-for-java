@@ -984,7 +984,8 @@
         "liudmila",
         "Milli",
         "qpid",
-        "unretriable"
+        "unretriable",
+        "AMQPS"
       ]
     },
     {

@@ -9,12 +9,14 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.resourcemanager.apimanagement.fluent.models.TagDescriptionContractInner;
 
-/** Contains all response data for the createOrUpdate operation. */
+/**
+ * Contains all response data for the createOrUpdate operation.
+ */
 public final class ApiTagDescriptionsCreateOrUpdateResponse
     extends ResponseBase<ApiTagDescriptionsCreateOrUpdateHeaders, TagDescriptionContractInner> {
     /**
      * Creates an instance of ApiTagDescriptionsCreateOrUpdateResponse.
-     *
+     * 
      * @param request the request which resulted in this ApiTagDescriptionsCreateOrUpdateResponse.
      * @param statusCode the status code of the HTTP response.
      * @param rawHeaders the raw headers of the HTTP response.
@@ -28,7 +30,7 @@ public final class ApiTagDescriptionsCreateOrUpdateResponse
 
     /**
      * Gets the deserialized response body.
-     *
+     * 
      * @return the deserialized response body.
      */
     @Override

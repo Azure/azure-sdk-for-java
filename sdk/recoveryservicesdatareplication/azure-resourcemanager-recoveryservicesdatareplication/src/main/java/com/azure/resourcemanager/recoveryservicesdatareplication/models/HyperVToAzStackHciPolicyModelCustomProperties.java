@@ -5,42 +5,58 @@
 package com.azure.resourcemanager.recoveryservicesdatareplication.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** HyperV To AzStackHCI Policy model custom properties. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
-@JsonTypeName("HyperVToAzStackHCI")
+/**
+ * HyperV To AzStackHCI Policy model custom properties.
+ */
 @Fluent
 public final class HyperVToAzStackHciPolicyModelCustomProperties extends PolicyModelCustomProperties {
+    /*
+     * Gets or sets the instance type.
+     */
+    private String instanceType = "HyperVToAzStackHCI";
+
     /*
      * Gets or sets the duration in minutes until which the recovery points need to be
      * stored.
      */
-    @JsonProperty(value = "recoveryPointHistoryInMinutes", required = true)
     private int recoveryPointHistoryInMinutes;
 
     /*
      * Gets or sets the crash consistent snapshot frequency (in minutes).
      */
-    @JsonProperty(value = "crashConsistentFrequencyInMinutes", required = true)
     private int crashConsistentFrequencyInMinutes;
 
     /*
      * Gets or sets the app consistent snapshot frequency (in minutes).
      */
-    @JsonProperty(value = "appConsistentFrequencyInMinutes", required = true)
     private int appConsistentFrequencyInMinutes;
 
-    /** Creates an instance of HyperVToAzStackHciPolicyModelCustomProperties class. */
+    /**
+     * Creates an instance of HyperVToAzStackHciPolicyModelCustomProperties class.
+     */
     public HyperVToAzStackHciPolicyModelCustomProperties() {
     }
 
     /**
+     * Get the instanceType property: Gets or sets the instance type.
+     * 
+     * @return the instanceType value.
+     */
+    @Override
+    public String instanceType() {
+        return this.instanceType;
+    }
+
+    /**
      * Get the recoveryPointHistoryInMinutes property: Gets or sets the duration in minutes until which the recovery
-     * points need to be stored.
-     *
+     * points need to be
+     * stored.
+     * 
      * @return the recoveryPointHistoryInMinutes value.
      */
     public int recoveryPointHistoryInMinutes() {
@@ -49,8 +65,9 @@ public final class HyperVToAzStackHciPolicyModelCustomProperties extends PolicyM
 
     /**
      * Set the recoveryPointHistoryInMinutes property: Gets or sets the duration in minutes until which the recovery
-     * points need to be stored.
-     *
+     * points need to be
+     * stored.
+     * 
      * @param recoveryPointHistoryInMinutes the recoveryPointHistoryInMinutes value to set.
      * @return the HyperVToAzStackHciPolicyModelCustomProperties object itself.
      */
@@ -63,7 +80,7 @@ public final class HyperVToAzStackHciPolicyModelCustomProperties extends PolicyM
     /**
      * Get the crashConsistentFrequencyInMinutes property: Gets or sets the crash consistent snapshot frequency (in
      * minutes).
-     *
+     * 
      * @return the crashConsistentFrequencyInMinutes value.
      */
     public int crashConsistentFrequencyInMinutes() {
@@ -73,7 +90,7 @@ public final class HyperVToAzStackHciPolicyModelCustomProperties extends PolicyM
     /**
      * Set the crashConsistentFrequencyInMinutes property: Gets or sets the crash consistent snapshot frequency (in
      * minutes).
-     *
+     * 
      * @param crashConsistentFrequencyInMinutes the crashConsistentFrequencyInMinutes value to set.
      * @return the HyperVToAzStackHciPolicyModelCustomProperties object itself.
      */
@@ -86,7 +103,7 @@ public final class HyperVToAzStackHciPolicyModelCustomProperties extends PolicyM
     /**
      * Get the appConsistentFrequencyInMinutes property: Gets or sets the app consistent snapshot frequency (in
      * minutes).
-     *
+     * 
      * @return the appConsistentFrequencyInMinutes value.
      */
     public int appConsistentFrequencyInMinutes() {
@@ -96,7 +113,7 @@ public final class HyperVToAzStackHciPolicyModelCustomProperties extends PolicyM
     /**
      * Set the appConsistentFrequencyInMinutes property: Gets or sets the app consistent snapshot frequency (in
      * minutes).
-     *
+     * 
      * @param appConsistentFrequencyInMinutes the appConsistentFrequencyInMinutes value to set.
      * @return the HyperVToAzStackHciPolicyModelCustomProperties object itself.
      */
@@ -108,11 +125,60 @@ public final class HyperVToAzStackHciPolicyModelCustomProperties extends PolicyM
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeIntField("recoveryPointHistoryInMinutes", this.recoveryPointHistoryInMinutes);
+        jsonWriter.writeIntField("crashConsistentFrequencyInMinutes", this.crashConsistentFrequencyInMinutes);
+        jsonWriter.writeIntField("appConsistentFrequencyInMinutes", this.appConsistentFrequencyInMinutes);
+        jsonWriter.writeStringField("instanceType", this.instanceType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HyperVToAzStackHciPolicyModelCustomProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HyperVToAzStackHciPolicyModelCustomProperties if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the HyperVToAzStackHciPolicyModelCustomProperties.
+     */
+    public static HyperVToAzStackHciPolicyModelCustomProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HyperVToAzStackHciPolicyModelCustomProperties deserializedHyperVToAzStackHciPolicyModelCustomProperties
+                = new HyperVToAzStackHciPolicyModelCustomProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("recoveryPointHistoryInMinutes".equals(fieldName)) {
+                    deserializedHyperVToAzStackHciPolicyModelCustomProperties.recoveryPointHistoryInMinutes
+                        = reader.getInt();
+                } else if ("crashConsistentFrequencyInMinutes".equals(fieldName)) {
+                    deserializedHyperVToAzStackHciPolicyModelCustomProperties.crashConsistentFrequencyInMinutes
+                        = reader.getInt();
+                } else if ("appConsistentFrequencyInMinutes".equals(fieldName)) {
+                    deserializedHyperVToAzStackHciPolicyModelCustomProperties.appConsistentFrequencyInMinutes
+                        = reader.getInt();
+                } else if ("instanceType".equals(fieldName)) {
+                    deserializedHyperVToAzStackHciPolicyModelCustomProperties.instanceType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHyperVToAzStackHciPolicyModelCustomProperties;
+        });
     }
 }

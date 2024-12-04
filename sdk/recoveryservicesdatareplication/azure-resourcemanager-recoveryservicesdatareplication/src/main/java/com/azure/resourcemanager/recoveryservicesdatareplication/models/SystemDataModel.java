@@ -5,57 +5,61 @@
 package com.azure.resourcemanager.recoveryservicesdatareplication.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** System data required to be defined for Azure resources. */
+/**
+ * System data required to be defined for Azure resources.
+ */
 @Fluent
-public class SystemDataModel {
+public class SystemDataModel implements JsonSerializable<SystemDataModel> {
     /*
      * Gets or sets identity that created the resource.
      */
-    @JsonProperty(value = "createdBy")
     private String createdBy;
 
     /*
      * Gets or sets the type of identity that created the resource: user, application,
      * managedIdentity.
      */
-    @JsonProperty(value = "createdByType")
     private String createdByType;
 
     /*
      * Gets or sets the timestamp of resource creation (UTC).
      */
-    @JsonProperty(value = "createdAt")
     private OffsetDateTime createdAt;
 
     /*
      * Gets or sets the identity that last modified the resource.
      */
-    @JsonProperty(value = "lastModifiedBy")
     private String lastModifiedBy;
 
     /*
      * Gets or sets the type of identity that last modified the resource: user, application,
      * managedIdentity.
      */
-    @JsonProperty(value = "lastModifiedByType")
     private String lastModifiedByType;
 
     /*
      * Gets or sets the timestamp of resource last modification (UTC).
      */
-    @JsonProperty(value = "lastModifiedAt")
     private OffsetDateTime lastModifiedAt;
 
-    /** Creates an instance of SystemDataModel class. */
+    /**
+     * Creates an instance of SystemDataModel class.
+     */
     public SystemDataModel() {
     }
 
     /**
      * Get the createdBy property: Gets or sets identity that created the resource.
-     *
+     * 
      * @return the createdBy value.
      */
     public String createdBy() {
@@ -64,7 +68,7 @@ public class SystemDataModel {
 
     /**
      * Set the createdBy property: Gets or sets identity that created the resource.
-     *
+     * 
      * @param createdBy the createdBy value to set.
      * @return the SystemDataModel object itself.
      */
@@ -76,7 +80,7 @@ public class SystemDataModel {
     /**
      * Get the createdByType property: Gets or sets the type of identity that created the resource: user, application,
      * managedIdentity.
-     *
+     * 
      * @return the createdByType value.
      */
     public String createdByType() {
@@ -86,7 +90,7 @@ public class SystemDataModel {
     /**
      * Set the createdByType property: Gets or sets the type of identity that created the resource: user, application,
      * managedIdentity.
-     *
+     * 
      * @param createdByType the createdByType value to set.
      * @return the SystemDataModel object itself.
      */
@@ -97,7 +101,7 @@ public class SystemDataModel {
 
     /**
      * Get the createdAt property: Gets or sets the timestamp of resource creation (UTC).
-     *
+     * 
      * @return the createdAt value.
      */
     public OffsetDateTime createdAt() {
@@ -106,7 +110,7 @@ public class SystemDataModel {
 
     /**
      * Set the createdAt property: Gets or sets the timestamp of resource creation (UTC).
-     *
+     * 
      * @param createdAt the createdAt value to set.
      * @return the SystemDataModel object itself.
      */
@@ -117,7 +121,7 @@ public class SystemDataModel {
 
     /**
      * Get the lastModifiedBy property: Gets or sets the identity that last modified the resource.
-     *
+     * 
      * @return the lastModifiedBy value.
      */
     public String lastModifiedBy() {
@@ -126,7 +130,7 @@ public class SystemDataModel {
 
     /**
      * Set the lastModifiedBy property: Gets or sets the identity that last modified the resource.
-     *
+     * 
      * @param lastModifiedBy the lastModifiedBy value to set.
      * @return the SystemDataModel object itself.
      */
@@ -137,8 +141,9 @@ public class SystemDataModel {
 
     /**
      * Get the lastModifiedByType property: Gets or sets the type of identity that last modified the resource: user,
-     * application, managedIdentity.
-     *
+     * application,
+     * managedIdentity.
+     * 
      * @return the lastModifiedByType value.
      */
     public String lastModifiedByType() {
@@ -147,8 +152,9 @@ public class SystemDataModel {
 
     /**
      * Set the lastModifiedByType property: Gets or sets the type of identity that last modified the resource: user,
-     * application, managedIdentity.
-     *
+     * application,
+     * managedIdentity.
+     * 
      * @param lastModifiedByType the lastModifiedByType value to set.
      * @return the SystemDataModel object itself.
      */
@@ -159,7 +165,7 @@ public class SystemDataModel {
 
     /**
      * Get the lastModifiedAt property: Gets or sets the timestamp of resource last modification (UTC).
-     *
+     * 
      * @return the lastModifiedAt value.
      */
     public OffsetDateTime lastModifiedAt() {
@@ -168,7 +174,7 @@ public class SystemDataModel {
 
     /**
      * Set the lastModifiedAt property: Gets or sets the timestamp of resource last modification (UTC).
-     *
+     * 
      * @param lastModifiedAt the lastModifiedAt value to set.
      * @return the SystemDataModel object itself.
      */
@@ -179,9 +185,64 @@ public class SystemDataModel {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("createdBy", this.createdBy);
+        jsonWriter.writeStringField("createdByType", this.createdByType);
+        jsonWriter.writeStringField("createdAt",
+            this.createdAt == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.createdAt));
+        jsonWriter.writeStringField("lastModifiedBy", this.lastModifiedBy);
+        jsonWriter.writeStringField("lastModifiedByType", this.lastModifiedByType);
+        jsonWriter.writeStringField("lastModifiedAt",
+            this.lastModifiedAt == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastModifiedAt));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SystemDataModel from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SystemDataModel if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SystemDataModel.
+     */
+    public static SystemDataModel fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SystemDataModel deserializedSystemDataModel = new SystemDataModel();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("createdBy".equals(fieldName)) {
+                    deserializedSystemDataModel.createdBy = reader.getString();
+                } else if ("createdByType".equals(fieldName)) {
+                    deserializedSystemDataModel.createdByType = reader.getString();
+                } else if ("createdAt".equals(fieldName)) {
+                    deserializedSystemDataModel.createdAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastModifiedBy".equals(fieldName)) {
+                    deserializedSystemDataModel.lastModifiedBy = reader.getString();
+                } else if ("lastModifiedByType".equals(fieldName)) {
+                    deserializedSystemDataModel.lastModifiedByType = reader.getString();
+                } else if ("lastModifiedAt".equals(fieldName)) {
+                    deserializedSystemDataModel.lastModifiedAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSystemDataModel;
+        });
     }
 }

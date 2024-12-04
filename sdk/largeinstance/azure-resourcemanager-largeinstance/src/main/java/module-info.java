@@ -10,6 +10,6 @@ module com.azure.resourcemanager.largeinstance {
     exports com.azure.resourcemanager.largeinstance.fluent.models;
     exports com.azure.resourcemanager.largeinstance.models;
 
-    opens com.azure.resourcemanager.largeinstance.fluent.models to com.azure.core, com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.largeinstance.models to com.azure.core, com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.largeinstance.fluent.models to com.azure.core;
+    opens com.azure.resourcemanager.largeinstance.models to com.azure.core;
 }

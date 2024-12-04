@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.notificationhubs.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class ZoneRedundancyPreference extends ExpandableStringEnum<ZoneRed
      * @param name a name to look for.
      * @return the corresponding ZoneRedundancyPreference.
      */
-    @JsonCreator
     public static ZoneRedundancyPreference fromString(String name) {
         return fromString(name, ZoneRedundancyPreference.class);
     }

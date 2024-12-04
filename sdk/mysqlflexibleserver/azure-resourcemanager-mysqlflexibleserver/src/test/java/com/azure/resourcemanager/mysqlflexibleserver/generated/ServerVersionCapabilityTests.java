@@ -11,7 +11,7 @@ public final class ServerVersionCapabilityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ServerVersionCapability model = BinaryData.fromString(
-            "{\"name\":\"bwwaloa\",\"supportedSkus\":[{\"name\":\"wrtz\",\"vCores\":1900837356777018235,\"supportedIops\":2493734222555395016,\"supportedMemoryPerVCoreMB\":5304844297296220991},{\"name\":\"ongmtsa\",\"vCores\":4946607856371446692,\"supportedIops\":7752304449285326809,\"supportedMemoryPerVCoreMB\":398412434287347439},{\"name\":\"knftguvriuh\",\"vCores\":2144176809632708140,\"supportedIops\":6220323322610788577,\"supportedMemoryPerVCoreMB\":6305214480301008748}]}")
+            "{\"name\":\"fkuwbcrnwbmehhse\",\"supportedSkus\":[{\"name\":\"srtslhspkdeem\",\"vCores\":1895836308961796190,\"supportedIops\":1461011233299690621,\"supportedMemoryPerVCoreMB\":1611861407793999607},{\"name\":\"elmqk\",\"vCores\":1137087157004223817,\"supportedIops\":3537949876650802706,\"supportedMemoryPerVCoreMB\":6307575147417814600},{\"name\":\"quhcdhmduala\",\"vCores\":2370990403210221685,\"supportedIops\":6851389169185127110,\"supportedMemoryPerVCoreMB\":4668891538540973425}]}")
             .toObject(ServerVersionCapability.class);
     }
 

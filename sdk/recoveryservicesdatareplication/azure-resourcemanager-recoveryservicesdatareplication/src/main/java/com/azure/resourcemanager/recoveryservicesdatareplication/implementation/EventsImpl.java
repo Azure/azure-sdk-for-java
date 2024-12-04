@@ -50,14 +50,14 @@ public final class EventsImpl implements Events {
 
     public PagedIterable<EventModel> list(String resourceGroupName, String vaultName) {
         PagedIterable<EventModelInner> inner = this.serviceClient().list(resourceGroupName, vaultName);
-        return Utils.mapPage(inner, inner1 -> new EventModelImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new EventModelImpl(inner1, this.manager()));
     }
 
     public PagedIterable<EventModel> list(String resourceGroupName, String vaultName, String filter,
         String continuationToken, Context context) {
         PagedIterable<EventModelInner> inner
             = this.serviceClient().list(resourceGroupName, vaultName, filter, continuationToken, context);
-        return Utils.mapPage(inner, inner1 -> new EventModelImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new EventModelImpl(inner1, this.manager()));
     }
 
     private EventsClient serviceClient() {

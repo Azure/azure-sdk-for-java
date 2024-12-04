@@ -5,8 +5,12 @@
 package com.azure.resourcemanager.storagecache.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.storagecache.fluent.models.AmlFilesystemInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -14,17 +18,15 @@ import java.util.List;
  * set of results.
  */
 @Fluent
-public final class AmlFilesystemsListResult {
+public final class AmlFilesystemsListResult implements JsonSerializable<AmlFilesystemsListResult> {
     /*
      * URL to get the next set of AML file system list results, if there are any.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /*
      * List of AML file systems.
      */
-    @JsonProperty(value = "value")
     private List<AmlFilesystemInner> value;
 
     /**
@@ -82,5 +84,45 @@ public final class AmlFilesystemsListResult {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AmlFilesystemsListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AmlFilesystemsListResult if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AmlFilesystemsListResult.
+     */
+    public static AmlFilesystemsListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AmlFilesystemsListResult deserializedAmlFilesystemsListResult = new AmlFilesystemsListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("nextLink".equals(fieldName)) {
+                    deserializedAmlFilesystemsListResult.nextLink = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    List<AmlFilesystemInner> value = reader.readArray(reader1 -> AmlFilesystemInner.fromJson(reader1));
+                    deserializedAmlFilesystemsListResult.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAmlFilesystemsListResult;
+        });
     }
 }

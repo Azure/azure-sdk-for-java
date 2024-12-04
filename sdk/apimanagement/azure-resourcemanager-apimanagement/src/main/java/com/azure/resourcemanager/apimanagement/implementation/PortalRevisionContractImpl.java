@@ -122,9 +122,9 @@ public final class PortalRevisionContractImpl
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.serviceName = Utils.getValueFromIdByName(innerObject.id(), "service");
-        this.portalRevisionId = Utils.getValueFromIdByName(innerObject.id(), "portalRevisions");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.serviceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "service");
+        this.portalRevisionId = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "portalRevisions");
     }
 
     public PortalRevisionContract refresh() {

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -62,7 +61,6 @@ public final class CaCertificateProvisioningState extends ExpandableStringEnum<C
      * @param name a name to look for.
      * @return the corresponding CaCertificateProvisioningState.
      */
-    @JsonCreator
     public static CaCertificateProvisioningState fromString(String name) {
         return fromString(name, CaCertificateProvisioningState.class);
     }

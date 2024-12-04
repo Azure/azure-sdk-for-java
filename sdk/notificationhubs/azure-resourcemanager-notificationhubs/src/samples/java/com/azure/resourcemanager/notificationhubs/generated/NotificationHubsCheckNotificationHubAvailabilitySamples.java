@@ -22,8 +22,9 @@ public final class NotificationHubsCheckNotificationHubAvailabilitySamples {
      */
     public static void notificationHubsCheckNotificationHubAvailability(
         com.azure.resourcemanager.notificationhubs.NotificationHubsManager manager) {
-        manager.notificationHubs().checkNotificationHubAvailabilityWithResponse("5ktrial", "locp-newns",
-            new CheckAvailabilityParameters().withName("sdktest").withLocation("West Europe"),
-            com.azure.core.util.Context.NONE);
+        manager.notificationHubs()
+            .checkNotificationHubAvailabilityWithResponse("5ktrial", "locp-newns",
+                new CheckAvailabilityParameters().withName("sdktest").withLocation("West Europe"),
+                com.azure.core.util.Context.NONE);
     }
 }

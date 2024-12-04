@@ -266,6 +266,8 @@ class SubnetImpl extends ChildResourceImpl<SubnetInner, NetworkImpl, Network>
                         if (e.getResponse().getStatusCode() == 404) {
                             // NIC not found, ignore this ipConfigRef
                             LOGGER.warning("Network interface not found '{}'", nicID);
+                        } else {
+                            throw LOGGER.logExceptionAsError(e);
                         }
                     }
                 }

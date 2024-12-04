@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.devcenter.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Properties for a recommended machine configuration.
  */
 @Immutable
-public final class RecommendedMachineConfiguration {
+public final class RecommendedMachineConfiguration implements JsonSerializable<RecommendedMachineConfiguration> {
     /*
      * Recommended memory range.
      */
-    @JsonProperty(value = "memory", access = JsonProperty.Access.WRITE_ONLY)
     private ResourceRange memory;
 
     /*
      * Recommended vCPU range.
      */
-    @JsonProperty(value = "vCPUs", access = JsonProperty.Access.WRITE_ONLY)
     private ResourceRange vCPUs;
 
     /**
@@ -60,5 +62,43 @@ public final class RecommendedMachineConfiguration {
         if (vCPUs() != null) {
             vCPUs().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RecommendedMachineConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RecommendedMachineConfiguration if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RecommendedMachineConfiguration.
+     */
+    public static RecommendedMachineConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RecommendedMachineConfiguration deserializedRecommendedMachineConfiguration
+                = new RecommendedMachineConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("memory".equals(fieldName)) {
+                    deserializedRecommendedMachineConfiguration.memory = ResourceRange.fromJson(reader);
+                } else if ("vCPUs".equals(fieldName)) {
+                    deserializedRecommendedMachineConfiguration.vCPUs = ResourceRange.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRecommendedMachineConfiguration;
+        });
     }
 }

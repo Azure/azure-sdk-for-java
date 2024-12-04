@@ -12,20 +12,20 @@ public final class CheckScopedNameAvailabilityRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CheckScopedNameAvailabilityRequest model
-            = BinaryData.fromString("{\"name\":\"nb\",\"type\":\"rxgibbd\",\"scope\":\"confozauors\"}")
+            = BinaryData.fromString("{\"name\":\"uenvrkp\",\"type\":\"uaibrebqaaysj\",\"scope\":\"xqtnq\"}")
                 .toObject(CheckScopedNameAvailabilityRequest.class);
-        Assertions.assertEquals("nb", model.name());
-        Assertions.assertEquals("rxgibbd", model.type());
-        Assertions.assertEquals("confozauors", model.scope());
+        Assertions.assertEquals("uenvrkp", model.name());
+        Assertions.assertEquals("uaibrebqaaysj", model.type());
+        Assertions.assertEquals("xqtnq", model.scope());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CheckScopedNameAvailabilityRequest model
-            = new CheckScopedNameAvailabilityRequest().withName("nb").withType("rxgibbd").withScope("confozauors");
+            = new CheckScopedNameAvailabilityRequest().withName("uenvrkp").withType("uaibrebqaaysj").withScope("xqtnq");
         model = BinaryData.fromObject(model).toObject(CheckScopedNameAvailabilityRequest.class);
-        Assertions.assertEquals("nb", model.name());
-        Assertions.assertEquals("rxgibbd", model.type());
-        Assertions.assertEquals("confozauors", model.scope());
+        Assertions.assertEquals("uenvrkp", model.name());
+        Assertions.assertEquals("uaibrebqaaysj", model.type());
+        Assertions.assertEquals("xqtnq", model.scope());
     }
 }

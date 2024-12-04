@@ -6,12 +6,14 @@ package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.util.Context;
 
-/** Resource collection API of ResourceProviders. */
+/**
+ * Resource collection API of ResourceProviders.
+ */
 public interface ResourceProviders {
     /**
      * Performs a connectivity check between the API Management service and a given destination, and returns metrics for
      * the connection, as well as errors encountered while trying to establish it.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param connectivityCheckRequestParams Connectivity Check request parameters.
@@ -26,7 +28,7 @@ public interface ResourceProviders {
     /**
      * Performs a connectivity check between the API Management service and a given destination, and returns metrics for
      * the connection, as well as errors encountered while trying to establish it.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param connectivityCheckRequestParams Connectivity Check request parameters.

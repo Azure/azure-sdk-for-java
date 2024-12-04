@@ -22,7 +22,7 @@ public final class AttachedNetworksListByDevCenterMockTests {
     @Test
     public void testListByDevCenter() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"TransientFailure\",\"networkConnectionId\":\"aj\",\"networkConnectionLocation\":\"wxacevehj\",\"healthCheckStatus\":\"Running\",\"domainJoinType\":\"HybridAzureADJoin\"},\"id\":\"fgaoq\",\"name\":\"tfaeyl\",\"type\":\"nm\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"MovingResources\",\"networkConnectionId\":\"nsdfzpbgtgky\",\"networkConnectionLocation\":\"dgh\",\"healthCheckStatus\":\"Pending\",\"domainJoinType\":\"AzureADJoin\"},\"id\":\"lwxezwzhokvbwnh\",\"name\":\"tqlgehgppi\",\"type\":\"ifhpf\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,9 +31,9 @@ public final class AttachedNetworksListByDevCenterMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<AttachedNetworkConnection> response
-            = manager.attachedNetworks().listByDevCenter("ij", "acvbmqz", 1802665958, com.azure.core.util.Context.NONE);
+        PagedIterable<AttachedNetworkConnection> response = manager.attachedNetworks()
+            .listByDevCenter("btmvpdvjdhttza", "fedxihchrphkm", 525308452, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("aj", response.iterator().next().networkConnectionId());
+        Assertions.assertEquals("nsdfzpbgtgky", response.iterator().next().networkConnectionId());
     }
 }

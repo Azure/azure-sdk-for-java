@@ -5,25 +5,32 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.apimanagement.fluent.models.ResolverUpdateContractProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** GraphQL API Resolver Update Contract details. */
+/**
+ * GraphQL API Resolver Update Contract details.
+ */
 @Fluent
-public final class ResolverUpdateContract {
+public final class ResolverUpdateContract implements JsonSerializable<ResolverUpdateContract> {
     /*
      * Properties of the GraphQL API Resolver entity that can be updated.
      */
-    @JsonProperty(value = "properties")
     private ResolverUpdateContractProperties innerProperties;
 
-    /** Creates an instance of ResolverUpdateContract class. */
+    /**
+     * Creates an instance of ResolverUpdateContract class.
+     */
     public ResolverUpdateContract() {
     }
 
     /**
      * Get the innerProperties property: Properties of the GraphQL API Resolver entity that can be updated.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ResolverUpdateContractProperties innerProperties() {
@@ -32,7 +39,7 @@ public final class ResolverUpdateContract {
 
     /**
      * Get the displayName property: Resolver Name.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -41,7 +48,7 @@ public final class ResolverUpdateContract {
 
     /**
      * Set the displayName property: Resolver Name.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the ResolverUpdateContract object itself.
      */
@@ -55,7 +62,7 @@ public final class ResolverUpdateContract {
 
     /**
      * Get the path property: Path is type/field being resolved.
-     *
+     * 
      * @return the path value.
      */
     public String path() {
@@ -64,7 +71,7 @@ public final class ResolverUpdateContract {
 
     /**
      * Set the path property: Path is type/field being resolved.
-     *
+     * 
      * @param path the path value to set.
      * @return the ResolverUpdateContract object itself.
      */
@@ -78,7 +85,7 @@ public final class ResolverUpdateContract {
 
     /**
      * Get the description property: Description of the resolver. May include HTML formatting tags.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -87,7 +94,7 @@ public final class ResolverUpdateContract {
 
     /**
      * Set the description property: Description of the resolver. May include HTML formatting tags.
-     *
+     * 
      * @param description the description value to set.
      * @return the ResolverUpdateContract object itself.
      */
@@ -101,12 +108,49 @@ public final class ResolverUpdateContract {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResolverUpdateContract from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResolverUpdateContract if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ResolverUpdateContract.
+     */
+    public static ResolverUpdateContract fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResolverUpdateContract deserializedResolverUpdateContract = new ResolverUpdateContract();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedResolverUpdateContract.innerProperties
+                        = ResolverUpdateContractProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResolverUpdateContract;
+        });
     }
 }

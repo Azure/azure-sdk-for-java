@@ -4,20 +4,23 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-/** Samples for AuthorizationServer ListSecrets. */
+/**
+ * Samples for AuthorizationServer ListSecrets.
+ */
 public final class AuthorizationServerListSecretsSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementAuthorizationServerListSecrets.json
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * ApiManagementAuthorizationServerListSecrets.json
      */
     /**
      * Sample code: ApiManagementAuthorizationServerListSecrets.
-     *
+     * 
      * @param manager Entry point to ApiManagementManager.
      */
     public static void apiManagementAuthorizationServerListSecrets(
         com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
-        manager
-            .authorizationServers()
+        manager.authorizationServers()
             .listSecretsWithResponse("rg1", "apimService1", "newauthServer2", com.azure.core.util.Context.NONE);
     }
 }

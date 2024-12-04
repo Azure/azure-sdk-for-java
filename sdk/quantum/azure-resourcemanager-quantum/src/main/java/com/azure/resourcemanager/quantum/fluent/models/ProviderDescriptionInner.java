@@ -5,30 +5,31 @@
 package com.azure.resourcemanager.quantum.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.quantum.models.ProviderProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Information about an offering. A provider offering is an entity that offers Targets to run Azure Quantum Jobs.
  */
 @Fluent
-public final class ProviderDescriptionInner {
+public final class ProviderDescriptionInner implements JsonSerializable<ProviderDescriptionInner> {
     /*
      * Unique provider's id.
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * Provider's display name.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * Provider properties.
      */
-    @JsonProperty(value = "properties")
     private ProviderProperties properties;
 
     /**
@@ -95,5 +96,46 @@ public final class ProviderDescriptionInner {
         if (properties() != null) {
             properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ProviderDescriptionInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ProviderDescriptionInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ProviderDescriptionInner.
+     */
+    public static ProviderDescriptionInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ProviderDescriptionInner deserializedProviderDescriptionInner = new ProviderDescriptionInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedProviderDescriptionInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedProviderDescriptionInner.name = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedProviderDescriptionInner.properties = ProviderProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedProviderDescriptionInner;
+        });
     }
 }

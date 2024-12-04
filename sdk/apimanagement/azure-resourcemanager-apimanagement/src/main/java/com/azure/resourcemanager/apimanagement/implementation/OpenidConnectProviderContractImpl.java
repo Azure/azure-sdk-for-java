@@ -138,9 +138,9 @@ public final class OpenidConnectProviderContractImpl implements OpenidConnectPro
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.serviceName = Utils.getValueFromIdByName(innerObject.id(), "service");
-        this.opid = Utils.getValueFromIdByName(innerObject.id(), "openidConnectProviders");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.serviceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "service");
+        this.opid = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "openidConnectProviders");
     }
 
     public OpenidConnectProviderContract refresh() {

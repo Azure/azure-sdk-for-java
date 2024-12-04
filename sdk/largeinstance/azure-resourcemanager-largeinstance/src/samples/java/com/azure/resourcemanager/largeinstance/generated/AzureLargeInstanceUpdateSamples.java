@@ -20,8 +20,8 @@ public final class AzureLargeInstanceUpdateSamples {
      */
     public static void
         azureLargeInstanceUpdateTag(com.azure.resourcemanager.largeinstance.LargeInstanceManager manager) {
-        manager.azureLargeInstances().updateWithResponse("myResourceGroup", "myALInstance", null,
-            com.azure.core.util.Context.NONE);
+        manager.azureLargeInstances()
+            .updateWithResponse("myResourceGroup", "myALInstance", null, com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -36,7 +36,7 @@ public final class AzureLargeInstanceUpdateSamples {
      */
     public static void
         azureLargeInstanceDeleteTag(com.azure.resourcemanager.largeinstance.LargeInstanceManager manager) {
-        manager.azureLargeInstances().updateWithResponse("myResourceGroup", "myALInstance", null,
-            com.azure.core.util.Context.NONE);
+        manager.azureLargeInstances()
+            .updateWithResponse("myResourceGroup", "myALInstance", null, com.azure.core.util.Context.NONE);
     }
 }

@@ -5,54 +5,62 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.Duration;
 
 /**
  * Properties of the Queue info for event subscription.
  */
 @Fluent
-public final class QueueInfo {
+public final class QueueInfo implements JsonSerializable<QueueInfo> {
     /*
-     * Maximum period in seconds in which once the message is in received (by the client) state and waiting to be accepted, released or rejected.
-     * If this time elapsed after a message has been received by the client and not transitioned into accepted (not processed), released or rejected,
-     * the message is available for redelivery. This is an optional field, where default is 60 seconds, minimum is 60 seconds and maximum is 300 seconds.
+     * Maximum period in seconds in which once the message is in received (by the client) state and waiting to be
+     * accepted, released or rejected.
+     * If this time elapsed after a message has been received by the client and not transitioned into accepted (not
+     * processed), released or rejected,
+     * the message is available for redelivery. This is an optional field, where default is 60 seconds, minimum is 60
+     * seconds and maximum is 300 seconds.
      */
-    @JsonProperty(value = "receiveLockDurationInSeconds")
     private Integer receiveLockDurationInSeconds;
 
     /*
      * The maximum delivery count of the events.
      */
-    @JsonProperty(value = "maxDeliveryCount")
     private Integer maxDeliveryCount;
 
     /*
-     * The dead letter destination of the event subscription. Any event that cannot be delivered to its' destination is sent to the dead letter destination.
-     * Uses the managed identity setup on the parent resource (namely, topic) to acquire the authentication tokens being used during delivery / dead-lettering.
+     * The dead letter destination of the event subscription. Any event that cannot be delivered to its' destination is
+     * sent to the dead letter destination.
+     * Uses the managed identity setup on the parent resource (namely, topic) to acquire the authentication tokens being
+     * used during delivery / dead-lettering.
      */
-    @JsonProperty(value = "deadLetterDestinationWithResourceIdentity")
     private DeadLetterWithResourceIdentity deadLetterDestinationWithResourceIdentity;
 
     /*
-     * Time span duration in ISO 8601 format that determines how long messages are available to the subscription from the time the message was published.
+     * Time span duration in ISO 8601 format that determines how long messages are available to the subscription from
+     * the time the message was published.
      * This duration value is expressed using the following format: \'P(n)Y(n)M(n)DT(n)H(n)M(n)S\', where:
-     *     - (n) is replaced by the value of each time element that follows the (n).
-     *     - P is the duration (or Period) designator and is always placed at the beginning of the duration.
-     *     - Y is the year designator, and it follows the value for the number of years.
-     *     - M is the month designator, and it follows the value for the number of months.
-     *     - W is the week designator, and it follows the value for the number of weeks.
-     *     - D is the day designator, and it follows the value for the number of days.
-     *     - T is the time designator, and it precedes the time components.
-     *     - H is the hour designator, and it follows the value for the number of hours.
-     *     - M is the minute designator, and it follows the value for the number of minutes.
-     *     - S is the second designator, and it follows the value for the number of seconds.
-     * This duration value cannot be set greater than the topic’s EventRetentionInDays. It is is an optional field where its minimum value is 1 minute, and its maximum is determined
+     * - (n) is replaced by the value of each time element that follows the (n).
+     * - P is the duration (or Period) designator and is always placed at the beginning of the duration.
+     * - Y is the year designator, and it follows the value for the number of years.
+     * - M is the month designator, and it follows the value for the number of months.
+     * - W is the week designator, and it follows the value for the number of weeks.
+     * - D is the day designator, and it follows the value for the number of days.
+     * - T is the time designator, and it precedes the time components.
+     * - H is the hour designator, and it follows the value for the number of hours.
+     * - M is the minute designator, and it follows the value for the number of minutes.
+     * - S is the second designator, and it follows the value for the number of seconds.
+     * This duration value cannot be set greater than the topic’s EventRetentionInDays. It is is an optional field where
+     * its minimum value is 1 minute, and its maximum is determined
      * by topic’s EventRetentionInDays value. The followings are examples of valid values:
-     *     - \'P0DT23H12M\' or \'PT23H12M\': for duration of 23 hours and 12 minutes.
-     *     - \'P1D\' or \'P1DT0H0M0S\': for duration of 1 day.
+     * - \'P0DT23H12M\' or \'PT23H12M\': for duration of 23 hours and 12 minutes.
+     * - \'P1D\' or \'P1DT0H0M0S\': for duration of 1 day.
      */
-    @JsonProperty(value = "eventTimeToLive")
     private Duration eventTimeToLive;
 
     /**
@@ -201,5 +209,53 @@ public final class QueueInfo {
         if (deadLetterDestinationWithResourceIdentity() != null) {
             deadLetterDestinationWithResourceIdentity().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("receiveLockDurationInSeconds", this.receiveLockDurationInSeconds);
+        jsonWriter.writeNumberField("maxDeliveryCount", this.maxDeliveryCount);
+        jsonWriter.writeJsonField("deadLetterDestinationWithResourceIdentity",
+            this.deadLetterDestinationWithResourceIdentity);
+        jsonWriter.writeStringField("eventTimeToLive", CoreUtils.durationToStringWithDays(this.eventTimeToLive));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of QueueInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of QueueInfo if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the QueueInfo.
+     */
+    public static QueueInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            QueueInfo deserializedQueueInfo = new QueueInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("receiveLockDurationInSeconds".equals(fieldName)) {
+                    deserializedQueueInfo.receiveLockDurationInSeconds = reader.getNullable(JsonReader::getInt);
+                } else if ("maxDeliveryCount".equals(fieldName)) {
+                    deserializedQueueInfo.maxDeliveryCount = reader.getNullable(JsonReader::getInt);
+                } else if ("deadLetterDestinationWithResourceIdentity".equals(fieldName)) {
+                    deserializedQueueInfo.deadLetterDestinationWithResourceIdentity
+                        = DeadLetterWithResourceIdentity.fromJson(reader);
+                } else if ("eventTimeToLive".equals(fieldName)) {
+                    deserializedQueueInfo.eventTimeToLive
+                        = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedQueueInfo;
+        });
     }
 }

@@ -11,7 +11,9 @@ import com.azure.resourcemanager.eventgrid.models.NetworkSecurityPerimeterResour
  */
 public final class NetworkSecurityPerimeterConfigurationsReconcileSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/NetworkSecurityPerimeterConfigurations_Reconcile.json
+     * x-ms-original-file:
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/
+     * NetworkSecurityPerimeterConfigurations_Reconcile.json
      */
     /**
      * Sample code: NetworkSecurityPerimeterConfigurations_Reconcile.

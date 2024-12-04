@@ -5,41 +5,44 @@
 package com.azure.resourcemanager.eventgrid.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.eventgrid.models.InboundIpRule;
 import com.azure.resourcemanager.eventgrid.models.PublicNetworkAccess;
-import com.azure.resourcemanager.eventgrid.models.UpdateTopicsConfigurationInfo;
 import com.azure.resourcemanager.eventgrid.models.UpdateTopicSpacesConfigurationInfo;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.resourcemanager.eventgrid.models.UpdateTopicsConfigurationInfo;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Information of namespace update parameter properties.
  */
 @Fluent
-public final class NamespaceUpdateParameterProperties {
+public final class NamespaceUpdateParameterProperties implements JsonSerializable<NamespaceUpdateParameterProperties> {
     /*
      * Topic spaces configuration properties that can be updated.
      */
-    @JsonProperty(value = "topicSpacesConfiguration")
     private UpdateTopicSpacesConfigurationInfo topicSpacesConfiguration;
 
     /*
      * Topics configuration properties that can be updated.
      */
-    @JsonProperty(value = "topicsConfiguration")
     private UpdateTopicsConfigurationInfo topicsConfiguration;
 
     /*
-     * This determines if traffic is allowed over public network. By default it is enabled. 
-     * You can further restrict to specific IPs by configuring <seealso cref="P:Microsoft.Azure.Events.ResourceProvider.Common.Contracts.PubSub.NamespaceUpdateParameterProperties.InboundIpRules" />
+     * This determines if traffic is allowed over public network. By default it is enabled.
+     * You can further restrict to specific IPs by configuring <seealso cref=
+     * "P:Microsoft.Azure.Events.ResourceProvider.Common.Contracts.PubSub.NamespaceUpdateParameterProperties.InboundIpRules"
+     * />
      */
-    @JsonProperty(value = "publicNetworkAccess")
     private PublicNetworkAccess publicNetworkAccess;
 
     /*
-     * This can be used to restrict traffic from specific IPs instead of all IPs. Note: These are considered only if PublicNetworkAccess is enabled.
+     * This can be used to restrict traffic from specific IPs instead of all IPs. Note: These are considered only if
+     * PublicNetworkAccess is enabled.
      */
-    @JsonProperty(value = "inboundIpRules")
     private List<InboundIpRule> inboundIpRules;
 
     /**
@@ -155,5 +158,57 @@ public final class NamespaceUpdateParameterProperties {
         if (inboundIpRules() != null) {
             inboundIpRules().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("topicSpacesConfiguration", this.topicSpacesConfiguration);
+        jsonWriter.writeJsonField("topicsConfiguration", this.topicsConfiguration);
+        jsonWriter.writeStringField("publicNetworkAccess",
+            this.publicNetworkAccess == null ? null : this.publicNetworkAccess.toString());
+        jsonWriter.writeArrayField("inboundIpRules", this.inboundIpRules,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NamespaceUpdateParameterProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NamespaceUpdateParameterProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NamespaceUpdateParameterProperties.
+     */
+    public static NamespaceUpdateParameterProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NamespaceUpdateParameterProperties deserializedNamespaceUpdateParameterProperties
+                = new NamespaceUpdateParameterProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("topicSpacesConfiguration".equals(fieldName)) {
+                    deserializedNamespaceUpdateParameterProperties.topicSpacesConfiguration
+                        = UpdateTopicSpacesConfigurationInfo.fromJson(reader);
+                } else if ("topicsConfiguration".equals(fieldName)) {
+                    deserializedNamespaceUpdateParameterProperties.topicsConfiguration
+                        = UpdateTopicsConfigurationInfo.fromJson(reader);
+                } else if ("publicNetworkAccess".equals(fieldName)) {
+                    deserializedNamespaceUpdateParameterProperties.publicNetworkAccess
+                        = PublicNetworkAccess.fromString(reader.getString());
+                } else if ("inboundIpRules".equals(fieldName)) {
+                    List<InboundIpRule> inboundIpRules = reader.readArray(reader1 -> InboundIpRule.fromJson(reader1));
+                    deserializedNamespaceUpdateParameterProperties.inboundIpRules = inboundIpRules;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNamespaceUpdateParameterProperties;
+        });
     }
 }

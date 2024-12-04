@@ -9,39 +9,41 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.fluent.models.CertificateContractInner;
 import java.time.OffsetDateTime;
 
-/** An immutable client-side representation of CertificateContract. */
+/**
+ * An immutable client-side representation of CertificateContract.
+ */
 public interface CertificateContract {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the subject property: Subject attribute of the certificate.
-     *
+     * 
      * @return the subject value.
      */
     String subject();
 
     /**
      * Gets the thumbprint property: Thumbprint of the certificate.
-     *
+     * 
      * @return the thumbprint value.
      */
     String thumbprint();
@@ -49,48 +51,56 @@ public interface CertificateContract {
     /**
      * Gets the expirationDate property: Expiration date of the certificate. The date conforms to the following format:
      * `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
-     *
+     * 
      * @return the expirationDate value.
      */
     OffsetDateTime expirationDate();
 
     /**
      * Gets the keyVault property: KeyVault location details of the certificate.
-     *
+     * 
      * @return the keyVault value.
      */
     KeyVaultContractProperties keyVault();
 
     /**
      * Gets the name of the resource group.
-     *
+     * 
      * @return the name of the resource group.
      */
     String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.apimanagement.fluent.models.CertificateContractInner object.
-     *
+     * 
      * @return the inner object.
      */
     CertificateContractInner innerModel();
 
-    /** The entirety of the CertificateContract definition. */
+    /**
+     * The entirety of the CertificateContract definition.
+     */
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
 
-    /** The CertificateContract definition stages. */
+    /**
+     * The CertificateContract definition stages.
+     */
     interface DefinitionStages {
-        /** The first stage of the CertificateContract definition. */
+        /**
+         * The first stage of the CertificateContract definition.
+         */
         interface Blank extends WithParentResource {
         }
 
-        /** The stage of the CertificateContract definition allowing to specify parent resource. */
+        /**
+         * The stage of the CertificateContract definition allowing to specify parent resource.
+         */
         interface WithParentResource {
             /**
              * Specifies resourceGroupName, serviceName.
-             *
+             * 
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @param serviceName The name of the API Management service.
              * @return the next definition stage.
@@ -106,61 +116,69 @@ public interface CertificateContract {
             DefinitionStages.WithKeyVault, DefinitionStages.WithIfMatch {
             /**
              * Executes the create request.
-             *
+             * 
              * @return the created resource.
              */
             CertificateContract create();
 
             /**
              * Executes the create request.
-             *
+             * 
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
             CertificateContract create(Context context);
         }
 
-        /** The stage of the CertificateContract definition allowing to specify data. */
+        /**
+         * The stage of the CertificateContract definition allowing to specify data.
+         */
         interface WithData {
             /**
              * Specifies the data property: Base 64 encoded certificate using the application/x-pkcs12 representation..
-             *
+             * 
              * @param data Base 64 encoded certificate using the application/x-pkcs12 representation.
              * @return the next definition stage.
              */
             WithCreate withData(String data);
         }
 
-        /** The stage of the CertificateContract definition allowing to specify password. */
+        /**
+         * The stage of the CertificateContract definition allowing to specify password.
+         */
         interface WithPassword {
             /**
              * Specifies the password property: Password for the Certificate.
-             *
+             * 
              * @param password Password for the Certificate.
              * @return the next definition stage.
              */
             WithCreate withPassword(String password);
         }
 
-        /** The stage of the CertificateContract definition allowing to specify keyVault. */
+        /**
+         * The stage of the CertificateContract definition allowing to specify keyVault.
+         */
         interface WithKeyVault {
             /**
              * Specifies the keyVault property: KeyVault location details of the certificate..
-             *
+             * 
              * @param keyVault KeyVault location details of the certificate.
              * @return the next definition stage.
              */
             WithCreate withKeyVault(KeyVaultContractCreateProperties keyVault);
         }
 
-        /** The stage of the CertificateContract definition allowing to specify ifMatch. */
+        /**
+         * The stage of the CertificateContract definition allowing to specify ifMatch.
+         */
         interface WithIfMatch {
             /**
              * Specifies the ifMatch property: ETag of the Entity. Not required when creating an entity, but required
              * when updating an entity..
-             *
+             * 
              * @param ifMatch ETag of the Entity. Not required when creating an entity, but required when updating an
-             *     entity.
+             * entity.
              * @return the next definition stage.
              */
             WithCreate withIfMatch(String ifMatch);
@@ -169,73 +187,85 @@ public interface CertificateContract {
 
     /**
      * Begins update for the CertificateContract resource.
-     *
+     * 
      * @return the stage of resource update.
      */
     CertificateContract.Update update();
 
-    /** The template for CertificateContract update. */
+    /**
+     * The template for CertificateContract update.
+     */
     interface Update
         extends UpdateStages.WithData, UpdateStages.WithPassword, UpdateStages.WithKeyVault, UpdateStages.WithIfMatch {
         /**
          * Executes the update request.
-         *
+         * 
          * @return the updated resource.
          */
         CertificateContract apply();
 
         /**
          * Executes the update request.
-         *
+         * 
          * @param context The context to associate with this operation.
          * @return the updated resource.
          */
         CertificateContract apply(Context context);
     }
 
-    /** The CertificateContract update stages. */
+    /**
+     * The CertificateContract update stages.
+     */
     interface UpdateStages {
-        /** The stage of the CertificateContract update allowing to specify data. */
+        /**
+         * The stage of the CertificateContract update allowing to specify data.
+         */
         interface WithData {
             /**
              * Specifies the data property: Base 64 encoded certificate using the application/x-pkcs12 representation..
-             *
+             * 
              * @param data Base 64 encoded certificate using the application/x-pkcs12 representation.
              * @return the next definition stage.
              */
             Update withData(String data);
         }
 
-        /** The stage of the CertificateContract update allowing to specify password. */
+        /**
+         * The stage of the CertificateContract update allowing to specify password.
+         */
         interface WithPassword {
             /**
              * Specifies the password property: Password for the Certificate.
-             *
+             * 
              * @param password Password for the Certificate.
              * @return the next definition stage.
              */
             Update withPassword(String password);
         }
 
-        /** The stage of the CertificateContract update allowing to specify keyVault. */
+        /**
+         * The stage of the CertificateContract update allowing to specify keyVault.
+         */
         interface WithKeyVault {
             /**
              * Specifies the keyVault property: KeyVault location details of the certificate..
-             *
+             * 
              * @param keyVault KeyVault location details of the certificate.
              * @return the next definition stage.
              */
             Update withKeyVault(KeyVaultContractCreateProperties keyVault);
         }
 
-        /** The stage of the CertificateContract update allowing to specify ifMatch. */
+        /**
+         * The stage of the CertificateContract update allowing to specify ifMatch.
+         */
         interface WithIfMatch {
             /**
              * Specifies the ifMatch property: ETag of the Entity. Not required when creating an entity, but required
              * when updating an entity..
-             *
+             * 
              * @param ifMatch ETag of the Entity. Not required when creating an entity, but required when updating an
-             *     entity.
+             * entity.
              * @return the next definition stage.
              */
             Update withIfMatch(String ifMatch);
@@ -244,14 +274,14 @@ public interface CertificateContract {
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @return the refreshed resource.
      */
     CertificateContract refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */
@@ -259,7 +289,7 @@ public interface CertificateContract {
 
     /**
      * From KeyVault, Refresh the certificate being used for authentication with the backend.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -270,7 +300,7 @@ public interface CertificateContract {
 
     /**
      * From KeyVault, Refresh the certificate being used for authentication with the backend.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return certificate details.

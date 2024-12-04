@@ -12,7 +12,9 @@ import com.azure.resourcemanager.mysqlflexibleserver.models.ConfigurationSource;
  */
 public final class ConfigurationsUpdateSamples {
     /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/Configurations/preview/2023-06-01-preview/examples/ConfigurationUpdate.json
+     * x-ms-original-file:
+     * specification/mysql/resource-manager/Microsoft.DBforMySQL/Configurations/preview/2023-06-01-preview/examples/
+     * ConfigurationUpdate.json
      */
     /**
      * Sample code: Update a user configuration.
