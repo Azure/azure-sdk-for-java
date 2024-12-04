@@ -5,24 +5,26 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Properties of the Topics Configuration.
  */
 @Fluent
-public final class TopicsConfiguration {
+public final class TopicsConfiguration implements JsonSerializable<TopicsConfiguration> {
     /*
      * The hostname for the topics configuration. This is a read-only property.
      */
-    @JsonProperty(value = "hostname", access = JsonProperty.Access.WRITE_ONLY)
     private String hostname;
 
     /*
      * List of custom domain configurations for the namespace.
      */
-    @JsonProperty(value = "customDomains")
     private List<CustomDomainConfiguration> customDomains;
 
     /**
@@ -69,5 +71,45 @@ public final class TopicsConfiguration {
         if (customDomains() != null) {
             customDomains().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("customDomains", this.customDomains, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TopicsConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TopicsConfiguration if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TopicsConfiguration.
+     */
+    public static TopicsConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TopicsConfiguration deserializedTopicsConfiguration = new TopicsConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("hostname".equals(fieldName)) {
+                    deserializedTopicsConfiguration.hostname = reader.getString();
+                } else if ("customDomains".equals(fieldName)) {
+                    List<CustomDomainConfiguration> customDomains
+                        = reader.readArray(reader1 -> CustomDomainConfiguration.fromJson(reader1));
+                    deserializedTopicsConfiguration.customDomains = customDomains;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTopicsConfiguration;
+        });
     }
 }

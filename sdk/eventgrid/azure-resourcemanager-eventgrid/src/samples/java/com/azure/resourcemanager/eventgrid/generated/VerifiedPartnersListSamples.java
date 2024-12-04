@@ -9,7 +9,9 @@ package com.azure.resourcemanager.eventgrid.generated;
  */
 public final class VerifiedPartnersListSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/VerifiedPartners_List.json
+     * x-ms-original-file:
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/
+     * VerifiedPartners_List.json
      */
     /**
      * Sample code: VerifiedPartners_List.

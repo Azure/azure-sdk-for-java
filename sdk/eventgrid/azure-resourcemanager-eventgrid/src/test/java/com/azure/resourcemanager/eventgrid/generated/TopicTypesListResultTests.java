@@ -9,8 +9,8 @@ import com.azure.resourcemanager.eventgrid.fluent.models.TopicTypeInfoInner;
 import com.azure.resourcemanager.eventgrid.models.ResourceRegionType;
 import com.azure.resourcemanager.eventgrid.models.TopicTypeAdditionalEnforcedPermission;
 import com.azure.resourcemanager.eventgrid.models.TopicTypeProvisioningState;
-import com.azure.resourcemanager.eventgrid.models.TopicTypesListResult;
 import com.azure.resourcemanager.eventgrid.models.TopicTypeSourceScope;
+import com.azure.resourcemanager.eventgrid.models.TopicTypesListResult;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 

@@ -9,7 +9,9 @@ package com.azure.resourcemanager.eventgrid.generated;
  */
 public final class EventSubscriptionsGetSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/EventSubscriptions_GetForCustomTopic_HybridConnectionDestination.json
+     * x-ms-original-file:
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/
+     * EventSubscriptions_GetForCustomTopic_HybridConnectionDestination.json
      */
     /**
      * Sample code: EventSubscriptions_GetForCustomTopic_HybridConnectionDestination.
@@ -25,7 +27,9 @@ public final class EventSubscriptionsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/EventSubscriptions_GetForCustomTopic_ServiceBusTopicDestination.json
+     * x-ms-original-file:
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/
+     * EventSubscriptions_GetForCustomTopic_ServiceBusTopicDestination.json
      */
     /**
      * Sample code: EventSubscriptions_GetForCustomTopic_ServiceBusTopicDestination.
@@ -41,7 +45,9 @@ public final class EventSubscriptionsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/EventSubscriptions_GetForResourceGroup.json
+     * x-ms-original-file:
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/
+     * EventSubscriptions_GetForResourceGroup.json
      */
     /**
      * Sample code: EventSubscriptions_GetForResourceGroup.
@@ -56,7 +62,9 @@ public final class EventSubscriptionsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/EventSubscriptions_GetForCustomTopic_EventHubDestination.json
+     * x-ms-original-file:
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/
+     * EventSubscriptions_GetForCustomTopic_EventHubDestination.json
      */
     /**
      * Sample code: EventSubscriptions_GetForCustomTopic_EventHubDestination.
@@ -72,7 +80,9 @@ public final class EventSubscriptionsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/EventSubscriptions_GetForSubscription.json
+     * x-ms-original-file:
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/
+     * EventSubscriptions_GetForSubscription.json
      */
     /**
      * Sample code: EventSubscriptions_GetForSubscription.
@@ -87,7 +97,9 @@ public final class EventSubscriptionsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/EventSubscriptions_GetForCustomTopic_WebhookDestination.json
+     * x-ms-original-file:
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/
+     * EventSubscriptions_GetForCustomTopic_WebhookDestination.json
      */
     /**
      * Sample code: EventSubscriptions_GetForCustomTopic_WebhookDestination.
@@ -103,7 +115,9 @@ public final class EventSubscriptionsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/EventSubscriptions_GetForCustomTopic_AzureFunctionDestination.json
+     * x-ms-original-file:
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/
+     * EventSubscriptions_GetForCustomTopic_AzureFunctionDestination.json
      */
     /**
      * Sample code: EventSubscriptions_GetForCustomTopic_AzureFunctionDestination.
@@ -119,7 +133,9 @@ public final class EventSubscriptionsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/EventSubscriptions_GetForCustomTopic.json
+     * x-ms-original-file:
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/
+     * EventSubscriptions_GetForCustomTopic.json
      */
     /**
      * Sample code: EventSubscriptions_GetForCustomTopic.
@@ -135,7 +151,9 @@ public final class EventSubscriptionsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/EventSubscriptions_GetForCustomTopic_StorageQueueDestination.json
+     * x-ms-original-file:
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/
+     * EventSubscriptions_GetForCustomTopic_StorageQueueDestination.json
      */
     /**
      * Sample code: EventSubscriptions_GetForCustomTopic_StorageQueueDestination.
@@ -151,7 +169,9 @@ public final class EventSubscriptionsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/EventSubscriptions_GetForResource.json
+     * x-ms-original-file:
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/
+     * EventSubscriptions_GetForResource.json
      */
     /**
      * Sample code: EventSubscriptions_GetForResource.
@@ -166,7 +186,9 @@ public final class EventSubscriptionsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/EventSubscriptions_GetForCustomTopic_ServiceBusQueueDestination.json
+     * x-ms-original-file:
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/
+     * EventSubscriptions_GetForCustomTopic_ServiceBusQueueDestination.json
      */
     /**
      * Sample code: EventSubscriptions_GetForCustomTopic_ServiceBusQueueDestination.

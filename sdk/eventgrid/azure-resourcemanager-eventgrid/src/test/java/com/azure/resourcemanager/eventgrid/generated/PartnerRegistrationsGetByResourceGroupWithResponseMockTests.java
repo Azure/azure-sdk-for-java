@@ -22,7 +22,7 @@ public final class PartnerRegistrationsGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"partnerRegistrationImmutableId\":\"08daa1f4-bd90-4620-b5cd-460a4917a9b9\"},\"location\":\"uq\",\"tags\":{\"rkgzkyhudbkuw\":\"adhfztlray\",\"kfecjvxf\":\"zqxlcwe\"},\"id\":\"qufqizj\",\"name\":\"ppwooaj\",\"type\":\"yyjmjjxiz\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"partnerRegistrationImmutableId\":\"57ad2d28-c5a8-46cb-b868-7c977d9959ea\"},\"location\":\"uq\",\"tags\":{\"rkgzkyhudbkuw\":\"adhfztlray\",\"kfecjvxf\":\"zqxlcwe\"},\"id\":\"qufqizj\",\"name\":\"ppwooaj\",\"type\":\"yyjmjjxiz\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -37,7 +37,7 @@ public final class PartnerRegistrationsGetByResourceGroupWithResponseMockTests {
 
         Assertions.assertEquals("uq", response.location());
         Assertions.assertEquals("adhfztlray", response.tags().get("rkgzkyhudbkuw"));
-        Assertions.assertEquals(UUID.fromString("08daa1f4-bd90-4620-b5cd-460a4917a9b9"),
+        Assertions.assertEquals(UUID.fromString("57ad2d28-c5a8-46cb-b868-7c977d9959ea"),
             response.partnerRegistrationImmutableId());
     }
 }
