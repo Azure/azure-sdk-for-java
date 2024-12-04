@@ -5,25 +5,37 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Execution of a process that isn't allowed. Allow list consists of process names to allow.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "ruleType", defaultImpl = ProcessNotAllowed.class, visible = true)
-@JsonTypeName("ProcessNotAllowed")
 @Fluent
 public final class ProcessNotAllowed extends AllowlistCustomAlertRule {
     /*
      * The type of the custom alert rule.
      */
-    @JsonTypeId
-    @JsonProperty(value = "ruleType", required = true)
     private String ruleType = "ProcessNotAllowed";
+
+    /*
+     * The value type of the items in the list.
+     */
+    private ValueType valueType;
+
+    /*
+     * The description of the custom alert.
+     */
+    private String description;
+
+    /*
+     * The display name of the custom alert.
+     */
+    private String displayName;
 
     /**
      * Creates an instance of ProcessNotAllowed class.
@@ -39,6 +51,36 @@ public final class ProcessNotAllowed extends AllowlistCustomAlertRule {
     @Override
     public String ruleType() {
         return this.ruleType;
+    }
+
+    /**
+     * Get the valueType property: The value type of the items in the list.
+     * 
+     * @return the valueType value.
+     */
+    @Override
+    public ValueType valueType() {
+        return this.valueType;
+    }
+
+    /**
+     * Get the description property: The description of the custom alert.
+     * 
+     * @return the description value.
+     */
+    @Override
+    public String description() {
+        return this.description;
+    }
+
+    /**
+     * Get the displayName property: The display name of the custom alert.
+     * 
+     * @return the displayName value.
+     */
+    @Override
+    public String displayName() {
+        return this.displayName;
     }
 
     /**
@@ -66,6 +108,63 @@ public final class ProcessNotAllowed extends AllowlistCustomAlertRule {
      */
     @Override
     public void validate() {
-        super.validate();
+        if (allowlistValues() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property allowlistValues in model ProcessNotAllowed"));
+        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ProcessNotAllowed.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("isEnabled", isEnabled());
+        jsonWriter.writeArrayField("allowlistValues", allowlistValues(),
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("ruleType", this.ruleType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ProcessNotAllowed from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ProcessNotAllowed if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ProcessNotAllowed.
+     */
+    public static ProcessNotAllowed fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ProcessNotAllowed deserializedProcessNotAllowed = new ProcessNotAllowed();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("isEnabled".equals(fieldName)) {
+                    deserializedProcessNotAllowed.withIsEnabled(reader.getBoolean());
+                } else if ("allowlistValues".equals(fieldName)) {
+                    List<String> allowlistValues = reader.readArray(reader1 -> reader1.getString());
+                    deserializedProcessNotAllowed.withAllowlistValues(allowlistValues);
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedProcessNotAllowed.displayName = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedProcessNotAllowed.description = reader.getString();
+                } else if ("valueType".equals(fieldName)) {
+                    deserializedProcessNotAllowed.valueType = ValueType.fromString(reader.getString());
+                } else if ("ruleType".equals(fieldName)) {
+                    deserializedProcessNotAllowed.ruleType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedProcessNotAllowed;
+        });
     }
 }

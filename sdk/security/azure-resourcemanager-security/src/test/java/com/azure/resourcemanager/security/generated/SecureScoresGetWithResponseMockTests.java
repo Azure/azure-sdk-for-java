@@ -20,7 +20,7 @@ public final class SecureScoresGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"displayName\":\"t\",\"score\":{\"max\":1419388857,\"current\":42.426379441642524,\"percentage\":60.2190869130585},\"weight\":5511850501314962842},\"id\":\"mvidsssfzsgzgusp\",\"name\":\"jomeq\",\"type\":\"xhwis\"}";
+            = "{\"properties\":{\"displayName\":\"lnlx\",\"score\":{\"max\":183252872,\"current\":19.007608410654708,\"percentage\":6.8688842082811},\"weight\":4013982467485448733},\"id\":\"ubukqmierzrnob\",\"name\":\"vequzytapgzdhz\",\"type\":\"jecdsysxnku\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class SecureScoresGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         SecureScoreItem response
-            = manager.secureScores().getWithResponse("pty", com.azure.core.util.Context.NONE).getValue();
+            = manager.secureScores().getWithResponse("bfhlgeehbd", com.azure.core.util.Context.NONE).getValue();
 
     }
 }

@@ -5,10 +5,14 @@
 package com.azure.resourcemanager.security.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.security.models.AutomationAction;
 import com.azure.resourcemanager.security.models.AutomationScope;
 import com.azure.resourcemanager.security.models.AutomationSource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -16,35 +20,32 @@ import java.util.List;
  * security events data models schemas - please visit https://aka.ms/ASCAutomationSchemas.
  */
 @Fluent
-public final class AutomationProperties {
+public final class AutomationProperties implements JsonSerializable<AutomationProperties> {
     /*
      * The security automation description.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * Indicates whether the security automation is enabled.
      */
-    @JsonProperty(value = "isEnabled")
     private Boolean isEnabled;
 
     /*
-     * A collection of scopes on which the security automations logic is applied. Supported scopes are the subscription itself or a resource group under that subscription. The automation will only apply on defined scopes.
+     * A collection of scopes on which the security automations logic is applied. Supported scopes are the subscription
+     * itself or a resource group under that subscription. The automation will only apply on defined scopes.
      */
-    @JsonProperty(value = "scopes")
     private List<AutomationScope> scopes;
 
     /*
      * A collection of the source event types which evaluate the security automation set of rules.
      */
-    @JsonProperty(value = "sources")
     private List<AutomationSource> sources;
 
     /*
-     * A collection of the actions which are triggered if all the configured rules evaluations, within at least one rule set, are true.
+     * A collection of the actions which are triggered if all the configured rules evaluations, within at least one rule
+     * set, are true.
      */
-    @JsonProperty(value = "actions")
     private List<AutomationAction> actions;
 
     /**
@@ -176,5 +177,56 @@ public final class AutomationProperties {
         if (actions() != null) {
             actions().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeBooleanField("isEnabled", this.isEnabled);
+        jsonWriter.writeArrayField("scopes", this.scopes, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("sources", this.sources, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("actions", this.actions, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AutomationProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AutomationProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AutomationProperties.
+     */
+    public static AutomationProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AutomationProperties deserializedAutomationProperties = new AutomationProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("description".equals(fieldName)) {
+                    deserializedAutomationProperties.description = reader.getString();
+                } else if ("isEnabled".equals(fieldName)) {
+                    deserializedAutomationProperties.isEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("scopes".equals(fieldName)) {
+                    List<AutomationScope> scopes = reader.readArray(reader1 -> AutomationScope.fromJson(reader1));
+                    deserializedAutomationProperties.scopes = scopes;
+                } else if ("sources".equals(fieldName)) {
+                    List<AutomationSource> sources = reader.readArray(reader1 -> AutomationSource.fromJson(reader1));
+                    deserializedAutomationProperties.sources = sources;
+                } else if ("actions".equals(fieldName)) {
+                    List<AutomationAction> actions = reader.readArray(reader1 -> AutomationAction.fromJson(reader1));
+                    deserializedAutomationProperties.actions = actions;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAutomationProperties;
+        });
     }
 }

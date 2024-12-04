@@ -11,7 +11,7 @@ public final class ConnectedResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ConnectedResource model = BinaryData
-            .fromString("{\"connectedResourceId\":\"jbzten\",\"tcpPorts\":\"kzykjtjk\",\"udpPorts\":\"xfwush\"}")
+            .fromString("{\"connectedResourceId\":\"kecpxdazvdh\",\"tcpPorts\":\"mmkoszudb\",\"udpPorts\":\"s\"}")
             .toObject(ConnectedResource.class);
     }
 

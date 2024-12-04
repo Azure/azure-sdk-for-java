@@ -16,22 +16,22 @@ public final class DefenderForServersGcpOfferingVmScannersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DefenderForServersGcpOfferingVmScanners model = BinaryData.fromString(
-            "{\"enabled\":true,\"configuration\":{\"scanningMode\":\"Default\",\"exclusionTags\":{\"uylztpziizevjyk\":\"aqjmkgxqwque\",\"kqtwqlepjjzkcasf\":\"fvezefk\"}}}")
+            "{\"enabled\":false,\"configuration\":{\"scanningMode\":\"Default\",\"exclusionTags\":{\"pibkgxyxyaux\":\"yil\"}}}")
             .toObject(DefenderForServersGcpOfferingVmScanners.class);
-        Assertions.assertEquals(true, model.enabled());
+        Assertions.assertEquals(false, model.enabled());
         Assertions.assertEquals(ScanningMode.DEFAULT, model.configuration().scanningMode());
-        Assertions.assertEquals("aqjmkgxqwque", model.configuration().exclusionTags().get("uylztpziizevjyk"));
+        Assertions.assertEquals("yil", model.configuration().exclusionTags().get("pibkgxyxyaux"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DefenderForServersGcpOfferingVmScanners model = new DefenderForServersGcpOfferingVmScanners().withEnabled(true)
+        DefenderForServersGcpOfferingVmScanners model = new DefenderForServersGcpOfferingVmScanners().withEnabled(false)
             .withConfiguration(new VmScannersBaseConfiguration().withScanningMode(ScanningMode.DEFAULT)
-                .withExclusionTags(mapOf("uylztpziizevjyk", "aqjmkgxqwque", "kqtwqlepjjzkcasf", "fvezefk")));
+                .withExclusionTags(mapOf("pibkgxyxyaux", "yil")));
         model = BinaryData.fromObject(model).toObject(DefenderForServersGcpOfferingVmScanners.class);
-        Assertions.assertEquals(true, model.enabled());
+        Assertions.assertEquals(false, model.enabled());
         Assertions.assertEquals(ScanningMode.DEFAULT, model.configuration().scanningMode());
-        Assertions.assertEquals("aqjmkgxqwque", model.configuration().exclusionTags().get("uylztpziizevjyk"));
+        Assertions.assertEquals("yil", model.configuration().exclusionTags().get("pibkgxyxyaux"));
     }
 
     // Use "Map.of" if available

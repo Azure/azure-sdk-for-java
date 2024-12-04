@@ -23,7 +23,7 @@ public final class SecurityConnectorsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"hierarchyIdentifier\":\"jptnnt\",\"hierarchyIdentifierTrialEndDate\":\"2021-01-23T01:07:35Z\",\"environmentName\":\"Github\",\"offerings\":[{\"offeringType\":\"CloudOffering\",\"description\":\"vn\"},{\"offeringType\":\"CloudOffering\",\"description\":\"rrhpgsjbio\"},{\"offeringType\":\"CloudOffering\",\"description\":\"wviqehmdqvaolid\"}],\"environmentData\":{\"environmentType\":\"EnvironmentData\"}},\"location\":\"fsfvkjcimbrsv\",\"tags\":{\"jl\":\"tjnhp\",\"cyzhimmydtdtftmi\":\"k\",\"rgyzcslazp\":\"uzjd\",\"teagbgac\":\"kqoyimxpggk\"},\"id\":\"qpjuytvude\",\"name\":\"lpbybkisb\",\"type\":\"ifm\"}]}";
+            = "{\"value\":[{\"properties\":{\"hierarchyIdentifier\":\"hqashtos\",\"hierarchyIdentifierTrialEndDate\":\"2021-02-01T16:53:59Z\",\"environmentName\":\"AWS\",\"offerings\":[{\"offeringType\":\"CloudOffering\",\"description\":\"cigz\"},{\"offeringType\":\"CloudOffering\",\"description\":\"wjtacfvv\"},{\"offeringType\":\"CloudOffering\",\"description\":\"pcbpzfom\"}],\"environmentData\":{\"environmentType\":\"EnvironmentData\"}},\"location\":\"augbrhfiwltk\",\"tags\":{\"vasyyhgqok\":\"untethklxwh\"},\"id\":\"bmsrkix\",\"name\":\"xxhwrlqo\",\"type\":\"aqsy\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,9 +34,9 @@ public final class SecurityConnectorsListMockTests {
 
         PagedIterable<SecurityConnector> response = manager.securityConnectors().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("fsfvkjcimbrsv", response.iterator().next().location());
-        Assertions.assertEquals("tjnhp", response.iterator().next().tags().get("jl"));
-        Assertions.assertEquals("jptnnt", response.iterator().next().hierarchyIdentifier());
-        Assertions.assertEquals(CloudName.GITHUB, response.iterator().next().environmentName());
+        Assertions.assertEquals("augbrhfiwltk", response.iterator().next().location());
+        Assertions.assertEquals("untethklxwh", response.iterator().next().tags().get("vasyyhgqok"));
+        Assertions.assertEquals("hqashtos", response.iterator().next().hierarchyIdentifier());
+        Assertions.assertEquals(CloudName.AWS, response.iterator().next().environmentName());
     }
 }

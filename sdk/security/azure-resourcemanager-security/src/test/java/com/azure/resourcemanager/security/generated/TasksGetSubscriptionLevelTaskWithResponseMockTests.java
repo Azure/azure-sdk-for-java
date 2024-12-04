@@ -20,7 +20,7 @@ public final class TasksGetSubscriptionLevelTaskWithResponseMockTests {
     @Test
     public void testGetSubscriptionLevelTaskWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"state\":\"tybhjuxidhhx\",\"creationTimeUtc\":\"2021-05-04T00:54:34Z\",\"securityTaskParameters\":{\"name\":\"dxjxdu\",\"\":{\"mqrslaateptwujjz\":\"datajwi\"}},\"lastStateChangeTimeUtc\":\"2021-03-30T16:06:13Z\",\"subState\":\"qwlxrhg\"},\"id\":\"vhvtq\",\"name\":\"ykbkkteozejogmk\",\"type\":\"rvvmvmcofn\"}";
+            = "{\"properties\":{\"state\":\"uvjhxmnrqstjc\",\"creationTimeUtc\":\"2021-11-02T21:51:02Z\",\"securityTaskParameters\":{\"name\":\"l\",\"\":{\"gjnaqyqipsl\":\"datavnpvvd\",\"tfo\":\"datamvcdsvmwbitek\"}},\"lastStateChangeTimeUtc\":\"2021-05-09T09:23:05Z\",\"subState\":\"ybxq\"},\"id\":\"chgy\",\"name\":\"fzdqekiv\",\"type\":\"cpzcvdizul\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class TasksGetSubscriptionLevelTaskWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         SecurityTask response = manager.tasks()
-            .getSubscriptionLevelTaskWithResponse("otdxpo", "cslhwuusi", com.azure.core.util.Context.NONE)
+            .getSubscriptionLevelTaskWithResponse("bcbgv", "btsertoxa", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

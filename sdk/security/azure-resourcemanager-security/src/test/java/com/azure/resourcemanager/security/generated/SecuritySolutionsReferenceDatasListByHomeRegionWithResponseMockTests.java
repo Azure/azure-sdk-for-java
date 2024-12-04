@@ -22,7 +22,7 @@ public final class SecuritySolutionsReferenceDatasListByHomeRegionWithResponseMo
     @Test
     public void testListByHomeRegionWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"securityFamily\":\"Ngfw\",\"alertVendorName\":\"wtidcnzalgmpupj\",\"packageInfoUrl\":\"ltyl\",\"productName\":\"uudvbgvzlzjsb\",\"publisher\":\"p\",\"publisherDisplayName\":\"utzaziydpoknsea\",\"template\":\"mbdqra\"},\"location\":\"d\",\"id\":\"rluob\",\"name\":\"valqwzkny\",\"type\":\"j\"},{\"properties\":{\"securityFamily\":\"SaasWaf\",\"alertVendorName\":\"svclfjycl\",\"packageInfoUrl\":\"ildlffll\",\"productName\":\"irmtxfqpfildcg\",\"publisher\":\"fouzfbpg\",\"publisherDisplayName\":\"ryvidbzdylb\",\"template\":\"jatgngwn\"},\"location\":\"ftecgprzsqmpdqc\",\"id\":\"kzb\",\"name\":\"qhaathxo\",\"type\":\"x\"},{\"properties\":{\"securityFamily\":\"Va\",\"alertVendorName\":\"colusyruxrzhhlhr\",\"packageInfoUrl\":\"mgsbpgmncrvtpifo\",\"productName\":\"omppz\",\"publisher\":\"a\",\"publisherDisplayName\":\"qmeu\",\"template\":\"plfcmpua\"},\"location\":\"goce\",\"id\":\"tlyspjymwicc\",\"name\":\"rncfu\",\"type\":\"lakgixhqjqhgqwbb\"}]}";
+            = "{\"value\":[{\"properties\":{\"securityFamily\":\"Va\",\"alertVendorName\":\"khmemxkahapesn\",\"packageInfoUrl\":\"youllyf\",\"productName\":\"mnxrmxxjvwb\",\"publisher\":\"tjgzkmwf\",\"publisherDisplayName\":\"zlmpxfmdjs\",\"template\":\"ommdzphxulx\"},\"location\":\"bdnpfcghdttow\",\"id\":\"xxcpbzxpzloov\",\"name\":\"atiyw\",\"type\":\"cvzuzpkf\"},{\"properties\":{\"securityFamily\":\"Ngfw\",\"alertVendorName\":\"motquqlqey\",\"packageInfoUrl\":\"sgqp\",\"productName\":\"k\",\"publisher\":\"dpfvlsqmmetwtla\",\"publisherDisplayName\":\"nkjtefbd\",\"template\":\"nuvhgcgrllyyfsm\"},\"location\":\"bxhrchmetvzhuu\",\"id\":\"dykg\",\"name\":\"skwvb\",\"type\":\"cawwayqtsrn\"},{\"properties\":{\"securityFamily\":\"Va\",\"alertVendorName\":\"tgnmzebcre\",\"packageInfoUrl\":\"uedcm\",\"productName\":\"ryhhe\",\"publisher\":\"xzh\",\"publisherDisplayName\":\"llxwkno\",\"template\":\"xdjklfsd\"},\"location\":\"kqiymmddslwnlgjd\",\"id\":\"hmk\",\"name\":\"pybnnnlpqdn\",\"type\":\"s\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,15 +32,15 @@ public final class SecuritySolutionsReferenceDatasListByHomeRegionWithResponseMo
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         SecuritySolutionsReferenceDataList response = manager.securitySolutionsReferenceDatas()
-            .listByHomeRegionWithResponse("ucrxdtejob", com.azure.core.util.Context.NONE)
+            .listByHomeRegionWithResponse("lnuom", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(SecurityFamily.NGFW, response.value().get(0).securityFamily());
-        Assertions.assertEquals("wtidcnzalgmpupj", response.value().get(0).alertVendorName());
-        Assertions.assertEquals("ltyl", response.value().get(0).packageInfoUrl());
-        Assertions.assertEquals("uudvbgvzlzjsb", response.value().get(0).productName());
-        Assertions.assertEquals("p", response.value().get(0).publisher());
-        Assertions.assertEquals("utzaziydpoknsea", response.value().get(0).publisherDisplayName());
-        Assertions.assertEquals("mbdqra", response.value().get(0).template());
+        Assertions.assertEquals(SecurityFamily.VA, response.value().get(0).securityFamily());
+        Assertions.assertEquals("khmemxkahapesn", response.value().get(0).alertVendorName());
+        Assertions.assertEquals("youllyf", response.value().get(0).packageInfoUrl());
+        Assertions.assertEquals("mnxrmxxjvwb", response.value().get(0).productName());
+        Assertions.assertEquals("tjgzkmwf", response.value().get(0).publisher());
+        Assertions.assertEquals("zlmpxfmdjs", response.value().get(0).publisherDisplayName());
+        Assertions.assertEquals("ommdzphxulx", response.value().get(0).template());
     }
 }

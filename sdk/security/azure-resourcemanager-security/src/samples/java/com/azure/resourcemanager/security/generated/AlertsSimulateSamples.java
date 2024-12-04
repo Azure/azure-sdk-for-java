@@ -14,7 +14,8 @@ import java.util.Arrays;
  */
 public final class AlertsSimulateSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2022-01-01/examples/Alerts/SimulateAlerts_example.json
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2022-01-01/examples/Alerts/
+     * SimulateAlerts_example.json
      */
     /**
      * Sample code: Simulate security alerts on a subscription.

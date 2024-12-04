@@ -14,21 +14,21 @@ public final class LabelTests {
     public void testDeserialize() throws Exception {
         Label model = BinaryData
             .fromString(
-                "{\"name\":\"fvjlboxqvkjlmx\",\"id\":\"1e66799e-2fb8-4d94-81a2-2f2e33903993\",\"order\":63.146137}")
+                "{\"name\":\"fvjlboxqvkjlmx\",\"id\":\"fd1bc755-4d07-4d07-b05b-c8eb8f409c0d\",\"order\":63.146137}")
             .toObject(Label.class);
         Assertions.assertEquals("fvjlboxqvkjlmx", model.name());
-        Assertions.assertEquals(UUID.fromString("1e66799e-2fb8-4d94-81a2-2f2e33903993"), model.id());
+        Assertions.assertEquals(UUID.fromString("fd1bc755-4d07-4d07-b05b-c8eb8f409c0d"), model.id());
         Assertions.assertEquals(63.146137F, model.order());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         Label model = new Label().withName("fvjlboxqvkjlmx")
-            .withId(UUID.fromString("1e66799e-2fb8-4d94-81a2-2f2e33903993"))
+            .withId(UUID.fromString("fd1bc755-4d07-4d07-b05b-c8eb8f409c0d"))
             .withOrder(63.146137F);
         model = BinaryData.fromObject(model).toObject(Label.class);
         Assertions.assertEquals("fvjlboxqvkjlmx", model.name());
-        Assertions.assertEquals(UUID.fromString("1e66799e-2fb8-4d94-81a2-2f2e33903993"), model.id());
+        Assertions.assertEquals(UUID.fromString("fd1bc755-4d07-4d07-b05b-c8eb8f409c0d"), model.id());
         Assertions.assertEquals(63.146137F, model.order());
     }
 }

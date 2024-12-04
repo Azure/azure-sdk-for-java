@@ -13,7 +13,9 @@ import com.azure.resourcemanager.security.models.AzureResourceDetails;
  */
 public final class AssessmentsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2021-06-01/examples/Assessments/PutAssessment_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2021-06-01/examples/Assessments/
+     * PutAssessment_example.json
      */
     /**
      * Sample code: Create security recommendation task on a resource.

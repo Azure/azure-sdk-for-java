@@ -13,19 +13,19 @@ public final class CspmMonitorGcpOfferingTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CspmMonitorGcpOffering model = BinaryData.fromString(
-            "{\"offeringType\":\"CspmMonitorGcp\",\"nativeCloudConnection\":{\"workloadIdentityProviderId\":\"sudyh\",\"serviceAccountEmailAddress\":\"jjtalxrdsj\"},\"description\":\"oluqwgusxxhdo\"}")
+            "{\"offeringType\":\"CspmMonitorGcp\",\"nativeCloudConnection\":{\"workloadIdentityProviderId\":\"l\",\"serviceAccountEmailAddress\":\"lhhfi\"},\"description\":\"cfculzj\"}")
             .toObject(CspmMonitorGcpOffering.class);
-        Assertions.assertEquals("sudyh", model.nativeCloudConnection().workloadIdentityProviderId());
-        Assertions.assertEquals("jjtalxrdsj", model.nativeCloudConnection().serviceAccountEmailAddress());
+        Assertions.assertEquals("l", model.nativeCloudConnection().workloadIdentityProviderId());
+        Assertions.assertEquals("lhhfi", model.nativeCloudConnection().serviceAccountEmailAddress());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CspmMonitorGcpOffering model = new CspmMonitorGcpOffering().withNativeCloudConnection(
-            new CspmMonitorGcpOfferingNativeCloudConnection().withWorkloadIdentityProviderId("sudyh")
-                .withServiceAccountEmailAddress("jjtalxrdsj"));
+            new CspmMonitorGcpOfferingNativeCloudConnection().withWorkloadIdentityProviderId("l")
+                .withServiceAccountEmailAddress("lhhfi"));
         model = BinaryData.fromObject(model).toObject(CspmMonitorGcpOffering.class);
-        Assertions.assertEquals("sudyh", model.nativeCloudConnection().workloadIdentityProviderId());
-        Assertions.assertEquals("jjtalxrdsj", model.nativeCloudConnection().serviceAccountEmailAddress());
+        Assertions.assertEquals("l", model.nativeCloudConnection().workloadIdentityProviderId());
+        Assertions.assertEquals("lhhfi", model.nativeCloudConnection().serviceAccountEmailAddress());
     }
 }

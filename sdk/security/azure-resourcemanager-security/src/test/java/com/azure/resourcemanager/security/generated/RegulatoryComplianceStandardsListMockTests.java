@@ -23,7 +23,7 @@ public final class RegulatoryComplianceStandardsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"state\":\"Failed\",\"passedControls\":93840359,\"failedControls\":1826541454,\"skippedControls\":691653578,\"unsupportedControls\":405337560},\"id\":\"uoxtfnressfepgck\",\"name\":\"cjmgvsnvbtqdxfm\",\"type\":\"ym\"}]}";
+            = "{\"value\":[{\"properties\":{\"state\":\"Failed\",\"passedControls\":886329823,\"failedControls\":2060801349,\"skippedControls\":935177552,\"unsupportedControls\":664236898},\"id\":\"kakzwhpjlwy\",\"name\":\"edznmxrfomckewv\",\"type\":\"yifop\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,7 +33,7 @@ public final class RegulatoryComplianceStandardsListMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<RegulatoryComplianceStandard> response
-            = manager.regulatoryComplianceStandards().list("vgp", com.azure.core.util.Context.NONE);
+            = manager.regulatoryComplianceStandards().list("gyedzfzqi", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals(State.FAILED, response.iterator().next().state());
     }

@@ -12,22 +12,22 @@ public final class DefenderCspmGcpOfferingDataSensitivityDiscoveryTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DefenderCspmGcpOfferingDataSensitivityDiscovery model = BinaryData.fromString(
-            "{\"enabled\":false,\"workloadIdentityProviderId\":\"w\",\"serviceAccountEmailAddress\":\"ggicwnxhtfmcqbs\"}")
+            "{\"enabled\":false,\"workloadIdentityProviderId\":\"piilhvtozy\",\"serviceAccountEmailAddress\":\"jjnxkby\"}")
             .toObject(DefenderCspmGcpOfferingDataSensitivityDiscovery.class);
         Assertions.assertEquals(false, model.enabled());
-        Assertions.assertEquals("w", model.workloadIdentityProviderId());
-        Assertions.assertEquals("ggicwnxhtfmcqbs", model.serviceAccountEmailAddress());
+        Assertions.assertEquals("piilhvtozy", model.workloadIdentityProviderId());
+        Assertions.assertEquals("jjnxkby", model.serviceAccountEmailAddress());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DefenderCspmGcpOfferingDataSensitivityDiscovery model
             = new DefenderCspmGcpOfferingDataSensitivityDiscovery().withEnabled(false)
-                .withWorkloadIdentityProviderId("w")
-                .withServiceAccountEmailAddress("ggicwnxhtfmcqbs");
+                .withWorkloadIdentityProviderId("piilhvtozy")
+                .withServiceAccountEmailAddress("jjnxkby");
         model = BinaryData.fromObject(model).toObject(DefenderCspmGcpOfferingDataSensitivityDiscovery.class);
         Assertions.assertEquals(false, model.enabled());
-        Assertions.assertEquals("w", model.workloadIdentityProviderId());
-        Assertions.assertEquals("ggicwnxhtfmcqbs", model.serviceAccountEmailAddress());
+        Assertions.assertEquals("piilhvtozy", model.workloadIdentityProviderId());
+        Assertions.assertEquals("jjnxkby", model.serviceAccountEmailAddress());
     }
 }

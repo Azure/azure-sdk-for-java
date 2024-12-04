@@ -5,13 +5,18 @@
 package com.azure.resourcemanager.security.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.security.models.Enforce;
 import com.azure.resourcemanager.security.models.Extension;
 import com.azure.resourcemanager.security.models.Inherited;
 import com.azure.resourcemanager.security.models.PricingTier;
 import com.azure.resourcemanager.security.models.ResourcesCoverageStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -20,71 +25,74 @@ import java.util.List;
  * Pricing properties for the relevant scope.
  */
 @Fluent
-public final class PricingProperties {
+public final class PricingProperties implements JsonSerializable<PricingProperties> {
     /*
-     * Indicates whether the Defender plan is enabled on the selected scope. Microsoft Defender for Cloud is provided in two pricing tiers: free and standard. The standard tier offers advanced security capabilities, while the free tier offers basic security features.
+     * Indicates whether the Defender plan is enabled on the selected scope. Microsoft Defender for Cloud is provided in
+     * two pricing tiers: free and standard. The standard tier offers advanced security capabilities, while the free
+     * tier offers basic security features.
      */
-    @JsonProperty(value = "pricingTier", required = true)
     private PricingTier pricingTier;
 
     /*
-     * The sub-plan selected for a Standard pricing configuration, when more than one sub-plan is available. Each sub-plan enables a set of security features. When not specified, full plan is applied. For VirtualMachines plan, available sub plans are 'P1' & 'P2', where for resource level only 'P1' sub plan is supported.
+     * The sub-plan selected for a Standard pricing configuration, when more than one sub-plan is available. Each
+     * sub-plan enables a set of security features. When not specified, full plan is applied. For VirtualMachines plan,
+     * available sub plans are 'P1' & 'P2', where for resource level only 'P1' sub plan is supported.
      */
-    @JsonProperty(value = "subPlan")
     private String subPlan;
 
     /*
      * The duration left for the subscriptions free trial period - in ISO 8601 format (e.g. P3Y6M4DT12H30M5S).
      */
-    @JsonProperty(value = "freeTrialRemainingTime", access = JsonProperty.Access.WRITE_ONLY)
     private Duration freeTrialRemainingTime;
 
     /*
-     * Optional. If `pricingTier` is `Standard` then this property holds the date of the last time the `pricingTier` was set to `Standard`, when available (e.g 2023-03-01T12:42:42.1921106Z).
+     * Optional. If `pricingTier` is `Standard` then this property holds the date of the last time the `pricingTier` was
+     * set to `Standard`, when available (e.g 2023-03-01T12:42:42.1921106Z).
      */
-    @JsonProperty(value = "enablementTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime enablementTime;
 
     /*
-     * If set to "False", it allows the descendants of this scope to override the pricing configuration set on this scope (allows setting inherited="False"). If set to "True", it prevents overrides and forces this pricing configuration on all the descendants of this scope. This field is only available for subscription-level pricing.
+     * If set to "False", it allows the descendants of this scope to override the pricing configuration set on this
+     * scope (allows setting inherited="False"). If set to "True", it prevents overrides and forces this pricing
+     * configuration on all the descendants of this scope. This field is only available for subscription-level pricing.
      */
-    @JsonProperty(value = "enforce")
     private Enforce enforce;
 
     /*
-     * "inherited" = "True" indicates that the current scope inherits its pricing configuration from its parent. The ID of the parent scope that provides the inherited configuration is displayed in the "inheritedFrom" field. On the other hand, "inherited" = "False" indicates that the current scope has its own pricing configuration explicitly set, and does not inherit from its parent. This field is read only and available only for resource-level pricing.
+     * "inherited" = "True" indicates that the current scope inherits its pricing configuration from its parent. The ID
+     * of the parent scope that provides the inherited configuration is displayed in the "inheritedFrom" field. On the
+     * other hand, "inherited" = "False" indicates that the current scope has its own pricing configuration explicitly
+     * set, and does not inherit from its parent. This field is read only and available only for resource-level pricing.
      */
-    @JsonProperty(value = "inherited", access = JsonProperty.Access.WRITE_ONLY)
     private Inherited inherited;
 
     /*
-     * The id of the scope inherited from. "Null" if not inherited. This field is only available for resource-level pricing.
+     * The id of the scope inherited from. "Null" if not inherited. This field is only available for resource-level
+     * pricing.
      */
-    @JsonProperty(value = "inheritedFrom", access = JsonProperty.Access.WRITE_ONLY)
     private String inheritedFrom;
 
     /*
-     * This field is available for subscription-level only, and reflects the coverage status of the resources under the subscription. Please note: The "pricingTier" field reflects the plan status of the subscription. However, since the plan status can also be defined at the resource level, there might be misalignment between the subscription's plan status and the resource status. This field helps indicate the coverage status of the resources.
+     * This field is available for subscription-level only, and reflects the coverage status of the resources under the
+     * subscription. Please note: The "pricingTier" field reflects the plan status of the subscription. However, since
+     * the plan status can also be defined at the resource level, there might be misalignment between the subscription's
+     * plan status and the resource status. This field helps indicate the coverage status of the resources.
      */
-    @JsonProperty(value = "resourcesCoverageStatus", access = JsonProperty.Access.WRITE_ONLY)
     private ResourcesCoverageStatus resourcesCoverageStatus;
 
     /*
      * Optional. List of extensions offered under a plan.
      */
-    @JsonProperty(value = "extensions")
     private List<Extension> extensions;
 
     /*
      * Optional. True if the plan is deprecated. If there are replacing plans they will appear in `replacedBy` property
      */
-    @JsonProperty(value = "deprecated", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean deprecated;
 
     /*
      * Optional. List of plans that replace this plan. This property exists only if this plan is deprecated.
      */
-    @JsonProperty(value = "replacedBy", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> replacedBy;
 
     /**
@@ -281,4 +289,69 @@ public final class PricingProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(PricingProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("pricingTier", this.pricingTier == null ? null : this.pricingTier.toString());
+        jsonWriter.writeStringField("subPlan", this.subPlan);
+        jsonWriter.writeStringField("enforce", this.enforce == null ? null : this.enforce.toString());
+        jsonWriter.writeArrayField("extensions", this.extensions, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PricingProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PricingProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PricingProperties.
+     */
+    public static PricingProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PricingProperties deserializedPricingProperties = new PricingProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("pricingTier".equals(fieldName)) {
+                    deserializedPricingProperties.pricingTier = PricingTier.fromString(reader.getString());
+                } else if ("subPlan".equals(fieldName)) {
+                    deserializedPricingProperties.subPlan = reader.getString();
+                } else if ("freeTrialRemainingTime".equals(fieldName)) {
+                    deserializedPricingProperties.freeTrialRemainingTime
+                        = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                } else if ("enablementTime".equals(fieldName)) {
+                    deserializedPricingProperties.enablementTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("enforce".equals(fieldName)) {
+                    deserializedPricingProperties.enforce = Enforce.fromString(reader.getString());
+                } else if ("inherited".equals(fieldName)) {
+                    deserializedPricingProperties.inherited = Inherited.fromString(reader.getString());
+                } else if ("inheritedFrom".equals(fieldName)) {
+                    deserializedPricingProperties.inheritedFrom = reader.getString();
+                } else if ("resourcesCoverageStatus".equals(fieldName)) {
+                    deserializedPricingProperties.resourcesCoverageStatus
+                        = ResourcesCoverageStatus.fromString(reader.getString());
+                } else if ("extensions".equals(fieldName)) {
+                    List<Extension> extensions = reader.readArray(reader1 -> Extension.fromJson(reader1));
+                    deserializedPricingProperties.extensions = extensions;
+                } else if ("deprecated".equals(fieldName)) {
+                    deserializedPricingProperties.deprecated = reader.getNullable(JsonReader::getBoolean);
+                } else if ("replacedBy".equals(fieldName)) {
+                    List<String> replacedBy = reader.readArray(reader1 -> reader1.getString());
+                    deserializedPricingProperties.replacedBy = replacedBy;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPricingProperties;
+        });
+    }
 }

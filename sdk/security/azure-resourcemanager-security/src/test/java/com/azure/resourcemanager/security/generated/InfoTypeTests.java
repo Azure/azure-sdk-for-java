@@ -13,21 +13,21 @@ public final class InfoTypeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         InfoType model = BinaryData.fromString(
-            "{\"name\":\"nhdwdigumbnra\",\"id\":\"2cdaf3ed-c8a8-46a6-8deb-5b8e0a640b5a\",\"description\":\"zptjazysd\"}")
+            "{\"name\":\"nhdwdigumbnra\",\"id\":\"9ac14dec-9d87-40b6-8c2e-210dcb890df8\",\"description\":\"zptjazysd\"}")
             .toObject(InfoType.class);
         Assertions.assertEquals("nhdwdigumbnra", model.name());
-        Assertions.assertEquals(UUID.fromString("2cdaf3ed-c8a8-46a6-8deb-5b8e0a640b5a"), model.id());
+        Assertions.assertEquals(UUID.fromString("9ac14dec-9d87-40b6-8c2e-210dcb890df8"), model.id());
         Assertions.assertEquals("zptjazysd", model.description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         InfoType model = new InfoType().withName("nhdwdigumbnra")
-            .withId(UUID.fromString("2cdaf3ed-c8a8-46a6-8deb-5b8e0a640b5a"))
+            .withId(UUID.fromString("9ac14dec-9d87-40b6-8c2e-210dcb890df8"))
             .withDescription("zptjazysd");
         model = BinaryData.fromObject(model).toObject(InfoType.class);
         Assertions.assertEquals("nhdwdigumbnra", model.name());
-        Assertions.assertEquals(UUID.fromString("2cdaf3ed-c8a8-46a6-8deb-5b8e0a640b5a"), model.id());
+        Assertions.assertEquals(UUID.fromString("9ac14dec-9d87-40b6-8c2e-210dcb890df8"), model.id());
         Assertions.assertEquals("zptjazysd", model.description());
     }
 }

@@ -28,7 +28,7 @@ public final class AlertsUpdateResourceGroupLevelStateToInProgressWithResponseMo
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.alerts()
-            .updateResourceGroupLevelStateToInProgressWithResponse("uxd", "pksgo", "bunvnjql",
+            .updateResourceGroupLevelStateToInProgressWithResponse("dtacvs", "nssxylsui", "adohsj",
                 com.azure.core.util.Context.NONE);
 
     }

@@ -29,7 +29,7 @@ public final class TasksUpdateSubscriptionLevelTaskStateWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.tasks()
-            .updateSubscriptionLevelTaskStateWithResponse("h", "bsn", TaskUpdateActionType.ACTIVATE,
+            .updateSubscriptionLevelTaskStateWithResponse("qtbhtr", "zpzlpryf", TaskUpdateActionType.RESOLVE,
                 com.azure.core.util.Context.NONE);
 
     }

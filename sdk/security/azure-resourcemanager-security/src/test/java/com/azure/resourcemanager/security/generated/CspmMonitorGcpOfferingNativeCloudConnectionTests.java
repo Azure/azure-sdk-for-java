@@ -12,19 +12,19 @@ public final class CspmMonitorGcpOfferingNativeCloudConnectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CspmMonitorGcpOfferingNativeCloudConnection model = BinaryData
-            .fromString("{\"workloadIdentityProviderId\":\"jwyblvtbdmvsb\",\"serviceAccountEmailAddress\":\"daelqpv\"}")
+            .fromString("{\"workloadIdentityProviderId\":\"hp\",\"serviceAccountEmailAddress\":\"wvyldqpzf\"}")
             .toObject(CspmMonitorGcpOfferingNativeCloudConnection.class);
-        Assertions.assertEquals("jwyblvtbdmvsb", model.workloadIdentityProviderId());
-        Assertions.assertEquals("daelqpv", model.serviceAccountEmailAddress());
+        Assertions.assertEquals("hp", model.workloadIdentityProviderId());
+        Assertions.assertEquals("wvyldqpzf", model.serviceAccountEmailAddress());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CspmMonitorGcpOfferingNativeCloudConnection model
-            = new CspmMonitorGcpOfferingNativeCloudConnection().withWorkloadIdentityProviderId("jwyblvtbdmvsb")
-                .withServiceAccountEmailAddress("daelqpv");
+            = new CspmMonitorGcpOfferingNativeCloudConnection().withWorkloadIdentityProviderId("hp")
+                .withServiceAccountEmailAddress("wvyldqpzf");
         model = BinaryData.fromObject(model).toObject(CspmMonitorGcpOfferingNativeCloudConnection.class);
-        Assertions.assertEquals("jwyblvtbdmvsb", model.workloadIdentityProviderId());
-        Assertions.assertEquals("daelqpv", model.serviceAccountEmailAddress());
+        Assertions.assertEquals("hp", model.workloadIdentityProviderId());
+        Assertions.assertEquals("wvyldqpzf", model.serviceAccountEmailAddress());
     }
 }

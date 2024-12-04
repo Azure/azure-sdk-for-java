@@ -6,24 +6,27 @@ package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The JitNetworkAccessRequestVirtualMachine model.
  */
 @Fluent
-public final class JitNetworkAccessRequestVirtualMachine {
+public final class JitNetworkAccessRequestVirtualMachine
+    implements JsonSerializable<JitNetworkAccessRequestVirtualMachine> {
     /*
      * Resource ID of the virtual machine that is linked to this policy
      */
-    @JsonProperty(value = "id", required = true)
     private String id;
 
     /*
      * The ports that were opened for the virtual machine
      */
-    @JsonProperty(value = "ports", required = true)
     private List<JitNetworkAccessRequestPort> ports;
 
     /**
@@ -93,4 +96,47 @@ public final class JitNetworkAccessRequestVirtualMachine {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(JitNetworkAccessRequestVirtualMachine.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeArrayField("ports", this.ports, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of JitNetworkAccessRequestVirtualMachine from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of JitNetworkAccessRequestVirtualMachine if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the JitNetworkAccessRequestVirtualMachine.
+     */
+    public static JitNetworkAccessRequestVirtualMachine fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            JitNetworkAccessRequestVirtualMachine deserializedJitNetworkAccessRequestVirtualMachine
+                = new JitNetworkAccessRequestVirtualMachine();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedJitNetworkAccessRequestVirtualMachine.id = reader.getString();
+                } else if ("ports".equals(fieldName)) {
+                    List<JitNetworkAccessRequestPort> ports
+                        = reader.readArray(reader1 -> JitNetworkAccessRequestPort.fromJson(reader1));
+                    deserializedJitNetworkAccessRequestVirtualMachine.ports = ports;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedJitNetworkAccessRequestVirtualMachine;
+        });
+    }
 }

@@ -14,19 +14,19 @@ public final class AwsEnvironmentDataTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AwsEnvironmentData model = BinaryData.fromString(
-            "{\"environmentType\":\"AwsAccount\",\"organizationalData\":{\"organizationMembershipType\":\"AwsOrganizationalData\"},\"regions\":[\"pbfs\",\"eqbbewfcuqfpy\",\"xmzrmtmvwitu\",\"eyyjshcybwfuppox\"],\"accountName\":\"cmvouujxdiikmoxr\",\"scanInterval\":5742033824299739232}")
+            "{\"environmentType\":\"AwsAccount\",\"organizationalData\":{\"organizationMembershipType\":\"AwsOrganizationalData\"},\"regions\":[\"mjkztibniynts\"],\"accountName\":\"mfmeftvhkmoo\",\"scanInterval\":1505602616121658926}")
             .toObject(AwsEnvironmentData.class);
-        Assertions.assertEquals("pbfs", model.regions().get(0));
-        Assertions.assertEquals(5742033824299739232L, model.scanInterval());
+        Assertions.assertEquals("mjkztibniynts", model.regions().get(0));
+        Assertions.assertEquals(1505602616121658926L, model.scanInterval());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AwsEnvironmentData model = new AwsEnvironmentData().withOrganizationalData(new AwsOrganizationalData())
-            .withRegions(Arrays.asList("pbfs", "eqbbewfcuqfpy", "xmzrmtmvwitu", "eyyjshcybwfuppox"))
-            .withScanInterval(5742033824299739232L);
+            .withRegions(Arrays.asList("mjkztibniynts"))
+            .withScanInterval(1505602616121658926L);
         model = BinaryData.fromObject(model).toObject(AwsEnvironmentData.class);
-        Assertions.assertEquals("pbfs", model.regions().get(0));
-        Assertions.assertEquals(5742033824299739232L, model.scanInterval());
+        Assertions.assertEquals("mjkztibniynts", model.regions().get(0));
+        Assertions.assertEquals(1505602616121658926L, model.scanInterval());
     }
 }

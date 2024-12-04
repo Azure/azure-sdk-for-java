@@ -21,7 +21,7 @@ public final class TasksListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"state\":\"cucrcm\",\"creationTimeUtc\":\"2021-08-15T10:16:28Z\",\"securityTaskParameters\":{\"name\":\"qjiwifhbksldttoh\",\"\":{\"tpmglxkoikmtr\":\"datanaihtgsiqikvllr\"}},\"lastStateChangeTimeUtc\":\"2021-04-01T15:07:30Z\",\"subState\":\"kzawbunmpaklwzlw\"},\"id\":\"epr\",\"name\":\"ejzltka\",\"type\":\"zfjsxscbd\"}]}";
+            = "{\"value\":[{\"properties\":{\"state\":\"iggq\",\"creationTimeUtc\":\"2021-06-28T03:07:46Z\",\"securityTaskParameters\":{\"name\":\"cbuulpyufl\",\"\":{\"gimwdcsklkqnqv\":\"datashtujcyoh\"}},\"lastStateChangeTimeUtc\":\"2021-06-24T08:47:34Z\",\"subState\":\"mbzmecuy\"},\"id\":\"zwimbzayspz\",\"name\":\"rietvfp\",\"type\":\"mdzxp\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,8 +30,8 @@ public final class TasksListByResourceGroupMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<SecurityTask> response = manager.tasks()
-            .listByResourceGroup("nqliwkmzoj", "etyalht", "mknazgbjbhrpgiq", com.azure.core.util.Context.NONE);
+        PagedIterable<SecurityTask> response
+            = manager.tasks().listByResourceGroup("mdutzfk", "il", "oudccgndjg", com.azure.core.util.Context.NONE);
 
     }
 }

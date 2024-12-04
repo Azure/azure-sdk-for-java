@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.security.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * The rank of the sensitivity label.
  */
@@ -51,7 +48,6 @@ public enum Rank {
      * @param value the serialized value to parse.
      * @return the parsed Rank object, or null if unable to parse.
      */
-    @JsonCreator
     public static Rank fromString(String value) {
         if (value == null) {
             return null;
@@ -68,7 +64,6 @@ public enum Rank {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

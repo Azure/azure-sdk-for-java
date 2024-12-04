@@ -5,7 +5,7 @@
 package com.azure.resourcemanager.security.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.security.fluent.models.OnUploadProperties;
+import com.azure.resourcemanager.security.models.OnUploadProperties;
 import org.junit.jupiter.api.Assertions;
 
 public final class OnUploadPropertiesTests {

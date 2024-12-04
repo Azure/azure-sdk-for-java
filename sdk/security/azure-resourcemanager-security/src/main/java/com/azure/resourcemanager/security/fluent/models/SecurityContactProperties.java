@@ -5,44 +5,45 @@
 package com.azure.resourcemanager.security.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.security.models.NotificationsSource;
 import com.azure.resourcemanager.security.models.SecurityContactPropertiesNotificationsByRole;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Describes security contact properties.
  */
 @Fluent
-public final class SecurityContactProperties {
+public final class SecurityContactProperties implements JsonSerializable<SecurityContactProperties> {
     /*
-     * List of email addresses which will get notifications from Microsoft Defender for Cloud by the configurations defined in this security contact.
+     * List of email addresses which will get notifications from Microsoft Defender for Cloud by the configurations
+     * defined in this security contact.
      */
-    @JsonProperty(value = "emails")
     private String emails;
 
     /*
      * The security contact's phone number
      */
-    @JsonProperty(value = "phone")
     private String phone;
 
     /*
      * Indicates whether the security contact is enabled.
      */
-    @JsonProperty(value = "isEnabled")
     private Boolean isEnabled;
 
     /*
      * A collection of sources types which evaluate the email notification.
      */
-    @JsonProperty(value = "notificationsSources")
     private List<NotificationsSource> notificationsSources;
 
     /*
-     * Defines whether to send email notifications from Microsoft Defender for Cloud to persons with specific RBAC roles on the subscription.
+     * Defines whether to send email notifications from Microsoft Defender for Cloud to persons with specific RBAC roles
+     * on the subscription.
      */
-    @JsonProperty(value = "notificationsByRole")
     private SecurityContactPropertiesNotificationsByRole notificationsByRole;
 
     /**
@@ -168,5 +169,57 @@ public final class SecurityContactProperties {
         if (notificationsByRole() != null) {
             notificationsByRole().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("emails", this.emails);
+        jsonWriter.writeStringField("phone", this.phone);
+        jsonWriter.writeBooleanField("isEnabled", this.isEnabled);
+        jsonWriter.writeArrayField("notificationsSources", this.notificationsSources,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("notificationsByRole", this.notificationsByRole);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SecurityContactProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SecurityContactProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SecurityContactProperties.
+     */
+    public static SecurityContactProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SecurityContactProperties deserializedSecurityContactProperties = new SecurityContactProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("emails".equals(fieldName)) {
+                    deserializedSecurityContactProperties.emails = reader.getString();
+                } else if ("phone".equals(fieldName)) {
+                    deserializedSecurityContactProperties.phone = reader.getString();
+                } else if ("isEnabled".equals(fieldName)) {
+                    deserializedSecurityContactProperties.isEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("notificationsSources".equals(fieldName)) {
+                    List<NotificationsSource> notificationsSources
+                        = reader.readArray(reader1 -> NotificationsSource.fromJson(reader1));
+                    deserializedSecurityContactProperties.notificationsSources = notificationsSources;
+                } else if ("notificationsByRole".equals(fieldName)) {
+                    deserializedSecurityContactProperties.notificationsByRole
+                        = SecurityContactPropertiesNotificationsByRole.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSecurityContactProperties;
+        });
     }
 }

@@ -6,37 +6,37 @@ package com.azure.resourcemanager.security.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.security.models.ProvisioningState;
 import com.azure.resourcemanager.security.models.SecurityFamily;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * The SecuritySolutionProperties model.
  */
 @Fluent
-public final class SecuritySolutionProperties {
+public final class SecuritySolutionProperties implements JsonSerializable<SecuritySolutionProperties> {
     /*
      * The security family of the security solution
      */
-    @JsonProperty(value = "securityFamily", required = true)
     private SecurityFamily securityFamily;
 
     /*
      * The security family provisioning State
      */
-    @JsonProperty(value = "provisioningState", required = true)
     private ProvisioningState provisioningState;
 
     /*
      * The security solutions' template
      */
-    @JsonProperty(value = "template", required = true)
     private String template;
 
     /*
      * The security solutions' status
      */
-    @JsonProperty(value = "protectionStatus", required = true)
     private String protectionStatus;
 
     /**
@@ -154,4 +154,54 @@ public final class SecuritySolutionProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SecuritySolutionProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("securityFamily",
+            this.securityFamily == null ? null : this.securityFamily.toString());
+        jsonWriter.writeStringField("provisioningState",
+            this.provisioningState == null ? null : this.provisioningState.toString());
+        jsonWriter.writeStringField("template", this.template);
+        jsonWriter.writeStringField("protectionStatus", this.protectionStatus);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SecuritySolutionProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SecuritySolutionProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SecuritySolutionProperties.
+     */
+    public static SecuritySolutionProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SecuritySolutionProperties deserializedSecuritySolutionProperties = new SecuritySolutionProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("securityFamily".equals(fieldName)) {
+                    deserializedSecuritySolutionProperties.securityFamily
+                        = SecurityFamily.fromString(reader.getString());
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedSecuritySolutionProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("template".equals(fieldName)) {
+                    deserializedSecuritySolutionProperties.template = reader.getString();
+                } else if ("protectionStatus".equals(fieldName)) {
+                    deserializedSecuritySolutionProperties.protectionStatus = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSecuritySolutionProperties;
+        });
+    }
 }

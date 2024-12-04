@@ -9,7 +9,8 @@ package com.azure.resourcemanager.security.generated;
  */
 public final class IotSecuritySolutionsAnalyticsRecommendationGetSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2019-08-01/examples/IoTSecuritySolutionsAnalytics/GetIoTSecuritySolutionsSecurityRecommendation.json
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2019-08-01/examples/
+     * IoTSecuritySolutionsAnalytics/GetIoTSecuritySolutionsSecurityRecommendation.json
      */
     /**
      * Sample code: Get the aggregated security analytics recommendation of yours IoT Security solution.

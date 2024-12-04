@@ -21,7 +21,7 @@ public final class CustomEntityStoreAssignmentsGetByResourceGroupWithResponseMoc
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"principal\":\"nfgyweo\",\"entityStoreDatabaseLink\":\"epgcmahiwf\"},\"id\":\"yawkch\",\"name\":\"apitskshfyftt\",\"type\":\"bjepzwhj\"}";
+            = "{\"properties\":{\"principal\":\"ssgfenffdxbvwfqj\",\"entityStoreDatabaseLink\":\"ivdrijanxn\"},\"id\":\"muvardlmzjot\",\"name\":\"r\",\"type\":\"muhcuhtuzl\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,10 +31,10 @@ public final class CustomEntityStoreAssignmentsGetByResourceGroupWithResponseMoc
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         CustomEntityStoreAssignment response = manager.customEntityStoreAssignments()
-            .getByResourceGroupWithResponse("qwtqszzgyksik", "wanvmwdvgjqcrbko", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("udma", "swtvd", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("nfgyweo", response.principal());
-        Assertions.assertEquals("epgcmahiwf", response.entityStoreDatabaseLink());
+        Assertions.assertEquals("ssgfenffdxbvwfqj", response.principal());
+        Assertions.assertEquals("ivdrijanxn", response.entityStoreDatabaseLink());
     }
 }

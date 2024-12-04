@@ -21,7 +21,7 @@ public final class TopologiesListByHomeRegionMockTests {
     @Test
     public void testListByHomeRegion() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"calculatedDateTime\":\"2021-05-25T08:24:35Z\",\"topologyResources\":[{\"resourceId\":\"elxtpfcya\",\"severity\":\"xdwrvyvtkmxvz\",\"recommendationsExist\":false,\"networkZones\":\"ugf\",\"topologyScore\":1147065199,\"location\":\"gkflv\",\"parents\":[{},{}],\"children\":[{},{},{},{}]}]},\"location\":\"uzwbkqcgzygtdj\",\"id\":\"tbarpt\",\"name\":\"ur\",\"type\":\"uoyyumhzpstocq\"}]}";
+            = "{\"value\":[{\"properties\":{\"calculatedDateTime\":\"2021-07-02T20:19:53Z\",\"topologyResources\":[{\"resourceId\":\"gkqyjkotypcj\",\"severity\":\"yzzl\",\"recommendationsExist\":false,\"networkZones\":\"zppdbrbmcxb\",\"topologyScore\":1205264723,\"location\":\"smivapes\",\"parents\":[{},{},{},{}],\"children\":[{},{},{}]},{\"resourceId\":\"jr\",\"severity\":\"sfv\",\"recommendationsExist\":false,\"networkZones\":\"xtmblm\",\"topologyScore\":893281173,\"location\":\"u\",\"parents\":[{},{},{}],\"children\":[{}]},{\"resourceId\":\"prbxjtezujtou\",\"severity\":\"de\",\"recommendationsExist\":false,\"networkZones\":\"ssrjciex\",\"topologyScore\":772565033,\"location\":\"tgtg\",\"parents\":[{},{},{}],\"children\":[{},{}]},{\"resourceId\":\"gsks\",\"severity\":\"sxehaxi\",\"recommendationsExist\":true,\"networkZones\":\"xolknshgwakptb\",\"topologyScore\":3201872,\"location\":\"lmnlbnatl\",\"parents\":[{},{},{},{}],\"children\":[{},{}]}]},\"location\":\"dkxo\",\"id\":\"tdzzvhbujkah\",\"name\":\"p\",\"type\":\"qwojdz\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,7 +31,7 @@ public final class TopologiesListByHomeRegionMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<TopologyResource> response
-            = manager.topologies().listByHomeRegion("eqzvdbb", com.azure.core.util.Context.NONE);
+            = manager.topologies().listByHomeRegion("einvzsodm", com.azure.core.util.Context.NONE);
 
     }
 }

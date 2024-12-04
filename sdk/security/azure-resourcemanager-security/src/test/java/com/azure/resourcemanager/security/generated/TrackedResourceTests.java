@@ -14,26 +14,25 @@ public final class TrackedResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TrackedResource model = BinaryData.fromString(
-            "{\"location\":\"cxqqxmyzklaoanp\",\"kind\":\"rvmzrqra\",\"etag\":\"divznl\",\"tags\":{\"jtgzgtaiywbq\":\"lkskhjqjpvbaih\",\"mhljqlxspm\":\"roigbsfsgsaenwld\",\"ryldsxeb\":\"jc\",\"hefr\":\"hsxrznmgsdaluyc\"},\"id\":\"hs\",\"name\":\"uerbgpxebjl\",\"type\":\"dcaytujraxd\"}")
+            "{\"location\":\"ookyfoz\",\"kind\":\"nzxbyp\",\"etag\":\"pgaixwrgrkkderf\",\"tags\":{\"g\":\"qikwepw\",\"d\":\"gicwnxhtfmcqbs\",\"djxh\":\"pgchzpgfqum\",\"v\":\"ghgodkynrceq\"},\"id\":\"dbd\",\"name\":\"mmxjdnajuopj\",\"type\":\"yqmkwlh\"}")
             .toObject(TrackedResource.class);
-        Assertions.assertEquals("cxqqxmyzklaoanp", model.location());
-        Assertions.assertEquals("rvmzrqra", model.kind());
-        Assertions.assertEquals("divznl", model.etag());
-        Assertions.assertEquals("lkskhjqjpvbaih", model.tags().get("jtgzgtaiywbq"));
+        Assertions.assertEquals("ookyfoz", model.location());
+        Assertions.assertEquals("nzxbyp", model.kind());
+        Assertions.assertEquals("pgaixwrgrkkderf", model.etag());
+        Assertions.assertEquals("qikwepw", model.tags().get("g"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TrackedResource model = new TrackedResource().withLocation("cxqqxmyzklaoanp")
-            .withKind("rvmzrqra")
-            .withEtag("divznl")
-            .withTags(mapOf("jtgzgtaiywbq", "lkskhjqjpvbaih", "mhljqlxspm", "roigbsfsgsaenwld", "ryldsxeb", "jc",
-                "hefr", "hsxrznmgsdaluyc"));
+        TrackedResource model = new TrackedResource().withLocation("ookyfoz")
+            .withKind("nzxbyp")
+            .withEtag("pgaixwrgrkkderf")
+            .withTags(mapOf("g", "qikwepw", "d", "gicwnxhtfmcqbs", "djxh", "pgchzpgfqum", "v", "ghgodkynrceq"));
         model = BinaryData.fromObject(model).toObject(TrackedResource.class);
-        Assertions.assertEquals("cxqqxmyzklaoanp", model.location());
-        Assertions.assertEquals("rvmzrqra", model.kind());
-        Assertions.assertEquals("divznl", model.etag());
-        Assertions.assertEquals("lkskhjqjpvbaih", model.tags().get("jtgzgtaiywbq"));
+        Assertions.assertEquals("ookyfoz", model.location());
+        Assertions.assertEquals("nzxbyp", model.kind());
+        Assertions.assertEquals("pgaixwrgrkkderf", model.etag());
+        Assertions.assertEquals("qikwepw", model.tags().get("g"));
     }
 
     // Use "Map.of" if available

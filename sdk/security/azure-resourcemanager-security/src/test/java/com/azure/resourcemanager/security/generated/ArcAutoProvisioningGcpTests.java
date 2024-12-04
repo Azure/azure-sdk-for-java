@@ -12,22 +12,21 @@ import org.junit.jupiter.api.Assertions;
 public final class ArcAutoProvisioningGcpTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ArcAutoProvisioningGcp model = BinaryData.fromString(
-            "{\"enabled\":false,\"configuration\":{\"proxy\":\"dklotcsubmzo\",\"privateLinkScope\":\"svobchkxfp\"}}")
+        ArcAutoProvisioningGcp model = BinaryData
+            .fromString("{\"enabled\":false,\"configuration\":{\"proxy\":\"fcnlrtbfi\",\"privateLinkScope\":\"z\"}}")
             .toObject(ArcAutoProvisioningGcp.class);
         Assertions.assertEquals(false, model.enabled());
-        Assertions.assertEquals("dklotcsubmzo", model.configuration().proxy());
-        Assertions.assertEquals("svobchkxfp", model.configuration().privateLinkScope());
+        Assertions.assertEquals("fcnlrtbfi", model.configuration().proxy());
+        Assertions.assertEquals("z", model.configuration().privateLinkScope());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ArcAutoProvisioningGcp model = new ArcAutoProvisioningGcp().withEnabled(false)
-            .withConfiguration(
-                new ArcAutoProvisioningConfiguration().withProxy("dklotcsubmzo").withPrivateLinkScope("svobchkxfp"));
+            .withConfiguration(new ArcAutoProvisioningConfiguration().withProxy("fcnlrtbfi").withPrivateLinkScope("z"));
         model = BinaryData.fromObject(model).toObject(ArcAutoProvisioningGcp.class);
         Assertions.assertEquals(false, model.enabled());
-        Assertions.assertEquals("dklotcsubmzo", model.configuration().proxy());
-        Assertions.assertEquals("svobchkxfp", model.configuration().privateLinkScope());
+        Assertions.assertEquals("fcnlrtbfi", model.configuration().proxy());
+        Assertions.assertEquals("z", model.configuration().privateLinkScope());
     }
 }

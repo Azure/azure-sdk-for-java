@@ -12,23 +12,23 @@ public final class DefenderForContainersGcpOfferingMdcContainersAgentlessDiscove
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DefenderForContainersGcpOfferingMdcContainersAgentlessDiscoveryK8S model = BinaryData.fromString(
-            "{\"enabled\":true,\"workloadIdentityProviderId\":\"owly\",\"serviceAccountEmailAddress\":\"zmudsqcm\"}")
+            "{\"enabled\":false,\"workloadIdentityProviderId\":\"qjsvep\",\"serviceAccountEmailAddress\":\"htleberpyljek\"}")
             .toObject(DefenderForContainersGcpOfferingMdcContainersAgentlessDiscoveryK8S.class);
-        Assertions.assertEquals(true, model.enabled());
-        Assertions.assertEquals("owly", model.workloadIdentityProviderId());
-        Assertions.assertEquals("zmudsqcm", model.serviceAccountEmailAddress());
+        Assertions.assertEquals(false, model.enabled());
+        Assertions.assertEquals("qjsvep", model.workloadIdentityProviderId());
+        Assertions.assertEquals("htleberpyljek", model.serviceAccountEmailAddress());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DefenderForContainersGcpOfferingMdcContainersAgentlessDiscoveryK8S model
-            = new DefenderForContainersGcpOfferingMdcContainersAgentlessDiscoveryK8S().withEnabled(true)
-                .withWorkloadIdentityProviderId("owly")
-                .withServiceAccountEmailAddress("zmudsqcm");
+            = new DefenderForContainersGcpOfferingMdcContainersAgentlessDiscoveryK8S().withEnabled(false)
+                .withWorkloadIdentityProviderId("qjsvep")
+                .withServiceAccountEmailAddress("htleberpyljek");
         model = BinaryData.fromObject(model)
             .toObject(DefenderForContainersGcpOfferingMdcContainersAgentlessDiscoveryK8S.class);
-        Assertions.assertEquals(true, model.enabled());
-        Assertions.assertEquals("owly", model.workloadIdentityProviderId());
-        Assertions.assertEquals("zmudsqcm", model.serviceAccountEmailAddress());
+        Assertions.assertEquals(false, model.enabled());
+        Assertions.assertEquals("qjsvep", model.workloadIdentityProviderId());
+        Assertions.assertEquals("htleberpyljek", model.serviceAccountEmailAddress());
     }
 }

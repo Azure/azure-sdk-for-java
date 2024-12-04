@@ -22,7 +22,7 @@ public final class SecureScoreControlsListBySecureScoreMockTests {
     @Test
     public void testListBySecureScore() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"displayName\":\"wjsba\",\"score\":{\"max\":1797222701,\"current\":73.83149851676426,\"percentage\":25.390317222265125},\"healthyResourceCount\":1509353774,\"unhealthyResourceCount\":2053007884,\"notApplicableResourceCount\":616800165,\"weight\":1063123898853327288,\"definition\":{\"properties\":{\"displayName\":\"i\",\"description\":\"onkrni\",\"maxScore\":834064746,\"source\":{\"sourceType\":\"BuiltIn\"},\"assessmentDefinitions\":[{},{}]},\"id\":\"itn\",\"name\":\"paptgvnaqyjuk\",\"type\":\"ajnnewltonop\"}},\"id\":\"femiwfhhawbabhz\",\"name\":\"fcdi\",\"type\":\"qnxyd\"}]}";
+            = "{\"value\":[{\"properties\":{\"displayName\":\"evzcrrwnk\",\"score\":{\"max\":394058607,\"current\":86.30703637308832,\"percentage\":59.99748313045367},\"healthyResourceCount\":1179627549,\"unhealthyResourceCount\":751615153,\"notApplicableResourceCount\":421067563,\"weight\":5202105265721135231,\"definition\":{\"properties\":{\"displayName\":\"aqh\",\"description\":\"awgqrwuh\",\"maxScore\":720607307,\"source\":{\"sourceType\":\"Custom\"},\"assessmentDefinitions\":[{},{},{}]},\"id\":\"pbcbkcpym\",\"name\":\"djieask\",\"type\":\"kqclnfusr\"}},\"id\":\"noskkhbmj\",\"name\":\"hlyyuah\",\"type\":\"yeikbv\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,7 +32,7 @@ public final class SecureScoreControlsListBySecureScoreMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<SecureScoreControlDetails> response = manager.secureScoreControls()
-            .listBySecureScore("so", ExpandControlsEnum.DEFINITION, com.azure.core.util.Context.NONE);
+            .listBySecureScore("v", ExpandControlsEnum.DEFINITION, com.azure.core.util.Context.NONE);
 
     }
 }

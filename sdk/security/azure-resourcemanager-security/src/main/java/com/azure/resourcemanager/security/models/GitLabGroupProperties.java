@@ -5,24 +5,27 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
 /**
  * GitLab Group properties.
  */
 @Fluent
-public final class GitLabGroupProperties {
+public final class GitLabGroupProperties implements JsonSerializable<GitLabGroupProperties> {
     /*
-     * Gets or sets resource status message.
+     * Gets the resource status message.
      */
-    @JsonProperty(value = "provisioningStatusMessage", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningStatusMessage;
 
     /*
-     * Gets or sets time when resource was last checked.
+     * Gets the time when resource was last checked.
      */
-    @JsonProperty(value = "provisioningStatusUpdateTimeUtc", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime provisioningStatusUpdateTimeUtc;
 
     /*
@@ -36,7 +39,6 @@ public final class GitLabGroupProperties {
      * DeletionSuccess - Deletion successful.
      * DeletionFailure - Deletion failure.
      */
-    @JsonProperty(value = "provisioningState")
     private DevOpsProvisioningState provisioningState;
 
     /*
@@ -44,32 +46,30 @@ public final class GitLabGroupProperties {
      * 
      * This contains the entire namespace hierarchy where namespaces are separated by the '$' character.
      */
-    @JsonProperty(value = "fullyQualifiedName", access = JsonProperty.Access.WRITE_ONLY)
     private String fullyQualifiedName;
 
     /*
      * Gets or sets the human readable fully-qualified name of the Group object.
      * 
-     * This contains the entire namespace hierarchy as seen on GitLab UI where namespaces are separated by the '/' character.
+     * This contains the entire namespace hierarchy as seen on GitLab UI where namespaces are separated by the '/'
+     * character.
      */
-    @JsonProperty(value = "fullyQualifiedFriendlyName", access = JsonProperty.Access.WRITE_ONLY)
     private String fullyQualifiedFriendlyName;
 
     /*
      * Gets or sets the url of the GitLab Group.
      */
-    @JsonProperty(value = "url", access = JsonProperty.Access.WRITE_ONLY)
     private String url;
 
     /*
      * Details about resource onboarding status across all connectors.
      * 
-     * OnboardedByOtherConnector - this resource has already been onboarded to another connector. This is only applicable to top-level resources.
+     * OnboardedByOtherConnector - this resource has already been onboarded to another connector. This is only
+     * applicable to top-level resources.
      * Onboarded - this resource has already been onboarded by the specified connector.
      * NotOnboarded - this resource has not been onboarded to any connector.
      * NotApplicable - the onboarding state is not applicable to the current endpoint.
      */
-    @JsonProperty(value = "onboardingState")
     private OnboardingState onboardingState;
 
     /**
@@ -79,7 +79,7 @@ public final class GitLabGroupProperties {
     }
 
     /**
-     * Get the provisioningStatusMessage property: Gets or sets resource status message.
+     * Get the provisioningStatusMessage property: Gets the resource status message.
      * 
      * @return the provisioningStatusMessage value.
      */
@@ -88,7 +88,7 @@ public final class GitLabGroupProperties {
     }
 
     /**
-     * Get the provisioningStatusUpdateTimeUtc property: Gets or sets time when resource was last checked.
+     * Get the provisioningStatusUpdateTimeUtc property: Gets the time when resource was last checked.
      * 
      * @return the provisioningStatusUpdateTimeUtc value.
      */
@@ -111,25 +111,6 @@ public final class GitLabGroupProperties {
      */
     public DevOpsProvisioningState provisioningState() {
         return this.provisioningState;
-    }
-
-    /**
-     * Set the provisioningState property: The provisioning state of the resource.
-     * 
-     * Pending - Provisioning pending.
-     * Failed - Provisioning failed.
-     * Succeeded - Successful provisioning.
-     * Canceled - Provisioning canceled.
-     * PendingDeletion - Deletion pending.
-     * DeletionSuccess - Deletion successful.
-     * DeletionFailure - Deletion failure.
-     * 
-     * @param provisioningState the provisioningState value to set.
-     * @return the GitLabGroupProperties object itself.
-     */
-    public GitLabGroupProperties withProvisioningState(DevOpsProvisioningState provisioningState) {
-        this.provisioningState = provisioningState;
-        return this;
     }
 
     /**
@@ -203,5 +184,56 @@ public final class GitLabGroupProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("onboardingState",
+            this.onboardingState == null ? null : this.onboardingState.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GitLabGroupProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GitLabGroupProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the GitLabGroupProperties.
+     */
+    public static GitLabGroupProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GitLabGroupProperties deserializedGitLabGroupProperties = new GitLabGroupProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningStatusMessage".equals(fieldName)) {
+                    deserializedGitLabGroupProperties.provisioningStatusMessage = reader.getString();
+                } else if ("provisioningStatusUpdateTimeUtc".equals(fieldName)) {
+                    deserializedGitLabGroupProperties.provisioningStatusUpdateTimeUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedGitLabGroupProperties.provisioningState
+                        = DevOpsProvisioningState.fromString(reader.getString());
+                } else if ("fullyQualifiedName".equals(fieldName)) {
+                    deserializedGitLabGroupProperties.fullyQualifiedName = reader.getString();
+                } else if ("fullyQualifiedFriendlyName".equals(fieldName)) {
+                    deserializedGitLabGroupProperties.fullyQualifiedFriendlyName = reader.getString();
+                } else if ("url".equals(fieldName)) {
+                    deserializedGitLabGroupProperties.url = reader.getString();
+                } else if ("onboardingState".equals(fieldName)) {
+                    deserializedGitLabGroupProperties.onboardingState = OnboardingState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGitLabGroupProperties;
+        });
     }
 }

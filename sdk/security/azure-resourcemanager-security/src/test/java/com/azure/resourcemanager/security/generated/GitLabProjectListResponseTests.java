@@ -6,7 +6,6 @@ package com.azure.resourcemanager.security.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.security.fluent.models.GitLabProjectInner;
-import com.azure.resourcemanager.security.models.DevOpsProvisioningState;
 import com.azure.resourcemanager.security.models.GitLabProjectListResponse;
 import com.azure.resourcemanager.security.models.GitLabProjectProperties;
 import com.azure.resourcemanager.security.models.OnboardingState;
@@ -17,28 +16,27 @@ public final class GitLabProjectListResponseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GitLabProjectListResponse model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningStatusMessage\":\"vfxlapjajodmkrr\",\"provisioningStatusUpdateTimeUtc\":\"2021-09-24T11:45:58Z\",\"provisioningState\":\"DeletionFailure\",\"fullyQualifiedName\":\"qokqlujqgirabwly\",\"fullyQualifiedFriendlyName\":\"chpqvctsfaeuhww\",\"fullyQualifiedParentGroupName\":\"nstvzuzhasup\",\"url\":\"p\",\"onboardingState\":\"Onboarded\"},\"id\":\"gzvzqazvbkarkp\",\"name\":\"gongr\",\"type\":\"atsyiysjqhenig\"},{\"properties\":{\"provisioningStatusMessage\":\"gubabyjde\",\"provisioningStatusUpdateTimeUtc\":\"2021-02-05T20:45:24Z\",\"provisioningState\":\"Succeeded\",\"fullyQualifiedName\":\"ydzjemexm\",\"fullyQualifiedFriendlyName\":\"kvmuwrxlniwmcp\",\"fullyQualifiedParentGroupName\":\"rdlhvdvmiphbe\",\"url\":\"qjzmhkdcl\",\"onboardingState\":\"Onboarded\"},\"id\":\"o\",\"name\":\"zfmunerkelux\",\"type\":\"shxzezb\"}],\"nextLink\":\"zudl\"}")
+            "{\"value\":[{\"properties\":{\"provisioningStatusMessage\":\"pcbbnzqcykna\",\"provisioningStatusUpdateTimeUtc\":\"2021-02-21T03:37:58Z\",\"provisioningState\":\"Canceled\",\"fullyQualifiedName\":\"icdhz\",\"fullyQualifiedFriendlyName\":\"ybww\",\"fullyQualifiedParentGroupName\":\"d\",\"url\":\"bid\",\"onboardingState\":\"NotApplicable\"},\"id\":\"wffplfmuvapc\",\"name\":\"ccrrvweyoxoyyu\",\"type\":\"phaimmoi\"},{\"properties\":{\"provisioningStatusMessage\":\"oshbragapyy\",\"provisioningStatusUpdateTimeUtc\":\"2021-05-08T08:14:40Z\",\"provisioningState\":\"DeletionFailure\",\"fullyQualifiedName\":\"pavbo\",\"fullyQualifiedFriendlyName\":\"ppdbwnupgahxkum\",\"fullyQualifiedParentGroupName\":\"jcaacfdmmcpugm\",\"url\":\"qepvufhbzeh\",\"onboardingState\":\"OnboardedByOtherConnector\"},\"id\":\"oqhnlb\",\"name\":\"nbldxeaclgschori\",\"type\":\"krsrrmoucs\"},{\"properties\":{\"provisioningStatusMessage\":\"puviyfcaabe\",\"provisioningStatusUpdateTimeUtc\":\"2021-02-18T03:11:59Z\",\"provisioningState\":\"Succeeded\",\"fullyQualifiedName\":\"vbmxuqibsx\",\"fullyQualifiedFriendlyName\":\"cudfbsfarfsiowl\",\"fullyQualifiedParentGroupName\":\"xnq\",\"url\":\"wgfstmhqykizm\",\"onboardingState\":\"Onboarded\"},\"id\":\"aoaf\",\"name\":\"luqvoxmycjimryv\",\"type\":\"gc\"},{\"properties\":{\"provisioningStatusMessage\":\"mzgwe\",\"provisioningStatusUpdateTimeUtc\":\"2021-09-14T09:19:36Z\",\"provisioningState\":\"Succeeded\",\"fullyQualifiedName\":\"efoh\",\"fullyQualifiedFriendlyName\":\"bvopwndyqle\",\"fullyQualifiedParentGroupName\":\"lklmtkhlo\",\"url\":\"x\",\"onboardingState\":\"NotOnboarded\"},\"id\":\"br\",\"name\":\"fjmzsyzfho\",\"type\":\"lhikcyychunsj\"}],\"nextLink\":\"jrtwsz\"}")
             .toObject(GitLabProjectListResponse.class);
-        Assertions.assertEquals(DevOpsProvisioningState.DELETION_FAILURE,
-            model.value().get(0).properties().provisioningState());
-        Assertions.assertEquals(OnboardingState.ONBOARDED, model.value().get(0).properties().onboardingState());
-        Assertions.assertEquals("zudl", model.nextLink());
+        Assertions.assertEquals(OnboardingState.NOT_APPLICABLE, model.value().get(0).properties().onboardingState());
+        Assertions.assertEquals("jrtwsz", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GitLabProjectListResponse model = new GitLabProjectListResponse().withValue(Arrays.asList(
-            new GitLabProjectInner().withProperties(
-                new GitLabProjectProperties().withProvisioningState(DevOpsProvisioningState.DELETION_FAILURE)
-                    .withOnboardingState(OnboardingState.ONBOARDED)),
-            new GitLabProjectInner()
-                .withProperties(new GitLabProjectProperties().withProvisioningState(DevOpsProvisioningState.SUCCEEDED)
-                    .withOnboardingState(OnboardingState.ONBOARDED))))
-            .withNextLink("zudl");
+        GitLabProjectListResponse model = new GitLabProjectListResponse()
+            .withValue(Arrays.asList(
+                new GitLabProjectInner()
+                    .withProperties(new GitLabProjectProperties().withOnboardingState(OnboardingState.NOT_APPLICABLE)),
+                new GitLabProjectInner().withProperties(
+                    new GitLabProjectProperties().withOnboardingState(OnboardingState.ONBOARDED_BY_OTHER_CONNECTOR)),
+                new GitLabProjectInner()
+                    .withProperties(new GitLabProjectProperties().withOnboardingState(OnboardingState.ONBOARDED)),
+                new GitLabProjectInner()
+                    .withProperties(new GitLabProjectProperties().withOnboardingState(OnboardingState.NOT_ONBOARDED))))
+            .withNextLink("jrtwsz");
         model = BinaryData.fromObject(model).toObject(GitLabProjectListResponse.class);
-        Assertions.assertEquals(DevOpsProvisioningState.DELETION_FAILURE,
-            model.value().get(0).properties().provisioningState());
-        Assertions.assertEquals(OnboardingState.ONBOARDED, model.value().get(0).properties().onboardingState());
-        Assertions.assertEquals("zudl", model.nextLink());
+        Assertions.assertEquals(OnboardingState.NOT_APPLICABLE, model.value().get(0).properties().onboardingState());
+        Assertions.assertEquals("jrtwsz", model.nextLink());
     }
 }

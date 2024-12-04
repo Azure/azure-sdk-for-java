@@ -14,7 +14,9 @@ import java.util.Arrays;
  */
 public final class JitNetworkAccessPoliciesInitiateSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/JitNetworkAccessPolicies/InitiateJitNetworkAccessPolicy_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/JitNetworkAccessPolicies/
+     * InitiateJitNetworkAccessPolicy_example.json
      */
     /**
      * Sample code: Initiate an action on a JIT network access policy.

@@ -9,7 +9,9 @@ package com.azure.resourcemanager.security.generated;
  */
 public final class SecuritySolutionsGetSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/SecuritySolutions/GetSecuritySolutionsResourceGroupLocation_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/SecuritySolutions/
+     * GetSecuritySolutionsResourceGroupLocation_example.json
      */
     /**
      * Sample code: Get a security solution from a security data location.

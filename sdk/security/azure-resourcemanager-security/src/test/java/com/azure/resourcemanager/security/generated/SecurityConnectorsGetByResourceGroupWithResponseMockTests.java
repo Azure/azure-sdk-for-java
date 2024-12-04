@@ -22,7 +22,7 @@ public final class SecurityConnectorsGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"hierarchyIdentifier\":\"seodtqfdrslzymqx\",\"hierarchyIdentifierTrialEndDate\":\"2021-06-11T04:38:46Z\",\"environmentName\":\"GCP\",\"offerings\":[{\"offeringType\":\"CloudOffering\",\"description\":\"ytjwgetfigw\"},{\"offeringType\":\"CloudOffering\",\"description\":\"qjxzi\"},{\"offeringType\":\"CloudOffering\",\"description\":\"bjrahgdstubw\"}],\"environmentData\":{\"environmentType\":\"EnvironmentData\"}},\"location\":\"xzsshxliqmsckwh\",\"tags\":{\"obqzwjalwrso\":\"oii\"},\"id\":\"xcacrmvjfmrsuydl\",\"name\":\"prel\",\"type\":\"xfkz\"}";
+            = "{\"properties\":{\"hierarchyIdentifier\":\"qregfurdpagknx\",\"hierarchyIdentifierTrialEndDate\":\"2021-10-07T21:44:46Z\",\"environmentName\":\"Azure\",\"offerings\":[{\"offeringType\":\"CloudOffering\",\"description\":\"lnzffewvqky\"},{\"offeringType\":\"CloudOffering\",\"description\":\"cgeipqxxsdyaf\"},{\"offeringType\":\"CloudOffering\",\"description\":\"ydsmmabh\"},{\"offeringType\":\"CloudOffering\",\"description\":\"lejqzhpvhxp\"}],\"environmentData\":{\"environmentType\":\"EnvironmentData\"}},\"location\":\"djze\",\"tags\":{\"ogtqscj\":\"gf\",\"cuex\":\"vqerqxkomwdzpzl\"},\"id\":\"qpwwvmbjecfwlbgh\",\"name\":\"kfrwxohlydsnjz\",\"type\":\"chiypbfhm\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,12 +32,12 @@ public final class SecurityConnectorsGetByResourceGroupWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         SecurityConnector response = manager.securityConnectors()
-            .getByResourceGroupWithResponse("il", "pqcaigazwfwlrfd", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("mlfjymgw", "mszcfy", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("xzsshxliqmsckwh", response.location());
-        Assertions.assertEquals("oii", response.tags().get("obqzwjalwrso"));
-        Assertions.assertEquals("seodtqfdrslzymqx", response.hierarchyIdentifier());
-        Assertions.assertEquals(CloudName.GCP, response.environmentName());
+        Assertions.assertEquals("djze", response.location());
+        Assertions.assertEquals("gf", response.tags().get("ogtqscj"));
+        Assertions.assertEquals("qregfurdpagknx", response.hierarchyIdentifier());
+        Assertions.assertEquals(CloudName.AZURE, response.environmentName());
     }
 }

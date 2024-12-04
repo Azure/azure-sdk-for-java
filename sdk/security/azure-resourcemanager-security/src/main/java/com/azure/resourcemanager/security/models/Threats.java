@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -67,7 +66,6 @@ public final class Threats extends ExpandableStringEnum<Threats> {
      * @param name a name to look for.
      * @return the corresponding Threats.
      */
-    @JsonCreator
     public static Threats fromString(String name) {
         return fromString(name, Threats.class);
     }

@@ -11,7 +11,7 @@ public final class ConnectableResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ConnectableResource model = BinaryData.fromString(
-            "{\"id\":\"ftjvvruxwigsye\",\"inboundConnectedResources\":[{\"connectedResourceId\":\"smjtgrqgdg\",\"tcpPorts\":\"ileplk\",\"udpPorts\":\"mknhwtbbaedor\"},{\"connectedResourceId\":\"mqfl\",\"tcpPorts\":\"gbdg\",\"udpPorts\":\"mgxdgdhpabgd\"}],\"outboundConnectedResources\":[{\"connectedResourceId\":\"d\",\"tcpPorts\":\"saq\",\"udpPorts\":\"tm\"},{\"connectedResourceId\":\"llcolsrsxapte\",\"tcpPorts\":\"excgjokjljnhvl\",\"udpPorts\":\"bekpeeksnbksdqhj\"},{\"connectedResourceId\":\"klxesl\",\"tcpPorts\":\"hustcpoqmavnwqjw\",\"udpPorts\":\"knlejjjkxybwfd\"}]}")
+            "{\"id\":\"fratqxmbjroumzz\",\"inboundConnectedResources\":[{\"connectedResourceId\":\"qjrhuzgfxonj\",\"tcpPorts\":\"usllywpvtiotz\",\"udpPorts\":\"d\"}],\"outboundConnectedResources\":[{\"connectedResourceId\":\"gryfqiuasig\",\"tcpPorts\":\"wsocnequygdjbo\",\"udpPorts\":\"rmtqjkqevadr\"},{\"connectedResourceId\":\"wiu\",\"tcpPorts\":\"vcmjzkxiidisczsk\",\"udpPorts\":\"woqiqazugamxzkrr\"},{\"connectedResourceId\":\"iisb\",\"tcpPorts\":\"nppcce\",\"udpPorts\":\"ztdsbeza\"},{\"connectedResourceId\":\"f\",\"tcpPorts\":\"zxuizhyhnepkpe\",\"udpPorts\":\"arxqiubx\"}]}")
             .toObject(ConnectableResource.class);
     }
 

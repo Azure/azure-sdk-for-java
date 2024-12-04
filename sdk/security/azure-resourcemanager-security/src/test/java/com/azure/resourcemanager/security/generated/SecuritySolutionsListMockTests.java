@@ -24,7 +24,7 @@ public final class SecuritySolutionsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"securityFamily\":\"Ngfw\",\"provisioningState\":\"Succeeded\",\"template\":\"wrybi\",\"protectionStatus\":\"ywo\"},\"location\":\"njuvtz\",\"id\":\"j\",\"name\":\"dlxbaeyocpkv\",\"type\":\"tjfdzfmnpbdrc\"}]}";
+            = "{\"value\":[{\"properties\":{\"securityFamily\":\"Va\",\"provisioningState\":\"Failed\",\"template\":\"sjym\",\"protectionStatus\":\"f\"},\"location\":\"zceuyuqktck\",\"id\":\"nbpkfnxrlncmlzvv\",\"name\":\"mesfhqs\",\"type\":\"cjqzrevfwcba\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,9 +35,9 @@ public final class SecuritySolutionsListMockTests {
 
         PagedIterable<SecuritySolution> response = manager.securitySolutions().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(SecurityFamily.NGFW, response.iterator().next().securityFamily());
-        Assertions.assertEquals(ProvisioningState.SUCCEEDED, response.iterator().next().provisioningState());
-        Assertions.assertEquals("wrybi", response.iterator().next().template());
-        Assertions.assertEquals("ywo", response.iterator().next().protectionStatus());
+        Assertions.assertEquals(SecurityFamily.VA, response.iterator().next().securityFamily());
+        Assertions.assertEquals(ProvisioningState.FAILED, response.iterator().next().provisioningState());
+        Assertions.assertEquals("sjym", response.iterator().next().template());
+        Assertions.assertEquals("f", response.iterator().next().protectionStatus());
     }
 }

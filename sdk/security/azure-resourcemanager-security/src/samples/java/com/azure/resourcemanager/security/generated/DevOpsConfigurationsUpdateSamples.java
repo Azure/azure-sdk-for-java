@@ -13,7 +13,9 @@ import com.azure.resourcemanager.security.models.DevOpsConfigurationProperties;
  */
 public final class DevOpsConfigurationsUpdateSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2024-04-01/examples/SecurityConnectorsDevOps/UpdateDevOpsConfigurations_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2024-05-15-preview/examples/
+     * SecurityConnectorsDevOps/UpdateDevOpsConfigurations_example.json
      */
     /**
      * Sample code: Update_DevOpsConfigurations.

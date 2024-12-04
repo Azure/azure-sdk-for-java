@@ -17,11 +17,11 @@ public final class UpdateIoTSecuritySolutionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UpdateIoTSecuritySolutionProperties model = BinaryData.fromString(
-            "{\"userDefinedResources\":{\"query\":\"qqagwwr\",\"querySubscriptions\":[\"omzisglrrcz\"]},\"recommendationsConfiguration\":[{\"recommendationType\":\"IoT_PermissiveFirewallPolicy\",\"name\":\"ltn\",\"status\":\"Disabled\"}]}")
+            "{\"userDefinedResources\":{\"query\":\"vdihoynkrx\",\"querySubscriptions\":[\"twk\",\"rcyrucpcunnu\",\"dqumoenodnai\",\"nhq\"]},\"recommendationsConfiguration\":[{\"recommendationType\":\"IoT_PrivilegedDockerOptions\",\"name\":\"nelqkaadl\",\"status\":\"Disabled\"}]}")
             .toObject(UpdateIoTSecuritySolutionProperties.class);
-        Assertions.assertEquals("qqagwwr", model.userDefinedResources().query());
-        Assertions.assertEquals("omzisglrrcz", model.userDefinedResources().querySubscriptions().get(0));
-        Assertions.assertEquals(RecommendationType.IO_T_PERMISSIVE_FIREWALL_POLICY,
+        Assertions.assertEquals("vdihoynkrx", model.userDefinedResources().query());
+        Assertions.assertEquals("twk", model.userDefinedResources().querySubscriptions().get(0));
+        Assertions.assertEquals(RecommendationType.IO_T_PRIVILEGED_DOCKER_OPTIONS,
             model.recommendationsConfiguration().get(0).recommendationType());
         Assertions.assertEquals(RecommendationConfigStatus.DISABLED,
             model.recommendationsConfiguration().get(0).status());
@@ -30,15 +30,15 @@ public final class UpdateIoTSecuritySolutionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         UpdateIoTSecuritySolutionProperties model = new UpdateIoTSecuritySolutionProperties()
-            .withUserDefinedResources(new UserDefinedResourcesProperties().withQuery("qqagwwr")
-                .withQuerySubscriptions(Arrays.asList("omzisglrrcz")))
+            .withUserDefinedResources(new UserDefinedResourcesProperties().withQuery("vdihoynkrx")
+                .withQuerySubscriptions(Arrays.asList("twk", "rcyrucpcunnu", "dqumoenodnai", "nhq")))
             .withRecommendationsConfiguration(Arrays.asList(new RecommendationConfigurationProperties()
-                .withRecommendationType(RecommendationType.IO_T_PERMISSIVE_FIREWALL_POLICY)
+                .withRecommendationType(RecommendationType.IO_T_PRIVILEGED_DOCKER_OPTIONS)
                 .withStatus(RecommendationConfigStatus.DISABLED)));
         model = BinaryData.fromObject(model).toObject(UpdateIoTSecuritySolutionProperties.class);
-        Assertions.assertEquals("qqagwwr", model.userDefinedResources().query());
-        Assertions.assertEquals("omzisglrrcz", model.userDefinedResources().querySubscriptions().get(0));
-        Assertions.assertEquals(RecommendationType.IO_T_PERMISSIVE_FIREWALL_POLICY,
+        Assertions.assertEquals("vdihoynkrx", model.userDefinedResources().query());
+        Assertions.assertEquals("twk", model.userDefinedResources().querySubscriptions().get(0));
+        Assertions.assertEquals(RecommendationType.IO_T_PRIVILEGED_DOCKER_OPTIONS,
             model.recommendationsConfiguration().get(0).recommendationType());
         Assertions.assertEquals(RecommendationConfigStatus.DISABLED,
             model.recommendationsConfiguration().get(0).status());

@@ -13,14 +13,13 @@ public final class ComplianceResultListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ComplianceResultList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"resourceStatus\":\"NotHealthy\"},\"id\":\"gcmjkavl\",\"name\":\"or\",\"type\":\"mftpmdtz\"},{\"properties\":{\"resourceStatus\":\"NotApplicable\"},\"id\":\"fvnz\",\"name\":\"yj\",\"type\":\"otp\"},{\"properties\":{\"resourceStatus\":\"OffByPolicy\"},\"id\":\"pbdbzqgqqi\",\"name\":\"edsvqwthmk\",\"type\":\"ibcysihsgqc\"},{\"properties\":{\"resourceStatus\":\"NotApplicable\"},\"id\":\"hsdtmc\",\"name\":\"zsu\",\"type\":\"cohdx\"}],\"nextLink\":\"lm\"}")
+            "{\"value\":[{\"properties\":{\"resourceStatus\":\"OffByPolicy\"},\"id\":\"yjucejikzoeo\",\"name\":\"vtzejetjklnti\",\"type\":\"yjuzkdb\"}],\"nextLink\":\"o\"}")
             .toObject(ComplianceResultList.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ComplianceResultList model = new ComplianceResultList().withValue(Arrays.asList(new ComplianceResultInner(),
-            new ComplianceResultInner(), new ComplianceResultInner(), new ComplianceResultInner()));
+        ComplianceResultList model = new ComplianceResultList().withValue(Arrays.asList(new ComplianceResultInner()));
         model = BinaryData.fromObject(model).toObject(ComplianceResultList.class);
     }
 }

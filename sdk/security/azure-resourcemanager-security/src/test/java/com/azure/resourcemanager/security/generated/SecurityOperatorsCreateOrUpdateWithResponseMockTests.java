@@ -22,7 +22,7 @@ public final class SecurityOperatorsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"identity\":{\"principalId\":\"zubak\",\"tenantId\":\"kvggcmfns\",\"type\":\"SystemAssigned\"},\"id\":\"tpkmixwe\",\"name\":\"zlscgs\",\"type\":\"epnqvxgvohdb\"}";
+            = "{\"identity\":{\"principalId\":\"piywqnp\",\"tenantId\":\"drfbgcnyxby\",\"type\":\"SystemAssigned\"},\"id\":\"hmqyncgaullfstyy\",\"name\":\"jqpulmwqg\",\"type\":\"hmqmiwxzf\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,7 +32,7 @@ public final class SecurityOperatorsCreateOrUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         SecurityOperator response = manager.securityOperators()
-            .createOrUpdateWithResponse("ddlggb", "a", com.azure.core.util.Context.NONE)
+            .createOrUpdateWithResponse("srupayl", "vwbzmfxlrymf", com.azure.core.util.Context.NONE)
             .getValue();
 
         Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED, response.identity().type());

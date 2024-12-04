@@ -22,7 +22,7 @@ public final class SecurityOperatorsListWithResponseMockTests {
     @Test
     public void testListWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":[{\"identity\":{\"principalId\":\"izbaxd\",\"tenantId\":\"zkz\",\"type\":\"SystemAssigned\"},\"id\":\"e\",\"name\":\"wacyyjmlxppdndzk\",\"type\":\"evuiiuiibfkcjytq\"},{\"identity\":{\"principalId\":\"z\",\"tenantId\":\"qfopvnopmotdsfho\",\"type\":\"SystemAssigned\"},\"id\":\"yoazyfbkm\",\"name\":\"ldzmxojzsvmaigb\",\"type\":\"kvhyejth\"}]}";
+            = "{\"value\":[{\"identity\":{\"principalId\":\"qcowscuyfql\",\"tenantId\":\"fbqhsujkaf\",\"type\":\"SystemAssigned\"},\"id\":\"nxqpwnikxkcajgrb\",\"name\":\"ct\",\"type\":\"vgoo\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,7 +32,7 @@ public final class SecurityOperatorsListWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         SecurityOperatorList response
-            = manager.securityOperators().listWithResponse("llanhzc", com.azure.core.util.Context.NONE).getValue();
+            = manager.securityOperators().listWithResponse("ospoe", com.azure.core.util.Context.NONE).getValue();
 
         Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED, response.value().get(0).identity().type());
     }

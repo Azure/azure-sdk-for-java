@@ -5,36 +5,37 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
 /**
  * The governance rule metadata.
  */
 @Immutable
-public final class GovernanceRuleMetadata {
+public final class GovernanceRuleMetadata implements JsonSerializable<GovernanceRuleMetadata> {
     /*
      * Governance rule Created by object id (GUID)
      */
-    @JsonProperty(value = "createdBy", access = JsonProperty.Access.WRITE_ONLY)
     private String createdBy;
 
     /*
      * Governance rule creation date
      */
-    @JsonProperty(value = "createdOn", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime createdOn;
 
     /*
      * Governance rule last updated by object id (GUID)
      */
-    @JsonProperty(value = "updatedBy", access = JsonProperty.Access.WRITE_ONLY)
     private String updatedBy;
 
     /*
      * Governance rule last update date
      */
-    @JsonProperty(value = "updatedOn", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime updatedOn;
 
     /**
@@ -85,5 +86,48 @@ public final class GovernanceRuleMetadata {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GovernanceRuleMetadata from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GovernanceRuleMetadata if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the GovernanceRuleMetadata.
+     */
+    public static GovernanceRuleMetadata fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GovernanceRuleMetadata deserializedGovernanceRuleMetadata = new GovernanceRuleMetadata();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("createdBy".equals(fieldName)) {
+                    deserializedGovernanceRuleMetadata.createdBy = reader.getString();
+                } else if ("createdOn".equals(fieldName)) {
+                    deserializedGovernanceRuleMetadata.createdOn = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("updatedBy".equals(fieldName)) {
+                    deserializedGovernanceRuleMetadata.updatedBy = reader.getString();
+                } else if ("updatedOn".equals(fieldName)) {
+                    deserializedGovernanceRuleMetadata.updatedOn = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGovernanceRuleMetadata;
+        });
     }
 }

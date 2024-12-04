@@ -16,11 +16,11 @@ public final class DefenderForContainersGcpOfferingVmScannersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DefenderForContainersGcpOfferingVmScanners model = BinaryData.fromString(
-            "{\"enabled\":false,\"configuration\":{\"scanningMode\":\"Default\",\"exclusionTags\":{\"machbkv\":\"o\",\"mvgoqpleh\":\"rpbj\",\"llcz\":\"umkz\"}}}")
+            "{\"enabled\":false,\"configuration\":{\"scanningMode\":\"Default\",\"exclusionTags\":{\"xgkrh\":\"xowkdnj\",\"r\":\"iehycpnowawonoe\"}}}")
             .toObject(DefenderForContainersGcpOfferingVmScanners.class);
         Assertions.assertEquals(false, model.enabled());
         Assertions.assertEquals(ScanningMode.DEFAULT, model.configuration().scanningMode());
-        Assertions.assertEquals("o", model.configuration().exclusionTags().get("machbkv"));
+        Assertions.assertEquals("xowkdnj", model.configuration().exclusionTags().get("xgkrh"));
     }
 
     @org.junit.jupiter.api.Test
@@ -28,11 +28,11 @@ public final class DefenderForContainersGcpOfferingVmScannersTests {
         DefenderForContainersGcpOfferingVmScanners model
             = new DefenderForContainersGcpOfferingVmScanners().withEnabled(false)
                 .withConfiguration(new VmScannersBaseConfiguration().withScanningMode(ScanningMode.DEFAULT)
-                    .withExclusionTags(mapOf("machbkv", "o", "mvgoqpleh", "rpbj", "llcz", "umkz")));
+                    .withExclusionTags(mapOf("xgkrh", "xowkdnj", "r", "iehycpnowawonoe")));
         model = BinaryData.fromObject(model).toObject(DefenderForContainersGcpOfferingVmScanners.class);
         Assertions.assertEquals(false, model.enabled());
         Assertions.assertEquals(ScanningMode.DEFAULT, model.configuration().scanningMode());
-        Assertions.assertEquals("o", model.configuration().exclusionTags().get("machbkv"));
+        Assertions.assertEquals("xowkdnj", model.configuration().exclusionTags().get("xgkrh"));
     }
 
     // Use "Map.of" if available

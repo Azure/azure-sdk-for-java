@@ -9,7 +9,9 @@ package com.azure.resourcemanager.security.generated;
  */
 public final class AzureDevOpsReposListSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2024-04-01/examples/SecurityConnectorsDevOps/ListAzureDevOpsRepos_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2024-05-15-preview/examples/
+     * SecurityConnectorsDevOps/ListAzureDevOpsRepos_example.json
      */
     /**
      * Sample code: List_AzureDevOpsRepos.

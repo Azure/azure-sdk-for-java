@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.security.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * Possible states of the rule.
  */
@@ -41,7 +38,6 @@ public enum RuleState {
      * @param value the serialized value to parse.
      * @return the parsed RuleState object, or null if unable to parse.
      */
-    @JsonCreator
     public static RuleState fromString(String value) {
         if (value == null) {
             return null;
@@ -58,7 +54,6 @@ public enum RuleState {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

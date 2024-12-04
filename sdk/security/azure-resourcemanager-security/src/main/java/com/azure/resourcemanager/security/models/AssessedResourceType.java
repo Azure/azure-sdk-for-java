@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -43,7 +42,6 @@ public final class AssessedResourceType extends ExpandableStringEnum<AssessedRes
      * @param name a name to look for.
      * @return the corresponding AssessedResourceType.
      */
-    @JsonCreator
     public static AssessedResourceType fromString(String name) {
         return fromString(name, AssessedResourceType.class);
     }

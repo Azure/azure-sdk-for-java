@@ -16,25 +16,25 @@ public final class VmScannersAwsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VmScannersAws model = BinaryData.fromString(
-            "{\"cloudRoleArn\":\"sixhgvbhx\",\"enabled\":false,\"configuration\":{\"scanningMode\":\"Default\",\"exclusionTags\":{\"mar\":\"jay\"}}}")
+            "{\"cloudRoleArn\":\"iysjqhe\",\"enabled\":false,\"configuration\":{\"scanningMode\":\"Default\",\"exclusionTags\":{\"yjdeayscseyd\":\"uba\",\"vmuw\":\"jemexmnv\",\"rdlhvdvmiphbe\":\"xlniwmcpm\"}}}")
             .toObject(VmScannersAws.class);
         Assertions.assertEquals(false, model.enabled());
         Assertions.assertEquals(ScanningMode.DEFAULT, model.configuration().scanningMode());
-        Assertions.assertEquals("jay", model.configuration().exclusionTags().get("mar"));
-        Assertions.assertEquals("sixhgvbhx", model.cloudRoleArn());
+        Assertions.assertEquals("uba", model.configuration().exclusionTags().get("yjdeayscseyd"));
+        Assertions.assertEquals("iysjqhe", model.cloudRoleArn());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         VmScannersAws model = new VmScannersAws().withEnabled(false)
             .withConfiguration(new VmScannersBaseConfiguration().withScanningMode(ScanningMode.DEFAULT)
-                .withExclusionTags(mapOf("mar", "jay")))
-            .withCloudRoleArn("sixhgvbhx");
+                .withExclusionTags(mapOf("yjdeayscseyd", "uba", "vmuw", "jemexmnv", "rdlhvdvmiphbe", "xlniwmcpm")))
+            .withCloudRoleArn("iysjqhe");
         model = BinaryData.fromObject(model).toObject(VmScannersAws.class);
         Assertions.assertEquals(false, model.enabled());
         Assertions.assertEquals(ScanningMode.DEFAULT, model.configuration().scanningMode());
-        Assertions.assertEquals("jay", model.configuration().exclusionTags().get("mar"));
-        Assertions.assertEquals("sixhgvbhx", model.cloudRoleArn());
+        Assertions.assertEquals("uba", model.configuration().exclusionTags().get("yjdeayscseyd"));
+        Assertions.assertEquals("iysjqhe", model.cloudRoleArn());
     }
 
     // Use "Map.of" if available

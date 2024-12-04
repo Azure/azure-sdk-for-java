@@ -6,7 +6,6 @@ package com.azure.resourcemanager.security.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.security.fluent.models.GitLabGroupInner;
-import com.azure.resourcemanager.security.models.DevOpsProvisioningState;
 import com.azure.resourcemanager.security.models.GitLabGroupProperties;
 import com.azure.resourcemanager.security.models.OnboardingState;
 import org.junit.jupiter.api.Assertions;
@@ -15,19 +14,16 @@ public final class GitLabGroupInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GitLabGroupInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningStatusMessage\":\"cakznhokhoitwhrj\",\"provisioningStatusUpdateTimeUtc\":\"2021-10-09T11:08:07Z\",\"provisioningState\":\"Canceled\",\"fullyQualifiedName\":\"dnckidbjpglhz\",\"fullyQualifiedFriendlyName\":\"xzbawkikc\",\"url\":\"fhbssdpjeyoqxded\",\"onboardingState\":\"NotApplicable\"},\"id\":\"iwhagxsur\",\"name\":\"jqrshz\",\"type\":\"bgullc\"}")
+            "{\"properties\":{\"provisioningStatusMessage\":\"vudb\",\"provisioningStatusUpdateTimeUtc\":\"2021-10-09T01:41:08Z\",\"provisioningState\":\"Pending\",\"fullyQualifiedName\":\"qecrqctmxx\",\"fullyQualifiedFriendlyName\":\"ddm\",\"url\":\"huytxzvtzn\",\"onboardingState\":\"Onboarded\"},\"id\":\"bannovvoxczytp\",\"name\":\"wnwvroevytlyokr\",\"type\":\"rouuxvnsasbcry\"}")
             .toObject(GitLabGroupInner.class);
-        Assertions.assertEquals(DevOpsProvisioningState.CANCELED, model.properties().provisioningState());
-        Assertions.assertEquals(OnboardingState.NOT_APPLICABLE, model.properties().onboardingState());
+        Assertions.assertEquals(OnboardingState.ONBOARDED, model.properties().onboardingState());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         GitLabGroupInner model = new GitLabGroupInner()
-            .withProperties(new GitLabGroupProperties().withProvisioningState(DevOpsProvisioningState.CANCELED)
-                .withOnboardingState(OnboardingState.NOT_APPLICABLE));
+            .withProperties(new GitLabGroupProperties().withOnboardingState(OnboardingState.ONBOARDED));
         model = BinaryData.fromObject(model).toObject(GitLabGroupInner.class);
-        Assertions.assertEquals(DevOpsProvisioningState.CANCELED, model.properties().provisioningState());
-        Assertions.assertEquals(OnboardingState.NOT_APPLICABLE, model.properties().onboardingState());
+        Assertions.assertEquals(OnboardingState.ONBOARDED, model.properties().onboardingState());
     }
 }

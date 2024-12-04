@@ -23,7 +23,7 @@ public final class ApplicationsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"displayName\":\"duydwnwgru\",\"description\":\"qldrd\",\"sourceResourceType\":\"Assessments\",\"conditionSets\":[\"datasw\"]},\"id\":\"i\",\"name\":\"xqwqnghxnim\",\"type\":\"yujrxgunnqgypuqt\"}]}";
+            = "{\"value\":[{\"properties\":{\"displayName\":\"claz\",\"description\":\"mexvtemaspma\",\"sourceResourceType\":\"Assessments\",\"conditionSets\":[\"datascd\",\"dataxwdpwjcbhaahntof\",\"datalf\",\"datapfixoskkzd\"]},\"id\":\"iv\",\"name\":\"ujybsrwz\",\"type\":\"mr\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,8 +34,8 @@ public final class ApplicationsListMockTests {
 
         PagedIterable<Application> response = manager.applications().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("duydwnwgru", response.iterator().next().displayName());
-        Assertions.assertEquals("qldrd", response.iterator().next().description());
+        Assertions.assertEquals("claz", response.iterator().next().displayName());
+        Assertions.assertEquals("mexvtemaspma", response.iterator().next().description());
         Assertions.assertEquals(ApplicationSourceResourceType.ASSESSMENTS,
             response.iterator().next().sourceResourceType());
     }

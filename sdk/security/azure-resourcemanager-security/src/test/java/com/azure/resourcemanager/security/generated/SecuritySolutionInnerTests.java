@@ -14,24 +14,24 @@ public final class SecuritySolutionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SecuritySolutionInner model = BinaryData.fromString(
-            "{\"properties\":{\"securityFamily\":\"Ngfw\",\"provisioningState\":\"Failed\",\"template\":\"nsxzajlns\",\"protectionStatus\":\"hwjuyxxbxqvmvua\"},\"location\":\"uadx\",\"id\":\"xeqbwp\",\"name\":\"tghyksarcdr\",\"type\":\"xsl\"}")
+            "{\"properties\":{\"securityFamily\":\"SaasWaf\",\"provisioningState\":\"Failed\",\"template\":\"bfsyrledjcustb\",\"protectionStatus\":\"tqi\"},\"location\":\"xzvsgeafgf\",\"id\":\"sehxlzsxezp\",\"name\":\"kkwa\",\"type\":\"es\"}")
             .toObject(SecuritySolutionInner.class);
-        Assertions.assertEquals(SecurityFamily.NGFW, model.securityFamily());
+        Assertions.assertEquals(SecurityFamily.SAAS_WAF, model.securityFamily());
         Assertions.assertEquals(ProvisioningState.FAILED, model.provisioningState());
-        Assertions.assertEquals("nsxzajlns", model.template());
-        Assertions.assertEquals("hwjuyxxbxqvmvua", model.protectionStatus());
+        Assertions.assertEquals("bfsyrledjcustb", model.template());
+        Assertions.assertEquals("tqi", model.protectionStatus());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SecuritySolutionInner model = new SecuritySolutionInner().withSecurityFamily(SecurityFamily.NGFW)
+        SecuritySolutionInner model = new SecuritySolutionInner().withSecurityFamily(SecurityFamily.SAAS_WAF)
             .withProvisioningState(ProvisioningState.FAILED)
-            .withTemplate("nsxzajlns")
-            .withProtectionStatus("hwjuyxxbxqvmvua");
+            .withTemplate("bfsyrledjcustb")
+            .withProtectionStatus("tqi");
         model = BinaryData.fromObject(model).toObject(SecuritySolutionInner.class);
-        Assertions.assertEquals(SecurityFamily.NGFW, model.securityFamily());
+        Assertions.assertEquals(SecurityFamily.SAAS_WAF, model.securityFamily());
         Assertions.assertEquals(ProvisioningState.FAILED, model.provisioningState());
-        Assertions.assertEquals("nsxzajlns", model.template());
-        Assertions.assertEquals("hwjuyxxbxqvmvua", model.protectionStatus());
+        Assertions.assertEquals("bfsyrledjcustb", model.template());
+        Assertions.assertEquals("tqi", model.protectionStatus());
     }
 }

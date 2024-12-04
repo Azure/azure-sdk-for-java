@@ -9,7 +9,9 @@ package com.azure.resourcemanager.security.generated;
  */
 public final class ApiCollectionsOnboardAzureApiManagementApiSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2023-11-15/examples/ApiCollections/APICollections_OnboardAzureApiManagementApi_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2023-11-15/examples/ApiCollections/
+     * APICollections_OnboardAzureApiManagementApi_example.json
      */
     /**
      * Sample code: Onboard an Azure API Management API to Microsoft Defender for APIs.

@@ -6,8 +6,11 @@ package com.azure.resourcemanager.security.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.resourcemanager.security.models.OperationStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.security.models.DefenderForStorageSettingProperties;
+import java.io.IOException;
 
 /**
  * The Defender for Storage resource.
@@ -17,8 +20,22 @@ public final class DefenderForStorageSettingInner extends ProxyResource {
     /*
      * Defender for Storage resource properties.
      */
-    @JsonProperty(value = "properties")
-    private DefenderForStorageSettingProperties innerProperties;
+    private DefenderForStorageSettingProperties properties;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
 
     /**
      * Creates an instance of DefenderForStorageSettingInner class.
@@ -27,186 +44,53 @@ public final class DefenderForStorageSettingInner extends ProxyResource {
     }
 
     /**
-     * Get the innerProperties property: Defender for Storage resource properties.
+     * Get the properties property: Defender for Storage resource properties.
      * 
-     * @return the innerProperties value.
+     * @return the properties value.
      */
-    private DefenderForStorageSettingProperties innerProperties() {
-        return this.innerProperties;
+    public DefenderForStorageSettingProperties properties() {
+        return this.properties;
     }
 
     /**
-     * Get the isEnabled property: Indicates whether Defender for Storage is enabled on this storage account.
+     * Set the properties property: Defender for Storage resource properties.
      * 
-     * @return the isEnabled value.
-     */
-    public Boolean isEnabled() {
-        return this.innerProperties() == null ? null : this.innerProperties().isEnabled();
-    }
-
-    /**
-     * Set the isEnabled property: Indicates whether Defender for Storage is enabled on this storage account.
-     * 
-     * @param isEnabled the isEnabled value to set.
+     * @param properties the properties value to set.
      * @return the DefenderForStorageSettingInner object itself.
      */
-    public DefenderForStorageSettingInner withIsEnabled(Boolean isEnabled) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new DefenderForStorageSettingProperties();
-        }
-        this.innerProperties().withIsEnabled(isEnabled);
+    public DefenderForStorageSettingInner withProperties(DefenderForStorageSettingProperties properties) {
+        this.properties = properties;
         return this;
     }
 
     /**
-     * Get the overrideSubscriptionLevelSettings property: Indicates whether the settings defined for this storage
-     * account should override the settings defined for the subscription.
+     * Get the type property: The type of the resource.
      * 
-     * @return the overrideSubscriptionLevelSettings value.
+     * @return the type value.
      */
-    public Boolean overrideSubscriptionLevelSettings() {
-        return this.innerProperties() == null ? null : this.innerProperties().overrideSubscriptionLevelSettings();
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
-     * Set the overrideSubscriptionLevelSettings property: Indicates whether the settings defined for this storage
-     * account should override the settings defined for the subscription.
+     * Get the name property: The name of the resource.
      * 
-     * @param overrideSubscriptionLevelSettings the overrideSubscriptionLevelSettings value to set.
-     * @return the DefenderForStorageSettingInner object itself.
+     * @return the name value.
      */
-    public DefenderForStorageSettingInner
-        withOverrideSubscriptionLevelSettings(Boolean overrideSubscriptionLevelSettings) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new DefenderForStorageSettingProperties();
-        }
-        this.innerProperties().withOverrideSubscriptionLevelSettings(overrideSubscriptionLevelSettings);
-        return this;
+    @Override
+    public String name() {
+        return this.name;
     }
 
     /**
-     * Get the scanResultsEventGridTopicResourceId property: Optional. Resource id of an Event Grid Topic to send scan
-     * results to.
+     * Get the id property: Fully qualified resource Id for the resource.
      * 
-     * @return the scanResultsEventGridTopicResourceId value.
+     * @return the id value.
      */
-    public String scanResultsEventGridTopicResourceId() {
-        return this.innerProperties() == null ? null : this.innerProperties().scanResultsEventGridTopicResourceId();
-    }
-
-    /**
-     * Set the scanResultsEventGridTopicResourceId property: Optional. Resource id of an Event Grid Topic to send scan
-     * results to.
-     * 
-     * @param scanResultsEventGridTopicResourceId the scanResultsEventGridTopicResourceId value to set.
-     * @return the DefenderForStorageSettingInner object itself.
-     */
-    public DefenderForStorageSettingInner
-        withScanResultsEventGridTopicResourceId(String scanResultsEventGridTopicResourceId) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new DefenderForStorageSettingProperties();
-        }
-        this.innerProperties().withScanResultsEventGridTopicResourceId(scanResultsEventGridTopicResourceId);
-        return this;
-    }
-
-    /**
-     * Get the operationStatus property: Upon failure or partial success. Additional data describing Malware Scanning
-     * enable/disable operation.
-     * 
-     * @return the operationStatus value.
-     */
-    public OperationStatus operationStatus() {
-        return this.innerProperties() == null ? null : this.innerProperties().operationStatus();
-    }
-
-    /**
-     * Get the isEnabledMalwareScanningIsEnabled property: Indicates whether On Upload malware scanning should be
-     * enabled.
-     * 
-     * @return the isEnabledMalwareScanningIsEnabled value.
-     */
-    public Boolean isEnabledMalwareScanningIsEnabled() {
-        return this.innerProperties() == null ? null : this.innerProperties().isEnabledMalwareScanningIsEnabled();
-    }
-
-    /**
-     * Set the isEnabledMalwareScanningIsEnabled property: Indicates whether On Upload malware scanning should be
-     * enabled.
-     * 
-     * @param isEnabledMalwareScanningIsEnabled the isEnabledMalwareScanningIsEnabled value to set.
-     * @return the DefenderForStorageSettingInner object itself.
-     */
-    public DefenderForStorageSettingInner
-        withIsEnabledMalwareScanningIsEnabled(Boolean isEnabledMalwareScanningIsEnabled) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new DefenderForStorageSettingProperties();
-        }
-        this.innerProperties().withIsEnabledMalwareScanningIsEnabled(isEnabledMalwareScanningIsEnabled);
-        return this;
-    }
-
-    /**
-     * Get the capGBPerMonth property: Defines the max GB to be scanned per Month. Set to -1 if no capping is needed.
-     * 
-     * @return the capGBPerMonth value.
-     */
-    public Integer capGBPerMonth() {
-        return this.innerProperties() == null ? null : this.innerProperties().capGBPerMonth();
-    }
-
-    /**
-     * Set the capGBPerMonth property: Defines the max GB to be scanned per Month. Set to -1 if no capping is needed.
-     * 
-     * @param capGBPerMonth the capGBPerMonth value to set.
-     * @return the DefenderForStorageSettingInner object itself.
-     */
-    public DefenderForStorageSettingInner withCapGBPerMonth(Integer capGBPerMonth) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new DefenderForStorageSettingProperties();
-        }
-        this.innerProperties().withCapGBPerMonth(capGBPerMonth);
-        return this;
-    }
-
-    /**
-     * Get the isEnabledSensitiveDataDiscoveryIsEnabled property: Indicates whether Sensitive Data Discovery should be
-     * enabled.
-     * 
-     * @return the isEnabledSensitiveDataDiscoveryIsEnabled value.
-     */
-    public Boolean isEnabledSensitiveDataDiscoveryIsEnabled() {
-        return this.innerProperties() == null
-            ? null
-            : this.innerProperties().isEnabledSensitiveDataDiscoveryIsEnabled();
-    }
-
-    /**
-     * Set the isEnabledSensitiveDataDiscoveryIsEnabled property: Indicates whether Sensitive Data Discovery should be
-     * enabled.
-     * 
-     * @param isEnabledSensitiveDataDiscoveryIsEnabled the isEnabledSensitiveDataDiscoveryIsEnabled value to set.
-     * @return the DefenderForStorageSettingInner object itself.
-     */
-    public DefenderForStorageSettingInner
-        withIsEnabledSensitiveDataDiscoveryIsEnabled(Boolean isEnabledSensitiveDataDiscoveryIsEnabled) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new DefenderForStorageSettingProperties();
-        }
-        this.innerProperties().withIsEnabledSensitiveDataDiscoveryIsEnabled(isEnabledSensitiveDataDiscoveryIsEnabled);
-        return this;
-    }
-
-    /**
-     * Get the operationStatusSensitiveDataDiscoveryOperationStatus property: Upon failure or partial success.
-     * Additional data describing Sensitive Data Discovery enable/disable operation.
-     * 
-     * @return the operationStatusSensitiveDataDiscoveryOperationStatus value.
-     */
-    public OperationStatus operationStatusSensitiveDataDiscoveryOperationStatus() {
-        return this.innerProperties() == null
-            ? null
-            : this.innerProperties().operationStatusSensitiveDataDiscoveryOperationStatus();
+    @Override
+    public String id() {
+        return this.id;
     }
 
     /**
@@ -215,8 +99,53 @@ public final class DefenderForStorageSettingInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (innerProperties() != null) {
-            innerProperties().validate();
+        if (properties() != null) {
+            properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DefenderForStorageSettingInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DefenderForStorageSettingInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DefenderForStorageSettingInner.
+     */
+    public static DefenderForStorageSettingInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DefenderForStorageSettingInner deserializedDefenderForStorageSettingInner
+                = new DefenderForStorageSettingInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedDefenderForStorageSettingInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedDefenderForStorageSettingInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedDefenderForStorageSettingInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedDefenderForStorageSettingInner.properties
+                        = DefenderForStorageSettingProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDefenderForStorageSettingInner;
+        });
     }
 }

@@ -14,20 +14,21 @@ import org.junit.jupiter.api.Assertions;
 public final class VmScannersBaseConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VmScannersBaseConfiguration model = BinaryData
-            .fromString("{\"scanningMode\":\"Default\",\"exclusionTags\":{\"mwgsghq\":\"haxttpf\",\"dd\":\"cum\"}}")
+        VmScannersBaseConfiguration model = BinaryData.fromString(
+            "{\"scanningMode\":\"Default\",\"exclusionTags\":{\"qwuzvcmcokx\":\"davsjcfmazpz\",\"frjwucaon\":\"zeku\",\"ckzidgzwdydami\":\"vajbvbnkrdemdid\",\"pjfojiunrls\":\"vpztdivykpxkqej\"}}")
             .toObject(VmScannersBaseConfiguration.class);
         Assertions.assertEquals(ScanningMode.DEFAULT, model.scanningMode());
-        Assertions.assertEquals("haxttpf", model.exclusionTags().get("mwgsghq"));
+        Assertions.assertEquals("davsjcfmazpz", model.exclusionTags().get("qwuzvcmcokx"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         VmScannersBaseConfiguration model = new VmScannersBaseConfiguration().withScanningMode(ScanningMode.DEFAULT)
-            .withExclusionTags(mapOf("mwgsghq", "haxttpf", "dd", "cum"));
+            .withExclusionTags(mapOf("qwuzvcmcokx", "davsjcfmazpz", "frjwucaon", "zeku", "ckzidgzwdydami",
+                "vajbvbnkrdemdid", "pjfojiunrls", "vpztdivykpxkqej"));
         model = BinaryData.fromObject(model).toObject(VmScannersBaseConfiguration.class);
         Assertions.assertEquals(ScanningMode.DEFAULT, model.scanningMode());
-        Assertions.assertEquals("haxttpf", model.exclusionTags().get("mwgsghq"));
+        Assertions.assertEquals("davsjcfmazpz", model.exclusionTags().get("qwuzvcmcokx"));
     }
 
     // Use "Map.of" if available

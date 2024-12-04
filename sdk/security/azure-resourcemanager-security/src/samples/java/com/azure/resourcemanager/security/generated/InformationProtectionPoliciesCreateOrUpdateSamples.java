@@ -18,7 +18,9 @@ import java.util.UUID;
  */
 public final class InformationProtectionPoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2017-08-01-preview/examples/InformationProtectionPolicies/CreateOrUpdateInformationProtectionPolicy_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2017-08-01-preview/examples/
+     * InformationProtectionPolicies/CreateOrUpdateInformationProtectionPolicy_example.json
      */
     /**
      * Sample code: Create or update an information protection policy for a management group.

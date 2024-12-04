@@ -22,7 +22,7 @@ public final class AutomationsGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"description\":\"pxrhrfj\",\"isEnabled\":true,\"scopes\":[{\"description\":\"efiktlhqashtost\",\"scopePath\":\"xyzsecigzzd\"},{\"description\":\"tacfvvtdpcbp\",\"scopePath\":\"omcsaugbrhfiwltk\"},{\"description\":\"su\",\"scopePath\":\"ethklxwhcv\"}],\"sources\":[{\"eventSource\":\"AttackPaths\",\"ruleSets\":[{},{},{}]},{\"eventSource\":\"AssessmentsSnapshot\",\"ruleSets\":[{},{}]},{\"eventSource\":\"AttackPathsSnapshot\",\"ruleSets\":[{},{},{},{}]}],\"actions\":[{\"actionType\":\"AutomationAction\"},{\"actionType\":\"AutomationAction\"}]},\"location\":\"yxxhwrlqom\",\"tags\":{\"rwnrzo\":\"yilpzz\",\"ksybvrrbnhylsb\":\"sxagysokli\",\"yllm\":\"ujcy\",\"zsyqagqllcbrvaid\":\"vpst\"},\"id\":\"lkyhtrrqwfyybpt\",\"name\":\"jjrnogykugdlavsa\",\"type\":\"gthkslgeu\"}";
+            = "{\"properties\":{\"description\":\"qacsf\",\"isEnabled\":true,\"scopes\":[{\"description\":\"bcel\",\"scopePath\":\"n\"}],\"sources\":[{\"eventSource\":\"Assessments\",\"ruleSets\":[{},{},{}]},{\"eventSource\":\"AttackPathsSnapshot\",\"ruleSets\":[{},{},{},{}]},{\"eventSource\":\"SecureScores\",\"ruleSets\":[{},{},{},{}]}],\"actions\":[{\"actionType\":\"AutomationAction\"}]},\"location\":\"lumodpegqxsorc\",\"tags\":{\"pwxslaj\":\"rqoxzyhlbeqvhskb\",\"gaef\":\"gf\",\"dwiu\":\"awkmibu\",\"qmiuvjpl\":\"nicupdyt\"},\"id\":\"s\",\"name\":\"bmhhtuqmt\",\"type\":\"ynoflqobfixngxe\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,15 +32,15 @@ public final class AutomationsGetByResourceGroupWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         Automation response = manager.automations()
-            .getByResourceGroupWithResponse("wofxxdplrel", "kvgahcbtu", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("flnxelrjkfzcdet", "wwezhyfkdilb", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("yxxhwrlqom", response.location());
-        Assertions.assertEquals("yilpzz", response.tags().get("rwnrzo"));
-        Assertions.assertEquals("pxrhrfj", response.description());
+        Assertions.assertEquals("lumodpegqxsorc", response.location());
+        Assertions.assertEquals("rqoxzyhlbeqvhskb", response.tags().get("pwxslaj"));
+        Assertions.assertEquals("qacsf", response.description());
         Assertions.assertEquals(true, response.isEnabled());
-        Assertions.assertEquals("efiktlhqashtost", response.scopes().get(0).description());
-        Assertions.assertEquals("xyzsecigzzd", response.scopes().get(0).scopePath());
-        Assertions.assertEquals(EventSource.ATTACK_PATHS, response.sources().get(0).eventSource());
+        Assertions.assertEquals("bcel", response.scopes().get(0).description());
+        Assertions.assertEquals("n", response.scopes().get(0).scopePath());
+        Assertions.assertEquals(EventSource.ASSESSMENTS, response.sources().get(0).eventSource());
     }
 }

@@ -10,8 +10,8 @@ import com.azure.resourcemanager.security.models.IoTSecurityAggregatedAlertPrope
 public final class IoTSecurityAggregatedAlertPropertiesTopDevicesListItemTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IoTSecurityAggregatedAlertPropertiesTopDevicesListItem model = BinaryData.fromString(
-            "{\"deviceId\":\"kcudfbsfarfsiowl\",\"alertsCount\":2835617475342020386,\"lastOccurrence\":\"pvwgfstmhqykizmd\"}")
+        IoTSecurityAggregatedAlertPropertiesTopDevicesListItem model = BinaryData
+            .fromString("{\"deviceId\":\"ioycbl\",\"alertsCount\":649525133189845086,\"lastOccurrence\":\"lujyxkyxl\"}")
             .toObject(IoTSecurityAggregatedAlertPropertiesTopDevicesListItem.class);
     }
 

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class StatusReason extends ExpandableStringEnum<StatusReason> {
      * @param name a name to look for.
      * @return the corresponding StatusReason.
      */
-    @JsonCreator
     public static StatusReason fromString(String name) {
         return fromString(name, StatusReason.class);
     }

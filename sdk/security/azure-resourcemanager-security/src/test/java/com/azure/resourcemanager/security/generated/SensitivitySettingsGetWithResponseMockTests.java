@@ -23,7 +23,7 @@ public final class SensitivitySettingsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"sensitiveInfoTypesIds\":[\"144e7990-0ef7-4ba9-9299-bcaccd8254a4\",\"daca6080-7f01-4fa7-8c27-f1fc3c437d08\",\"eb3a3505-99bd-4357-89b7-aa0f95858588\",\"f2f43458-ae38-485b-8903-a74d2492fe7f\"],\"sensitivityThresholdLabelOrder\":53.555878,\"sensitivityThresholdLabelId\":\"228a756f-c44f-4426-9d2d-82e38481893c\",\"mipInformation\":{\"mipIntegrationStatus\":\"Ok\",\"labels\":[{\"name\":\"hawkmibuydwi\",\"id\":\"d37cff5e-4d6f-4942-bd88-3483eafa42b6\",\"order\":39.98521},{\"name\":\"updyttqm\",\"id\":\"163fa2c4-e27e-47c9-b1bf-4dedf55179d6\",\"order\":51.10358},{\"name\":\"l\",\"id\":\"eaf32cb4-57d4-4984-aed3-a374c0963f82\",\"order\":52.05425}],\"customInfoTypes\":[{\"name\":\"tuqmtxynoflqob\",\"id\":\"a61d45f8-fae8-4546-9a2d-5bfad7b3985e\",\"description\":\"ngxebihexhnk\"},{\"name\":\"giqcdolrpg\",\"id\":\"cc03b270-b1cc-43f8-a2d4-fe59bd0f548e\",\"description\":\"jlbsmndafbncuyj\"},{\"name\":\"kcnhpplzhc\",\"id\":\"6d01f10b-4079-4e80-8393-387b3b67ff59\",\"description\":\"jziuucrlnewnuwk\"}],\"builtInInfoTypes\":[{\"name\":\"et\",\"id\":\"02fdaefe-79b3-4f63-97b3-866eba7353d1\",\"type\":\"dyxzlvwywjvr\"},{\"name\":\"qpwwlzpddarc\",\"id\":\"a027469b-214c-4084-90d4-6e681ad6afe9\",\"type\":\"whslxebaja\"},{\"name\":\"n\",\"id\":\"68f918d8-e6d5-4511-8230-5e3c8dbdb06d\",\"type\":\"bd\"}]}},\"id\":\"prwkampyhw\",\"name\":\"bldz\",\"type\":\"iudrcycmwhuzym\"}";
+            = "{\"properties\":{\"sensitiveInfoTypesIds\":[\"bf87a7d0-eb18-4a60-a403-cb727bc633bc\",\"273caa31-370b-4a18-871d-6d7addf0df69\"],\"sensitivityThresholdLabelOrder\":73.90602,\"sensitivityThresholdLabelId\":\"dd48a6c4-89b5-4778-8c5d-0a346c9a932a\",\"mipInformation\":{\"mipIntegrationStatus\":\"noMipLabels\",\"labels\":[{\"name\":\"blpectsmwpg\",\"id\":\"b1436e40-ebe2-4d31-9716-b6e10b3096e5\",\"order\":61.57176},{\"name\":\"bjqlqfbl\",\"id\":\"31f4f7ae-d8e1-4ba5-aed9-ea43479f1be0\",\"order\":1.8061817}],\"customInfoTypes\":[{\"name\":\"c\",\"id\":\"30388f17-9198-4530-bf42-05491ee571e8\",\"description\":\"ucihbymjjvt\"},{\"name\":\"erx\",\"id\":\"c5a56a94-5151-4123-be41-004243dedcf7\",\"description\":\"azra\"},{\"name\":\"lhbimyii\",\"id\":\"8e47eccb-5ea6-462a-8131-ee6af4e81ae3\",\"description\":\"mcthtpqgf\"}],\"builtInInfoTypes\":[{\"name\":\"i\",\"id\":\"3cfb36a8-5a6b-4d41-9445-45f4bdc82618\",\"type\":\"iuvflgzhcwjgwahc\"},{\"name\":\"ofgrutvnp\",\"id\":\"bee4c59c-8bf3-4022-a602-6857c8473b8c\",\"type\":\"zivxpmh\"}]}},\"id\":\"ghhh\",\"name\":\"vnnjd\",\"type\":\"ujqzvhnjvpmxnht\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,26 +35,26 @@ public final class SensitivitySettingsGetWithResponseMockTests {
         GetSensitivitySettingsResponse response
             = manager.sensitivitySettings().getWithResponse(com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals(UUID.fromString("144e7990-0ef7-4ba9-9299-bcaccd8254a4"),
+        Assertions.assertEquals(UUID.fromString("bf87a7d0-eb18-4a60-a403-cb727bc633bc"),
             response.properties().sensitiveInfoTypesIds().get(0));
-        Assertions.assertEquals(53.555878F, response.properties().sensitivityThresholdLabelOrder());
-        Assertions.assertEquals(UUID.fromString("228a756f-c44f-4426-9d2d-82e38481893c"),
+        Assertions.assertEquals(73.90602F, response.properties().sensitivityThresholdLabelOrder());
+        Assertions.assertEquals(UUID.fromString("dd48a6c4-89b5-4778-8c5d-0a346c9a932a"),
             response.properties().sensitivityThresholdLabelId());
-        Assertions.assertEquals(MipIntegrationStatus.OK, response.properties().mipInformation().mipIntegrationStatus());
-        Assertions.assertEquals("hawkmibuydwi", response.properties().mipInformation().labels().get(0).name());
-        Assertions.assertEquals(UUID.fromString("d37cff5e-4d6f-4942-bd88-3483eafa42b6"),
+        Assertions.assertEquals(MipIntegrationStatus.NO_MIP_LABELS,
+            response.properties().mipInformation().mipIntegrationStatus());
+        Assertions.assertEquals("blpectsmwpg", response.properties().mipInformation().labels().get(0).name());
+        Assertions.assertEquals(UUID.fromString("b1436e40-ebe2-4d31-9716-b6e10b3096e5"),
             response.properties().mipInformation().labels().get(0).id());
-        Assertions.assertEquals(39.98521F, response.properties().mipInformation().labels().get(0).order());
-        Assertions.assertEquals("tuqmtxynoflqob",
-            response.properties().mipInformation().customInfoTypes().get(0).name());
-        Assertions.assertEquals(UUID.fromString("a61d45f8-fae8-4546-9a2d-5bfad7b3985e"),
+        Assertions.assertEquals(61.57176F, response.properties().mipInformation().labels().get(0).order());
+        Assertions.assertEquals("c", response.properties().mipInformation().customInfoTypes().get(0).name());
+        Assertions.assertEquals(UUID.fromString("30388f17-9198-4530-bf42-05491ee571e8"),
             response.properties().mipInformation().customInfoTypes().get(0).id());
-        Assertions.assertEquals("ngxebihexhnk",
+        Assertions.assertEquals("ucihbymjjvt",
             response.properties().mipInformation().customInfoTypes().get(0).description());
-        Assertions.assertEquals("et", response.properties().mipInformation().builtInInfoTypes().get(0).name());
-        Assertions.assertEquals(UUID.fromString("02fdaefe-79b3-4f63-97b3-866eba7353d1"),
+        Assertions.assertEquals("i", response.properties().mipInformation().builtInInfoTypes().get(0).name());
+        Assertions.assertEquals(UUID.fromString("3cfb36a8-5a6b-4d41-9445-45f4bdc82618"),
             response.properties().mipInformation().builtInInfoTypes().get(0).id());
-        Assertions.assertEquals("dyxzlvwywjvr",
+        Assertions.assertEquals("iuvflgzhcwjgwahc",
             response.properties().mipInformation().builtInInfoTypes().get(0).type());
     }
 }

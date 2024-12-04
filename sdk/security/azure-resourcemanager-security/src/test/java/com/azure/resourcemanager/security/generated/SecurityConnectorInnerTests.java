@@ -18,12 +18,12 @@ public final class SecurityConnectorInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SecurityConnectorInner model = BinaryData.fromString(
-            "{\"properties\":{\"hierarchyIdentifier\":\"yzihgrkyuizabsn\",\"hierarchyIdentifierTrialEndDate\":\"2021-11-10T17:16:29Z\",\"environmentName\":\"Github\",\"offerings\":[{\"offeringType\":\"CloudOffering\",\"description\":\"evy\"}],\"environmentData\":{\"environmentType\":\"EnvironmentData\"}},\"location\":\"hsgz\",\"tags\":{\"gleohi\":\"bgomfgbegl\",\"eebtijvacvb\":\"etnluankrrfx\",\"evehjkuyxoaf\":\"qzbqqxlajrnwxa\"},\"id\":\"aoqltfaey\",\"name\":\"inmfgvxirp\",\"type\":\"hriypoqeyhlqhy\"}")
+            "{\"properties\":{\"hierarchyIdentifier\":\"yzihgrkyuizabsn\",\"hierarchyIdentifierTrialEndDate\":\"2021-11-10T17:16:29Z\",\"environmentName\":\"Azure\",\"offerings\":[{\"offeringType\":\"CloudOffering\",\"description\":\"evy\"}],\"environmentData\":{\"environmentType\":\"EnvironmentData\"}},\"location\":\"hsgz\",\"tags\":{\"gleohi\":\"bgomfgbegl\",\"eebtijvacvb\":\"etnluankrrfx\",\"evehjkuyxoaf\":\"qzbqqxlajrnwxa\"},\"id\":\"aoqltfaey\",\"name\":\"inmfgvxirp\",\"type\":\"hriypoqeyhlqhy\"}")
             .toObject(SecurityConnectorInner.class);
         Assertions.assertEquals("hsgz", model.location());
         Assertions.assertEquals("bgomfgbegl", model.tags().get("gleohi"));
         Assertions.assertEquals("yzihgrkyuizabsn", model.hierarchyIdentifier());
-        Assertions.assertEquals(CloudName.GITHUB, model.environmentName());
+        Assertions.assertEquals(CloudName.AZURE, model.environmentName());
     }
 
     @org.junit.jupiter.api.Test
@@ -31,14 +31,14 @@ public final class SecurityConnectorInnerTests {
         SecurityConnectorInner model = new SecurityConnectorInner().withLocation("hsgz")
             .withTags(mapOf("gleohi", "bgomfgbegl", "eebtijvacvb", "etnluankrrfx", "evehjkuyxoaf", "qzbqqxlajrnwxa"))
             .withHierarchyIdentifier("yzihgrkyuizabsn")
-            .withEnvironmentName(CloudName.GITHUB)
+            .withEnvironmentName(CloudName.AZURE)
             .withOfferings(Arrays.asList(new CloudOffering()))
             .withEnvironmentData(new EnvironmentData());
         model = BinaryData.fromObject(model).toObject(SecurityConnectorInner.class);
         Assertions.assertEquals("hsgz", model.location());
         Assertions.assertEquals("bgomfgbegl", model.tags().get("gleohi"));
         Assertions.assertEquals("yzihgrkyuizabsn", model.hierarchyIdentifier());
-        Assertions.assertEquals(CloudName.GITHUB, model.environmentName());
+        Assertions.assertEquals(CloudName.AZURE, model.environmentName());
     }
 
     // Use "Map.of" if available

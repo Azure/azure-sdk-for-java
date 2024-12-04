@@ -5,52 +5,41 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * A custom alert rule.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "ruleType", defaultImpl = CustomAlertRule.class, visible = true)
-@JsonTypeName("CustomAlertRule")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "ThresholdCustomAlertRule", value = ThresholdCustomAlertRule.class),
-    @JsonSubTypes.Type(name = "ListCustomAlertRule", value = ListCustomAlertRule.class) })
 @Fluent
-public class CustomAlertRule {
+public class CustomAlertRule implements JsonSerializable<CustomAlertRule> {
     /*
      * The type of the custom alert rule.
      */
-    @JsonTypeId
-    @JsonProperty(value = "ruleType", required = true)
-    private String ruleType;
+    private String ruleType = "CustomAlertRule";
 
     /*
      * The display name of the custom alert.
      */
-    @JsonProperty(value = "displayName", access = JsonProperty.Access.WRITE_ONLY)
     private String displayName;
 
     /*
      * The description of the custom alert.
      */
-    @JsonProperty(value = "description", access = JsonProperty.Access.WRITE_ONLY)
     private String description;
 
     /*
      * Status of the custom alert.
      */
-    @JsonProperty(value = "isEnabled", required = true)
     private boolean isEnabled;
 
     /**
      * Creates an instance of CustomAlertRule class.
      */
     public CustomAlertRule() {
-        this.ruleType = "CustomAlertRule";
     }
 
     /**
@@ -72,12 +61,34 @@ public class CustomAlertRule {
     }
 
     /**
+     * Set the displayName property: The display name of the custom alert.
+     * 
+     * @param displayName the displayName value to set.
+     * @return the CustomAlertRule object itself.
+     */
+    CustomAlertRule withDisplayName(String displayName) {
+        this.displayName = displayName;
+        return this;
+    }
+
+    /**
      * Get the description property: The description of the custom alert.
      * 
      * @return the description value.
      */
     public String description() {
         return this.description;
+    }
+
+    /**
+     * Set the description property: The description of the custom alert.
+     * 
+     * @param description the description value to set.
+     * @return the CustomAlertRule object itself.
+     */
+    CustomAlertRule withDescription(String description) {
+        this.description = description;
+        return this;
     }
 
     /**
@@ -106,5 +117,122 @@ public class CustomAlertRule {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("isEnabled", this.isEnabled);
+        jsonWriter.writeStringField("ruleType", this.ruleType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CustomAlertRule from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CustomAlertRule if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CustomAlertRule.
+     */
+    public static CustomAlertRule fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("ruleType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("ThresholdCustomAlertRule".equals(discriminatorValue)) {
+                    return ThresholdCustomAlertRule.fromJsonKnownDiscriminator(readerToUse.reset());
+                } else if ("TimeWindowCustomAlertRule".equals(discriminatorValue)) {
+                    return TimeWindowCustomAlertRule.fromJsonKnownDiscriminator(readerToUse.reset());
+                } else if ("ActiveConnectionsNotInAllowedRange".equals(discriminatorValue)) {
+                    return ActiveConnectionsNotInAllowedRange.fromJson(readerToUse.reset());
+                } else if ("AmqpC2DMessagesNotInAllowedRange".equals(discriminatorValue)) {
+                    return AmqpC2DMessagesNotInAllowedRange.fromJson(readerToUse.reset());
+                } else if ("MqttC2DMessagesNotInAllowedRange".equals(discriminatorValue)) {
+                    return MqttC2DMessagesNotInAllowedRange.fromJson(readerToUse.reset());
+                } else if ("HttpC2DMessagesNotInAllowedRange".equals(discriminatorValue)) {
+                    return HttpC2DMessagesNotInAllowedRange.fromJson(readerToUse.reset());
+                } else if ("AmqpC2DRejectedMessagesNotInAllowedRange".equals(discriminatorValue)) {
+                    return AmqpC2DRejectedMessagesNotInAllowedRange.fromJson(readerToUse.reset());
+                } else if ("MqttC2DRejectedMessagesNotInAllowedRange".equals(discriminatorValue)) {
+                    return MqttC2DRejectedMessagesNotInAllowedRange.fromJson(readerToUse.reset());
+                } else if ("HttpC2DRejectedMessagesNotInAllowedRange".equals(discriminatorValue)) {
+                    return HttpC2DRejectedMessagesNotInAllowedRange.fromJson(readerToUse.reset());
+                } else if ("AmqpD2CMessagesNotInAllowedRange".equals(discriminatorValue)) {
+                    return AmqpD2CMessagesNotInAllowedRange.fromJson(readerToUse.reset());
+                } else if ("MqttD2CMessagesNotInAllowedRange".equals(discriminatorValue)) {
+                    return MqttD2CMessagesNotInAllowedRange.fromJson(readerToUse.reset());
+                } else if ("HttpD2CMessagesNotInAllowedRange".equals(discriminatorValue)) {
+                    return HttpD2CMessagesNotInAllowedRange.fromJson(readerToUse.reset());
+                } else if ("DirectMethodInvokesNotInAllowedRange".equals(discriminatorValue)) {
+                    return DirectMethodInvokesNotInAllowedRange.fromJson(readerToUse.reset());
+                } else if ("FailedLocalLoginsNotInAllowedRange".equals(discriminatorValue)) {
+                    return FailedLocalLoginsNotInAllowedRange.fromJson(readerToUse.reset());
+                } else if ("FileUploadsNotInAllowedRange".equals(discriminatorValue)) {
+                    return FileUploadsNotInAllowedRange.fromJson(readerToUse.reset());
+                } else if ("QueuePurgesNotInAllowedRange".equals(discriminatorValue)) {
+                    return QueuePurgesNotInAllowedRange.fromJson(readerToUse.reset());
+                } else if ("TwinUpdatesNotInAllowedRange".equals(discriminatorValue)) {
+                    return TwinUpdatesNotInAllowedRange.fromJson(readerToUse.reset());
+                } else if ("UnauthorizedOperationsNotInAllowedRange".equals(discriminatorValue)) {
+                    return UnauthorizedOperationsNotInAllowedRange.fromJson(readerToUse.reset());
+                } else if ("ListCustomAlertRule".equals(discriminatorValue)) {
+                    return ListCustomAlertRule.fromJsonKnownDiscriminator(readerToUse.reset());
+                } else if ("AllowlistCustomAlertRule".equals(discriminatorValue)) {
+                    return AllowlistCustomAlertRule.fromJsonKnownDiscriminator(readerToUse.reset());
+                } else if ("ConnectionToIpNotAllowed".equals(discriminatorValue)) {
+                    return ConnectionToIpNotAllowed.fromJson(readerToUse.reset());
+                } else if ("ConnectionFromIpNotAllowed".equals(discriminatorValue)) {
+                    return ConnectionFromIpNotAllowed.fromJson(readerToUse.reset());
+                } else if ("LocalUserNotAllowed".equals(discriminatorValue)) {
+                    return LocalUserNotAllowed.fromJson(readerToUse.reset());
+                } else if ("ProcessNotAllowed".equals(discriminatorValue)) {
+                    return ProcessNotAllowed.fromJson(readerToUse.reset());
+                } else if ("DenylistCustomAlertRule".equals(discriminatorValue)) {
+                    return DenylistCustomAlertRule.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static CustomAlertRule fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CustomAlertRule deserializedCustomAlertRule = new CustomAlertRule();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("isEnabled".equals(fieldName)) {
+                    deserializedCustomAlertRule.isEnabled = reader.getBoolean();
+                } else if ("ruleType".equals(fieldName)) {
+                    deserializedCustomAlertRule.ruleType = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedCustomAlertRule.displayName = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedCustomAlertRule.description = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCustomAlertRule;
+        });
     }
 }

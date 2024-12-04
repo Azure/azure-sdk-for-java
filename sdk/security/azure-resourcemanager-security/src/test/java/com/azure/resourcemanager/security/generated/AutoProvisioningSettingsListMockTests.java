@@ -23,7 +23,7 @@ public final class AutoProvisioningSettingsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"autoProvision\":\"Off\"},\"id\":\"aloow\",\"name\":\"zizznyu\",\"type\":\"pqzstifgufyjf\"}]}";
+            = "{\"value\":[{\"properties\":{\"autoProvision\":\"On\"},\"id\":\"faxdtnqifbsa\",\"name\":\"roiauesugmo\",\"type\":\"pcjycb\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,6 +35,6 @@ public final class AutoProvisioningSettingsListMockTests {
         PagedIterable<AutoProvisioningSetting> response
             = manager.autoProvisioningSettings().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(AutoProvision.OFF, response.iterator().next().autoProvision());
+        Assertions.assertEquals(AutoProvision.ON, response.iterator().next().autoProvision());
     }
 }

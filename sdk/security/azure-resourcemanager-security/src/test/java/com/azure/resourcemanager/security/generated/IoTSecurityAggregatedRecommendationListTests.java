@@ -16,22 +16,28 @@ public final class IoTSecurityAggregatedRecommendationListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IoTSecurityAggregatedRecommendationList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"recommendationName\":\"uhplrvkmjcwmjv\",\"recommendationDisplayName\":\"fggc\",\"description\":\"yylizrz\",\"recommendationTypeId\":\"psfxsf\",\"detectedBy\":\"tl\",\"remediationSteps\":\"mvagbwidqlvhuko\",\"reportedSeverity\":\"High\",\"healthyDevices\":229689641193790417,\"unhealthyDeviceCount\":3903457587821133847,\"logAnalyticsQuery\":\"nmjmvlwyzgiblk\"},\"tags\":{\"uyjucejikzo\":\"llfojuidjp\",\"ikyju\":\"ovvtzejetjkln\",\"bqzolxr\":\"k\",\"pcrrk\":\"vhqjwtrhtgvg\"},\"id\":\"lawjmjsmwrok\",\"name\":\"dxfzzzwyjaf\",\"type\":\"tlhguynuchl\"}],\"nextLink\":\"ltxdwhmozu\"}")
+            "{\"value\":[{\"properties\":{\"recommendationName\":\"uuipldq\",\"recommendationDisplayName\":\"tekva\",\"description\":\"l\",\"recommendationTypeId\":\"jqvq\",\"detectedBy\":\"wehtaemxh\",\"remediationSteps\":\"ysev\",\"reportedSeverity\":\"Low\",\"healthyDevices\":3311459489311370250,\"unhealthyDeviceCount\":5720754078383440351,\"logAnalyticsQuery\":\"veimipskdyzatv\"},\"tags\":{\"jvvruxwigsyei\":\"kaf\",\"qgdgkkile\":\"qdsmjtg\",\"orvvmqfloygbdgw\":\"lkcsmknhwtbbae\"},\"id\":\"mgxdgdhpabgd\",\"name\":\"xjd\",\"type\":\"vjsaqwotm\"},{\"properties\":{\"recommendationName\":\"lcol\",\"recommendationDisplayName\":\"sxap\",\"description\":\"f\",\"recommendationTypeId\":\"xcgjokjljnhvlq\",\"detectedBy\":\"ek\",\"remediationSteps\":\"eksnbksdqhjvyk\",\"reportedSeverity\":\"Informational\",\"healthyDevices\":5086164099994248054,\"unhealthyDeviceCount\":8799946155135105306,\"logAnalyticsQuery\":\"tcpoqma\"},\"tags\":{\"jkxyb\":\"qjwgoknlej\",\"jbzten\":\"fdb\"},\"id\":\"vkzykjtjknsxf\",\"name\":\"us\",\"type\":\"cdp\"}],\"nextLink\":\"pn\"}")
             .toObject(IoTSecurityAggregatedRecommendationList.class);
-        Assertions.assertEquals("llfojuidjp", model.value().get(0).tags().get("uyjucejikzo"));
-        Assertions.assertEquals("uhplrvkmjcwmjv", model.value().get(0).recommendationName());
+        Assertions.assertEquals("kaf", model.value().get(0).tags().get("jvvruxwigsyei"));
+        Assertions.assertEquals("uuipldq", model.value().get(0).recommendationName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IoTSecurityAggregatedRecommendationList model = new IoTSecurityAggregatedRecommendationList()
-            .withValue(Arrays.asList(new IoTSecurityAggregatedRecommendationInner()
-                .withTags(mapOf("uyjucejikzo", "llfojuidjp", "ikyju", "ovvtzejetjkln", "bqzolxr", "k", "pcrrk",
-                    "vhqjwtrhtgvg"))
-                .withRecommendationName("uhplrvkmjcwmjv")));
+        IoTSecurityAggregatedRecommendationList model
+            = new IoTSecurityAggregatedRecommendationList()
+                .withValue(
+                    Arrays.asList(
+                        new IoTSecurityAggregatedRecommendationInner()
+                            .withTags(mapOf("jvvruxwigsyei", "kaf", "qgdgkkile", "qdsmjtg", "orvvmqfloygbdgw",
+                                "lkcsmknhwtbbae"))
+                            .withRecommendationName("uuipldq"),
+                        new IoTSecurityAggregatedRecommendationInner()
+                            .withTags(mapOf("jkxyb", "qjwgoknlej", "jbzten", "fdb"))
+                            .withRecommendationName("lcol")));
         model = BinaryData.fromObject(model).toObject(IoTSecurityAggregatedRecommendationList.class);
-        Assertions.assertEquals("llfojuidjp", model.value().get(0).tags().get("uyjucejikzo"));
-        Assertions.assertEquals("uhplrvkmjcwmjv", model.value().get(0).recommendationName());
+        Assertions.assertEquals("kaf", model.value().get(0).tags().get("jvvruxwigsyei"));
+        Assertions.assertEquals("uuipldq", model.value().get(0).recommendationName());
     }
 
     // Use "Map.of" if available

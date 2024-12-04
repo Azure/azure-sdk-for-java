@@ -5,36 +5,36 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The rule result adjusted with baseline.
  */
 @Fluent
-public final class BaselineAdjustedResult {
+public final class BaselineAdjustedResult implements JsonSerializable<BaselineAdjustedResult> {
     /*
      * Baseline details.
      */
-    @JsonProperty(value = "baseline")
     private Baseline baseline;
 
     /*
      * The rule result status.
      */
-    @JsonProperty(value = "status")
     private RuleStatus status;
 
     /*
      * Results the are not in baseline.
      */
-    @JsonProperty(value = "resultsNotInBaseline")
     private List<List<String>> resultsNotInBaseline;
 
     /*
      * Results the are in baseline.
      */
-    @JsonProperty(value = "resultsOnlyInBaseline")
     private List<List<String>> resultsOnlyInBaseline;
 
     /**
@@ -132,5 +132,56 @@ public final class BaselineAdjustedResult {
         if (baseline() != null) {
             baseline().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("baseline", this.baseline);
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        jsonWriter.writeArrayField("resultsNotInBaseline", this.resultsNotInBaseline,
+            (writer, element) -> writer.writeArray(element, (writer1, element1) -> writer1.writeString(element1)));
+        jsonWriter.writeArrayField("resultsOnlyInBaseline", this.resultsOnlyInBaseline,
+            (writer, element) -> writer.writeArray(element, (writer1, element1) -> writer1.writeString(element1)));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BaselineAdjustedResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BaselineAdjustedResult if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BaselineAdjustedResult.
+     */
+    public static BaselineAdjustedResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BaselineAdjustedResult deserializedBaselineAdjustedResult = new BaselineAdjustedResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("baseline".equals(fieldName)) {
+                    deserializedBaselineAdjustedResult.baseline = Baseline.fromJson(reader);
+                } else if ("status".equals(fieldName)) {
+                    deserializedBaselineAdjustedResult.status = RuleStatus.fromString(reader.getString());
+                } else if ("resultsNotInBaseline".equals(fieldName)) {
+                    List<List<String>> resultsNotInBaseline
+                        = reader.readArray(reader1 -> reader1.readArray(reader2 -> reader2.getString()));
+                    deserializedBaselineAdjustedResult.resultsNotInBaseline = resultsNotInBaseline;
+                } else if ("resultsOnlyInBaseline".equals(fieldName)) {
+                    List<List<String>> resultsOnlyInBaseline
+                        = reader.readArray(reader1 -> reader1.readArray(reader2 -> reader2.getString()));
+                    deserializedBaselineAdjustedResult.resultsOnlyInBaseline = resultsOnlyInBaseline;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBaselineAdjustedResult;
+        });
     }
 }

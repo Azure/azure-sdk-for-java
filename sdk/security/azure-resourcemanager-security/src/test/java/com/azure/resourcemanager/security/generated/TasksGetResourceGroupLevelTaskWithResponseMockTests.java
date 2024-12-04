@@ -20,7 +20,7 @@ public final class TasksGetResourceGroupLevelTaskWithResponseMockTests {
     @Test
     public void testGetResourceGroupLevelTaskWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"state\":\"ancoinmphymcqid\",\"creationTimeUtc\":\"2021-07-16T10:11:41Z\",\"securityTaskParameters\":{\"name\":\"hqnufbxwei\",\"\":{\"vfnybydh\":\"datatoj\",\"rhjkehw\":\"dataihaouwudhua\",\"qircamqprlob\":\"dataumo\",\"gelajdyolje\":\"dataugejcvjkjyczcmt\"}},\"lastStateChangeTimeUtc\":\"2021-10-23T13:52:24Z\",\"subState\":\"fmzsizzhravr\"},\"id\":\"jkjymgqbgcx\",\"name\":\"nqxgz\",\"type\":\"lermkmerg\"}";
+            = "{\"properties\":{\"state\":\"fwsx\",\"creationTimeUtc\":\"2021-10-16T07:56:31Z\",\"securityTaskParameters\":{\"name\":\"worimmovzwdehk\",\"\":{\"yrvap\":\"datahzfova\"}},\"lastStateChangeTimeUtc\":\"2021-12-08T00:21:45Z\",\"subState\":\"l\"},\"id\":\"wewikfya\",\"name\":\"a\",\"type\":\"dmym\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class TasksGetResourceGroupLevelTaskWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         SecurityTask response = manager.tasks()
-            .getResourceGroupLevelTaskWithResponse("xapgrcqebmvrdjom", "nwsb", "vdlsflxkqesdfeds",
+            .getResourceGroupLevelTaskWithResponse("gtpvdva", "lzmgschnzrs", "kkzovlzdm",
                 com.azure.core.util.Context.NONE)
             .getValue();
 

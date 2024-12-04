@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -32,7 +31,6 @@ public final class DataSource extends ExpandableStringEnum<DataSource> {
      * @param name a name to look for.
      * @return the corresponding DataSource.
      */
-    @JsonCreator
     public static DataSource fromString(String name) {
         return fromString(name, DataSource.class);
     }

@@ -28,7 +28,7 @@ public final class AlertsSuppressionRulesUpdateWithResponseMockTests {
     @Test
     public void testUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"alertType\":\"corkfrocgbmxl\",\"lastModifiedUtc\":\"2021-11-29T06:49:01Z\",\"expirationDateUtc\":\"2021-10-01T18:03:45Z\",\"reason\":\"zbjesylslur\",\"state\":\"Disabled\",\"comment\":\"ygpnyhgdzuqsca\",\"suppressionAlertsScope\":{\"allOf\":[{\"field\":\"ouprs\",\"\":{\"fduiolhgyqvpb\":\"datazsslhmgwfnivrx\",\"oqzucfzluczdq\":\"dataj\"}},{\"field\":\"rbormvhvzie\",\"\":{\"gmnwsvhbn\":\"datarnqujywzcqy\",\"jtobdrrp\":\"dataqiwy\"}},{\"field\":\"ehkuns\",\"\":{\"egea\":\"datahhlwtpk\",\"qsttewuvcysjeuf\":\"datatbzkgtzqn\",\"lpditfnonpi\":\"datax\",\"qflvtlrvbst\":\"datauxlvrhprrvbwonl\"}}]}},\"id\":\"huy\",\"name\":\"uninttlnrjdszd\",\"type\":\"u\"}";
+            = "{\"properties\":{\"alertType\":\"swku\",\"lastModifiedUtc\":\"2021-08-16T22:12:26Z\",\"expirationDateUtc\":\"2021-06-04T13:34:39Z\",\"reason\":\"aczkf\",\"state\":\"Expired\",\"comment\":\"tgawphnskiv\",\"suppressionAlertsScope\":{\"allOf\":[{\"field\":\"qcumecsa\",\"\":{\"uy\":\"dataoqbd\"}},{\"field\":\"bskowkr\",\"\":{\"asfgqgucyhfaimqv\":\"datahrbkhtmqowi\",\"oehgfmqmskkixvlz\":\"dataruozkgyfp\",\"yntvzjyielbq\":\"dataxplhpeva\"}},{\"field\":\"vbqv\",\"\":{\"nstlpwqpjn\":\"datapecqxgiqasifubn\"}},{\"field\":\"khtupsvyou\",\"\":{\"lznfhkqytkztado\":\"dataiyxfwkztsmsfbevy\",\"yyhigqkzjuqw\":\"datagfzdgjfcycrsvl\",\"nfdbgsoscienezf\":\"dataajquzxpixhyoi\",\"nrtekw\":\"databennmfkbp\"}}]}},\"id\":\"nthropmdudsyiu\",\"name\":\"ztvktjhffecqko\",\"type\":\"youergaghp\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -37,27 +37,28 @@ public final class AlertsSuppressionRulesUpdateWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        AlertsSuppressionRule response = manager.alertsSuppressionRules()
-            .updateWithResponse("wihbnnxemv",
-                new AlertsSuppressionRuleInner().withAlertType("u")
-                    .withExpirationDateUtc(OffsetDateTime.parse("2021-11-23T15:37:38Z"))
-                    .withReason("auratni")
-                    .withState(RuleState.ENABLED)
-                    .withComment("fzs")
-                    .withSuppressionAlertsScope(new SuppressionAlertsScope().withAllOf(
-                        Arrays.asList(new ScopeElement().withField("yrletndqlmf").withAdditionalProperties(mapOf()),
-                            new ScopeElement().withField("cwtewfhxwyrkb").withAdditionalProperties(mapOf()),
-                            new ScopeElement().withField("tzqzcloy").withAdditionalProperties(mapOf()),
-                            new ScopeElement().withField("vyrfbqvum").withAdditionalProperties(mapOf())))),
-                com.azure.core.util.Context.NONE)
-            .getValue();
+        AlertsSuppressionRule response
+            = manager.alertsSuppressionRules()
+                .updateWithResponse("lweeprne",
+                    new AlertsSuppressionRuleInner().withAlertType("l")
+                        .withExpirationDateUtc(OffsetDateTime.parse("2021-07-17T07:02:50Z"))
+                        .withReason("fjsxscbduxapg")
+                        .withState(RuleState.DISABLED)
+                        .withComment("ebmvrdjom")
+                        .withSuppressionAlertsScope(new SuppressionAlertsScope().withAllOf(Arrays.asList(
+                            new ScopeElement().withField("bvvdlsflxkqesd").withAdditionalProperties(mapOf()),
+                            new ScopeElement().withField("dhuihaouwudhuao").withAdditionalProperties(mapOf()),
+                            new ScopeElement().withField("ravrcjkjymg").withAdditionalProperties(mapOf()),
+                            new ScopeElement().withField("stifgufyjf").withAdditionalProperties(mapOf())))),
+                    com.azure.core.util.Context.NONE)
+                .getValue();
 
-        Assertions.assertEquals("corkfrocgbmxl", response.alertType());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-01T18:03:45Z"), response.expirationDateUtc());
-        Assertions.assertEquals("zbjesylslur", response.reason());
-        Assertions.assertEquals(RuleState.DISABLED, response.state());
-        Assertions.assertEquals("ygpnyhgdzuqsca", response.comment());
-        Assertions.assertEquals("ouprs", response.suppressionAlertsScope().allOf().get(0).field());
+        Assertions.assertEquals("swku", response.alertType());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-04T13:34:39Z"), response.expirationDateUtc());
+        Assertions.assertEquals("aczkf", response.reason());
+        Assertions.assertEquals(RuleState.EXPIRED, response.state());
+        Assertions.assertEquals("tgawphnskiv", response.comment());
+        Assertions.assertEquals("qcumecsa", response.suppressionAlertsScope().allOf().get(0).field());
     }
 
     // Use "Map.of" if available

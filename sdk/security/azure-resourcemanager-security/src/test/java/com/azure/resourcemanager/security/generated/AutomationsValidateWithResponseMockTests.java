@@ -29,7 +29,7 @@ import reactor.core.publisher.Mono;
 public final class AutomationsValidateWithResponseMockTests {
     @Test
     public void testValidateWithResponse() throws Exception {
-        String responseStr = "{\"isValid\":true,\"message\":\"oufq\"}";
+        String responseStr = "{\"isValid\":false,\"message\":\"ehohflyuv\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -39,25 +39,29 @@ public final class AutomationsValidateWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         AutomationValidationStatus response = manager.automations()
-            .validateWithResponse("dj", "ofsv", new AutomationInner().withLocation("gf")
-                .withTags(mapOf("mwdz", "tqscjpvqerqxk", "x", "zlhcu", "kfrwxohlydsnjz", "qpwwvmbjecfwlbgh"))
-                .withDescription("gnywxu")
-                .withIsEnabled(false)
-                .withScopes(Arrays.asList(new AutomationScope().withDescription("mgwtmszcfyzqp").withScopePath("re"),
-                    new AutomationScope().withDescription("urd").withScopePath("gknxmaovrg"),
-                    new AutomationScope().withDescription("lnzffewvqky").withScopePath("cgeipqxxsdyaf"),
-                    new AutomationScope().withDescription("ydsmmabh").withScopePath("lejqzhpvhxp")))
-                .withSources(
-                    Arrays
-                        .asList(new AutomationSource().withEventSource(EventSource.REGULATORY_COMPLIANCE_ASSESSMENT)
-                            .withRuleSets(Arrays.asList(new AutomationRuleSet(), new AutomationRuleSet(),
-                                new AutomationRuleSet()))))
+            .validateWithResponse("cdolrpgupsjlbsmn", "a", new AutomationInner().withLocation("kopaiildcp")
+                .withTags(mapOf("drobujnjgy", "hquxsyjofpgv", "njgcp", "uxmqxigidul"))
+                .withDescription("cuyjeykcnhpplzhc")
+                .withIsEnabled(true)
+                .withScopes(Arrays.asList(new AutomationScope().withDescription("uucrl").withScopePath("wnuwkkfzzetl"),
+                    new AutomationScope().withDescription("dyxzlvwywjvr").withScopePath("qpwwlzpddarc"),
+                    new AutomationScope().withDescription("dwhslxebaj").withScopePath("knmstbdoprwkamp"),
+                    new AutomationScope().withDescription("wpbldz").withScopePath("udrcycm")))
+                .withSources(Arrays.asList(
+                    new AutomationSource().withEventSource(EventSource.ATTACK_PATHS_SNAPSHOT)
+                        .withRuleSets(Arrays.asList(new AutomationRuleSet())),
+                    new AutomationSource().withEventSource(EventSource.ATTACK_PATHS)
+                        .withRuleSets(Arrays.asList(new AutomationRuleSet())),
+                    new AutomationSource().withEventSource(EventSource.SUB_ASSESSMENTS_SNAPSHOT)
+                        .withRuleSets(Arrays.asList(new AutomationRuleSet())),
+                    new AutomationSource().withEventSource(EventSource.SECURE_SCORE_CONTROLS_SNAPSHOT)
+                        .withRuleSets(Arrays.asList(new AutomationRuleSet()))))
                 .withActions(Arrays.asList(new AutomationAction(), new AutomationAction())),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(true, response.isValid());
-        Assertions.assertEquals("oufq", response.message());
+        Assertions.assertEquals(false, response.isValid());
+        Assertions.assertEquals("ehohflyuv", response.message());
     }
 
     // Use "Map.of" if available

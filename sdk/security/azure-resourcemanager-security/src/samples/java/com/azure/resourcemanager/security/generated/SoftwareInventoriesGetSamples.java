@@ -9,7 +9,9 @@ package com.azure.resourcemanager.security.generated;
  */
 public final class SoftwareInventoriesGetSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2021-05-01-preview/examples/SoftwareInventories/GetSoftware_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2021-05-01-preview/examples/
+     * SoftwareInventories/GetSoftware_example.json
      */
     /**
      * Sample code: Gets a single software data of the virtual machine.

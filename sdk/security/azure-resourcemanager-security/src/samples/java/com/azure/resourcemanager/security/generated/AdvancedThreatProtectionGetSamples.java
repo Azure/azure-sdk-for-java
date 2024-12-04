@@ -9,7 +9,9 @@ package com.azure.resourcemanager.security.generated;
  */
 public final class AdvancedThreatProtectionGetSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2019-01-01/examples/AdvancedThreatProtection/GetAdvancedThreatProtectionSettings_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2019-01-01/examples/AdvancedThreatProtection/
+     * GetAdvancedThreatProtectionSettings_example.json
      */
     /**
      * Sample code: Gets the Advanced Threat Protection settings for the specified resource.

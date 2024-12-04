@@ -12,21 +12,21 @@ public final class AutomationActionEventHubTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AutomationActionEventHub model = BinaryData.fromString(
-            "{\"actionType\":\"EventHub\",\"eventHubResourceId\":\"xfabl\",\"sasPolicyName\":\"pwbmwhria\",\"connectionString\":\"wrycgnwpl\",\"isTrustedServiceEnabled\":false}")
+            "{\"actionType\":\"EventHub\",\"eventHubResourceId\":\"zlgzawkgyepey\",\"sasPolicyName\":\"nnidmdiawpzxk\",\"connectionString\":\"ntmkctdhuosgwqps\",\"isTrustedServiceEnabled\":false}")
             .toObject(AutomationActionEventHub.class);
-        Assertions.assertEquals("xfabl", model.eventHubResourceId());
-        Assertions.assertEquals("wrycgnwpl", model.connectionString());
+        Assertions.assertEquals("zlgzawkgyepey", model.eventHubResourceId());
+        Assertions.assertEquals("ntmkctdhuosgwqps", model.connectionString());
         Assertions.assertEquals(false, model.isTrustedServiceEnabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AutomationActionEventHub model = new AutomationActionEventHub().withEventHubResourceId("xfabl")
-            .withConnectionString("wrycgnwpl")
+        AutomationActionEventHub model = new AutomationActionEventHub().withEventHubResourceId("zlgzawkgyepey")
+            .withConnectionString("ntmkctdhuosgwqps")
             .withIsTrustedServiceEnabled(false);
         model = BinaryData.fromObject(model).toObject(AutomationActionEventHub.class);
-        Assertions.assertEquals("xfabl", model.eventHubResourceId());
-        Assertions.assertEquals("wrycgnwpl", model.connectionString());
+        Assertions.assertEquals("zlgzawkgyepey", model.eventHubResourceId());
+        Assertions.assertEquals("ntmkctdhuosgwqps", model.connectionString());
         Assertions.assertEquals(false, model.isTrustedServiceEnabled());
     }
 }

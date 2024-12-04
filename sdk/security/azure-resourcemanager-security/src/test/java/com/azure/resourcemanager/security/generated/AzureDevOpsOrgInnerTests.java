@@ -11,7 +11,6 @@ import com.azure.resourcemanager.security.models.ActionableRemediationState;
 import com.azure.resourcemanager.security.models.AnnotateDefaultBranchState;
 import com.azure.resourcemanager.security.models.AzureDevOpsOrgProperties;
 import com.azure.resourcemanager.security.models.CategoryConfiguration;
-import com.azure.resourcemanager.security.models.DevOpsProvisioningState;
 import com.azure.resourcemanager.security.models.InheritFromParentState;
 import com.azure.resourcemanager.security.models.OnboardingState;
 import com.azure.resourcemanager.security.models.RuleCategory;
@@ -23,53 +22,45 @@ public final class AzureDevOpsOrgInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureDevOpsOrgInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningStatusMessage\":\"kwtjawhva\",\"provisioningStatusUpdateTimeUtc\":\"2021-07-18T11:01:51Z\",\"provisioningState\":\"Pending\",\"onboardingState\":\"OnboardedByOtherConnector\",\"actionableRemediation\":{\"state\":\"Enabled\",\"categoryConfigurations\":[{\"minimumSeverityLevel\":\"lcaymjchtv\",\"category\":\"Containers\"},{\"minimumSeverityLevel\":\"aqdnzyzawatuwq\",\"category\":\"Dependencies\"},{\"minimumSeverityLevel\":\"czothymgo\",\"category\":\"Artifacts\"},{\"minimumSeverityLevel\":\"snwgwimaa\",\"category\":\"IaC\"}],\"branchConfiguration\":{\"branchNames\":[\"mhobcyan\"],\"annotateDefaultBranch\":\"Disabled\"},\"inheritFromParentState\":\"Disabled\"}},\"id\":\"vkhgv\",\"name\":\"ogxkfnaoa\",\"type\":\"ymhcctopuo\"}")
+            "{\"properties\":{\"provisioningStatusMessage\":\"zgnzv\",\"provisioningStatusUpdateTimeUtc\":\"2021-07-04T23:14:39Z\",\"provisioningState\":\"PendingDeletion\",\"onboardingState\":\"Onboarded\",\"actionableRemediation\":{\"state\":\"Enabled\",\"categoryConfigurations\":[{\"minimumSeverityLevel\":\"d\",\"category\":\"Dependencies\"}],\"branchConfiguration\":{\"branchNames\":[\"ewjptmcg\",\"bostzel\",\"dlat\",\"tmzlbiojlv\"],\"annotateDefaultBranch\":\"Enabled\"},\"inheritFromParentState\":\"Enabled\"}},\"id\":\"pn\",\"name\":\"qvcww\",\"type\":\"yurmochpprprs\"}")
             .toObject(AzureDevOpsOrgInner.class);
-        Assertions.assertEquals(DevOpsProvisioningState.PENDING, model.properties().provisioningState());
-        Assertions.assertEquals(OnboardingState.ONBOARDED_BY_OTHER_CONNECTOR, model.properties().onboardingState());
+        Assertions.assertEquals(OnboardingState.ONBOARDED, model.properties().onboardingState());
         Assertions.assertEquals(ActionableRemediationState.ENABLED, model.properties().actionableRemediation().state());
-        Assertions.assertEquals("lcaymjchtv",
+        Assertions.assertEquals("d",
             model.properties().actionableRemediation().categoryConfigurations().get(0).minimumSeverityLevel());
-        Assertions.assertEquals(RuleCategory.CONTAINERS,
+        Assertions.assertEquals(RuleCategory.DEPENDENCIES,
             model.properties().actionableRemediation().categoryConfigurations().get(0).category());
-        Assertions.assertEquals("mhobcyan",
+        Assertions.assertEquals("ewjptmcg",
             model.properties().actionableRemediation().branchConfiguration().branchNames().get(0));
-        Assertions.assertEquals(AnnotateDefaultBranchState.DISABLED,
+        Assertions.assertEquals(AnnotateDefaultBranchState.ENABLED,
             model.properties().actionableRemediation().branchConfiguration().annotateDefaultBranch());
-        Assertions.assertEquals(InheritFromParentState.DISABLED,
+        Assertions.assertEquals(InheritFromParentState.ENABLED,
             model.properties().actionableRemediation().inheritFromParentState());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AzureDevOpsOrgInner model = new AzureDevOpsOrgInner().withProperties(new AzureDevOpsOrgProperties()
-            .withProvisioningState(DevOpsProvisioningState.PENDING)
-            .withOnboardingState(OnboardingState.ONBOARDED_BY_OTHER_CONNECTOR)
+            .withOnboardingState(OnboardingState.ONBOARDED)
             .withActionableRemediation(new ActionableRemediation().withState(ActionableRemediationState.ENABLED)
                 .withCategoryConfigurations(Arrays.asList(
-                    new CategoryConfiguration().withMinimumSeverityLevel("lcaymjchtv")
-                        .withCategory(RuleCategory.CONTAINERS),
-                    new CategoryConfiguration().withMinimumSeverityLevel("aqdnzyzawatuwq")
-                        .withCategory(RuleCategory.DEPENDENCIES),
-                    new CategoryConfiguration().withMinimumSeverityLevel("czothymgo")
-                        .withCategory(RuleCategory.ARTIFACTS),
-                    new CategoryConfiguration().withMinimumSeverityLevel("snwgwimaa").withCategory(RuleCategory.IAC)))
-                .withBranchConfiguration(new TargetBranchConfiguration().withBranchNames(Arrays.asList("mhobcyan"))
-                    .withAnnotateDefaultBranch(AnnotateDefaultBranchState.DISABLED))
-                .withInheritFromParentState(InheritFromParentState.DISABLED)));
+                    new CategoryConfiguration().withMinimumSeverityLevel("d").withCategory(RuleCategory.DEPENDENCIES)))
+                .withBranchConfiguration(new TargetBranchConfiguration()
+                    .withBranchNames(Arrays.asList("ewjptmcg", "bostzel", "dlat", "tmzlbiojlv"))
+                    .withAnnotateDefaultBranch(AnnotateDefaultBranchState.ENABLED))
+                .withInheritFromParentState(InheritFromParentState.ENABLED)));
         model = BinaryData.fromObject(model).toObject(AzureDevOpsOrgInner.class);
-        Assertions.assertEquals(DevOpsProvisioningState.PENDING, model.properties().provisioningState());
-        Assertions.assertEquals(OnboardingState.ONBOARDED_BY_OTHER_CONNECTOR, model.properties().onboardingState());
+        Assertions.assertEquals(OnboardingState.ONBOARDED, model.properties().onboardingState());
         Assertions.assertEquals(ActionableRemediationState.ENABLED, model.properties().actionableRemediation().state());
-        Assertions.assertEquals("lcaymjchtv",
+        Assertions.assertEquals("d",
             model.properties().actionableRemediation().categoryConfigurations().get(0).minimumSeverityLevel());
-        Assertions.assertEquals(RuleCategory.CONTAINERS,
+        Assertions.assertEquals(RuleCategory.DEPENDENCIES,
             model.properties().actionableRemediation().categoryConfigurations().get(0).category());
-        Assertions.assertEquals("mhobcyan",
+        Assertions.assertEquals("ewjptmcg",
             model.properties().actionableRemediation().branchConfiguration().branchNames().get(0));
-        Assertions.assertEquals(AnnotateDefaultBranchState.DISABLED,
+        Assertions.assertEquals(AnnotateDefaultBranchState.ENABLED,
             model.properties().actionableRemediation().branchConfiguration().annotateDefaultBranch());
-        Assertions.assertEquals(InheritFromParentState.DISABLED,
+        Assertions.assertEquals(InheritFromParentState.ENABLED,
             model.properties().actionableRemediation().inheritFromParentState());
     }
 }

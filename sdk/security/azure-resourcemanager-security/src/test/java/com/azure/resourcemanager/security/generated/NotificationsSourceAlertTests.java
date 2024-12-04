@@ -12,15 +12,16 @@ import org.junit.jupiter.api.Assertions;
 public final class NotificationsSourceAlertTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NotificationsSourceAlert model = BinaryData.fromString("{\"sourceType\":\"Alert\",\"minimalSeverity\":\"Low\"}")
-            .toObject(NotificationsSourceAlert.class);
-        Assertions.assertEquals(MinimalSeverity.LOW, model.minimalSeverity());
+        NotificationsSourceAlert model
+            = BinaryData.fromString("{\"sourceType\":\"Alert\",\"minimalSeverity\":\"Medium\"}")
+                .toObject(NotificationsSourceAlert.class);
+        Assertions.assertEquals(MinimalSeverity.MEDIUM, model.minimalSeverity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NotificationsSourceAlert model = new NotificationsSourceAlert().withMinimalSeverity(MinimalSeverity.LOW);
+        NotificationsSourceAlert model = new NotificationsSourceAlert().withMinimalSeverity(MinimalSeverity.MEDIUM);
         model = BinaryData.fromObject(model).toObject(NotificationsSourceAlert.class);
-        Assertions.assertEquals(MinimalSeverity.LOW, model.minimalSeverity());
+        Assertions.assertEquals(MinimalSeverity.MEDIUM, model.minimalSeverity());
     }
 }

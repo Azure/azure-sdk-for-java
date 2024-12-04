@@ -9,7 +9,9 @@ package com.azure.resourcemanager.security.generated;
  */
 public final class DevOpsConfigurationsGetSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2024-04-01/examples/SecurityConnectorsDevOps/GetDevOpsConfigurationsWithCapabilities_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2024-05-15-preview/examples/
+     * SecurityConnectorsDevOps/GetDevOpsConfigurationsWithCapabilities_example.json
      */
     /**
      * Sample code: Get_DevOpsConfigurations_WithCapabilities.
@@ -23,7 +25,9 @@ public final class DevOpsConfigurationsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2024-04-01/examples/SecurityConnectorsDevOps/GetDevOpsConfigurations_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2024-05-15-preview/examples/
+     * SecurityConnectorsDevOps/GetDevOpsConfigurations_example.json
      */
     /**
      * Sample code: Get_DevOpsConfigurations.

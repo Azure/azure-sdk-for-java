@@ -9,7 +9,9 @@ package com.azure.resourcemanager.security.generated;
  */
 public final class AutomationsDeleteSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2023-12-01-preview/examples/Automations/DeleteAutomation_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2023-12-01-preview/examples/Automations/
+     * DeleteAutomation_example.json
      */
     /**
      * Sample code: Delete a security automation.

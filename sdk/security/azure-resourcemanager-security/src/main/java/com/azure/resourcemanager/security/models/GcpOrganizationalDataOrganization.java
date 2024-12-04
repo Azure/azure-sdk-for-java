@@ -5,52 +5,41 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The gcpOrganization data for the parent account.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "organizationMembershipType",
-    defaultImpl = GcpOrganizationalDataOrganization.class,
-    visible = true)
-@JsonTypeName("Organization")
 @Fluent
 public final class GcpOrganizationalDataOrganization extends GcpOrganizationalData {
     /*
      * The multi cloud account's membership type in the organization
      */
-    @JsonTypeId
-    @JsonProperty(value = "organizationMembershipType", required = true)
     private OrganizationMembershipType organizationMembershipType = OrganizationMembershipType.ORGANIZATION;
 
     /*
      * If the multi cloud account is of membership type organization, list of accounts excluded from offering
      */
-    @JsonProperty(value = "excludedProjectNumbers")
     private List<String> excludedProjectNumbers;
 
     /*
      * The service account email address which represents the organization level permissions container.
      */
-    @JsonProperty(value = "serviceAccountEmailAddress")
     private String serviceAccountEmailAddress;
 
     /*
-     * The GCP workload identity provider id which represents the permissions required to auto provision security connectors
+     * The GCP workload identity provider id which represents the permissions required to auto provision security
+     * connectors
      */
-    @JsonProperty(value = "workloadIdentityProviderId")
     private String workloadIdentityProviderId;
 
     /*
      * GCP organization name
      */
-    @JsonProperty(value = "organizationName", access = JsonProperty.Access.WRITE_ONLY)
     private String organizationName;
 
     /**
@@ -151,6 +140,57 @@ public final class GcpOrganizationalDataOrganization extends GcpOrganizationalDa
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("organizationMembershipType",
+            this.organizationMembershipType == null ? null : this.organizationMembershipType.toString());
+        jsonWriter.writeArrayField("excludedProjectNumbers", this.excludedProjectNumbers,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("serviceAccountEmailAddress", this.serviceAccountEmailAddress);
+        jsonWriter.writeStringField("workloadIdentityProviderId", this.workloadIdentityProviderId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GcpOrganizationalDataOrganization from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GcpOrganizationalDataOrganization if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the GcpOrganizationalDataOrganization.
+     */
+    public static GcpOrganizationalDataOrganization fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GcpOrganizationalDataOrganization deserializedGcpOrganizationalDataOrganization
+                = new GcpOrganizationalDataOrganization();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("organizationMembershipType".equals(fieldName)) {
+                    deserializedGcpOrganizationalDataOrganization.organizationMembershipType
+                        = OrganizationMembershipType.fromString(reader.getString());
+                } else if ("excludedProjectNumbers".equals(fieldName)) {
+                    List<String> excludedProjectNumbers = reader.readArray(reader1 -> reader1.getString());
+                    deserializedGcpOrganizationalDataOrganization.excludedProjectNumbers = excludedProjectNumbers;
+                } else if ("serviceAccountEmailAddress".equals(fieldName)) {
+                    deserializedGcpOrganizationalDataOrganization.serviceAccountEmailAddress = reader.getString();
+                } else if ("workloadIdentityProviderId".equals(fieldName)) {
+                    deserializedGcpOrganizationalDataOrganization.workloadIdentityProviderId = reader.getString();
+                } else if ("organizationName".equals(fieldName)) {
+                    deserializedGcpOrganizationalDataOrganization.organizationName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGcpOrganizationalDataOrganization;
+        });
     }
 }

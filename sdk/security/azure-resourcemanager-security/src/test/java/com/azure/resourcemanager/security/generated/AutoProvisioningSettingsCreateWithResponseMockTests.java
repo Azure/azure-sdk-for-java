@@ -22,7 +22,7 @@ public final class AutoProvisioningSettingsCreateWithResponseMockTests {
     @Test
     public void testCreateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"autoProvision\":\"Off\"},\"id\":\"tgawphnskiv\",\"name\":\"wgtqcume\",\"type\":\"saaqgoq\"}";
+            = "{\"properties\":{\"autoProvision\":\"On\"},\"id\":\"ztxlnomfpbjceeg\",\"name\":\"yieztkutnjil\",\"type\":\"ukkrehyh\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,8 +32,8 @@ public final class AutoProvisioningSettingsCreateWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         AutoProvisioningSetting response
-            = manager.autoProvisioningSettings().define("ujqbbgsimwejl").withAutoProvision(AutoProvision.OFF).create();
+            = manager.autoProvisioningSettings().define("xiqahr").withAutoProvision(AutoProvision.ON).create();
 
-        Assertions.assertEquals(AutoProvision.OFF, response.autoProvision());
+        Assertions.assertEquals(AutoProvision.ON, response.autoProvision());
     }
 }

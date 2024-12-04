@@ -5,7 +5,11 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -13,11 +17,10 @@ import java.util.List;
  * will be evaluated as 'true', will the event trigger the defined actions.
  */
 @Fluent
-public final class AutomationRuleSet {
+public final class AutomationRuleSet implements JsonSerializable<AutomationRuleSet> {
     /*
      * The rules property.
      */
-    @JsonProperty(value = "rules")
     private List<AutomationTriggeringRule> rules;
 
     /**
@@ -55,5 +58,43 @@ public final class AutomationRuleSet {
         if (rules() != null) {
             rules().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("rules", this.rules, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AutomationRuleSet from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AutomationRuleSet if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AutomationRuleSet.
+     */
+    public static AutomationRuleSet fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AutomationRuleSet deserializedAutomationRuleSet = new AutomationRuleSet();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("rules".equals(fieldName)) {
+                    List<AutomationTriggeringRule> rules
+                        = reader.readArray(reader1 -> AutomationTriggeringRule.fromJson(reader1));
+                    deserializedAutomationRuleSet.rules = rules;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAutomationRuleSet;
+        });
     }
 }

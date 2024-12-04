@@ -5,6 +5,10 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The ARC autoprovisioning configuration for an GCP environment.
@@ -42,6 +46,48 @@ public class ArcAutoProvisioningGcp extends ArcAutoProvisioning {
      */
     @Override
     public void validate() {
-        super.validate();
+        if (configuration() != null) {
+            configuration().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("enabled", enabled());
+        jsonWriter.writeJsonField("configuration", configuration());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ArcAutoProvisioningGcp from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ArcAutoProvisioningGcp if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ArcAutoProvisioningGcp.
+     */
+    public static ArcAutoProvisioningGcp fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ArcAutoProvisioningGcp deserializedArcAutoProvisioningGcp = new ArcAutoProvisioningGcp();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("enabled".equals(fieldName)) {
+                    deserializedArcAutoProvisioningGcp.withEnabled(reader.getNullable(JsonReader::getBoolean));
+                } else if ("configuration".equals(fieldName)) {
+                    deserializedArcAutoProvisioningGcp
+                        .withConfiguration(ArcAutoProvisioningConfiguration.fromJson(reader));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedArcAutoProvisioningGcp;
+        });
     }
 }

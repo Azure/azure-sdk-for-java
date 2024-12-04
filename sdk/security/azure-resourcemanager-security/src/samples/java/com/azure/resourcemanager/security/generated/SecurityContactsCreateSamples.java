@@ -19,7 +19,9 @@ import java.util.Arrays;
  */
 public final class SecurityContactsCreateSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2023-12-01-preview/examples/SecurityContacts/CreateSecurityContact_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2023-12-01-preview/examples/SecurityContacts/
+     * CreateSecurityContact_example.json
      */
     /**
      * Sample code: Create security contact data.

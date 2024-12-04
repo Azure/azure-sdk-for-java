@@ -22,7 +22,7 @@ public final class CustomEntityStoreAssignmentsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"principal\":\"loisjk\",\"entityStoreDatabaseLink\":\"o\"},\"id\":\"zn\",\"name\":\"twg\",\"type\":\"vyohpsapzu\"}]}";
+            = "{\"value\":[{\"properties\":{\"principal\":\"kqakofaj\",\"entityStoreDatabaseLink\":\"epr\"},\"id\":\"vmkinwtey\",\"name\":\"qshixbc\",\"type\":\"jopylblfsprrwcsp\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,7 +34,7 @@ public final class CustomEntityStoreAssignmentsListMockTests {
         PagedIterable<CustomEntityStoreAssignment> response
             = manager.customEntityStoreAssignments().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("loisjk", response.iterator().next().principal());
-        Assertions.assertEquals("o", response.iterator().next().entityStoreDatabaseLink());
+        Assertions.assertEquals("kqakofaj", response.iterator().next().principal());
+        Assertions.assertEquals("epr", response.iterator().next().entityStoreDatabaseLink());
     }
 }

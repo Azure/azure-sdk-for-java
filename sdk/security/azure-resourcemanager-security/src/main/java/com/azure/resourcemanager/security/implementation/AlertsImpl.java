@@ -12,8 +12,8 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.security.fluent.AlertsClient;
 import com.azure.resourcemanager.security.fluent.models.AlertInner;
 import com.azure.resourcemanager.security.models.Alert;
-import com.azure.resourcemanager.security.models.Alerts;
 import com.azure.resourcemanager.security.models.AlertSimulatorRequestBody;
+import com.azure.resourcemanager.security.models.Alerts;
 
 public final class AlertsImpl implements Alerts {
     private static final ClientLogger LOGGER = new ClientLogger(AlertsImpl.class);

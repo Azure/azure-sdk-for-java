@@ -15,24 +15,24 @@ public final class ExternalSecuritySolutionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExternalSecuritySolutionProperties model = BinaryData.fromString(
-            "{\"deviceVendor\":\"tmjoduifvu\",\"deviceType\":\"faryrvjlg\",\"workspace\":{\"id\":\"vjqwaho\"},\"\":{\"ovbooqbmdqrxy\":\"dataaxqvjweiwtczkddn\",\"e\":\"datalaetscflwtjdtlr\",\"cuxd\":\"dataooy\",\"ehxlantolamlb\":\"datazcqipsdudgcozzo\"}}")
+            "{\"deviceVendor\":\"gorwjoqtrotpvclp\",\"deviceType\":\"yrlmwkptsk\",\"workspace\":{\"id\":\"gvhxccbmka\"},\"\":{\"mgvmuy\":\"dataookbpu\",\"ow\":\"datakmlwkt\",\"ejtgzjxxl\":\"datakroyrdurxflzqji\",\"lzuqloiwyayyzivr\":\"datae\"}}")
             .toObject(ExternalSecuritySolutionProperties.class);
-        Assertions.assertEquals("tmjoduifvu", model.deviceVendor());
-        Assertions.assertEquals("faryrvjlg", model.deviceType());
-        Assertions.assertEquals("vjqwaho", model.workspace().id());
+        Assertions.assertEquals("gorwjoqtrotpvclp", model.deviceVendor());
+        Assertions.assertEquals("yrlmwkptsk", model.deviceType());
+        Assertions.assertEquals("gvhxccbmka", model.workspace().id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ExternalSecuritySolutionProperties model
-            = new ExternalSecuritySolutionProperties().withDeviceVendor("tmjoduifvu")
-                .withDeviceType("faryrvjlg")
-                .withWorkspace(new ConnectedWorkspace().withId("vjqwaho"))
+            = new ExternalSecuritySolutionProperties().withDeviceVendor("gorwjoqtrotpvclp")
+                .withDeviceType("yrlmwkptsk")
+                .withWorkspace(new ConnectedWorkspace().withId("gvhxccbmka"))
                 .withAdditionalProperties(mapOf());
         model = BinaryData.fromObject(model).toObject(ExternalSecuritySolutionProperties.class);
-        Assertions.assertEquals("tmjoduifvu", model.deviceVendor());
-        Assertions.assertEquals("faryrvjlg", model.deviceType());
-        Assertions.assertEquals("vjqwaho", model.workspace().id());
+        Assertions.assertEquals("gorwjoqtrotpvclp", model.deviceVendor());
+        Assertions.assertEquals("yrlmwkptsk", model.deviceType());
+        Assertions.assertEquals("gvhxccbmka", model.workspace().id());
     }
 
     // Use "Map.of" if available

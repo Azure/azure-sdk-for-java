@@ -13,24 +13,24 @@ public final class ArcAutoProvisioningAwsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ArcAutoProvisioningAws model = BinaryData.fromString(
-            "{\"cloudRoleArn\":\"ermhzicsbfdjhyaa\",\"enabled\":true,\"configuration\":{\"proxy\":\"ibxiglhph\",\"privateLinkScope\":\"xqtejpiilhvt\"}}")
+            "{\"cloudRoleArn\":\"jmeqkvy\",\"enabled\":false,\"configuration\":{\"proxy\":\"oyuoh\",\"privateLinkScope\":\"nsnaajphmp\"}}")
             .toObject(ArcAutoProvisioningAws.class);
-        Assertions.assertEquals(true, model.enabled());
-        Assertions.assertEquals("ibxiglhph", model.configuration().proxy());
-        Assertions.assertEquals("xqtejpiilhvt", model.configuration().privateLinkScope());
-        Assertions.assertEquals("ermhzicsbfdjhyaa", model.cloudRoleArn());
+        Assertions.assertEquals(false, model.enabled());
+        Assertions.assertEquals("oyuoh", model.configuration().proxy());
+        Assertions.assertEquals("nsnaajphmp", model.configuration().privateLinkScope());
+        Assertions.assertEquals("jmeqkvy", model.cloudRoleArn());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ArcAutoProvisioningAws model = new ArcAutoProvisioningAws().withEnabled(true)
+        ArcAutoProvisioningAws model = new ArcAutoProvisioningAws().withEnabled(false)
             .withConfiguration(
-                new ArcAutoProvisioningConfiguration().withProxy("ibxiglhph").withPrivateLinkScope("xqtejpiilhvt"))
-            .withCloudRoleArn("ermhzicsbfdjhyaa");
+                new ArcAutoProvisioningConfiguration().withProxy("oyuoh").withPrivateLinkScope("nsnaajphmp"))
+            .withCloudRoleArn("jmeqkvy");
         model = BinaryData.fromObject(model).toObject(ArcAutoProvisioningAws.class);
-        Assertions.assertEquals(true, model.enabled());
-        Assertions.assertEquals("ibxiglhph", model.configuration().proxy());
-        Assertions.assertEquals("xqtejpiilhvt", model.configuration().privateLinkScope());
-        Assertions.assertEquals("ermhzicsbfdjhyaa", model.cloudRoleArn());
+        Assertions.assertEquals(false, model.enabled());
+        Assertions.assertEquals("oyuoh", model.configuration().proxy());
+        Assertions.assertEquals("nsnaajphmp", model.configuration().privateLinkScope());
+        Assertions.assertEquals("jmeqkvy", model.cloudRoleArn());
     }
 }

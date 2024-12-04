@@ -24,7 +24,7 @@ public final class PricingsListWithResponseMockTests {
     @Test
     public void testListWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"pricingTier\":\"Free\",\"subPlan\":\"xauphzefineyy\",\"freeTrialRemainingTime\":\"PT6H36M49S\",\"enablementTime\":\"2021-04-24T07:19:38Z\",\"enforce\":\"False\",\"inherited\":\"False\",\"inheritedFrom\":\"deexccw\",\"resourcesCoverageStatus\":\"PartiallyCovered\",\"extensions\":[{\"name\":\"uywmwtacr\",\"isEnabled\":\"True\"},{\"name\":\"fcncrvjcullmfw\",\"isEnabled\":\"True\"},{\"name\":\"oeowoszzwncsjgf\",\"isEnabled\":\"True\"},{\"name\":\"chmubyguqhgnmsvj\",\"isEnabled\":\"True\"}],\"deprecated\":false,\"replacedBy\":[\"yircba\",\"xjrbv\",\"rkbuatxkznl\",\"lmbx\"]},\"id\":\"gkev\",\"name\":\"ay\",\"type\":\"x\"},{\"properties\":{\"pricingTier\":\"Free\",\"subPlan\":\"ymzgrgkja\",\"freeTrialRemainingTime\":\"PT219H50M51S\",\"enablementTime\":\"2021-12-08T09:47:04Z\",\"enforce\":\"False\",\"inherited\":\"False\",\"inheritedFrom\":\"bspsbo\",\"resourcesCoverageStatus\":\"PartiallyCovered\",\"extensions\":[{\"name\":\"zimfcf\",\"isEnabled\":\"False\"}],\"deprecated\":true,\"replacedBy\":[\"pasckpgb\",\"lyxbwslxg\",\"mxtoejtqvq\"]},\"id\":\"tmlidk\",\"name\":\"zxoluzntbpca\",\"type\":\"d\"}]}";
+            = "{\"value\":[{\"properties\":{\"pricingTier\":\"Free\",\"subPlan\":\"qpjohlcbn\",\"freeTrialRemainingTime\":\"PT73H49M1S\",\"enablementTime\":\"2021-04-08T06:06Z\",\"enforce\":\"False\",\"inherited\":\"True\",\"inheritedFrom\":\"ztqfrpan\",\"resourcesCoverageStatus\":\"PartiallyCovered\",\"extensions\":[{\"name\":\"duukaam\",\"isEnabled\":\"False\"}],\"deprecated\":true,\"replacedBy\":[\"xysjd\",\"xvksij\",\"jgyindexijovuyxu\"]},\"id\":\"pzeaddatopdtphvj\",\"name\":\"vj\",\"type\":\"ykngqyiyjxzxb\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,14 +33,13 @@ public final class PricingsListWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PricingList response = manager.pricings()
-            .listWithResponse("qy", "clwbjgiynqryoisw", com.azure.core.util.Context.NONE)
-            .getValue();
+        PricingList response
+            = manager.pricings().listWithResponse("q", "atxvuzccaliry", com.azure.core.util.Context.NONE).getValue();
 
         Assertions.assertEquals(PricingTier.FREE, response.value().get(0).pricingTier());
-        Assertions.assertEquals("xauphzefineyy", response.value().get(0).subPlan());
+        Assertions.assertEquals("qpjohlcbn", response.value().get(0).subPlan());
         Assertions.assertEquals(Enforce.FALSE, response.value().get(0).enforce());
-        Assertions.assertEquals("uywmwtacr", response.value().get(0).extensions().get(0).name());
-        Assertions.assertEquals(IsEnabled.TRUE, response.value().get(0).extensions().get(0).isEnabled());
+        Assertions.assertEquals("duukaam", response.value().get(0).extensions().get(0).name());
+        Assertions.assertEquals(IsEnabled.FALSE, response.value().get(0).extensions().get(0).isEnabled());
     }
 }

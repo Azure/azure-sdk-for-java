@@ -10,7 +10,6 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.security.SecurityManager;
-import com.azure.resourcemanager.security.models.DevOpsProvisioningState;
 import com.azure.resourcemanager.security.models.GitLabProject;
 import com.azure.resourcemanager.security.models.OnboardingState;
 import java.nio.charset.StandardCharsets;
@@ -23,7 +22,7 @@ public final class GitLabProjectsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningStatusMessage\":\"afapctgljopizqq\",\"provisioningStatusUpdateTimeUtc\":\"2021-12-01T14:45:17Z\",\"provisioningState\":\"Pending\",\"fullyQualifiedName\":\"fq\",\"fullyQualifiedFriendlyName\":\"ddj\",\"fullyQualifiedParentGroupName\":\"pgom\",\"url\":\"kjpajl\",\"onboardingState\":\"Onboarded\"},\"id\":\"vrljlhejcccp\",\"name\":\"bnwitafjjevp\",\"type\":\"vitghzq\"}";
+            = "{\"properties\":{\"provisioningStatusMessage\":\"qgtzpvqewflwzhx\",\"provisioningStatusUpdateTimeUtc\":\"2021-02-23T08:05:14Z\",\"provisioningState\":\"Succeeded\",\"fullyQualifiedName\":\"hywlrkqsq\",\"fullyQualifiedFriendlyName\":\"d\",\"fullyQualifiedParentGroupName\":\"pfjdajdqxymxxyf\",\"url\":\"j\",\"onboardingState\":\"Onboarded\"},\"id\":\"etfvgwfw\",\"name\":\"ld\",\"type\":\"gwouppvyddqsvc\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,10 +32,9 @@ public final class GitLabProjectsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         GitLabProject response = manager.gitLabProjects()
-            .getWithResponse("zjohdhczh", "xitydljgrpqua", "xgjqqbactffxd", "isi", com.azure.core.util.Context.NONE)
+            .getWithResponse("rkrgsdc", "b", "mgqlwyqznbbyzpo", "zfutgpbygbnb", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(DevOpsProvisioningState.PENDING, response.properties().provisioningState());
         Assertions.assertEquals(OnboardingState.ONBOARDED, response.properties().onboardingState());
     }
 }

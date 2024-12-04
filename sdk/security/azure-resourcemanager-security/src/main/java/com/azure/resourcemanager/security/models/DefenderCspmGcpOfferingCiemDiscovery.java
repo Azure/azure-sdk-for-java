@@ -5,29 +5,31 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * GCP Defenders CSPM Permissions Management OIDC (Open ID connect) connection configurations.
  */
 @Fluent
-public final class DefenderCspmGcpOfferingCiemDiscovery {
+public final class DefenderCspmGcpOfferingCiemDiscovery
+    implements JsonSerializable<DefenderCspmGcpOfferingCiemDiscovery> {
     /*
      * The GCP workload identity provider id for Permissions Management offering
      */
-    @JsonProperty(value = "workloadIdentityProviderId")
     private String workloadIdentityProviderId;
 
     /*
      * The service account email address in GCP for Permissions Management offering
      */
-    @JsonProperty(value = "serviceAccountEmailAddress")
     private String serviceAccountEmailAddress;
 
     /*
      * the azure active directory app name used of authenticating against GCP workload identity federation
      */
-    @JsonProperty(value = "azureActiveDirectoryAppName")
     private String azureActiveDirectoryAppName;
 
     /**
@@ -108,5 +110,48 @@ public final class DefenderCspmGcpOfferingCiemDiscovery {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("workloadIdentityProviderId", this.workloadIdentityProviderId);
+        jsonWriter.writeStringField("serviceAccountEmailAddress", this.serviceAccountEmailAddress);
+        jsonWriter.writeStringField("azureActiveDirectoryAppName", this.azureActiveDirectoryAppName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DefenderCspmGcpOfferingCiemDiscovery from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DefenderCspmGcpOfferingCiemDiscovery if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DefenderCspmGcpOfferingCiemDiscovery.
+     */
+    public static DefenderCspmGcpOfferingCiemDiscovery fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DefenderCspmGcpOfferingCiemDiscovery deserializedDefenderCspmGcpOfferingCiemDiscovery
+                = new DefenderCspmGcpOfferingCiemDiscovery();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("workloadIdentityProviderId".equals(fieldName)) {
+                    deserializedDefenderCspmGcpOfferingCiemDiscovery.workloadIdentityProviderId = reader.getString();
+                } else if ("serviceAccountEmailAddress".equals(fieldName)) {
+                    deserializedDefenderCspmGcpOfferingCiemDiscovery.serviceAccountEmailAddress = reader.getString();
+                } else if ("azureActiveDirectoryAppName".equals(fieldName)) {
+                    deserializedDefenderCspmGcpOfferingCiemDiscovery.azureActiveDirectoryAppName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDefenderCspmGcpOfferingCiemDiscovery;
+        });
     }
 }

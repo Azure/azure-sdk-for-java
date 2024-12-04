@@ -12,7 +12,7 @@ public final class DefenderForServersGcpOfferingMdeAutoProvisioningTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DefenderForServersGcpOfferingMdeAutoProvisioning model
-            = BinaryData.fromString("{\"enabled\":false,\"configuration\":\"datamnnkkwayqshw\"}")
+            = BinaryData.fromString("{\"enabled\":false,\"configuration\":\"dataktwieope\"}")
                 .toObject(DefenderForServersGcpOfferingMdeAutoProvisioning.class);
         Assertions.assertEquals(false, model.enabled());
     }
@@ -21,7 +21,7 @@ public final class DefenderForServersGcpOfferingMdeAutoProvisioningTests {
     public void testSerialize() throws Exception {
         DefenderForServersGcpOfferingMdeAutoProvisioning model
             = new DefenderForServersGcpOfferingMdeAutoProvisioning().withEnabled(false)
-                .withConfiguration("datamnnkkwayqshw");
+                .withConfiguration("dataktwieope");
         model = BinaryData.fromObject(model).toObject(DefenderForServersGcpOfferingMdeAutoProvisioning.class);
         Assertions.assertEquals(false, model.enabled());
     }

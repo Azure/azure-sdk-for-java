@@ -5,10 +5,15 @@
 package com.azure.resourcemanager.security.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.security.models.CloudName;
 import com.azure.resourcemanager.security.models.CloudOffering;
 import com.azure.resourcemanager.security.models.EnvironmentData;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
@@ -16,35 +21,32 @@ import java.util.List;
  * A set of properties that defines the security connector configuration.
  */
 @Fluent
-public final class SecurityConnectorProperties {
+public final class SecurityConnectorProperties implements JsonSerializable<SecurityConnectorProperties> {
     /*
-     * The multi cloud resource identifier (account id in case of AWS connector, project number in case of GCP connector).
+     * The multi cloud resource identifier (account id in case of AWS connector, project number in case of GCP
+     * connector).
      */
-    @JsonProperty(value = "hierarchyIdentifier")
     private String hierarchyIdentifier;
 
     /*
-     * The date on which the trial period will end, if applicable. Trial period exists for 30 days after upgrading to payed offerings.
+     * The date on which the trial period will end, if applicable. Trial period exists for 30 days after upgrading to
+     * payed offerings.
      */
-    @JsonProperty(value = "hierarchyIdentifierTrialEndDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime hierarchyIdentifierTrialEndDate;
 
     /*
      * The multi cloud resource's cloud name.
      */
-    @JsonProperty(value = "environmentName")
     private CloudName environmentName;
 
     /*
      * A collection of offerings for the security connector.
      */
-    @JsonProperty(value = "offerings")
     private List<CloudOffering> offerings;
 
     /*
      * The security connector environment data.
      */
-    @JsonProperty(value = "environmentData")
     private EnvironmentData environmentData;
 
     /**
@@ -157,5 +159,55 @@ public final class SecurityConnectorProperties {
         if (environmentData() != null) {
             environmentData().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("hierarchyIdentifier", this.hierarchyIdentifier);
+        jsonWriter.writeStringField("environmentName",
+            this.environmentName == null ? null : this.environmentName.toString());
+        jsonWriter.writeArrayField("offerings", this.offerings, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("environmentData", this.environmentData);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SecurityConnectorProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SecurityConnectorProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SecurityConnectorProperties.
+     */
+    public static SecurityConnectorProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SecurityConnectorProperties deserializedSecurityConnectorProperties = new SecurityConnectorProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("hierarchyIdentifier".equals(fieldName)) {
+                    deserializedSecurityConnectorProperties.hierarchyIdentifier = reader.getString();
+                } else if ("hierarchyIdentifierTrialEndDate".equals(fieldName)) {
+                    deserializedSecurityConnectorProperties.hierarchyIdentifierTrialEndDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("environmentName".equals(fieldName)) {
+                    deserializedSecurityConnectorProperties.environmentName = CloudName.fromString(reader.getString());
+                } else if ("offerings".equals(fieldName)) {
+                    List<CloudOffering> offerings = reader.readArray(reader1 -> CloudOffering.fromJson(reader1));
+                    deserializedSecurityConnectorProperties.offerings = offerings;
+                } else if ("environmentData".equals(fieldName)) {
+                    deserializedSecurityConnectorProperties.environmentData = EnvironmentData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSecurityConnectorProperties;
+        });
     }
 }

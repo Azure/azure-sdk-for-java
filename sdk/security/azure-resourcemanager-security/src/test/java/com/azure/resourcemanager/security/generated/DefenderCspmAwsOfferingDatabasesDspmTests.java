@@ -12,18 +12,18 @@ public final class DefenderCspmAwsOfferingDatabasesDspmTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DefenderCspmAwsOfferingDatabasesDspm model
-            = BinaryData.fromString("{\"enabled\":true,\"cloudRoleArn\":\"oqusvwlu\"}")
+            = BinaryData.fromString("{\"enabled\":true,\"cloudRoleArn\":\"bpgb\"}")
                 .toObject(DefenderCspmAwsOfferingDatabasesDspm.class);
         Assertions.assertEquals(true, model.enabled());
-        Assertions.assertEquals("oqusvwlu", model.cloudRoleArn());
+        Assertions.assertEquals("bpgb", model.cloudRoleArn());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DefenderCspmAwsOfferingDatabasesDspm model
-            = new DefenderCspmAwsOfferingDatabasesDspm().withEnabled(true).withCloudRoleArn("oqusvwlu");
+            = new DefenderCspmAwsOfferingDatabasesDspm().withEnabled(true).withCloudRoleArn("bpgb");
         model = BinaryData.fromObject(model).toObject(DefenderCspmAwsOfferingDatabasesDspm.class);
         Assertions.assertEquals(true, model.enabled());
-        Assertions.assertEquals("oqusvwlu", model.cloudRoleArn());
+        Assertions.assertEquals("bpgb", model.cloudRoleArn());
     }
 }

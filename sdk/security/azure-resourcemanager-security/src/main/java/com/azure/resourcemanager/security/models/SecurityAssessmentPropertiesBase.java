@@ -6,51 +6,47 @@ package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.security.fluent.models.SecurityAssessmentMetadataProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
 /**
  * Describes properties of an assessment.
  */
 @Fluent
-public class SecurityAssessmentPropertiesBase {
+public class SecurityAssessmentPropertiesBase implements JsonSerializable<SecurityAssessmentPropertiesBase> {
     /*
      * Details of the resource that was assessed
      */
-    @JsonProperty(value = "resourceDetails", required = true)
     private ResourceDetails resourceDetails;
 
     /*
      * User friendly display name of the assessment
      */
-    @JsonProperty(value = "displayName", access = JsonProperty.Access.WRITE_ONLY)
     private String displayName;
 
     /*
      * Additional data regarding the assessment
      */
-    @JsonProperty(value = "additionalData")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> additionalData;
 
     /*
      * Links relevant to the assessment
      */
-    @JsonProperty(value = "links", access = JsonProperty.Access.WRITE_ONLY)
     private AssessmentLinks links;
 
     /*
      * Describes properties of an assessment metadata.
      */
-    @JsonProperty(value = "metadata")
     private SecurityAssessmentMetadataProperties metadata;
 
     /*
      * Data regarding 3rd party partner integration
      */
-    @JsonProperty(value = "partnersData")
     private SecurityAssessmentPartnerData partnersData;
 
     /**
@@ -89,6 +85,17 @@ public class SecurityAssessmentPropertiesBase {
     }
 
     /**
+     * Set the displayName property: User friendly display name of the assessment.
+     * 
+     * @param displayName the displayName value to set.
+     * @return the SecurityAssessmentPropertiesBase object itself.
+     */
+    SecurityAssessmentPropertiesBase withDisplayName(String displayName) {
+        this.displayName = displayName;
+        return this;
+    }
+
+    /**
      * Get the additionalData property: Additional data regarding the assessment.
      * 
      * @return the additionalData value.
@@ -115,6 +122,17 @@ public class SecurityAssessmentPropertiesBase {
      */
     public AssessmentLinks links() {
         return this.links;
+    }
+
+    /**
+     * Set the links property: Links relevant to the assessment.
+     * 
+     * @param links the links value to set.
+     * @return the SecurityAssessmentPropertiesBase object itself.
+     */
+    SecurityAssessmentPropertiesBase withLinks(AssessmentLinks links) {
+        this.links = links;
+        return this;
     }
 
     /**
@@ -182,4 +200,59 @@ public class SecurityAssessmentPropertiesBase {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SecurityAssessmentPropertiesBase.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("resourceDetails", this.resourceDetails);
+        jsonWriter.writeMapField("additionalData", this.additionalData,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("metadata", this.metadata);
+        jsonWriter.writeJsonField("partnersData", this.partnersData);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SecurityAssessmentPropertiesBase from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SecurityAssessmentPropertiesBase if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SecurityAssessmentPropertiesBase.
+     */
+    public static SecurityAssessmentPropertiesBase fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SecurityAssessmentPropertiesBase deserializedSecurityAssessmentPropertiesBase
+                = new SecurityAssessmentPropertiesBase();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceDetails".equals(fieldName)) {
+                    deserializedSecurityAssessmentPropertiesBase.resourceDetails = ResourceDetails.fromJson(reader);
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedSecurityAssessmentPropertiesBase.displayName = reader.getString();
+                } else if ("additionalData".equals(fieldName)) {
+                    Map<String, String> additionalData = reader.readMap(reader1 -> reader1.getString());
+                    deserializedSecurityAssessmentPropertiesBase.additionalData = additionalData;
+                } else if ("links".equals(fieldName)) {
+                    deserializedSecurityAssessmentPropertiesBase.links = AssessmentLinks.fromJson(reader);
+                } else if ("metadata".equals(fieldName)) {
+                    deserializedSecurityAssessmentPropertiesBase.metadata
+                        = SecurityAssessmentMetadataProperties.fromJson(reader);
+                } else if ("partnersData".equals(fieldName)) {
+                    deserializedSecurityAssessmentPropertiesBase.partnersData
+                        = SecurityAssessmentPartnerData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSecurityAssessmentPropertiesBase;
+        });
+    }
 }

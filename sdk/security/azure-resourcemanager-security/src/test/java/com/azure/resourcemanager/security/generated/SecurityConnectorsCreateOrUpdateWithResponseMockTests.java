@@ -27,7 +27,7 @@ public final class SecurityConnectorsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"hierarchyIdentifier\":\"cnuestbsliejdnc\",\"hierarchyIdentifierTrialEndDate\":\"2021-02-08T15:18:26Z\",\"environmentName\":\"Azure\",\"offerings\":[{\"offeringType\":\"CloudOffering\",\"description\":\"iytehhxtzxqdwbym\"},{\"offeringType\":\"CloudOffering\",\"description\":\"lngncrdorc\"}],\"environmentData\":{\"environmentType\":\"EnvironmentData\"}},\"location\":\"s\",\"tags\":{\"dbyhqtzcvim\":\"ekh\"},\"id\":\"wckozvlf\",\"name\":\"mtrtsv\",\"type\":\"upqtzckj\"}";
+            = "{\"properties\":{\"hierarchyIdentifier\":\"lezay\",\"hierarchyIdentifierTrialEndDate\":\"2021-08-08T04:22:01Z\",\"environmentName\":\"Azure\",\"offerings\":[{\"offeringType\":\"CloudOffering\",\"description\":\"efxli\"},{\"offeringType\":\"CloudOffering\",\"description\":\"gotosmhssfnwhzka\"},{\"offeringType\":\"CloudOffering\",\"description\":\"ecknfm\"}],\"environmentData\":{\"environmentType\":\"EnvironmentData\"}},\"location\":\"ufthd\",\"tags\":{\"onodvhzf\":\"z\",\"ysodcikgx\":\"dn\",\"zfzdjekeb\":\"k\",\"xz\":\"w\"},\"id\":\"jwyfi\",\"name\":\"irgcjfai\",\"type\":\"ulp\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -37,20 +37,19 @@ public final class SecurityConnectorsCreateOrUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         SecurityConnector response = manager.securityConnectors()
-            .define("cqqnlsjxcsc")
-            .withRegion("lsfo")
-            .withExistingResourceGroup("lrlqxbctatezyozd")
-            .withTags(mapOf("elpfijtezgxmpes", "mtfcqmmynbr", "f", "amadlerzi", "mirmnrijefmrt", "ivczktllxswtdap",
-                "ffmwt", "xcevdspth"))
-            .withHierarchyIdentifier("dmra")
-            .withEnvironmentName(CloudName.AZURE)
-            .withOfferings(Arrays.asList(new CloudOffering(), new CloudOffering(), new CloudOffering()))
+            .define("srerukbuudriz")
+            .withRegion("iqhypwtmzyj")
+            .withExistingResourceGroup("uxboufqnnqbjxgj")
+            .withTags(mapOf("mzqlnaag", "t"))
+            .withHierarchyIdentifier("jxlaaced")
+            .withEnvironmentName(CloudName.DOCKER_HUB)
+            .withOfferings(Arrays.asList(new CloudOffering()))
             .withEnvironmentData(new EnvironmentData())
             .create();
 
-        Assertions.assertEquals("s", response.location());
-        Assertions.assertEquals("ekh", response.tags().get("dbyhqtzcvim"));
-        Assertions.assertEquals("cnuestbsliejdnc", response.hierarchyIdentifier());
+        Assertions.assertEquals("ufthd", response.location());
+        Assertions.assertEquals("z", response.tags().get("onodvhzf"));
+        Assertions.assertEquals("lezay", response.hierarchyIdentifier());
         Assertions.assertEquals(CloudName.AZURE, response.environmentName());
     }
 

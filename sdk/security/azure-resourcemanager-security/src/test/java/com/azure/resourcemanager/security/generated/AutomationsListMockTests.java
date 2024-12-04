@@ -23,7 +23,7 @@ public final class AutomationsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"description\":\"r\",\"isEnabled\":true,\"scopes\":[{\"description\":\"sax\",\"scopePath\":\"kq\"},{\"description\":\"deppjnaphi\",\"scopePath\":\"fr\"},{\"description\":\"p\",\"scopePath\":\"bpebrmj\"},{\"description\":\"fpghtbttpkim\",\"scopePath\":\"hnkkhbykrs\"}],\"sources\":[{\"eventSource\":\"SubAssessments\",\"ruleSets\":[{}]},{\"eventSource\":\"AttackPaths\",\"ruleSets\":[{},{},{}]},{\"eventSource\":\"AssessmentsSnapshot\",\"ruleSets\":[{}]},{\"eventSource\":\"SecureScoreControls\",\"ruleSets\":[{},{},{}]}],\"actions\":[{\"actionType\":\"AutomationAction\"},{\"actionType\":\"AutomationAction\"}]},\"location\":\"zbnv\",\"tags\":{\"xlvzcgulaebxiauq\":\"fuzzlapy\",\"pv\":\"uptessjlwjta\",\"vwpvlcj\":\"lskxgxqaygaslkv\",\"onbwhi\":\"vyezjwjk\"},\"id\":\"eyozvrcw\",\"name\":\"puc\",\"type\":\"nbc\"}]}";
+            = "{\"value\":[{\"properties\":{\"description\":\"trqxxwt\",\"isEnabled\":false,\"scopes\":[{\"description\":\"suhqhtoxt\",\"scopePath\":\"qavfxbqmzxs\"},{\"description\":\"ksinpa\",\"scopePath\":\"ihwbghvwtgp\"}],\"sources\":[{\"eventSource\":\"SecureScoreControls\",\"ruleSets\":[{},{},{}]},{\"eventSource\":\"SecureScores\",\"ruleSets\":[{}]}],\"actions\":[{\"actionType\":\"AutomationAction\"}]},\"location\":\"iys\",\"tags\":{\"sgw\":\"sdjpgxe\",\"ivoveomkhfeqcoop\":\"cfferznzc\"},\"id\":\"fpohimgckycjpeeb\",\"name\":\"nbz\",\"type\":\"xsuloutnpb\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,12 +34,13 @@ public final class AutomationsListMockTests {
 
         PagedIterable<Automation> response = manager.automations().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("zbnv", response.iterator().next().location());
-        Assertions.assertEquals("fuzzlapy", response.iterator().next().tags().get("xlvzcgulaebxiauq"));
-        Assertions.assertEquals("r", response.iterator().next().description());
-        Assertions.assertEquals(true, response.iterator().next().isEnabled());
-        Assertions.assertEquals("sax", response.iterator().next().scopes().get(0).description());
-        Assertions.assertEquals("kq", response.iterator().next().scopes().get(0).scopePath());
-        Assertions.assertEquals(EventSource.SUB_ASSESSMENTS, response.iterator().next().sources().get(0).eventSource());
+        Assertions.assertEquals("iys", response.iterator().next().location());
+        Assertions.assertEquals("sdjpgxe", response.iterator().next().tags().get("sgw"));
+        Assertions.assertEquals("trqxxwt", response.iterator().next().description());
+        Assertions.assertEquals(false, response.iterator().next().isEnabled());
+        Assertions.assertEquals("suhqhtoxt", response.iterator().next().scopes().get(0).description());
+        Assertions.assertEquals("qavfxbqmzxs", response.iterator().next().scopes().get(0).scopePath());
+        Assertions.assertEquals(EventSource.SECURE_SCORE_CONTROLS,
+            response.iterator().next().sources().get(0).eventSource());
     }
 }

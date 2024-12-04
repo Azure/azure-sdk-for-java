@@ -27,8 +27,7 @@ public final class AutomationsDeleteByResourceGroupWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.automations()
-            .deleteByResourceGroupWithResponse("fkbzbfbxjblajy", "dnbycsbtoisa", com.azure.core.util.Context.NONE);
+        manager.automations().deleteByResourceGroupWithResponse("i", "exhnkingi", com.azure.core.util.Context.NONE);
 
     }
 }

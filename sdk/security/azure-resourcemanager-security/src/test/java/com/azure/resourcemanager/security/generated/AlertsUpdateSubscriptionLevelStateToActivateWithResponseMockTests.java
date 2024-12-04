@@ -28,7 +28,7 @@ public final class AlertsUpdateSubscriptionLevelStateToActivateWithResponseMockT
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.alerts()
-            .updateSubscriptionLevelStateToActivateWithResponse("nitvkyahfoyfzo", "dyaepre",
+            .updateSubscriptionLevelStateToActivateWithResponse("aghddcozwxuxorru", "uhvemgxlss",
                 com.azure.core.util.Context.NONE);
 
     }

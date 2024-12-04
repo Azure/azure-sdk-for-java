@@ -20,26 +20,26 @@ public final class GetSensitivitySettingsResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GetSensitivitySettingsResponseInner model = BinaryData.fromString(
-            "{\"properties\":{\"sensitiveInfoTypesIds\":[\"cf0fbeb6-4a90-4d7d-aecc-1138e4a1bb4e\",\"9842cf88-c462-4604-94d7-b00a2d8458ed\"],\"sensitivityThresholdLabelOrder\":36.13757,\"sensitivityThresholdLabelId\":\"139f9498-6b82-4eae-9b1e-e98831efbd90\",\"mipInformation\":{\"mipIntegrationStatus\":\"noMipLabels\",\"labels\":[{\"name\":\"yhddvia\",\"id\":\"472faa3a-9072-49ff-8d49-e8c66d383940\",\"order\":82.58922}],\"customInfoTypes\":[{\"name\":\"tfpmvmemfnczdw\",\"id\":\"06413f52-2fb2-4970-b72c-85314569178c\",\"description\":\"alxlllchp\"}],\"builtInInfoTypes\":[{\"name\":\"evwrdnhfuk\",\"id\":\"2c5880d6-8338-4328-bfb6-c51f50e863ee\",\"type\":\"jcswsmys\"},{\"name\":\"luqypfcvlerch\",\"id\":\"51d8ee50-7e3a-4b39-b452-e377c7aecc54\",\"type\":\"mfpjbabw\"}]}},\"id\":\"dfc\",\"name\":\"sspuunnoxyhkx\",\"type\":\"qddrihpfhoqcaae\"}")
+            "{\"properties\":{\"sensitiveInfoTypesIds\":[\"df678806-f7c0-445b-a55c-07f22b07f725\",\"eea58c9d-2e91-435c-81e3-231d28c83886\"],\"sensitivityThresholdLabelOrder\":36.13757,\"sensitivityThresholdLabelId\":\"6785ff05-d43d-4043-a7e9-b7b8f8fc7dca\",\"mipInformation\":{\"mipIntegrationStatus\":\"noMipLabels\",\"labels\":[{\"name\":\"yhddvia\",\"id\":\"7d7dc8ed-90bb-4e6d-8de4-7d13ddfcb1ef\",\"order\":82.58922}],\"customInfoTypes\":[{\"name\":\"tfpmvmemfnczdw\",\"id\":\"c208b185-a5b8-4963-ab97-0ccb061f4acc\",\"description\":\"alxlllchp\"}],\"builtInInfoTypes\":[{\"name\":\"evwrdnhfuk\",\"id\":\"475168db-3576-4cc5-b1b8-3b489cc70d18\",\"type\":\"jcswsmys\"},{\"name\":\"luqypfcvlerch\",\"id\":\"b3fd462e-b1b8-4329-b4ac-d87643e79c7d\",\"type\":\"mfpjbabw\"}]}},\"id\":\"dfc\",\"name\":\"sspuunnoxyhkx\",\"type\":\"qddrihpfhoqcaae\"}")
             .toObject(GetSensitivitySettingsResponseInner.class);
-        Assertions.assertEquals(UUID.fromString("cf0fbeb6-4a90-4d7d-aecc-1138e4a1bb4e"),
+        Assertions.assertEquals(UUID.fromString("df678806-f7c0-445b-a55c-07f22b07f725"),
             model.properties().sensitiveInfoTypesIds().get(0));
         Assertions.assertEquals(36.13757F, model.properties().sensitivityThresholdLabelOrder());
-        Assertions.assertEquals(UUID.fromString("139f9498-6b82-4eae-9b1e-e98831efbd90"),
+        Assertions.assertEquals(UUID.fromString("6785ff05-d43d-4043-a7e9-b7b8f8fc7dca"),
             model.properties().sensitivityThresholdLabelId());
         Assertions.assertEquals(MipIntegrationStatus.NO_MIP_LABELS,
             model.properties().mipInformation().mipIntegrationStatus());
         Assertions.assertEquals("yhddvia", model.properties().mipInformation().labels().get(0).name());
-        Assertions.assertEquals(UUID.fromString("472faa3a-9072-49ff-8d49-e8c66d383940"),
+        Assertions.assertEquals(UUID.fromString("7d7dc8ed-90bb-4e6d-8de4-7d13ddfcb1ef"),
             model.properties().mipInformation().labels().get(0).id());
         Assertions.assertEquals(82.58922F, model.properties().mipInformation().labels().get(0).order());
         Assertions.assertEquals("tfpmvmemfnczdw", model.properties().mipInformation().customInfoTypes().get(0).name());
-        Assertions.assertEquals(UUID.fromString("06413f52-2fb2-4970-b72c-85314569178c"),
+        Assertions.assertEquals(UUID.fromString("c208b185-a5b8-4963-ab97-0ccb061f4acc"),
             model.properties().mipInformation().customInfoTypes().get(0).id());
         Assertions.assertEquals("alxlllchp",
             model.properties().mipInformation().customInfoTypes().get(0).description());
         Assertions.assertEquals("evwrdnhfuk", model.properties().mipInformation().builtInInfoTypes().get(0).name());
-        Assertions.assertEquals(UUID.fromString("2c5880d6-8338-4328-bfb6-c51f50e863ee"),
+        Assertions.assertEquals(UUID.fromString("475168db-3576-4cc5-b1b8-3b489cc70d18"),
             model.properties().mipInformation().builtInInfoTypes().get(0).id());
         Assertions.assertEquals("jcswsmys", model.properties().mipInformation().builtInInfoTypes().get(0).type());
     }
@@ -48,44 +48,44 @@ public final class GetSensitivitySettingsResponseInnerTests {
     public void testSerialize() throws Exception {
         GetSensitivitySettingsResponseInner model
             = new GetSensitivitySettingsResponseInner().withProperties(new GetSensitivitySettingsResponseProperties()
-                .withSensitiveInfoTypesIds(Arrays.asList(UUID.fromString("cf0fbeb6-4a90-4d7d-aecc-1138e4a1bb4e"),
-                    UUID.fromString("9842cf88-c462-4604-94d7-b00a2d8458ed")))
+                .withSensitiveInfoTypesIds(Arrays.asList(UUID.fromString("df678806-f7c0-445b-a55c-07f22b07f725"),
+                    UUID.fromString("eea58c9d-2e91-435c-81e3-231d28c83886")))
                 .withSensitivityThresholdLabelOrder(36.13757F)
-                .withSensitivityThresholdLabelId(UUID.fromString("139f9498-6b82-4eae-9b1e-e98831efbd90"))
+                .withSensitivityThresholdLabelId(UUID.fromString("6785ff05-d43d-4043-a7e9-b7b8f8fc7dca"))
                 .withMipInformation(new GetSensitivitySettingsResponsePropertiesMipInformation()
                     .withMipIntegrationStatus(MipIntegrationStatus.NO_MIP_LABELS)
                     .withLabels(Arrays.asList(new Label().withName("yhddvia")
-                        .withId(UUID.fromString("472faa3a-9072-49ff-8d49-e8c66d383940"))
+                        .withId(UUID.fromString("7d7dc8ed-90bb-4e6d-8de4-7d13ddfcb1ef"))
                         .withOrder(82.58922F)))
                     .withCustomInfoTypes(Arrays.asList(new InfoType().withName("tfpmvmemfnczdw")
-                        .withId(UUID.fromString("06413f52-2fb2-4970-b72c-85314569178c"))
+                        .withId(UUID.fromString("c208b185-a5b8-4963-ab97-0ccb061f4acc"))
                         .withDescription("alxlllchp")))
                     .withBuiltInInfoTypes(Arrays.asList(
                         new BuiltInInfoType().withName("evwrdnhfuk")
-                            .withId(UUID.fromString("2c5880d6-8338-4328-bfb6-c51f50e863ee"))
+                            .withId(UUID.fromString("475168db-3576-4cc5-b1b8-3b489cc70d18"))
                             .withType("jcswsmys"),
                         new BuiltInInfoType().withName("luqypfcvlerch")
-                            .withId(UUID.fromString("51d8ee50-7e3a-4b39-b452-e377c7aecc54"))
+                            .withId(UUID.fromString("b3fd462e-b1b8-4329-b4ac-d87643e79c7d"))
                             .withType("mfpjbabw")))));
         model = BinaryData.fromObject(model).toObject(GetSensitivitySettingsResponseInner.class);
-        Assertions.assertEquals(UUID.fromString("cf0fbeb6-4a90-4d7d-aecc-1138e4a1bb4e"),
+        Assertions.assertEquals(UUID.fromString("df678806-f7c0-445b-a55c-07f22b07f725"),
             model.properties().sensitiveInfoTypesIds().get(0));
         Assertions.assertEquals(36.13757F, model.properties().sensitivityThresholdLabelOrder());
-        Assertions.assertEquals(UUID.fromString("139f9498-6b82-4eae-9b1e-e98831efbd90"),
+        Assertions.assertEquals(UUID.fromString("6785ff05-d43d-4043-a7e9-b7b8f8fc7dca"),
             model.properties().sensitivityThresholdLabelId());
         Assertions.assertEquals(MipIntegrationStatus.NO_MIP_LABELS,
             model.properties().mipInformation().mipIntegrationStatus());
         Assertions.assertEquals("yhddvia", model.properties().mipInformation().labels().get(0).name());
-        Assertions.assertEquals(UUID.fromString("472faa3a-9072-49ff-8d49-e8c66d383940"),
+        Assertions.assertEquals(UUID.fromString("7d7dc8ed-90bb-4e6d-8de4-7d13ddfcb1ef"),
             model.properties().mipInformation().labels().get(0).id());
         Assertions.assertEquals(82.58922F, model.properties().mipInformation().labels().get(0).order());
         Assertions.assertEquals("tfpmvmemfnczdw", model.properties().mipInformation().customInfoTypes().get(0).name());
-        Assertions.assertEquals(UUID.fromString("06413f52-2fb2-4970-b72c-85314569178c"),
+        Assertions.assertEquals(UUID.fromString("c208b185-a5b8-4963-ab97-0ccb061f4acc"),
             model.properties().mipInformation().customInfoTypes().get(0).id());
         Assertions.assertEquals("alxlllchp",
             model.properties().mipInformation().customInfoTypes().get(0).description());
         Assertions.assertEquals("evwrdnhfuk", model.properties().mipInformation().builtInInfoTypes().get(0).name());
-        Assertions.assertEquals(UUID.fromString("2c5880d6-8338-4328-bfb6-c51f50e863ee"),
+        Assertions.assertEquals(UUID.fromString("475168db-3576-4cc5-b1b8-3b489cc70d18"),
             model.properties().mipInformation().builtInInfoTypes().get(0).id());
         Assertions.assertEquals("jcswsmys", model.properties().mipInformation().builtInInfoTypes().get(0).type());
     }

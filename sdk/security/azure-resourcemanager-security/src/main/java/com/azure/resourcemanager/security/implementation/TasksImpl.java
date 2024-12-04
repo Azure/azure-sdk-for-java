@@ -12,8 +12,8 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.security.fluent.TasksClient;
 import com.azure.resourcemanager.security.fluent.models.SecurityTaskInner;
 import com.azure.resourcemanager.security.models.SecurityTask;
-import com.azure.resourcemanager.security.models.Tasks;
 import com.azure.resourcemanager.security.models.TaskUpdateActionType;
+import com.azure.resourcemanager.security.models.Tasks;
 
 public final class TasksImpl implements Tasks {
     private static final ClientLogger LOGGER = new ClientLogger(TasksImpl.class);

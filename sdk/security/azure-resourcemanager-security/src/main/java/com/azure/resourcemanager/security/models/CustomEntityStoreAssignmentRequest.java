@@ -5,18 +5,21 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.security.fluent.models.CustomEntityStoreAssignmentRequestProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * describes the custom entity store assignment request.
  */
 @Fluent
-public final class CustomEntityStoreAssignmentRequest {
+public final class CustomEntityStoreAssignmentRequest implements JsonSerializable<CustomEntityStoreAssignmentRequest> {
     /*
      * describes properties of custom entity store assignment request
      */
-    @JsonProperty(value = "properties")
     private CustomEntityStoreAssignmentRequestProperties innerProperties;
 
     /**
@@ -68,5 +71,43 @@ public final class CustomEntityStoreAssignmentRequest {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CustomEntityStoreAssignmentRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CustomEntityStoreAssignmentRequest if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CustomEntityStoreAssignmentRequest.
+     */
+    public static CustomEntityStoreAssignmentRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CustomEntityStoreAssignmentRequest deserializedCustomEntityStoreAssignmentRequest
+                = new CustomEntityStoreAssignmentRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedCustomEntityStoreAssignmentRequest.innerProperties
+                        = CustomEntityStoreAssignmentRequestProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCustomEntityStoreAssignmentRequest;
+        });
     }
 }

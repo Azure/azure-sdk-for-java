@@ -164,7 +164,7 @@ public final class AzureDevOpsOrgsClientImpl implements AzureDevOpsOrgsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter securityConnectorName is required and cannot be null."));
         }
-        final String apiVersion = "2024-04-01";
+        final String apiVersion = "2024-05-15-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listAvailable(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -203,7 +203,7 @@ public final class AzureDevOpsOrgsClientImpl implements AzureDevOpsOrgsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter securityConnectorName is required and cannot be null."));
         }
-        final String apiVersion = "2024-04-01";
+        final String apiVersion = "2024-05-15-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listAvailable(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -289,7 +289,7 @@ public final class AzureDevOpsOrgsClientImpl implements AzureDevOpsOrgsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter securityConnectorName is required and cannot be null."));
         }
-        final String apiVersion = "2024-04-01";
+        final String apiVersion = "2024-05-15-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -330,7 +330,7 @@ public final class AzureDevOpsOrgsClientImpl implements AzureDevOpsOrgsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter securityConnectorName is required and cannot be null."));
         }
-        final String apiVersion = "2024-04-01";
+        final String apiVersion = "2024-05-15-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -439,7 +439,7 @@ public final class AzureDevOpsOrgsClientImpl implements AzureDevOpsOrgsClient {
         if (orgName == null) {
             return Mono.error(new IllegalArgumentException("Parameter orgName is required and cannot be null."));
         }
-        final String apiVersion = "2024-04-01";
+        final String apiVersion = "2024-05-15-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -481,7 +481,7 @@ public final class AzureDevOpsOrgsClientImpl implements AzureDevOpsOrgsClient {
         if (orgName == null) {
             return Mono.error(new IllegalArgumentException("Parameter orgName is required and cannot be null."));
         }
-        final String apiVersion = "2024-04-01";
+        final String apiVersion = "2024-05-15-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -578,7 +578,7 @@ public final class AzureDevOpsOrgsClientImpl implements AzureDevOpsOrgsClient {
         } else {
             azureDevOpsOrg.validate();
         }
-        final String apiVersion = "2024-04-01";
+        final String apiVersion = "2024-05-15-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -626,7 +626,7 @@ public final class AzureDevOpsOrgsClientImpl implements AzureDevOpsOrgsClient {
         } else {
             azureDevOpsOrg.validate();
         }
-        final String apiVersion = "2024-04-01";
+        final String apiVersion = "2024-05-15-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -834,7 +834,7 @@ public final class AzureDevOpsOrgsClientImpl implements AzureDevOpsOrgsClient {
         } else {
             azureDevOpsOrg.validate();
         }
-        final String apiVersion = "2024-04-01";
+        final String apiVersion = "2024-05-15-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -882,7 +882,7 @@ public final class AzureDevOpsOrgsClientImpl implements AzureDevOpsOrgsClient {
         } else {
             azureDevOpsOrg.validate();
         }
-        final String apiVersion = "2024-04-01";
+        final String apiVersion = "2024-05-15-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -1050,9 +1050,7 @@ public final class AzureDevOpsOrgsClientImpl implements AzureDevOpsOrgsClient {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1078,9 +1076,7 @@ public final class AzureDevOpsOrgsClientImpl implements AzureDevOpsOrgsClient {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

@@ -21,7 +21,7 @@ public final class IotSecuritySolutionsAnalyticsRecommendationsGetWithResponseMo
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"recommendationName\":\"ynoy\",\"recommendationDisplayName\":\"flsmsbnlyoifg\",\"description\":\"zjqthykcvo\",\"recommendationTypeId\":\"cwfzotkxxl\",\"detectedBy\":\"ooxgbsd\",\"remediationSteps\":\"gcvypjhu\",\"reportedSeverity\":\"High\",\"healthyDevices\":4186193399949006969,\"unhealthyDeviceCount\":3588661982854941532,\"logAnalyticsQuery\":\"jcqgzwvxwi\"},\"tags\":{\"qrljdcukylaxrj\":\"ibmjk\"},\"id\":\"qoqovqhgphgx\",\"name\":\"wudgcyqruv\",\"type\":\"mryddnqivahfcq\"}";
+            = "{\"properties\":{\"recommendationName\":\"wmqcycabaam\",\"recommendationDisplayName\":\"hdhpmkxdujkxpu\",\"description\":\"dyoqywsuarpzhry\",\"recommendationTypeId\":\"zx\",\"detectedBy\":\"ds\",\"remediationSteps\":\"bfjilbuazccouhw\",\"reportedSeverity\":\"Informational\",\"healthyDevices\":8392341540038081795,\"unhealthyDeviceCount\":4173887042012502577,\"logAnalyticsQuery\":\"rb\"},\"tags\":{\"tv\":\"pi\"},\"id\":\"piqdqbvxqto\",\"name\":\"pwbopvhcbt\",\"type\":\"aprjxcon\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,10 +31,10 @@ public final class IotSecuritySolutionsAnalyticsRecommendationsGetWithResponseMo
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         IoTSecurityAggregatedRecommendation response = manager.iotSecuritySolutionsAnalyticsRecommendations()
-            .getWithResponse("orwp", "b", "tweobptscruykkie", com.azure.core.util.Context.NONE)
+            .getWithResponse("gsbfeiirpnjy", "llfkchhgs", "uzzc", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("ibmjk", response.tags().get("qrljdcukylaxrj"));
-        Assertions.assertEquals("ynoy", response.recommendationName());
+        Assertions.assertEquals("pi", response.tags().get("tv"));
+        Assertions.assertEquals("wmqcycabaam", response.recommendationName());
     }
 }

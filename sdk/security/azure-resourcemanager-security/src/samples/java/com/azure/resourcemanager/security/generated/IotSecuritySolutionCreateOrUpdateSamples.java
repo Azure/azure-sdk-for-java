@@ -19,7 +19,9 @@ import java.util.Map;
  */
 public final class IotSecuritySolutionCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2019-08-01/examples/IoTSecuritySolutions/CreateIoTSecuritySolution.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2019-08-01/examples/IoTSecuritySolutions/
+     * CreateIoTSecuritySolution.json
      */
     /**
      * Sample code: Create or update a IoT security solution.

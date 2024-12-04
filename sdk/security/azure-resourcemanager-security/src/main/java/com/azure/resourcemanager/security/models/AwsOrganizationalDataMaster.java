@@ -5,40 +5,30 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The AWS organization data for the master account.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "organizationMembershipType",
-    defaultImpl = AwsOrganizationalDataMaster.class,
-    visible = true)
-@JsonTypeName("Organization")
 @Fluent
 public final class AwsOrganizationalDataMaster extends AwsOrganizationalData {
     /*
      * The multi cloud account's membership type in the organization
      */
-    @JsonTypeId
-    @JsonProperty(value = "organizationMembershipType", required = true)
     private OrganizationMembershipType organizationMembershipType = OrganizationMembershipType.ORGANIZATION;
 
     /*
      * If the multi cloud account is of membership type organization, this will be the name of the onboarding stackset
      */
-    @JsonProperty(value = "stacksetName")
     private String stacksetName;
 
     /*
      * If the multi cloud account is of membership type organization, list of accounts excluded from offering
      */
-    @JsonProperty(value = "excludedAccountIds")
     private List<String> excludedAccountIds;
 
     /**
@@ -108,6 +98,51 @@ public final class AwsOrganizationalDataMaster extends AwsOrganizationalData {
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("organizationMembershipType",
+            this.organizationMembershipType == null ? null : this.organizationMembershipType.toString());
+        jsonWriter.writeStringField("stacksetName", this.stacksetName);
+        jsonWriter.writeArrayField("excludedAccountIds", this.excludedAccountIds,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AwsOrganizationalDataMaster from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AwsOrganizationalDataMaster if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AwsOrganizationalDataMaster.
+     */
+    public static AwsOrganizationalDataMaster fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AwsOrganizationalDataMaster deserializedAwsOrganizationalDataMaster = new AwsOrganizationalDataMaster();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("organizationMembershipType".equals(fieldName)) {
+                    deserializedAwsOrganizationalDataMaster.organizationMembershipType
+                        = OrganizationMembershipType.fromString(reader.getString());
+                } else if ("stacksetName".equals(fieldName)) {
+                    deserializedAwsOrganizationalDataMaster.stacksetName = reader.getString();
+                } else if ("excludedAccountIds".equals(fieldName)) {
+                    List<String> excludedAccountIds = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAwsOrganizationalDataMaster.excludedAccountIds = excludedAccountIds;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAwsOrganizationalDataMaster;
+        });
     }
 }

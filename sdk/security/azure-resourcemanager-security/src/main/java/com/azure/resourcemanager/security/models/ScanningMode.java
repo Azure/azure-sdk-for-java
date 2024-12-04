@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -32,7 +31,6 @@ public final class ScanningMode extends ExpandableStringEnum<ScanningMode> {
      * @param name a name to look for.
      * @return the corresponding ScanningMode.
      */
-    @JsonCreator
     public static ScanningMode fromString(String name) {
         return fromString(name, ScanningMode.class);
     }

@@ -14,31 +14,31 @@ public final class CefExternalSecuritySolutionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CefExternalSecuritySolution model = BinaryData.fromString(
-            "{\"kind\":\"CEF\",\"properties\":{\"hostname\":\"gschnzrsbk\",\"agent\":\"ovlzdm\",\"lastEventReceived\":\"mfwsxafofu\",\"deviceVendor\":\"rimm\",\"deviceType\":\"zwdehkkmvhz\",\"workspace\":{\"id\":\"anyrvaprtgelgwe\"},\"\":{\"j\":\"datafyaqandmymnqo\",\"paxmfm\":\"datamovsfbpbvz\",\"nqifb\":\"datasmcwoxfaxd\",\"ugmocpc\":\"dataatroiaue\"}},\"location\":\"cboe\",\"id\":\"rgttw\",\"name\":\"ldsiuorinikc\",\"type\":\"dpk\"}")
+            "{\"kind\":\"CEF\",\"properties\":{\"hostname\":\"kmjqncfvdsc\",\"agent\":\"emvwf\",\"lastEventReceived\":\"qwypvndrwb\",\"deviceVendor\":\"dtggrssg\",\"deviceType\":\"fk\",\"workspace\":{\"id\":\"jmu\"},\"\":{\"gmusaictdscnkzzo\":\"dataecvztsc\",\"ehlbzqixbnjrqvzy\":\"datanrddclzeqoz\"}},\"location\":\"xozony\",\"id\":\"pam\",\"name\":\"udpabcreuwzos\",\"type\":\"yjxvc\"}")
             .toObject(CefExternalSecuritySolution.class);
-        Assertions.assertEquals("rimm", model.properties().deviceVendor());
-        Assertions.assertEquals("zwdehkkmvhz", model.properties().deviceType());
-        Assertions.assertEquals("anyrvaprtgelgwe", model.properties().workspace().id());
-        Assertions.assertEquals("gschnzrsbk", model.properties().hostname());
-        Assertions.assertEquals("ovlzdm", model.properties().agent());
-        Assertions.assertEquals("mfwsxafofu", model.properties().lastEventReceived());
+        Assertions.assertEquals("dtggrssg", model.properties().deviceVendor());
+        Assertions.assertEquals("fk", model.properties().deviceType());
+        Assertions.assertEquals("jmu", model.properties().workspace().id());
+        Assertions.assertEquals("kmjqncfvdsc", model.properties().hostname());
+        Assertions.assertEquals("emvwf", model.properties().agent());
+        Assertions.assertEquals("qwypvndrwb", model.properties().lastEventReceived());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CefExternalSecuritySolution model
-            = new CefExternalSecuritySolution().withProperties(new CefSolutionProperties().withDeviceVendor("rimm")
-                .withDeviceType("zwdehkkmvhz")
-                .withWorkspace(new ConnectedWorkspace().withId("anyrvaprtgelgwe"))
-                .withHostname("gschnzrsbk")
-                .withAgent("ovlzdm")
-                .withLastEventReceived("mfwsxafofu"));
+            = new CefExternalSecuritySolution().withProperties(new CefSolutionProperties().withDeviceVendor("dtggrssg")
+                .withDeviceType("fk")
+                .withWorkspace(new ConnectedWorkspace().withId("jmu"))
+                .withHostname("kmjqncfvdsc")
+                .withAgent("emvwf")
+                .withLastEventReceived("qwypvndrwb"));
         model = BinaryData.fromObject(model).toObject(CefExternalSecuritySolution.class);
-        Assertions.assertEquals("rimm", model.properties().deviceVendor());
-        Assertions.assertEquals("zwdehkkmvhz", model.properties().deviceType());
-        Assertions.assertEquals("anyrvaprtgelgwe", model.properties().workspace().id());
-        Assertions.assertEquals("gschnzrsbk", model.properties().hostname());
-        Assertions.assertEquals("ovlzdm", model.properties().agent());
-        Assertions.assertEquals("mfwsxafofu", model.properties().lastEventReceived());
+        Assertions.assertEquals("dtggrssg", model.properties().deviceVendor());
+        Assertions.assertEquals("fk", model.properties().deviceType());
+        Assertions.assertEquals("jmu", model.properties().workspace().id());
+        Assertions.assertEquals("kmjqncfvdsc", model.properties().hostname());
+        Assertions.assertEquals("emvwf", model.properties().agent());
+        Assertions.assertEquals("qwypvndrwb", model.properties().lastEventReceived());
     }
 }

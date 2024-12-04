@@ -5,29 +5,30 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Describe the additional data of governance assignment - optional.
  */
 @Fluent
-public final class GovernanceAssignmentAdditionalData {
+public final class GovernanceAssignmentAdditionalData implements JsonSerializable<GovernanceAssignmentAdditionalData> {
     /*
      * Ticket number associated with this governance assignment
      */
-    @JsonProperty(value = "ticketNumber")
     private Integer ticketNumber;
 
     /*
      * Ticket link associated with this governance assignment - for example: https://snow.com
      */
-    @JsonProperty(value = "ticketLink")
     private String ticketLink;
 
     /*
      * The ticket status associated with this governance assignment - for example: Active
      */
-    @JsonProperty(value = "ticketStatus")
     private String ticketStatus;
 
     /**
@@ -106,5 +107,49 @@ public final class GovernanceAssignmentAdditionalData {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("ticketNumber", this.ticketNumber);
+        jsonWriter.writeStringField("ticketLink", this.ticketLink);
+        jsonWriter.writeStringField("ticketStatus", this.ticketStatus);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GovernanceAssignmentAdditionalData from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GovernanceAssignmentAdditionalData if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the GovernanceAssignmentAdditionalData.
+     */
+    public static GovernanceAssignmentAdditionalData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GovernanceAssignmentAdditionalData deserializedGovernanceAssignmentAdditionalData
+                = new GovernanceAssignmentAdditionalData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("ticketNumber".equals(fieldName)) {
+                    deserializedGovernanceAssignmentAdditionalData.ticketNumber
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("ticketLink".equals(fieldName)) {
+                    deserializedGovernanceAssignmentAdditionalData.ticketLink = reader.getString();
+                } else if ("ticketStatus".equals(fieldName)) {
+                    deserializedGovernanceAssignmentAdditionalData.ticketStatus = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGovernanceAssignmentAdditionalData;
+        });
     }
 }

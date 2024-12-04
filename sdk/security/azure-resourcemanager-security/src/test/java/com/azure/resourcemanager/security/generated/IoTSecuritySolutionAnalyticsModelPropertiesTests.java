@@ -15,7 +15,7 @@ public final class IoTSecuritySolutionAnalyticsModelPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IoTSecuritySolutionAnalyticsModelProperties model = BinaryData.fromString(
-            "{\"metrics\":{\"high\":8035715798235351617,\"medium\":7262703039995760177,\"low\":5843480099396189878},\"unhealthyDeviceCount\":9112054049291465968,\"devicesMetrics\":[{\"date\":\"2021-03-24T08:20:59Z\",\"devicesMetrics\":{\"high\":7016664533046634570,\"medium\":476263366479295764,\"low\":5283248384427445413}}],\"topAlertedDevices\":[{\"deviceId\":\"pngajin\",\"alertsCount\":6727021117660261427}],\"mostPrevalentDeviceAlerts\":[{\"alertDisplayName\":\"tmjfjmyccxlzhcox\",\"reportedSeverity\":\"High\",\"alertsCount\":7303002963288852756},{\"alertDisplayName\":\"nlusfnrd\",\"reportedSeverity\":\"High\",\"alertsCount\":7902850458902365247},{\"alertDisplayName\":\"cq\",\"reportedSeverity\":\"High\",\"alertsCount\":2129063086645105046}],\"mostPrevalentDeviceRecommendations\":[{\"recommendationDisplayName\":\"puslvyj\",\"reportedSeverity\":\"High\",\"devicesCount\":2153193005537260833},{\"recommendationDisplayName\":\"s\",\"reportedSeverity\":\"Low\",\"devicesCount\":6533192365973677613},{\"recommendationDisplayName\":\"ughtuqfecjxeygtu\",\"reportedSeverity\":\"Medium\",\"devicesCount\":7175441664487277981}]}")
+            "{\"metrics\":{\"high\":8080220027377198790,\"medium\":6933717980472811375,\"low\":6638021120593268542},\"unhealthyDeviceCount\":8830835503354069855,\"devicesMetrics\":[{\"date\":\"2021-06-06T13:44:54Z\",\"devicesMetrics\":{\"high\":3090385531429713139,\"medium\":8295525075235799473,\"low\":8197878714228862404}},{\"date\":\"2021-02-19T15:21:16Z\",\"devicesMetrics\":{\"high\":7401192112815336764,\"medium\":9181649805511042662,\"low\":4606536337351366712}},{\"date\":\"2021-07-27T10:39:49Z\",\"devicesMetrics\":{\"high\":2670120782716960741,\"medium\":6377046999955413000,\"low\":8682161930744530375}},{\"date\":\"2021-07-26T12:05:48Z\",\"devicesMetrics\":{\"high\":2468456852175055542,\"medium\":7528454363396157436,\"low\":7257661492558993624}}],\"topAlertedDevices\":[{\"deviceId\":\"uuzivensrpmeyyvp\",\"alertsCount\":3563821438693938949}],\"mostPrevalentDeviceAlerts\":[{\"alertDisplayName\":\"jp\",\"reportedSeverity\":\"High\",\"alertsCount\":5511629518307035405},{\"alertDisplayName\":\"hfvolmknb\",\"reportedSeverity\":\"Medium\",\"alertsCount\":5576561384641840563},{\"alertDisplayName\":\"mp\",\"reportedSeverity\":\"Informational\",\"alertsCount\":8509605857029832760}],\"mostPrevalentDeviceRecommendations\":[{\"recommendationDisplayName\":\"rttuiaclkiexha\",\"reportedSeverity\":\"Informational\",\"devicesCount\":738018844884911707}]}")
             .toObject(IoTSecuritySolutionAnalyticsModelProperties.class);
     }
 
@@ -25,8 +25,7 @@ public final class IoTSecuritySolutionAnalyticsModelPropertiesTests {
             .withTopAlertedDevices(Arrays.asList(new IoTSecurityAlertedDevice()))
             .withMostPrevalentDeviceAlerts(
                 Arrays.asList(new IoTSecurityDeviceAlert(), new IoTSecurityDeviceAlert(), new IoTSecurityDeviceAlert()))
-            .withMostPrevalentDeviceRecommendations(Arrays.asList(new IoTSecurityDeviceRecommendation(),
-                new IoTSecurityDeviceRecommendation(), new IoTSecurityDeviceRecommendation()));
+            .withMostPrevalentDeviceRecommendations(Arrays.asList(new IoTSecurityDeviceRecommendation()));
         model = BinaryData.fromObject(model).toObject(IoTSecuritySolutionAnalyticsModelProperties.class);
     }
 }

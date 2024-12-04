@@ -20,7 +20,7 @@ public final class IotSecuritySolutionAnalyticsListWithResponseMockTests {
     @Test
     public void testListWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"metrics\":{\"high\":5550878869194174659,\"medium\":3185508686426709353,\"low\":2753309819412349580},\"unhealthyDeviceCount\":5728582017868540717,\"devicesMetrics\":[{}],\"topAlertedDevices\":[{},{}],\"mostPrevalentDeviceAlerts\":[{},{},{}],\"mostPrevalentDeviceRecommendations\":[{},{},{},{}]},\"id\":\"npyeevffifu\",\"name\":\"gtdow\",\"type\":\"xmwefcbybpc\"}],\"nextLink\":\"tczwjcujyznv\"}";
+            = "{\"value\":[{\"properties\":{\"metrics\":{\"high\":7542426153124723606,\"medium\":1918531985244108518,\"low\":8628528650383008163},\"unhealthyDeviceCount\":1204731080271677062,\"devicesMetrics\":[{},{}],\"topAlertedDevices\":[{},{},{},{}],\"mostPrevalentDeviceAlerts\":[{},{},{}],\"mostPrevalentDeviceRecommendations\":[{}]},\"id\":\"mrihu\",\"name\":\"grmsdbv\",\"type\":\"xgfygfkgxbd\"},{\"properties\":{\"metrics\":{\"high\":6335922117620142554,\"medium\":1491298620331131147,\"low\":5410472079283498676},\"unhealthyDeviceCount\":7520845893866781697,\"devicesMetrics\":[{},{},{},{}],\"topAlertedDevices\":[{},{},{},{}],\"mostPrevalentDeviceAlerts\":[{},{}],\"mostPrevalentDeviceRecommendations\":[{},{},{},{}]},\"id\":\"vkxtfc\",\"name\":\"anetinqxdhnpjne\",\"type\":\"jighd\"},{\"properties\":{\"metrics\":{\"high\":3245867137199347467,\"medium\":8107222177349964418,\"low\":108843206621745320},\"unhealthyDeviceCount\":7832208995149913960,\"devicesMetrics\":[{}],\"topAlertedDevices\":[{},{},{}],\"mostPrevalentDeviceAlerts\":[{},{}],\"mostPrevalentDeviceRecommendations\":[{},{},{}]},\"id\":\"hngqqxjbsotocl\",\"name\":\"rttujydeatwxp\",\"type\":\"bx\"}],\"nextLink\":\"hxbboceksramq\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class IotSecuritySolutionAnalyticsListWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         IoTSecuritySolutionAnalyticsModelList response = manager.iotSecuritySolutionAnalytics()
-            .listWithResponse("nmsg", "ywdibugvnrgalvw", com.azure.core.util.Context.NONE)
+            .listWithResponse("j", "dvmsnaosxsx", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

@@ -16,7 +16,6 @@ import com.azure.resourcemanager.security.models.AnnotateDefaultBranchState;
 import com.azure.resourcemanager.security.models.AzureDevOpsRepository;
 import com.azure.resourcemanager.security.models.AzureDevOpsRepositoryProperties;
 import com.azure.resourcemanager.security.models.CategoryConfiguration;
-import com.azure.resourcemanager.security.models.DevOpsProvisioningState;
 import com.azure.resourcemanager.security.models.InheritFromParentState;
 import com.azure.resourcemanager.security.models.OnboardingState;
 import com.azure.resourcemanager.security.models.RuleCategory;
@@ -32,7 +31,7 @@ public final class AzureDevOpsReposCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningStatusMessage\":\"poipdjxyotgvrax\",\"provisioningStatusUpdateTimeUtc\":\"2021-07-09T17:08:15Z\",\"provisioningState\":\"Succeeded\",\"parentOrgName\":\"fszkrlkosjwrrets\",\"parentProjectName\":\"qfgksdiim\",\"repoId\":\"ixviob\",\"repoUrl\":\"bngeuwhd\",\"visibility\":\"gqamhbmggnqxnex\",\"onboardingState\":\"NotOnboarded\",\"actionableRemediation\":{\"state\":\"Disabled\",\"categoryConfigurations\":[{\"minimumSeverityLevel\":\"okstkvomdqxno\",\"category\":\"Artifacts\"},{\"minimumSeverityLevel\":\"papi\",\"category\":\"Code\"},{\"minimumSeverityLevel\":\"d\",\"category\":\"Artifacts\"},{\"minimumSeverityLevel\":\"un\",\"category\":\"Artifacts\"}],\"branchConfiguration\":{\"branchNames\":[\"ocbzvvxdvphxmw\"],\"annotateDefaultBranch\":\"Disabled\"},\"inheritFromParentState\":\"Disabled\"}},\"id\":\"icbicbogsfo\",\"name\":\"k\",\"type\":\"amiyfgunrukcyyaa\"}";
+            = "{\"properties\":{\"provisioningStatusMessage\":\"knsastlpsmgomi\",\"provisioningStatusUpdateTimeUtc\":\"2021-11-01T08:22:43Z\",\"provisioningState\":\"Succeeded\",\"parentOrgName\":\"vvjmxokxx\",\"parentProjectName\":\"qecjrzvlcivqx\",\"repoId\":\"mklphxwww\",\"repoUrl\":\"jkbgnfbr\",\"visibility\":\"vfsunhaevla\",\"onboardingState\":\"Onboarded\",\"actionableRemediation\":{\"state\":\"Enabled\",\"categoryConfigurations\":[{\"minimumSeverityLevel\":\"ahwcorewcnn\",\"category\":\"Dependencies\"},{\"minimumSeverityLevel\":\"jfdaj\",\"category\":\"Containers\"}],\"branchConfiguration\":{\"branchNames\":[\"mggewdqbxexfy\",\"nvussuqk\"],\"annotateDefaultBranch\":\"Disabled\"},\"inheritFromParentState\":\"Enabled\"}},\"id\":\"xayzqbyeyw\",\"name\":\"mohnrtl\",\"type\":\"kffydztkqrfbgy\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -42,42 +41,39 @@ public final class AzureDevOpsReposCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         AzureDevOpsRepository response = manager.azureDevOpsRepos()
-            .define("ppypfreuwvzhnd")
-            .withExistingProject("eynqlsnrgaxoyv", "jjpfyxhsppvjs", "uouoqtenq", "omuogeqeapaseq")
-            .withProperties(new AzureDevOpsRepositoryProperties()
-                .withProvisioningState(DevOpsProvisioningState.SUCCEEDED)
-                .withParentOrgName("hellitpqvpivrsgq")
-                .withParentProjectName("olxeomebzvtv")
-                .withOnboardingState(OnboardingState.NOT_APPLICABLE)
+            .define("vhed")
+            .withExistingProject("fapwxsvdeatjiobn", "rgoextqdnw", "gntimz", "upbmtbsetkods")
+            .withProperties(new AzureDevOpsRepositoryProperties().withParentOrgName("vdhdgdiwmlgs")
+                .withParentProjectName("fetq")
+                .withOnboardingState(OnboardingState.NOT_ONBOARDED)
                 .withActionableRemediation(new ActionableRemediation().withState(ActionableRemediationState.DISABLED)
                     .withCategoryConfigurations(Arrays.asList(
-                        new CategoryConfiguration().withMinimumSeverityLevel("katywedbpir")
+                        new CategoryConfiguration().withMinimumSeverityLevel("qpfzxkczbd")
                             .withCategory(RuleCategory.CONTAINERS),
-                        new CategoryConfiguration().withMinimumSeverityLevel("uzbbhxncs")
-                            .withCategory(RuleCategory.ARTIFACTS),
-                        new CategoryConfiguration().withMinimumSeverityLevel("aveuxgmigs")
-                            .withCategory(RuleCategory.DEPENDENCIES)))
+                        new CategoryConfiguration().withMinimumSeverityLevel("imh")
+                            .withCategory(RuleCategory.CONTAINERS),
+                        new CategoryConfiguration().withMinimumSeverityLevel("voortcl")
+                            .withCategory(RuleCategory.CONTAINERS)))
                     .withBranchConfiguration(
-                        new TargetBranchConfiguration().withBranchNames(Arrays.asList("n", "uiimerffhgvcym"))
+                        new TargetBranchConfiguration().withBranchNames(Arrays.asList("uzlybqs", "ibvylkv"))
                             .withAnnotateDefaultBranch(AnnotateDefaultBranchState.DISABLED))
-                    .withInheritFromParentState(InheritFromParentState.DISABLED)))
+                    .withInheritFromParentState(InheritFromParentState.ENABLED)))
             .create();
 
-        Assertions.assertEquals(DevOpsProvisioningState.SUCCEEDED, response.properties().provisioningState());
-        Assertions.assertEquals("fszkrlkosjwrrets", response.properties().parentOrgName());
-        Assertions.assertEquals("qfgksdiim", response.properties().parentProjectName());
-        Assertions.assertEquals(OnboardingState.NOT_ONBOARDED, response.properties().onboardingState());
-        Assertions.assertEquals(ActionableRemediationState.DISABLED,
+        Assertions.assertEquals("vvjmxokxx", response.properties().parentOrgName());
+        Assertions.assertEquals("qecjrzvlcivqx", response.properties().parentProjectName());
+        Assertions.assertEquals(OnboardingState.ONBOARDED, response.properties().onboardingState());
+        Assertions.assertEquals(ActionableRemediationState.ENABLED,
             response.properties().actionableRemediation().state());
-        Assertions.assertEquals("okstkvomdqxno",
+        Assertions.assertEquals("ahwcorewcnn",
             response.properties().actionableRemediation().categoryConfigurations().get(0).minimumSeverityLevel());
-        Assertions.assertEquals(RuleCategory.ARTIFACTS,
+        Assertions.assertEquals(RuleCategory.DEPENDENCIES,
             response.properties().actionableRemediation().categoryConfigurations().get(0).category());
-        Assertions.assertEquals("ocbzvvxdvphxmw",
+        Assertions.assertEquals("mggewdqbxexfy",
             response.properties().actionableRemediation().branchConfiguration().branchNames().get(0));
         Assertions.assertEquals(AnnotateDefaultBranchState.DISABLED,
             response.properties().actionableRemediation().branchConfiguration().annotateDefaultBranch());
-        Assertions.assertEquals(InheritFromParentState.DISABLED,
+        Assertions.assertEquals(InheritFromParentState.ENABLED,
             response.properties().actionableRemediation().inheritFromParentState());
     }
 }

@@ -25,7 +25,7 @@ public final class GovernanceRulesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"tenantId\":\"ebqnnfy\",\"displayName\":\"tkqowsd\",\"description\":\"hczygpmg\",\"remediationTimeframe\":\"culojh\",\"isGracePeriod\":true,\"rulePriority\":1485072442,\"isDisabled\":true,\"ruleType\":\"Integrated\",\"sourceResourceType\":\"Assessments\",\"excludedScopes\":[\"ymotuz\",\"ybwjmtftc\"],\"conditionSets\":[\"datalnirupkq\",\"datastpaqpibjgbvswm\",\"datahfxrt\"],\"includeMemberScopes\":true,\"ownerSource\":{\"type\":\"Manually\",\"value\":\"nn\"},\"governanceEmailNotification\":{\"disableManagerEmailNotification\":true,\"disableOwnerEmailNotification\":false},\"metadata\":{\"createdBy\":\"alectcxsfmbz\",\"createdOn\":\"2021-08-13T10:58:55Z\",\"updatedBy\":\"ynbkdnnyufxuzms\",\"updatedOn\":\"2021-07-03T09:04:47Z\"}},\"id\":\"qrbrnxhjtlxf\",\"name\":\"kjkxaravww\",\"type\":\"asnjeglht\"}]}";
+            = "{\"value\":[{\"properties\":{\"tenantId\":\"sugisn\",\"displayName\":\"mwnwnghojovkey\",\"description\":\"ic\",\"remediationTimeframe\":\"xxf\",\"isGracePeriod\":false,\"rulePriority\":879841671,\"isDisabled\":true,\"ruleType\":\"Integrated\",\"sourceResourceType\":\"Assessments\",\"excludedScopes\":[\"efx\",\"ijte\",\"dveywetkrhlol\",\"cnw\"],\"conditionSets\":[\"datafgsvbbvaqdljnpet\",\"datarnrdetawevx\",\"datahuekdxljzvdovb\",\"datablerlpr\"],\"includeMemberScopes\":true,\"ownerSource\":{\"type\":\"ByTag\",\"value\":\"dcb\"},\"governanceEmailNotification\":{\"disableManagerEmailNotification\":true,\"disableOwnerEmailNotification\":false},\"metadata\":{\"createdBy\":\"wbpwy\",\"createdOn\":\"2021-08-23T11:20:16Z\",\"updatedBy\":\"gq\",\"updatedOn\":\"2021-09-24T02:12:17Z\"}},\"id\":\"zndasdnidmj\",\"name\":\"mvyt\",\"type\":\"kiqlarhqtwvcaze\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,23 +34,21 @@ public final class GovernanceRulesListMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<GovernanceRule> response
-            = manager.governanceRules().list("iywhubymfpop", com.azure.core.util.Context.NONE);
+        PagedIterable<GovernanceRule> response = manager.governanceRules().list("m", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("tkqowsd", response.iterator().next().displayName());
-        Assertions.assertEquals("hczygpmg", response.iterator().next().description());
-        Assertions.assertEquals("culojh", response.iterator().next().remediationTimeframe());
-        Assertions.assertEquals(true, response.iterator().next().isGracePeriod());
-        Assertions.assertEquals(1485072442, response.iterator().next().rulePriority());
+        Assertions.assertEquals("mwnwnghojovkey", response.iterator().next().displayName());
+        Assertions.assertEquals("ic", response.iterator().next().description());
+        Assertions.assertEquals("xxf", response.iterator().next().remediationTimeframe());
+        Assertions.assertEquals(false, response.iterator().next().isGracePeriod());
+        Assertions.assertEquals(879841671, response.iterator().next().rulePriority());
         Assertions.assertEquals(true, response.iterator().next().isDisabled());
         Assertions.assertEquals(GovernanceRuleType.INTEGRATED, response.iterator().next().ruleType());
         Assertions.assertEquals(GovernanceRuleSourceResourceType.ASSESSMENTS,
             response.iterator().next().sourceResourceType());
-        Assertions.assertEquals("ymotuz", response.iterator().next().excludedScopes().get(0));
+        Assertions.assertEquals("efx", response.iterator().next().excludedScopes().get(0));
         Assertions.assertEquals(true, response.iterator().next().includeMemberScopes());
-        Assertions.assertEquals(GovernanceRuleOwnerSourceType.MANUALLY,
-            response.iterator().next().ownerSource().type());
-        Assertions.assertEquals("nn", response.iterator().next().ownerSource().value());
+        Assertions.assertEquals(GovernanceRuleOwnerSourceType.BY_TAG, response.iterator().next().ownerSource().type());
+        Assertions.assertEquals("dcb", response.iterator().next().ownerSource().value());
         Assertions.assertEquals(true,
             response.iterator().next().governanceEmailNotification().disableManagerEmailNotification());
         Assertions.assertEquals(false,

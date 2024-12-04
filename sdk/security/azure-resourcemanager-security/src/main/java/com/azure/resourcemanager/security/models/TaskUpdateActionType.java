@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -52,7 +51,6 @@ public final class TaskUpdateActionType extends ExpandableStringEnum<TaskUpdateA
      * @param name a name to look for.
      * @return the corresponding TaskUpdateActionType.
      */
-    @JsonCreator
     public static TaskUpdateActionType fromString(String name) {
         return fromString(name, TaskUpdateActionType.class);
     }

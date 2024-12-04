@@ -28,7 +28,7 @@ public final class SecurityConnectorApplicationOperationsDeleteWithResponseMockT
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.securityConnectorApplicationOperations()
-            .deleteWithResponse("ugeerclbltbhpwac", "yeurjwmv", "r", com.azure.core.util.Context.NONE);
+            .deleteWithResponse("jxsawooau", "fh", "fqkmwz", com.azure.core.util.Context.NONE);
 
     }
 }

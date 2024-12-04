@@ -5,7 +5,12 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
@@ -13,17 +18,15 @@ import java.util.List;
  * DevOps Configuration properties.
  */
 @Fluent
-public final class DevOpsConfigurationProperties {
+public final class DevOpsConfigurationProperties implements JsonSerializable<DevOpsConfigurationProperties> {
     /*
-     * Gets or sets resource status message.
+     * Gets the resource status message.
      */
-    @JsonProperty(value = "provisioningStatusMessage", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningStatusMessage;
 
     /*
-     * Gets or sets time when resource was last checked.
+     * Gets the time when resource was last checked.
      */
-    @JsonProperty(value = "provisioningStatusUpdateTimeUtc", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime provisioningStatusUpdateTimeUtc;
 
     /*
@@ -37,32 +40,27 @@ public final class DevOpsConfigurationProperties {
      * DeletionSuccess - Deletion successful.
      * DeletionFailure - Deletion failure.
      */
-    @JsonProperty(value = "provisioningState")
     private DevOpsProvisioningState provisioningState;
 
     /*
      * Authorization payload.
      */
-    @JsonProperty(value = "authorization")
     private Authorization authorization;
 
     /*
      * AutoDiscovery states.
      */
-    @JsonProperty(value = "autoDiscovery")
     private AutoDiscovery autoDiscovery;
 
     /*
      * List of top-level inventory to select when AutoDiscovery is disabled.
      * This field is ignored when AutoDiscovery is enabled.
      */
-    @JsonProperty(value = "topLevelInventoryList")
     private List<String> topLevelInventoryList;
 
     /*
      * List of capabilities assigned to the DevOps configuration during the discovery process.
      */
-    @JsonProperty(value = "capabilities", access = JsonProperty.Access.WRITE_ONLY)
     private List<DevOpsCapability> capabilities;
 
     /**
@@ -72,7 +70,7 @@ public final class DevOpsConfigurationProperties {
     }
 
     /**
-     * Get the provisioningStatusMessage property: Gets or sets resource status message.
+     * Get the provisioningStatusMessage property: Gets the resource status message.
      * 
      * @return the provisioningStatusMessage value.
      */
@@ -81,7 +79,7 @@ public final class DevOpsConfigurationProperties {
     }
 
     /**
-     * Get the provisioningStatusUpdateTimeUtc property: Gets or sets time when resource was last checked.
+     * Get the provisioningStatusUpdateTimeUtc property: Gets the time when resource was last checked.
      * 
      * @return the provisioningStatusUpdateTimeUtc value.
      */
@@ -104,25 +102,6 @@ public final class DevOpsConfigurationProperties {
      */
     public DevOpsProvisioningState provisioningState() {
         return this.provisioningState;
-    }
-
-    /**
-     * Set the provisioningState property: The provisioning state of the resource.
-     * 
-     * Pending - Provisioning pending.
-     * Failed - Provisioning failed.
-     * Succeeded - Successful provisioning.
-     * Canceled - Provisioning canceled.
-     * PendingDeletion - Deletion pending.
-     * DeletionSuccess - Deletion successful.
-     * DeletionFailure - Deletion failure.
-     * 
-     * @param provisioningState the provisioningState value to set.
-     * @return the DevOpsConfigurationProperties object itself.
-     */
-    public DevOpsConfigurationProperties withProvisioningState(DevOpsProvisioningState provisioningState) {
-        this.provisioningState = provisioningState;
-        return this;
     }
 
     /**
@@ -209,5 +188,63 @@ public final class DevOpsConfigurationProperties {
         if (capabilities() != null) {
             capabilities().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("authorization", this.authorization);
+        jsonWriter.writeStringField("autoDiscovery", this.autoDiscovery == null ? null : this.autoDiscovery.toString());
+        jsonWriter.writeArrayField("topLevelInventoryList", this.topLevelInventoryList,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DevOpsConfigurationProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DevOpsConfigurationProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DevOpsConfigurationProperties.
+     */
+    public static DevOpsConfigurationProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DevOpsConfigurationProperties deserializedDevOpsConfigurationProperties
+                = new DevOpsConfigurationProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningStatusMessage".equals(fieldName)) {
+                    deserializedDevOpsConfigurationProperties.provisioningStatusMessage = reader.getString();
+                } else if ("provisioningStatusUpdateTimeUtc".equals(fieldName)) {
+                    deserializedDevOpsConfigurationProperties.provisioningStatusUpdateTimeUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedDevOpsConfigurationProperties.provisioningState
+                        = DevOpsProvisioningState.fromString(reader.getString());
+                } else if ("authorization".equals(fieldName)) {
+                    deserializedDevOpsConfigurationProperties.authorization = Authorization.fromJson(reader);
+                } else if ("autoDiscovery".equals(fieldName)) {
+                    deserializedDevOpsConfigurationProperties.autoDiscovery
+                        = AutoDiscovery.fromString(reader.getString());
+                } else if ("topLevelInventoryList".equals(fieldName)) {
+                    List<String> topLevelInventoryList = reader.readArray(reader1 -> reader1.getString());
+                    deserializedDevOpsConfigurationProperties.topLevelInventoryList = topLevelInventoryList;
+                } else if ("capabilities".equals(fieldName)) {
+                    List<DevOpsCapability> capabilities
+                        = reader.readArray(reader1 -> DevOpsCapability.fromJson(reader1));
+                    deserializedDevOpsConfigurationProperties.capabilities = capabilities;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDevOpsConfigurationProperties;
+        });
     }
 }

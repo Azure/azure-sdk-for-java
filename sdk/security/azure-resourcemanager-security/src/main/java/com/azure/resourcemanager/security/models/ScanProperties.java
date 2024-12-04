@@ -5,102 +5,93 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * A vulnerability assessment scan record properties.
  */
 @Fluent
-public final class ScanProperties {
+public final class ScanProperties implements JsonSerializable<ScanProperties> {
     /*
      * The scan trigger type.
      */
-    @JsonProperty(value = "triggerType")
     private ScanTriggerType triggerType;
 
     /*
      * The scan status.
      */
-    @JsonProperty(value = "state")
     private ScanState state;
 
     /*
      * The server name.
      */
-    @JsonProperty(value = "server")
     private String server;
 
     /*
      * The database name.
      */
-    @JsonProperty(value = "database")
     private String database;
 
     /*
      * The SQL version.
      */
-    @JsonProperty(value = "sqlVersion")
     private String sqlVersion;
 
     /*
      * The scan start time (UTC).
      */
-    @JsonProperty(value = "startTime")
     private OffsetDateTime startTime;
 
     /*
      * Scan results are valid until end time (UTC).
      */
-    @JsonProperty(value = "endTime")
     private OffsetDateTime endTime;
 
     /*
      * The number of failed rules with high severity.
      */
-    @JsonProperty(value = "highSeverityFailedRulesCount")
     private Integer highSeverityFailedRulesCount;
 
     /*
      * The number of failed rules with medium severity.
      */
-    @JsonProperty(value = "mediumSeverityFailedRulesCount")
     private Integer mediumSeverityFailedRulesCount;
 
     /*
      * The number of failed rules with low severity.
      */
-    @JsonProperty(value = "lowSeverityFailedRulesCount")
     private Integer lowSeverityFailedRulesCount;
 
     /*
      * The number of total passed rules.
      */
-    @JsonProperty(value = "totalPassedRulesCount")
     private Integer totalPassedRulesCount;
 
     /*
      * The number of total failed rules.
      */
-    @JsonProperty(value = "totalFailedRulesCount")
     private Integer totalFailedRulesCount;
 
     /*
      * The number of total rules assessed.
      */
-    @JsonProperty(value = "totalRulesCount")
     private Integer totalRulesCount;
 
     /*
      * Baseline created for this database, and has one or more rules.
      */
-    @JsonProperty(value = "isBaselineApplied")
     private Boolean isBaselineApplied;
 
     /*
      * Last scan time.
      */
-    @JsonProperty(value = "lastScanTime")
     private OffsetDateTime lastScanTime;
 
     /**
@@ -415,5 +406,89 @@ public final class ScanProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("triggerType", this.triggerType == null ? null : this.triggerType.toString());
+        jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
+        jsonWriter.writeStringField("server", this.server);
+        jsonWriter.writeStringField("database", this.database);
+        jsonWriter.writeStringField("sqlVersion", this.sqlVersion);
+        jsonWriter.writeStringField("startTime",
+            this.startTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startTime));
+        jsonWriter.writeStringField("endTime",
+            this.endTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endTime));
+        jsonWriter.writeNumberField("highSeverityFailedRulesCount", this.highSeverityFailedRulesCount);
+        jsonWriter.writeNumberField("mediumSeverityFailedRulesCount", this.mediumSeverityFailedRulesCount);
+        jsonWriter.writeNumberField("lowSeverityFailedRulesCount", this.lowSeverityFailedRulesCount);
+        jsonWriter.writeNumberField("totalPassedRulesCount", this.totalPassedRulesCount);
+        jsonWriter.writeNumberField("totalFailedRulesCount", this.totalFailedRulesCount);
+        jsonWriter.writeNumberField("totalRulesCount", this.totalRulesCount);
+        jsonWriter.writeBooleanField("isBaselineApplied", this.isBaselineApplied);
+        jsonWriter.writeStringField("lastScanTime",
+            this.lastScanTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastScanTime));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ScanProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ScanProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ScanProperties.
+     */
+    public static ScanProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ScanProperties deserializedScanProperties = new ScanProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("triggerType".equals(fieldName)) {
+                    deserializedScanProperties.triggerType = ScanTriggerType.fromString(reader.getString());
+                } else if ("state".equals(fieldName)) {
+                    deserializedScanProperties.state = ScanState.fromString(reader.getString());
+                } else if ("server".equals(fieldName)) {
+                    deserializedScanProperties.server = reader.getString();
+                } else if ("database".equals(fieldName)) {
+                    deserializedScanProperties.database = reader.getString();
+                } else if ("sqlVersion".equals(fieldName)) {
+                    deserializedScanProperties.sqlVersion = reader.getString();
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedScanProperties.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("endTime".equals(fieldName)) {
+                    deserializedScanProperties.endTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("highSeverityFailedRulesCount".equals(fieldName)) {
+                    deserializedScanProperties.highSeverityFailedRulesCount = reader.getNullable(JsonReader::getInt);
+                } else if ("mediumSeverityFailedRulesCount".equals(fieldName)) {
+                    deserializedScanProperties.mediumSeverityFailedRulesCount = reader.getNullable(JsonReader::getInt);
+                } else if ("lowSeverityFailedRulesCount".equals(fieldName)) {
+                    deserializedScanProperties.lowSeverityFailedRulesCount = reader.getNullable(JsonReader::getInt);
+                } else if ("totalPassedRulesCount".equals(fieldName)) {
+                    deserializedScanProperties.totalPassedRulesCount = reader.getNullable(JsonReader::getInt);
+                } else if ("totalFailedRulesCount".equals(fieldName)) {
+                    deserializedScanProperties.totalFailedRulesCount = reader.getNullable(JsonReader::getInt);
+                } else if ("totalRulesCount".equals(fieldName)) {
+                    deserializedScanProperties.totalRulesCount = reader.getNullable(JsonReader::getInt);
+                } else if ("isBaselineApplied".equals(fieldName)) {
+                    deserializedScanProperties.isBaselineApplied = reader.getNullable(JsonReader::getBoolean);
+                } else if ("lastScanTime".equals(fieldName)) {
+                    deserializedScanProperties.lastScanTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedScanProperties;
+        });
     }
 }

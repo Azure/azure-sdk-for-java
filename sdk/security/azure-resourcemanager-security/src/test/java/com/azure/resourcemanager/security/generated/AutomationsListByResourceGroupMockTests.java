@@ -23,7 +23,7 @@ public final class AutomationsListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"description\":\"goa\",\"isEnabled\":true,\"scopes\":[{\"description\":\"iag\",\"scopePath\":\"dlhuduklbjo\"}],\"sources\":[{\"eventSource\":\"RegulatoryComplianceAssessment\",\"ruleSets\":[{}]},{\"eventSource\":\"SecureScoreControls\",\"ruleSets\":[{},{}]},{\"eventSource\":\"Alerts\",\"ruleSets\":[{},{},{},{}]}],\"actions\":[{\"actionType\":\"AutomationAction\"},{\"actionType\":\"AutomationAction\"}]},\"location\":\"seiancsqoac\",\"tags\":{\"xenvszgl\":\"dgsapleqfg\",\"vulaqcwggc\":\"yakeszsu\",\"icaovphirlzbipi\":\"xvlqgfbrve\",\"r\":\"nnepkwzzzku\"},\"id\":\"wcjomipvw\",\"name\":\"a\",\"type\":\"jttwykoxv\"}]}";
+            = "{\"value\":[{\"properties\":{\"description\":\"hsldqd\",\"isEnabled\":true,\"scopes\":[{\"description\":\"yevdy\",\"scopePath\":\"sytciksw\"}],\"sources\":[{\"eventSource\":\"AttackPathsSnapshot\",\"ruleSets\":[{}]},{\"eventSource\":\"Assessments\",\"ruleSets\":[{},{},{}]},{\"eventSource\":\"SubAssessments\",\"ruleSets\":[{},{},{}]},{\"eventSource\":\"SubAssessments\",\"ruleSets\":[{}]}],\"actions\":[{\"actionType\":\"AutomationAction\"}]},\"location\":\"rpbatvyrkljqkqw\",\"tags\":{\"y\":\"tvjkowggxawwdm\",\"g\":\"nkteiidlbovwbclp\",\"kjcnerek\":\"gani\",\"gpwxtvce\":\"julskwwnqhql\"},\"id\":\"avv\",\"name\":\"vxwve\",\"type\":\"enlrjcsmwevgu\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,15 +33,15 @@ public final class AutomationsListByResourceGroupMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<Automation> response
-            = manager.automations().listByResourceGroup("qefgzjvbx", com.azure.core.util.Context.NONE);
+            = manager.automations().listByResourceGroup("xooqohgpncdmwkh", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("seiancsqoac", response.iterator().next().location());
-        Assertions.assertEquals("dgsapleqfg", response.iterator().next().tags().get("xenvszgl"));
-        Assertions.assertEquals("goa", response.iterator().next().description());
+        Assertions.assertEquals("rpbatvyrkljqkqw", response.iterator().next().location());
+        Assertions.assertEquals("tvjkowggxawwdm", response.iterator().next().tags().get("y"));
+        Assertions.assertEquals("hsldqd", response.iterator().next().description());
         Assertions.assertEquals(true, response.iterator().next().isEnabled());
-        Assertions.assertEquals("iag", response.iterator().next().scopes().get(0).description());
-        Assertions.assertEquals("dlhuduklbjo", response.iterator().next().scopes().get(0).scopePath());
-        Assertions.assertEquals(EventSource.REGULATORY_COMPLIANCE_ASSESSMENT,
+        Assertions.assertEquals("yevdy", response.iterator().next().scopes().get(0).description());
+        Assertions.assertEquals("sytciksw", response.iterator().next().scopes().get(0).scopePath());
+        Assertions.assertEquals(EventSource.ATTACK_PATHS_SNAPSHOT,
             response.iterator().next().sources().get(0).eventSource());
     }
 }

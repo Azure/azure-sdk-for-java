@@ -10,7 +10,6 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.security.SecurityManager;
-import com.azure.resourcemanager.security.models.DevOpsProvisioningState;
 import com.azure.resourcemanager.security.models.GitLabGroupListResponse;
 import com.azure.resourcemanager.security.models.OnboardingState;
 import java.nio.charset.StandardCharsets;
@@ -23,7 +22,7 @@ public final class GitLabGroupsListAvailableWithResponseMockTests {
     @Test
     public void testListAvailableWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningStatusMessage\":\"eikffjq\",\"provisioningStatusUpdateTimeUtc\":\"2021-11-13T22:44:39Z\",\"provisioningState\":\"PendingDeletion\",\"fullyQualifiedName\":\"wylavet\",\"fullyQualifiedFriendlyName\":\"vohy\",\"url\":\"dgjtpbtkogfg\",\"onboardingState\":\"NotOnboarded\"},\"id\":\"yzolrvws\",\"name\":\"seqjteoa\",\"type\":\"irmgis\"},{\"properties\":{\"provisioningStatusMessage\":\"bpvsobamtarir\",\"provisioningStatusUpdateTimeUtc\":\"2021-07-28T18:20:41Z\",\"provisioningState\":\"DeletionFailure\",\"fullyQualifiedName\":\"oflzuk\",\"fullyQualifiedFriendlyName\":\"ougxpyp\",\"url\":\"zqsxblmnxrxkul\",\"onboardingState\":\"NotApplicable\"},\"id\":\"vviyqonbxxyf\",\"name\":\"zbgodywxjikfrx\",\"type\":\"lused\"},{\"properties\":{\"provisioningStatusMessage\":\"imqaxtmvmycvjpa\",\"provisioningStatusUpdateTimeUtc\":\"2021-06-11T23:51:25Z\",\"provisioningState\":\"DeletionSuccess\",\"fullyQualifiedName\":\"yjehyvnfjng\",\"fullyQualifiedFriendlyName\":\"mrdvhbgtuhwhx\",\"url\":\"we\",\"onboardingState\":\"NotApplicable\"},\"id\":\"hylnuzgz\",\"name\":\"x\",\"type\":\"dusebkcfetxp\"},{\"properties\":{\"provisioningStatusMessage\":\"rmasuiqrsnm\",\"provisioningStatusUpdateTimeUtc\":\"2021-11-11T05:05:31Z\",\"provisioningState\":\"Succeeded\",\"fullyQualifiedName\":\"x\",\"fullyQualifiedFriendlyName\":\"xrbiyzjlgrw\",\"url\":\"s\",\"onboardingState\":\"NotOnboarded\"},\"id\":\"kbocsitsx\",\"name\":\"vsg\",\"type\":\"pwqieyxjkctyqst\"}],\"nextLink\":\"m\"}";
+            = "{\"value\":[{\"properties\":{\"provisioningStatusMessage\":\"wnlpjcxbjg\",\"provisioningStatusUpdateTimeUtc\":\"2021-03-13T00:00:14Z\",\"provisioningState\":\"Succeeded\",\"fullyQualifiedName\":\"frridzfpsf\",\"fullyQualifiedFriendlyName\":\"kidfhmlxrqkeknu\",\"url\":\"qafz\",\"onboardingState\":\"NotOnboarded\"},\"id\":\"riysjrgt\",\"name\":\"uwpuqpsrcekdvvo\",\"type\":\"dwedg\"},{\"properties\":{\"provisioningStatusMessage\":\"lvbwatzadrjbjn\",\"provisioningStatusUpdateTimeUtc\":\"2021-05-08T16:01:56Z\",\"provisioningState\":\"Canceled\",\"fullyQualifiedName\":\"drw\",\"fullyQualifiedFriendlyName\":\"mzc\",\"url\":\"iapypimr\",\"onboardingState\":\"NotApplicable\"},\"id\":\"qwipzesstuin\",\"name\":\"tkmlfupjzcxx\",\"type\":\"zj\"},{\"properties\":{\"provisioningStatusMessage\":\"gahxuerrdaktnyt\",\"provisioningStatusUpdateTimeUtc\":\"2021-07-12T18:46:29Z\",\"provisioningState\":\"DeletionFailure\",\"fullyQualifiedName\":\"cvcp\",\"fullyQualifiedFriendlyName\":\"qjc\",\"url\":\"pw\",\"onboardingState\":\"NotApplicable\"},\"id\":\"hnhhcikh\",\"name\":\"ebgjg\",\"type\":\"lsac\"},{\"properties\":{\"provisioningStatusMessage\":\"lrcygotohzwto\",\"provisioningStatusUpdateTimeUtc\":\"2021-10-16T22:40:59Z\",\"provisioningState\":\"Succeeded\",\"fullyQualifiedName\":\"trapw\",\"fullyQualifiedFriendlyName\":\"lutjsjzels\",\"url\":\"emvupmeak\",\"onboardingState\":\"NotApplicable\"},\"id\":\"sycvldee\",\"name\":\"cb\",\"type\":\"aipu\"}],\"nextLink\":\"ofkegbvbbdledffl\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,12 +32,10 @@ public final class GitLabGroupsListAvailableWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         GitLabGroupListResponse response = manager.gitLabGroups()
-            .listAvailableWithResponse("yplavbvs", "cedsoqwexi", com.azure.core.util.Context.NONE)
+            .listAvailableWithResponse("blcyeqdobobaq", "abebckc", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(DevOpsProvisioningState.PENDING_DELETION,
-            response.value().get(0).properties().provisioningState());
         Assertions.assertEquals(OnboardingState.NOT_ONBOARDED, response.value().get(0).properties().onboardingState());
-        Assertions.assertEquals("m", response.nextLink());
+        Assertions.assertEquals("ofkegbvbbdledffl", response.nextLink());
     }
 }

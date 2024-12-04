@@ -29,8 +29,8 @@ public final class TasksUpdateResourceGroupLevelTaskStateWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.tasks()
-            .updateResourceGroupLevelTaskStateWithResponse("skirhn", "upkcbkfukdljqnvt", "dydshk",
-                TaskUpdateActionType.CLOSE, com.azure.core.util.Context.NONE);
+            .updateResourceGroupLevelTaskStateWithResponse("qoq", "umov", "fbpbvzopaxmfmvsm",
+                TaskUpdateActionType.RESOLVE, com.azure.core.util.Context.NONE);
 
     }
 }

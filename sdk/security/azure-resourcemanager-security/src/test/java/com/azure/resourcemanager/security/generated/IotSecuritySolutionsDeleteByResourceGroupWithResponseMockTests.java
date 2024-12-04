@@ -28,7 +28,7 @@ public final class IotSecuritySolutionsDeleteByResourceGroupWithResponseMockTest
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.iotSecuritySolutions()
-            .deleteByResourceGroupWithResponse("s", "lzbki", com.azure.core.util.Context.NONE);
+            .deleteByResourceGroupWithResponse("ctvrpeawzzkvf", "cozv", com.azure.core.util.Context.NONE);
 
     }
 }

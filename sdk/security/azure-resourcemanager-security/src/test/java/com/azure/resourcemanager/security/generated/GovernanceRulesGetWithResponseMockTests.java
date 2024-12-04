@@ -24,7 +24,7 @@ public final class GovernanceRulesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"tenantId\":\"i\",\"displayName\":\"awws\",\"description\":\"orgfhjxsawooauff\",\"remediationTimeframe\":\"fqkmwz\",\"isGracePeriod\":false,\"rulePriority\":1087648309,\"isDisabled\":true,\"ruleType\":\"Integrated\",\"sourceResourceType\":\"Assessments\",\"excludedScopes\":[\"otoc\"],\"conditionSets\":[\"datazdaiovrb\",\"datarpqphkvyyzad\"],\"includeMemberScopes\":true,\"ownerSource\":{\"type\":\"Manually\",\"value\":\"yp\"},\"governanceEmailNotification\":{\"disableManagerEmailNotification\":true,\"disableOwnerEmailNotification\":false},\"metadata\":{\"createdBy\":\"fohuriwhjdfr\",\"createdOn\":\"2021-09-29T21:32:43Z\",\"updatedBy\":\"h\",\"updatedOn\":\"2021-09-21T12:16:40Z\"}},\"id\":\"kcclpctuo\",\"name\":\"kscxjfsgmospoe\",\"type\":\"nxs\"}";
+            = "{\"properties\":{\"tenantId\":\"elgfyatigfgfrr\",\"displayName\":\"dknczgorywn\",\"description\":\"jtv\",\"remediationTimeframe\":\"evdlh\",\"isGracePeriod\":true,\"rulePriority\":415948990,\"isDisabled\":true,\"ruleType\":\"ServiceNow\",\"sourceResourceType\":\"Assessments\",\"excludedScopes\":[\"ssrlvkpkpk\",\"cmaccebx\",\"opyicyvsp\"],\"conditionSets\":[\"datalhwyykgvrccpumd\",\"datahgajkrdy\"],\"includeMemberScopes\":true,\"ownerSource\":{\"type\":\"Manually\",\"value\":\"udvafnbfbqvenqnx\"},\"governanceEmailNotification\":{\"disableManagerEmailNotification\":true,\"disableOwnerEmailNotification\":false},\"metadata\":{\"createdBy\":\"ejpec\",\"createdOn\":\"2021-08-22T07:48:03Z\",\"updatedBy\":\"mbpwdludayp\",\"updatedOn\":\"2021-06-06T21:55:23Z\"}},\"id\":\"idwmt\",\"name\":\"f\",\"type\":\"vtzldzchubagwn\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,21 +34,21 @@ public final class GovernanceRulesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         GovernanceRule response = manager.governanceRules()
-            .getWithResponse("xbozpcjcnwjz", "qblxrnwvds", com.azure.core.util.Context.NONE)
+            .getWithResponse("d", "dzffzjwztsmpchg", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("awws", response.displayName());
-        Assertions.assertEquals("orgfhjxsawooauff", response.description());
-        Assertions.assertEquals("fqkmwz", response.remediationTimeframe());
-        Assertions.assertEquals(false, response.isGracePeriod());
-        Assertions.assertEquals(1087648309, response.rulePriority());
+        Assertions.assertEquals("dknczgorywn", response.displayName());
+        Assertions.assertEquals("jtv", response.description());
+        Assertions.assertEquals("evdlh", response.remediationTimeframe());
+        Assertions.assertEquals(true, response.isGracePeriod());
+        Assertions.assertEquals(415948990, response.rulePriority());
         Assertions.assertEquals(true, response.isDisabled());
-        Assertions.assertEquals(GovernanceRuleType.INTEGRATED, response.ruleType());
+        Assertions.assertEquals(GovernanceRuleType.SERVICE_NOW, response.ruleType());
         Assertions.assertEquals(GovernanceRuleSourceResourceType.ASSESSMENTS, response.sourceResourceType());
-        Assertions.assertEquals("otoc", response.excludedScopes().get(0));
+        Assertions.assertEquals("ssrlvkpkpk", response.excludedScopes().get(0));
         Assertions.assertEquals(true, response.includeMemberScopes());
         Assertions.assertEquals(GovernanceRuleOwnerSourceType.MANUALLY, response.ownerSource().type());
-        Assertions.assertEquals("yp", response.ownerSource().value());
+        Assertions.assertEquals("udvafnbfbqvenqnx", response.ownerSource().value());
         Assertions.assertEquals(true, response.governanceEmailNotification().disableManagerEmailNotification());
         Assertions.assertEquals(false, response.governanceEmailNotification().disableOwnerEmailNotification());
     }

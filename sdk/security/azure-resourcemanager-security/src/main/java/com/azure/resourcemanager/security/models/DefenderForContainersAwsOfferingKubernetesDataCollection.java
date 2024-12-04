@@ -5,17 +5,21 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The kubernetes data collection connection configuration.
  */
 @Fluent
-public final class DefenderForContainersAwsOfferingKubernetesDataCollection {
+public final class DefenderForContainersAwsOfferingKubernetesDataCollection
+    implements JsonSerializable<DefenderForContainersAwsOfferingKubernetesDataCollection> {
     /*
      * The cloud role ARN in AWS for this feature used for reading data
      */
-    @JsonProperty(value = "cloudRoleArn")
     private String cloudRoleArn;
 
     /**
@@ -50,5 +54,45 @@ public final class DefenderForContainersAwsOfferingKubernetesDataCollection {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("cloudRoleArn", this.cloudRoleArn);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DefenderForContainersAwsOfferingKubernetesDataCollection from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DefenderForContainersAwsOfferingKubernetesDataCollection if the JsonReader was pointing to
+     * an instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the
+     * DefenderForContainersAwsOfferingKubernetesDataCollection.
+     */
+    public static DefenderForContainersAwsOfferingKubernetesDataCollection fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            DefenderForContainersAwsOfferingKubernetesDataCollection deserializedDefenderForContainersAwsOfferingKubernetesDataCollection
+                = new DefenderForContainersAwsOfferingKubernetesDataCollection();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("cloudRoleArn".equals(fieldName)) {
+                    deserializedDefenderForContainersAwsOfferingKubernetesDataCollection.cloudRoleArn
+                        = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDefenderForContainersAwsOfferingKubernetesDataCollection;
+        });
     }
 }

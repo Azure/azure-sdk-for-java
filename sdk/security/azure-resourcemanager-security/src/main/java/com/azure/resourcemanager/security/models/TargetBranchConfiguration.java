@@ -5,18 +5,21 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Repository branch configuration for PR Annotations.
  */
 @Fluent
-public final class TargetBranchConfiguration {
+public final class TargetBranchConfiguration implements JsonSerializable<TargetBranchConfiguration> {
     /*
      * Gets or sets branches that should have annotations.
      */
-    @JsonProperty(value = "branchNames")
     private List<String> branchNames;
 
     /*
@@ -25,7 +28,6 @@ public final class TargetBranchConfiguration {
      * Enabled - PR Annotations are enabled on the resource's default branch.
      * Disabled - PR Annotations are disabled on the resource's default branch.
      */
-    @JsonProperty(value = "annotateDefaultBranch")
     private AnnotateDefaultBranchState annotateDefaultBranch;
 
     /**
@@ -86,5 +88,47 @@ public final class TargetBranchConfiguration {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("branchNames", this.branchNames, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("annotateDefaultBranch",
+            this.annotateDefaultBranch == null ? null : this.annotateDefaultBranch.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TargetBranchConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TargetBranchConfiguration if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TargetBranchConfiguration.
+     */
+    public static TargetBranchConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TargetBranchConfiguration deserializedTargetBranchConfiguration = new TargetBranchConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("branchNames".equals(fieldName)) {
+                    List<String> branchNames = reader.readArray(reader1 -> reader1.getString());
+                    deserializedTargetBranchConfiguration.branchNames = branchNames;
+                } else if ("annotateDefaultBranch".equals(fieldName)) {
+                    deserializedTargetBranchConfiguration.annotateDefaultBranch
+                        = AnnotateDefaultBranchState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTargetBranchConfiguration;
+        });
     }
 }

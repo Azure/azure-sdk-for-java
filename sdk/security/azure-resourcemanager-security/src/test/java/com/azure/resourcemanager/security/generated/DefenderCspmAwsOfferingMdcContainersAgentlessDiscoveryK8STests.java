@@ -12,19 +12,19 @@ public final class DefenderCspmAwsOfferingMdcContainersAgentlessDiscoveryK8STest
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DefenderCspmAwsOfferingMdcContainersAgentlessDiscoveryK8S model
-            = BinaryData.fromString("{\"enabled\":false,\"cloudRoleArn\":\"fbxufeapdr\"}")
+            = BinaryData.fromString("{\"enabled\":true,\"cloudRoleArn\":\"rjdljlkqhvkrb\"}")
                 .toObject(DefenderCspmAwsOfferingMdcContainersAgentlessDiscoveryK8S.class);
-        Assertions.assertEquals(false, model.enabled());
-        Assertions.assertEquals("fbxufeapdr", model.cloudRoleArn());
+        Assertions.assertEquals(true, model.enabled());
+        Assertions.assertEquals("rjdljlkqhvkrb", model.cloudRoleArn());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DefenderCspmAwsOfferingMdcContainersAgentlessDiscoveryK8S model
-            = new DefenderCspmAwsOfferingMdcContainersAgentlessDiscoveryK8S().withEnabled(false)
-                .withCloudRoleArn("fbxufeapdr");
+            = new DefenderCspmAwsOfferingMdcContainersAgentlessDiscoveryK8S().withEnabled(true)
+                .withCloudRoleArn("rjdljlkqhvkrb");
         model = BinaryData.fromObject(model).toObject(DefenderCspmAwsOfferingMdcContainersAgentlessDiscoveryK8S.class);
-        Assertions.assertEquals(false, model.enabled());
-        Assertions.assertEquals("fbxufeapdr", model.cloudRoleArn());
+        Assertions.assertEquals(true, model.enabled());
+        Assertions.assertEquals("rjdljlkqhvkrb", model.cloudRoleArn());
     }
 }

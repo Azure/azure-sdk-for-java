@@ -22,7 +22,7 @@ public final class SoftwareInventoriesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"deviceId\":\"micjixxfsf\",\"osPlatform\":\"rtnuguefxxijteb\",\"vendor\":\"eywetkrhlolmcn\",\"softwareName\":\"pfgsvbbvaqdljnp\",\"version\":\"l\",\"endOfSupportStatus\":\"upcomingNoLongerSupported\",\"endOfSupportDate\":\"etawevx\",\"numberOfKnownVulnerabilities\":615135158,\"firstSeenAt\":\"kdxl\"},\"id\":\"zvdov\",\"name\":\"rblerlprdaqcc\",\"type\":\"dcb\"}";
+            = "{\"properties\":{\"deviceId\":\"fr\",\"osPlatform\":\"gbmxldjmz\",\"vendor\":\"bjesylslur\",\"softwareName\":\"fygpnyhgd\",\"version\":\"qscag\",\"endOfSupportStatus\":\"None\",\"endOfSupportDate\":\"uprsytqzsslhmg\",\"numberOfKnownVulnerabilities\":650349270,\"firstSeenAt\":\"vrxpfdu\"},\"id\":\"olhg\",\"name\":\"qvpbfjpoqzucfzl\",\"type\":\"czdquurbo\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,18 +32,18 @@ public final class SoftwareInventoriesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         Software response = manager.softwareInventories()
-            .getWithResponse("dror", "yogzmsimehtcu", "wdhtqqhyhnimxtn", "ugisnomwnwngho", "ovke",
+            .getWithResponse("t", "efvulblmr", "uxyprhfcaeooifqd", "wjflobh", "hqmomfeco",
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("micjixxfsf", response.deviceId());
-        Assertions.assertEquals("rtnuguefxxijteb", response.osPlatform());
-        Assertions.assertEquals("eywetkrhlolmcn", response.vendor());
-        Assertions.assertEquals("pfgsvbbvaqdljnp", response.softwareName());
-        Assertions.assertEquals("l", response.version());
-        Assertions.assertEquals(EndOfSupportStatus.UPCOMING_NO_LONGER_SUPPORTED, response.endOfSupportStatus());
-        Assertions.assertEquals("etawevx", response.endOfSupportDate());
-        Assertions.assertEquals(615135158, response.numberOfKnownVulnerabilities());
-        Assertions.assertEquals("kdxl", response.firstSeenAt());
+        Assertions.assertEquals("fr", response.deviceId());
+        Assertions.assertEquals("gbmxldjmz", response.osPlatform());
+        Assertions.assertEquals("bjesylslur", response.vendor());
+        Assertions.assertEquals("fygpnyhgd", response.softwareName());
+        Assertions.assertEquals("qscag", response.version());
+        Assertions.assertEquals(EndOfSupportStatus.NONE, response.endOfSupportStatus());
+        Assertions.assertEquals("uprsytqzsslhmg", response.endOfSupportDate());
+        Assertions.assertEquals(650349270, response.numberOfKnownVulnerabilities());
+        Assertions.assertEquals("vrxpfdu", response.firstSeenAt());
     }
 }

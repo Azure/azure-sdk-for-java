@@ -5,35 +5,35 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The details about the project represented by the security connector.
  */
 @Fluent
-public final class GcpProjectDetails {
+public final class GcpProjectDetails implements JsonSerializable<GcpProjectDetails> {
     /*
      * The unique GCP Project number
      */
-    @JsonProperty(value = "projectNumber")
     private String projectNumber;
 
     /*
      * The GCP Project id
      */
-    @JsonProperty(value = "projectId")
     private String projectId;
 
     /*
      * The GCP workload identity federation pool id
      */
-    @JsonProperty(value = "workloadIdentityPoolId", access = JsonProperty.Access.WRITE_ONLY)
     private String workloadIdentityPoolId;
 
     /*
      * GCP project name
      */
-    @JsonProperty(value = "projectName", access = JsonProperty.Access.WRITE_ONLY)
     private String projectName;
 
     /**
@@ -106,5 +106,48 @@ public final class GcpProjectDetails {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("projectNumber", this.projectNumber);
+        jsonWriter.writeStringField("projectId", this.projectId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GcpProjectDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GcpProjectDetails if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the GcpProjectDetails.
+     */
+    public static GcpProjectDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GcpProjectDetails deserializedGcpProjectDetails = new GcpProjectDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("projectNumber".equals(fieldName)) {
+                    deserializedGcpProjectDetails.projectNumber = reader.getString();
+                } else if ("projectId".equals(fieldName)) {
+                    deserializedGcpProjectDetails.projectId = reader.getString();
+                } else if ("workloadIdentityPoolId".equals(fieldName)) {
+                    deserializedGcpProjectDetails.workloadIdentityPoolId = reader.getString();
+                } else if ("projectName".equals(fieldName)) {
+                    deserializedGcpProjectDetails.projectName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGcpProjectDetails;
+        });
     }
 }

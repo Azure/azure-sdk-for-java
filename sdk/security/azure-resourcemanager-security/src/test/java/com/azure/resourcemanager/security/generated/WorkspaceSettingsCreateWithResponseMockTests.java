@@ -21,7 +21,7 @@ public final class WorkspaceSettingsCreateWithResponseMockTests {
     @Test
     public void testCreateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"workspaceId\":\"qmrpahuuonjk\",\"scope\":\"xukguehv\"},\"id\":\"pxjoegcjojll\",\"name\":\"uidpmtonvhg\",\"type\":\"htmep\"}";
+            = "{\"properties\":{\"workspaceId\":\"ctr\",\"scope\":\"ldsxebuhsxrz\"},\"id\":\"mgsdaluyckhefrbh\",\"name\":\"eu\",\"type\":\"rbgpxeb\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,13 +30,10 @@ public final class WorkspaceSettingsCreateWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        WorkspaceSetting response = manager.workspaceSettings()
-            .define("rnrnjrcufmbgacnr")
-            .withWorkspaceId("dtncmsps")
-            .withScope("nmameubk")
-            .create();
+        WorkspaceSetting response
+            = manager.workspaceSettings().define("ivznllas").withWorkspaceId("skhj").withScope("jpv").create();
 
-        Assertions.assertEquals("qmrpahuuonjk", response.workspaceId());
-        Assertions.assertEquals("xukguehv", response.scope());
+        Assertions.assertEquals("ctr", response.workspaceId());
+        Assertions.assertEquals("ldsxebuhsxrz", response.scope());
     }
 }

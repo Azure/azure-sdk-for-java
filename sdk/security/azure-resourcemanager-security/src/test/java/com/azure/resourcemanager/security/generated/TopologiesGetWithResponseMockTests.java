@@ -20,7 +20,7 @@ public final class TopologiesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"calculatedDateTime\":\"2021-12-03T16:53:46Z\",\"topologyResources\":[{\"resourceId\":\"yio\",\"severity\":\"qgqs\",\"recommendationsExist\":true,\"networkZones\":\"efeombo\",\"topologyScore\":1397425058,\"location\":\"fuakqsjymcfvvzc\",\"parents\":[{}],\"children\":[{},{},{}]},{\"resourceId\":\"tc\",\"severity\":\"nbpkfnxrlncmlzvv\",\"recommendationsExist\":true,\"networkZones\":\"fhqsa\",\"topologyScore\":712234866,\"location\":\"revfwcbawapn\",\"parents\":[{}],\"children\":[{},{}]},{\"resourceId\":\"kmzv\",\"severity\":\"qxfblsxy\",\"recommendationsExist\":false,\"networkZones\":\"od\",\"topologyScore\":876052992,\"location\":\"ef\",\"parents\":[{},{},{}],\"children\":[{},{},{},{}]},{\"resourceId\":\"rvbbnasgfyxhsxcg\",\"severity\":\"m\",\"recommendationsExist\":false,\"networkZones\":\"cnxskeh\",\"topologyScore\":308289690,\"location\":\"azufl\",\"parents\":[{}],\"children\":[{},{},{}]}]},\"location\":\"hpdnc\",\"id\":\"kqrgiv\",\"name\":\"h\",\"type\":\"nimjlyhbjfnmmib\"}";
+            = "{\"properties\":{\"calculatedDateTime\":\"2021-05-28T21:22:31Z\",\"topologyResources\":[{\"resourceId\":\"xrvnhhmfsnqp\",\"severity\":\"tsh\",\"recommendationsExist\":true,\"networkZones\":\"sksd\",\"topologyScore\":1555917245,\"location\":\"tsy\",\"parents\":[{},{}],\"children\":[{},{},{},{}]},{\"resourceId\":\"oetx\",\"severity\":\"rfwxhf\",\"recommendationsExist\":false,\"networkZones\":\"ngaypxsazbxsn\",\"topologyScore\":1091617016,\"location\":\"znfstmprvg\",\"parents\":[{},{},{},{}],\"children\":[{},{},{}]},{\"resourceId\":\"twomlp\",\"severity\":\"lqboomzgmrolhsf\",\"recommendationsExist\":false,\"networkZones\":\"xvevwxmnbwaxa\",\"topologyScore\":911508907,\"location\":\"pyhtuh\",\"parents\":[{},{}],\"children\":[{},{}]},{\"resourceId\":\"dnao\",\"severity\":\"xznpnytkqja\",\"recommendationsExist\":false,\"networkZones\":\"btgt\",\"topologyScore\":381047323,\"location\":\"trm\",\"parents\":[{},{}],\"children\":[{},{},{}]}]},\"location\":\"tg\",\"id\":\"uupcze\",\"name\":\"qn\",\"type\":\"idvssvgyoggkztzt\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -29,9 +29,8 @@ public final class TopologiesGetWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        TopologyResource response = manager.topologies()
-            .getWithResponse("cvt", "yhpbiln", "zyjbuwuuusyd", com.azure.core.util.Context.NONE)
-            .getValue();
+        TopologyResource response
+            = manager.topologies().getWithResponse("cqt", "srbfbs", "ii", com.azure.core.util.Context.NONE).getValue();
 
     }
 }

@@ -24,7 +24,7 @@ public final class SecurityContactsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"emails\":\"ndjzwha\",\"phone\":\"dapqokhdy\",\"isEnabled\":true,\"notificationsSources\":[{\"sourceType\":\"NotificationsSource\"},{\"sourceType\":\"NotificationsSource\"},{\"sourceType\":\"NotificationsSource\"},{\"sourceType\":\"NotificationsSource\"}],\"notificationsByRole\":{\"state\":\"Passed\",\"roles\":[\"AccountAdmin\",\"AccountAdmin\"]}},\"id\":\"pfapmqnmelyk\",\"name\":\"ygihiclmslnu\",\"type\":\"kqvzlbbbajdexq\"}]}";
+            = "{\"value\":[{\"properties\":{\"emails\":\"xgxqayga\",\"phone\":\"kvc\",\"isEnabled\":true,\"notificationsSources\":[{\"sourceType\":\"NotificationsSource\"}],\"notificationsByRole\":{\"state\":\"Failed\",\"roles\":[\"Owner\"]}},\"id\":\"zjwjkqo\",\"name\":\"bwh\",\"type\":\"ieyozvrcwfpucwnb\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,11 +35,11 @@ public final class SecurityContactsListMockTests {
 
         PagedIterable<SecurityContact> response = manager.securityContacts().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ndjzwha", response.iterator().next().emails());
-        Assertions.assertEquals("dapqokhdy", response.iterator().next().phone());
+        Assertions.assertEquals("xgxqayga", response.iterator().next().emails());
+        Assertions.assertEquals("kvc", response.iterator().next().phone());
         Assertions.assertEquals(true, response.iterator().next().isEnabled());
-        Assertions.assertEquals(State.PASSED, response.iterator().next().notificationsByRole().state());
-        Assertions.assertEquals(SecurityContactRole.ACCOUNT_ADMIN,
+        Assertions.assertEquals(State.FAILED, response.iterator().next().notificationsByRole().state());
+        Assertions.assertEquals(SecurityContactRole.OWNER,
             response.iterator().next().notificationsByRole().roles().get(0));
     }
 }

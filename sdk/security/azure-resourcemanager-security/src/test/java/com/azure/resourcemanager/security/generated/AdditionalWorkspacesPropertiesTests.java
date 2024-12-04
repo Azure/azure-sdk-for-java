@@ -6,8 +6,8 @@ package com.azure.resourcemanager.security.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.security.models.AdditionalWorkspaceDataType;
-import com.azure.resourcemanager.security.models.AdditionalWorkspacesProperties;
 import com.azure.resourcemanager.security.models.AdditionalWorkspaceType;
+import com.azure.resourcemanager.security.models.AdditionalWorkspacesProperties;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
@@ -16,21 +16,21 @@ public final class AdditionalWorkspacesPropertiesTests {
     public void testDeserialize() throws Exception {
         AdditionalWorkspacesProperties model = BinaryData
             .fromString(
-                "{\"workspace\":\"sffxui\",\"type\":\"Sentinel\",\"dataTypes\":[\"Alerts\",\"RawEvents\",\"Alerts\"]}")
+                "{\"workspace\":\"nqxaekqsyk\",\"type\":\"Sentinel\",\"dataTypes\":[\"Alerts\",\"Alerts\",\"Alerts\"]}")
             .toObject(AdditionalWorkspacesProperties.class);
-        Assertions.assertEquals("sffxui", model.workspace());
+        Assertions.assertEquals("nqxaekqsyk", model.workspace());
         Assertions.assertEquals(AdditionalWorkspaceType.SENTINEL, model.type());
         Assertions.assertEquals(AdditionalWorkspaceDataType.ALERTS, model.dataTypes().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AdditionalWorkspacesProperties model = new AdditionalWorkspacesProperties().withWorkspace("sffxui")
+        AdditionalWorkspacesProperties model = new AdditionalWorkspacesProperties().withWorkspace("nqxaekqsyk")
             .withType(AdditionalWorkspaceType.SENTINEL)
-            .withDataTypes(Arrays.asList(AdditionalWorkspaceDataType.ALERTS, AdditionalWorkspaceDataType.RAW_EVENTS,
+            .withDataTypes(Arrays.asList(AdditionalWorkspaceDataType.ALERTS, AdditionalWorkspaceDataType.ALERTS,
                 AdditionalWorkspaceDataType.ALERTS));
         model = BinaryData.fromObject(model).toObject(AdditionalWorkspacesProperties.class);
-        Assertions.assertEquals("sffxui", model.workspace());
+        Assertions.assertEquals("nqxaekqsyk", model.workspace());
         Assertions.assertEquals(AdditionalWorkspaceType.SENTINEL, model.type());
         Assertions.assertEquals(AdditionalWorkspaceDataType.ALERTS, model.dataTypes().get(0));
     }

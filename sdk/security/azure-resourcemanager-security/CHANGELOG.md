@@ -1,14 +1,504 @@
 # Release History
 
-## 1.0.0-beta.8 (Unreleased)
+## 1.0.0-beta.8 (2024-12-04)
 
-### Features Added
+- Azure Resource Manager Security client library for Java. This package contains Microsoft Azure SDK for Security Management SDK. API spec for Microsoft.Security (Azure Security Center) resource provider. Package tag package-composite-v3. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### Serialization/Deserialization change
 
-### Other Changes
+- `Jackson` is removed from dependency and no longer supported.
+
+##### Migration Guide
+
+If you are using `Jackson`/`ObjectMapper` for manual serialization/deserialization, configure your `ObjectMapper` for backward compatibility:
+```java
+objectMapper.registerModule(com.azure.core.serializer.json.jackson.JacksonJsonProvider.getJsonSerializableDatabindModule());
+```
+
+#### `models.EffectiveNetworkSecurityGroups` was removed
+
+#### `models.RecommendationAction` was removed
+
+#### `models.Direction` was removed
+
+#### `models.AdaptiveApplicationControlIssueSummary` was removed
+
+#### `models.Rule` was removed
+
+#### `models.RecommendationStatus` was removed
+
+#### `models.AdaptiveApplicationControlGroup$Definition` was removed
+
+#### `models.FileType` was removed
+
+#### `models.SourceSystem` was removed
+
+#### `models.AdaptiveApplicationControlGroup$UpdateStages` was removed
+
+#### `models.AdaptiveApplicationControls` was removed
+
+#### `models.AdaptiveApplicationControlGroups` was removed
+
+#### `models.AdaptiveNetworkHardeningEnforceRequest` was removed
+
+#### `models.AdaptiveApplicationControlGroup` was removed
+
+#### `models.AdaptiveNetworkHardening` was removed
+
+#### `models.ProtectionMode` was removed
+
+#### `models.EnforcementMode` was removed
+
+#### `models.AdaptiveNetworkHardenings` was removed
+
+#### `models.EnforcementSupport` was removed
+
+#### `models.PathRecommendation` was removed
+
+#### `models.AdaptiveNetworkHardeningsList` was removed
+
+#### `models.AdaptiveApplicationControlGroup$Update` was removed
+
+#### `models.UserRecommendation` was removed
+
+#### `models.VmRecommendation` was removed
+
+#### `models.AdaptiveApplicationControlGroup$DefinitionStages` was removed
+
+#### `models.TransportProtocol` was removed
+
+#### `models.AdaptiveApplicationControlIssue` was removed
+
+#### `models.ConfigurationStatus` was removed
+
+#### `models.PublisherInfo` was removed
+
+#### `models.DefenderForStorageSetting$Definition` was modified
+
+* `withIsEnabled(java.lang.Boolean)` was removed
+* `withScanResultsEventGridTopicResourceId(java.lang.String)` was removed
+* `withIsEnabledMalwareScanningIsEnabled(java.lang.Boolean)` was removed
+* `withOverrideSubscriptionLevelSettings(java.lang.Boolean)` was removed
+* `withIsEnabledSensitiveDataDiscoveryIsEnabled(java.lang.Boolean)` was removed
+* `withCapGBPerMonth(java.lang.Integer)` was removed
+
+#### `SecurityManager` was modified
+
+* `adaptiveApplicationControls()` was removed
+* `adaptiveNetworkHardenings()` was removed
+
+#### `models.DefenderForStorageSetting` was modified
+
+* `isEnabled()` was removed
+* `operationStatus()` was removed
+* `overrideSubscriptionLevelSettings()` was removed
+* `scanResultsEventGridTopicResourceId()` was removed
+* `isEnabledMalwareScanningIsEnabled()` was removed
+* `operationStatusSensitiveDataDiscoveryOperationStatus()` was removed
+* `capGBPerMonth()` was removed
+* `isEnabledSensitiveDataDiscoveryIsEnabled()` was removed
+
+### Features Added
+
+* `models.StandardAssignmentsList` was added
+
+* `models.CustomRecommendation$Update` was added
+
+* `models.StandardAssignmentPropertiesExemptionData` was added
+
+* `models.DevOpsPolicyAssignment$UpdateStages` was added
+
+* `models.DockerHubEnvironmentData` was added
+
+* `models.CspmMonitorDockerHubOffering` was added
+
+* `models.CustomRecommendations` was added
+
+* `models.DevOpsPolicyProperties` was added
+
+* `models.ExemptionCategory` was added
+
+* `models.AttestationComplianceState` was added
+
+* `models.StandardAssignment` was added
+
+* `models.DevOpsPolicyAssignment$DefinitionStages` was added
+
+* `models.DescendantBehavior` was added
+
+* `models.OnUploadProperties` was added
+
+* `models.SecurityStandard$DefinitionStages` was added
+
+* `models.DevOpsPolicies` was added
+
+* `models.DevOpsPolicyAssignment$Update` was added
+
+* `models.AssignedAssessmentItem` was added
+
+* `models.Authentication` was added
+
+* `models.SecurityStandardList` was added
+
+* `models.Effect` was added
+
+* `models.DevOpsPolicy` was added
+
+* `models.DevOpsPolicyAssignmentProperties` was added
+
+* `models.CustomRecommendation$UpdateStages` was added
+
+* `models.StandardAssignment$DefinitionStages` was added
+
+* `models.StandardAssignments` was added
+
+* `models.CustomRecommendationsList` was added
+
+* `models.SecurityStandard` was added
+
+* `models.DevOpsPolicyAssignment` was added
+
+* `models.DevOpsPolicyAssignmentListResponse` was added
+
+* `models.DefenderForStorageSettingProperties` was added
+
+* `models.PartialAssessmentProperties` was added
+
+* `models.MalwareScanningProperties` was added
+
+* `models.DevOpsPolicySource` was added
+
+* `models.SecurityStandard$UpdateStages` was added
+
+* `models.StandardType` was added
+
+* `models.RecommendationSupportedClouds` was added
+
+* `models.SensitiveDataDiscoveryProperties` was added
+
+* `models.AssignedStandardItem` was added
+
+* `models.CustomRecommendation` was added
+
+* `models.SecurityIssue` was added
+
+* `models.StandardAssignment$Definition` was added
+
+* `models.StandardAssignmentMetadata` was added
+
+* `models.StandardAssignmentPropertiesAttestationData` was added
+
+* `models.DevOpsPolicyAssignment$Definition` was added
+
+* `models.StandardSupportedCloud` was added
+
+* `models.CustomRecommendation$Definition` was added
+
+* `models.StandardMetadata` was added
+
+* `models.DevOpsPolicyType` was added
+
+* `models.AttestationEvidence` was added
+
+* `models.DevOpsPolicyListResponse` was added
+
+* `models.AccessTokenAuthentication` was added
+
+* `models.DevOpsPolicyDescriptor` was added
+
+* `models.SecurityStandards` was added
+
+* `models.DefenderCspmDockerHubOffering` was added
+
+* `models.DefenderForContainersDockerHubOffering` was added
+
+* `models.SecurityStandard$Update` was added
+
+* `models.CustomRecommendation$DefinitionStages` was added
+
+* `models.DevOpsPolicyAssignments` was added
+
+* `models.SecurityStandard$Definition` was added
+
+#### `models.DenylistCustomAlertRule` was modified
+
+* `valueType()` was added
+* `displayName()` was added
+* `description()` was added
+
+#### `models.DirectMethodInvokesNotInAllowedRange` was modified
+
+* `displayName()` was added
+* `description()` was added
+
+#### `models.DefenderForStorageSetting$Definition` was modified
+
+* `withProperties(models.DefenderForStorageSettingProperties)` was added
+
+#### `models.DefenderForServersGcpOffering` was modified
+
+* `description()` was added
+
+#### `models.ThresholdCustomAlertRule` was modified
+
+* `displayName()` was added
+* `description()` was added
+
+#### `models.ConnectionToIpNotAllowed` was modified
+
+* `valueType()` was added
+* `description()` was added
+* `displayName()` was added
+
+#### `models.CustomAssessmentAutomationRequest` was modified
+
+* `id()` was added
+* `name()` was added
+* `type()` was added
+
+#### `models.FailedLocalLoginsNotInAllowedRange` was modified
+
+* `displayName()` was added
+* `description()` was added
+
+#### `models.FileUploadsNotInAllowedRange` was modified
+
+* `displayName()` was added
+* `description()` was added
+
+#### `models.MqttC2DMessagesNotInAllowedRange` was modified
+
+* `description()` was added
+* `displayName()` was added
+
+#### `models.ConnectionFromIpNotAllowed` was modified
+
+* `displayName()` was added
+* `valueType()` was added
+* `description()` was added
+
+#### `models.SecuritySolutionsReferenceData` was modified
+
+* `type()` was added
+* `name()` was added
+* `id()` was added
+
+#### `models.AmqpC2DRejectedMessagesNotInAllowedRange` was modified
+
+* `displayName()` was added
+* `description()` was added
+
+#### `models.CspmMonitorAzureDevOpsOffering` was modified
+
+* `description()` was added
+
+#### `models.LocalUserNotAllowed` was modified
+
+* `displayName()` was added
+* `description()` was added
+* `valueType()` was added
+
+#### `models.DefenderForServersAwsOffering` was modified
+
+* `description()` was added
+
+#### `models.CspmMonitorGithubOffering` was modified
+
+* `description()` was added
+
+#### `models.MqttC2DRejectedMessagesNotInAllowedRange` was modified
+
+* `displayName()` was added
+* `description()` was added
+
+#### `models.AwAssumeRoleAuthenticationDetailsProperties` was modified
+
+* `authenticationProvisioningState()` was added
+* `grantedPermissions()` was added
+
+#### `models.AzureServersSetting` was modified
+
+* `type()` was added
+* `name()` was added
+* `id()` was added
+* `systemData()` was added
+
+#### `models.AtaExternalSecuritySolution` was modified
+
+* `id()` was added
+* `type()` was added
+* `name()` was added
+* `location()` was added
+
+#### `models.AlertSyncSettings` was modified
+
+* `id()` was added
+* `name()` was added
+* `type()` was added
+
+#### `models.TwinUpdatesNotInAllowedRange` was modified
+
+* `description()` was added
+* `displayName()` was added
+
+#### `models.CefExternalSecuritySolution` was modified
+
+* `name()` was added
+* `location()` was added
+* `id()` was added
+* `type()` was added
+
+#### `models.AmqpC2DMessagesNotInAllowedRange` was modified
+
+* `description()` was added
+* `displayName()` was added
+
+#### `SecurityManager` was modified
+
+* `devOpsPolicies()` was added
+* `securityStandards()` was added
+* `devOpsPolicyAssignments()` was added
+* `customRecommendations()` was added
+* `standardAssignments()` was added
+
+#### `models.HttpC2DRejectedMessagesNotInAllowedRange` was modified
+
+* `displayName()` was added
+* `description()` was added
+
+#### `models.SecurityAssessment` was modified
+
+* `id()` was added
+* `type()` was added
+* `name()` was added
+
+#### `models.AmqpD2CMessagesNotInAllowedRange` was modified
+
+* `displayName()` was added
+* `description()` was added
+
+#### `models.DataExportSettings` was modified
+
+* `id()` was added
+* `name()` was added
+* `type()` was added
+
+#### `models.ListCustomAlertRule` was modified
+
+* `displayName()` was added
+* `description()` was added
+
+#### `models.MqttD2CMessagesNotInAllowedRange` was modified
+
+* `description()` was added
+* `displayName()` was added
+
+#### `models.ActiveConnectionsNotInAllowedRange` was modified
+
+* `description()` was added
+* `displayName()` was added
+
+#### `models.AadExternalSecuritySolution` was modified
+
+* `location()` was added
+* `name()` was added
+* `id()` was added
+* `type()` was added
+
+#### `models.QueuePurgesNotInAllowedRange` was modified
+
+* `description()` was added
+* `displayName()` was added
+
+#### `models.DefenderFoDatabasesAwsOffering` was modified
+
+* `description()` was added
+
+#### `models.HttpC2DMessagesNotInAllowedRange` was modified
+
+* `description()` was added
+* `displayName()` was added
+
+#### `models.CspmMonitorGcpOffering` was modified
+
+* `description()` was added
+
+#### `models.CspmMonitorAwsOffering` was modified
+
+* `description()` was added
+
+#### `models.TrackedResource` was modified
+
+* `id()` was added
+* `type()` was added
+* `name()` was added
+
+#### `models.DefenderForDatabasesGcpOffering` was modified
+
+* `description()` was added
+
+#### `models.AllowlistCustomAlertRule` was modified
+
+* `valueType()` was added
+* `description()` was added
+* `displayName()` was added
+
+#### `models.DefenderForStorageSetting` was modified
+
+* `properties()` was added
+
+#### `models.DefenderForContainersAwsOffering` was modified
+
+* `description()` was added
+
+#### `models.HttpD2CMessagesNotInAllowedRange` was modified
+
+* `description()` was added
+* `displayName()` was added
+
+#### `models.UnauthorizedOperationsNotInAllowedRange` was modified
+
+* `description()` was added
+* `displayName()` was added
+
+#### `models.DefenderForContainersGcpOffering` was modified
+
+* `description()` was added
+
+#### `models.AwsCredsAuthenticationDetailsProperties` was modified
+
+* `authenticationProvisioningState()` was added
+* `grantedPermissions()` was added
+
+#### `models.DefenderCspmAwsOffering` was modified
+
+* `description()` was added
+
+#### `models.GcpCredentialsDetailsProperties` was modified
+
+* `authenticationProvisioningState()` was added
+* `grantedPermissions()` was added
+
+#### `models.CspmMonitorGitLabOffering` was modified
+
+* `description()` was added
+
+#### `models.DefenderCspmGcpOffering` was modified
+
+* `description()` was added
+
+#### `models.ProcessNotAllowed` was modified
+
+* `valueType()` was added
+* `description()` was added
+* `displayName()` was added
+
+#### `models.TimeWindowCustomAlertRule` was modified
+
+* `description()` was added
+* `displayName()` was added
 
 ## 1.0.0-beta.7 (2024-05-15)
 

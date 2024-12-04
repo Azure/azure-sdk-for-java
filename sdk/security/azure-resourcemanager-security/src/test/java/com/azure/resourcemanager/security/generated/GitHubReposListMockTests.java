@@ -11,7 +11,6 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.security.SecurityManager;
-import com.azure.resourcemanager.security.models.DevOpsProvisioningState;
 import com.azure.resourcemanager.security.models.GitHubRepository;
 import com.azure.resourcemanager.security.models.OnboardingState;
 import java.nio.charset.StandardCharsets;
@@ -24,7 +23,7 @@ public final class GitHubReposListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningStatusMessage\":\"tiembr\",\"provisioningStatusUpdateTimeUtc\":\"2021-09-26T00:03Z\",\"provisioningState\":\"DeletionSuccess\",\"repoId\":\"cehzrtrgpd\",\"repoName\":\"t\",\"repoFullName\":\"hyfwjfqktuzr\",\"onboardingState\":\"OnboardedByOtherConnector\",\"repoUrl\":\"c\",\"parentOwnerName\":\"kbqfzbvttqjntvhn\"},\"id\":\"pbhj\",\"name\":\"ugcupcyfrhooyvm\",\"type\":\"uxyeeafdxsuwly\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningStatusMessage\":\"vao\",\"provisioningStatusUpdateTimeUtc\":\"2021-06-08T05:17:38Z\",\"provisioningState\":\"Canceled\",\"repoId\":\"h\",\"repoName\":\"psp\",\"repoFullName\":\"eifdyfa\",\"onboardingState\":\"OnboardedByOtherConnector\",\"repoUrl\":\"guwnrdpuzlai\",\"parentOwnerName\":\"ujtg\"},\"id\":\"ybsz\",\"name\":\"mijxejpd\",\"type\":\"liqwzutiyelrnhh\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,13 +32,11 @@ public final class GitHubReposListMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<GitHubRepository> response = manager.gitHubRepos()
-            .list("nddaxaogsk", "cmmmbipysehyybo", "fjcvmkkbpgdiwd", com.azure.core.util.Context.NONE);
+        PagedIterable<GitHubRepository> response
+            = manager.gitHubRepos().list("jk", "nkynkstdtfw", "jfphfxaqjyih", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(DevOpsProvisioningState.DELETION_SUCCESS,
-            response.iterator().next().properties().provisioningState());
         Assertions.assertEquals(OnboardingState.ONBOARDED_BY_OTHER_CONNECTOR,
             response.iterator().next().properties().onboardingState());
-        Assertions.assertEquals("kbqfzbvttqjntvhn", response.iterator().next().properties().parentOwnerName());
+        Assertions.assertEquals("ujtg", response.iterator().next().properties().parentOwnerName());
     }
 }

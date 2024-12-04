@@ -14,19 +14,20 @@ public final class DefenderForServersAwsOfferingVaAutoProvisioningTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DefenderForServersAwsOfferingVaAutoProvisioning model
-            = BinaryData.fromString("{\"enabled\":false,\"configuration\":{\"type\":\"TVM\"}}")
+            = BinaryData.fromString("{\"enabled\":false,\"configuration\":{\"type\":\"Qualys\"}}")
                 .toObject(DefenderForServersAwsOfferingVaAutoProvisioning.class);
         Assertions.assertEquals(false, model.enabled());
-        Assertions.assertEquals(Type.TVM, model.configuration().type());
+        Assertions.assertEquals(Type.QUALYS, model.configuration().type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DefenderForServersAwsOfferingVaAutoProvisioning model = new DefenderForServersAwsOfferingVaAutoProvisioning()
-            .withEnabled(false)
-            .withConfiguration(new DefenderForServersAwsOfferingVaAutoProvisioningConfiguration().withType(Type.TVM));
+        DefenderForServersAwsOfferingVaAutoProvisioning model
+            = new DefenderForServersAwsOfferingVaAutoProvisioning().withEnabled(false)
+                .withConfiguration(
+                    new DefenderForServersAwsOfferingVaAutoProvisioningConfiguration().withType(Type.QUALYS));
         model = BinaryData.fromObject(model).toObject(DefenderForServersAwsOfferingVaAutoProvisioning.class);
         Assertions.assertEquals(false, model.enabled());
-        Assertions.assertEquals(Type.TVM, model.configuration().type());
+        Assertions.assertEquals(Type.QUALYS, model.configuration().type());
     }
 }

@@ -5,64 +5,55 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The CSPM P1 for AWS offering.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "offeringType",
-    defaultImpl = DefenderCspmAwsOffering.class,
-    visible = true)
-@JsonTypeName("DefenderCspmAws")
 @Fluent
 public final class DefenderCspmAwsOffering extends CloudOffering {
     /*
      * The type of the security offering.
      */
-    @JsonTypeId
-    @JsonProperty(value = "offeringType", required = true)
     private OfferingType offeringType = OfferingType.DEFENDER_CSPM_AWS;
 
     /*
      * The Microsoft Defender for CSPM offering VM scanning configuration
      */
-    @JsonProperty(value = "vmScanners")
     private DefenderCspmAwsOfferingVmScanners vmScanners;
 
     /*
      * The Microsoft Defender Data Sensitivity discovery configuration
      */
-    @JsonProperty(value = "dataSensitivityDiscovery")
     private DefenderCspmAwsOfferingDataSensitivityDiscovery dataSensitivityDiscovery;
 
     /*
      * The databases DSPM configuration
      */
-    @JsonProperty(value = "databasesDspm")
     private DefenderCspmAwsOfferingDatabasesDspm databasesDspm;
 
     /*
      * Defenders CSPM Permissions Management offering configurations
      */
-    @JsonProperty(value = "ciem")
     private DefenderCspmAwsOfferingCiem ciem;
 
     /*
      * The Microsoft Defender container image assessment configuration
      */
-    @JsonProperty(value = "mdcContainersImageAssessment")
     private DefenderCspmAwsOfferingMdcContainersImageAssessment mdcContainersImageAssessment;
 
     /*
      * The Microsoft Defender container agentless discovery K8s configuration
      */
-    @JsonProperty(value = "mdcContainersAgentlessDiscoveryK8s")
     private DefenderCspmAwsOfferingMdcContainersAgentlessDiscoveryK8S mdcContainersAgentlessDiscoveryK8S;
+
+    /*
+     * The offering description.
+     */
+    private String description;
 
     /**
      * Creates an instance of DefenderCspmAwsOffering class.
@@ -206,13 +197,22 @@ public final class DefenderCspmAwsOffering extends CloudOffering {
     }
 
     /**
+     * Get the description property: The offering description.
+     * 
+     * @return the description value.
+     */
+    @Override
+    public String description() {
+        return this.description;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (vmScanners() != null) {
             vmScanners().validate();
         }
@@ -231,5 +231,65 @@ public final class DefenderCspmAwsOffering extends CloudOffering {
         if (mdcContainersAgentlessDiscoveryK8S() != null) {
             mdcContainersAgentlessDiscoveryK8S().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("offeringType", this.offeringType == null ? null : this.offeringType.toString());
+        jsonWriter.writeJsonField("vmScanners", this.vmScanners);
+        jsonWriter.writeJsonField("dataSensitivityDiscovery", this.dataSensitivityDiscovery);
+        jsonWriter.writeJsonField("databasesDspm", this.databasesDspm);
+        jsonWriter.writeJsonField("ciem", this.ciem);
+        jsonWriter.writeJsonField("mdcContainersImageAssessment", this.mdcContainersImageAssessment);
+        jsonWriter.writeJsonField("mdcContainersAgentlessDiscoveryK8s", this.mdcContainersAgentlessDiscoveryK8S);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DefenderCspmAwsOffering from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DefenderCspmAwsOffering if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DefenderCspmAwsOffering.
+     */
+    public static DefenderCspmAwsOffering fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DefenderCspmAwsOffering deserializedDefenderCspmAwsOffering = new DefenderCspmAwsOffering();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("description".equals(fieldName)) {
+                    deserializedDefenderCspmAwsOffering.description = reader.getString();
+                } else if ("offeringType".equals(fieldName)) {
+                    deserializedDefenderCspmAwsOffering.offeringType = OfferingType.fromString(reader.getString());
+                } else if ("vmScanners".equals(fieldName)) {
+                    deserializedDefenderCspmAwsOffering.vmScanners = DefenderCspmAwsOfferingVmScanners.fromJson(reader);
+                } else if ("dataSensitivityDiscovery".equals(fieldName)) {
+                    deserializedDefenderCspmAwsOffering.dataSensitivityDiscovery
+                        = DefenderCspmAwsOfferingDataSensitivityDiscovery.fromJson(reader);
+                } else if ("databasesDspm".equals(fieldName)) {
+                    deserializedDefenderCspmAwsOffering.databasesDspm
+                        = DefenderCspmAwsOfferingDatabasesDspm.fromJson(reader);
+                } else if ("ciem".equals(fieldName)) {
+                    deserializedDefenderCspmAwsOffering.ciem = DefenderCspmAwsOfferingCiem.fromJson(reader);
+                } else if ("mdcContainersImageAssessment".equals(fieldName)) {
+                    deserializedDefenderCspmAwsOffering.mdcContainersImageAssessment
+                        = DefenderCspmAwsOfferingMdcContainersImageAssessment.fromJson(reader);
+                } else if ("mdcContainersAgentlessDiscoveryK8s".equals(fieldName)) {
+                    deserializedDefenderCspmAwsOffering.mdcContainersAgentlessDiscoveryK8S
+                        = DefenderCspmAwsOfferingMdcContainersAgentlessDiscoveryK8S.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDefenderCspmAwsOffering;
+        });
     }
 }

@@ -12,7 +12,6 @@ import com.azure.resourcemanager.security.models.ActionableRemediationState;
 import com.azure.resourcemanager.security.models.AnnotateDefaultBranchState;
 import com.azure.resourcemanager.security.models.AzureDevOpsOrgProperties;
 import com.azure.resourcemanager.security.models.CategoryConfiguration;
-import com.azure.resourcemanager.security.models.DevOpsProvisioningState;
 import com.azure.resourcemanager.security.models.InheritFromParentState;
 import com.azure.resourcemanager.security.models.OnboardingState;
 import com.azure.resourcemanager.security.models.TargetBranchConfiguration;
@@ -23,50 +22,54 @@ public final class AzureDevOpsOrgListResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureDevOpsOrgListResponseInner model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningStatusMessage\":\"nkgzukwdr\",\"provisioningStatusUpdateTimeUtc\":\"2021-06-07T10:47:13Z\",\"provisioningState\":\"DeletionFailure\",\"onboardingState\":\"OnboardedByOtherConnector\",\"actionableRemediation\":{\"state\":\"None\",\"categoryConfigurations\":[{},{},{}],\"branchConfiguration\":{\"branchNames\":[\"lfuyfjbpfiddhlr\",\"fz\",\"qyjmqrfuioc\"],\"annotateDefaultBranch\":\"Disabled\"},\"inheritFromParentState\":\"Enabled\"}},\"id\":\"k\",\"name\":\"sazrhxuddqmdtff\",\"type\":\"sjmrkkhm\"}],\"nextLink\":\"mdlgy\"}")
+            "{\"value\":[{\"properties\":{\"provisioningStatusMessage\":\"cmjkavlgorbmftpm\",\"provisioningStatusUpdateTimeUtc\":\"2021-04-22T13:11:31Z\",\"provisioningState\":\"Failed\",\"onboardingState\":\"OnboardedByOtherConnector\",\"actionableRemediation\":{\"state\":\"Enabled\",\"categoryConfigurations\":[{},{},{}],\"branchConfiguration\":{\"branchNames\":[\"otp\"],\"annotateDefaultBranch\":\"Enabled\"},\"inheritFromParentState\":\"Enabled\"}},\"id\":\"bdb\",\"name\":\"qgqqihedsvqwthmk\",\"type\":\"ibcysihsgqc\"},{\"properties\":{\"provisioningStatusMessage\":\"hsdtmc\",\"provisioningStatusUpdateTimeUtc\":\"2021-01-19T20:58:49Z\",\"provisioningState\":\"DeletionSuccess\",\"onboardingState\":\"Onboarded\",\"actionableRemediation\":{\"state\":\"None\",\"categoryConfigurations\":[{},{},{},{}],\"branchConfiguration\":{\"branchNames\":[\"muapcvhdbevw\",\"qxeysko\",\"qzinkfkbg\"],\"annotateDefaultBranch\":\"Disabled\"},\"inheritFromParentState\":\"Enabled\"}},\"id\":\"xeqoc\",\"name\":\"jmygvk\",\"type\":\"qkjjeokbz\"}],\"nextLink\":\"ezrxcczurtleipqx\"}")
             .toObject(AzureDevOpsOrgListResponseInner.class);
-        Assertions.assertEquals(DevOpsProvisioningState.DELETION_FAILURE,
-            model.value().get(0).properties().provisioningState());
         Assertions.assertEquals(OnboardingState.ONBOARDED_BY_OTHER_CONNECTOR,
             model.value().get(0).properties().onboardingState());
-        Assertions.assertEquals(ActionableRemediationState.NONE,
+        Assertions.assertEquals(ActionableRemediationState.ENABLED,
             model.value().get(0).properties().actionableRemediation().state());
-        Assertions.assertEquals("lfuyfjbpfiddhlr",
+        Assertions.assertEquals("otp",
             model.value().get(0).properties().actionableRemediation().branchConfiguration().branchNames().get(0));
-        Assertions.assertEquals(AnnotateDefaultBranchState.DISABLED,
+        Assertions.assertEquals(AnnotateDefaultBranchState.ENABLED,
             model.value().get(0).properties().actionableRemediation().branchConfiguration().annotateDefaultBranch());
         Assertions.assertEquals(InheritFromParentState.ENABLED,
             model.value().get(0).properties().actionableRemediation().inheritFromParentState());
-        Assertions.assertEquals("mdlgy", model.nextLink());
+        Assertions.assertEquals("ezrxcczurtleipqx", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureDevOpsOrgListResponseInner model
-            = new AzureDevOpsOrgListResponseInner().withValue(Arrays.asList(new AzureDevOpsOrgInner().withProperties(
-                new AzureDevOpsOrgProperties().withProvisioningState(DevOpsProvisioningState.DELETION_FAILURE)
+        AzureDevOpsOrgListResponseInner model = new AzureDevOpsOrgListResponseInner()
+            .withValue(Arrays.asList(
+                new AzureDevOpsOrgInner().withProperties(new AzureDevOpsOrgProperties()
                     .withOnboardingState(OnboardingState.ONBOARDED_BY_OTHER_CONNECTOR)
-                    .withActionableRemediation(new ActionableRemediation().withState(ActionableRemediationState.NONE)
+                    .withActionableRemediation(new ActionableRemediation().withState(ActionableRemediationState.ENABLED)
                         .withCategoryConfigurations(Arrays.asList(new CategoryConfiguration(),
                             new CategoryConfiguration(), new CategoryConfiguration()))
+                        .withBranchConfiguration(new TargetBranchConfiguration().withBranchNames(Arrays.asList("otp"))
+                            .withAnnotateDefaultBranch(AnnotateDefaultBranchState.ENABLED))
+                        .withInheritFromParentState(InheritFromParentState.ENABLED))),
+                new AzureDevOpsOrgInner().withProperties(new AzureDevOpsOrgProperties()
+                    .withOnboardingState(OnboardingState.ONBOARDED)
+                    .withActionableRemediation(new ActionableRemediation().withState(ActionableRemediationState.NONE)
+                        .withCategoryConfigurations(Arrays.asList(new CategoryConfiguration(),
+                            new CategoryConfiguration(), new CategoryConfiguration(), new CategoryConfiguration()))
                         .withBranchConfiguration(new TargetBranchConfiguration()
-                            .withBranchNames(Arrays.asList("lfuyfjbpfiddhlr", "fz", "qyjmqrfuioc"))
+                            .withBranchNames(Arrays.asList("muapcvhdbevw", "qxeysko", "qzinkfkbg"))
                             .withAnnotateDefaultBranch(AnnotateDefaultBranchState.DISABLED))
                         .withInheritFromParentState(InheritFromParentState.ENABLED)))))
-                .withNextLink("mdlgy");
+            .withNextLink("ezrxcczurtleipqx");
         model = BinaryData.fromObject(model).toObject(AzureDevOpsOrgListResponseInner.class);
-        Assertions.assertEquals(DevOpsProvisioningState.DELETION_FAILURE,
-            model.value().get(0).properties().provisioningState());
         Assertions.assertEquals(OnboardingState.ONBOARDED_BY_OTHER_CONNECTOR,
             model.value().get(0).properties().onboardingState());
-        Assertions.assertEquals(ActionableRemediationState.NONE,
+        Assertions.assertEquals(ActionableRemediationState.ENABLED,
             model.value().get(0).properties().actionableRemediation().state());
-        Assertions.assertEquals("lfuyfjbpfiddhlr",
+        Assertions.assertEquals("otp",
             model.value().get(0).properties().actionableRemediation().branchConfiguration().branchNames().get(0));
-        Assertions.assertEquals(AnnotateDefaultBranchState.DISABLED,
+        Assertions.assertEquals(AnnotateDefaultBranchState.ENABLED,
             model.value().get(0).properties().actionableRemediation().branchConfiguration().annotateDefaultBranch());
         Assertions.assertEquals(InheritFromParentState.ENABLED,
             model.value().get(0).properties().actionableRemediation().inheritFromParentState());
-        Assertions.assertEquals("mdlgy", model.nextLink());
+        Assertions.assertEquals("ezrxcczurtleipqx", model.nextLink());
     }
 }

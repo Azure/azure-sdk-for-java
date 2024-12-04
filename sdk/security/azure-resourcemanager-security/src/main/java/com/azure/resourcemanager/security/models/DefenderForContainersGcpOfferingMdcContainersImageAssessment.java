@@ -5,29 +5,31 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The Microsoft Defender Container image assessment configuration.
  */
 @Fluent
-public final class DefenderForContainersGcpOfferingMdcContainersImageAssessment {
+public final class DefenderForContainersGcpOfferingMdcContainersImageAssessment
+    implements JsonSerializable<DefenderForContainersGcpOfferingMdcContainersImageAssessment> {
     /*
      * Is Microsoft Defender container image assessment enabled
      */
-    @JsonProperty(value = "enabled")
     private Boolean enabled;
 
     /*
      * The workload identity provider id in GCP for this feature
      */
-    @JsonProperty(value = "workloadIdentityProviderId")
     private String workloadIdentityProviderId;
 
     /*
      * The service account email address in GCP for this feature
      */
-    @JsonProperty(value = "serviceAccountEmailAddress")
     private String serviceAccountEmailAddress;
 
     /**
@@ -104,5 +106,53 @@ public final class DefenderForContainersGcpOfferingMdcContainersImageAssessment 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("enabled", this.enabled);
+        jsonWriter.writeStringField("workloadIdentityProviderId", this.workloadIdentityProviderId);
+        jsonWriter.writeStringField("serviceAccountEmailAddress", this.serviceAccountEmailAddress);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DefenderForContainersGcpOfferingMdcContainersImageAssessment from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DefenderForContainersGcpOfferingMdcContainersImageAssessment if the JsonReader was
+     * pointing to an instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the
+     * DefenderForContainersGcpOfferingMdcContainersImageAssessment.
+     */
+    public static DefenderForContainersGcpOfferingMdcContainersImageAssessment fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            DefenderForContainersGcpOfferingMdcContainersImageAssessment deserializedDefenderForContainersGcpOfferingMdcContainersImageAssessment
+                = new DefenderForContainersGcpOfferingMdcContainersImageAssessment();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("enabled".equals(fieldName)) {
+                    deserializedDefenderForContainersGcpOfferingMdcContainersImageAssessment.enabled
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("workloadIdentityProviderId".equals(fieldName)) {
+                    deserializedDefenderForContainersGcpOfferingMdcContainersImageAssessment.workloadIdentityProviderId
+                        = reader.getString();
+                } else if ("serviceAccountEmailAddress".equals(fieldName)) {
+                    deserializedDefenderForContainersGcpOfferingMdcContainersImageAssessment.serviceAccountEmailAddress
+                        = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDefenderForContainersGcpOfferingMdcContainersImageAssessment;
+        });
     }
 }

@@ -5,72 +5,67 @@
 package com.azure.resourcemanager.security.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.security.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Describes the properties of an API collection.
  */
 @Immutable
-public final class ApiCollectionProperties {
+public final class ApiCollectionProperties implements JsonSerializable<ApiCollectionProperties> {
     /*
      * Gets the provisioning state of the API collection.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * The display name of the API collection.
      */
-    @JsonProperty(value = "displayName", access = JsonProperty.Access.WRITE_ONLY)
     private String displayName;
 
     /*
      * The resource Id of the resource from where this API collection was discovered.
      */
-    @JsonProperty(value = "discoveredVia", access = JsonProperty.Access.WRITE_ONLY)
     private String discoveredVia;
 
     /*
      * The base URI for this API collection. All endpoints of this API collection extend this base URI.
      */
-    @JsonProperty(value = "baseUrl", access = JsonProperty.Access.WRITE_ONLY)
     private String baseUrl;
 
     /*
      * The number of API endpoints discovered in this API collection.
      */
-    @JsonProperty(value = "numberOfApiEndpoints", access = JsonProperty.Access.WRITE_ONLY)
     private Long numberOfApiEndpoints;
 
     /*
      * The number of API endpoints in this API collection that have not received any API traffic in the last 30 days.
      */
-    @JsonProperty(value = "numberOfInactiveApiEndpoints", access = JsonProperty.Access.WRITE_ONLY)
     private Long numberOfInactiveApiEndpoints;
 
     /*
      * The number of API endpoints in this API collection that are unauthenticated.
      */
-    @JsonProperty(value = "numberOfUnauthenticatedApiEndpoints", access = JsonProperty.Access.WRITE_ONLY)
     private Long numberOfUnauthenticatedApiEndpoints;
 
     /*
      * The number of API endpoints in this API collection for which API traffic from the internet was observed.
      */
-    @JsonProperty(value = "numberOfExternalApiEndpoints", access = JsonProperty.Access.WRITE_ONLY)
     private Long numberOfExternalApiEndpoints;
 
     /*
-     * The number of API endpoints in this API collection which are exposing sensitive data in their requests and/or responses.
+     * The number of API endpoints in this API collection which are exposing sensitive data in their requests and/or
+     * responses.
      */
-    @JsonProperty(value = "numberOfApiEndpointsWithSensitiveDataExposed", access = JsonProperty.Access.WRITE_ONLY)
     private Long numberOfApiEndpointsWithSensitiveDataExposed;
 
     /*
      * The highest priority sensitivity label from Microsoft Purview in this API collection.
      */
-    @JsonProperty(value = "sensitivityLabel", access = JsonProperty.Access.WRITE_ONLY)
     private String sensitivityLabel;
 
     /**
@@ -181,5 +176,63 @@ public final class ApiCollectionProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApiCollectionProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApiCollectionProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApiCollectionProperties.
+     */
+    public static ApiCollectionProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApiCollectionProperties deserializedApiCollectionProperties = new ApiCollectionProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedApiCollectionProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedApiCollectionProperties.displayName = reader.getString();
+                } else if ("discoveredVia".equals(fieldName)) {
+                    deserializedApiCollectionProperties.discoveredVia = reader.getString();
+                } else if ("baseUrl".equals(fieldName)) {
+                    deserializedApiCollectionProperties.baseUrl = reader.getString();
+                } else if ("numberOfApiEndpoints".equals(fieldName)) {
+                    deserializedApiCollectionProperties.numberOfApiEndpoints = reader.getNullable(JsonReader::getLong);
+                } else if ("numberOfInactiveApiEndpoints".equals(fieldName)) {
+                    deserializedApiCollectionProperties.numberOfInactiveApiEndpoints
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("numberOfUnauthenticatedApiEndpoints".equals(fieldName)) {
+                    deserializedApiCollectionProperties.numberOfUnauthenticatedApiEndpoints
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("numberOfExternalApiEndpoints".equals(fieldName)) {
+                    deserializedApiCollectionProperties.numberOfExternalApiEndpoints
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("numberOfApiEndpointsWithSensitiveDataExposed".equals(fieldName)) {
+                    deserializedApiCollectionProperties.numberOfApiEndpointsWithSensitiveDataExposed
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("sensitivityLabel".equals(fieldName)) {
+                    deserializedApiCollectionProperties.sensitivityLabel = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApiCollectionProperties;
+        });
     }
 }

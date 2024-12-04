@@ -13,21 +13,21 @@ public final class ArcAutoProvisioningTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ArcAutoProvisioning model = BinaryData
-            .fromString("{\"enabled\":true,\"configuration\":{\"proxy\":\"jjnxkby\",\"privateLinkScope\":\"yyxgff\"}}")
+            .fromString("{\"enabled\":true,\"configuration\":{\"proxy\":\"lpwsadaxjs\",\"privateLinkScope\":\"xpez\"}}")
             .toObject(ArcAutoProvisioning.class);
         Assertions.assertEquals(true, model.enabled());
-        Assertions.assertEquals("jjnxkby", model.configuration().proxy());
-        Assertions.assertEquals("yyxgff", model.configuration().privateLinkScope());
+        Assertions.assertEquals("lpwsadaxjs", model.configuration().proxy());
+        Assertions.assertEquals("xpez", model.configuration().privateLinkScope());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ArcAutoProvisioning model = new ArcAutoProvisioning().withEnabled(true)
             .withConfiguration(
-                new ArcAutoProvisioningConfiguration().withProxy("jjnxkby").withPrivateLinkScope("yyxgff"));
+                new ArcAutoProvisioningConfiguration().withProxy("lpwsadaxjs").withPrivateLinkScope("xpez"));
         model = BinaryData.fromObject(model).toObject(ArcAutoProvisioning.class);
         Assertions.assertEquals(true, model.enabled());
-        Assertions.assertEquals("jjnxkby", model.configuration().proxy());
-        Assertions.assertEquals("yyxgff", model.configuration().privateLinkScope());
+        Assertions.assertEquals("lpwsadaxjs", model.configuration().proxy());
+        Assertions.assertEquals("xpez", model.configuration().privateLinkScope());
     }
 }

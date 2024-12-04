@@ -21,7 +21,7 @@ public final class AdvancedThreatProtectionsCreateWithResponseMockTests {
     @Test
     public void testCreateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"isEnabled\":false},\"id\":\"fopkyll\",\"name\":\"ey\",\"type\":\"nj\"}";
+            = "{\"properties\":{\"isEnabled\":false},\"id\":\"mhbtqyzycgcmbkyg\",\"name\":\"xjdqosxzmdzlybq\",\"type\":\"ufkekzf\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,7 +32,7 @@ public final class AdvancedThreatProtectionsCreateWithResponseMockTests {
 
         AdvancedThreatProtectionSetting response = manager.advancedThreatProtections()
             .define()
-            .withExistingResourceId("cjiuhcxyveh")
+            .withExistingResourceId("tgbqpfyrv")
             .withIsEnabled(true)
             .create();
 

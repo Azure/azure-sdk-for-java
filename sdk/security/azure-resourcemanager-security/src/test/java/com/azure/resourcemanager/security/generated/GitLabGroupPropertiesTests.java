@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.security.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.security.models.DevOpsProvisioningState;
 import com.azure.resourcemanager.security.models.GitLabGroupProperties;
 import com.azure.resourcemanager.security.models.OnboardingState;
 import org.junit.jupiter.api.Assertions;
@@ -14,18 +13,15 @@ public final class GitLabGroupPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GitLabGroupProperties model = BinaryData.fromString(
-            "{\"provisioningStatusMessage\":\"qqzjkoxdu\",\"provisioningStatusUpdateTimeUtc\":\"2021-03-21T20:01:13Z\",\"provisioningState\":\"Failed\",\"fullyQualifiedName\":\"rouigdmfivjqte\",\"fullyQualifiedFriendlyName\":\"qq\",\"url\":\"dydkghpcvrwqir\",\"onboardingState\":\"Onboarded\"}")
+            "{\"provisioningStatusMessage\":\"dizr\",\"provisioningStatusUpdateTimeUtc\":\"2021-10-15T15:21:22Z\",\"provisioningState\":\"Pending\",\"fullyQualifiedName\":\"xnazpmkml\",\"fullyQualifiedFriendlyName\":\"evfxzopjhbzxlioh\",\"url\":\"dd\",\"onboardingState\":\"Onboarded\"}")
             .toObject(GitLabGroupProperties.class);
-        Assertions.assertEquals(DevOpsProvisioningState.FAILED, model.provisioningState());
         Assertions.assertEquals(OnboardingState.ONBOARDED, model.onboardingState());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GitLabGroupProperties model = new GitLabGroupProperties().withProvisioningState(DevOpsProvisioningState.FAILED)
-            .withOnboardingState(OnboardingState.ONBOARDED);
+        GitLabGroupProperties model = new GitLabGroupProperties().withOnboardingState(OnboardingState.ONBOARDED);
         model = BinaryData.fromObject(model).toObject(GitLabGroupProperties.class);
-        Assertions.assertEquals(DevOpsProvisioningState.FAILED, model.provisioningState());
         Assertions.assertEquals(OnboardingState.ONBOARDED, model.onboardingState());
     }
 }

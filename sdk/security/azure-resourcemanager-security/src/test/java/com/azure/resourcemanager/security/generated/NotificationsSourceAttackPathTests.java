@@ -13,16 +13,16 @@ public final class NotificationsSourceAttackPathTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NotificationsSourceAttackPath model
-            = BinaryData.fromString("{\"sourceType\":\"AttackPath\",\"minimalRiskLevel\":\"Medium\"}")
+            = BinaryData.fromString("{\"sourceType\":\"AttackPath\",\"minimalRiskLevel\":\"Critical\"}")
                 .toObject(NotificationsSourceAttackPath.class);
-        Assertions.assertEquals(MinimalRiskLevel.MEDIUM, model.minimalRiskLevel());
+        Assertions.assertEquals(MinimalRiskLevel.CRITICAL, model.minimalRiskLevel());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         NotificationsSourceAttackPath model
-            = new NotificationsSourceAttackPath().withMinimalRiskLevel(MinimalRiskLevel.MEDIUM);
+            = new NotificationsSourceAttackPath().withMinimalRiskLevel(MinimalRiskLevel.CRITICAL);
         model = BinaryData.fromObject(model).toObject(NotificationsSourceAttackPath.class);
-        Assertions.assertEquals(MinimalRiskLevel.MEDIUM, model.minimalRiskLevel());
+        Assertions.assertEquals(MinimalRiskLevel.CRITICAL, model.minimalRiskLevel());
     }
 }

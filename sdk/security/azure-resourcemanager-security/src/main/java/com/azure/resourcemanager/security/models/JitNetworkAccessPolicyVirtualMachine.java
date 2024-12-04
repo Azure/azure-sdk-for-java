@@ -6,30 +6,32 @@ package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The JitNetworkAccessPolicyVirtualMachine model.
  */
 @Fluent
-public final class JitNetworkAccessPolicyVirtualMachine {
+public final class JitNetworkAccessPolicyVirtualMachine
+    implements JsonSerializable<JitNetworkAccessPolicyVirtualMachine> {
     /*
      * Resource ID of the virtual machine that is linked to this policy
      */
-    @JsonProperty(value = "id", required = true)
     private String id;
 
     /*
      * Port configurations for the virtual machine
      */
-    @JsonProperty(value = "ports", required = true)
     private List<JitNetworkAccessPortRule> ports;
 
     /*
      * Public IP address of the Azure Firewall that is linked to this policy, if applicable
      */
-    @JsonProperty(value = "publicIpAddress")
     private String publicIpAddress;
 
     /**
@@ -121,4 +123,50 @@ public final class JitNetworkAccessPolicyVirtualMachine {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(JitNetworkAccessPolicyVirtualMachine.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeArrayField("ports", this.ports, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("publicIpAddress", this.publicIpAddress);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of JitNetworkAccessPolicyVirtualMachine from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of JitNetworkAccessPolicyVirtualMachine if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the JitNetworkAccessPolicyVirtualMachine.
+     */
+    public static JitNetworkAccessPolicyVirtualMachine fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            JitNetworkAccessPolicyVirtualMachine deserializedJitNetworkAccessPolicyVirtualMachine
+                = new JitNetworkAccessPolicyVirtualMachine();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedJitNetworkAccessPolicyVirtualMachine.id = reader.getString();
+                } else if ("ports".equals(fieldName)) {
+                    List<JitNetworkAccessPortRule> ports
+                        = reader.readArray(reader1 -> JitNetworkAccessPortRule.fromJson(reader1));
+                    deserializedJitNetworkAccessPolicyVirtualMachine.ports = ports;
+                } else if ("publicIpAddress".equals(fieldName)) {
+                    deserializedJitNetworkAccessPolicyVirtualMachine.publicIpAddress = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedJitNetworkAccessPolicyVirtualMachine;
+        });
+    }
 }

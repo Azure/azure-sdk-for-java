@@ -22,7 +22,7 @@ public final class WorkspaceSettingsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"workspaceId\":\"min\",\"scope\":\"qplgtkihonikz\"},\"id\":\"r\",\"name\":\"f\",\"type\":\"f\"}]}";
+            = "{\"value\":[{\"properties\":{\"workspaceId\":\"vtkwxnhw\",\"scope\":\"hnoyrzaaoeeh\"},\"id\":\"mjenvjeatea\",\"name\":\"xc\",\"type\":\"xoxdjxldnaryyi\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,7 +33,7 @@ public final class WorkspaceSettingsListMockTests {
 
         PagedIterable<WorkspaceSetting> response = manager.workspaceSettings().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("min", response.iterator().next().workspaceId());
-        Assertions.assertEquals("qplgtkihonikz", response.iterator().next().scope());
+        Assertions.assertEquals("vtkwxnhw", response.iterator().next().workspaceId());
+        Assertions.assertEquals("hnoyrzaaoeeh", response.iterator().next().scope());
     }
 }

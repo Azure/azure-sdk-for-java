@@ -5,30 +5,32 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.Objects;
 import java.util.UUID;
 
 /**
  * Custom user-defined information type.
  */
 @Fluent
-public final class InfoType {
+public final class InfoType implements JsonSerializable<InfoType> {
     /*
      * Display name of the info type
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Id of the info type
      */
-    @JsonProperty(value = "id")
     private UUID id;
 
     /*
      * Description of the info type
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /**
@@ -103,5 +105,48 @@ public final class InfoType {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("id", Objects.toString(this.id, null));
+        jsonWriter.writeStringField("description", this.description);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InfoType from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InfoType if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the InfoType.
+     */
+    public static InfoType fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InfoType deserializedInfoType = new InfoType();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedInfoType.name = reader.getString();
+                } else if ("id".equals(fieldName)) {
+                    deserializedInfoType.id
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("description".equals(fieldName)) {
+                    deserializedInfoType.description = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInfoType;
+        });
     }
 }

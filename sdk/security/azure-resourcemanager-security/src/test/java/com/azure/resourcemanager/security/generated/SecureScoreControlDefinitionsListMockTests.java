@@ -21,7 +21,7 @@ public final class SecureScoreControlDefinitionsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"displayName\":\"ickzovguzprpxhhb\",\"description\":\"gzxkopqlrzhtocjz\",\"maxScore\":1639805939,\"source\":{\"sourceType\":\"Custom\"},\"assessmentDefinitions\":[{\"id\":\"zwn\"}]},\"id\":\"jwgiitvjcmimbmsw\",\"name\":\"kbbbjoypplod\",\"type\":\"qr\"}]}";
+            = "{\"value\":[{\"properties\":{\"displayName\":\"rplzeqzv\",\"description\":\"b\",\"maxScore\":1102010974,\"source\":{\"sourceType\":\"BuiltIn\"},\"assessmentDefinitions\":[{\"id\":\"xt\"},{\"id\":\"cyatbxd\"},{\"id\":\"vy\"}]},\"id\":\"tkmxvztshnugfbp\",\"name\":\"igkflvovriq\",\"type\":\"uzwbkqcgzygtdj\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));

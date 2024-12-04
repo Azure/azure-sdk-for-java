@@ -23,7 +23,7 @@ public final class SecurityConnectorsListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"hierarchyIdentifier\":\"shzn\",\"hierarchyIdentifierTrialEndDate\":\"2021-05-06T15:28:17Z\",\"environmentName\":\"GitLab\",\"offerings\":[{\"offeringType\":\"CloudOffering\",\"description\":\"axxdcdjmd\"},{\"offeringType\":\"CloudOffering\",\"description\":\"txfrm\"}],\"environmentData\":{\"environmentType\":\"EnvironmentData\"}},\"location\":\"cxstowageh\",\"tags\":{\"gblkkncyp\":\"hwesrtja\"},\"id\":\"tevspsaneyvaerp\",\"name\":\"obnhrfbrjokjwqd\",\"type\":\"raq\"}]}";
+            = "{\"value\":[{\"properties\":{\"hierarchyIdentifier\":\"nrz\",\"hierarchyIdentifierTrialEndDate\":\"2021-09-17T06:25:17Z\",\"environmentName\":\"Azure\",\"offerings\":[{\"offeringType\":\"CloudOffering\",\"description\":\"o\"},{\"offeringType\":\"CloudOffering\",\"description\":\"iiksybvrrbnhyl\"},{\"offeringType\":\"CloudOffering\",\"description\":\"hujc\"}],\"environmentData\":{\"environmentType\":\"EnvironmentData\"}},\"location\":\"yllm\",\"tags\":{\"llcbrva\":\"stizsyqag\",\"qwfyybptmjjr\":\"dylkyhtr\",\"thkslgeuufkb\":\"ogykugdlavsav\",\"lajybdnb\":\"bfbxj\"},\"id\":\"csbto\",\"name\":\"sazdjmofsvpz\",\"type\":\"gnywxu\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,11 +33,11 @@ public final class SecurityConnectorsListByResourceGroupMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<SecurityConnector> response
-            = manager.securityConnectors().listByResourceGroup("glpwdjr", com.azure.core.util.Context.NONE);
+            = manager.securityConnectors().listByResourceGroup("lpz", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("cxstowageh", response.iterator().next().location());
-        Assertions.assertEquals("hwesrtja", response.iterator().next().tags().get("gblkkncyp"));
-        Assertions.assertEquals("shzn", response.iterator().next().hierarchyIdentifier());
-        Assertions.assertEquals(CloudName.GIT_LAB, response.iterator().next().environmentName());
+        Assertions.assertEquals("yllm", response.iterator().next().location());
+        Assertions.assertEquals("stizsyqag", response.iterator().next().tags().get("llcbrva"));
+        Assertions.assertEquals("nrz", response.iterator().next().hierarchyIdentifier());
+        Assertions.assertEquals(CloudName.AZURE, response.iterator().next().environmentName());
     }
 }

@@ -5,27 +5,19 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The GitLab scope connector's environment data.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "environmentType",
-    defaultImpl = GitlabScopeEnvironmentData.class,
-    visible = true)
-@JsonTypeName("GitlabScope")
 @Immutable
 public final class GitlabScopeEnvironmentData extends EnvironmentData {
     /*
      * The type of the environment data.
      */
-    @JsonTypeId
-    @JsonProperty(value = "environmentType", required = true)
     private EnvironmentType environmentType = EnvironmentType.GITLAB_SCOPE;
 
     /**
@@ -51,6 +43,43 @@ public final class GitlabScopeEnvironmentData extends EnvironmentData {
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("environmentType",
+            this.environmentType == null ? null : this.environmentType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GitlabScopeEnvironmentData from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GitlabScopeEnvironmentData if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the GitlabScopeEnvironmentData.
+     */
+    public static GitlabScopeEnvironmentData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GitlabScopeEnvironmentData deserializedGitlabScopeEnvironmentData = new GitlabScopeEnvironmentData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("environmentType".equals(fieldName)) {
+                    deserializedGitlabScopeEnvironmentData.environmentType
+                        = EnvironmentType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGitlabScopeEnvironmentData;
+        });
     }
 }

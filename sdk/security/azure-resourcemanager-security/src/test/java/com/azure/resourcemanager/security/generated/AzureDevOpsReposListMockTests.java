@@ -14,7 +14,6 @@ import com.azure.resourcemanager.security.SecurityManager;
 import com.azure.resourcemanager.security.models.ActionableRemediationState;
 import com.azure.resourcemanager.security.models.AnnotateDefaultBranchState;
 import com.azure.resourcemanager.security.models.AzureDevOpsRepository;
-import com.azure.resourcemanager.security.models.DevOpsProvisioningState;
 import com.azure.resourcemanager.security.models.InheritFromParentState;
 import com.azure.resourcemanager.security.models.OnboardingState;
 import com.azure.resourcemanager.security.models.RuleCategory;
@@ -28,7 +27,7 @@ public final class AzureDevOpsReposListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningStatusMessage\":\"avyotp\",\"provisioningStatusUpdateTimeUtc\":\"2021-08-21T10:13:59Z\",\"provisioningState\":\"DeletionSuccess\",\"parentOrgName\":\"pkvyqpvzxxzn\",\"parentProjectName\":\"tominrufq\",\"repoId\":\"uygasfmhb\",\"repoUrl\":\"ewk\",\"visibility\":\"atxvuzccaliry\",\"onboardingState\":\"OnboardedByOtherConnector\",\"actionableRemediation\":{\"state\":\"Disabled\",\"categoryConfigurations\":[{\"minimumSeverityLevel\":\"hlc\",\"category\":\"Artifacts\"},{\"minimumSeverityLevel\":\"xyyhhs\",\"category\":\"Dependencies\"},{\"minimumSeverityLevel\":\"qfrpanteqiw\",\"category\":\"IaC\"},{\"minimumSeverityLevel\":\"aamimkjz\",\"category\":\"Containers\"}],\"branchConfiguration\":{\"branchNames\":[\"f\"],\"annotateDefaultBranch\":\"Enabled\"},\"inheritFromParentState\":\"Enabled\"}},\"id\":\"jrjgyindexi\",\"name\":\"ovuyxu\",\"type\":\"pzeaddatopdtphvj\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningStatusMessage\":\"d\",\"provisioningStatusUpdateTimeUtc\":\"2021-09-28T03:14:10Z\",\"provisioningState\":\"Pending\",\"parentOrgName\":\"qlefnohey\",\"parentProjectName\":\"fopkyll\",\"repoId\":\"yenjpwdmsfw\",\"repoUrl\":\"rsvevcneqswxhqh\",\"visibility\":\"htbzvulqevvj\",\"onboardingState\":\"OnboardedByOtherConnector\",\"actionableRemediation\":{\"state\":\"Disabled\",\"categoryConfigurations\":[{\"minimumSeverityLevel\":\"dmvghcmi\",\"category\":\"IaC\"},{\"minimumSeverityLevel\":\"kfefbcyjrtalqeeb\",\"category\":\"Artifacts\"},{\"minimumSeverityLevel\":\"imooaezktomsgoih\",\"category\":\"Code\"},{\"minimumSeverityLevel\":\"ywaazbaeeek\",\"category\":\"Artifacts\"}],\"branchConfiguration\":{\"branchNames\":[\"bfb\"],\"annotateDefaultBranch\":\"Disabled\"},\"inheritFromParentState\":\"Enabled\"}},\"id\":\"oljdkxhmew\",\"name\":\"aol\",\"type\":\"lzxkrdpuyyt\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -38,17 +37,15 @@ public final class AzureDevOpsReposListMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<AzureDevOpsRepository> response = manager.azureDevOpsRepos()
-            .list("oyjmjwqdslqreo", "zrkrztpyay", "hxl", "mwaxsymnrtv", com.azure.core.util.Context.NONE);
+            .list("yjucamnsb", "oitwhmucjiuh", "xy", "ehyklelyqdvpqfbx", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(DevOpsProvisioningState.DELETION_SUCCESS,
-            response.iterator().next().properties().provisioningState());
-        Assertions.assertEquals("pkvyqpvzxxzn", response.iterator().next().properties().parentOrgName());
-        Assertions.assertEquals("tominrufq", response.iterator().next().properties().parentProjectName());
+        Assertions.assertEquals("qlefnohey", response.iterator().next().properties().parentOrgName());
+        Assertions.assertEquals("fopkyll", response.iterator().next().properties().parentProjectName());
         Assertions.assertEquals(OnboardingState.ONBOARDED_BY_OTHER_CONNECTOR,
             response.iterator().next().properties().onboardingState());
         Assertions.assertEquals(ActionableRemediationState.DISABLED,
             response.iterator().next().properties().actionableRemediation().state());
-        Assertions.assertEquals("hlc",
+        Assertions.assertEquals("dmvghcmi",
             response.iterator()
                 .next()
                 .properties()
@@ -56,11 +53,11 @@ public final class AzureDevOpsReposListMockTests {
                 .categoryConfigurations()
                 .get(0)
                 .minimumSeverityLevel());
-        Assertions.assertEquals(RuleCategory.ARTIFACTS,
+        Assertions.assertEquals(RuleCategory.IAC,
             response.iterator().next().properties().actionableRemediation().categoryConfigurations().get(0).category());
-        Assertions.assertEquals("f",
+        Assertions.assertEquals("bfb",
             response.iterator().next().properties().actionableRemediation().branchConfiguration().branchNames().get(0));
-        Assertions.assertEquals(AnnotateDefaultBranchState.ENABLED,
+        Assertions.assertEquals(AnnotateDefaultBranchState.DISABLED,
             response.iterator()
                 .next()
                 .properties()

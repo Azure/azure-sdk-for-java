@@ -9,7 +9,9 @@ package com.azure.resourcemanager.security.generated;
  */
 public final class ApplicationOperationGetSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2022-07-01-preview/examples/Applications/GetApplication_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2022-07-01-preview/examples/Applications/
+     * GetApplication_example.json
      */
     /**
      * Sample code: Get security application by specific applicationId.

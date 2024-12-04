@@ -19,35 +19,33 @@ public final class ActionableRemediationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ActionableRemediation model = BinaryData.fromString(
-            "{\"state\":\"Enabled\",\"categoryConfigurations\":[{\"minimumSeverityLevel\":\"nplfac\",\"category\":\"IaC\"},{\"minimumSeverityLevel\":\"qrqxwetjt\",\"category\":\"Secrets\"},{\"minimumSeverityLevel\":\"tfdoadtx\",\"category\":\"Artifacts\"}],\"branchConfiguration\":{\"branchNames\":[\"adkm\",\"zgssz\",\"vctkbbx\",\"harls\"],\"annotateDefaultBranch\":\"Enabled\"},\"inheritFromParentState\":\"Disabled\"}")
+            "{\"state\":\"Enabled\",\"categoryConfigurations\":[{\"minimumSeverityLevel\":\"oguyaip\",\"category\":\"Containers\"}],\"branchConfiguration\":{\"branchNames\":[\"ltxijjumfqwazln\",\"nm\",\"jng\"],\"annotateDefaultBranch\":\"Enabled\"},\"inheritFromParentState\":\"Enabled\"}")
             .toObject(ActionableRemediation.class);
         Assertions.assertEquals(ActionableRemediationState.ENABLED, model.state());
-        Assertions.assertEquals("nplfac", model.categoryConfigurations().get(0).minimumSeverityLevel());
-        Assertions.assertEquals(RuleCategory.IAC, model.categoryConfigurations().get(0).category());
-        Assertions.assertEquals("adkm", model.branchConfiguration().branchNames().get(0));
+        Assertions.assertEquals("oguyaip", model.categoryConfigurations().get(0).minimumSeverityLevel());
+        Assertions.assertEquals(RuleCategory.CONTAINERS, model.categoryConfigurations().get(0).category());
+        Assertions.assertEquals("ltxijjumfqwazln", model.branchConfiguration().branchNames().get(0));
         Assertions.assertEquals(AnnotateDefaultBranchState.ENABLED,
             model.branchConfiguration().annotateDefaultBranch());
-        Assertions.assertEquals(InheritFromParentState.DISABLED, model.inheritFromParentState());
+        Assertions.assertEquals(InheritFromParentState.ENABLED, model.inheritFromParentState());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ActionableRemediation model = new ActionableRemediation().withState(ActionableRemediationState.ENABLED)
             .withCategoryConfigurations(Arrays.asList(
-                new CategoryConfiguration().withMinimumSeverityLevel("nplfac").withCategory(RuleCategory.IAC),
-                new CategoryConfiguration().withMinimumSeverityLevel("qrqxwetjt").withCategory(RuleCategory.SECRETS),
-                new CategoryConfiguration().withMinimumSeverityLevel("tfdoadtx").withCategory(RuleCategory.ARTIFACTS)))
+                new CategoryConfiguration().withMinimumSeverityLevel("oguyaip").withCategory(RuleCategory.CONTAINERS)))
             .withBranchConfiguration(
-                new TargetBranchConfiguration().withBranchNames(Arrays.asList("adkm", "zgssz", "vctkbbx", "harls"))
+                new TargetBranchConfiguration().withBranchNames(Arrays.asList("ltxijjumfqwazln", "nm", "jng"))
                     .withAnnotateDefaultBranch(AnnotateDefaultBranchState.ENABLED))
-            .withInheritFromParentState(InheritFromParentState.DISABLED);
+            .withInheritFromParentState(InheritFromParentState.ENABLED);
         model = BinaryData.fromObject(model).toObject(ActionableRemediation.class);
         Assertions.assertEquals(ActionableRemediationState.ENABLED, model.state());
-        Assertions.assertEquals("nplfac", model.categoryConfigurations().get(0).minimumSeverityLevel());
-        Assertions.assertEquals(RuleCategory.IAC, model.categoryConfigurations().get(0).category());
-        Assertions.assertEquals("adkm", model.branchConfiguration().branchNames().get(0));
+        Assertions.assertEquals("oguyaip", model.categoryConfigurations().get(0).minimumSeverityLevel());
+        Assertions.assertEquals(RuleCategory.CONTAINERS, model.categoryConfigurations().get(0).category());
+        Assertions.assertEquals("ltxijjumfqwazln", model.branchConfiguration().branchNames().get(0));
         Assertions.assertEquals(AnnotateDefaultBranchState.ENABLED,
             model.branchConfiguration().annotateDefaultBranch());
-        Assertions.assertEquals(InheritFromParentState.DISABLED, model.inheritFromParentState());
+        Assertions.assertEquals(InheritFromParentState.ENABLED, model.inheritFromParentState());
     }
 }

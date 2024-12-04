@@ -12,22 +12,22 @@ public final class DefenderCspmGcpOfferingMdcContainersImageAssessmentTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DefenderCspmGcpOfferingMdcContainersImageAssessment model = BinaryData.fromString(
-            "{\"enabled\":false,\"workloadIdentityProviderId\":\"gchzpgfqumj\",\"serviceAccountEmailAddress\":\"xhzghgodkynr\"}")
+            "{\"enabled\":false,\"workloadIdentityProviderId\":\"xgffklvq\",\"serviceAccountEmailAddress\":\"wtrdgs\"}")
             .toObject(DefenderCspmGcpOfferingMdcContainersImageAssessment.class);
         Assertions.assertEquals(false, model.enabled());
-        Assertions.assertEquals("gchzpgfqumj", model.workloadIdentityProviderId());
-        Assertions.assertEquals("xhzghgodkynr", model.serviceAccountEmailAddress());
+        Assertions.assertEquals("xgffklvq", model.workloadIdentityProviderId());
+        Assertions.assertEquals("wtrdgs", model.serviceAccountEmailAddress());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DefenderCspmGcpOfferingMdcContainersImageAssessment model
             = new DefenderCspmGcpOfferingMdcContainersImageAssessment().withEnabled(false)
-                .withWorkloadIdentityProviderId("gchzpgfqumj")
-                .withServiceAccountEmailAddress("xhzghgodkynr");
+                .withWorkloadIdentityProviderId("xgffklvq")
+                .withServiceAccountEmailAddress("wtrdgs");
         model = BinaryData.fromObject(model).toObject(DefenderCspmGcpOfferingMdcContainersImageAssessment.class);
         Assertions.assertEquals(false, model.enabled());
-        Assertions.assertEquals("gchzpgfqumj", model.workloadIdentityProviderId());
-        Assertions.assertEquals("xhzghgodkynr", model.serviceAccountEmailAddress());
+        Assertions.assertEquals("xgffklvq", model.workloadIdentityProviderId());
+        Assertions.assertEquals("wtrdgs", model.serviceAccountEmailAddress());
     }
 }

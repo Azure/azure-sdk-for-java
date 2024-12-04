@@ -22,7 +22,7 @@ public final class ApplicationOperationsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"displayName\":\"bsnznwgsqufm\",\"description\":\"cyoseqcazisvbrqg\",\"sourceResourceType\":\"Assessments\",\"conditionSets\":[\"datapgawepk\"]},\"id\":\"on\",\"name\":\"zpghlrdtbgblxbu\",\"type\":\"brvjztaflv\"}";
+            = "{\"properties\":{\"displayName\":\"mfppinmg\",\"description\":\"esmkwtzgf\",\"sourceResourceType\":\"Assessments\",\"conditionSets\":[\"datajhxerxlo\",\"datakdbtq\"]},\"id\":\"vmmnii\",\"name\":\"yholhjns\",\"type\":\"bggicnqwlctmw\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,12 +31,11 @@ public final class ApplicationOperationsGetWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Application response = manager.applicationOperations()
-            .getWithResponse("ylquevqmvyumgm", com.azure.core.util.Context.NONE)
-            .getValue();
+        Application response
+            = manager.applicationOperations().getWithResponse("t", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("bsnznwgsqufm", response.displayName());
-        Assertions.assertEquals("cyoseqcazisvbrqg", response.description());
+        Assertions.assertEquals("mfppinmg", response.displayName());
+        Assertions.assertEquals("esmkwtzgf", response.description());
         Assertions.assertEquals(ApplicationSourceResourceType.ASSESSMENTS, response.sourceResourceType());
     }
 }

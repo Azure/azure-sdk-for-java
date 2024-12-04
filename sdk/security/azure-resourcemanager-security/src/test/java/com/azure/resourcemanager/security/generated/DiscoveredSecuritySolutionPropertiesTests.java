@@ -14,25 +14,25 @@ public final class DiscoveredSecuritySolutionPropertiesTests {
     public void testDeserialize() throws Exception {
         DiscoveredSecuritySolutionProperties model = BinaryData
             .fromString(
-                "{\"securityFamily\":\"SaasWaf\",\"offer\":\"gmmuteyxey\",\"publisher\":\"uqi\",\"sku\":\"ijiitns\"}")
+                "{\"securityFamily\":\"Ngfw\",\"offer\":\"obrl\",\"publisher\":\"pgsn\",\"sku\":\"agnchjhgemuowaky\"}")
             .toObject(DiscoveredSecuritySolutionProperties.class);
-        Assertions.assertEquals(SecurityFamily.SAAS_WAF, model.securityFamily());
-        Assertions.assertEquals("gmmuteyxey", model.offer());
-        Assertions.assertEquals("uqi", model.publisher());
-        Assertions.assertEquals("ijiitns", model.sku());
+        Assertions.assertEquals(SecurityFamily.NGFW, model.securityFamily());
+        Assertions.assertEquals("obrl", model.offer());
+        Assertions.assertEquals("pgsn", model.publisher());
+        Assertions.assertEquals("agnchjhgemuowaky", model.sku());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DiscoveredSecuritySolutionProperties model
-            = new DiscoveredSecuritySolutionProperties().withSecurityFamily(SecurityFamily.SAAS_WAF)
-                .withOffer("gmmuteyxey")
-                .withPublisher("uqi")
-                .withSku("ijiitns");
+            = new DiscoveredSecuritySolutionProperties().withSecurityFamily(SecurityFamily.NGFW)
+                .withOffer("obrl")
+                .withPublisher("pgsn")
+                .withSku("agnchjhgemuowaky");
         model = BinaryData.fromObject(model).toObject(DiscoveredSecuritySolutionProperties.class);
-        Assertions.assertEquals(SecurityFamily.SAAS_WAF, model.securityFamily());
-        Assertions.assertEquals("gmmuteyxey", model.offer());
-        Assertions.assertEquals("uqi", model.publisher());
-        Assertions.assertEquals("ijiitns", model.sku());
+        Assertions.assertEquals(SecurityFamily.NGFW, model.securityFamily());
+        Assertions.assertEquals("obrl", model.offer());
+        Assertions.assertEquals("pgsn", model.publisher());
+        Assertions.assertEquals("agnchjhgemuowaky", model.sku());
     }
 }

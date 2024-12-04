@@ -14,7 +14,9 @@ import java.time.OffsetDateTime;
  */
 public final class GovernanceAssignmentsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2022-01-01-preview/examples/GovernanceAssignments/PutGovernanceAssignment_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2022-01-01-preview/examples/
+     * GovernanceAssignments/PutGovernanceAssignment_example.json
      */
     /**
      * Sample code: Create Governance assignment.

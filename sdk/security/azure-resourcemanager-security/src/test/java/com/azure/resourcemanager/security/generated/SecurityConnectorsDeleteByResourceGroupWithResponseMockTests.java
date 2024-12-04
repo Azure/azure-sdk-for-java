@@ -28,7 +28,7 @@ public final class SecurityConnectorsDeleteByResourceGroupWithResponseMockTests 
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.securityConnectors()
-            .deleteByResourceGroupWithResponse("ztirjvqxvwkiocxo", "rjwbuocqflm", com.azure.core.util.Context.NONE);
+            .deleteByResourceGroupWithResponse("hi", "tqozewbrsrjzgkbr", com.azure.core.util.Context.NONE);
 
     }
 }

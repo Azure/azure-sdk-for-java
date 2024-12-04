@@ -22,7 +22,7 @@ public final class SecurityConnectorApplicationOperationsGetWithResponseMockTest
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"displayName\":\"ytjgoeayokrw\",\"description\":\"ihwpadhedbfobd\",\"sourceResourceType\":\"Assessments\",\"conditionSets\":[\"dataothm\",\"datahjaozvbwfcn\",\"datahbpoelhscmyhrhj\"]},\"id\":\"szfqbokndwpppqw\",\"name\":\"joevzzuf\",\"type\":\"tdxmlynzlyvap\"}";
+            = "{\"properties\":{\"displayName\":\"gxmbrygmwibiosiq\",\"description\":\"kqfdqwdrtx\",\"sourceResourceType\":\"Assessments\",\"conditionSets\":[\"dataaglmrcokzzert\",\"dataounzsiywh\",\"databym\"]},\"id\":\"popikzeb\",\"name\":\"nnf\",\"type\":\"wt\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,11 +32,11 @@ public final class SecurityConnectorApplicationOperationsGetWithResponseMockTest
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         Application response = manager.securityConnectorApplicationOperations()
-            .getWithResponse("mkaqldqabnwvpaq", "qxfbbigcfddofx", "fbmjyyrqaedwo", com.azure.core.util.Context.NONE)
+            .getWithResponse("iceecvjwy", "veoxmpzzwah", "rdvhaztkxbi", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("ytjgoeayokrw", response.displayName());
-        Assertions.assertEquals("ihwpadhedbfobd", response.description());
+        Assertions.assertEquals("gxmbrygmwibiosiq", response.displayName());
+        Assertions.assertEquals("kqfdqwdrtx", response.description());
         Assertions.assertEquals(ApplicationSourceResourceType.ASSESSMENTS, response.sourceResourceType());
     }
 }

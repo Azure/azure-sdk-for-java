@@ -22,7 +22,7 @@ public final class IotSecuritySolutionsAnalyticsAggregatedAlertsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"alertType\":\"z\",\"alertDisplayName\":\"yovqmqcudptoqwr\",\"vendorName\":\"kjthl\",\"reportedSeverity\":\"Informational\",\"remediationSteps\":\"wawfu\",\"description\":\"ngejjxumowynjmoo\",\"count\":8742565226811425459,\"effectedResourceType\":\"tdrsjtmnkxjou\",\"systemSource\":\"zcfdtstiaxtyrnu\",\"actionTaken\":\"fhepis\",\"logAnalyticsQuery\":\"cmlroiommemso\",\"topDevicesList\":[{\"deviceId\":\"cyeqd\",\"alertsCount\":4380794604325601453,\"lastOccurrence\":\"qcabebck\"},{\"deviceId\":\"srsixwn\",\"alertsCount\":505938771822321914,\"lastOccurrence\":\"bjgfmyqyy\"},{\"deviceId\":\"ridzfpsfyakid\",\"alertsCount\":183154782545041181,\"lastOccurrence\":\"rqke\"},{\"deviceId\":\"umkq\",\"alertsCount\":43365760248026067,\"lastOccurrence\":\"triysjrgtruwpuq\"}]},\"tags\":{\"gclvbwa\":\"cekdvvoydwedgg\"},\"id\":\"zadrjbjngoar\",\"name\":\"rdrwiem\",\"type\":\"cyniapy\"}]}";
+            = "{\"value\":[{\"properties\":{\"alertType\":\"iekkiskyyyaekn\",\"alertDisplayName\":\"fys\",\"vendorName\":\"wjlmlcufbbjiutfo\",\"reportedSeverity\":\"Low\",\"remediationSteps\":\"jjylsyqyj\",\"description\":\"fzvlqquyhbce\",\"count\":7737483875231160457,\"effectedResourceType\":\"rrp\",\"systemSource\":\"qtvuxeujmdssijua\",\"actionTaken\":\"fdlypk\",\"logAnalyticsQuery\":\"wsrqnnmjundtlxcl\",\"topDevicesList\":[{\"deviceId\":\"cycg\",\"alertsCount\":730429371573339373,\"lastOccurrence\":\"ihxv\"},{\"deviceId\":\"cwwfopxp\",\"alertsCount\":2500613286227288086,\"lastOccurrence\":\"bubwhzq\"},{\"deviceId\":\"u\",\"alertsCount\":8139964851872364158,\"lastOccurrence\":\"ahtqmmk\"},{\"deviceId\":\"wqcqwe\",\"alertsCount\":8077357459108512497,\"lastOccurrence\":\"pkephujeucosvkke\"}]},\"tags\":{\"lgnuee\":\"vypaxpjpyi\",\"cgmbg\":\"fpffbuqxknv\"},\"id\":\"yojfchicpare\",\"name\":\"zoksgqhb\",\"type\":\"ojuxil\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,8 +32,8 @@ public final class IotSecuritySolutionsAnalyticsAggregatedAlertsListMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<IoTSecurityAggregatedAlert> response = manager.iotSecuritySolutionsAnalyticsAggregatedAlerts()
-            .list("liqwzutiyelrnhh", "t", 263278670, com.azure.core.util.Context.NONE);
+            .list("joezvw", "ryzgavpln", 1229403610, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("cekdvvoydwedgg", response.iterator().next().tags().get("gclvbwa"));
+        Assertions.assertEquals("vypaxpjpyi", response.iterator().next().tags().get("lgnuee"));
     }
 }

@@ -12,7 +12,6 @@ import com.azure.resourcemanager.security.models.AnnotateDefaultBranchState;
 import com.azure.resourcemanager.security.models.AzureDevOpsRepositoryListResponse;
 import com.azure.resourcemanager.security.models.AzureDevOpsRepositoryProperties;
 import com.azure.resourcemanager.security.models.CategoryConfiguration;
-import com.azure.resourcemanager.security.models.DevOpsProvisioningState;
 import com.azure.resourcemanager.security.models.InheritFromParentState;
 import com.azure.resourcemanager.security.models.OnboardingState;
 import com.azure.resourcemanager.security.models.TargetBranchConfiguration;
@@ -23,54 +22,65 @@ public final class AzureDevOpsRepositoryListResponseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureDevOpsRepositoryListResponse model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningStatusMessage\":\"lnfyzav\",\"provisioningStatusUpdateTimeUtc\":\"2021-04-19T06:29:11Z\",\"provisioningState\":\"Succeeded\",\"parentOrgName\":\"cdbkpdjtaq\",\"parentProjectName\":\"mqazpdgonjh\",\"repoId\":\"h\",\"repoUrl\":\"mgpczqulptkbvc\",\"visibility\":\"tzhigqqbtim\",\"onboardingState\":\"NotApplicable\",\"actionableRemediation\":{\"state\":\"None\",\"categoryConfigurations\":[{},{},{}],\"branchConfiguration\":{\"branchNames\":[\"qhudsmusuaawj\",\"kxwj\"],\"annotateDefaultBranch\":\"Enabled\"},\"inheritFromParentState\":\"Disabled\"}},\"id\":\"nniixyxvqba\",\"name\":\"os\",\"type\":\"tgirnb\"}],\"nextLink\":\"gm\"}")
+            "{\"value\":[{\"properties\":{\"provisioningStatusMessage\":\"tixo\",\"provisioningStatusUpdateTimeUtc\":\"2021-03-25T04:51:39Z\",\"provisioningState\":\"DeletionFailure\",\"parentOrgName\":\"nljqepqwhixmons\",\"parentProjectName\":\"hiyxgvelfclduc\",\"repoId\":\"irdsvuwcob\",\"repoUrl\":\"gstmninwjizciln\",\"visibility\":\"gshejjtbxqmulux\",\"onboardingState\":\"NotOnboarded\",\"actionableRemediation\":{\"state\":\"None\",\"categoryConfigurations\":[{},{},{}],\"branchConfiguration\":{\"branchNames\":[\"cucrwnamikze\",\"rqbsmswziq\",\"fuhok\",\"ruswhv\"],\"annotateDefaultBranch\":\"Disabled\"},\"inheritFromParentState\":\"Disabled\"}},\"id\":\"vfbyc\",\"name\":\"sxjwwixz\",\"type\":\"umwmxqhnd\"},{\"properties\":{\"provisioningStatusMessage\":\"mldsehaohdj\",\"provisioningStatusUpdateTimeUtc\":\"2021-09-08T22:46:23Z\",\"provisioningState\":\"DeletionSuccess\",\"parentOrgName\":\"kxcoxpelnje\",\"parentProjectName\":\"gltsxoat\",\"repoId\":\"g\",\"repoUrl\":\"npbs\",\"visibility\":\"e\",\"onboardingState\":\"OnboardedByOtherConnector\",\"actionableRemediation\":{\"state\":\"None\",\"categoryConfigurations\":[{}],\"branchConfiguration\":{\"branchNames\":[\"hmipgawtxxpkyjc\",\"cjxgrytf\",\"pcycilrmcaykg\",\"noxuztrksx\"],\"annotateDefaultBranch\":\"Disabled\"},\"inheritFromParentState\":\"Enabled\"}},\"id\":\"cpfnznthjtwkja\",\"name\":\"srxuzvoam\",\"type\":\"tcqiosmg\"}],\"nextLink\":\"ahgx\"}")
             .toObject(AzureDevOpsRepositoryListResponse.class);
-        Assertions.assertEquals(DevOpsProvisioningState.SUCCEEDED,
-            model.value().get(0).properties().provisioningState());
-        Assertions.assertEquals("cdbkpdjtaq", model.value().get(0).properties().parentOrgName());
-        Assertions.assertEquals("mqazpdgonjh", model.value().get(0).properties().parentProjectName());
-        Assertions.assertEquals(OnboardingState.NOT_APPLICABLE, model.value().get(0).properties().onboardingState());
+        Assertions.assertEquals("nljqepqwhixmons", model.value().get(0).properties().parentOrgName());
+        Assertions.assertEquals("hiyxgvelfclduc", model.value().get(0).properties().parentProjectName());
+        Assertions.assertEquals(OnboardingState.NOT_ONBOARDED, model.value().get(0).properties().onboardingState());
         Assertions.assertEquals(ActionableRemediationState.NONE,
             model.value().get(0).properties().actionableRemediation().state());
-        Assertions.assertEquals("qhudsmusuaawj",
+        Assertions.assertEquals("cucrwnamikze",
             model.value().get(0).properties().actionableRemediation().branchConfiguration().branchNames().get(0));
-        Assertions.assertEquals(AnnotateDefaultBranchState.ENABLED,
+        Assertions.assertEquals(AnnotateDefaultBranchState.DISABLED,
             model.value().get(0).properties().actionableRemediation().branchConfiguration().annotateDefaultBranch());
         Assertions.assertEquals(InheritFromParentState.DISABLED,
             model.value().get(0).properties().actionableRemediation().inheritFromParentState());
-        Assertions.assertEquals("gm", model.nextLink());
+        Assertions.assertEquals("ahgx", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureDevOpsRepositoryListResponse model = new AzureDevOpsRepositoryListResponse()
-            .withValue(Arrays.asList(new AzureDevOpsRepositoryInner().withProperties(
-                new AzureDevOpsRepositoryProperties().withProvisioningState(DevOpsProvisioningState.SUCCEEDED)
-                    .withParentOrgName("cdbkpdjtaq")
-                    .withParentProjectName("mqazpdgonjh")
-                    .withOnboardingState(OnboardingState.NOT_APPLICABLE)
-                    .withActionableRemediation(new ActionableRemediation().withState(ActionableRemediationState.NONE)
-                        .withCategoryConfigurations(Arrays.asList(new CategoryConfiguration(),
-                            new CategoryConfiguration(), new CategoryConfiguration()))
-                        .withBranchConfiguration(
-                            new TargetBranchConfiguration().withBranchNames(Arrays.asList("qhudsmusuaawj", "kxwj"))
-                                .withAnnotateDefaultBranch(AnnotateDefaultBranchState.ENABLED))
-                        .withInheritFromParentState(InheritFromParentState.DISABLED)))))
-            .withNextLink("gm");
+        AzureDevOpsRepositoryListResponse model
+            = new AzureDevOpsRepositoryListResponse()
+                .withValue(
+                    Arrays.asList(
+                        new AzureDevOpsRepositoryInner()
+                            .withProperties(new AzureDevOpsRepositoryProperties().withParentOrgName("nljqepqwhixmons")
+                                .withParentProjectName("hiyxgvelfclduc")
+                                .withOnboardingState(OnboardingState.NOT_ONBOARDED)
+                                .withActionableRemediation(new ActionableRemediation()
+                                    .withState(ActionableRemediationState.NONE)
+                                    .withCategoryConfigurations(Arrays.asList(new CategoryConfiguration(),
+                                        new CategoryConfiguration(), new CategoryConfiguration()))
+                                    .withBranchConfiguration(new TargetBranchConfiguration()
+                                        .withBranchNames(Arrays.asList("cucrwnamikze", "rqbsmswziq", "fuhok", "ruswhv"))
+                                        .withAnnotateDefaultBranch(AnnotateDefaultBranchState.DISABLED))
+                                    .withInheritFromParentState(InheritFromParentState.DISABLED))),
+                        new AzureDevOpsRepositoryInner()
+                            .withProperties(new AzureDevOpsRepositoryProperties().withParentOrgName("kxcoxpelnje")
+                                .withParentProjectName("gltsxoat")
+                                .withOnboardingState(OnboardingState.ONBOARDED_BY_OTHER_CONNECTOR)
+                                .withActionableRemediation(new ActionableRemediation()
+                                    .withState(ActionableRemediationState.NONE)
+                                    .withCategoryConfigurations(Arrays.asList(new CategoryConfiguration()))
+                                    .withBranchConfiguration(new TargetBranchConfiguration()
+                                        .withBranchNames(
+                                            Arrays.asList("hmipgawtxxpkyjc", "cjxgrytf", "pcycilrmcaykg", "noxuztrksx"))
+                                        .withAnnotateDefaultBranch(AnnotateDefaultBranchState.DISABLED))
+                                    .withInheritFromParentState(InheritFromParentState.ENABLED)))))
+                .withNextLink("ahgx");
         model = BinaryData.fromObject(model).toObject(AzureDevOpsRepositoryListResponse.class);
-        Assertions.assertEquals(DevOpsProvisioningState.SUCCEEDED,
-            model.value().get(0).properties().provisioningState());
-        Assertions.assertEquals("cdbkpdjtaq", model.value().get(0).properties().parentOrgName());
-        Assertions.assertEquals("mqazpdgonjh", model.value().get(0).properties().parentProjectName());
-        Assertions.assertEquals(OnboardingState.NOT_APPLICABLE, model.value().get(0).properties().onboardingState());
+        Assertions.assertEquals("nljqepqwhixmons", model.value().get(0).properties().parentOrgName());
+        Assertions.assertEquals("hiyxgvelfclduc", model.value().get(0).properties().parentProjectName());
+        Assertions.assertEquals(OnboardingState.NOT_ONBOARDED, model.value().get(0).properties().onboardingState());
         Assertions.assertEquals(ActionableRemediationState.NONE,
             model.value().get(0).properties().actionableRemediation().state());
-        Assertions.assertEquals("qhudsmusuaawj",
+        Assertions.assertEquals("cucrwnamikze",
             model.value().get(0).properties().actionableRemediation().branchConfiguration().branchNames().get(0));
-        Assertions.assertEquals(AnnotateDefaultBranchState.ENABLED,
+        Assertions.assertEquals(AnnotateDefaultBranchState.DISABLED,
             model.value().get(0).properties().actionableRemediation().branchConfiguration().annotateDefaultBranch());
         Assertions.assertEquals(InheritFromParentState.DISABLED,
             model.value().get(0).properties().actionableRemediation().inheritFromParentState());
-        Assertions.assertEquals("gm", model.nextLink());
+        Assertions.assertEquals("ahgx", model.nextLink());
     }
 }

@@ -5,25 +5,27 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.security.fluent.models.GitLabProjectInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * List of RP resources which supports pagination.
  */
 @Fluent
-public final class GitLabProjectListResponse {
+public final class GitLabProjectListResponse implements JsonSerializable<GitLabProjectListResponse> {
     /*
      * Gets or sets list of resources.
      */
-    @JsonProperty(value = "value")
     private List<GitLabProjectInner> value;
 
     /*
      * Gets or sets next link to scroll over the results.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
@@ -81,5 +83,45 @@ public final class GitLabProjectListResponse {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GitLabProjectListResponse from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GitLabProjectListResponse if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the GitLabProjectListResponse.
+     */
+    public static GitLabProjectListResponse fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GitLabProjectListResponse deserializedGitLabProjectListResponse = new GitLabProjectListResponse();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<GitLabProjectInner> value = reader.readArray(reader1 -> GitLabProjectInner.fromJson(reader1));
+                    deserializedGitLabProjectListResponse.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedGitLabProjectListResponse.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGitLabProjectListResponse;
+        });
     }
 }

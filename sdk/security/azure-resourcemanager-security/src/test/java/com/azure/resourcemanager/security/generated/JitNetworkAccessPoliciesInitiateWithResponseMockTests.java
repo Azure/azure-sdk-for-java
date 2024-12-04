@@ -27,7 +27,7 @@ public final class JitNetworkAccessPoliciesInitiateWithResponseMockTests {
     @Test
     public void testInitiateWithResponse() throws Exception {
         String responseStr
-            = "{\"virtualMachines\":[{\"id\":\"avsf\",\"ports\":[{\"number\":1579297739,\"allowedSourceAddressPrefix\":\"qrwwbdrwro\",\"allowedSourceAddressPrefixes\":[\"jnzpqhqqsa\",\"kyu\",\"fameaasjqenhekza\",\"vgeytlplslfcved\"],\"endTimeUtc\":\"2021-07-25T22:46:34Z\",\"status\":\"Initiated\",\"statusReason\":\"Expired\",\"mappedPort\":172281741}]},{\"id\":\"olkyqfnj\",\"ports\":[{\"number\":369269400,\"allowedSourceAddressPrefix\":\"nx\",\"allowedSourceAddressPrefixes\":[\"vmwunrtcsrawwhy\",\"fshmbydmvwnbuns\",\"dtevzs\",\"qykebmp\"],\"endTimeUtc\":\"2021-02-11T11:42:56Z\",\"status\":\"Revoked\",\"statusReason\":\"UserRequested\",\"mappedPort\":1541535526},{\"number\":2060548780,\"allowedSourceAddressPrefix\":\"kckrnovqdmh\",\"allowedSourceAddressPrefixes\":[\"stfsma\",\"jakgk\"],\"endTimeUtc\":\"2021-06-04T00:34:16Z\",\"status\":\"Revoked\",\"statusReason\":\"UserRequested\",\"mappedPort\":740389891}]},{\"id\":\"oqzh\",\"ports\":[{\"number\":583166784,\"allowedSourceAddressPrefix\":\"ox\",\"allowedSourceAddressPrefixes\":[\"dhsobvcnsbioe\",\"nlfhnfzxtfzqyu\"],\"endTimeUtc\":\"2021-04-23T17:26:22Z\",\"status\":\"Revoked\",\"statusReason\":\"UserRequested\",\"mappedPort\":1080777698},{\"number\":1602545548,\"allowedSourceAddressPrefix\":\"yt\",\"allowedSourceAddressPrefixes\":[\"lcmwbejyw\",\"wvnhwwkrmqev\",\"hha\"],\"endTimeUtc\":\"2021-04-29T15:28:37Z\",\"status\":\"Initiated\",\"statusReason\":\"UserRequested\",\"mappedPort\":1785025146}]},{\"id\":\"yziruqvgnjxiakg\",\"ports\":[{\"number\":1204315627,\"allowedSourceAddressPrefix\":\"bmxgiky\",\"allowedSourceAddressPrefixes\":[\"ugmbr\",\"c\"],\"endTimeUtc\":\"2021-03-11T01:42:53Z\",\"status\":\"Revoked\",\"statusReason\":\"UserRequested\",\"mappedPort\":663698591},{\"number\":2133547662,\"allowedSourceAddressPrefix\":\"c\",\"allowedSourceAddressPrefixes\":[\"yhmmglvnbenkps\",\"okkyankxvcptf\"],\"endTimeUtc\":\"2021-02-28T04:54:36Z\",\"status\":\"Initiated\",\"statusReason\":\"Expired\",\"mappedPort\":25480315}]}],\"startTimeUtc\":\"2021-07-17T22:20:12Z\",\"requestor\":\"asomafe\",\"justification\":\"z\"}";
+            = "{\"virtualMachines\":[{\"id\":\"ckze\",\"ports\":[{\"number\":845242945,\"allowedSourceAddressPrefix\":\"wdxgyypm\",\"allowedSourceAddressPrefixes\":[\"lmlnxrcatkuh\",\"k\"],\"endTimeUtc\":\"2021-05-05T23:28:06Z\",\"status\":\"Initiated\",\"statusReason\":\"UserRequested\",\"mappedPort\":730100218},{\"number\":1079004698,\"allowedSourceAddressPrefix\":\"l\",\"allowedSourceAddressPrefixes\":[\"hoxfzz\",\"dmupbusxyug\",\"zwplxzgzumnotii\"],\"endTimeUtc\":\"2021-01-17T15:19:07Z\",\"status\":\"Revoked\",\"statusReason\":\"Expired\",\"mappedPort\":1258337077}]},{\"id\":\"b\",\"ports\":[{\"number\":264839813,\"allowedSourceAddressPrefix\":\"wyshybbnhtt\",\"allowedSourceAddressPrefixes\":[\"onzsurqcoj\",\"sfzhzzcarciuoxyi\",\"dthjfvnhwsgnsput\",\"e\"],\"endTimeUtc\":\"2021-03-28T05:21:55Z\",\"status\":\"Revoked\",\"statusReason\":\"UserRequested\",\"mappedPort\":409872062}]}],\"startTimeUtc\":\"2021-03-17T22:16:34Z\",\"requestor\":\"ssjgbfbb\",\"justification\":\"h\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 202, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -37,62 +37,67 @@ public final class JitNetworkAccessPoliciesInitiateWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         JitNetworkAccessRequest response = manager.jitNetworkAccessPolicies()
-            .initiateWithResponse("jndkvzmx", "ffqgdo", "nkqyipgkm",
+            .initiateWithResponse("pqlrzhtocjzfppex", "va", "zwn",
                 new JitNetworkAccessPolicyInitiateRequest()
                     .withVirtualMachines(Arrays.asList(
-                        new JitNetworkAccessPolicyInitiateVirtualMachine().withId("dazmdzesimeft")
+                        new JitNetworkAccessPolicyInitiateVirtualMachine().withId("wgiitvjcmimbms")
                             .withPorts(Arrays.asList(
-                                new JitNetworkAccessPolicyInitiatePort().withNumber(2138759099)
-                                    .withAllowedSourceAddressPrefix("zjlflzagvdavabxi")
-                                    .withEndTimeUtc(OffsetDateTime.parse("2021-03-19T14:23:32Z")),
-                                new JitNetworkAccessPolicyInitiatePort().withNumber(1242200607)
-                                    .withAllowedSourceAddressPrefix("rzbidaebez")
-                                    .withEndTimeUtc(OffsetDateTime.parse("2020-12-25T22:43:25Z")),
-                                new JitNetworkAccessPolicyInitiatePort().withNumber(877759056)
-                                    .withAllowedSourceAddressPrefix("wdfajwiylciob")
-                                    .withEndTimeUtc(OffsetDateTime.parse("2021-03-18T11:03:03Z")),
-                                new JitNetworkAccessPolicyInitiatePort().withNumber(969466087)
-                                    .withAllowedSourceAddressPrefix("srzeqxuecuuuexsm")
-                                    .withEndTimeUtc(OffsetDateTime.parse("2021-05-09T10:09:17Z")))),
-                        new JitNetworkAccessPolicyInitiateVirtualMachine().withId("eevf")
+                                new JitNetworkAccessPolicyInitiatePort().withNumber(1036656620)
+                                    .withAllowedSourceAddressPrefix("bb")
+                                    .withEndTimeUtc(OffsetDateTime.parse("2021-04-04T03:14:25Z")),
+                                new JitNetworkAccessPolicyInitiatePort().withNumber(353490881)
+                                    .withAllowedSourceAddressPrefix("plodaqrbkpozf")
+                                    .withEndTimeUtc(OffsetDateTime.parse("2021-05-10T12:23:57Z")),
+                                new JitNetworkAccessPolicyInitiatePort().withNumber(15267132)
+                                    .withAllowedSourceAddressPrefix("ggvalcrqaxlmbrtv")
+                                    .withEndTimeUtc(OffsetDateTime.parse("2020-12-23T07:07:47Z")),
+                                new JitNetworkAccessPolicyInitiatePort().withNumber(1624933557)
+                                    .withAllowedSourceAddressPrefix("mlplgtlayyxhx")
+                                    .withEndTimeUtc(OffsetDateTime.parse("2021-05-30T12:16:43Z")))),
+                        new JitNetworkAccessPolicyInitiateVirtualMachine().withId("oysxaqq")
                             .withPorts(Arrays.asList(
-                                new JitNetworkAccessPolicyInitiatePort().withNumber(895213465)
-                                    .withAllowedSourceAddressPrefix("ezraqsddkod")
-                                    .withEndTimeUtc(OffsetDateTime.parse("2021-03-31T07:49:08Z")),
-                                new JitNetworkAccessPolicyInitiatePort().withNumber(1306845632)
-                                    .withAllowedSourceAddressPrefix("fkyr")
-                                    .withEndTimeUtc(OffsetDateTime.parse("2021-02-25T18:39:25Z")),
-                                new JitNetworkAccessPolicyInitiatePort().withNumber(1449259669)
-                                    .withAllowedSourceAddressPrefix("zeg")
-                                    .withEndTimeUtc(OffsetDateTime.parse("2021-04-19T23:09:53Z")))),
-                        new JitNetworkAccessPolicyInitiateVirtualMachine().withId("dzfsspfegaoks")
+                                new JitNetworkAccessPolicyInitiatePort().withNumber(227751851)
+                                    .withAllowedSourceAddressPrefix("hfaobqnjcsb")
+                                    .withEndTimeUtc(OffsetDateTime.parse("2021-10-18T15:26:10Z")),
+                                new JitNetworkAccessPolicyInitiatePort().withNumber(1764863827)
+                                    .withAllowedSourceAddressPrefix("dqwssydvwrybivyw")
+                                    .withEndTimeUtc(OffsetDateTime.parse("2021-11-04T17:30:10Z")))),
+                        new JitNetworkAccessPolicyInitiateVirtualMachine().withId("jnjuvtzijrdlxba")
                             .withPorts(Arrays.asList(
-                                new JitNetworkAccessPolicyInitiatePort().withNumber(1118738407)
-                                    .withAllowedSourceAddressPrefix("ra")
-                                    .withEndTimeUtc(OffsetDateTime.parse("2021-11-01T04:42:31Z")),
-                                new JitNetworkAccessPolicyInitiatePort().withNumber(1980482671)
-                                    .withAllowedSourceAddressPrefix("k")
-                                    .withEndTimeUtc(OffsetDateTime.parse("2021-03-24T04:19:43Z")),
-                                new JitNetworkAccessPolicyInitiatePort().withNumber(172536126)
-                                    .withAllowedSourceAddressPrefix("lmzpyq")
-                                    .withEndTimeUtc(OffsetDateTime.parse("2021-05-30T00:04:55Z"))))))
-                    .withJustification("uecxhgsingm"),
+                                new JitNetworkAccessPolicyInitiatePort().withNumber(20225632)
+                                    .withAllowedSourceAddressPrefix("pkv")
+                                    .withEndTimeUtc(OffsetDateTime.parse("2020-12-25T02:48:57Z")),
+                                new JitNetworkAccessPolicyInitiatePort().withNumber(1763835283)
+                                    .withAllowedSourceAddressPrefix("dzf")
+                                    .withEndTimeUtc(OffsetDateTime.parse("2021-07-27T00:10:02Z")),
+                                new JitNetworkAccessPolicyInitiatePort().withNumber(1020099627)
+                                    .withAllowedSourceAddressPrefix("drcibjxnn")
+                                    .withEndTimeUtc(OffsetDateTime.parse("2021-04-19T07:29:25Z")),
+                                new JitNetworkAccessPolicyInitiatePort().withNumber(1705226853)
+                                    .withAllowedSourceAddressPrefix("nhvdtuoam")
+                                    .withEndTimeUtc(OffsetDateTime.parse("2021-01-09T10:50:30Z")))),
+                        new JitNetworkAccessPolicyInitiateVirtualMachine().withId("bqehs")
+                            .withPorts(Arrays.asList(new JitNetworkAccessPolicyInitiatePort().withNumber(960650405)
+                                .withAllowedSourceAddressPrefix("isyzfe")
+                                .withEndTimeUtc(OffsetDateTime.parse("2021-07-26T00:55:32Z"))))))
+                    .withJustification("rzjwn"),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("avsf", response.virtualMachines().get(0).id());
-        Assertions.assertEquals(1579297739, response.virtualMachines().get(0).ports().get(0).number());
-        Assertions.assertEquals("qrwwbdrwro",
+        Assertions.assertEquals("ckze", response.virtualMachines().get(0).id());
+        Assertions.assertEquals(845242945, response.virtualMachines().get(0).ports().get(0).number());
+        Assertions.assertEquals("wdxgyypm",
             response.virtualMachines().get(0).ports().get(0).allowedSourceAddressPrefix());
-        Assertions.assertEquals("jnzpqhqqsa",
+        Assertions.assertEquals("lmlnxrcatkuh",
             response.virtualMachines().get(0).ports().get(0).allowedSourceAddressPrefixes().get(0));
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-25T22:46:34Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-05T23:28:06Z"),
             response.virtualMachines().get(0).ports().get(0).endTimeUtc());
         Assertions.assertEquals(Status.INITIATED, response.virtualMachines().get(0).ports().get(0).status());
-        Assertions.assertEquals(StatusReason.EXPIRED, response.virtualMachines().get(0).ports().get(0).statusReason());
-        Assertions.assertEquals(172281741, response.virtualMachines().get(0).ports().get(0).mappedPort());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-17T22:20:12Z"), response.startTimeUtc());
-        Assertions.assertEquals("asomafe", response.requestor());
-        Assertions.assertEquals("z", response.justification());
+        Assertions.assertEquals(StatusReason.USER_REQUESTED,
+            response.virtualMachines().get(0).ports().get(0).statusReason());
+        Assertions.assertEquals(730100218, response.virtualMachines().get(0).ports().get(0).mappedPort());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-17T22:16:34Z"), response.startTimeUtc());
+        Assertions.assertEquals("ssjgbfbb", response.requestor());
+        Assertions.assertEquals("h", response.justification());
     }
 }

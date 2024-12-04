@@ -18,7 +18,9 @@ import java.util.Map;
  */
 public final class AutomationsUpdateSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2023-12-01-preview/examples/Automations/PatchAutomation_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2023-12-01-preview/examples/Automations/
+     * PatchAutomation_example.json
      */
     /**
      * Sample code: Update a security automation.

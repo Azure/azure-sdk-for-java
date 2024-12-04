@@ -21,7 +21,7 @@ public final class TasksListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"state\":\"spfeylqlocvvuje\",\"creationTimeUtc\":\"2021-06-17T15:21:08Z\",\"securityTaskParameters\":{\"name\":\"xrkgjn\",\"\":{\"iuofpieidz\":\"dataaslavxj\",\"vikmfngpmillxgj\":\"datavssqywjopackyhy\",\"bijeiydy\":\"datacizwgsori\",\"opdweoft\":\"datauynhbokayrgwybr\"}},\"lastStateChangeTimeUtc\":\"2021-11-30T05:17:10Z\",\"subState\":\"a\"},\"id\":\"gsioc\",\"name\":\"qkmv\",\"type\":\"a\"}]}";
+            = "{\"value\":[{\"properties\":{\"state\":\"qcnrrfijhggabqb\",\"creationTimeUtc\":\"2021-07-29T07:35:42Z\",\"securityTaskParameters\":{\"name\":\"ilir\",\"\":{\"qrxqwqnjx\":\"dataffhsdpzouhk\",\"zcxdfweapyfmlxrl\":\"datadfddtullygtav\"}},\"lastStateChangeTimeUtc\":\"2021-11-16T18:58:57Z\",\"subState\":\"aspiflei\"},\"id\":\"ixlmdbgic\",\"name\":\"hfgsmd\",\"type\":\"juqbpx\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class TasksListMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<SecurityTask> response = manager.tasks().list("pxraqaw", com.azure.core.util.Context.NONE);
+        PagedIterable<SecurityTask> response = manager.tasks().list("l", com.azure.core.util.Context.NONE);
 
     }
 }

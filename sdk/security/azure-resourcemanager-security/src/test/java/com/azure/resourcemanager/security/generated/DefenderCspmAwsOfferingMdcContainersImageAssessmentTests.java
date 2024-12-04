@@ -12,19 +12,19 @@ public final class DefenderCspmAwsOfferingMdcContainersImageAssessmentTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DefenderCspmAwsOfferingMdcContainersImageAssessment model
-            = BinaryData.fromString("{\"enabled\":false,\"cloudRoleArn\":\"nbcpjstbhemhcucs\"}")
+            = BinaryData.fromString("{\"enabled\":false,\"cloudRoleArn\":\"uqmllfeothxu\"}")
                 .toObject(DefenderCspmAwsOfferingMdcContainersImageAssessment.class);
         Assertions.assertEquals(false, model.enabled());
-        Assertions.assertEquals("nbcpjstbhemhcucs", model.cloudRoleArn());
+        Assertions.assertEquals("uqmllfeothxu", model.cloudRoleArn());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DefenderCspmAwsOfferingMdcContainersImageAssessment model
             = new DefenderCspmAwsOfferingMdcContainersImageAssessment().withEnabled(false)
-                .withCloudRoleArn("nbcpjstbhemhcucs");
+                .withCloudRoleArn("uqmllfeothxu");
         model = BinaryData.fromObject(model).toObject(DefenderCspmAwsOfferingMdcContainersImageAssessment.class);
         Assertions.assertEquals(false, model.enabled());
-        Assertions.assertEquals("nbcpjstbhemhcucs", model.cloudRoleArn());
+        Assertions.assertEquals("uqmllfeothxu", model.cloudRoleArn());
     }
 }

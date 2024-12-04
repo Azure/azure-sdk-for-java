@@ -28,7 +28,7 @@ public final class CustomEntityStoreAssignmentsDeleteByResourceGroupWithResponse
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.customEntityStoreAssignments()
-            .deleteByResourceGroupWithResponse("nfd", "bggcj", com.azure.core.util.Context.NONE);
+            .deleteByResourceGroupWithResponse("iwyopga", "pfct", com.azure.core.util.Context.NONE);
 
     }
 }

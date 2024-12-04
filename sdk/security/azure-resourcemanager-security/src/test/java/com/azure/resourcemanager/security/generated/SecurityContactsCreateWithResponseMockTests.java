@@ -27,7 +27,7 @@ public final class SecurityContactsCreateWithResponseMockTests {
     @Test
     public void testCreateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"emails\":\"ikm\",\"phone\":\"hqsxjbjkewrig\",\"isEnabled\":false,\"notificationsSources\":[{\"sourceType\":\"NotificationsSource\"},{\"sourceType\":\"NotificationsSource\"},{\"sourceType\":\"NotificationsSource\"}],\"notificationsByRole\":{\"state\":\"Skipped\",\"roles\":[\"Contributor\"]}},\"id\":\"lxcjffzwncv\",\"name\":\"efx\",\"type\":\"n\"}";
+            = "{\"properties\":{\"emails\":\"wcjomipvw\",\"phone\":\"ujttwykoxvbw\",\"isEnabled\":true,\"notificationsSources\":[{\"sourceType\":\"NotificationsSource\"}],\"notificationsByRole\":{\"state\":\"Skipped\",\"roles\":[\"AccountAdmin\",\"Owner\"]}},\"id\":\"vga\",\"name\":\"cbtuxlbpxrhrfjen\",\"type\":\"azwef\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -38,19 +38,19 @@ public final class SecurityContactsCreateWithResponseMockTests {
 
         SecurityContact response = manager.securityContacts()
             .define(SecurityContactName.DEFAULT)
-            .withEmails("ndcbs")
-            .withPhone("ludzjkk")
-            .withIsEnabled(false)
-            .withNotificationsSources(Arrays.asList(new NotificationsSource(), new NotificationsSource()))
-            .withNotificationsByRole(new SecurityContactPropertiesNotificationsByRole().withState(State.PASSED)
-                .withRoles(Arrays.asList(SecurityContactRole.ACCOUNT_ADMIN, SecurityContactRole.ACCOUNT_ADMIN,
-                    SecurityContactRole.CONTRIBUTOR)))
+            .withEmails("leqfgkxenvszg")
+            .withPhone("yakeszsu")
+            .withIsEnabled(true)
+            .withNotificationsSources(Arrays.asList(new NotificationsSource(), new NotificationsSource(),
+                new NotificationsSource(), new NotificationsSource()))
+            .withNotificationsByRole(new SecurityContactPropertiesNotificationsByRole().withState(State.FAILED)
+                .withRoles(Arrays.asList(SecurityContactRole.ACCOUNT_ADMIN)))
             .create();
 
-        Assertions.assertEquals("ikm", response.emails());
-        Assertions.assertEquals("hqsxjbjkewrig", response.phone());
-        Assertions.assertEquals(false, response.isEnabled());
+        Assertions.assertEquals("wcjomipvw", response.emails());
+        Assertions.assertEquals("ujttwykoxvbw", response.phone());
+        Assertions.assertEquals(true, response.isEnabled());
         Assertions.assertEquals(State.SKIPPED, response.notificationsByRole().state());
-        Assertions.assertEquals(SecurityContactRole.CONTRIBUTOR, response.notificationsByRole().roles().get(0));
+        Assertions.assertEquals(SecurityContactRole.ACCOUNT_ADMIN, response.notificationsByRole().roles().get(0));
     }
 }

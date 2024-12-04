@@ -5,10 +5,14 @@
 package com.azure.resourcemanager.security.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.security.models.InformationType;
 import com.azure.resourcemanager.security.models.SensitivityLabel;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
@@ -16,31 +20,26 @@ import java.util.Map;
  * describes properties of an information protection policy.
  */
 @Fluent
-public final class InformationProtectionPolicyProperties {
+public final class InformationProtectionPolicyProperties
+    implements JsonSerializable<InformationProtectionPolicyProperties> {
     /*
      * Describes the last UTC time the policy was modified.
      */
-    @JsonProperty(value = "lastModifiedUtc", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastModifiedUtc;
 
     /*
      * Describes the version of the policy.
      */
-    @JsonProperty(value = "version", access = JsonProperty.Access.WRITE_ONLY)
     private String version;
 
     /*
      * Dictionary of sensitivity labels.
      */
-    @JsonProperty(value = "labels")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, SensitivityLabel> labels;
 
     /*
      * The sensitivity information types.
      */
-    @JsonProperty(value = "informationTypes")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, InformationType> informationTypes;
 
     /**
@@ -127,5 +126,55 @@ public final class InformationProtectionPolicyProperties {
                 }
             });
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("labels", this.labels, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeMapField("informationTypes", this.informationTypes,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InformationProtectionPolicyProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InformationProtectionPolicyProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the InformationProtectionPolicyProperties.
+     */
+    public static InformationProtectionPolicyProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InformationProtectionPolicyProperties deserializedInformationProtectionPolicyProperties
+                = new InformationProtectionPolicyProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("lastModifiedUtc".equals(fieldName)) {
+                    deserializedInformationProtectionPolicyProperties.lastModifiedUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("version".equals(fieldName)) {
+                    deserializedInformationProtectionPolicyProperties.version = reader.getString();
+                } else if ("labels".equals(fieldName)) {
+                    Map<String, SensitivityLabel> labels
+                        = reader.readMap(reader1 -> SensitivityLabel.fromJson(reader1));
+                    deserializedInformationProtectionPolicyProperties.labels = labels;
+                } else if ("informationTypes".equals(fieldName)) {
+                    Map<String, InformationType> informationTypes
+                        = reader.readMap(reader1 -> InformationType.fromJson(reader1));
+                    deserializedInformationProtectionPolicyProperties.informationTypes = informationTypes;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInformationProtectionPolicyProperties;
+        });
     }
 }

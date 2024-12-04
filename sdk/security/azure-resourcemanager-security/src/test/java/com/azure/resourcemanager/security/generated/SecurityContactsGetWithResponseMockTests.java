@@ -24,7 +24,7 @@ public final class SecurityContactsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"emails\":\"xizbfzet\",\"phone\":\"zwhpnbmajv\",\"isEnabled\":false,\"notificationsSources\":[{\"sourceType\":\"NotificationsSource\"}],\"notificationsByRole\":{\"state\":\"Unsupported\",\"roles\":[\"ServiceAdmin\",\"ServiceAdmin\"]}},\"id\":\"xbkaybfmln\",\"name\":\"fwhrmvlaknujmw\",\"type\":\"nrzblxna\"}";
+            = "{\"properties\":{\"emails\":\"fgzjvbxqcbgoa\",\"phone\":\"tuuciagvkd\",\"isEnabled\":true,\"notificationsSources\":[{\"sourceType\":\"NotificationsSource\"}],\"notificationsByRole\":{\"state\":\"Failed\",\"roles\":[\"Owner\",\"Owner\",\"Owner\"]}},\"id\":\"jfexulvoepkna\",\"name\":\"seiancsqoac\",\"type\":\"uq\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -37,10 +37,10 @@ public final class SecurityContactsGetWithResponseMockTests {
             .getWithResponse(SecurityContactName.DEFAULT, com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("xizbfzet", response.emails());
-        Assertions.assertEquals("zwhpnbmajv", response.phone());
-        Assertions.assertEquals(false, response.isEnabled());
-        Assertions.assertEquals(State.UNSUPPORTED, response.notificationsByRole().state());
-        Assertions.assertEquals(SecurityContactRole.SERVICE_ADMIN, response.notificationsByRole().roles().get(0));
+        Assertions.assertEquals("fgzjvbxqcbgoa", response.emails());
+        Assertions.assertEquals("tuuciagvkd", response.phone());
+        Assertions.assertEquals(true, response.isEnabled());
+        Assertions.assertEquals(State.FAILED, response.notificationsByRole().state());
+        Assertions.assertEquals(SecurityContactRole.OWNER, response.notificationsByRole().roles().get(0));
     }
 }

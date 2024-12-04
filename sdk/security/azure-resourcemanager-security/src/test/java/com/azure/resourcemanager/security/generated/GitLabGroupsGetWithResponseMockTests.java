@@ -10,7 +10,6 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.security.SecurityManager;
-import com.azure.resourcemanager.security.models.DevOpsProvisioningState;
 import com.azure.resourcemanager.security.models.GitLabGroup;
 import com.azure.resourcemanager.security.models.OnboardingState;
 import java.nio.charset.StandardCharsets;
@@ -23,7 +22,7 @@ public final class GitLabGroupsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningStatusMessage\":\"xxhcynnmvaiz\",\"provisioningStatusUpdateTimeUtc\":\"2021-06-05T21:58:46Z\",\"provisioningState\":\"Succeeded\",\"fullyQualifiedName\":\"wcidsjqc\",\"fullyQualifiedFriendlyName\":\"z\",\"url\":\"tfd\",\"onboardingState\":\"NotOnboarded\"},\"id\":\"ryyjlikalbcyuwah\",\"name\":\"zagvaidzcephn\",\"type\":\"nuhgy\"}";
+            = "{\"properties\":{\"provisioningStatusMessage\":\"kuorw\",\"provisioningStatusUpdateTimeUtc\":\"2021-04-27T23:53:48Z\",\"provisioningState\":\"PendingDeletion\",\"fullyQualifiedName\":\"e\",\"fullyQualifiedFriendlyName\":\"ptscru\",\"url\":\"ki\",\"onboardingState\":\"OnboardedByOtherConnector\"},\"id\":\"yyno\",\"name\":\"jyflsmsbnlyoif\",\"type\":\"dfz\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,10 +32,9 @@ public final class GitLabGroupsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         GitLabGroup response = manager.gitLabGroups()
-            .getWithResponse("smnwbmacvemmriy", "yvquesxplcs", "nb", com.azure.core.util.Context.NONE)
+            .getWithResponse("viiebe", "rfzav", "ymcwtsiucepl", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(DevOpsProvisioningState.SUCCEEDED, response.properties().provisioningState());
-        Assertions.assertEquals(OnboardingState.NOT_ONBOARDED, response.properties().onboardingState());
+        Assertions.assertEquals(OnboardingState.ONBOARDED_BY_OTHER_CONNECTOR, response.properties().onboardingState());
     }
 }

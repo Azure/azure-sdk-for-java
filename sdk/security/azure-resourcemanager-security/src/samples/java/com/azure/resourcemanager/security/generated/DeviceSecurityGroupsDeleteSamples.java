@@ -9,7 +9,9 @@ package com.azure.resourcemanager.security.generated;
  */
 public final class DeviceSecurityGroupsDeleteSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2019-08-01/examples/DeviceSecurityGroups/DeleteDeviceSecurityGroups_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2019-08-01/examples/DeviceSecurityGroups/
+     * DeleteDeviceSecurityGroups_example.json
      */
     /**
      * Sample code: Delete a device security group for the specified IoT Hub resource.

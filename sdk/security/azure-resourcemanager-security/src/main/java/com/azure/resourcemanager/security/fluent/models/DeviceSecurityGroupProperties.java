@@ -5,40 +5,40 @@
 package com.azure.resourcemanager.security.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.security.models.AllowlistCustomAlertRule;
 import com.azure.resourcemanager.security.models.DenylistCustomAlertRule;
 import com.azure.resourcemanager.security.models.ThresholdCustomAlertRule;
 import com.azure.resourcemanager.security.models.TimeWindowCustomAlertRule;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * describes properties of a security group.
  */
 @Fluent
-public final class DeviceSecurityGroupProperties {
+public final class DeviceSecurityGroupProperties implements JsonSerializable<DeviceSecurityGroupProperties> {
     /*
      * The list of custom alert threshold rules.
      */
-    @JsonProperty(value = "thresholdRules")
     private List<ThresholdCustomAlertRule> thresholdRules;
 
     /*
      * The list of custom alert time-window rules.
      */
-    @JsonProperty(value = "timeWindowRules")
     private List<TimeWindowCustomAlertRule> timeWindowRules;
 
     /*
      * The allow-list custom alert rules.
      */
-    @JsonProperty(value = "allowlistRules")
     private List<AllowlistCustomAlertRule> allowlistRules;
 
     /*
      * The deny-list custom alert rules.
      */
-    @JsonProperty(value = "denylistRules")
     private List<DenylistCustomAlertRule> denylistRules;
 
     /**
@@ -145,5 +145,62 @@ public final class DeviceSecurityGroupProperties {
         if (denylistRules() != null) {
             denylistRules().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("thresholdRules", this.thresholdRules,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("timeWindowRules", this.timeWindowRules,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("allowlistRules", this.allowlistRules,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("denylistRules", this.denylistRules, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DeviceSecurityGroupProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DeviceSecurityGroupProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DeviceSecurityGroupProperties.
+     */
+    public static DeviceSecurityGroupProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DeviceSecurityGroupProperties deserializedDeviceSecurityGroupProperties
+                = new DeviceSecurityGroupProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("thresholdRules".equals(fieldName)) {
+                    List<ThresholdCustomAlertRule> thresholdRules
+                        = reader.readArray(reader1 -> ThresholdCustomAlertRule.fromJson(reader1));
+                    deserializedDeviceSecurityGroupProperties.thresholdRules = thresholdRules;
+                } else if ("timeWindowRules".equals(fieldName)) {
+                    List<TimeWindowCustomAlertRule> timeWindowRules
+                        = reader.readArray(reader1 -> TimeWindowCustomAlertRule.fromJson(reader1));
+                    deserializedDeviceSecurityGroupProperties.timeWindowRules = timeWindowRules;
+                } else if ("allowlistRules".equals(fieldName)) {
+                    List<AllowlistCustomAlertRule> allowlistRules
+                        = reader.readArray(reader1 -> AllowlistCustomAlertRule.fromJson(reader1));
+                    deserializedDeviceSecurityGroupProperties.allowlistRules = allowlistRules;
+                } else if ("denylistRules".equals(fieldName)) {
+                    List<DenylistCustomAlertRule> denylistRules
+                        = reader.readArray(reader1 -> DenylistCustomAlertRule.fromJson(reader1));
+                    deserializedDeviceSecurityGroupProperties.denylistRules = denylistRules;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDeviceSecurityGroupProperties;
+        });
     }
 }

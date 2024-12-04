@@ -28,7 +28,7 @@ public final class DeviceSecurityGroupsDeleteByResourceGroupWithResponseMockTest
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.deviceSecurityGroups()
-            .deleteByResourceGroupWithResponse("p", "wlkqdgwbztrthl", com.azure.core.util.Context.NONE);
+            .deleteByResourceGroupWithResponse("dliklxkyoddoq", "a", com.azure.core.util.Context.NONE);
 
     }
 }

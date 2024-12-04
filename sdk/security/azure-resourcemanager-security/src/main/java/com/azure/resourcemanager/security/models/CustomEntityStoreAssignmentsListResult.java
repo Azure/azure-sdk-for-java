@@ -5,25 +5,28 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.security.fluent.models.CustomEntityStoreAssignmentInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * A list of custom entity store assignments.
  */
 @Fluent
-public final class CustomEntityStoreAssignmentsListResult {
+public final class CustomEntityStoreAssignmentsListResult
+    implements JsonSerializable<CustomEntityStoreAssignmentsListResult> {
     /*
      * Collection of custom entity store assignments
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<CustomEntityStoreAssignmentInner> value;
 
     /*
      * The link used to get the next page of operations.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
@@ -70,5 +73,46 @@ public final class CustomEntityStoreAssignmentsListResult {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CustomEntityStoreAssignmentsListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CustomEntityStoreAssignmentsListResult if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CustomEntityStoreAssignmentsListResult.
+     */
+    public static CustomEntityStoreAssignmentsListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CustomEntityStoreAssignmentsListResult deserializedCustomEntityStoreAssignmentsListResult
+                = new CustomEntityStoreAssignmentsListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<CustomEntityStoreAssignmentInner> value
+                        = reader.readArray(reader1 -> CustomEntityStoreAssignmentInner.fromJson(reader1));
+                    deserializedCustomEntityStoreAssignmentsListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedCustomEntityStoreAssignmentsListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCustomEntityStoreAssignmentsListResult;
+        });
     }
 }

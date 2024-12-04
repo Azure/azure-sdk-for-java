@@ -20,7 +20,7 @@ public final class CompliancesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"assessmentTimestampUtcDate\":\"2021-09-28T13:59:48Z\",\"resourceCount\":1605969000,\"assessmentResult\":[{\"segmentType\":\"ifubnsnstlpwqp\",\"percentage\":55.966483341490644}]},\"id\":\"khtupsvyou\",\"name\":\"euiyxfwkztsms\",\"type\":\"b\"}";
+            = "{\"properties\":{\"assessmentTimestampUtcDate\":\"2021-02-05T01:05:40Z\",\"resourceCount\":2020636495,\"assessmentResult\":[{\"segmentType\":\"ipsdudgcozzomehx\",\"percentage\":48.27679658385821}]},\"id\":\"olamlbijuxk\",\"name\":\"llczipvwdt\",\"type\":\"ckzdqiqdlra\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class CompliancesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         Compliance response
-            = manager.compliances().getWithResponse("vvbq", "knmp", com.azure.core.util.Context.NONE).getValue();
+            = manager.compliances().getWithResponse("e", "ooy", com.azure.core.util.Context.NONE).getValue();
 
     }
 }

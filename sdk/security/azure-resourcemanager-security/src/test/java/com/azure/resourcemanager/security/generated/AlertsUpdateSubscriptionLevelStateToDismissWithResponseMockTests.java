@@ -28,8 +28,7 @@ public final class AlertsUpdateSubscriptionLevelStateToDismissWithResponseMockTe
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.alerts()
-            .updateSubscriptionLevelStateToDismissWithResponse("uicsggsxznbppmkq", "ylb",
-                com.azure.core.util.Context.NONE);
+            .updateSubscriptionLevelStateToDismissWithResponse("cthype", "xshmrdisc", com.azure.core.util.Context.NONE);
 
     }
 }

@@ -5,8 +5,13 @@
 package com.azure.resourcemanager.security.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.security.models.ComplianceSegment;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
@@ -16,23 +21,21 @@ import java.util.List;
  * Definitions applicable to a given resource.
  */
 @Immutable
-public final class ComplianceProperties {
+public final class ComplianceProperties implements JsonSerializable<ComplianceProperties> {
     /*
      * The timestamp when the Compliance calculation was conducted.
      */
-    @JsonProperty(value = "assessmentTimestampUtcDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime assessmentTimestampUtcDate;
 
     /*
-     * The resource count of the given subscription for which the Compliance calculation was conducted (needed for Management Group Compliance calculation).
+     * The resource count of the given subscription for which the Compliance calculation was conducted (needed for
+     * Management Group Compliance calculation).
      */
-    @JsonProperty(value = "resourceCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer resourceCount;
 
     /*
      * An array of segment, which is the actually the compliance assessment.
      */
-    @JsonProperty(value = "assessmentResult", access = JsonProperty.Access.WRITE_ONLY)
     private List<ComplianceSegment> assessmentResult;
 
     /**
@@ -78,5 +81,47 @@ public final class ComplianceProperties {
         if (assessmentResult() != null) {
             assessmentResult().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ComplianceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ComplianceProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ComplianceProperties.
+     */
+    public static ComplianceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ComplianceProperties deserializedComplianceProperties = new ComplianceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("assessmentTimestampUtcDate".equals(fieldName)) {
+                    deserializedComplianceProperties.assessmentTimestampUtcDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("resourceCount".equals(fieldName)) {
+                    deserializedComplianceProperties.resourceCount = reader.getNullable(JsonReader::getInt);
+                } else if ("assessmentResult".equals(fieldName)) {
+                    List<ComplianceSegment> assessmentResult
+                        = reader.readArray(reader1 -> ComplianceSegment.fromJson(reader1));
+                    deserializedComplianceProperties.assessmentResult = assessmentResult;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedComplianceProperties;
+        });
     }
 }

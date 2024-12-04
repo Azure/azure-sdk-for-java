@@ -23,7 +23,7 @@ public final class JitNetworkAccessPoliciesListByRegionMockTests {
     @Test
     public void testListByRegion() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"virtualMachines\":[{\"id\":\"enegg\",\"ports\":[{\"number\":1307676483,\"protocol\":\"TCP\",\"maxRequestAccessDuration\":\"zpxlitwkejmgemud\"},{\"number\":883228909,\"protocol\":\"*\",\"maxRequestAccessDuration\":\"hskvsdfvhrypezam\"}],\"publicIpAddress\":\"kapvnpeukgn\"},{\"id\":\"fakeqnitro\",\"ports\":[{\"number\":61090455,\"protocol\":\"*\",\"maxRequestAccessDuration\":\"vktfp\"},{\"number\":1173407545,\"protocol\":\"*\",\"maxRequestAccessDuration\":\"wshvfxjt\"},{\"number\":540342239,\"protocol\":\"*\",\"maxRequestAccessDuration\":\"wmvdyq\"},{\"number\":1270557733,\"protocol\":\"UDP\",\"maxRequestAccessDuration\":\"ropxfqd\"}],\"publicIpAddress\":\"lznyjyuw\"},{\"id\":\"lzwgdpvhw\",\"ports\":[{\"number\":1167647739,\"protocol\":\"*\",\"maxRequestAccessDuration\":\"amqtrhqdoxdegacd\"},{\"number\":1399760112,\"protocol\":\"UDP\",\"maxRequestAccessDuration\":\"kw\"},{\"number\":363665282,\"protocol\":\"UDP\",\"maxRequestAccessDuration\":\"bpgdcidpdaqe\"},{\"number\":444699563,\"protocol\":\"*\",\"maxRequestAccessDuration\":\"ddlirqqcl\"}],\"publicIpAddress\":\"qifepdureeviv\"}],\"requests\":[{\"virtualMachines\":[{\"id\":\"ioklsuffp\",\"ports\":[]},{\"id\":\"eswc\",\"ports\":[]},{\"id\":\"lfytbltytvnpbgce\",\"ports\":[]}],\"startTimeUtc\":\"2021-05-06T14:28:24Z\",\"requestor\":\"ddfclmowu\",\"justification\":\"fofkbcjzzwweob\"},{\"virtualMachines\":[{\"id\":\"tdqzhixccnkfso\",\"ports\":[]}],\"startTimeUtc\":\"2020-12-24T00:27:56Z\",\"requestor\":\"yoxmyqzyqepg\",\"justification\":\"z\"}],\"provisioningState\":\"luokc\"},\"kind\":\"oxdddpwmgwxwuk\",\"location\":\"v\",\"id\":\"glaxseis\",\"name\":\"vvgyphheo\",\"type\":\"ejk\"}]}";
+            = "{\"value\":[{\"properties\":{\"virtualMachines\":[{\"id\":\"xnwcgzuoxixtx\",\"ports\":[{\"number\":1460009454,\"protocol\":\"UDP\",\"maxRequestAccessDuration\":\"sehbknnrnk\"},{\"number\":589543785,\"protocol\":\"UDP\",\"maxRequestAccessDuration\":\"awpcbso\"}],\"publicIpAddress\":\"ehczbnivcohsxv\"},{\"id\":\"pkjealkdbewhotv\",\"ports\":[{\"number\":1781899157,\"protocol\":\"TCP\",\"maxRequestAccessDuration\":\"uq\"},{\"number\":1424020455,\"protocol\":\"UDP\",\"maxRequestAccessDuration\":\"dktrjtoqszh\"}],\"publicIpAddress\":\"ngjn\"},{\"id\":\"kvzmxlffqg\",\"ports\":[{\"number\":852860637,\"protocol\":\"UDP\",\"maxRequestAccessDuration\":\"kqyipgkmjtda\"},{\"number\":2035829379,\"protocol\":\"*\",\"maxRequestAccessDuration\":\"zesimef\"},{\"number\":486715826,\"protocol\":\"UDP\",\"maxRequestAccessDuration\":\"rfzjlflzagvdavab\"},{\"number\":624510871,\"protocol\":\"TCP\",\"maxRequestAccessDuration\":\"fcorzbidae\"}],\"publicIpAddress\":\"zni\"},{\"id\":\"e\",\"ports\":[{\"number\":978435959,\"protocol\":\"TCP\",\"maxRequestAccessDuration\":\"jwiylciobb\"},{\"number\":969466087,\"protocol\":\"TCP\",\"maxRequestAccessDuration\":\"srzeqxuecuuuexsm\"},{\"number\":706554267,\"protocol\":\"UDP\",\"maxRequestAccessDuration\":\"evfgaxfe\"},{\"number\":54733302,\"protocol\":\"*\",\"maxRequestAccessDuration\":\"qsddk\"}],\"publicIpAddress\":\"kgxqfkyrxgmzze\"}],\"requests\":[{\"virtualMachines\":[{\"id\":\"zfss\",\"ports\":[]},{\"id\":\"fegaok\",\"ports\":[]},{\"id\":\"ddkkraj\",\"ports\":[]},{\"id\":\"yuklxkel\",\"ports\":[]}],\"startTimeUtc\":\"2021-01-04T09:23:26Z\",\"requestor\":\"pyqbwhue\",\"justification\":\"hgsingm\"}],\"provisioningState\":\"avsf\"},\"kind\":\"rvqrwwbdrwroqk\",\"location\":\"nzpqhqqsarky\",\"id\":\"lfameaasjq\",\"name\":\"nhekzazvgeytlpls\",\"type\":\"fcvedks\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,22 +33,22 @@ public final class JitNetworkAccessPoliciesListByRegionMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<JitNetworkAccessPolicy> response
-            = manager.jitNetworkAccessPolicies().listByRegion("anguhbnhogse", com.azure.core.util.Context.NONE);
+            = manager.jitNetworkAccessPolicies().listByRegion("m", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("oxdddpwmgwxwuk", response.iterator().next().kind());
-        Assertions.assertEquals("enegg", response.iterator().next().virtualMachines().get(0).id());
-        Assertions.assertEquals(1307676483,
+        Assertions.assertEquals("rvqrwwbdrwroqk", response.iterator().next().kind());
+        Assertions.assertEquals("xnwcgzuoxixtx", response.iterator().next().virtualMachines().get(0).id());
+        Assertions.assertEquals(1460009454,
             response.iterator().next().virtualMachines().get(0).ports().get(0).number());
-        Assertions.assertEquals(Protocol.TCP,
+        Assertions.assertEquals(Protocol.UDP,
             response.iterator().next().virtualMachines().get(0).ports().get(0).protocol());
-        Assertions.assertEquals("zpxlitwkejmgemud",
+        Assertions.assertEquals("sehbknnrnk",
             response.iterator().next().virtualMachines().get(0).ports().get(0).maxRequestAccessDuration());
-        Assertions.assertEquals("kapvnpeukgn", response.iterator().next().virtualMachines().get(0).publicIpAddress());
-        Assertions.assertEquals("ioklsuffp",
-            response.iterator().next().requests().get(0).virtualMachines().get(0).id());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-06T14:28:24Z"),
+        Assertions.assertEquals("ehczbnivcohsxv",
+            response.iterator().next().virtualMachines().get(0).publicIpAddress());
+        Assertions.assertEquals("zfss", response.iterator().next().requests().get(0).virtualMachines().get(0).id());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-04T09:23:26Z"),
             response.iterator().next().requests().get(0).startTimeUtc());
-        Assertions.assertEquals("ddfclmowu", response.iterator().next().requests().get(0).requestor());
-        Assertions.assertEquals("fofkbcjzzwweob", response.iterator().next().requests().get(0).justification());
+        Assertions.assertEquals("pyqbwhue", response.iterator().next().requests().get(0).requestor());
+        Assertions.assertEquals("hgsingm", response.iterator().next().requests().get(0).justification());
     }
 }

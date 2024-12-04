@@ -12,21 +12,21 @@ public final class IoTSeverityMetricsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IoTSeverityMetrics model = BinaryData
-            .fromString("{\"high\":2543224081290194120,\"medium\":5345078025295991871,\"low\":4021549992719181471}")
+            .fromString("{\"high\":7226762894267934753,\"medium\":298330271125301264,\"low\":8273997735640789883}")
             .toObject(IoTSeverityMetrics.class);
-        Assertions.assertEquals(2543224081290194120L, model.high());
-        Assertions.assertEquals(5345078025295991871L, model.medium());
-        Assertions.assertEquals(4021549992719181471L, model.low());
+        Assertions.assertEquals(7226762894267934753L, model.high());
+        Assertions.assertEquals(298330271125301264L, model.medium());
+        Assertions.assertEquals(8273997735640789883L, model.low());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IoTSeverityMetrics model = new IoTSeverityMetrics().withHigh(2543224081290194120L)
-            .withMedium(5345078025295991871L)
-            .withLow(4021549992719181471L);
+        IoTSeverityMetrics model = new IoTSeverityMetrics().withHigh(7226762894267934753L)
+            .withMedium(298330271125301264L)
+            .withLow(8273997735640789883L);
         model = BinaryData.fromObject(model).toObject(IoTSeverityMetrics.class);
-        Assertions.assertEquals(2543224081290194120L, model.high());
-        Assertions.assertEquals(5345078025295991871L, model.medium());
-        Assertions.assertEquals(4021549992719181471L, model.low());
+        Assertions.assertEquals(7226762894267934753L, model.high());
+        Assertions.assertEquals(298330271125301264L, model.medium());
+        Assertions.assertEquals(8273997735640789883L, model.low());
     }
 }

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -52,7 +51,6 @@ public final class RuleSeverity extends ExpandableStringEnum<RuleSeverity> {
      * @param name a name to look for.
      * @return the corresponding RuleSeverity.
      */
-    @JsonCreator
     public static RuleSeverity fromString(String name) {
         return fromString(name, RuleSeverity.class);
     }

@@ -26,56 +26,56 @@ public final class DefenderForServersAwsOfferingTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DefenderForServersAwsOffering model = BinaryData.fromString(
-            "{\"offeringType\":\"DefenderForServersAws\",\"defenderForServers\":{\"cloudRoleArn\":\"ml\"},\"arcAutoProvisioning\":{\"cloudRoleArn\":\"othxuarigrjd\",\"enabled\":true,\"configuration\":{\"proxy\":\"hvkr\",\"privateLinkScope\":\"kuastaxklpr\"}},\"vaAutoProvisioning\":{\"enabled\":true,\"configuration\":{\"type\":\"Qualys\"}},\"mdeAutoProvisioning\":{\"enabled\":true,\"configuration\":\"dataxvsc\"},\"subPlan\":{\"type\":\"P1\"},\"vmScanners\":{\"cloudRoleArn\":\"skyekgafxczv\",\"enabled\":false,\"configuration\":{\"scanningMode\":\"Default\",\"exclusionTags\":{\"tlh\":\"letyvesz\",\"njfmbbfnvjxit\":\"dhwynctacz\",\"oqksyiibhyxwbgbu\":\"ovnkrtiklsmnihql\",\"thojvlirknucos\":\"avqdorbccqcd\"}}},\"description\":\"rdtnagzl\"}")
+            "{\"offeringType\":\"DefenderForServersAws\",\"defenderForServers\":{\"cloudRoleArn\":\"knsykdtoiboan\"},\"arcAutoProvisioning\":{\"cloudRoleArn\":\"coan\",\"enabled\":false,\"configuration\":{\"proxy\":\"xonckbnlblfxlup\",\"privateLinkScope\":\"aqziz\"}},\"vaAutoProvisioning\":{\"enabled\":true,\"configuration\":{\"type\":\"Qualys\"}},\"mdeAutoProvisioning\":{\"enabled\":true,\"configuration\":\"databogvgfklqiy\"},\"subPlan\":{\"type\":\"P1\"},\"vmScanners\":{\"cloudRoleArn\":\"lsb\",\"enabled\":true,\"configuration\":{\"scanningMode\":\"Default\",\"exclusionTags\":{\"znsvlrd\":\"xsg\",\"rqaqotn\":\"movpimyndnoxax\",\"g\":\"dxolousdv\"}}},\"description\":\"qmawzjdrpizfu\"}")
             .toObject(DefenderForServersAwsOffering.class);
-        Assertions.assertEquals("ml", model.defenderForServers().cloudRoleArn());
-        Assertions.assertEquals(true, model.arcAutoProvisioning().enabled());
-        Assertions.assertEquals("hvkr", model.arcAutoProvisioning().configuration().proxy());
-        Assertions.assertEquals("kuastaxklpr", model.arcAutoProvisioning().configuration().privateLinkScope());
-        Assertions.assertEquals("othxuarigrjd", model.arcAutoProvisioning().cloudRoleArn());
+        Assertions.assertEquals("knsykdtoiboan", model.defenderForServers().cloudRoleArn());
+        Assertions.assertEquals(false, model.arcAutoProvisioning().enabled());
+        Assertions.assertEquals("xonckbnlblfxlup", model.arcAutoProvisioning().configuration().proxy());
+        Assertions.assertEquals("aqziz", model.arcAutoProvisioning().configuration().privateLinkScope());
+        Assertions.assertEquals("coan", model.arcAutoProvisioning().cloudRoleArn());
         Assertions.assertEquals(true, model.vaAutoProvisioning().enabled());
         Assertions.assertEquals(Type.QUALYS, model.vaAutoProvisioning().configuration().type());
         Assertions.assertEquals(true, model.mdeAutoProvisioning().enabled());
         Assertions.assertEquals(SubPlan.P1, model.subPlan().type());
-        Assertions.assertEquals(false, model.vmScanners().enabled());
+        Assertions.assertEquals(true, model.vmScanners().enabled());
         Assertions.assertEquals(ScanningMode.DEFAULT, model.vmScanners().configuration().scanningMode());
-        Assertions.assertEquals("letyvesz", model.vmScanners().configuration().exclusionTags().get("tlh"));
-        Assertions.assertEquals("skyekgafxczv", model.vmScanners().cloudRoleArn());
+        Assertions.assertEquals("xsg", model.vmScanners().configuration().exclusionTags().get("znsvlrd"));
+        Assertions.assertEquals("lsb", model.vmScanners().cloudRoleArn());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DefenderForServersAwsOffering model = new DefenderForServersAwsOffering()
-            .withDefenderForServers(new DefenderForServersAwsOfferingDefenderForServers().withCloudRoleArn("ml"))
-            .withArcAutoProvisioning(new DefenderForServersAwsOfferingArcAutoProvisioning().withEnabled(true)
+            .withDefenderForServers(
+                new DefenderForServersAwsOfferingDefenderForServers().withCloudRoleArn("knsykdtoiboan"))
+            .withArcAutoProvisioning(new DefenderForServersAwsOfferingArcAutoProvisioning().withEnabled(false)
                 .withConfiguration(
-                    new ArcAutoProvisioningConfiguration().withProxy("hvkr").withPrivateLinkScope("kuastaxklpr"))
-                .withCloudRoleArn("othxuarigrjd"))
+                    new ArcAutoProvisioningConfiguration().withProxy("xonckbnlblfxlup").withPrivateLinkScope("aqziz"))
+                .withCloudRoleArn("coan"))
             .withVaAutoProvisioning(new DefenderForServersAwsOfferingVaAutoProvisioning().withEnabled(true)
                 .withConfiguration(
                     new DefenderForServersAwsOfferingVaAutoProvisioningConfiguration().withType(Type.QUALYS)))
-            .withMdeAutoProvisioning(
-                new DefenderForServersAwsOfferingMdeAutoProvisioning().withEnabled(true).withConfiguration("dataxvsc"))
+            .withMdeAutoProvisioning(new DefenderForServersAwsOfferingMdeAutoProvisioning().withEnabled(true)
+                .withConfiguration("databogvgfklqiy"))
             .withSubPlan(new DefenderForServersAwsOfferingSubPlan().withType(SubPlan.P1))
-            .withVmScanners(new DefenderForServersAwsOfferingVmScanners().withEnabled(false)
+            .withVmScanners(new DefenderForServersAwsOfferingVmScanners().withEnabled(true)
                 .withConfiguration(new VmScannersBaseConfiguration().withScanningMode(ScanningMode.DEFAULT)
-                    .withExclusionTags(mapOf("tlh", "letyvesz", "njfmbbfnvjxit", "dhwynctacz", "oqksyiibhyxwbgbu",
-                        "ovnkrtiklsmnihql", "thojvlirknucos", "avqdorbccqcd")))
-                .withCloudRoleArn("skyekgafxczv"));
+                    .withExclusionTags(mapOf("znsvlrd", "xsg", "rqaqotn", "movpimyndnoxax", "g", "dxolousdv")))
+                .withCloudRoleArn("lsb"));
         model = BinaryData.fromObject(model).toObject(DefenderForServersAwsOffering.class);
-        Assertions.assertEquals("ml", model.defenderForServers().cloudRoleArn());
-        Assertions.assertEquals(true, model.arcAutoProvisioning().enabled());
-        Assertions.assertEquals("hvkr", model.arcAutoProvisioning().configuration().proxy());
-        Assertions.assertEquals("kuastaxklpr", model.arcAutoProvisioning().configuration().privateLinkScope());
-        Assertions.assertEquals("othxuarigrjd", model.arcAutoProvisioning().cloudRoleArn());
+        Assertions.assertEquals("knsykdtoiboan", model.defenderForServers().cloudRoleArn());
+        Assertions.assertEquals(false, model.arcAutoProvisioning().enabled());
+        Assertions.assertEquals("xonckbnlblfxlup", model.arcAutoProvisioning().configuration().proxy());
+        Assertions.assertEquals("aqziz", model.arcAutoProvisioning().configuration().privateLinkScope());
+        Assertions.assertEquals("coan", model.arcAutoProvisioning().cloudRoleArn());
         Assertions.assertEquals(true, model.vaAutoProvisioning().enabled());
         Assertions.assertEquals(Type.QUALYS, model.vaAutoProvisioning().configuration().type());
         Assertions.assertEquals(true, model.mdeAutoProvisioning().enabled());
         Assertions.assertEquals(SubPlan.P1, model.subPlan().type());
-        Assertions.assertEquals(false, model.vmScanners().enabled());
+        Assertions.assertEquals(true, model.vmScanners().enabled());
         Assertions.assertEquals(ScanningMode.DEFAULT, model.vmScanners().configuration().scanningMode());
-        Assertions.assertEquals("letyvesz", model.vmScanners().configuration().exclusionTags().get("tlh"));
-        Assertions.assertEquals("skyekgafxczv", model.vmScanners().cloudRoleArn());
+        Assertions.assertEquals("xsg", model.vmScanners().configuration().exclusionTags().get("znsvlrd"));
+        Assertions.assertEquals("lsb", model.vmScanners().cloudRoleArn());
     }
 
     // Use "Map.of" if available

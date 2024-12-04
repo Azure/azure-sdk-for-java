@@ -33,66 +33,11 @@ public interface DefenderForStorageSetting {
     String type();
 
     /**
-     * Gets the isEnabled property: Indicates whether Defender for Storage is enabled on this storage account.
+     * Gets the properties property: Defender for Storage resource properties.
      * 
-     * @return the isEnabled value.
+     * @return the properties value.
      */
-    Boolean isEnabled();
-
-    /**
-     * Gets the overrideSubscriptionLevelSettings property: Indicates whether the settings defined for this storage
-     * account should override the settings defined for the subscription.
-     * 
-     * @return the overrideSubscriptionLevelSettings value.
-     */
-    Boolean overrideSubscriptionLevelSettings();
-
-    /**
-     * Gets the scanResultsEventGridTopicResourceId property: Optional. Resource id of an Event Grid Topic to send scan
-     * results to.
-     * 
-     * @return the scanResultsEventGridTopicResourceId value.
-     */
-    String scanResultsEventGridTopicResourceId();
-
-    /**
-     * Gets the operationStatus property: Upon failure or partial success. Additional data describing Malware Scanning
-     * enable/disable operation.
-     * 
-     * @return the operationStatus value.
-     */
-    OperationStatus operationStatus();
-
-    /**
-     * Gets the isEnabledMalwareScanningIsEnabled property: Indicates whether On Upload malware scanning should be
-     * enabled.
-     * 
-     * @return the isEnabledMalwareScanningIsEnabled value.
-     */
-    Boolean isEnabledMalwareScanningIsEnabled();
-
-    /**
-     * Gets the capGBPerMonth property: Defines the max GB to be scanned per Month. Set to -1 if no capping is needed.
-     * 
-     * @return the capGBPerMonth value.
-     */
-    Integer capGBPerMonth();
-
-    /**
-     * Gets the isEnabledSensitiveDataDiscoveryIsEnabled property: Indicates whether Sensitive Data Discovery should be
-     * enabled.
-     * 
-     * @return the isEnabledSensitiveDataDiscoveryIsEnabled value.
-     */
-    Boolean isEnabledSensitiveDataDiscoveryIsEnabled();
-
-    /**
-     * Gets the operationStatusSensitiveDataDiscoveryOperationStatus property: Upon failure or partial success.
-     * Additional data describing Sensitive Data Discovery enable/disable operation.
-     * 
-     * @return the operationStatusSensitiveDataDiscoveryOperationStatus value.
-     */
-    OperationStatus operationStatusSensitiveDataDiscoveryOperationStatus();
+    DefenderForStorageSettingProperties properties();
 
     /**
      * Gets the inner com.azure.resourcemanager.security.fluent.models.DefenderForStorageSettingInner object.
@@ -134,11 +79,7 @@ public interface DefenderForStorageSetting {
          * The stage of the DefenderForStorageSetting definition which contains all the minimum required properties for
          * the resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithIsEnabled, DefinitionStages.WithOverrideSubscriptionLevelSettings,
-            DefinitionStages.WithScanResultsEventGridTopicResourceId,
-            DefinitionStages.WithIsEnabledMalwareScanningIsEnabled, DefinitionStages.WithCapGBPerMonth,
-            DefinitionStages.WithIsEnabledSensitiveDataDiscoveryIsEnabled {
+        interface WithCreate extends DefinitionStages.WithProperties {
             /**
              * Executes the create request.
              * 
@@ -156,92 +97,16 @@ public interface DefenderForStorageSetting {
         }
 
         /**
-         * The stage of the DefenderForStorageSetting definition allowing to specify isEnabled.
+         * The stage of the DefenderForStorageSetting definition allowing to specify properties.
          */
-        interface WithIsEnabled {
+        interface WithProperties {
             /**
-             * Specifies the isEnabled property: Indicates whether Defender for Storage is enabled on this storage
-             * account..
+             * Specifies the properties property: Defender for Storage resource properties..
              * 
-             * @param isEnabled Indicates whether Defender for Storage is enabled on this storage account.
+             * @param properties Defender for Storage resource properties.
              * @return the next definition stage.
              */
-            WithCreate withIsEnabled(Boolean isEnabled);
-        }
-
-        /**
-         * The stage of the DefenderForStorageSetting definition allowing to specify overrideSubscriptionLevelSettings.
-         */
-        interface WithOverrideSubscriptionLevelSettings {
-            /**
-             * Specifies the overrideSubscriptionLevelSettings property: Indicates whether the settings defined for this
-             * storage account should override the settings defined for the subscription..
-             * 
-             * @param overrideSubscriptionLevelSettings Indicates whether the settings defined for this storage account
-             * should override the settings defined for the subscription.
-             * @return the next definition stage.
-             */
-            WithCreate withOverrideSubscriptionLevelSettings(Boolean overrideSubscriptionLevelSettings);
-        }
-
-        /**
-         * The stage of the DefenderForStorageSetting definition allowing to specify
-         * scanResultsEventGridTopicResourceId.
-         */
-        interface WithScanResultsEventGridTopicResourceId {
-            /**
-             * Specifies the scanResultsEventGridTopicResourceId property: Optional. Resource id of an Event Grid Topic
-             * to send scan results to..
-             * 
-             * @param scanResultsEventGridTopicResourceId Optional. Resource id of an Event Grid Topic to send scan
-             * results to.
-             * @return the next definition stage.
-             */
-            WithCreate withScanResultsEventGridTopicResourceId(String scanResultsEventGridTopicResourceId);
-        }
-
-        /**
-         * The stage of the DefenderForStorageSetting definition allowing to specify isEnabledMalwareScanningIsEnabled.
-         */
-        interface WithIsEnabledMalwareScanningIsEnabled {
-            /**
-             * Specifies the isEnabledMalwareScanningIsEnabled property: Indicates whether On Upload malware scanning
-             * should be enabled..
-             * 
-             * @param isEnabledMalwareScanningIsEnabled Indicates whether On Upload malware scanning should be enabled.
-             * @return the next definition stage.
-             */
-            WithCreate withIsEnabledMalwareScanningIsEnabled(Boolean isEnabledMalwareScanningIsEnabled);
-        }
-
-        /**
-         * The stage of the DefenderForStorageSetting definition allowing to specify capGBPerMonth.
-         */
-        interface WithCapGBPerMonth {
-            /**
-             * Specifies the capGBPerMonth property: Defines the max GB to be scanned per Month. Set to -1 if no capping
-             * is needed..
-             * 
-             * @param capGBPerMonth Defines the max GB to be scanned per Month. Set to -1 if no capping is needed.
-             * @return the next definition stage.
-             */
-            WithCreate withCapGBPerMonth(Integer capGBPerMonth);
-        }
-
-        /**
-         * The stage of the DefenderForStorageSetting definition allowing to specify
-         * isEnabledSensitiveDataDiscoveryIsEnabled.
-         */
-        interface WithIsEnabledSensitiveDataDiscoveryIsEnabled {
-            /**
-             * Specifies the isEnabledSensitiveDataDiscoveryIsEnabled property: Indicates whether Sensitive Data
-             * Discovery should be enabled..
-             * 
-             * @param isEnabledSensitiveDataDiscoveryIsEnabled Indicates whether Sensitive Data Discovery should be
-             * enabled.
-             * @return the next definition stage.
-             */
-            WithCreate withIsEnabledSensitiveDataDiscoveryIsEnabled(Boolean isEnabledSensitiveDataDiscoveryIsEnabled);
+            WithCreate withProperties(DefenderForStorageSettingProperties properties);
         }
     }
 

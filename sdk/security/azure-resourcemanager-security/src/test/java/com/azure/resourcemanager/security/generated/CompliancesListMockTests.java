@@ -21,7 +21,7 @@ public final class CompliancesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"assessmentTimestampUtcDate\":\"2021-02-23T22:02:45Z\",\"resourceCount\":1246413054,\"assessmentResult\":[{\"segmentType\":\"wiuasfg\",\"percentage\":53.90945033532123},{\"segmentType\":\"hfaimqvdruozkg\",\"percentage\":33.53438075015429}]},\"id\":\"oehgfmqmskkixvlz\",\"name\":\"xplhpeva\",\"type\":\"yntvzjyielbq\"}]}";
+            = "{\"value\":[{\"properties\":{\"assessmentTimestampUtcDate\":\"2021-04-11T12:59:41Z\",\"resourceCount\":2127681631,\"assessmentResult\":[{\"segmentType\":\"yrvjlgdezvjq\",\"percentage\":82.05957479993805},{\"segmentType\":\"iyaxqvjweiwt\",\"percentage\":20.606992871244323}]},\"id\":\"dn\",\"name\":\"ovbooqbmdqrxy\",\"type\":\"laetscflwtjdtlr\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,8 +30,7 @@ public final class CompliancesListMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<Compliance> response
-            = manager.compliances().list("diuycsbskowkrbhz", com.azure.core.util.Context.NONE);
+        PagedIterable<Compliance> response = manager.compliances().list("mjodu", com.azure.core.util.Context.NONE);
 
     }
 }

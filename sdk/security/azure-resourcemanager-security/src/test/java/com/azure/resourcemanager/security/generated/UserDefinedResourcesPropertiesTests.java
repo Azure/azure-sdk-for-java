@@ -13,18 +13,18 @@ public final class UserDefinedResourcesPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UserDefinedResourcesProperties model = BinaryData.fromString(
-            "{\"query\":\"hshxcylhkgmnsghp\",\"querySubscriptions\":[\"cphdrwjjkhvyo\",\"ac\",\"u\",\"vxnqmhrpqpd\"]}")
+            "{\"query\":\"uwg\",\"querySubscriptions\":[\"vuafpwzyifr\",\"gwltxeqip\",\"gzdyimsfayorp\",\"avkjog\"]}")
             .toObject(UserDefinedResourcesProperties.class);
-        Assertions.assertEquals("hshxcylhkgmnsghp", model.query());
-        Assertions.assertEquals("cphdrwjjkhvyo", model.querySubscriptions().get(0));
+        Assertions.assertEquals("uwg", model.query());
+        Assertions.assertEquals("vuafpwzyifr", model.querySubscriptions().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UserDefinedResourcesProperties model = new UserDefinedResourcesProperties().withQuery("hshxcylhkgmnsghp")
-            .withQuerySubscriptions(Arrays.asList("cphdrwjjkhvyo", "ac", "u", "vxnqmhrpqpd"));
+        UserDefinedResourcesProperties model = new UserDefinedResourcesProperties().withQuery("uwg")
+            .withQuerySubscriptions(Arrays.asList("vuafpwzyifr", "gwltxeqip", "gzdyimsfayorp", "avkjog"));
         model = BinaryData.fromObject(model).toObject(UserDefinedResourcesProperties.class);
-        Assertions.assertEquals("hshxcylhkgmnsghp", model.query());
-        Assertions.assertEquals("cphdrwjjkhvyo", model.querySubscriptions().get(0));
+        Assertions.assertEquals("uwg", model.query());
+        Assertions.assertEquals("vuafpwzyifr", model.querySubscriptions().get(0));
     }
 }

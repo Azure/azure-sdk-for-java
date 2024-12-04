@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The benchmark references.
  */
 @Fluent
-public final class BenchmarkReference {
+public final class BenchmarkReference implements JsonSerializable<BenchmarkReference> {
     /*
      * The benchmark name.
      */
-    @JsonProperty(value = "benchmark")
     private String benchmark;
 
     /*
      * The benchmark reference.
      */
-    @JsonProperty(value = "reference")
     private String reference;
 
     /**
@@ -76,5 +78,44 @@ public final class BenchmarkReference {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("benchmark", this.benchmark);
+        jsonWriter.writeStringField("reference", this.reference);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BenchmarkReference from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BenchmarkReference if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BenchmarkReference.
+     */
+    public static BenchmarkReference fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BenchmarkReference deserializedBenchmarkReference = new BenchmarkReference();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("benchmark".equals(fieldName)) {
+                    deserializedBenchmarkReference.benchmark = reader.getString();
+                } else if ("reference".equals(fieldName)) {
+                    deserializedBenchmarkReference.reference = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBenchmarkReference;
+        });
     }
 }

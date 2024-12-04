@@ -21,7 +21,7 @@ public final class CustomEntityStoreAssignmentsCreateWithResponseMockTests {
     @Test
     public void testCreateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"principal\":\"tsjk\",\"entityStoreDatabaseLink\":\"rexw\"},\"id\":\"onbexft\",\"name\":\"daubheeggzgr\",\"type\":\"qtlfoz\"}";
+            = "{\"properties\":{\"principal\":\"xxupjxv\",\"entityStoreDatabaseLink\":\"kfkgenjqn\"},\"id\":\"pjwkosnyxigf\",\"name\":\"ujjcxgdqmrlhn\",\"type\":\"kwopswnyinxupr\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,12 +31,12 @@ public final class CustomEntityStoreAssignmentsCreateWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         CustomEntityStoreAssignment response = manager.customEntityStoreAssignments()
-            .define("bdjzghximkg")
-            .withExistingResourceGroup("zwwy")
-            .withPrincipal("pqkjnpyriwntotcx")
+            .define("rdytzfslxizhq")
+            .withExistingResourceGroup("mtcvvf")
+            .withPrincipal("gobliqemcdiiisk")
             .create();
 
-        Assertions.assertEquals("tsjk", response.principal());
-        Assertions.assertEquals("rexw", response.entityStoreDatabaseLink());
+        Assertions.assertEquals("xxupjxv", response.principal());
+        Assertions.assertEquals("kfkgenjqn", response.entityStoreDatabaseLink());
     }
 }

@@ -11,7 +11,6 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.security.SecurityManager;
-import com.azure.resourcemanager.security.models.DevOpsProvisioningState;
 import com.azure.resourcemanager.security.models.GitLabGroup;
 import com.azure.resourcemanager.security.models.OnboardingState;
 import java.nio.charset.StandardCharsets;
@@ -24,7 +23,7 @@ public final class GitLabGroupsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningStatusMessage\":\"eql\",\"provisioningStatusUpdateTimeUtc\":\"2021-06-01T19:24:01Z\",\"provisioningState\":\"Pending\",\"fullyQualifiedName\":\"izeqlc\",\"fullyQualifiedFriendlyName\":\"qnofkwhg\",\"url\":\"wfyfdbvooelmikds\",\"onboardingState\":\"NotOnboarded\"},\"id\":\"kgjj\",\"name\":\"mvsiy\",\"type\":\"mlmwj\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningStatusMessage\":\"oxr\",\"provisioningStatusUpdateTimeUtc\":\"2020-12-25T18:22:34Z\",\"provisioningState\":\"Pending\",\"fullyQualifiedName\":\"rjgobekxeheowsec\",\"fullyQualifiedFriendlyName\":\"drzzbskiwrjsb\",\"url\":\"mseesacuicnvqiqs\",\"onboardingState\":\"NotOnboarded\"},\"id\":\"mrfaptndr\",\"name\":\"mnlhnkmx\",\"type\":\"qkekcd\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,10 +33,8 @@ public final class GitLabGroupsListMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<GitLabGroup> response
-            = manager.gitLabGroups().list("qepeftmub", "l", com.azure.core.util.Context.NONE);
+            = manager.gitLabGroups().list("vsluazzxfjv", "ugpxzeempup", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(DevOpsProvisioningState.PENDING,
-            response.iterator().next().properties().provisioningState());
         Assertions.assertEquals(OnboardingState.NOT_ONBOARDED,
             response.iterator().next().properties().onboardingState());
     }

@@ -5,23 +5,26 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The Microsoft Defender container agentless discovery K8s configuration.
  */
 @Fluent
-public final class DefenderForContainersAwsOfferingMdcContainersAgentlessDiscoveryK8S {
+public final class DefenderForContainersAwsOfferingMdcContainersAgentlessDiscoveryK8S
+    implements JsonSerializable<DefenderForContainersAwsOfferingMdcContainersAgentlessDiscoveryK8S> {
     /*
      * Is Microsoft Defender container agentless discovery K8s enabled
      */
-    @JsonProperty(value = "enabled")
     private Boolean enabled;
 
     /*
      * The cloud role ARN in AWS for this feature
      */
-    @JsonProperty(value = "cloudRoleArn")
     private String cloudRoleArn;
 
     /**
@@ -76,5 +79,49 @@ public final class DefenderForContainersAwsOfferingMdcContainersAgentlessDiscove
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("enabled", this.enabled);
+        jsonWriter.writeStringField("cloudRoleArn", this.cloudRoleArn);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DefenderForContainersAwsOfferingMdcContainersAgentlessDiscoveryK8S from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DefenderForContainersAwsOfferingMdcContainersAgentlessDiscoveryK8S if the JsonReader was
+     * pointing to an instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the
+     * DefenderForContainersAwsOfferingMdcContainersAgentlessDiscoveryK8S.
+     */
+    public static DefenderForContainersAwsOfferingMdcContainersAgentlessDiscoveryK8S fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            DefenderForContainersAwsOfferingMdcContainersAgentlessDiscoveryK8S deserializedDefenderForContainersAwsOfferingMdcContainersAgentlessDiscoveryK8S
+                = new DefenderForContainersAwsOfferingMdcContainersAgentlessDiscoveryK8S();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("enabled".equals(fieldName)) {
+                    deserializedDefenderForContainersAwsOfferingMdcContainersAgentlessDiscoveryK8S.enabled
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("cloudRoleArn".equals(fieldName)) {
+                    deserializedDefenderForContainersAwsOfferingMdcContainersAgentlessDiscoveryK8S.cloudRoleArn
+                        = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDefenderForContainersAwsOfferingMdcContainersAgentlessDiscoveryK8S;
+        });
     }
 }

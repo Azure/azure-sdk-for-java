@@ -11,7 +11,9 @@ import com.azure.resourcemanager.security.models.InformationProtectionPolicyName
  */
 public final class InformationProtectionPoliciesGetSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2017-08-01-preview/examples/InformationProtectionPolicies/GetCustomInformationProtectionPolicy_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2017-08-01-preview/examples/
+     * InformationProtectionPolicies/GetCustomInformationProtectionPolicy_example.json
      */
     /**
      * Sample code: Get the customized information protection policy for a management group.
@@ -26,7 +28,9 @@ public final class InformationProtectionPoliciesGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2017-08-01-preview/examples/InformationProtectionPolicies/GetEffectiveInformationProtectionPolicy_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2017-08-01-preview/examples/
+     * InformationProtectionPolicies/GetEffectiveInformationProtectionPolicy_example.json
      */
     /**
      * Sample code: Get the effective information protection policy for a management group.

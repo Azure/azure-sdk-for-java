@@ -11,7 +11,6 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.security.SecurityManager;
-import com.azure.resourcemanager.security.models.DevOpsProvisioningState;
 import com.azure.resourcemanager.security.models.GitLabProject;
 import com.azure.resourcemanager.security.models.OnboardingState;
 import java.nio.charset.StandardCharsets;
@@ -24,7 +23,7 @@ public final class GitLabProjectsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningStatusMessage\":\"pjj\",\"provisioningStatusUpdateTimeUtc\":\"2021-05-25T00:17:10Z\",\"provisioningState\":\"Pending\",\"fullyQualifiedName\":\"jfpxoygnmjniqwu\",\"fullyQualifiedFriendlyName\":\"yxfknj\",\"fullyQualifiedParentGroupName\":\"stnwvravntvklkwq\",\"url\":\"nlpaymketotk\",\"onboardingState\":\"Onboarded\"},\"id\":\"ewwlkry\",\"name\":\"mpgqqdhtct\",\"type\":\"xregykjmpad\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningStatusMessage\":\"um\",\"provisioningStatusUpdateTimeUtc\":\"2021-10-24T17:21:16Z\",\"provisioningState\":\"DeletionSuccess\",\"fullyQualifiedName\":\"ivahfcqwnjzebpic\",\"fullyQualifiedFriendlyName\":\"yoypoedkspwwibpy\",\"fullyQualifiedParentGroupName\":\"eig\",\"url\":\"yxsx\",\"onboardingState\":\"NotApplicable\"},\"id\":\"ikhznfffnhcg\",\"name\":\"aqsr\",\"type\":\"rfqd\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,10 +33,9 @@ public final class GitLabProjectsListMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<GitLabProject> response
-            = manager.gitLabProjects().list("mcgvjb", "ybfarkhkoqcudn", "m", com.azure.core.util.Context.NONE);
+            = manager.gitLabProjects().list("u", "ud", "cy", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(DevOpsProvisioningState.PENDING,
-            response.iterator().next().properties().provisioningState());
-        Assertions.assertEquals(OnboardingState.ONBOARDED, response.iterator().next().properties().onboardingState());
+        Assertions.assertEquals(OnboardingState.NOT_APPLICABLE,
+            response.iterator().next().properties().onboardingState());
     }
 }

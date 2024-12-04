@@ -20,7 +20,7 @@ public final class MdeOnboardingsListWithResponseMockTests {
     @Test
     public void testListWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{},\"id\":\"jqgacantnsyx\",\"name\":\"xjmkanbclazofmex\",\"type\":\"te\"},{\"properties\":{},\"id\":\"manydscdkxwdpw\",\"name\":\"cbhaah\",\"type\":\"tofelfhpfixo\"}]}";
+            = "{\"value\":[{\"properties\":{},\"id\":\"ezbfqployuek\",\"name\":\"cpvuft\",\"type\":\"svjmnsvujnjk\"},{\"properties\":{},\"id\":\"efcjisepkdbxot\",\"name\":\"bja\",\"type\":\"pqoclannmxynlsuq\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));

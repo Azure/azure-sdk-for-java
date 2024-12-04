@@ -5,25 +5,27 @@
 package com.azure.resourcemanager.security.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.security.models.AuthenticationDetailsProperties;
 import com.azure.resourcemanager.security.models.HybridComputeSettingsProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Describes properties of a connector setting.
  */
 @Fluent
-public final class ConnectorSettingProperties {
+public final class ConnectorSettingProperties implements JsonSerializable<ConnectorSettingProperties> {
     /*
      * Settings for hybrid compute management. These settings are relevant only for Arc autoProvision (Hybrid Compute).
      */
-    @JsonProperty(value = "hybridComputeSettings")
     private HybridComputeSettingsProperties hybridComputeSettings;
 
     /*
      * Settings for authentication management, these settings are relevant only for the cloud connector.
      */
-    @JsonProperty(value = "authenticationDetails")
     private AuthenticationDetailsProperties authenticationDetails;
 
     /**
@@ -88,5 +90,46 @@ public final class ConnectorSettingProperties {
         if (authenticationDetails() != null) {
             authenticationDetails().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("hybridComputeSettings", this.hybridComputeSettings);
+        jsonWriter.writeJsonField("authenticationDetails", this.authenticationDetails);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConnectorSettingProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConnectorSettingProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ConnectorSettingProperties.
+     */
+    public static ConnectorSettingProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConnectorSettingProperties deserializedConnectorSettingProperties = new ConnectorSettingProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("hybridComputeSettings".equals(fieldName)) {
+                    deserializedConnectorSettingProperties.hybridComputeSettings
+                        = HybridComputeSettingsProperties.fromJson(reader);
+                } else if ("authenticationDetails".equals(fieldName)) {
+                    deserializedConnectorSettingProperties.authenticationDetails
+                        = AuthenticationDetailsProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConnectorSettingProperties;
+        });
     }
 }

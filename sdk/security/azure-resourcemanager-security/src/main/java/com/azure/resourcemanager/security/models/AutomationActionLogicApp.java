@@ -5,40 +5,31 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The logic app action that should be triggered. To learn more about Microsoft Defender for Cloud's Workflow Automation
  * capabilities, visit https://aka.ms/ASCWorkflowAutomationLearnMore.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "actionType",
-    defaultImpl = AutomationActionLogicApp.class,
-    visible = true)
-@JsonTypeName("LogicApp")
 @Fluent
 public final class AutomationActionLogicApp extends AutomationAction {
     /*
      * The type of the action that will be triggered by the Automation
      */
-    @JsonTypeId
-    @JsonProperty(value = "actionType", required = true)
     private ActionType actionType = ActionType.LOGIC_APP;
 
     /*
-     * The triggered Logic App Azure Resource ID. This can also reside on other subscriptions, given that you have permissions to trigger the Logic App
+     * The triggered Logic App Azure Resource ID. This can also reside on other subscriptions, given that you have
+     * permissions to trigger the Logic App
      */
-    @JsonProperty(value = "logicAppResourceId")
     private String logicAppResourceId;
 
     /*
      * The Logic App trigger URI endpoint (it will not be included in any response).
      */
-    @JsonProperty(value = "uri")
     private String uri;
 
     /**
@@ -106,6 +97,47 @@ public final class AutomationActionLogicApp extends AutomationAction {
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("actionType", this.actionType == null ? null : this.actionType.toString());
+        jsonWriter.writeStringField("logicAppResourceId", this.logicAppResourceId);
+        jsonWriter.writeStringField("uri", this.uri);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AutomationActionLogicApp from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AutomationActionLogicApp if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AutomationActionLogicApp.
+     */
+    public static AutomationActionLogicApp fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AutomationActionLogicApp deserializedAutomationActionLogicApp = new AutomationActionLogicApp();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("actionType".equals(fieldName)) {
+                    deserializedAutomationActionLogicApp.actionType = ActionType.fromString(reader.getString());
+                } else if ("logicAppResourceId".equals(fieldName)) {
+                    deserializedAutomationActionLogicApp.logicAppResourceId = reader.getString();
+                } else if ("uri".equals(fieldName)) {
+                    deserializedAutomationActionLogicApp.uri = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAutomationActionLogicApp;
+        });
     }
 }

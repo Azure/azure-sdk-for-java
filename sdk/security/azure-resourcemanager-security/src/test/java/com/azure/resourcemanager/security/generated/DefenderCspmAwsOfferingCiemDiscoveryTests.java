@@ -11,16 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class DefenderCspmAwsOfferingCiemDiscoveryTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DefenderCspmAwsOfferingCiemDiscovery model = BinaryData.fromString("{\"cloudRoleArn\":\"ryizwbxgde\"}")
-            .toObject(DefenderCspmAwsOfferingCiemDiscovery.class);
-        Assertions.assertEquals("ryizwbxgde", model.cloudRoleArn());
+        DefenderCspmAwsOfferingCiemDiscovery model
+            = BinaryData.fromString("{\"cloudRoleArn\":\"gkfh\"}").toObject(DefenderCspmAwsOfferingCiemDiscovery.class);
+        Assertions.assertEquals("gkfh", model.cloudRoleArn());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DefenderCspmAwsOfferingCiemDiscovery model
-            = new DefenderCspmAwsOfferingCiemDiscovery().withCloudRoleArn("ryizwbxgde");
+            = new DefenderCspmAwsOfferingCiemDiscovery().withCloudRoleArn("gkfh");
         model = BinaryData.fromObject(model).toObject(DefenderCspmAwsOfferingCiemDiscovery.class);
-        Assertions.assertEquals("ryizwbxgde", model.cloudRoleArn());
+        Assertions.assertEquals("gkfh", model.cloudRoleArn());
     }
 }

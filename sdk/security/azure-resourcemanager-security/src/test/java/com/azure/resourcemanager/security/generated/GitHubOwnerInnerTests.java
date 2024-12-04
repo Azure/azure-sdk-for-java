@@ -6,7 +6,6 @@ package com.azure.resourcemanager.security.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.security.fluent.models.GitHubOwnerInner;
-import com.azure.resourcemanager.security.models.DevOpsProvisioningState;
 import com.azure.resourcemanager.security.models.GitHubOwnerProperties;
 import com.azure.resourcemanager.security.models.OnboardingState;
 import org.junit.jupiter.api.Assertions;
@@ -15,19 +14,16 @@ public final class GitHubOwnerInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GitHubOwnerInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningStatusMessage\":\"c\",\"provisioningStatusUpdateTimeUtc\":\"2021-07-25T12:28:37Z\",\"provisioningState\":\"DeletionFailure\",\"ownerUrl\":\"kpyyc\",\"gitHubInternalId\":\"wmpjprd\",\"onboardingState\":\"Onboarded\"},\"id\":\"pcfpcfj\",\"name\":\"wzlgzawkgy\",\"type\":\"peyamnnidmdiaw\"}")
+            "{\"properties\":{\"provisioningStatusMessage\":\"dlfgtdysnaq\",\"provisioningStatusUpdateTimeUtc\":\"2021-08-17T11:36:27Z\",\"provisioningState\":\"Pending\",\"ownerUrl\":\"tqhamzjrw\",\"gitHubInternalId\":\"qzeqyjleziunjxdf\",\"onboardingState\":\"OnboardedByOtherConnector\"},\"id\":\"tkw\",\"name\":\"eg\",\"type\":\"amlbnseqacjjvpil\"}")
             .toObject(GitHubOwnerInner.class);
-        Assertions.assertEquals(DevOpsProvisioningState.DELETION_FAILURE, model.properties().provisioningState());
-        Assertions.assertEquals(OnboardingState.ONBOARDED, model.properties().onboardingState());
+        Assertions.assertEquals(OnboardingState.ONBOARDED_BY_OTHER_CONNECTOR, model.properties().onboardingState());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GitHubOwnerInner model = new GitHubOwnerInner()
-            .withProperties(new GitHubOwnerProperties().withProvisioningState(DevOpsProvisioningState.DELETION_FAILURE)
-                .withOnboardingState(OnboardingState.ONBOARDED));
+        GitHubOwnerInner model = new GitHubOwnerInner().withProperties(
+            new GitHubOwnerProperties().withOnboardingState(OnboardingState.ONBOARDED_BY_OTHER_CONNECTOR));
         model = BinaryData.fromObject(model).toObject(GitHubOwnerInner.class);
-        Assertions.assertEquals(DevOpsProvisioningState.DELETION_FAILURE, model.properties().provisioningState());
-        Assertions.assertEquals(OnboardingState.ONBOARDED, model.properties().onboardingState());
+        Assertions.assertEquals(OnboardingState.ONBOARDED_BY_OTHER_CONNECTOR, model.properties().onboardingState());
     }
 }

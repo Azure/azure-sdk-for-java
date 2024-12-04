@@ -17,52 +17,51 @@ public final class JitNetworkAccessRequestVirtualMachineTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         JitNetworkAccessRequestVirtualMachine model = BinaryData.fromString(
-            "{\"id\":\"ioskkfmkmfdjxyxg\",\"ports\":[{\"number\":873234333,\"allowedSourceAddressPrefix\":\"vjcteoedlrslsk\",\"allowedSourceAddressPrefixes\":[\"xv\",\"nzdpvoco\"],\"endTimeUtc\":\"2021-08-30T02:40:45Z\",\"status\":\"Revoked\",\"statusReason\":\"UserRequested\",\"mappedPort\":1286292074},{\"number\":1324074544,\"allowedSourceAddressPrefix\":\"zf\",\"allowedSourceAddressPrefixes\":[\"gyte\",\"vzilmhiv\",\"kwwwnckn\",\"zdajlskzptjxu\"],\"endTimeUtc\":\"2021-01-25T02:45:05Z\",\"status\":\"Revoked\",\"statusReason\":\"Expired\",\"mappedPort\":947825220},{\"number\":585553981,\"allowedSourceAddressPrefix\":\"hxqlehmcgcjeinue\",\"allowedSourceAddressPrefixes\":[\"am\",\"fejvqn\"],\"endTimeUtc\":\"2020-12-24T06:15:41Z\",\"status\":\"Initiated\",\"statusReason\":\"UserRequested\",\"mappedPort\":640602332}]}")
+            "{\"id\":\"agynoi\",\"ports\":[{\"number\":11976518,\"allowedSourceAddressPrefix\":\"calincryqxz\",\"allowedSourceAddressPrefixes\":[\"zi\"],\"endTimeUtc\":\"2021-08-21T14:53:03Z\",\"status\":\"Revoked\",\"statusReason\":\"Expired\",\"mappedPort\":1092944240},{\"number\":1448460408,\"allowedSourceAddressPrefix\":\"qruqguh\",\"allowedSourceAddressPrefixes\":[\"etasvvoqsbp\",\"flanfkgxsyao\",\"uzowpuohdkcpr\"],\"endTimeUtc\":\"2021-06-08T11:38:10Z\",\"status\":\"Revoked\",\"statusReason\":\"Expired\",\"mappedPort\":309241462},{\"number\":1303987907,\"allowedSourceAddressPrefix\":\"ochlu\",\"allowedSourceAddressPrefixes\":[\"mqrud\",\"izcbfzmcrunfhiuc\",\"mfbcpaqktkrum\"],\"endTimeUtc\":\"2021-09-26T02:40:11Z\",\"status\":\"Revoked\",\"statusReason\":\"Expired\",\"mappedPort\":612930756}]}")
             .toObject(JitNetworkAccessRequestVirtualMachine.class);
-        Assertions.assertEquals("ioskkfmkmfdjxyxg", model.id());
-        Assertions.assertEquals(873234333, model.ports().get(0).number());
-        Assertions.assertEquals("vjcteoedlrslsk", model.ports().get(0).allowedSourceAddressPrefix());
-        Assertions.assertEquals("xv", model.ports().get(0).allowedSourceAddressPrefixes().get(0));
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-30T02:40:45Z"), model.ports().get(0).endTimeUtc());
+        Assertions.assertEquals("agynoi", model.id());
+        Assertions.assertEquals(11976518, model.ports().get(0).number());
+        Assertions.assertEquals("calincryqxz", model.ports().get(0).allowedSourceAddressPrefix());
+        Assertions.assertEquals("zi", model.ports().get(0).allowedSourceAddressPrefixes().get(0));
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-21T14:53:03Z"), model.ports().get(0).endTimeUtc());
         Assertions.assertEquals(Status.REVOKED, model.ports().get(0).status());
-        Assertions.assertEquals(StatusReason.USER_REQUESTED, model.ports().get(0).statusReason());
-        Assertions.assertEquals(1286292074, model.ports().get(0).mappedPort());
+        Assertions.assertEquals(StatusReason.EXPIRED, model.ports().get(0).statusReason());
+        Assertions.assertEquals(1092944240, model.ports().get(0).mappedPort());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        JitNetworkAccessRequestVirtualMachine model = new JitNetworkAccessRequestVirtualMachine()
-            .withId("ioskkfmkmfdjxyxg")
+        JitNetworkAccessRequestVirtualMachine model = new JitNetworkAccessRequestVirtualMachine().withId("agynoi")
             .withPorts(Arrays.asList(
-                new JitNetworkAccessRequestPort().withNumber(873234333)
-                    .withAllowedSourceAddressPrefix("vjcteoedlrslsk")
-                    .withAllowedSourceAddressPrefixes(Arrays.asList("xv", "nzdpvoco"))
-                    .withEndTimeUtc(OffsetDateTime.parse("2021-08-30T02:40:45Z"))
-                    .withStatus(Status.REVOKED)
-                    .withStatusReason(StatusReason.USER_REQUESTED)
-                    .withMappedPort(1286292074),
-                new JitNetworkAccessRequestPort().withNumber(1324074544)
-                    .withAllowedSourceAddressPrefix("zf")
-                    .withAllowedSourceAddressPrefixes(Arrays.asList("gyte", "vzilmhiv", "kwwwnckn", "zdajlskzptjxu"))
-                    .withEndTimeUtc(OffsetDateTime.parse("2021-01-25T02:45:05Z"))
+                new JitNetworkAccessRequestPort().withNumber(11976518)
+                    .withAllowedSourceAddressPrefix("calincryqxz")
+                    .withAllowedSourceAddressPrefixes(Arrays.asList("zi"))
+                    .withEndTimeUtc(OffsetDateTime.parse("2021-08-21T14:53:03Z"))
                     .withStatus(Status.REVOKED)
                     .withStatusReason(StatusReason.EXPIRED)
-                    .withMappedPort(947825220),
-                new JitNetworkAccessRequestPort().withNumber(585553981)
-                    .withAllowedSourceAddressPrefix("hxqlehmcgcjeinue")
-                    .withAllowedSourceAddressPrefixes(Arrays.asList("am", "fejvqn"))
-                    .withEndTimeUtc(OffsetDateTime.parse("2020-12-24T06:15:41Z"))
-                    .withStatus(Status.INITIATED)
-                    .withStatusReason(StatusReason.USER_REQUESTED)
-                    .withMappedPort(640602332)));
+                    .withMappedPort(1092944240),
+                new JitNetworkAccessRequestPort().withNumber(1448460408)
+                    .withAllowedSourceAddressPrefix("qruqguh")
+                    .withAllowedSourceAddressPrefixes(Arrays.asList("etasvvoqsbp", "flanfkgxsyao", "uzowpuohdkcpr"))
+                    .withEndTimeUtc(OffsetDateTime.parse("2021-06-08T11:38:10Z"))
+                    .withStatus(Status.REVOKED)
+                    .withStatusReason(StatusReason.EXPIRED)
+                    .withMappedPort(309241462),
+                new JitNetworkAccessRequestPort().withNumber(1303987907)
+                    .withAllowedSourceAddressPrefix("ochlu")
+                    .withAllowedSourceAddressPrefixes(Arrays.asList("mqrud", "izcbfzmcrunfhiuc", "mfbcpaqktkrum"))
+                    .withEndTimeUtc(OffsetDateTime.parse("2021-09-26T02:40:11Z"))
+                    .withStatus(Status.REVOKED)
+                    .withStatusReason(StatusReason.EXPIRED)
+                    .withMappedPort(612930756)));
         model = BinaryData.fromObject(model).toObject(JitNetworkAccessRequestVirtualMachine.class);
-        Assertions.assertEquals("ioskkfmkmfdjxyxg", model.id());
-        Assertions.assertEquals(873234333, model.ports().get(0).number());
-        Assertions.assertEquals("vjcteoedlrslsk", model.ports().get(0).allowedSourceAddressPrefix());
-        Assertions.assertEquals("xv", model.ports().get(0).allowedSourceAddressPrefixes().get(0));
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-30T02:40:45Z"), model.ports().get(0).endTimeUtc());
+        Assertions.assertEquals("agynoi", model.id());
+        Assertions.assertEquals(11976518, model.ports().get(0).number());
+        Assertions.assertEquals("calincryqxz", model.ports().get(0).allowedSourceAddressPrefix());
+        Assertions.assertEquals("zi", model.ports().get(0).allowedSourceAddressPrefixes().get(0));
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-21T14:53:03Z"), model.ports().get(0).endTimeUtc());
         Assertions.assertEquals(Status.REVOKED, model.ports().get(0).status());
-        Assertions.assertEquals(StatusReason.USER_REQUESTED, model.ports().get(0).statusReason());
-        Assertions.assertEquals(1286292074, model.ports().get(0).mappedPort());
+        Assertions.assertEquals(StatusReason.EXPIRED, model.ports().get(0).statusReason());
+        Assertions.assertEquals(1092944240, model.ports().get(0).mappedPort());
     }
 }

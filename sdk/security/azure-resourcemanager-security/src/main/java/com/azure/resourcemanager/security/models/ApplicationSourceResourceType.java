@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -32,7 +31,6 @@ public final class ApplicationSourceResourceType extends ExpandableStringEnum<Ap
      * @param name a name to look for.
      * @return the corresponding ApplicationSourceResourceType.
      */
-    @JsonCreator
     public static ApplicationSourceResourceType fromString(String name) {
         return fromString(name, ApplicationSourceResourceType.class);
     }

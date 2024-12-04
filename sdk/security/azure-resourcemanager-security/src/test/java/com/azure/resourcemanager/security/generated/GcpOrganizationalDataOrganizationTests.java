@@ -13,22 +13,22 @@ public final class GcpOrganizationalDataOrganizationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GcpOrganizationalDataOrganization model = BinaryData.fromString(
-            "{\"organizationMembershipType\":\"Organization\",\"excludedProjectNumbers\":[\"s\",\"bduxvzmlghnys\"],\"serviceAccountEmailAddress\":\"pye\",\"workloadIdentityProviderId\":\"kppdi\",\"organizationName\":\"bo\"}")
+            "{\"organizationMembershipType\":\"Organization\",\"excludedProjectNumbers\":[\"wsszvlc\",\"lisolntfxxc\",\"qmipfj\"],\"serviceAccountEmailAddress\":\"oygizmsh\",\"workloadIdentityProviderId\":\"baizabulnvgskjto\",\"organizationName\":\"dzjs\"}")
             .toObject(GcpOrganizationalDataOrganization.class);
-        Assertions.assertEquals("s", model.excludedProjectNumbers().get(0));
-        Assertions.assertEquals("pye", model.serviceAccountEmailAddress());
-        Assertions.assertEquals("kppdi", model.workloadIdentityProviderId());
+        Assertions.assertEquals("wsszvlc", model.excludedProjectNumbers().get(0));
+        Assertions.assertEquals("oygizmsh", model.serviceAccountEmailAddress());
+        Assertions.assertEquals("baizabulnvgskjto", model.workloadIdentityProviderId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GcpOrganizationalDataOrganization model
-            = new GcpOrganizationalDataOrganization().withExcludedProjectNumbers(Arrays.asList("s", "bduxvzmlghnys"))
-                .withServiceAccountEmailAddress("pye")
-                .withWorkloadIdentityProviderId("kppdi");
+        GcpOrganizationalDataOrganization model = new GcpOrganizationalDataOrganization()
+            .withExcludedProjectNumbers(Arrays.asList("wsszvlc", "lisolntfxxc", "qmipfj"))
+            .withServiceAccountEmailAddress("oygizmsh")
+            .withWorkloadIdentityProviderId("baizabulnvgskjto");
         model = BinaryData.fromObject(model).toObject(GcpOrganizationalDataOrganization.class);
-        Assertions.assertEquals("s", model.excludedProjectNumbers().get(0));
-        Assertions.assertEquals("pye", model.serviceAccountEmailAddress());
-        Assertions.assertEquals("kppdi", model.workloadIdentityProviderId());
+        Assertions.assertEquals("wsszvlc", model.excludedProjectNumbers().get(0));
+        Assertions.assertEquals("oygizmsh", model.serviceAccountEmailAddress());
+        Assertions.assertEquals("baizabulnvgskjto", model.workloadIdentityProviderId());
     }
 }

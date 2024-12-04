@@ -10,8 +10,8 @@ import com.azure.resourcemanager.security.models.DevOpsCapability;
 public final class DevOpsCapabilityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DevOpsCapability model = BinaryData.fromString("{\"name\":\"eubanlxunpqcc\",\"value\":\"iawzlzklaslgac\"}")
-            .toObject(DevOpsCapability.class);
+        DevOpsCapability model
+            = BinaryData.fromString("{\"name\":\"iynknlq\",\"value\":\"dvpiwh\"}").toObject(DevOpsCapability.class);
     }
 
     @org.junit.jupiter.api.Test

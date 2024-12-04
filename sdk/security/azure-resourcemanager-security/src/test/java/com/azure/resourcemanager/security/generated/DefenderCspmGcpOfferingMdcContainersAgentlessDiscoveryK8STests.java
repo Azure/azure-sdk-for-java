@@ -11,24 +11,23 @@ import org.junit.jupiter.api.Assertions;
 public final class DefenderCspmGcpOfferingMdcContainersAgentlessDiscoveryK8STests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DefenderCspmGcpOfferingMdcContainersAgentlessDiscoveryK8S model = BinaryData
-            .fromString(
-                "{\"enabled\":false,\"workloadIdentityProviderId\":\"v\",\"serviceAccountEmailAddress\":\"bdfmm\"}")
+        DefenderCspmGcpOfferingMdcContainersAgentlessDiscoveryK8S model = BinaryData.fromString(
+            "{\"enabled\":false,\"workloadIdentityProviderId\":\"eonsgnwx\",\"serviceAccountEmailAddress\":\"mezyo\"}")
             .toObject(DefenderCspmGcpOfferingMdcContainersAgentlessDiscoveryK8S.class);
         Assertions.assertEquals(false, model.enabled());
-        Assertions.assertEquals("v", model.workloadIdentityProviderId());
-        Assertions.assertEquals("bdfmm", model.serviceAccountEmailAddress());
+        Assertions.assertEquals("eonsgnwx", model.workloadIdentityProviderId());
+        Assertions.assertEquals("mezyo", model.serviceAccountEmailAddress());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DefenderCspmGcpOfferingMdcContainersAgentlessDiscoveryK8S model
             = new DefenderCspmGcpOfferingMdcContainersAgentlessDiscoveryK8S().withEnabled(false)
-                .withWorkloadIdentityProviderId("v")
-                .withServiceAccountEmailAddress("bdfmm");
+                .withWorkloadIdentityProviderId("eonsgnwx")
+                .withServiceAccountEmailAddress("mezyo");
         model = BinaryData.fromObject(model).toObject(DefenderCspmGcpOfferingMdcContainersAgentlessDiscoveryK8S.class);
         Assertions.assertEquals(false, model.enabled());
-        Assertions.assertEquals("v", model.workloadIdentityProviderId());
-        Assertions.assertEquals("bdfmm", model.serviceAccountEmailAddress());
+        Assertions.assertEquals("eonsgnwx", model.workloadIdentityProviderId());
+        Assertions.assertEquals("mezyo", model.serviceAccountEmailAddress());
     }
 }

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -39,7 +38,6 @@ public final class PricingTier extends ExpandableStringEnum<PricingTier> {
      * @param name a name to look for.
      * @return the corresponding PricingTier.
      */
-    @JsonCreator
     public static PricingTier fromString(String name) {
         return fromString(name, PricingTier.class);
     }

@@ -5,33 +5,24 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The AWS organization data for the member account.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "organizationMembershipType",
-    defaultImpl = AwsOrganizationalDataMember.class,
-    visible = true)
-@JsonTypeName("Member")
 @Fluent
 public final class AwsOrganizationalDataMember extends AwsOrganizationalData {
     /*
      * The multi cloud account's membership type in the organization
      */
-    @JsonTypeId
-    @JsonProperty(value = "organizationMembershipType", required = true)
     private OrganizationMembershipType organizationMembershipType = OrganizationMembershipType.MEMBER;
 
     /*
      * If the multi cloud account is not of membership type organization, this will be the ID of the account's parent
      */
-    @JsonProperty(value = "parentHierarchyId")
     private String parentHierarchyId;
 
     /**
@@ -79,6 +70,46 @@ public final class AwsOrganizationalDataMember extends AwsOrganizationalData {
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("organizationMembershipType",
+            this.organizationMembershipType == null ? null : this.organizationMembershipType.toString());
+        jsonWriter.writeStringField("parentHierarchyId", this.parentHierarchyId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AwsOrganizationalDataMember from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AwsOrganizationalDataMember if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AwsOrganizationalDataMember.
+     */
+    public static AwsOrganizationalDataMember fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AwsOrganizationalDataMember deserializedAwsOrganizationalDataMember = new AwsOrganizationalDataMember();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("organizationMembershipType".equals(fieldName)) {
+                    deserializedAwsOrganizationalDataMember.organizationMembershipType
+                        = OrganizationMembershipType.fromString(reader.getString());
+                } else if ("parentHierarchyId".equals(fieldName)) {
+                    deserializedAwsOrganizationalDataMember.parentHierarchyId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAwsOrganizationalDataMember;
+        });
     }
 }

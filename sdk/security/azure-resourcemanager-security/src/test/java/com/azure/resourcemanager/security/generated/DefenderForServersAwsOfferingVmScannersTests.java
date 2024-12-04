@@ -16,26 +16,26 @@ public final class DefenderForServersAwsOfferingVmScannersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DefenderForServersAwsOfferingVmScanners model = BinaryData.fromString(
-            "{\"cloudRoleArn\":\"wfvesobpbok\",\"enabled\":true,\"configuration\":{\"scanningMode\":\"Default\",\"exclusionTags\":{\"lqhxkasmcolmu\":\"rnggcjfw\",\"ygz\":\"pyvaosdkluwzx\",\"nobguqisqsqkpdmi\":\"tyevjhu\",\"pnml\":\"y\"}}}")
+            "{\"cloudRoleArn\":\"zaqpqi\",\"enabled\":true,\"configuration\":{\"scanningMode\":\"Default\",\"exclusionTags\":{\"r\":\"txzuisamonatnize\",\"xsrgxfqpan\":\"qsqjghrmthsplwst\",\"gzwhsxyrujmtik\":\"ceov\"}}}")
             .toObject(DefenderForServersAwsOfferingVmScanners.class);
         Assertions.assertEquals(true, model.enabled());
         Assertions.assertEquals(ScanningMode.DEFAULT, model.configuration().scanningMode());
-        Assertions.assertEquals("rnggcjfw", model.configuration().exclusionTags().get("lqhxkasmcolmu"));
-        Assertions.assertEquals("wfvesobpbok", model.cloudRoleArn());
+        Assertions.assertEquals("txzuisamonatnize", model.configuration().exclusionTags().get("r"));
+        Assertions.assertEquals("zaqpqi", model.cloudRoleArn());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DefenderForServersAwsOfferingVmScanners model = new DefenderForServersAwsOfferingVmScanners().withEnabled(true)
             .withConfiguration(new VmScannersBaseConfiguration().withScanningMode(ScanningMode.DEFAULT)
-                .withExclusionTags(mapOf("lqhxkasmcolmu", "rnggcjfw", "ygz", "pyvaosdkluwzx", "nobguqisqsqkpdmi",
-                    "tyevjhu", "pnml", "y")))
-            .withCloudRoleArn("wfvesobpbok");
+                .withExclusionTags(
+                    mapOf("r", "txzuisamonatnize", "xsrgxfqpan", "qsqjghrmthsplwst", "gzwhsxyrujmtik", "ceov")))
+            .withCloudRoleArn("zaqpqi");
         model = BinaryData.fromObject(model).toObject(DefenderForServersAwsOfferingVmScanners.class);
         Assertions.assertEquals(true, model.enabled());
         Assertions.assertEquals(ScanningMode.DEFAULT, model.configuration().scanningMode());
-        Assertions.assertEquals("rnggcjfw", model.configuration().exclusionTags().get("lqhxkasmcolmu"));
-        Assertions.assertEquals("wfvesobpbok", model.cloudRoleArn());
+        Assertions.assertEquals("txzuisamonatnize", model.configuration().exclusionTags().get("r"));
+        Assertions.assertEquals("zaqpqi", model.cloudRoleArn());
     }
 
     // Use "Map.of" if available

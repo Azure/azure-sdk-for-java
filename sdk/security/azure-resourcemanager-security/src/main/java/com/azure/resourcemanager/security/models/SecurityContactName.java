@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -32,7 +31,6 @@ public final class SecurityContactName extends ExpandableStringEnum<SecurityCont
      * @param name a name to look for.
      * @return the corresponding SecurityContactName.
      */
-    @JsonCreator
     public static SecurityContactName fromString(String name) {
         return fromString(name, SecurityContactName.class);
     }

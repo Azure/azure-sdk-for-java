@@ -22,7 +22,7 @@ public final class DeviceSecurityGroupsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"thresholdRules\":[{\"ruleType\":\"ThresholdCustomAlertRule\",\"minThreshold\":872903915,\"maxThreshold\":642448617,\"displayName\":\"h\",\"description\":\"cyuzlybqscibv\",\"isEnabled\":false},{\"ruleType\":\"ThresholdCustomAlertRule\",\"minThreshold\":837498555,\"maxThreshold\":80726149,\"displayName\":\"kcafnwqhawv\",\"description\":\"viulbyl\",\"isEnabled\":false}],\"timeWindowRules\":[{\"ruleType\":\"TimeWindowCustomAlertRule\",\"timeWindowSize\":\"PT13H41M31S\",\"minThreshold\":24448407,\"maxThreshold\":1364223481,\"displayName\":\"pbgu\",\"description\":\"hmxpucknsastl\",\"isEnabled\":false},{\"ruleType\":\"TimeWindowCustomAlertRule\",\"timeWindowSize\":\"PT47H56M26S\",\"minThreshold\":1531298340,\"maxThreshold\":930966984,\"displayName\":\"icttr\",\"description\":\"vvjmxokxx\",\"isEnabled\":true}],\"allowlistRules\":[{\"ruleType\":\"AllowlistCustomAlertRule\",\"allowlistValues\":[\"jrzvlc\",\"vqxdemklphx\",\"wwlojkbgnf\"],\"valueType\":\"IpCidr\",\"displayName\":\"vfsunhaevla\",\"description\":\"czywywuahwc\",\"isEnabled\":true},{\"ruleType\":\"AllowlistCustomAlertRule\",\"allowlistValues\":[\"wcnnaax\",\"jfdaj\",\"fgi\",\"omggew\"],\"valueType\":\"IpCidr\",\"displayName\":\"exfyznvussuqkslw\",\"description\":\"xayzqbyeyw\",\"isEnabled\":false},{\"ruleType\":\"AllowlistCustomAlertRule\",\"allowlistValues\":[\"hnrt\",\"ikffydztk\",\"rfbg\",\"nzfwvz\"],\"valueType\":\"IpCidr\",\"displayName\":\"jmyqxuhgka\",\"description\":\"yprij\",\"isEnabled\":false}],\"denylistRules\":[{\"ruleType\":\"DenylistCustomAlertRule\",\"denylistValues\":[\"xbsowrrlcck\",\"yfp\",\"ms\"],\"valueType\":\"IpCidr\",\"displayName\":\"mqomxoalknuy\",\"description\":\"vibzicy\",\"isEnabled\":false},{\"ruleType\":\"DenylistCustomAlertRule\",\"denylistValues\":[\"hcaptkhjx\",\"rkbn\",\"fcck\",\"z\"],\"valueType\":\"IpCidr\",\"displayName\":\"gvlxyx\",\"description\":\"ctigp\",\"isEnabled\":true},{\"ruleType\":\"DenylistCustomAlertRule\",\"denylistValues\":[\"wic\",\"lktgkdp\",\"tqjytdc\",\"efuhb\"],\"valueType\":\"String\",\"displayName\":\"jsbg\",\"description\":\"amoaxcaytnpk\",\"isEnabled\":true},{\"ruleType\":\"DenylistCustomAlertRule\",\"denylistValues\":[\"bltcwsexheeocnq\",\"ubvepvlryszfhdx\"],\"valueType\":\"String\",\"displayName\":\"ohzbzhhavzfuxnvk\",\"description\":\"lcofuvtfu\",\"isEnabled\":true}]},\"id\":\"ouisakl\",\"name\":\"jfddxqfussub\",\"type\":\"sspmjvailfauyv\"}";
+            = "{\"properties\":{\"thresholdRules\":[{\"ruleType\":\"ThresholdCustomAlertRule\",\"minThreshold\":1548137596,\"maxThreshold\":1195922354,\"displayName\":\"rq\",\"description\":\"xdoicqpkntly\",\"isEnabled\":true},{\"ruleType\":\"ThresholdCustomAlertRule\",\"minThreshold\":1619663790,\"maxThreshold\":124428287,\"displayName\":\"nsbmzjritukoym\",\"description\":\"f\",\"isEnabled\":true},{\"ruleType\":\"ThresholdCustomAlertRule\",\"minThreshold\":78416358,\"maxThreshold\":1849534829,\"displayName\":\"zjxwjoq\",\"description\":\"wanduh\",\"isEnabled\":false},{\"ruleType\":\"ThresholdCustomAlertRule\",\"minThreshold\":151827145,\"maxThreshold\":1579817792,\"displayName\":\"olxtqmric\",\"description\":\"flzbk\",\"isEnabled\":true}],\"timeWindowRules\":[{\"ruleType\":\"TimeWindowCustomAlertRule\",\"timeWindowSize\":\"PT111H39M41S\",\"minThreshold\":2123944899,\"maxThreshold\":1305106285,\"displayName\":\"edrm\",\"description\":\"zhvchvvoyiogb\",\"isEnabled\":false},{\"ruleType\":\"TimeWindowCustomAlertRule\",\"timeWindowSize\":\"PT48H56M7S\",\"minThreshold\":424600179,\"maxThreshold\":1081887477,\"displayName\":\"uzsoowxcsm\",\"description\":\"lcappnvcebspci\",\"isEnabled\":true}],\"allowlistRules\":[{\"ruleType\":\"AllowlistCustomAlertRule\",\"allowlistValues\":[\"kdw\",\"wedupbkmzkwhjjs\"],\"valueType\":\"String\",\"displayName\":\"efefvvkxdbnmcva\",\"description\":\"cdzdobuesdy\",\"isEnabled\":false},{\"ruleType\":\"AllowlistCustomAlertRule\",\"allowlistValues\":[\"n\",\"pfdfu\",\"ktwpd\"],\"valueType\":\"String\",\"displayName\":\"ivytabvbbkflewg\",\"description\":\"tutbuvedwuu\",\"isEnabled\":false},{\"ruleType\":\"AllowlistCustomAlertRule\",\"allowlistValues\":[\"enxcqsxwclykcrud\",\"kk\",\"njre\"],\"valueType\":\"String\",\"displayName\":\"edeuenthshnf\",\"description\":\"gpgpkkhpjnglaqlm\",\"isEnabled\":false},{\"ruleType\":\"AllowlistCustomAlertRule\",\"allowlistValues\":[\"mtrdlpxiww\",\"ecpvfpnrzikvo\"],\"valueType\":\"String\",\"displayName\":\"oh\",\"description\":\"ivxdifbwblijhp\",\"isEnabled\":true}],\"denylistRules\":[{\"ruleType\":\"DenylistCustomAlertRule\",\"denylistValues\":[\"oyxontbwdq\",\"xr\"],\"valueType\":\"IpCidr\",\"displayName\":\"rrldxf\",\"description\":\"e\",\"isEnabled\":true},{\"ruleType\":\"DenylistCustomAlertRule\",\"denylistValues\":[\"xatktwjrppifeyr\",\"velrmdcizhvk\",\"bojklw\"],\"valueType\":\"String\",\"displayName\":\"yncwk\",\"description\":\"pyeyzolbfnflytf\",\"isEnabled\":false},{\"ruleType\":\"DenylistCustomAlertRule\",\"denylistValues\":[\"uiqoomis\",\"kqwopws\",\"liyznghuqzgp\"],\"valueType\":\"IpCidr\",\"displayName\":\"fvdwr\",\"description\":\"vtf\",\"isEnabled\":true}]},\"id\":\"sedfmzu\",\"name\":\"ryxpi\",\"type\":\"vapeakfdmc\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,19 +32,19 @@ public final class DeviceSecurityGroupsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         DeviceSecurityGroup response = manager.deviceSecurityGroups()
-            .getWithResponse("pfzxkczbdypbbim", "jbozv", com.azure.core.util.Context.NONE)
+            .getWithResponse("hvjixgo", "qdqw", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(false, response.thresholdRules().get(0).isEnabled());
-        Assertions.assertEquals(872903915, response.thresholdRules().get(0).minThreshold());
-        Assertions.assertEquals(642448617, response.thresholdRules().get(0).maxThreshold());
+        Assertions.assertEquals(true, response.thresholdRules().get(0).isEnabled());
+        Assertions.assertEquals(1548137596, response.thresholdRules().get(0).minThreshold());
+        Assertions.assertEquals(1195922354, response.thresholdRules().get(0).maxThreshold());
         Assertions.assertEquals(false, response.timeWindowRules().get(0).isEnabled());
-        Assertions.assertEquals(24448407, response.timeWindowRules().get(0).minThreshold());
-        Assertions.assertEquals(1364223481, response.timeWindowRules().get(0).maxThreshold());
-        Assertions.assertEquals(Duration.parse("PT13H41M31S"), response.timeWindowRules().get(0).timeWindowSize());
-        Assertions.assertEquals(true, response.allowlistRules().get(0).isEnabled());
-        Assertions.assertEquals("jrzvlc", response.allowlistRules().get(0).allowlistValues().get(0));
-        Assertions.assertEquals(false, response.denylistRules().get(0).isEnabled());
-        Assertions.assertEquals("xbsowrrlcck", response.denylistRules().get(0).denylistValues().get(0));
+        Assertions.assertEquals(2123944899, response.timeWindowRules().get(0).minThreshold());
+        Assertions.assertEquals(1305106285, response.timeWindowRules().get(0).maxThreshold());
+        Assertions.assertEquals(Duration.parse("PT111H39M41S"), response.timeWindowRules().get(0).timeWindowSize());
+        Assertions.assertEquals(false, response.allowlistRules().get(0).isEnabled());
+        Assertions.assertEquals("kdw", response.allowlistRules().get(0).allowlistValues().get(0));
+        Assertions.assertEquals(true, response.denylistRules().get(0).isEnabled());
+        Assertions.assertEquals("oyxontbwdq", response.denylistRules().get(0).denylistValues().get(0));
     }
 }

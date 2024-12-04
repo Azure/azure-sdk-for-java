@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class RuleStatus extends ExpandableStringEnum<RuleStatus> {
      * @param name a name to look for.
      * @return the corresponding RuleStatus.
      */
-    @JsonCreator
     public static RuleStatus fromString(String name) {
         return fromString(name, RuleStatus.class);
     }
