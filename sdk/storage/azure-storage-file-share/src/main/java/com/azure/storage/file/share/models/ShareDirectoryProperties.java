@@ -5,6 +5,7 @@ package com.azure.storage.file.share.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.storage.file.share.FileSmbProperties;
+import com.azure.storage.file.share.implementation.accesshelpers.ShareDirectoryPropertiesHelper;
 
 import java.time.OffsetDateTime;
 import java.util.Map;
@@ -32,6 +33,16 @@ public final class ShareDirectoryProperties {
      * @param smbProperties The SMB properties of the directory.
      */
     public ShareDirectoryProperties(Map<String, String> metadata, String eTag, OffsetDateTime lastModified,
+        boolean isServerEncrypted, FileSmbProperties smbProperties) {
+        this.metadata = metadata;
+        this.eTag = eTag;
+        this.lastModified = lastModified;
+        this.isServerEncrypted = isServerEncrypted;
+        this.smbProperties = smbProperties;
+        this.posixProperties = null;
+    }
+
+    private ShareDirectoryProperties(Map<String, String> metadata, String eTag, OffsetDateTime lastModified,
         boolean isServerEncrypted, FileSmbProperties smbProperties, FilePosixProperties posixProperties) {
         this.metadata = metadata;
         this.eTag = eTag;
@@ -39,6 +50,19 @@ public final class ShareDirectoryProperties {
         this.isServerEncrypted = isServerEncrypted;
         this.smbProperties = smbProperties;
         this.posixProperties = posixProperties;
+    }
+
+    static {
+        ShareDirectoryPropertiesHelper
+            .setAccessor(new ShareDirectoryPropertiesHelper.ShareDirectoryPropertiesAccessor() {
+                @Override
+                public ShareDirectoryProperties create(Map<String, String> metadata, String eTag,
+                    OffsetDateTime lastModified, boolean isServerEncrypted, FileSmbProperties smbProperties,
+                    FilePosixProperties posixProperties) {
+                    return new ShareDirectoryProperties(metadata, eTag, lastModified, isServerEncrypted, smbProperties,
+                        posixProperties);
+                }
+            });
     }
 
     /**

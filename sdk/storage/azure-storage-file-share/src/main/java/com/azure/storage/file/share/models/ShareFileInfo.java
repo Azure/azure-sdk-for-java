@@ -5,6 +5,7 @@ package com.azure.storage.file.share.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.storage.file.share.FileSmbProperties;
+import com.azure.storage.file.share.implementation.accesshelpers.ShareFileInfoHelper;
 
 import java.time.OffsetDateTime;
 
@@ -29,12 +30,31 @@ public final class ShareFileInfo {
      * @param smbProperties The SMB properties of the file.
      */
     public ShareFileInfo(String eTag, OffsetDateTime lastModified, Boolean isServerEncrypted,
+        FileSmbProperties smbProperties) {
+        this.eTag = eTag;
+        this.lastModified = lastModified;
+        this.isServerEncrypted = isServerEncrypted;
+        this.smbProperties = smbProperties;
+        this.posixProperties = null;
+    }
+
+    private ShareFileInfo(String eTag, OffsetDateTime lastModified, Boolean isServerEncrypted,
         FileSmbProperties smbProperties, FilePosixProperties posixProperties) {
         this.eTag = eTag;
         this.lastModified = lastModified;
         this.isServerEncrypted = isServerEncrypted;
         this.smbProperties = smbProperties;
         this.posixProperties = posixProperties;
+    }
+
+    static {
+        ShareFileInfoHelper.setAccessor(new ShareFileInfoHelper.ShareFileInfoAccessor() {
+            @Override
+            public ShareFileInfo create(String eTag, OffsetDateTime lastModified, Boolean isServerEncrypted,
+                FileSmbProperties smbProperties, FilePosixProperties posixProperties) {
+                return new ShareFileInfo(eTag, lastModified, isServerEncrypted, smbProperties, posixProperties);
+            }
+        });
     }
 
     /**

@@ -102,7 +102,7 @@ public class StorageSeekableByteChannelShareFileWriteBehaviorTests extends FileS
                 public ShareFileProperties getProperties() {
                     getPropertiesCallCount.incrementAndGet();
                     return new ShareFileProperties(null, null, null, null, fileSize, null, null, null, null, null, null,
-                        null, null, null, null, null, null, null, null);
+                        null, null, null, null, null, null, null);
                 }
             };
         StorageSeekableByteChannelShareFileWriteBehavior behavior
@@ -128,7 +128,7 @@ public class StorageSeekableByteChannelShareFileWriteBehaviorTests extends FileS
                 public ShareFileProperties getProperties() {
                     getPropertiesCallCount.incrementAndGet();
                     return new ShareFileProperties(null, null, null, null, fileSize, null, null, null, null, null, null,
-                        null, null, null, null, null, null, null, null);
+                        null, null, null, null, null, null, null);
                 }
             };
 
