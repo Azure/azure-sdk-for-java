@@ -5,28 +5,30 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
 /**
  * The event type information for Channels.
  */
 @Fluent
-public final class EventTypeInfo {
+public final class EventTypeInfo implements JsonSerializable<EventTypeInfo> {
     /*
      * The kind of event type used.
      */
-    @JsonProperty(value = "kind")
     private EventDefinitionKind kind;
 
     /*
-     * A collection of inline event types for the resource. The inline event type keys are of type string which represents the name of the event.
+     * A collection of inline event types for the resource. The inline event type keys are of type string which
+     * represents the name of the event.
      * An example of a valid inline event name is "Contoso.OrderCreated".
-     * The inline event type values are of type InlineEventProperties and will contain additional information for every inline event type.
+     * The inline event type values are of type InlineEventProperties and will contain additional information for every
+     * inline event type.
      */
-    @JsonProperty(value = "inlineEventTypes")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, InlineEventProperties> inlineEventTypes;
 
     /**
@@ -96,5 +98,47 @@ public final class EventTypeInfo {
                 }
             });
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        jsonWriter.writeMapField("inlineEventTypes", this.inlineEventTypes,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EventTypeInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EventTypeInfo if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EventTypeInfo.
+     */
+    public static EventTypeInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EventTypeInfo deserializedEventTypeInfo = new EventTypeInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("kind".equals(fieldName)) {
+                    deserializedEventTypeInfo.kind = EventDefinitionKind.fromString(reader.getString());
+                } else if ("inlineEventTypes".equals(fieldName)) {
+                    Map<String, InlineEventProperties> inlineEventTypes
+                        = reader.readMap(reader1 -> InlineEventProperties.fromJson(reader1));
+                    deserializedEventTypeInfo.inlineEventTypes = inlineEventTypes;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEventTypeInfo;
+        });
     }
 }

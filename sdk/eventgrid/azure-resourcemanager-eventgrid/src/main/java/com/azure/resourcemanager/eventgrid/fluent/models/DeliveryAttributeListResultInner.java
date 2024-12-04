@@ -5,19 +5,22 @@
 package com.azure.resourcemanager.eventgrid.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.eventgrid.models.DeliveryAttributeMapping;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Result of the Get delivery attributes operation.
  */
 @Fluent
-public final class DeliveryAttributeListResultInner {
+public final class DeliveryAttributeListResultInner implements JsonSerializable<DeliveryAttributeListResultInner> {
     /*
      * A collection of DeliveryAttributeMapping
      */
-    @JsonProperty(value = "value")
     private List<DeliveryAttributeMapping> value;
 
     /**
@@ -55,5 +58,44 @@ public final class DeliveryAttributeListResultInner {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DeliveryAttributeListResultInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DeliveryAttributeListResultInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DeliveryAttributeListResultInner.
+     */
+    public static DeliveryAttributeListResultInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DeliveryAttributeListResultInner deserializedDeliveryAttributeListResultInner
+                = new DeliveryAttributeListResultInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<DeliveryAttributeMapping> value
+                        = reader.readArray(reader1 -> DeliveryAttributeMapping.fromJson(reader1));
+                    deserializedDeliveryAttributeListResultInner.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDeliveryAttributeListResultInner;
+        });
     }
 }

@@ -5,18 +5,21 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.eventgrid.fluent.models.NamespaceTopicUpdateParameterProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Properties of the namespace topic update.
  */
 @Fluent
-public final class NamespaceTopicUpdateParameters {
+public final class NamespaceTopicUpdateParameters implements JsonSerializable<NamespaceTopicUpdateParameters> {
     /*
      * Properties of the namespace topic resource.
      */
-    @JsonProperty(value = "properties")
     private NamespaceTopicUpdateParameterProperties innerProperties;
 
     /**
@@ -70,5 +73,43 @@ public final class NamespaceTopicUpdateParameters {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NamespaceTopicUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NamespaceTopicUpdateParameters if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NamespaceTopicUpdateParameters.
+     */
+    public static NamespaceTopicUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NamespaceTopicUpdateParameters deserializedNamespaceTopicUpdateParameters
+                = new NamespaceTopicUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedNamespaceTopicUpdateParameters.innerProperties
+                        = NamespaceTopicUpdateParameterProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNamespaceTopicUpdateParameters;
+        });
     }
 }

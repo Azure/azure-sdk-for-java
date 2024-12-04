@@ -5,18 +5,22 @@
 package com.azure.resourcemanager.eventgrid.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Information of namespace topic update parameter properties.
  */
 @Fluent
-public final class NamespaceTopicUpdateParameterProperties {
+public final class NamespaceTopicUpdateParameterProperties
+    implements JsonSerializable<NamespaceTopicUpdateParameterProperties> {
     /*
      * Event retention for the namespace topic expressed in days. The property default value is 1 day.
      * Min event retention duration value is 1 day and max event retention duration value is 1 day.
      */
-    @JsonProperty(value = "eventRetentionInDays")
     private Integer eventRetentionInDays;
 
     /**
@@ -55,5 +59,43 @@ public final class NamespaceTopicUpdateParameterProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("eventRetentionInDays", this.eventRetentionInDays);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NamespaceTopicUpdateParameterProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NamespaceTopicUpdateParameterProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NamespaceTopicUpdateParameterProperties.
+     */
+    public static NamespaceTopicUpdateParameterProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NamespaceTopicUpdateParameterProperties deserializedNamespaceTopicUpdateParameterProperties
+                = new NamespaceTopicUpdateParameterProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("eventRetentionInDays".equals(fieldName)) {
+                    deserializedNamespaceTopicUpdateParameterProperties.eventRetentionInDays
+                        = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNamespaceTopicUpdateParameterProperties;
+        });
     }
 }
