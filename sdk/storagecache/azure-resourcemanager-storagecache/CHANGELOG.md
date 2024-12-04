@@ -1,14 +1,29 @@
 # Release History
 
-## 1.0.0-beta.12 (Unreleased)
+## 1.0.0-beta.12 (2024-12-04)
 
-### Features Added
+- Azure Resource Manager StorageCache client library for Java. This package contains Microsoft Azure SDK for StorageCache Management SDK. Azure Managed Lustre provides a fully managed Lustre® file system, integrated with Blob storage, for use on demand. These operations create and manage Azure Managed Lustre file systems. Package tag package-2024-03. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### Serialization/Deserialization change
 
-### Other Changes
+- `Jackson` is removed from dependency and no longer supported.
+
+##### Migration Guide
+
+If you are using `Jackson`/`ObjectMapper` for manual serialization/deserialization, configure your `ObjectMapper` for backward compatibility:
+```java
+objectMapper.registerModule(com.azure.core.serializer.json.jackson.JacksonJsonProvider.getJsonSerializableDatabindModule());
+```
+
+### Features Added
+
+#### `models.StorageTargetResource` was modified
+
+* `type()` was added
+* `name()` was added
+* `id()` was added
 
 ## 1.0.0-beta.11 (2024-05-20)
 

@@ -5,24 +5,30 @@
 package com.azure.resourcemanager.storagecache.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Cache Upgrade Settings.
  */
 @Fluent
-public final class CacheUpgradeSettings {
+public final class CacheUpgradeSettings implements JsonSerializable<CacheUpgradeSettings> {
     /*
-     * True if the user chooses to select an installation time between now and firmwareUpdateDeadline. Else the firmware will automatically be installed after firmwareUpdateDeadline if not triggered earlier via the upgrade operation.
+     * True if the user chooses to select an installation time between now and firmwareUpdateDeadline. Else the firmware
+     * will automatically be installed after firmwareUpdateDeadline if not triggered earlier via the upgrade operation.
      */
-    @JsonProperty(value = "upgradeScheduleEnabled")
     private Boolean upgradeScheduleEnabled;
 
     /*
-     * When upgradeScheduleEnabled is true, this field holds the user-chosen upgrade time. At the user-chosen time, the firmware update will automatically be installed on the cache.
+     * When upgradeScheduleEnabled is true, this field holds the user-chosen upgrade time. At the user-chosen time, the
+     * firmware update will automatically be installed on the cache.
      */
-    @JsonProperty(value = "scheduledTime")
     private OffsetDateTime scheduledTime;
 
     /**
@@ -83,5 +89,47 @@ public final class CacheUpgradeSettings {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("upgradeScheduleEnabled", this.upgradeScheduleEnabled);
+        jsonWriter.writeStringField("scheduledTime",
+            this.scheduledTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.scheduledTime));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CacheUpgradeSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CacheUpgradeSettings if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CacheUpgradeSettings.
+     */
+    public static CacheUpgradeSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CacheUpgradeSettings deserializedCacheUpgradeSettings = new CacheUpgradeSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("upgradeScheduleEnabled".equals(fieldName)) {
+                    deserializedCacheUpgradeSettings.upgradeScheduleEnabled
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("scheduledTime".equals(fieldName)) {
+                    deserializedCacheUpgradeSettings.scheduledTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCacheUpgradeSettings;
+        });
     }
 }
