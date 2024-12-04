@@ -144,7 +144,7 @@ public final class RealtimeServerVadTurnDetection extends RealtimeTurnDetection 
      * @throws IOException If an error occurs while reading the RealtimeServerVadTurnDetection.
      */
     @Generated
-    @SuppressWarnings("deprecation")
+    @SuppressWarnings("removal")
     public static RealtimeServerVadTurnDetection fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             RealtimeServerVadTurnDetection deserializedRealtimeServerVadTurnDetection
