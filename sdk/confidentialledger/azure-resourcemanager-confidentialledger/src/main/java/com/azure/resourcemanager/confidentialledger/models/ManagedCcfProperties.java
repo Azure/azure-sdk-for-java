@@ -5,7 +5,11 @@
 package com.azure.resourcemanager.confidentialledger.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -14,57 +18,45 @@ import java.util.List;
  * Additional Managed CCF properties.
  */
 @Fluent
-public final class ManagedCcfProperties {
+public final class ManagedCcfProperties implements JsonSerializable<ManagedCcfProperties> {
     /*
      * Unique name for the Managed CCF.
      */
-    @JsonProperty(value = "appName", access = JsonProperty.Access.WRITE_ONLY)
     private String appName;
 
     /*
      * Endpoint for calling Managed CCF Service.
      */
-    @JsonProperty(value = "appUri", access = JsonProperty.Access.WRITE_ONLY)
     private String appUri;
 
     /*
      * Endpoint for accessing network identity.
      */
-    @JsonProperty(value = "identityServiceUri", access = JsonProperty.Access.WRITE_ONLY)
     private String identityServiceUri;
 
     /*
-     * List of member identity certificates for  Managed CCF
+     * List of member identity certificates for Managed CCF
      */
-    @JsonProperty(value = "memberIdentityCertificates")
     private List<MemberIdentityCertificate> memberIdentityCertificates;
 
     /*
-     * DeploymentType
-     * 
      * Deployment Type of Managed CCF
      */
-    @JsonProperty(value = "deploymentType")
     private DeploymentType deploymentType;
 
     /*
      * Object representing RunningState for Managed CCF.
      */
-    @JsonProperty(value = "runningState")
     private RunningState runningState;
 
     /*
      * Provisioning state of Managed CCF Resource
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
-     * NodeCount
-     * 
      * Number of CCF nodes in the Managed CCF.
      */
-    @JsonProperty(value = "nodeCount")
     private Integer nodeCount;
 
     /**
@@ -122,9 +114,7 @@ public final class ManagedCcfProperties {
     }
 
     /**
-     * Get the deploymentType property: DeploymentType
-     * 
-     * Deployment Type of Managed CCF.
+     * Get the deploymentType property: Deployment Type of Managed CCF.
      * 
      * @return the deploymentType value.
      */
@@ -133,9 +123,7 @@ public final class ManagedCcfProperties {
     }
 
     /**
-     * Set the deploymentType property: DeploymentType
-     * 
-     * Deployment Type of Managed CCF.
+     * Set the deploymentType property: Deployment Type of Managed CCF.
      * 
      * @param deploymentType the deploymentType value to set.
      * @return the ManagedCcfProperties object itself.
@@ -175,9 +163,7 @@ public final class ManagedCcfProperties {
     }
 
     /**
-     * Get the nodeCount property: NodeCount
-     * 
-     * Number of CCF nodes in the Managed CCF.
+     * Get the nodeCount property: Number of CCF nodes in the Managed CCF.
      * 
      * @return the nodeCount value.
      */
@@ -186,9 +172,7 @@ public final class ManagedCcfProperties {
     }
 
     /**
-     * Set the nodeCount property: NodeCount
-     * 
-     * Number of CCF nodes in the Managed CCF.
+     * Set the nodeCount property: Number of CCF nodes in the Managed CCF.
      * 
      * @param nodeCount the nodeCount value to set.
      * @return the ManagedCcfProperties object itself.
@@ -210,5 +194,62 @@ public final class ManagedCcfProperties {
         if (deploymentType() != null) {
             deploymentType().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("memberIdentityCertificates", this.memberIdentityCertificates,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("deploymentType", this.deploymentType);
+        jsonWriter.writeStringField("runningState", this.runningState == null ? null : this.runningState.toString());
+        jsonWriter.writeNumberField("nodeCount", this.nodeCount);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedCcfProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedCcfProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ManagedCcfProperties.
+     */
+    public static ManagedCcfProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedCcfProperties deserializedManagedCcfProperties = new ManagedCcfProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("appName".equals(fieldName)) {
+                    deserializedManagedCcfProperties.appName = reader.getString();
+                } else if ("appUri".equals(fieldName)) {
+                    deserializedManagedCcfProperties.appUri = reader.getString();
+                } else if ("identityServiceUri".equals(fieldName)) {
+                    deserializedManagedCcfProperties.identityServiceUri = reader.getString();
+                } else if ("memberIdentityCertificates".equals(fieldName)) {
+                    List<MemberIdentityCertificate> memberIdentityCertificates
+                        = reader.readArray(reader1 -> MemberIdentityCertificate.fromJson(reader1));
+                    deserializedManagedCcfProperties.memberIdentityCertificates = memberIdentityCertificates;
+                } else if ("deploymentType".equals(fieldName)) {
+                    deserializedManagedCcfProperties.deploymentType = DeploymentType.fromJson(reader);
+                } else if ("runningState".equals(fieldName)) {
+                    deserializedManagedCcfProperties.runningState = RunningState.fromString(reader.getString());
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedManagedCcfProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("nodeCount".equals(fieldName)) {
+                    deserializedManagedCcfProperties.nodeCount = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagedCcfProperties;
+        });
     }
 }

@@ -5,17 +5,20 @@
 package com.azure.resourcemanager.confidentialledger.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Object representing the backup response of a Managed CCF Resource.
  */
 @Immutable
-public final class ManagedCcfBackupResponseInner {
+public final class ManagedCcfBackupResponseInner implements JsonSerializable<ManagedCcfBackupResponseInner> {
     /*
      * Response body stating if the managed CCF resource is being backed up.
      */
-    @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
     private String message;
 
     /**
@@ -39,5 +42,41 @@ public final class ManagedCcfBackupResponseInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedCcfBackupResponseInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedCcfBackupResponseInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ManagedCcfBackupResponseInner.
+     */
+    public static ManagedCcfBackupResponseInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedCcfBackupResponseInner deserializedManagedCcfBackupResponseInner
+                = new ManagedCcfBackupResponseInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("message".equals(fieldName)) {
+                    deserializedManagedCcfBackupResponseInner.message = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagedCcfBackupResponseInner;
+        });
     }
 }
