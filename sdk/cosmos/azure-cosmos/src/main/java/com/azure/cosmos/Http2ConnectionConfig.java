@@ -6,6 +6,9 @@ package com.azure.cosmos;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.util.Beta;
 
+/***
+ * Represents the http2 connection config associated with Cosmos Client in the Azure Cosmos DB database service.
+ */
 @Beta(value = Beta.SinceVersion.V4_66_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public class Http2ConnectionConfig {
     private int maxConnectionPoolSize;
@@ -13,6 +16,9 @@ public class Http2ConnectionConfig {
     private int maxConcurrentStreams;
     private boolean enabled;
 
+    /***
+     * The constructor of Http2ConnectionConfig.
+     */
     @Beta(value = Beta.SinceVersion.V4_66_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Http2ConnectionConfig() {
         this.maxConnectionPoolSize = Configs.getHttp2MaxConnectionPoolSize(); // overlapping with the maxConnectionPoolSize in gateway connection config
