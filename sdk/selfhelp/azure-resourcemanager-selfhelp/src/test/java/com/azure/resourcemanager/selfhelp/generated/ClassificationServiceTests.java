@@ -12,17 +12,16 @@ import org.junit.jupiter.api.Assertions;
 public final class ClassificationServiceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ClassificationService model = BinaryData.fromString(
-            "{\"serviceId\":\"t\",\"displayName\":\"dut\",\"resourceTypes\":[\"rmrlxqtvcof\",\"dflvkg\",\"u\",\"gdknnqv\"]}")
+        ClassificationService model = BinaryData
+            .fromString("{\"serviceId\":\"dut\",\"displayName\":\"ormrlxqtvcofudfl\",\"resourceTypes\":[\"jub\"]}")
             .toObject(ClassificationService.class);
-        Assertions.assertEquals("rmrlxqtvcof", model.resourceTypes().get(0));
+        Assertions.assertEquals("jub", model.resourceTypes().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClassificationService model
-            = new ClassificationService().withResourceTypes(Arrays.asList("rmrlxqtvcof", "dflvkg", "u", "gdknnqv"));
+        ClassificationService model = new ClassificationService().withResourceTypes(Arrays.asList("jub"));
         model = BinaryData.fromObject(model).toObject(ClassificationService.class);
-        Assertions.assertEquals("rmrlxqtvcof", model.resourceTypes().get(0));
+        Assertions.assertEquals("jub", model.resourceTypes().get(0));
     }
 }

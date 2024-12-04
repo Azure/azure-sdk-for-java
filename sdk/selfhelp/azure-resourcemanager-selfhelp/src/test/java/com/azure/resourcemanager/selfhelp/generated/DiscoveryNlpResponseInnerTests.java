@@ -16,51 +16,65 @@ public final class DiscoveryNlpResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DiscoveryNlpResponseInner model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"problemTitle\":\"ka\",\"problemDescription\":\"utiiswacf\",\"serviceId\":\"dkzzewkfvhqcrail\",\"problemClassificationId\":\"n\",\"solutions\":[{\"solutionId\":\"flrwd\",\"solutionType\":\"Solutions\",\"description\":\"xyjrxsagafcnih\",\"requiredInputs\":[\"apnedgfbcvkc\",\"q\",\"pkeqdcvdrhvoo\"]},{\"solutionId\":\"otbobzdopcj\",\"solutionType\":\"Troubleshooters\",\"description\":\"dldwmgxc\",\"requiredInputs\":[\"lpmutwuoegrpkhj\",\"niyqslui\",\"pdggkzzlvm\"]},{\"solutionId\":\"paxmodfvuefywsb\",\"solutionType\":\"Diagnostics\",\"description\":\"wyhrfouyftaakc\",\"requiredInputs\":[\"yzvqt\",\"nubexk\",\"zksmondj\"]}],\"relatedServices\":[{\"serviceId\":\"vypomgkopkwho\",\"displayName\":\"pajqgxysm\",\"resourceTypes\":[\"bq\",\"qvmkcxo\"]},{\"serviceId\":\"pvhelxprg\",\"displayName\":\"atddc\",\"resourceTypes\":[\"cuejrjxgci\",\"ibrhosxsdqr\",\"zoymibmrqyibahw\"]},{\"serviceId\":\"uszdtmhrkwof\",\"displayName\":\"voqacpiexpbt\",\"resourceTypes\":[\"bwoenwashrt\"]},{\"serviceId\":\"kcnqxwbpo\",\"displayName\":\"lpiujwaa\",\"resourceTypes\":[\"qiiobyuqer\",\"qlpqwcciuq\",\"bdbutauvf\"]}]},\"id\":\"kuwhh\",\"name\":\"hykojoxafnndlpic\",\"type\":\"koymkcd\"},{\"properties\":{\"problemTitle\":\"pkkpw\",\"problemDescription\":\"eqnovvqfovl\",\"serviceId\":\"ywsuwsy\",\"problemClassificationId\":\"ndsytgadg\",\"solutions\":[{\"solutionId\":\"aeneqnzarrwl\",\"solutionType\":\"Solutions\",\"description\":\"jfqka\",\"requiredInputs\":[\"iipfpubj\",\"bwwift\"]},{\"solutionId\":\"qkvpuvksgplsakn\",\"solutionType\":\"Troubleshooters\",\"description\":\"ynl\",\"requiredInputs\":[\"uopxodlqiyntor\",\"ihleos\",\"swsrms\",\"yzrpzbchckqqzq\"]},{\"solutionId\":\"xiy\",\"solutionType\":\"SelfHelp\",\"description\":\"zynkedya\",\"requiredInputs\":[\"yhqmibzyhwi\",\"smypyynpc\",\"pumnz\",\"mwzn\"]},{\"solutionId\":\"biknsorgjhxbld\",\"solutionType\":\"Troubleshooters\",\"description\":\"rlkdmtncvokotl\",\"requiredInputs\":[\"yhgsy\"]}],\"relatedServices\":[{\"serviceId\":\"jlt\",\"displayName\":\"bnnhadoocrkvcik\",\"resourceTypes\":[\"p\"]},{\"serviceId\":\"qgxqquezikyw\",\"displayName\":\"xkalla\",\"resourceTypes\":[\"lwuip\",\"ccjzkzivgvv\"]},{\"serviceId\":\"ayrhyrnx\",\"displayName\":\"ueedndrdvs\",\"resourceTypes\":[\"qqtch\"]},{\"serviceId\":\"lmfmtdaay\",\"displayName\":\"v\",\"resourceTypes\":[\"piohgwxrtfu\",\"xepxgyqagvrvmn\",\"k\",\"kghimdblxgwimfnj\"]}]},\"id\":\"j\",\"name\":\"wmszkk\",\"type\":\"oqreyfkzikfjawn\"}]}")
+            "{\"value\":[{\"properties\":{\"problemTitle\":\"konzmnsik\",\"problemDescription\":\"kqze\",\"serviceId\":\"kdltfzxmhhvhg\",\"problemClassificationId\":\"eodkwobda\",\"solutions\":[{\"solutionId\":\"bqdxbx\",\"solutionType\":\"SelfHelp\",\"description\":\"ogqxndlkzgxhuri\",\"requiredInputs\":[\"podxunkb\",\"bxmubyynt\",\"lrb\",\"tkoievseotgq\"]},{\"solutionId\":\"ltmuwlauwzizx\",\"solutionType\":\"Troubleshooters\",\"description\":\"cjefuzmu\",\"requiredInputs\":[\"ttdumorppxebmnzb\",\"bhjpglkfgohdne\",\"el\"]},{\"solutionId\":\"hsd\",\"solutionType\":\"Diagnostics\",\"description\":\"zfikd\",\"requiredInputs\":[\"quuvxzxcl\"]}],\"relatedServices\":[{\"serviceId\":\"hqzonosggbhcoh\",\"displayName\":\"dsjnka\",\"resourceTypes\":[\"tiiswacffg\",\"k\",\"zewk\"]},{\"serviceId\":\"hqcrailvpnpp\",\"displayName\":\"flrwd\",\"resourceTypes\":[\"lxyjr\",\"sag\"]},{\"serviceId\":\"cnihgwqapnedgfbc\",\"displayName\":\"cvqvpkeqdcv\",\"resourceTypes\":[\"vo\",\"dsotbobzd\",\"pcjwv\",\"hdldwmgxcxrsl\"]},{\"serviceId\":\"utwu\",\"displayName\":\"grpkhjwniyqs\",\"resourceTypes\":[\"cpdggkzzlvmbmp\"]}]},\"id\":\"modfvuefywsbpfvm\",\"name\":\"yhrfouyftaakcpw\",\"type\":\"yzvqt\"},{\"properties\":{\"problemTitle\":\"bexkpzksmondj\",\"problemDescription\":\"uxvypomgkopkwh\",\"serviceId\":\"v\",\"problemClassificationId\":\"jqg\",\"solutions\":[{\"solutionId\":\"ocmbqfqvmkcxoza\",\"solutionType\":\"Troubleshooters\",\"description\":\"lxprglyatddckcbc\",\"requiredInputs\":[\"rjxgciqib\",\"hos\",\"sdqrhzoymibmrq\",\"ibahwflus\"]},{\"solutionId\":\"tmhrkwofyyvoqacp\",\"solutionType\":\"Troubleshooters\",\"description\":\"btgiwbwoenwas\",\"requiredInputs\":[\"dtkcnqxwbpokulp\",\"ujw\"]}],\"relatedServices\":[{\"serviceId\":\"pqiiobyuqe\",\"displayName\":\"qlpqwcciuq\",\"resourceTypes\":[\"butauvfb\",\"kuwhh\",\"hykojoxafnndlpic\",\"koymkcd\"]},{\"serviceId\":\"bpkkpwdre\",\"displayName\":\"ovvqfovljxywsu\",\"resourceTypes\":[\"rsndsytgadgvra\"]}]},\"id\":\"en\",\"name\":\"qnzarrwl\",\"type\":\"uu\"},{\"properties\":{\"problemTitle\":\"qkacewii\",\"problemDescription\":\"pubjibw\",\"serviceId\":\"f\",\"problemClassificationId\":\"hqkvpuvksgplsak\",\"solutions\":[{\"solutionId\":\"synljphuopxodl\",\"solutionType\":\"Diagnostics\",\"description\":\"torzih\",\"requiredInputs\":[\"sjswsrms\",\"yzrpzbchckqqzq\"]}],\"relatedServices\":[{\"serviceId\":\"ysuiizynkedya\",\"displayName\":\"wyhqmibzyhwits\",\"resourceTypes\":[\"yynpcdpumnzgmwz\"]}]},\"id\":\"abikns\",\"name\":\"rgjhxb\",\"type\":\"dtlwwrlkd\"},{\"properties\":{\"problemTitle\":\"cvokotllxdyhg\",\"problemDescription\":\"ocogj\",\"serviceId\":\"dtbnnha\",\"problemClassificationId\":\"ocrkvcikh\",\"solutions\":[{\"solutionId\":\"mqg\",\"solutionType\":\"Solutions\",\"description\":\"ezikywggxkal\",\"requiredInputs\":[\"melwuipiccjz\",\"z\"]}],\"relatedServices\":[{\"serviceId\":\"vc\",\"displayName\":\"y\",\"resourceTypes\":[\"rnxxmueed\",\"drd\",\"stkwqqtch\"]},{\"serviceId\":\"lmfmtdaay\",\"displayName\":\"v\",\"resourceTypes\":[\"piohgwxrtfu\",\"xepxgyqagvrvmn\",\"k\",\"kghimdblxgwimfnj\"]},{\"serviceId\":\"j\",\"displayName\":\"mszkkfo\",\"resourceTypes\":[\"yfkzik\",\"jawneaiv\",\"wczelpci\"]}]},\"id\":\"lsfeaenwabfatkld\",\"name\":\"xbjhwuaanozjosph\",\"type\":\"oulpjrv\"}]}")
             .toObject(DiscoveryNlpResponseInner.class);
-        Assertions.assertEquals("ka", model.value().get(0).problemTitle());
-        Assertions.assertEquals("utiiswacf", model.value().get(0).problemDescription());
-        Assertions.assertEquals("dkzzewkfvhqcrail", model.value().get(0).serviceId());
-        Assertions.assertEquals("n", model.value().get(0).problemClassificationId());
-        Assertions.assertEquals("flrwd", model.value().get(0).solutions().get(0).solutionId());
-        Assertions.assertEquals("bq", model.value().get(0).relatedServices().get(0).resourceTypes().get(0));
+        Assertions.assertEquals("konzmnsik", model.value().get(0).problemTitle());
+        Assertions.assertEquals("kqze", model.value().get(0).problemDescription());
+        Assertions.assertEquals("kdltfzxmhhvhg", model.value().get(0).serviceId());
+        Assertions.assertEquals("eodkwobda", model.value().get(0).problemClassificationId());
+        Assertions.assertEquals("bqdxbx", model.value().get(0).solutions().get(0).solutionId());
+        Assertions.assertEquals("tiiswacffg", model.value().get(0).relatedServices().get(0).resourceTypes().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DiscoveryNlpResponseInner model = new DiscoveryNlpResponseInner().withValue(Arrays.asList(
-            new SolutionNlpMetadataResource().withProblemTitle("ka")
-                .withProblemDescription("utiiswacf")
-                .withServiceId("dkzzewkfvhqcrail")
-                .withProblemClassificationId("n")
-                .withSolutions(Arrays.asList(new SolutionMetadataProperties().withSolutionId("flrwd"),
-                    new SolutionMetadataProperties().withSolutionId("otbobzdopcj"),
-                    new SolutionMetadataProperties().withSolutionId("paxmodfvuefywsb")))
+            new SolutionNlpMetadataResource().withProblemTitle("konzmnsik")
+                .withProblemDescription("kqze")
+                .withServiceId("kdltfzxmhhvhg")
+                .withProblemClassificationId("eodkwobda")
+                .withSolutions(Arrays.asList(new SolutionMetadataProperties().withSolutionId("bqdxbx"),
+                    new SolutionMetadataProperties().withSolutionId("ltmuwlauwzizx"),
+                    new SolutionMetadataProperties().withSolutionId("hsd")))
+                .withRelatedServices(Arrays.asList(
+                    new ClassificationService().withResourceTypes(Arrays.asList("tiiswacffg", "k", "zewk")),
+                    new ClassificationService().withResourceTypes(Arrays.asList("lxyjr", "sag")),
+                    new ClassificationService()
+                        .withResourceTypes(Arrays.asList("vo", "dsotbobzd", "pcjwv", "hdldwmgxcxrsl")),
+                    new ClassificationService().withResourceTypes(Arrays.asList("cpdggkzzlvmbmp")))),
+            new SolutionNlpMetadataResource().withProblemTitle("bexkpzksmondj")
+                .withProblemDescription("uxvypomgkopkwh")
+                .withServiceId("v")
+                .withProblemClassificationId("jqg")
+                .withSolutions(Arrays.asList(new SolutionMetadataProperties().withSolutionId("ocmbqfqvmkcxoza"),
+                    new SolutionMetadataProperties().withSolutionId("tmhrkwofyyvoqacp")))
+                .withRelatedServices(Arrays.asList(
+                    new ClassificationService()
+                        .withResourceTypes(Arrays.asList("butauvfb", "kuwhh", "hykojoxafnndlpic", "koymkcd")),
+                    new ClassificationService().withResourceTypes(Arrays.asList("rsndsytgadgvra")))),
+            new SolutionNlpMetadataResource().withProblemTitle("qkacewii")
+                .withProblemDescription("pubjibw")
+                .withServiceId("f")
+                .withProblemClassificationId("hqkvpuvksgplsak")
+                .withSolutions(Arrays.asList(new SolutionMetadataProperties().withSolutionId("synljphuopxodl")))
                 .withRelatedServices(
-                    Arrays.asList(new ClassificationService().withResourceTypes(Arrays.asList("bq", "qvmkcxo")),
-                        new ClassificationService()
-                            .withResourceTypes(Arrays.asList("cuejrjxgci", "ibrhosxsdqr", "zoymibmrqyibahw")),
-                        new ClassificationService().withResourceTypes(Arrays.asList("bwoenwashrt")),
-                        new ClassificationService()
-                            .withResourceTypes(Arrays.asList("qiiobyuqer", "qlpqwcciuq", "bdbutauvf")))),
-            new SolutionNlpMetadataResource().withProblemTitle("pkkpw")
-                .withProblemDescription("eqnovvqfovl")
-                .withServiceId("ywsuwsy")
-                .withProblemClassificationId("ndsytgadg")
-                .withSolutions(Arrays.asList(new SolutionMetadataProperties().withSolutionId("aeneqnzarrwl"),
-                    new SolutionMetadataProperties().withSolutionId("qkvpuvksgplsakn"),
-                    new SolutionMetadataProperties().withSolutionId("xiy"),
-                    new SolutionMetadataProperties().withSolutionId("biknsorgjhxbld")))
-                .withRelatedServices(Arrays.asList(new ClassificationService().withResourceTypes(Arrays.asList("p")),
-                    new ClassificationService().withResourceTypes(Arrays.asList("lwuip", "ccjzkzivgvv")),
-                    new ClassificationService().withResourceTypes(Arrays.asList("qqtch")), new ClassificationService()
-                        .withResourceTypes(Arrays.asList("piohgwxrtfu", "xepxgyqagvrvmn", "k", "kghimdblxgwimfnj"))))));
+                    Arrays.asList(new ClassificationService().withResourceTypes(Arrays.asList("yynpcdpumnzgmwz")))),
+            new SolutionNlpMetadataResource().withProblemTitle("cvokotllxdyhg")
+                .withProblemDescription("ocogj")
+                .withServiceId("dtbnnha")
+                .withProblemClassificationId("ocrkvcikh")
+                .withSolutions(Arrays.asList(new SolutionMetadataProperties().withSolutionId("mqg")))
+                .withRelatedServices(Arrays.asList(
+                    new ClassificationService().withResourceTypes(Arrays.asList("rnxxmueed", "drd", "stkwqqtch")),
+                    new ClassificationService()
+                        .withResourceTypes(Arrays.asList("piohgwxrtfu", "xepxgyqagvrvmn", "k", "kghimdblxgwimfnj")),
+                    new ClassificationService().withResourceTypes(Arrays.asList("yfkzik", "jawneaiv", "wczelpci"))))));
         model = BinaryData.fromObject(model).toObject(DiscoveryNlpResponseInner.class);
-        Assertions.assertEquals("ka", model.value().get(0).problemTitle());
-        Assertions.assertEquals("utiiswacf", model.value().get(0).problemDescription());
-        Assertions.assertEquals("dkzzewkfvhqcrail", model.value().get(0).serviceId());
-        Assertions.assertEquals("n", model.value().get(0).problemClassificationId());
-        Assertions.assertEquals("flrwd", model.value().get(0).solutions().get(0).solutionId());
-        Assertions.assertEquals("bq", model.value().get(0).relatedServices().get(0).resourceTypes().get(0));
+        Assertions.assertEquals("konzmnsik", model.value().get(0).problemTitle());
+        Assertions.assertEquals("kqze", model.value().get(0).problemDescription());
+        Assertions.assertEquals("kdltfzxmhhvhg", model.value().get(0).serviceId());
+        Assertions.assertEquals("eodkwobda", model.value().get(0).problemClassificationId());
+        Assertions.assertEquals("bqdxbx", model.value().get(0).solutions().get(0).solutionId());
+        Assertions.assertEquals("tiiswacffg", model.value().get(0).relatedServices().get(0).resourceTypes().get(0));
     }
 }

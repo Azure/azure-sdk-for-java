@@ -31,8 +31,9 @@ public final class SolutionOperationsWarmUpWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.solutionOperations()
-            .warmUpWithResponse("nwoiind", "pwp", new SolutionWarmUpRequestBody().withParameters(
-                mapOf("zfjvfbgofe", "wbtlhflsjcdh", "iiojnal", "jagrqmqhldvr")), com.azure.core.util.Context.NONE);
+            .warmUpWithResponse("jnalghf", "vtvsexsowueluq",
+                new SolutionWarmUpRequestBody().withParameters(mapOf("wws", "hhxvrhmzkwpj", "qxujxukndxd", "ughftqsx")),
+                com.azure.core.util.Context.NONE);
 
     }
 

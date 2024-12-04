@@ -15,31 +15,28 @@ public final class ContinueRequestBodyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ContinueRequestBody model = BinaryData.fromString(
-            "{\"stepId\":\"erscdntne\",\"responses\":[{\"questionId\":\"jmygtdsslswtmwer\",\"questionType\":\"DateTimePicker\",\"response\":\"pyqs\"},{\"questionId\":\"wab\",\"questionType\":\"DateTimePicker\",\"response\":\"hhszh\"},{\"questionId\":\"plvwiwubmwmbes\",\"questionType\":\"MultiLineInfoBox\",\"response\":\"wwtppj\"}]}")
+            "{\"stepId\":\"qqnvwpmq\",\"responses\":[{\"questionId\":\"oujmkcjhwqytj\",\"questionType\":\"RadioButton\",\"response\":\"wj\"},{\"questionId\":\"gdrjervnaenqpe\",\"questionType\":\"DateTimePicker\",\"response\":\"oygmift\"}]}")
             .toObject(ContinueRequestBody.class);
-        Assertions.assertEquals("erscdntne", model.stepId());
-        Assertions.assertEquals("jmygtdsslswtmwer", model.responses().get(0).questionId());
-        Assertions.assertEquals(QuestionType.DATE_TIME_PICKER, model.responses().get(0).questionType());
-        Assertions.assertEquals("pyqs", model.responses().get(0).response());
+        Assertions.assertEquals("qqnvwpmq", model.stepId());
+        Assertions.assertEquals("oujmkcjhwqytj", model.responses().get(0).questionId());
+        Assertions.assertEquals(QuestionType.RADIO_BUTTON, model.responses().get(0).questionType());
+        Assertions.assertEquals("wj", model.responses().get(0).response());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ContinueRequestBody model = new ContinueRequestBody().withStepId("erscdntne")
+        ContinueRequestBody model = new ContinueRequestBody().withStepId("qqnvwpmq")
             .withResponses(Arrays.asList(
-                new TroubleshooterResponse().withQuestionId("jmygtdsslswtmwer")
+                new TroubleshooterResponse().withQuestionId("oujmkcjhwqytj")
+                    .withQuestionType(QuestionType.RADIO_BUTTON)
+                    .withResponse("wj"),
+                new TroubleshooterResponse().withQuestionId("gdrjervnaenqpe")
                     .withQuestionType(QuestionType.DATE_TIME_PICKER)
-                    .withResponse("pyqs"),
-                new TroubleshooterResponse().withQuestionId("wab")
-                    .withQuestionType(QuestionType.DATE_TIME_PICKER)
-                    .withResponse("hhszh"),
-                new TroubleshooterResponse().withQuestionId("plvwiwubmwmbes")
-                    .withQuestionType(QuestionType.MULTI_LINE_INFO_BOX)
-                    .withResponse("wwtppj")));
+                    .withResponse("oygmift")));
         model = BinaryData.fromObject(model).toObject(ContinueRequestBody.class);
-        Assertions.assertEquals("erscdntne", model.stepId());
-        Assertions.assertEquals("jmygtdsslswtmwer", model.responses().get(0).questionId());
-        Assertions.assertEquals(QuestionType.DATE_TIME_PICKER, model.responses().get(0).questionType());
-        Assertions.assertEquals("pyqs", model.responses().get(0).response());
+        Assertions.assertEquals("qqnvwpmq", model.stepId());
+        Assertions.assertEquals("oujmkcjhwqytj", model.responses().get(0).questionId());
+        Assertions.assertEquals(QuestionType.RADIO_BUTTON, model.responses().get(0).questionType());
+        Assertions.assertEquals("wj", model.responses().get(0).response());
     }
 }

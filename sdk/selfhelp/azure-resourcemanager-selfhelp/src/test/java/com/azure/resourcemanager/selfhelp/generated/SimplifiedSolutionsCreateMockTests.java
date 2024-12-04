@@ -23,7 +23,7 @@ public final class SimplifiedSolutionsCreateMockTests {
     @Test
     public void testCreate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"solutionId\":\"pwjxezn\",\"parameters\":{\"pn\":\"brnjwmw\"},\"title\":\"azej\",\"appendix\":{\"ugzxnf\":\"kagfhsxtt\",\"uenvrkp\":\"azpxdtnkdmkqjjl\",\"ibreb\":\"ou\"},\"content\":\"aysjkixqtnqttez\",\"provisioningState\":\"Succeeded\"},\"id\":\"fiakpjpqqm\",\"name\":\"edltmmjihyeozp\",\"type\":\"vwau\"}";
+            = "{\"properties\":{\"solutionId\":\"znoigbrn\",\"parameters\":{\"jjoqkagf\":\"wkpnbsaz\"},\"title\":\"xttaugzxnfaaz\",\"appendix\":{\"lwuenvrkp\":\"tnkdmkqj\",\"ibreb\":\"ou\"},\"content\":\"aysjkixqtnqttez\",\"provisioningState\":\"Succeeded\"},\"id\":\"fiakpjpqqm\",\"name\":\"edltmmjihyeozp\",\"type\":\"vwau\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,14 +33,14 @@ public final class SimplifiedSolutionsCreateMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         SimplifiedSolutionsResource response = manager.simplifiedSolutions()
-            .define("dn")
-            .withExistingScope("l")
-            .withSolutionId("vgbmhr")
-            .withParameters(mapOf("hbpnaixexccbd", "wmyijejveg"))
+            .define("ixexcc")
+            .withExistingScope("grhbpn")
+            .withSolutionId("eaxhcexdrrvqahqk")
+            .withParameters(mapOf("svfycxzbfv", "pwijnhy", "ronzmyhgfip", "owvrvmtgjqppyos"))
             .create();
 
-        Assertions.assertEquals("pwjxezn", response.solutionId());
-        Assertions.assertEquals("brnjwmw", response.parameters().get("pn"));
+        Assertions.assertEquals("znoigbrn", response.solutionId());
+        Assertions.assertEquals("wkpnbsaz", response.parameters().get("jjoqkagf"));
     }
 
     // Use "Map.of" if available

@@ -12,24 +12,24 @@ public final class DiscoveryNlpRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DiscoveryNlpRequest model = BinaryData.fromString(
-            "{\"issueSummary\":\"phsdyhto\",\"resourceId\":\"ikdowwquuvx\",\"serviceId\":\"clvit\",\"additionalContext\":\"qzonosggbhcohf\"}")
+            "{\"issueSummary\":\"wab\",\"resourceId\":\"tshhszhedp\",\"serviceId\":\"wiwubm\",\"additionalContext\":\"besldnkwwtppjflc\"}")
             .toObject(DiscoveryNlpRequest.class);
-        Assertions.assertEquals("phsdyhto", model.issueSummary());
-        Assertions.assertEquals("ikdowwquuvx", model.resourceId());
-        Assertions.assertEquals("clvit", model.serviceId());
-        Assertions.assertEquals("qzonosggbhcohf", model.additionalContext());
+        Assertions.assertEquals("wab", model.issueSummary());
+        Assertions.assertEquals("tshhszhedp", model.resourceId());
+        Assertions.assertEquals("wiwubm", model.serviceId());
+        Assertions.assertEquals("besldnkwwtppjflc", model.additionalContext());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DiscoveryNlpRequest model = new DiscoveryNlpRequest().withIssueSummary("phsdyhto")
-            .withResourceId("ikdowwquuvx")
-            .withServiceId("clvit")
-            .withAdditionalContext("qzonosggbhcohf");
+        DiscoveryNlpRequest model = new DiscoveryNlpRequest().withIssueSummary("wab")
+            .withResourceId("tshhszhedp")
+            .withServiceId("wiwubm")
+            .withAdditionalContext("besldnkwwtppjflc");
         model = BinaryData.fromObject(model).toObject(DiscoveryNlpRequest.class);
-        Assertions.assertEquals("phsdyhto", model.issueSummary());
-        Assertions.assertEquals("ikdowwquuvx", model.resourceId());
-        Assertions.assertEquals("clvit", model.serviceId());
-        Assertions.assertEquals("qzonosggbhcohf", model.additionalContext());
+        Assertions.assertEquals("wab", model.issueSummary());
+        Assertions.assertEquals("tshhszhedp", model.resourceId());
+        Assertions.assertEquals("wiwubm", model.serviceId());
+        Assertions.assertEquals("besldnkwwtppjflc", model.additionalContext());
     }
 }

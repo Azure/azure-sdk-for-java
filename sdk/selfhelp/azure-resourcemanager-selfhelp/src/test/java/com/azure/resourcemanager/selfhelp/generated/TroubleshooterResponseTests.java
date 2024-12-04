@@ -12,23 +12,22 @@ import org.junit.jupiter.api.Assertions;
 public final class TroubleshooterResponseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TroubleshooterResponse model = BinaryData
-            .fromString(
-                "{\"questionId\":\"cxogaokonzm\",\"questionType\":\"DateTimePicker\",\"response\":\"vmkqzeqq\"}")
-            .toObject(TroubleshooterResponse.class);
-        Assertions.assertEquals("cxogaokonzm", model.questionId());
-        Assertions.assertEquals(QuestionType.DATE_TIME_PICKER, model.questionType());
-        Assertions.assertEquals("vmkqzeqq", model.response());
+        TroubleshooterResponse model
+            = BinaryData.fromString("{\"questionId\":\"zdnds\",\"questionType\":\"TextInput\",\"response\":\"yq\"}")
+                .toObject(TroubleshooterResponse.class);
+        Assertions.assertEquals("zdnds", model.questionId());
+        Assertions.assertEquals(QuestionType.TEXT_INPUT, model.questionType());
+        Assertions.assertEquals("yq", model.response());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TroubleshooterResponse model = new TroubleshooterResponse().withQuestionId("cxogaokonzm")
-            .withQuestionType(QuestionType.DATE_TIME_PICKER)
-            .withResponse("vmkqzeqq");
+        TroubleshooterResponse model = new TroubleshooterResponse().withQuestionId("zdnds")
+            .withQuestionType(QuestionType.TEXT_INPUT)
+            .withResponse("yq");
         model = BinaryData.fromObject(model).toObject(TroubleshooterResponse.class);
-        Assertions.assertEquals("cxogaokonzm", model.questionId());
-        Assertions.assertEquals(QuestionType.DATE_TIME_PICKER, model.questionType());
-        Assertions.assertEquals("vmkqzeqq", model.response());
+        Assertions.assertEquals("zdnds", model.questionId());
+        Assertions.assertEquals(QuestionType.TEXT_INPUT, model.questionType());
+        Assertions.assertEquals("yq", model.response());
     }
 }

@@ -22,7 +22,7 @@ public final class DiscoverySolutionNlpsDiscoverSolutionsWithResponseMockTests {
     @Test
     public void testDiscoverSolutionsWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"problemTitle\":\"fhjxakvvjgs\",\"problemDescription\":\"r\",\"serviceId\":\"lmywwtkgkxnyed\",\"problemClassificationId\":\"gyvudtjuewbc\",\"solutions\":[{},{}],\"relatedServices\":[{},{},{}]},\"id\":\"hcjyxc\",\"name\":\"ybvpay\",\"type\":\"kkudzp\"},{\"properties\":{\"problemTitle\":\"jplmagstcy\",\"problemDescription\":\"pfkyrkdbdgiogsj\",\"serviceId\":\"nwqjnoba\",\"problemClassificationId\":\"hdd\",\"solutions\":[{},{},{}],\"relatedServices\":[{},{},{},{}]},\"id\":\"fnmntfpmvmemfn\",\"name\":\"zdwvvbalxl\",\"type\":\"lchpodbzevwrdn\"},{\"properties\":{\"problemTitle\":\"kuvsjcswsm\",\"problemDescription\":\"tuluq\",\"serviceId\":\"fcvlerch\",\"problemClassificationId\":\"bm\",\"solutions\":[{},{}],\"relatedServices\":[{},{},{},{}]},\"id\":\"widf\",\"name\":\"xsspuunnoxyhk\",\"type\":\"g\"}]}";
+            = "{\"value\":[{\"properties\":{\"problemTitle\":\"baeqphc\",\"problemDescription\":\"nrnrp\",\"serviceId\":\"huwrykqgaifm\",\"problemClassificationId\":\"klbydv\",\"solutions\":[{},{},{}],\"relatedServices\":[{}]},\"id\":\"znxcvds\",\"name\":\"hnjivo\",\"type\":\"v\"},{\"properties\":{\"problemTitle\":\"v\",\"problemDescription\":\"zgemjdftuljlt\",\"serviceId\":\"ceamtm\",\"problemClassificationId\":\"u\",\"solutions\":[{},{},{}],\"relatedServices\":[{}]},\"id\":\"w\",\"name\":\"qioknssxmojm\",\"type\":\"vpkjpr\"},{\"properties\":{\"problemTitle\":\"cfzq\",\"problemDescription\":\"yxgtczh\",\"serviceId\":\"dbsdshm\",\"problemClassificationId\":\"maehvbbxurip\",\"solutions\":[{},{},{}],\"relatedServices\":[{}]},\"id\":\"baxk\",\"name\":\"xywr\",\"type\":\"kpyklyhp\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,15 +32,15 @@ public final class DiscoverySolutionNlpsDiscoverSolutionsWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         DiscoveryNlpResponse response = manager.discoverySolutionNlps()
-            .discoverSolutionsWithResponse(new DiscoveryNlpRequest().withIssueSummary("vscx")
-                .withResourceId("mligov")
-                .withServiceId("rxkpmloazuruoc")
-                .withAdditionalContext("oorb"), com.azure.core.util.Context.NONE)
+            .discoverSolutionsWithResponse(new DiscoveryNlpRequest().withIssueSummary("acvlhv")
+                .withResourceId("dyftumrtwna")
+                .withServiceId("slbi")
+                .withAdditionalContext("ojgcyzt"), com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("fhjxakvvjgs", response.value().get(0).problemTitle());
-        Assertions.assertEquals("r", response.value().get(0).problemDescription());
-        Assertions.assertEquals("lmywwtkgkxnyed", response.value().get(0).serviceId());
-        Assertions.assertEquals("gyvudtjuewbc", response.value().get(0).problemClassificationId());
+        Assertions.assertEquals("baeqphc", response.value().get(0).problemTitle());
+        Assertions.assertEquals("nrnrp", response.value().get(0).problemDescription());
+        Assertions.assertEquals("huwrykqgaifm", response.value().get(0).serviceId());
+        Assertions.assertEquals("klbydv", response.value().get(0).problemClassificationId());
     }
 }

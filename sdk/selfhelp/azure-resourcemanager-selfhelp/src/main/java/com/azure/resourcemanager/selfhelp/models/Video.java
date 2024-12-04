@@ -71,7 +71,6 @@ public final class Video extends VideoGroupVideo {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**
