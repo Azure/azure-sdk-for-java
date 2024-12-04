@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class CustomDimensions {
-    private Map<String, String> customDimensions;
+    private final Map<String, String> customDimensions;
 
     public CustomDimensions(Map<String, String> customDimensions, Map<String, Double> customMeasurements) {
         Map<String, String> resultMap = new HashMap<>();

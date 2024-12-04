@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.DerivedMetricInfo;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.FilterConjunctionGroupInfo;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.CollectionConfigurationInfo;
@@ -14,10 +15,12 @@ import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.s
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.FilterInfo;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.PredicateType;
 
+import java.io.IOException;
 import java.util.Set;
 import java.util.List;
-import java.util.HashSet;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Map;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -37,6 +40,8 @@ public class FilteringConfiguration {
 
     private volatile String etag;
 
+    private static final ClientLogger logger = new ClientLogger(FilteringConfiguration.class);
+
     public FilteringConfiguration(ErrorTracker errorTracker) {
         validDerivedMetricInfos = new ConcurrentHashMap<>();
         validDocumentFilterConjunctionGroupInfos = new ConcurrentHashMap<>();
@@ -46,11 +51,41 @@ public class FilteringConfiguration {
     }
 
     public synchronized void updateConfiguration(CollectionConfigurationInfo configuration) {
+        try {
+            logger.verbose("passed in config: {}", configuration.toJsonString());
+        } catch (IOException e) {
+            logger.error(e.getMessage());
+        }
         etag = configuration.getETag();
+        logger.verbose("etag in update config after change: {}", etag);
         errorTracker.clearValidationTimeErrors();
         seenMetricIds.clear();
         parseDocumentFilterConfiguration(configuration);
         parseMetricFilterConfiguration(configuration);
+
+        try {
+            for (Map.Entry<String, ConcurrentMap<String, List<FilterConjunctionGroupInfo>>> entry : validDocumentFilterConjunctionGroupInfos
+                .entrySet()) {
+                logger.verbose(entry.getKey());
+                ConcurrentMap<String, List<FilterConjunctionGroupInfo>> value = entry.getValue();
+                for (Map.Entry<String, List<FilterConjunctionGroupInfo>> e2 : value.entrySet()) {
+                    logger.verbose("  {}", e2.getKey());
+                    for (FilterConjunctionGroupInfo filterGroup : e2.getValue()) {
+                        logger.verbose("    {}", filterGroup.toJsonString());
+                    }
+                }
+            }
+
+            for (Map.Entry<String, List<DerivedMetricInfo>> entry : validDerivedMetricInfos.entrySet()) {
+                logger.verbose(entry.getKey());
+                for (DerivedMetricInfo dmi : entry.getValue()) {
+                    logger.verbose("  {}", dmi.toJsonString());
+                }
+            }
+        } catch (IOException e) {
+            logger.error(e.getMessage());
+        }
+
     }
 
     public synchronized List<DerivedMetricInfo> fetchMetricConfigForTelemetryType(String telemetryType) {
@@ -311,10 +346,11 @@ public class FilteringConfiguration {
                 }
 
                 // Just in case a strange timestamp value is passed from the service side. Not completely sure how robust the service side validation is for user entered durations.
-                if (KnownDependencyColumns.DURATION.equals(filter.getFieldName())
-                    && Filter.getMicroSecondsFromFilterTimestampString(filter.getComparand()) == Long.MIN_VALUE) {
-                    throw new UnexpectedFilterCreateException(
-                        "The provided duration timestamp can't be converted to microseconds: " + filter.getComparand());
+                if (KnownDependencyColumns.DURATION.equals(filter.getFieldName())) {
+                    if (Filter.getMicroSecondsFromFilterTimestampString(filter.getComparand()) == Long.MIN_VALUE) {
+                        throw new UnexpectedFilterCreateException(
+                            "The provided duration timestamp can't be converted to microseconds: " + filter.getComparand());
+                    }
                 } else { // The service side not does not validate entered codes for result code or response code.
                     try {
                         Long.parseLong(filter.getComparand());

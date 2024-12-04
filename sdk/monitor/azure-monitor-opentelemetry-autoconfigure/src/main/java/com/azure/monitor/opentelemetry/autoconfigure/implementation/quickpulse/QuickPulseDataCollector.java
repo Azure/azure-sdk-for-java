@@ -3,6 +3,7 @@
 
 package com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.MonitorDomain;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.RemoteDependencyData;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.RequestData;
@@ -22,9 +23,12 @@ import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.s
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.KeyValuePairString;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.DocumentIngress;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.Exception;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.FilterConjunctionGroupInfo;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.DerivedMetricInfo;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.CpuPerformanceCounterCalculator;
 import reactor.util.annotation.Nullable;
 
+import java.io.IOException;
 import java.lang.management.ManagementFactory;
 import java.lang.management.MemoryMXBean;
 import java.lang.management.MemoryUsage;
@@ -37,6 +41,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
+import java.util.concurrent.ConcurrentMap;
 
 final class QuickPulseDataCollector {
 
@@ -52,14 +57,16 @@ final class QuickPulseDataCollector {
 
     private volatile Supplier<String> instrumentationKeySupplier;
 
+    private static final ClientLogger logger = new ClientLogger(QuickPulseDataCollector.class);
+
     // TODO (harskaur): Track projection (runtime) related errors in future PR
     //private volatile ErrorTracker errorTracker;
     // TODO (harskaur): Access configuration for filtering in future PR
-    // private volatile FilteringConfiguration configuration;
+    private volatile FilteringConfiguration configuration;
 
     QuickPulseDataCollector(ErrorTracker errorTracker, FilteringConfiguration configuration) {
         //this.errorTracker = errorTracker;
-        //this.configuration = configuration;
+        this.configuration = configuration;
     }
 
     private static CpuPerformanceCounterCalculator getCpuPerformanceCounterCalculator() {
@@ -147,16 +154,34 @@ final class QuickPulseDataCollector {
 
     private boolean matchesDocumentFilters(TelemetryColumns columns, String telemetryType) {
         // TODO (harskaur): In a future PR, check if the document matches any filter (using Filter class)
-        // ConcurrentMap<String, List<FilterConjunctionGroupInfo>> documentsConfig
-        //= configuration.fetchDocumentsConfigForTelemetryType(telemetryType);
+        ConcurrentMap<String, List<FilterConjunctionGroupInfo>> documentsConfig
+            = configuration.fetchDocumentsConfigForTelemetryType(telemetryType);
+        try {
+            for (Map.Entry<String, List<FilterConjunctionGroupInfo>> e2 : documentsConfig.entrySet()) {
+                logger.verbose(e2.getKey());
+                for (FilterConjunctionGroupInfo filterGroup : e2.getValue()) {
+                    logger.verbose("  {}", filterGroup.toJsonString());
+                }
+            }
+        } catch (IOException e) {
+            logger.error(e.getMessage());
+        }
+
         return true; // change this
     }
 
-    //private void applyMetricFilters(TelemetryColumns columns, String telemetryType) {
-    // TODO (harskaur): In a future PR, use Filter class to check if columns match any filter
-    // TODO (harskaur): If columns matches a filter, then create/increment a derived metric
-    //List<DerivedMetricInfo> metricsConfig = configuration.fetchMetricConfigForTelemetryType("Dependency");
-    //}
+    private void applyMetricFilters(TelemetryColumns columns, String telemetryType) {
+        // TODO (harskaur): In a future PR, use Filter class to check if columns match any filter
+        // TODO (harskaur): If columns matches a filter, then create/increment a derived metric
+        List<DerivedMetricInfo> metricsConfig = configuration.fetchMetricConfigForTelemetryType("Dependency");
+        try {
+            for (DerivedMetricInfo dmi : metricsConfig) {
+                logger.verbose(dmi.toJsonString());
+            }
+        } catch (IOException e) {
+            logger.error(e.getMessage());
+        }
+    }
 
     private void addDependency(RemoteDependencyData telemetry, int itemCount) {
         Counters counters = this.counters.get();
@@ -171,7 +196,7 @@ final class QuickPulseDataCollector {
         }
 
         DependencyDataColumns columns = new DependencyDataColumns(telemetry);
-        //applyMetricFilters(columns, "Dependency");
+        applyMetricFilters(columns, "Dependency");
 
         if (matchesDocumentFilters(columns, "Dependency")) {
             RemoteDependency dependencyDoc = new RemoteDependency();
@@ -198,7 +223,7 @@ final class QuickPulseDataCollector {
         counters.exceptions.addAndGet(itemCount);
 
         ExceptionDataColumns columns = new ExceptionDataColumns(exceptionData);
-        //applyMetricFilters(columns, "Exception");
+        applyMetricFilters(columns, "Exception");
 
         if (matchesDocumentFilters(columns, "Exception")) {
             List<TelemetryExceptionDetails> exceptionList = exceptionData.getExceptions();
@@ -231,7 +256,7 @@ final class QuickPulseDataCollector {
         }
 
         RequestDataColumns columns = new RequestDataColumns(requestTelemetry);
-        //applyMetricFilters(columns, "Request");
+        applyMetricFilters(columns, "Request");
 
         if (matchesDocumentFilters(columns, "Request")) {
             Request requestDoc = new Request();

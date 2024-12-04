@@ -13,6 +13,7 @@ import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.s
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.PublishHeaders;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.Strings;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
@@ -78,6 +79,8 @@ class QuickPulseDataSender implements Runnable {
             Date currentDate = new Date();
             long transmissionTimeInTicks = currentDate.getTime() * 10000 + TICKS_AT_EPOCH;
             try {
+                logger.verbose("Monitoring point: {}", point.toJsonString());
+                logger.verbose("etag: {}", configuration.getETag());
                 Response<CollectionConfigurationInfo> responseMono = liveMetricsRestAPIsForClientSDKs
                     .publishNoCustomHeadersWithResponseAsync(endpointPrefix, instrumentationKey.get(),
                         configuration.getETag(), transmissionTimeInTicks, dataPointList)
@@ -104,7 +107,7 @@ class QuickPulseDataSender implements Runnable {
                     configuration.updateConfiguration(body);
                 }
 
-            } catch (RuntimeException e) { // this includes ServiceErrorException & RuntimeException thrown from quickpulse post api
+            } catch (RuntimeException | IOException e) { // this includes ServiceErrorException & RuntimeException thrown from quickpulse post api
                 onPostError(sendTime);
                 logger.error(
                     "QuickPulseDataSender received a service error while attempting to send data to quickpulse {}",
