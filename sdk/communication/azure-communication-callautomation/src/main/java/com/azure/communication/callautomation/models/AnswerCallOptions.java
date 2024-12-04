@@ -3,6 +3,8 @@
 
 package com.azure.communication.callautomation.models;
 
+import java.util.HashMap;
+
 import com.azure.core.annotation.Fluent;
 
 /**
@@ -40,6 +42,11 @@ public final class AnswerCallOptions {
      */
     private String operationContext;
 
+    /*
+     * Used by customer to send custom calling context to targets when answering On-Behalf-Of call
+     */
+    private CustomCallingContext customCallingContext;
+
     /**
      * Constructor
      *
@@ -49,6 +56,7 @@ public final class AnswerCallOptions {
     public AnswerCallOptions(String incomingCallContext, String callbackUrl) {
         this.incomingCallContext = incomingCallContext;
         this.callbackUrl = callbackUrl;
+        this.customCallingContext = new CustomCallingContext(new HashMap<String, String>(), new HashMap<String, String>());
     }
 
     /**
@@ -147,5 +155,14 @@ public final class AnswerCallOptions {
     public AnswerCallOptions setMediaStreamingConfiguration(MediaStreamingOptions mediaStreamingOptions) {
         this.mediaStreamingOptions = mediaStreamingOptions;
         return this;
+    }
+
+     /**
+     * Get the Custom Calling Context.
+     *
+     * @return the customCallingContext.
+     */
+    public CustomCallingContext getCustomCallingContext() {
+        return customCallingContext;
     }
 }

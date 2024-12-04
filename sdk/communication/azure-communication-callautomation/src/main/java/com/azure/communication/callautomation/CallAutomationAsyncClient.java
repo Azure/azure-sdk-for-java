@@ -55,8 +55,10 @@ import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
 import java.net.URISyntaxException;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.monoError;
@@ -395,6 +397,13 @@ public final class CallAutomationAsyncClient {
                     = getTranscriptionConfigurationInternal(answerCallOptions.getTranscriptionConfiguration());
                 request.setTranscriptionConfiguration(transcriptionConfigurationInternal);
             }
+            if (answerCallOptions.getCustomCallingContext().getSipHeaders() != null
+            || answerCallOptions.getCustomCallingContext().getVoipHeaders() != null) {
+            CustomCallingContext customContext = new CustomCallingContext();
+            customContext.setSipHeaders(answerCallOptions.getCustomCallingContext().getSipHeaders());
+            customContext.setVoipHeaders(answerCallOptions.getCustomCallingContext().getVoipHeaders());
+            request.setCustomCallingContext(customContext);
+        }
 
             return azureCommunicationCallAutomationServiceInternal.answerCallWithResponseAsync(request, context)
                 .map(response -> {
