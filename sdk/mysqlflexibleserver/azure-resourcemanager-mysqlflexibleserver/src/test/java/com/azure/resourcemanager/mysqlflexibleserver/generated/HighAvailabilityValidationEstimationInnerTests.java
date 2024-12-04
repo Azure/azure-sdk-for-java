@@ -12,16 +12,16 @@ public final class HighAvailabilityValidationEstimationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HighAvailabilityValidationEstimationInner model = BinaryData.fromString(
-            "{\"estimatedDowntime\":1044580515,\"scheduledStandbyAvailabilityZone\":\"cciw\",\"expectedStandbyAvailabilityZone\":\"juqk\"}")
+            "{\"estimatedDowntime\":2118838793,\"scheduledStandbyAvailabilityZone\":\"mvxi\",\"expectedStandbyAvailabilityZone\":\"uugidyjrrfby\"}")
             .toObject(HighAvailabilityValidationEstimationInner.class);
-        Assertions.assertEquals("juqk", model.expectedStandbyAvailabilityZone());
+        Assertions.assertEquals("uugidyjrrfby", model.expectedStandbyAvailabilityZone());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         HighAvailabilityValidationEstimationInner model
-            = new HighAvailabilityValidationEstimationInner().withExpectedStandbyAvailabilityZone("juqk");
+            = new HighAvailabilityValidationEstimationInner().withExpectedStandbyAvailabilityZone("uugidyjrrfby");
         model = BinaryData.fromObject(model).toObject(HighAvailabilityValidationEstimationInner.class);
-        Assertions.assertEquals("juqk", model.expectedStandbyAvailabilityZone());
+        Assertions.assertEquals("uugidyjrrfby", model.expectedStandbyAvailabilityZone());
     }
 }

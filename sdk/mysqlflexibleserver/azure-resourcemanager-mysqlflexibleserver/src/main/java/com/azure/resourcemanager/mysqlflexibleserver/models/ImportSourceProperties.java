@@ -5,35 +5,35 @@
 package com.azure.resourcemanager.mysqlflexibleserver.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Import source related properties.
  */
 @Fluent
-public final class ImportSourceProperties {
+public final class ImportSourceProperties implements JsonSerializable<ImportSourceProperties> {
     /*
      * Storage type of import source.
      */
-    @JsonProperty(value = "storageType")
     private ImportSourceStorageType storageType;
 
     /*
      * Uri of the import source storage.
      */
-    @JsonProperty(value = "storageUrl")
     private String storageUrl;
 
     /*
      * Sas token for accessing source storage. Read and list permissions are required for sas token.
      */
-    @JsonProperty(value = "sasToken")
     private String sasToken;
 
     /*
      * Relative path of data directory in storage.
      */
-    @JsonProperty(value = "dataDirPath")
     private String dataDirPath;
 
     /**
@@ -130,5 +130,51 @@ public final class ImportSourceProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("storageType", this.storageType == null ? null : this.storageType.toString());
+        jsonWriter.writeStringField("storageUrl", this.storageUrl);
+        jsonWriter.writeStringField("sasToken", this.sasToken);
+        jsonWriter.writeStringField("dataDirPath", this.dataDirPath);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ImportSourceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ImportSourceProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ImportSourceProperties.
+     */
+    public static ImportSourceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ImportSourceProperties deserializedImportSourceProperties = new ImportSourceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("storageType".equals(fieldName)) {
+                    deserializedImportSourceProperties.storageType
+                        = ImportSourceStorageType.fromString(reader.getString());
+                } else if ("storageUrl".equals(fieldName)) {
+                    deserializedImportSourceProperties.storageUrl = reader.getString();
+                } else if ("sasToken".equals(fieldName)) {
+                    deserializedImportSourceProperties.sasToken = reader.getString();
+                } else if ("dataDirPath".equals(fieldName)) {
+                    deserializedImportSourceProperties.dataDirPath = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedImportSourceProperties;
+        });
     }
 }

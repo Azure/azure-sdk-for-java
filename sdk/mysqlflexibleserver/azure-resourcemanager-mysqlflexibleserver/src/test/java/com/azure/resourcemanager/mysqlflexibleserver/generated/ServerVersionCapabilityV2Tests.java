@@ -11,7 +11,7 @@ public final class ServerVersionCapabilityV2Tests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ServerVersionCapabilityV2 model
-            = BinaryData.fromString("{\"name\":\"wyhqmibzyhwits\"}").toObject(ServerVersionCapabilityV2.class);
+            = BinaryData.fromString("{\"name\":\"v\"}").toObject(ServerVersionCapabilityV2.class);
     }
 
     @org.junit.jupiter.api.Test

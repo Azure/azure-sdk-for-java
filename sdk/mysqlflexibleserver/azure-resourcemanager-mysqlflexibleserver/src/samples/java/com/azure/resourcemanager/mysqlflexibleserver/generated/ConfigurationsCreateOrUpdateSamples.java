@@ -11,7 +11,9 @@ import com.azure.resourcemanager.mysqlflexibleserver.models.ConfigurationSource;
  */
 public final class ConfigurationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/Configurations/preview/2023-06-01-preview/examples/ConfigurationCreateOrUpdate.json
+     * x-ms-original-file:
+     * specification/mysql/resource-manager/Microsoft.DBforMySQL/Configurations/preview/2023-06-01-preview/examples/
+     * ConfigurationCreateOrUpdate.json
      */
     /**
      * Sample code: ConfigurationCreateOrUpdate.

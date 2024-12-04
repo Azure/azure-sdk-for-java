@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.mysqlflexibleserver.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class HighAvailabilityMode extends ExpandableStringEnum<HighAvailab
      * @param name a name to look for.
      * @return the corresponding HighAvailabilityMode.
      */
-    @JsonCreator
     public static HighAvailabilityMode fromString(String name) {
         return fromString(name, HighAvailabilityMode.class);
     }
