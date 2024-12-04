@@ -7,9 +7,9 @@ package com.azure.resourcemanager.quota.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.quota.models.AdditionalAttributesPatch;
 import com.azure.resourcemanager.quota.models.EnvironmentType;
+import com.azure.resourcemanager.quota.models.GroupQuotasEntityBasePatch;
 import com.azure.resourcemanager.quota.models.GroupingId;
 import com.azure.resourcemanager.quota.models.GroupingIdType;
-import com.azure.resourcemanager.quota.models.GroupQuotasEntityBasePatch;
 import org.junit.jupiter.api.Assertions;
 
 public final class GroupQuotasEntityBasePatchTests {
