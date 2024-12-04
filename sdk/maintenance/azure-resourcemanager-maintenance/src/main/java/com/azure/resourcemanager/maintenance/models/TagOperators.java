@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.maintenance.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * Filter VMs by Any or All specified tags.
  */
@@ -36,7 +33,6 @@ public enum TagOperators {
      * @param value the serialized value to parse.
      * @return the parsed TagOperators object, or null if unable to parse.
      */
-    @JsonCreator
     public static TagOperators fromString(String value) {
         if (value == null) {
             return null;
@@ -53,7 +49,6 @@ public enum TagOperators {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;
