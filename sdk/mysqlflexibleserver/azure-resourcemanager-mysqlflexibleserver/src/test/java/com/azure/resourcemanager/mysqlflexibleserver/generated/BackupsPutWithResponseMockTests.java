@@ -21,7 +21,7 @@ public final class BackupsPutWithResponseMockTests {
     @Test
     public void testPutWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"backupType\":\"hwagohbuffkmrqe\",\"completedTime\":\"2021-08-30T07:57:15Z\",\"source\":\"mxtd\"},\"id\":\"futacoebjvewzc\",\"name\":\"znmwcp\",\"type\":\"guaadraufactkahz\"}";
+            = "{\"properties\":{\"backupType\":\"vyqia\",\"completedTime\":\"2021-01-15T03:57:36Z\",\"source\":\"pcnp\"},\"id\":\"cjaesgvvs\",\"name\":\"cyajguqf\",\"type\":\"wygzlvdnkfxusem\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,11 +31,11 @@ public final class BackupsPutWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         ServerBackup response = manager.backups()
-            .putWithResponse("ryeu", "yjkqabqgzslesjcb", "ernntiewdjcvbquw", com.azure.core.util.Context.NONE)
+            .putWithResponse("dphqamv", "kfwynw", "vtbvkayh", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("hwagohbuffkmrqe", response.backupType());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-30T07:57:15Z"), response.completedTime());
-        Assertions.assertEquals("mxtd", response.source());
+        Assertions.assertEquals("vyqia", response.backupType());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-15T03:57:36Z"), response.completedTime());
+        Assertions.assertEquals("pcnp", response.source());
     }
 }

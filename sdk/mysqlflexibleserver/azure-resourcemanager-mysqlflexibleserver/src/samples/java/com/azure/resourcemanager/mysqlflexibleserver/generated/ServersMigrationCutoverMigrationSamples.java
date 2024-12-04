@@ -9,7 +9,9 @@ package com.azure.resourcemanager.mysqlflexibleserver.generated;
  */
 public final class ServersMigrationCutoverMigrationSamples {
     /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/FlexibleServers/stable/2023-12-30/examples/CutoverMigration.json
+     * x-ms-original-file:
+     * specification/mysql/resource-manager/Microsoft.DBforMySQL/FlexibleServers/stable/2023-12-30/examples/
+     * CutoverMigration.json
      */
     /**
      * Sample code: Cutover migration for MySQL import.

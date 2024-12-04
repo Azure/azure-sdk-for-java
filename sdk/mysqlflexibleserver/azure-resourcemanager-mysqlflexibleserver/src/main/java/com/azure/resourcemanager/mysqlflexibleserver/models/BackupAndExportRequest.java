@@ -6,7 +6,10 @@ package com.azure.resourcemanager.mysqlflexibleserver.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * BackupAndExport API Request.
@@ -16,7 +19,6 @@ public final class BackupAndExportRequest extends BackupRequestBase {
     /*
      * Backup Target Store Details
      */
-    @JsonProperty(value = "targetDetails", required = true)
     private BackupStoreDetails targetDetails;
 
     /**
@@ -61,7 +63,6 @@ public final class BackupAndExportRequest extends BackupRequestBase {
      */
     @Override
     public void validate() {
-        super.validate();
         if (targetDetails() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
@@ -69,7 +70,54 @@ public final class BackupAndExportRequest extends BackupRequestBase {
         } else {
             targetDetails().validate();
         }
+        if (backupSettings() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property backupSettings in model BackupAndExportRequest"));
+        } else {
+            backupSettings().validate();
+        }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(BackupAndExportRequest.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("backupSettings", backupSettings());
+        jsonWriter.writeJsonField("targetDetails", this.targetDetails);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BackupAndExportRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BackupAndExportRequest if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the BackupAndExportRequest.
+     */
+    public static BackupAndExportRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BackupAndExportRequest deserializedBackupAndExportRequest = new BackupAndExportRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("backupSettings".equals(fieldName)) {
+                    deserializedBackupAndExportRequest.withBackupSettings(BackupSettings.fromJson(reader));
+                } else if ("targetDetails".equals(fieldName)) {
+                    deserializedBackupAndExportRequest.targetDetails = BackupStoreDetails.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBackupAndExportRequest;
+        });
+    }
 }

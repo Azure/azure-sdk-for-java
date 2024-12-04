@@ -11,7 +11,9 @@ import com.azure.resourcemanager.mysqlflexibleserver.fluent.models.HighAvailabil
  */
 public final class ServersValidateEstimateHighAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/FlexibleServers/stable/2023-12-30/examples/ServerValidateEstimateHighAvailability.json
+     * x-ms-original-file:
+     * specification/mysql/resource-manager/Microsoft.DBforMySQL/FlexibleServers/stable/2023-12-30/examples/
+     * ServerValidateEstimateHighAvailability.json
      */
     /**
      * Sample code: Validate a validation and estimation of high availability.

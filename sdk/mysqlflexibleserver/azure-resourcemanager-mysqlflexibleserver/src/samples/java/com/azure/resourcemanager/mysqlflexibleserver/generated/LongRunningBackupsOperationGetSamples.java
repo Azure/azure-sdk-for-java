@@ -9,7 +9,9 @@ package com.azure.resourcemanager.mysqlflexibleserver.generated;
  */
 public final class LongRunningBackupsOperationGetSamples {
     /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/Backups/preview/2023-10-01-preview/examples/LongRunningBackupGet.json
+     * x-ms-original-file:
+     * specification/mysql/resource-manager/Microsoft.DBforMySQL/Backups/preview/2023-10-01-preview/examples/
+     * LongRunningBackupGet.json
      */
     /**
      * Sample code: Get a backup for a server.

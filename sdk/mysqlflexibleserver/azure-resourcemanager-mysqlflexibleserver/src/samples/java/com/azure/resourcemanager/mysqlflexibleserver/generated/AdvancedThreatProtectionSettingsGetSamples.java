@@ -11,7 +11,9 @@ import com.azure.resourcemanager.mysqlflexibleserver.models.AdvancedThreatProtec
  */
 public final class AdvancedThreatProtectionSettingsGetSamples {
     /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/FlexibleServers/stable/2023-12-30/examples/AdvancedThreatProtectionSettingsGet.json
+     * x-ms-original-file:
+     * specification/mysql/resource-manager/Microsoft.DBforMySQL/FlexibleServers/stable/2023-12-30/examples/
+     * AdvancedThreatProtectionSettingsGet.json
      */
     /**
      * Sample code: Get a server's Advanced Threat Protection settings.

@@ -11,15 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class ValidateBackupResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ValidateBackupResponseInner model = BinaryData.fromString("{\"properties\":{\"numberOfContainers\":148902907}}")
-            .toObject(ValidateBackupResponseInner.class);
-        Assertions.assertEquals(148902907, model.numberOfContainers());
+        ValidateBackupResponseInner model
+            = BinaryData.fromString("{\"properties\":{\"numberOfContainers\":1743197151}}")
+                .toObject(ValidateBackupResponseInner.class);
+        Assertions.assertEquals(1743197151, model.numberOfContainers());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ValidateBackupResponseInner model = new ValidateBackupResponseInner().withNumberOfContainers(148902907);
+        ValidateBackupResponseInner model = new ValidateBackupResponseInner().withNumberOfContainers(1743197151);
         model = BinaryData.fromObject(model).toObject(ValidateBackupResponseInner.class);
-        Assertions.assertEquals(148902907, model.numberOfContainers());
+        Assertions.assertEquals(1743197151, model.numberOfContainers());
     }
 }
