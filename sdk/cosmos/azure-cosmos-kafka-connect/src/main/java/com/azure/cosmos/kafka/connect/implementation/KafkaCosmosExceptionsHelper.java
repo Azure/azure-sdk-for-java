@@ -96,10 +96,9 @@ public class KafkaCosmosExceptionsHelper {
     }
 
     public static boolean isBadRequestException(Throwable throwable) {
-        if (throwable instanceof CosmosException) {
-            return ((CosmosException) throwable).getStatusCode() == HttpConstants.StatusCodes.BADREQUEST;
-        }
-
-        return false;
+        CosmosException cosmosException = Utils.as(Exceptions.unwrap(throwable), CosmosException.class);
+        return cosmosException != null
+            && cosmosException.getStatusCode() == HttpConstants.StatusCodes.BADREQUEST
+            && cosmosException.getSubStatusCode() == HttpConstants.SubStatusCodes.UNKNOWN;
     }
 }

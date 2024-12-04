@@ -235,8 +235,8 @@ public final class CosmosSourceConnector extends SourceConnector implements Auto
             .createContainer(
                 this.config.getMetadataConfig().getStorageName(),
                 "/id",
-                throughput == null ?
-                    null : ThroughputProperties.createAutoscaledThroughput(throughput));
+                throughput == null
+                    ? null : ThroughputProperties.createAutoscaledThroughput(throughput));
     }
 
     private void updateMetadataRecordsInCosmos(MetadataTaskUnit metadataTaskUnit) {
