@@ -5,7 +5,7 @@
 ### Dependency Updates
 
 - Added a new library entry to the BOM:
-  - `azure-ai-translation-document`
+  - [azure-ai-translation-document](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/translation/azure-ai-translation-document/README.md)
 
 - Updated Azure SDK dependency versions to the latest releases.
 
