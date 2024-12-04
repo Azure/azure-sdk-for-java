@@ -66,6 +66,8 @@ public class Graph<DataT, NodeT extends Node<DataT, NodeT>> {
     }
 
     /**
+     * Gets all nodes in the graph.
+     *
      * @return all nodes in the graph.
      */
     public Collection<NodeT> getNodes() {

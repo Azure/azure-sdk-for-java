@@ -29,6 +29,8 @@ public final class ForceDeletionResourceType extends ExpandableStringEnum<ForceD
     }
 
     /**
+     * Gets know ForceDeletionResourceType values
+     *
      * @return known ForceDeletionResourceType values
      */
     public static Collection<ForceDeletionResourceType> values() {

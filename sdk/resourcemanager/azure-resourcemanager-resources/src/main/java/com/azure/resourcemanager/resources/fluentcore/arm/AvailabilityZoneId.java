@@ -37,6 +37,8 @@ public class AvailabilityZoneId extends ExpandableStringEnum<AvailabilityZoneId>
     }
 
     /**
+     * Gets known AvailabilityZoneId values.
+     *
      * @return known availability zone identifiers
      */
     public static Collection<AvailabilityZoneId> values() {

@@ -591,6 +591,8 @@ public class TaskGroup extends DAGraph<TaskItem, TaskGroupEntry<TaskItem>> imple
      */
     public interface HasTaskGroup {
         /**
+         * Gets the task group.
+         *
          * @return Gets the task group.
          */
         TaskGroup taskGroup();

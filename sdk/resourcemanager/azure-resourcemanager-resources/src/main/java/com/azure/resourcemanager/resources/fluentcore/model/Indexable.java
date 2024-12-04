@@ -8,6 +8,8 @@ package com.azure.resourcemanager.resources.fluentcore.model;
  */
 public interface Indexable {
     /**
+     * Gets the index key.
+     *
      * @return the index key.
      */
     String key();

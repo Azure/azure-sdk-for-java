@@ -969,6 +969,8 @@ public final class CountryPhoneCode extends ExpandableStringEnum<CountryPhoneCod
     }
 
     /**
+     * Gets know CountryPhoneCode values
+     *
      * @return known country phone codes
      */
     public static Collection<CountryPhoneCode> values() {

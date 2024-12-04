@@ -57,6 +57,8 @@ public interface FunctionalTaskItem extends Function<FunctionalTaskItem.Context,
         }
 
         /**
+         * Gets a Mono upon subscription.
+         *
          * @return a {@link Mono} upon subscription emits {@link VoidIndexable} with key same as
          * the key of this TaskItem.
          */
