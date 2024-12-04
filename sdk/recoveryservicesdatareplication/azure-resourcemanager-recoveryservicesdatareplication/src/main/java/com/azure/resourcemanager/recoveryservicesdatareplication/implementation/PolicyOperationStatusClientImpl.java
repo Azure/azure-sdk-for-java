@@ -25,17 +25,23 @@ import com.azure.resourcemanager.recoveryservicesdatareplication.fluent.PolicyOp
 import com.azure.resourcemanager.recoveryservicesdatareplication.fluent.models.OperationStatusInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in PolicyOperationStatusClient. */
+/**
+ * An instance of this class provides access to all the operations defined in PolicyOperationStatusClient.
+ */
 public final class PolicyOperationStatusClientImpl implements PolicyOperationStatusClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final PolicyOperationStatusService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final DataReplicationMgmtClientImpl client;
 
     /**
      * Initializes an instance of PolicyOperationStatusClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     PolicyOperationStatusClientImpl(DataReplicationMgmtClientImpl client) {
@@ -64,9 +70,9 @@ public final class PolicyOperationStatusClientImpl implements PolicyOperationSta
 
     /**
      * Gets the policy operation status.
-     *
-     * <p>Tracks the results of an asynchronous operation on the policy.
-     *
+     * 
+     * Tracks the results of an asynchronous operation on the policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param policyName The policy name.
@@ -109,9 +115,9 @@ public final class PolicyOperationStatusClientImpl implements PolicyOperationSta
 
     /**
      * Gets the policy operation status.
-     *
-     * <p>Tracks the results of an asynchronous operation on the policy.
-     *
+     * 
+     * Tracks the results of an asynchronous operation on the policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param policyName The policy name.
@@ -154,9 +160,9 @@ public final class PolicyOperationStatusClientImpl implements PolicyOperationSta
 
     /**
      * Gets the policy operation status.
-     *
-     * <p>Tracks the results of an asynchronous operation on the policy.
-     *
+     * 
+     * Tracks the results of an asynchronous operation on the policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param policyName The policy name.
@@ -175,9 +181,9 @@ public final class PolicyOperationStatusClientImpl implements PolicyOperationSta
 
     /**
      * Gets the policy operation status.
-     *
-     * <p>Tracks the results of an asynchronous operation on the policy.
-     *
+     * 
+     * Tracks the results of an asynchronous operation on the policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param policyName The policy name.
@@ -196,9 +202,9 @@ public final class PolicyOperationStatusClientImpl implements PolicyOperationSta
 
     /**
      * Gets the policy operation status.
-     *
-     * <p>Tracks the results of an asynchronous operation on the policy.
-     *
+     * 
+     * Tracks the results of an asynchronous operation on the policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param policyName The policy name.

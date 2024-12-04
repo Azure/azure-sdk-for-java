@@ -61,12 +61,12 @@ public final class ProtectedItemsImpl implements ProtectedItems {
 
     public PagedIterable<ProtectedItemModel> list(String resourceGroupName, String vaultName) {
         PagedIterable<ProtectedItemModelInner> inner = this.serviceClient().list(resourceGroupName, vaultName);
-        return Utils.mapPage(inner, inner1 -> new ProtectedItemModelImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ProtectedItemModelImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ProtectedItemModel> list(String resourceGroupName, String vaultName, Context context) {
         PagedIterable<ProtectedItemModelInner> inner = this.serviceClient().list(resourceGroupName, vaultName, context);
-        return Utils.mapPage(inner, inner1 -> new ProtectedItemModelImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ProtectedItemModelImpl(inner1, this.manager()));
     }
 
     public PlannedFailoverModel plannedFailover(String resourceGroupName, String vaultName, String protectedItemName) {
@@ -91,17 +91,17 @@ public final class ProtectedItemsImpl implements ProtectedItems {
     }
 
     public ProtectedItemModel getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String vaultName = Utils.getValueFromIdByName(id, "replicationVaults");
+        String vaultName = ResourceManagerUtils.getValueFromIdByName(id, "replicationVaults");
         if (vaultName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'replicationVaults'.", id)));
         }
-        String protectedItemName = Utils.getValueFromIdByName(id, "protectedItems");
+        String protectedItemName = ResourceManagerUtils.getValueFromIdByName(id, "protectedItems");
         if (protectedItemName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'protectedItems'.", id)));
@@ -110,17 +110,17 @@ public final class ProtectedItemsImpl implements ProtectedItems {
     }
 
     public Response<ProtectedItemModel> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String vaultName = Utils.getValueFromIdByName(id, "replicationVaults");
+        String vaultName = ResourceManagerUtils.getValueFromIdByName(id, "replicationVaults");
         if (vaultName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'replicationVaults'.", id)));
         }
-        String protectedItemName = Utils.getValueFromIdByName(id, "protectedItems");
+        String protectedItemName = ResourceManagerUtils.getValueFromIdByName(id, "protectedItems");
         if (protectedItemName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'protectedItems'.", id)));
@@ -129,17 +129,17 @@ public final class ProtectedItemsImpl implements ProtectedItems {
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String vaultName = Utils.getValueFromIdByName(id, "replicationVaults");
+        String vaultName = ResourceManagerUtils.getValueFromIdByName(id, "replicationVaults");
         if (vaultName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'replicationVaults'.", id)));
         }
-        String protectedItemName = Utils.getValueFromIdByName(id, "protectedItems");
+        String protectedItemName = ResourceManagerUtils.getValueFromIdByName(id, "protectedItems");
         if (protectedItemName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'protectedItems'.", id)));
@@ -149,17 +149,17 @@ public final class ProtectedItemsImpl implements ProtectedItems {
     }
 
     public void deleteByIdWithResponse(String id, Boolean forceDelete, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String vaultName = Utils.getValueFromIdByName(id, "replicationVaults");
+        String vaultName = ResourceManagerUtils.getValueFromIdByName(id, "replicationVaults");
         if (vaultName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'replicationVaults'.", id)));
         }
-        String protectedItemName = Utils.getValueFromIdByName(id, "protectedItems");
+        String protectedItemName = ResourceManagerUtils.getValueFromIdByName(id, "protectedItems");
         if (protectedItemName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'protectedItems'.", id)));
