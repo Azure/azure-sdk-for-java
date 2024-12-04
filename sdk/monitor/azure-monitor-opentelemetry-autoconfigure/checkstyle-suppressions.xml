@@ -247,11 +247,6 @@
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.CustomDimensions.java" checks="MissingJavadocTypeCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.KnownExceptionColumns.java" checks="MissingJavadocTypeCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.KnownTraceColumns.java" checks="MissingJavadocTypeCheck" />
-  <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.DuplicateMetricIdException.java" checks="MissingJavadocTypeCheck" />
-  <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.TelemetryTypeException.java" checks="MissingJavadocTypeCheck" />
-  <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.UnexpectedFilterCreateException.java" checks="MissingJavadocTypeCheck" />
-  <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.MetricFailureToCreateException" checks="MissingJavadocTypeCheck" />
-  <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.ErrorTracker.java" checks="MissingJavadocTypeCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.FilteringConfiguration.java" checks="MissingJavadocTypeCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.statsbeat.CustomDimensions.java" checks="MissingJavadocTypeCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.statsbeat.Feature.java" checks="MissingJavadocTypeCheck" />
@@ -368,11 +363,6 @@
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.TraceDataColumns" checks="MissingJavadocMethod" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.Filter" checks="MissingJavadocMethod" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.CustomDimensions" checks="MissingJavadocMethod" />
-  <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.DuplicateMetricIdException" checks="MissingJavadocMethod" />
-  <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.UnexpectedFilterCreateException" checks="MissingJavadocMethod" />
-  <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.TelemetryTypeException" checks="MissingJavadocMethod" />
-  <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.MetricFailureToCreateException" checks="MissingJavadocMethod" />
-  <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.ErrorTracker" checks="MissingJavadocMethod" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.LiveMetricsRestAPIsForClientSDKsBuilder" checks="DenyListedWords" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.LiveMetricsRestAPIsForClientSDKsBuilder" checks="ServiceClientBuilder" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.*" checks="JavadocPackage" />

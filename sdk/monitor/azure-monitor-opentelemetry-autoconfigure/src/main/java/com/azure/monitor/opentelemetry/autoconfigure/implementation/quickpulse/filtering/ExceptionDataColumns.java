@@ -36,11 +36,11 @@ public class ExceptionDataColumns implements TelemetryColumns {
     }
 
     public boolean checkAllCustomDims(FilterInfo filter, TelemetryColumns data) {
-        return customDims.checkAllCustomDims(filter, data);
+        return customDims.matchesAnyFieldInCustomDimensions(filter);
     }
 
     public boolean checkCustomDimFilter(FilterInfo filter, TelemetryColumns data, String trimmedFieldName) {
-        return customDims.checkCustomDimFilter(filter, data, trimmedFieldName);
+        return customDims.matchesCustomDimFilter(filter, trimmedFieldName);
     }
 
     public <T> T getFieldValue(String fieldName, Class<T> type) {

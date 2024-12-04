@@ -9,4 +9,5 @@ public class KnownRequestColumns {
     public static final String RESPONSE_CODE = "ResponseCode";
     public static final String SUCCESS = "Success";
     public static final String NAME = "Name";
+
 }

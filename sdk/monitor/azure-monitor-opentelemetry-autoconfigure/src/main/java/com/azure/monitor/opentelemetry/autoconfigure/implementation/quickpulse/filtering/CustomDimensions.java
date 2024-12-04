@@ -23,7 +23,7 @@ public class CustomDimensions {
         this.customDimensions = resultMap;
     }
 
-    public boolean checkAllCustomDims(FilterInfo filter, TelemetryColumns data) {
+    public boolean matchesAnyFieldInCustomDimensions(FilterInfo filter) {
         for (String value : customDimensions.values()) {
             if (Filter.stringCompare(value, filter.getComparand(), filter.getPredicate())) {
                 return true;
@@ -32,7 +32,7 @@ public class CustomDimensions {
         return false;
     }
 
-    public boolean checkCustomDimFilter(FilterInfo filter, TelemetryColumns data, String trimmedFieldName) {
+    public boolean matchesCustomDimFilter(FilterInfo filter, String trimmedFieldName) {
         if (customDimensions.containsKey(trimmedFieldName)) {
             String value = customDimensions.get(trimmedFieldName);
             return Filter.stringCompare(value, filter.getComparand(), filter.getPredicate());
