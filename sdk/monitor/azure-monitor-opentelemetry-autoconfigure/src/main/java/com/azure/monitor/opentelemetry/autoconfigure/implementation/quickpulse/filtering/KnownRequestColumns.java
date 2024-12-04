@@ -14,6 +14,5 @@ public class KnownRequestColumns {
     public static final String RESPONSE_CODE = "ResponseCode";
     public static final String SUCCESS = "Success";
     public static final String NAME = "Name";
-
-    public static final Set<String> ALL_COLUMNS = new HashSet<>(asList(URL, DURATION, RESPONSE_CODE, SUCCESS, NAME));
+    
 }

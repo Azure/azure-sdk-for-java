@@ -79,6 +79,7 @@ class QuickPulseDataSender implements Runnable {
             Date currentDate = new Date();
             long transmissionTimeInTicks = currentDate.getTime() * 10000 + TICKS_AT_EPOCH;
             try {
+                // TODO (harskaur): remove logging when manual testing done
                 logger.verbose("Monitoring point: {}", point.toJsonString());
                 logger.verbose("etag: {}", configuration.getETag());
                 Response<CollectionConfigurationInfo> responseMono = liveMetricsRestAPIsForClientSDKs
