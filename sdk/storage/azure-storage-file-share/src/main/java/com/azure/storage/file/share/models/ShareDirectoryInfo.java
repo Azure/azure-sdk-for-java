@@ -5,6 +5,7 @@ package com.azure.storage.file.share.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.storage.file.share.FileSmbProperties;
+import com.azure.storage.file.share.implementation.accesshelpers.ShareDirectoryInfoHelper;
 
 import java.time.OffsetDateTime;
 
@@ -25,12 +26,29 @@ public final class ShareDirectoryInfo {
      * @param lastModified Last time the directory was modified.
      * @param smbProperties The SMB properties of the directory.
      */
-    public ShareDirectoryInfo(String eTag, OffsetDateTime lastModified, FileSmbProperties smbProperties,
+    public ShareDirectoryInfo(String eTag, OffsetDateTime lastModified, FileSmbProperties smbProperties) {
+        this.eTag = eTag;
+        this.lastModified = lastModified;
+        this.smbProperties = smbProperties;
+        this.nfsProperties = null;
+    }
+
+    private ShareDirectoryInfo(String eTag, OffsetDateTime lastModified, FileSmbProperties smbProperties,
         FilePosixProperties nfsProperties) {
         this.eTag = eTag;
         this.lastModified = lastModified;
         this.smbProperties = smbProperties;
         this.nfsProperties = nfsProperties;
+    }
+
+    static {
+        ShareDirectoryInfoHelper.setAccessor(new ShareDirectoryInfoHelper.ShareDirectoryInfoAccessor() {
+            @Override
+            public ShareDirectoryInfo create(String eTag, OffsetDateTime lastModified, FileSmbProperties smbProperties,
+                FilePosixProperties nfsProperties) {
+                return new ShareDirectoryInfo(eTag, lastModified, smbProperties, nfsProperties);
+            }
+        });
     }
 
     /**

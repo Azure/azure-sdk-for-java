@@ -19,6 +19,7 @@ import com.azure.storage.file.share.FileSmbProperties;
 import com.azure.storage.file.share.implementation.MessageConstants;
 import com.azure.storage.file.share.implementation.accesshelpers.FilePosixPropertiesHelper;
 import com.azure.storage.file.share.implementation.accesshelpers.FileSmbPropertiesHelper;
+import com.azure.storage.file.share.implementation.accesshelpers.ShareDirectoryInfoHelper;
 import com.azure.storage.file.share.implementation.accesshelpers.ShareFileDownloadHeadersConstructorProxy;
 import com.azure.storage.file.share.implementation.models.DeleteSnapshotsOptionType;
 import com.azure.storage.file.share.implementation.models.DirectoriesCreateHeaders;
@@ -551,7 +552,7 @@ public class ModelHelper {
         FileSmbProperties smbProperties = FileSmbPropertiesHelper.create(response.getHeaders());
         FilePosixProperties nfsProperties = FilePosixPropertiesHelper.create(response.getHeaders());
         ShareDirectoryInfo shareDirectoryInfo
-            = new ShareDirectoryInfo(eTag, lastModified, smbProperties, nfsProperties);
+            = ShareDirectoryInfoHelper.create(eTag, lastModified, smbProperties, nfsProperties);
         return new SimpleResponse<>(response, shareDirectoryInfo);
     }
 
@@ -575,7 +576,7 @@ public class ModelHelper {
         FileSmbProperties smbProperties = FileSmbPropertiesHelper.create(response.getHeaders());
         FilePosixProperties nfsProperties = FilePosixPropertiesHelper.create(response.getHeaders());
         ShareDirectoryInfo shareDirectoryInfo
-            = new ShareDirectoryInfo(eTag, lastModified, smbProperties, nfsProperties);
+            = ShareDirectoryInfoHelper.create(eTag, lastModified, smbProperties, nfsProperties);
         return new SimpleResponse<>(response, shareDirectoryInfo);
     }
 
