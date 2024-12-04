@@ -9,7 +9,9 @@ package com.azure.resourcemanager.edgezones.generated;
  */
 public final class ExtendedZonesGetSamples {
     /*
-     * x-ms-original-file: specification/edgezones/resource-manager/Microsoft.EdgeZones/preview/2024-04-01-preview/examples/ExtendedZones_Get.json
+     * x-ms-original-file:
+     * specification/edgezones/resource-manager/Microsoft.EdgeZones/preview/2024-04-01-preview/examples/
+     * ExtendedZones_Get.json
      */
     /**
      * Sample code: GetExtendedZone.
