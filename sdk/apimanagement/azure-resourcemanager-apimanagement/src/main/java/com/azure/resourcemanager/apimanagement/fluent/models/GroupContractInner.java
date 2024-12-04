@@ -6,25 +6,46 @@ package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.apimanagement.models.GroupType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Contract details. */
+/**
+ * Contract details.
+ */
 @Fluent
 public final class GroupContractInner extends ProxyResource {
     /*
      * Group entity contract properties.
      */
-    @JsonProperty(value = "properties")
     private GroupContractProperties innerProperties;
 
-    /** Creates an instance of GroupContractInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of GroupContractInner class.
+     */
     public GroupContractInner() {
     }
 
     /**
      * Get the innerProperties property: Group entity contract properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private GroupContractProperties innerProperties() {
@@ -32,8 +53,38 @@ public final class GroupContractInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the displayName property: Group name.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -42,7 +93,7 @@ public final class GroupContractInner extends ProxyResource {
 
     /**
      * Set the displayName property: Group name.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the GroupContractInner object itself.
      */
@@ -56,7 +107,7 @@ public final class GroupContractInner extends ProxyResource {
 
     /**
      * Get the description property: Group description. Can contain HTML formatting tags.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -65,7 +116,7 @@ public final class GroupContractInner extends ProxyResource {
 
     /**
      * Set the description property: Group description. Can contain HTML formatting tags.
-     *
+     * 
      * @param description the description value to set.
      * @return the GroupContractInner object itself.
      */
@@ -80,7 +131,7 @@ public final class GroupContractInner extends ProxyResource {
     /**
      * Get the builtIn property: true if the group is one of the three system groups (Administrators, Developers, or
      * Guests); otherwise false.
-     *
+     * 
      * @return the builtIn value.
      */
     public Boolean builtIn() {
@@ -89,7 +140,7 @@ public final class GroupContractInner extends ProxyResource {
 
     /**
      * Get the type property: Group type.
-     *
+     * 
      * @return the type value.
      */
     public GroupType typePropertiesType() {
@@ -98,7 +149,7 @@ public final class GroupContractInner extends ProxyResource {
 
     /**
      * Set the type property: Group type.
-     *
+     * 
      * @param type the type value to set.
      * @return the GroupContractInner object itself.
      */
@@ -114,7 +165,7 @@ public final class GroupContractInner extends ProxyResource {
      * Get the externalId property: For external groups, this property contains the id of the group from the external
      * identity provider, e.g. for Azure Active Directory `aad://&lt;tenant&gt;.onmicrosoft.com/groups/&lt;group object
      * id&gt;`; otherwise the value is null.
-     *
+     * 
      * @return the externalId value.
      */
     public String externalId() {
@@ -125,7 +176,7 @@ public final class GroupContractInner extends ProxyResource {
      * Set the externalId property: For external groups, this property contains the id of the group from the external
      * identity provider, e.g. for Azure Active Directory `aad://&lt;tenant&gt;.onmicrosoft.com/groups/&lt;group object
      * id&gt;`; otherwise the value is null.
-     *
+     * 
      * @param externalId the externalId value to set.
      * @return the GroupContractInner object itself.
      */
@@ -139,12 +190,55 @@ public final class GroupContractInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GroupContractInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GroupContractInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the GroupContractInner.
+     */
+    public static GroupContractInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GroupContractInner deserializedGroupContractInner = new GroupContractInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedGroupContractInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedGroupContractInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedGroupContractInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedGroupContractInner.innerProperties = GroupContractProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGroupContractInner;
+        });
     }
 }

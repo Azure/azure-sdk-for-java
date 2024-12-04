@@ -6,23 +6,25 @@ package com.azure.resourcemanager.nginx.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The autoscale profile.
  */
 @Fluent
-public final class ScaleProfile {
+public final class ScaleProfile implements JsonSerializable<ScaleProfile> {
     /*
      * The name property.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * The capacity parameters of the profile.
      */
-    @JsonProperty(value = "capacity", required = true)
     private ScaleProfileCapacity capacity;
 
     /**
@@ -90,4 +92,44 @@ public final class ScaleProfile {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ScaleProfile.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeJsonField("capacity", this.capacity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ScaleProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ScaleProfile if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ScaleProfile.
+     */
+    public static ScaleProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ScaleProfile deserializedScaleProfile = new ScaleProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedScaleProfile.name = reader.getString();
+                } else if ("capacity".equals(fieldName)) {
+                    deserializedScaleProfile.capacity = ScaleProfileCapacity.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedScaleProfile;
+        });
+    }
 }

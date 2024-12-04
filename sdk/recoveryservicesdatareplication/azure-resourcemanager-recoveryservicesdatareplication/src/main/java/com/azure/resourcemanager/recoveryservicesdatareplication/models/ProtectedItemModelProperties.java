@@ -5,195 +5,175 @@
 package com.azure.resourcemanager.recoveryservicesdatareplication.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Protected item model properties. */
+/**
+ * Protected item model properties.
+ */
 @Fluent
-public final class ProtectedItemModelProperties {
+public final class ProtectedItemModelProperties implements JsonSerializable<ProtectedItemModelProperties> {
     /*
      * Gets or sets the policy name.
      */
-    @JsonProperty(value = "policyName", required = true)
     private String policyName;
 
     /*
      * Gets or sets the replication extension name.
      */
-    @JsonProperty(value = "replicationExtensionName", required = true)
     private String replicationExtensionName;
 
     /*
      * Gets or sets the protected item correlation Id.
      */
-    @JsonProperty(value = "correlationId", access = JsonProperty.Access.WRITE_ONLY)
     private String correlationId;
 
     /*
      * Gets or sets the provisioning state of the Dra.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * Gets or sets the protection state.
      */
-    @JsonProperty(value = "protectionState", access = JsonProperty.Access.WRITE_ONLY)
     private ProtectionState protectionState;
 
     /*
      * Gets or sets the protection state description.
      */
-    @JsonProperty(value = "protectionStateDescription", access = JsonProperty.Access.WRITE_ONLY)
     private String protectionStateDescription;
 
     /*
      * Gets or sets the test failover state.
      */
-    @JsonProperty(value = "testFailoverState", access = JsonProperty.Access.WRITE_ONLY)
     private TestFailoverState testFailoverState;
 
     /*
      * Gets or sets the Test failover state description.
      */
-    @JsonProperty(value = "testFailoverStateDescription", access = JsonProperty.Access.WRITE_ONLY)
     private String testFailoverStateDescription;
 
     /*
      * Gets or sets the resynchronization state.
      */
-    @JsonProperty(value = "resynchronizationState", access = JsonProperty.Access.WRITE_ONLY)
     private ResynchronizationState resynchronizationState;
 
     /*
      * Gets or sets the fabric object Id.
      */
-    @JsonProperty(value = "fabricObjectId", access = JsonProperty.Access.WRITE_ONLY)
     private String fabricObjectId;
 
     /*
      * Gets or sets the fabric object name.
      */
-    @JsonProperty(value = "fabricObjectName", access = JsonProperty.Access.WRITE_ONLY)
     private String fabricObjectName;
 
     /*
      * Gets or sets the source fabric provider Id.
      */
-    @JsonProperty(value = "sourceFabricProviderId", access = JsonProperty.Access.WRITE_ONLY)
     private String sourceFabricProviderId;
 
     /*
      * Gets or sets the target fabric provider Id.
      */
-    @JsonProperty(value = "targetFabricProviderId", access = JsonProperty.Access.WRITE_ONLY)
     private String targetFabricProviderId;
 
     /*
      * Gets or sets the fabric Id.
      */
-    @JsonProperty(value = "fabricId", access = JsonProperty.Access.WRITE_ONLY)
     private String fabricId;
 
     /*
      * Gets or sets the target fabric Id.
      */
-    @JsonProperty(value = "targetFabricId", access = JsonProperty.Access.WRITE_ONLY)
     private String targetFabricId;
 
     /*
      * Gets or sets the DRA Id.
      */
-    @JsonProperty(value = "draId", access = JsonProperty.Access.WRITE_ONLY)
     private String draId;
 
     /*
      * Gets or sets the target DRA Id.
      */
-    @JsonProperty(value = "targetDraId", access = JsonProperty.Access.WRITE_ONLY)
     private String targetDraId;
 
     /*
      * Gets or sets a value indicating whether resynchronization is required or not.
      */
-    @JsonProperty(value = "resyncRequired", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean resyncRequired;
 
     /*
      * Gets or sets the Last successful planned failover time.
      */
-    @JsonProperty(value = "lastSuccessfulPlannedFailoverTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastSuccessfulPlannedFailoverTime;
 
     /*
      * Gets or sets the Last successful unplanned failover time.
      */
-    @JsonProperty(value = "lastSuccessfulUnplannedFailoverTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastSuccessfulUnplannedFailoverTime;
 
     /*
      * Gets or sets the Last successful test failover time.
      */
-    @JsonProperty(value = "lastSuccessfulTestFailoverTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastSuccessfulTestFailoverTime;
 
     /*
      * The currentJob property.
      */
-    @JsonProperty(value = "currentJob", access = JsonProperty.Access.WRITE_ONLY)
     private ProtectedItemModelPropertiesCurrentJob currentJob;
 
     /*
      * Gets or sets the allowed scenarios on the protected item.
      */
-    @JsonProperty(value = "allowedJobs", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> allowedJobs;
 
     /*
      * The lastFailedEnableProtectionJob property.
      */
-    @JsonProperty(value = "lastFailedEnableProtectionJob", access = JsonProperty.Access.WRITE_ONLY)
     private LastFailedEnableProtectionJob lastFailedEnableProtectionJob;
 
     /*
      * The lastFailedPlannedFailoverJob property.
      */
-    @JsonProperty(value = "lastFailedPlannedFailoverJob", access = JsonProperty.Access.WRITE_ONLY)
     private LastFailedPlannedFailoverJob lastFailedPlannedFailoverJob;
 
     /*
      * The lastTestFailoverJob property.
      */
-    @JsonProperty(value = "lastTestFailoverJob", access = JsonProperty.Access.WRITE_ONLY)
     private ProtectedItemModelPropertiesLastTestFailoverJob lastTestFailoverJob;
 
     /*
      * Gets or sets protected item replication health.
      */
-    @JsonProperty(value = "replicationHealth", access = JsonProperty.Access.WRITE_ONLY)
     private HealthStatus replicationHealth;
 
     /*
      * Gets or sets the list of health errors.
      */
-    @JsonProperty(value = "healthErrors", access = JsonProperty.Access.WRITE_ONLY)
     private List<HealthErrorModel> healthErrors;
 
     /*
      * Protected item model custom properties.
      */
-    @JsonProperty(value = "customProperties", required = true)
     private ProtectedItemModelCustomProperties customProperties;
 
-    /** Creates an instance of ProtectedItemModelProperties class. */
+    /**
+     * Creates an instance of ProtectedItemModelProperties class.
+     */
     public ProtectedItemModelProperties() {
     }
 
     /**
      * Get the policyName property: Gets or sets the policy name.
-     *
+     * 
      * @return the policyName value.
      */
     public String policyName() {
@@ -202,7 +182,7 @@ public final class ProtectedItemModelProperties {
 
     /**
      * Set the policyName property: Gets or sets the policy name.
-     *
+     * 
      * @param policyName the policyName value to set.
      * @return the ProtectedItemModelProperties object itself.
      */
@@ -213,7 +193,7 @@ public final class ProtectedItemModelProperties {
 
     /**
      * Get the replicationExtensionName property: Gets or sets the replication extension name.
-     *
+     * 
      * @return the replicationExtensionName value.
      */
     public String replicationExtensionName() {
@@ -222,7 +202,7 @@ public final class ProtectedItemModelProperties {
 
     /**
      * Set the replicationExtensionName property: Gets or sets the replication extension name.
-     *
+     * 
      * @param replicationExtensionName the replicationExtensionName value to set.
      * @return the ProtectedItemModelProperties object itself.
      */
@@ -233,7 +213,7 @@ public final class ProtectedItemModelProperties {
 
     /**
      * Get the correlationId property: Gets or sets the protected item correlation Id.
-     *
+     * 
      * @return the correlationId value.
      */
     public String correlationId() {
@@ -242,7 +222,7 @@ public final class ProtectedItemModelProperties {
 
     /**
      * Get the provisioningState property: Gets or sets the provisioning state of the Dra.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -251,7 +231,7 @@ public final class ProtectedItemModelProperties {
 
     /**
      * Get the protectionState property: Gets or sets the protection state.
-     *
+     * 
      * @return the protectionState value.
      */
     public ProtectionState protectionState() {
@@ -260,7 +240,7 @@ public final class ProtectedItemModelProperties {
 
     /**
      * Get the protectionStateDescription property: Gets or sets the protection state description.
-     *
+     * 
      * @return the protectionStateDescription value.
      */
     public String protectionStateDescription() {
@@ -269,7 +249,7 @@ public final class ProtectedItemModelProperties {
 
     /**
      * Get the testFailoverState property: Gets or sets the test failover state.
-     *
+     * 
      * @return the testFailoverState value.
      */
     public TestFailoverState testFailoverState() {
@@ -278,7 +258,7 @@ public final class ProtectedItemModelProperties {
 
     /**
      * Get the testFailoverStateDescription property: Gets or sets the Test failover state description.
-     *
+     * 
      * @return the testFailoverStateDescription value.
      */
     public String testFailoverStateDescription() {
@@ -287,7 +267,7 @@ public final class ProtectedItemModelProperties {
 
     /**
      * Get the resynchronizationState property: Gets or sets the resynchronization state.
-     *
+     * 
      * @return the resynchronizationState value.
      */
     public ResynchronizationState resynchronizationState() {
@@ -296,7 +276,7 @@ public final class ProtectedItemModelProperties {
 
     /**
      * Get the fabricObjectId property: Gets or sets the fabric object Id.
-     *
+     * 
      * @return the fabricObjectId value.
      */
     public String fabricObjectId() {
@@ -305,7 +285,7 @@ public final class ProtectedItemModelProperties {
 
     /**
      * Get the fabricObjectName property: Gets or sets the fabric object name.
-     *
+     * 
      * @return the fabricObjectName value.
      */
     public String fabricObjectName() {
@@ -314,7 +294,7 @@ public final class ProtectedItemModelProperties {
 
     /**
      * Get the sourceFabricProviderId property: Gets or sets the source fabric provider Id.
-     *
+     * 
      * @return the sourceFabricProviderId value.
      */
     public String sourceFabricProviderId() {
@@ -323,7 +303,7 @@ public final class ProtectedItemModelProperties {
 
     /**
      * Get the targetFabricProviderId property: Gets or sets the target fabric provider Id.
-     *
+     * 
      * @return the targetFabricProviderId value.
      */
     public String targetFabricProviderId() {
@@ -332,7 +312,7 @@ public final class ProtectedItemModelProperties {
 
     /**
      * Get the fabricId property: Gets or sets the fabric Id.
-     *
+     * 
      * @return the fabricId value.
      */
     public String fabricId() {
@@ -341,7 +321,7 @@ public final class ProtectedItemModelProperties {
 
     /**
      * Get the targetFabricId property: Gets or sets the target fabric Id.
-     *
+     * 
      * @return the targetFabricId value.
      */
     public String targetFabricId() {
@@ -350,7 +330,7 @@ public final class ProtectedItemModelProperties {
 
     /**
      * Get the draId property: Gets or sets the DRA Id.
-     *
+     * 
      * @return the draId value.
      */
     public String draId() {
@@ -359,7 +339,7 @@ public final class ProtectedItemModelProperties {
 
     /**
      * Get the targetDraId property: Gets or sets the target DRA Id.
-     *
+     * 
      * @return the targetDraId value.
      */
     public String targetDraId() {
@@ -368,7 +348,7 @@ public final class ProtectedItemModelProperties {
 
     /**
      * Get the resyncRequired property: Gets or sets a value indicating whether resynchronization is required or not.
-     *
+     * 
      * @return the resyncRequired value.
      */
     public Boolean resyncRequired() {
@@ -377,7 +357,7 @@ public final class ProtectedItemModelProperties {
 
     /**
      * Get the lastSuccessfulPlannedFailoverTime property: Gets or sets the Last successful planned failover time.
-     *
+     * 
      * @return the lastSuccessfulPlannedFailoverTime value.
      */
     public OffsetDateTime lastSuccessfulPlannedFailoverTime() {
@@ -386,7 +366,7 @@ public final class ProtectedItemModelProperties {
 
     /**
      * Get the lastSuccessfulUnplannedFailoverTime property: Gets or sets the Last successful unplanned failover time.
-     *
+     * 
      * @return the lastSuccessfulUnplannedFailoverTime value.
      */
     public OffsetDateTime lastSuccessfulUnplannedFailoverTime() {
@@ -395,7 +375,7 @@ public final class ProtectedItemModelProperties {
 
     /**
      * Get the lastSuccessfulTestFailoverTime property: Gets or sets the Last successful test failover time.
-     *
+     * 
      * @return the lastSuccessfulTestFailoverTime value.
      */
     public OffsetDateTime lastSuccessfulTestFailoverTime() {
@@ -404,7 +384,7 @@ public final class ProtectedItemModelProperties {
 
     /**
      * Get the currentJob property: The currentJob property.
-     *
+     * 
      * @return the currentJob value.
      */
     public ProtectedItemModelPropertiesCurrentJob currentJob() {
@@ -413,7 +393,7 @@ public final class ProtectedItemModelProperties {
 
     /**
      * Get the allowedJobs property: Gets or sets the allowed scenarios on the protected item.
-     *
+     * 
      * @return the allowedJobs value.
      */
     public List<String> allowedJobs() {
@@ -422,7 +402,7 @@ public final class ProtectedItemModelProperties {
 
     /**
      * Get the lastFailedEnableProtectionJob property: The lastFailedEnableProtectionJob property.
-     *
+     * 
      * @return the lastFailedEnableProtectionJob value.
      */
     public LastFailedEnableProtectionJob lastFailedEnableProtectionJob() {
@@ -431,7 +411,7 @@ public final class ProtectedItemModelProperties {
 
     /**
      * Get the lastFailedPlannedFailoverJob property: The lastFailedPlannedFailoverJob property.
-     *
+     * 
      * @return the lastFailedPlannedFailoverJob value.
      */
     public LastFailedPlannedFailoverJob lastFailedPlannedFailoverJob() {
@@ -440,7 +420,7 @@ public final class ProtectedItemModelProperties {
 
     /**
      * Get the lastTestFailoverJob property: The lastTestFailoverJob property.
-     *
+     * 
      * @return the lastTestFailoverJob value.
      */
     public ProtectedItemModelPropertiesLastTestFailoverJob lastTestFailoverJob() {
@@ -449,7 +429,7 @@ public final class ProtectedItemModelProperties {
 
     /**
      * Get the replicationHealth property: Gets or sets protected item replication health.
-     *
+     * 
      * @return the replicationHealth value.
      */
     public HealthStatus replicationHealth() {
@@ -458,7 +438,7 @@ public final class ProtectedItemModelProperties {
 
     /**
      * Get the healthErrors property: Gets or sets the list of health errors.
-     *
+     * 
      * @return the healthErrors value.
      */
     public List<HealthErrorModel> healthErrors() {
@@ -467,7 +447,7 @@ public final class ProtectedItemModelProperties {
 
     /**
      * Get the customProperties property: Protected item model custom properties.
-     *
+     * 
      * @return the customProperties value.
      */
     public ProtectedItemModelCustomProperties customProperties() {
@@ -476,7 +456,7 @@ public final class ProtectedItemModelProperties {
 
     /**
      * Set the customProperties property: Protected item model custom properties.
-     *
+     * 
      * @param customProperties the customProperties value to set.
      * @return the ProtectedItemModelProperties object itself.
      */
@@ -487,17 +467,19 @@ public final class ProtectedItemModelProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (policyName() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property policyName in model ProtectedItemModelProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property policyName in model ProtectedItemModelProperties"));
         }
         if (replicationExtensionName() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property replicationExtensionName in model ProtectedItemModelProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property replicationExtensionName in model ProtectedItemModelProperties"));
         }
         if (currentJob() != null) {
             currentJob().validate();
@@ -515,12 +497,125 @@ public final class ProtectedItemModelProperties {
             healthErrors().forEach(e -> e.validate());
         }
         if (customProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property customProperties in model ProtectedItemModelProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property customProperties in model ProtectedItemModelProperties"));
         } else {
             customProperties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ProtectedItemModelProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("policyName", this.policyName);
+        jsonWriter.writeStringField("replicationExtensionName", this.replicationExtensionName);
+        jsonWriter.writeJsonField("customProperties", this.customProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ProtectedItemModelProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ProtectedItemModelProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ProtectedItemModelProperties.
+     */
+    public static ProtectedItemModelProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ProtectedItemModelProperties deserializedProtectedItemModelProperties = new ProtectedItemModelProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("policyName".equals(fieldName)) {
+                    deserializedProtectedItemModelProperties.policyName = reader.getString();
+                } else if ("replicationExtensionName".equals(fieldName)) {
+                    deserializedProtectedItemModelProperties.replicationExtensionName = reader.getString();
+                } else if ("customProperties".equals(fieldName)) {
+                    deserializedProtectedItemModelProperties.customProperties
+                        = ProtectedItemModelCustomProperties.fromJson(reader);
+                } else if ("correlationId".equals(fieldName)) {
+                    deserializedProtectedItemModelProperties.correlationId = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedProtectedItemModelProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("protectionState".equals(fieldName)) {
+                    deserializedProtectedItemModelProperties.protectionState
+                        = ProtectionState.fromString(reader.getString());
+                } else if ("protectionStateDescription".equals(fieldName)) {
+                    deserializedProtectedItemModelProperties.protectionStateDescription = reader.getString();
+                } else if ("testFailoverState".equals(fieldName)) {
+                    deserializedProtectedItemModelProperties.testFailoverState
+                        = TestFailoverState.fromString(reader.getString());
+                } else if ("testFailoverStateDescription".equals(fieldName)) {
+                    deserializedProtectedItemModelProperties.testFailoverStateDescription = reader.getString();
+                } else if ("resynchronizationState".equals(fieldName)) {
+                    deserializedProtectedItemModelProperties.resynchronizationState
+                        = ResynchronizationState.fromString(reader.getString());
+                } else if ("fabricObjectId".equals(fieldName)) {
+                    deserializedProtectedItemModelProperties.fabricObjectId = reader.getString();
+                } else if ("fabricObjectName".equals(fieldName)) {
+                    deserializedProtectedItemModelProperties.fabricObjectName = reader.getString();
+                } else if ("sourceFabricProviderId".equals(fieldName)) {
+                    deserializedProtectedItemModelProperties.sourceFabricProviderId = reader.getString();
+                } else if ("targetFabricProviderId".equals(fieldName)) {
+                    deserializedProtectedItemModelProperties.targetFabricProviderId = reader.getString();
+                } else if ("fabricId".equals(fieldName)) {
+                    deserializedProtectedItemModelProperties.fabricId = reader.getString();
+                } else if ("targetFabricId".equals(fieldName)) {
+                    deserializedProtectedItemModelProperties.targetFabricId = reader.getString();
+                } else if ("draId".equals(fieldName)) {
+                    deserializedProtectedItemModelProperties.draId = reader.getString();
+                } else if ("targetDraId".equals(fieldName)) {
+                    deserializedProtectedItemModelProperties.targetDraId = reader.getString();
+                } else if ("resyncRequired".equals(fieldName)) {
+                    deserializedProtectedItemModelProperties.resyncRequired
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("lastSuccessfulPlannedFailoverTime".equals(fieldName)) {
+                    deserializedProtectedItemModelProperties.lastSuccessfulPlannedFailoverTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastSuccessfulUnplannedFailoverTime".equals(fieldName)) {
+                    deserializedProtectedItemModelProperties.lastSuccessfulUnplannedFailoverTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastSuccessfulTestFailoverTime".equals(fieldName)) {
+                    deserializedProtectedItemModelProperties.lastSuccessfulTestFailoverTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("currentJob".equals(fieldName)) {
+                    deserializedProtectedItemModelProperties.currentJob
+                        = ProtectedItemModelPropertiesCurrentJob.fromJson(reader);
+                } else if ("allowedJobs".equals(fieldName)) {
+                    List<String> allowedJobs = reader.readArray(reader1 -> reader1.getString());
+                    deserializedProtectedItemModelProperties.allowedJobs = allowedJobs;
+                } else if ("lastFailedEnableProtectionJob".equals(fieldName)) {
+                    deserializedProtectedItemModelProperties.lastFailedEnableProtectionJob
+                        = LastFailedEnableProtectionJob.fromJson(reader);
+                } else if ("lastFailedPlannedFailoverJob".equals(fieldName)) {
+                    deserializedProtectedItemModelProperties.lastFailedPlannedFailoverJob
+                        = LastFailedPlannedFailoverJob.fromJson(reader);
+                } else if ("lastTestFailoverJob".equals(fieldName)) {
+                    deserializedProtectedItemModelProperties.lastTestFailoverJob
+                        = ProtectedItemModelPropertiesLastTestFailoverJob.fromJson(reader);
+                } else if ("replicationHealth".equals(fieldName)) {
+                    deserializedProtectedItemModelProperties.replicationHealth
+                        = HealthStatus.fromString(reader.getString());
+                } else if ("healthErrors".equals(fieldName)) {
+                    List<HealthErrorModel> healthErrors
+                        = reader.readArray(reader1 -> HealthErrorModel.fromJson(reader1));
+                    deserializedProtectedItemModelProperties.healthErrors = healthErrors;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedProtectedItemModelProperties;
+        });
+    }
 }

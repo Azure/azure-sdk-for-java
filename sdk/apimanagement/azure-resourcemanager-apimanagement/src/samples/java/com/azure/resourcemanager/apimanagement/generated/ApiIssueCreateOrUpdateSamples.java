@@ -7,20 +7,23 @@ package com.azure.resourcemanager.apimanagement.generated;
 import com.azure.resourcemanager.apimanagement.models.State;
 import java.time.OffsetDateTime;
 
-/** Samples for ApiIssue CreateOrUpdate. */
+/**
+ * Samples for ApiIssue CreateOrUpdate.
+ */
 public final class ApiIssueCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateApiIssue.json
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * ApiManagementCreateApiIssue.json
      */
     /**
      * Sample code: ApiManagementCreateApiIssue.
-     *
+     * 
      * @param manager Entry point to ApiManagementManager.
      */
-    public static void apiManagementCreateApiIssue(
-        com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
-        manager
-            .apiIssues()
+    public static void
+        apiManagementCreateApiIssue(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.apiIssues()
             .define("57d2ef278aa04f0ad01d6cdc")
             .withExistingApi("rg1", "apimService1", "57d1f7558aa04f15146d9d8a")
             .withTitle("New API issue")

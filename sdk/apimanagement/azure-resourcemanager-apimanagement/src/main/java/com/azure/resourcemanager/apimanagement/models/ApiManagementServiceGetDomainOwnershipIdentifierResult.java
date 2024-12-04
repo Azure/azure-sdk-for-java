@@ -6,11 +6,13 @@ package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.resourcemanager.apimanagement.fluent.models.ApiManagementServiceGetDomainOwnershipIdentifierResultInner;
 
-/** An immutable client-side representation of ApiManagementServiceGetDomainOwnershipIdentifierResult. */
+/**
+ * An immutable client-side representation of ApiManagementServiceGetDomainOwnershipIdentifierResult.
+ */
 public interface ApiManagementServiceGetDomainOwnershipIdentifierResult {
     /**
      * Gets the domainOwnershipIdentifier property: The domain ownership identifier value.
-     *
+     * 
      * @return the domainOwnershipIdentifier value.
      */
     String domainOwnershipIdentifier();
@@ -19,7 +21,7 @@ public interface ApiManagementServiceGetDomainOwnershipIdentifierResult {
      * Gets the inner
      * com.azure.resourcemanager.apimanagement.fluent.models.ApiManagementServiceGetDomainOwnershipIdentifierResultInner
      * object.
-     *
+     * 
      * @return the inner object.
      */
     ApiManagementServiceGetDomainOwnershipIdentifierResultInner innerModel();

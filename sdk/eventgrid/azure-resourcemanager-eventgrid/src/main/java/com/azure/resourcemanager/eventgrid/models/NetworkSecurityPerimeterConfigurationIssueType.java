@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -51,7 +50,6 @@ public final class NetworkSecurityPerimeterConfigurationIssueType
      * @param name a name to look for.
      * @return the corresponding NetworkSecurityPerimeterConfigurationIssueType.
      */
-    @JsonCreator
     public static NetworkSecurityPerimeterConfigurationIssueType fromString(String name) {
         return fromString(name, NetworkSecurityPerimeterConfigurationIssueType.class);
     }

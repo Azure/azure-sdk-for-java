@@ -12,7 +12,8 @@ import java.util.Map;
  */
 public final class ProjectsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2024-02-01/examples/Projects_PutWithMaxDevBoxPerUser.json
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2024-02-01/examples/
+     * Projects_PutWithMaxDevBoxPerUser.json
      */
     /**
      * Sample code: Projects_CreateOrUpdateWithLimitsPerDev.
@@ -34,7 +35,8 @@ public final class ProjectsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2024-02-01/examples/Projects_Put.json
+     * x-ms-original-file:
+     * specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2024-02-01/examples/Projects_Put.json
      */
     /**
      * Sample code: Projects_CreateOrUpdate.

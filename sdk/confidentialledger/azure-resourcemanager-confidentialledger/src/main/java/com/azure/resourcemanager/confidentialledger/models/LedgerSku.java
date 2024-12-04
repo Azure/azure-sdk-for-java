@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.confidentialledger.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class LedgerSku extends ExpandableStringEnum<LedgerSku> {
      * @param name a name to look for.
      * @return the corresponding LedgerSku.
      */
-    @JsonCreator
     public static LedgerSku fromString(String name) {
         return fromString(name, LedgerSku.class);
     }

@@ -5,17 +5,20 @@
 package com.azure.resourcemanager.mysqlflexibleserver.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Virtual network subnet usage parameter.
  */
 @Fluent
-public final class VirtualNetworkSubnetUsageParameter {
+public final class VirtualNetworkSubnetUsageParameter implements JsonSerializable<VirtualNetworkSubnetUsageParameter> {
     /*
      * Virtual network resource id.
      */
-    @JsonProperty(value = "virtualNetworkResourceId")
     private String virtualNetworkResourceId;
 
     /**
@@ -50,5 +53,42 @@ public final class VirtualNetworkSubnetUsageParameter {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("virtualNetworkResourceId", this.virtualNetworkResourceId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualNetworkSubnetUsageParameter from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualNetworkSubnetUsageParameter if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualNetworkSubnetUsageParameter.
+     */
+    public static VirtualNetworkSubnetUsageParameter fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualNetworkSubnetUsageParameter deserializedVirtualNetworkSubnetUsageParameter
+                = new VirtualNetworkSubnetUsageParameter();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("virtualNetworkResourceId".equals(fieldName)) {
+                    deserializedVirtualNetworkSubnetUsageParameter.virtualNetworkResourceId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualNetworkSubnetUsageParameter;
+        });
     }
 }

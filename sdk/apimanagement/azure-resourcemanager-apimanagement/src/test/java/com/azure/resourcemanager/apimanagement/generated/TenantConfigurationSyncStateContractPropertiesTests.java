@@ -13,37 +13,37 @@ public final class TenantConfigurationSyncStateContractPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TenantConfigurationSyncStateContractProperties model = BinaryData.fromString(
-            "{\"branch\":\"unsbfjhhlw\",\"commitId\":\"kvegeattbzkgtzq\",\"isExport\":true,\"isSynced\":true,\"isGitEnabled\":true,\"syncDate\":\"2021-12-03T01:55:12Z\",\"configurationChangeDate\":\"2021-05-18T12:42:31Z\",\"lastOperationId\":\"sjeufjxflpd\"}")
+            "{\"branch\":\"l\",\"commitId\":\"rnqujywzcqy\",\"isExport\":false,\"isSynced\":false,\"isGitEnabled\":false,\"syncDate\":\"2021-09-11T16:52:45Z\",\"configurationChangeDate\":\"2020-12-21T03:43:13Z\",\"lastOperationId\":\"iwyejtobdr\"}")
             .toObject(TenantConfigurationSyncStateContractProperties.class);
-        Assertions.assertEquals("unsbfjhhlw", model.branch());
-        Assertions.assertEquals("kvegeattbzkgtzq", model.commitId());
-        Assertions.assertEquals(true, model.isExport());
-        Assertions.assertEquals(true, model.isSynced());
-        Assertions.assertEquals(true, model.isGitEnabled());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-12-03T01:55:12Z"), model.syncDate());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-18T12:42:31Z"), model.configurationChangeDate());
-        Assertions.assertEquals("sjeufjxflpd", model.lastOperationId());
+        Assertions.assertEquals("l", model.branch());
+        Assertions.assertEquals("rnqujywzcqy", model.commitId());
+        Assertions.assertEquals(false, model.isExport());
+        Assertions.assertEquals(false, model.isSynced());
+        Assertions.assertEquals(false, model.isGitEnabled());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-11T16:52:45Z"), model.syncDate());
+        Assertions.assertEquals(OffsetDateTime.parse("2020-12-21T03:43:13Z"), model.configurationChangeDate());
+        Assertions.assertEquals("iwyejtobdr", model.lastOperationId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         TenantConfigurationSyncStateContractProperties model
-            = new TenantConfigurationSyncStateContractProperties().withBranch("unsbfjhhlw")
-                .withCommitId("kvegeattbzkgtzq")
-                .withIsExport(true)
-                .withIsSynced(true)
-                .withIsGitEnabled(true)
-                .withSyncDate(OffsetDateTime.parse("2021-12-03T01:55:12Z"))
-                .withConfigurationChangeDate(OffsetDateTime.parse("2021-05-18T12:42:31Z"))
-                .withLastOperationId("sjeufjxflpd");
+            = new TenantConfigurationSyncStateContractProperties().withBranch("l")
+                .withCommitId("rnqujywzcqy")
+                .withIsExport(false)
+                .withIsSynced(false)
+                .withIsGitEnabled(false)
+                .withSyncDate(OffsetDateTime.parse("2021-09-11T16:52:45Z"))
+                .withConfigurationChangeDate(OffsetDateTime.parse("2020-12-21T03:43:13Z"))
+                .withLastOperationId("iwyejtobdr");
         model = BinaryData.fromObject(model).toObject(TenantConfigurationSyncStateContractProperties.class);
-        Assertions.assertEquals("unsbfjhhlw", model.branch());
-        Assertions.assertEquals("kvegeattbzkgtzq", model.commitId());
-        Assertions.assertEquals(true, model.isExport());
-        Assertions.assertEquals(true, model.isSynced());
-        Assertions.assertEquals(true, model.isGitEnabled());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-12-03T01:55:12Z"), model.syncDate());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-18T12:42:31Z"), model.configurationChangeDate());
-        Assertions.assertEquals("sjeufjxflpd", model.lastOperationId());
+        Assertions.assertEquals("l", model.branch());
+        Assertions.assertEquals("rnqujywzcqy", model.commitId());
+        Assertions.assertEquals(false, model.isExport());
+        Assertions.assertEquals(false, model.isSynced());
+        Assertions.assertEquals(false, model.isGitEnabled());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-11T16:52:45Z"), model.syncDate());
+        Assertions.assertEquals(OffsetDateTime.parse("2020-12-21T03:43:13Z"), model.configurationChangeDate());
+        Assertions.assertEquals("iwyejtobdr", model.lastOperationId());
     }
 }

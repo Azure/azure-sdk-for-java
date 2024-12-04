@@ -5,42 +5,43 @@
 package com.azure.resourcemanager.mysqlflexibleserver.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * The properties of a logFile.
  */
 @Fluent
-public final class LogFileProperties {
+public final class LogFileProperties implements JsonSerializable<LogFileProperties> {
     /*
      * The size in kb of the logFile.
      */
-    @JsonProperty(value = "sizeInKB")
     private Long sizeInKB;
 
     /*
      * Creation timestamp of the log file.
      */
-    @JsonProperty(value = "createdTime")
     private OffsetDateTime createdTime;
 
     /*
      * Type of the log file.
      */
-    @JsonProperty(value = "type")
     private String type;
 
     /*
      * Last modified timestamp of the log file.
      */
-    @JsonProperty(value = "lastModifiedTime")
     private OffsetDateTime lastModifiedTime;
 
     /*
      * The url to download the log file from.
      */
-    @JsonProperty(value = "url")
     private String url;
 
     /**
@@ -155,5 +156,59 @@ public final class LogFileProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("sizeInKB", this.sizeInKB);
+        jsonWriter.writeStringField("createdTime",
+            this.createdTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.createdTime));
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("lastModifiedTime",
+            this.lastModifiedTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastModifiedTime));
+        jsonWriter.writeStringField("url", this.url);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LogFileProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LogFileProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LogFileProperties.
+     */
+    public static LogFileProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LogFileProperties deserializedLogFileProperties = new LogFileProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sizeInKB".equals(fieldName)) {
+                    deserializedLogFileProperties.sizeInKB = reader.getNullable(JsonReader::getLong);
+                } else if ("createdTime".equals(fieldName)) {
+                    deserializedLogFileProperties.createdTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("type".equals(fieldName)) {
+                    deserializedLogFileProperties.type = reader.getString();
+                } else if ("lastModifiedTime".equals(fieldName)) {
+                    deserializedLogFileProperties.lastModifiedTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("url".equals(fieldName)) {
+                    deserializedLogFileProperties.url = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLogFileProperties;
+        });
     }
 }

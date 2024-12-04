@@ -5,33 +5,24 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * NumberGreaterThan Filter.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "operatorType",
-    defaultImpl = NumberGreaterThanFilter.class,
-    visible = true)
-@JsonTypeName("NumberGreaterThan")
 @Fluent
 public final class NumberGreaterThanFilter extends Filter {
     /*
      * The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals and others.
      */
-    @JsonTypeId
-    @JsonProperty(value = "operatorType", required = true)
     private FilterOperatorType operatorType = FilterOperatorType.NUMBER_GREATER_THAN;
 
     /*
      * The filter value.
      */
-    @JsonProperty(value = "value")
     private Double value;
 
     /**
@@ -87,6 +78,48 @@ public final class NumberGreaterThanFilter extends Filter {
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("key", key());
+        jsonWriter.writeStringField("operatorType", this.operatorType == null ? null : this.operatorType.toString());
+        jsonWriter.writeNumberField("value", this.value);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NumberGreaterThanFilter from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NumberGreaterThanFilter if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NumberGreaterThanFilter.
+     */
+    public static NumberGreaterThanFilter fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NumberGreaterThanFilter deserializedNumberGreaterThanFilter = new NumberGreaterThanFilter();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("key".equals(fieldName)) {
+                    deserializedNumberGreaterThanFilter.withKey(reader.getString());
+                } else if ("operatorType".equals(fieldName)) {
+                    deserializedNumberGreaterThanFilter.operatorType
+                        = FilterOperatorType.fromString(reader.getString());
+                } else if ("value".equals(fieldName)) {
+                    deserializedNumberGreaterThanFilter.value = reader.getNullable(JsonReader::getDouble);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNumberGreaterThanFilter;
+        });
     }
 }

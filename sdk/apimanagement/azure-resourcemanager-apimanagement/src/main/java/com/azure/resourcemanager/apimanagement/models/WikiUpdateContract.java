@@ -5,26 +5,33 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.apimanagement.fluent.models.WikiContractProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Wiki update contract details. */
+/**
+ * Wiki update contract details.
+ */
 @Fluent
-public final class WikiUpdateContract {
+public final class WikiUpdateContract implements JsonSerializable<WikiUpdateContract> {
     /*
      * Wiki details.
      */
-    @JsonProperty(value = "properties")
     private WikiContractProperties innerProperties;
 
-    /** Creates an instance of WikiUpdateContract class. */
+    /**
+     * Creates an instance of WikiUpdateContract class.
+     */
     public WikiUpdateContract() {
     }
 
     /**
      * Get the innerProperties property: Wiki details.
-     *
+     * 
      * @return the innerProperties value.
      */
     private WikiContractProperties innerProperties() {
@@ -33,7 +40,7 @@ public final class WikiUpdateContract {
 
     /**
      * Get the documents property: Collection wiki documents included into this wiki.
-     *
+     * 
      * @return the documents value.
      */
     public List<WikiDocumentationContract> documents() {
@@ -42,7 +49,7 @@ public final class WikiUpdateContract {
 
     /**
      * Set the documents property: Collection wiki documents included into this wiki.
-     *
+     * 
      * @param documents the documents value to set.
      * @return the WikiUpdateContract object itself.
      */
@@ -56,12 +63,48 @@ public final class WikiUpdateContract {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WikiUpdateContract from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WikiUpdateContract if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WikiUpdateContract.
+     */
+    public static WikiUpdateContract fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WikiUpdateContract deserializedWikiUpdateContract = new WikiUpdateContract();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedWikiUpdateContract.innerProperties = WikiContractProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWikiUpdateContract;
+        });
     }
 }

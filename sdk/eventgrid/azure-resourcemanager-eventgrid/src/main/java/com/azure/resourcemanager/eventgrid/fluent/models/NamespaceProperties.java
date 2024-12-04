@@ -5,71 +5,70 @@
 package com.azure.resourcemanager.eventgrid.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.eventgrid.models.InboundIpRule;
 import com.azure.resourcemanager.eventgrid.models.NamespaceProvisioningState;
 import com.azure.resourcemanager.eventgrid.models.PublicNetworkAccess;
 import com.azure.resourcemanager.eventgrid.models.TlsVersion;
-import com.azure.resourcemanager.eventgrid.models.TopicsConfiguration;
 import com.azure.resourcemanager.eventgrid.models.TopicSpacesConfiguration;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.resourcemanager.eventgrid.models.TopicsConfiguration;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Properties of the namespace resource.
  */
 @Fluent
-public final class NamespaceProperties {
+public final class NamespaceProperties implements JsonSerializable<NamespaceProperties> {
     /*
      * List of private endpoint connections.
      */
-    @JsonProperty(value = "privateEndpointConnections")
     private List<PrivateEndpointConnectionInner> privateEndpointConnections;
 
     /*
      * Provisioning state of the namespace resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private NamespaceProvisioningState provisioningState;
 
     /*
      * Topics configuration information for the namespace resource
      */
-    @JsonProperty(value = "topicsConfiguration")
     private TopicsConfiguration topicsConfiguration;
 
     /*
      * Topic spaces configuration information for the namespace resource
      */
-    @JsonProperty(value = "topicSpacesConfiguration")
     private TopicSpacesConfiguration topicSpacesConfiguration;
 
     /*
-     * This is an optional property and it allows the user to specify if the namespace resource supports zone-redundancy capability or not. If this
+     * This is an optional property and it allows the user to specify if the namespace resource supports zone-redundancy
+     * capability or not. If this
      * property is not specified explicitly by the user, its default value depends on the following conditions:
-     *     a. For Availability Zones enabled regions - The default property value would be true.
-     *     b. For non-Availability Zones enabled regions - The default property value would be false.
+     * a. For Availability Zones enabled regions - The default property value would be true.
+     * b. For non-Availability Zones enabled regions - The default property value would be false.
      * Once specified, this property cannot be updated.
      */
-    @JsonProperty(value = "isZoneRedundant")
     private Boolean isZoneRedundant;
 
     /*
      * This determines if traffic is allowed over public network. By default it is enabled.
-     * You can further restrict to specific IPs by configuring <seealso cref="P:Microsoft.Azure.Events.ResourceProvider.Common.Contracts.PubSub.NamespaceProperties.InboundIpRules" />
+     * You can further restrict to specific IPs by configuring <seealso
+     * cref="P:Microsoft.Azure.Events.ResourceProvider.Common.Contracts.PubSub.NamespaceProperties.InboundIpRules" />
      */
-    @JsonProperty(value = "publicNetworkAccess")
     private PublicNetworkAccess publicNetworkAccess;
 
     /*
-     * This can be used to restrict traffic from specific IPs instead of all IPs. Note: These are considered only if PublicNetworkAccess is enabled.
+     * This can be used to restrict traffic from specific IPs instead of all IPs. Note: These are considered only if
+     * PublicNetworkAccess is enabled.
      */
-    @JsonProperty(value = "inboundIpRules")
     private List<InboundIpRule> inboundIpRules;
 
     /*
      * Minimum TLS version of the publisher allowed to publish to this namespace. Only TLS version 1.2 is supported.
      */
-    @JsonProperty(value = "minimumTlsVersionAllowed")
     private TlsVersion minimumTlsVersionAllowed;
 
     /**
@@ -268,5 +267,72 @@ public final class NamespaceProperties {
         if (inboundIpRules() != null) {
             inboundIpRules().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("privateEndpointConnections", this.privateEndpointConnections,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("topicsConfiguration", this.topicsConfiguration);
+        jsonWriter.writeJsonField("topicSpacesConfiguration", this.topicSpacesConfiguration);
+        jsonWriter.writeBooleanField("isZoneRedundant", this.isZoneRedundant);
+        jsonWriter.writeStringField("publicNetworkAccess",
+            this.publicNetworkAccess == null ? null : this.publicNetworkAccess.toString());
+        jsonWriter.writeArrayField("inboundIpRules", this.inboundIpRules,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("minimumTlsVersionAllowed",
+            this.minimumTlsVersionAllowed == null ? null : this.minimumTlsVersionAllowed.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NamespaceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NamespaceProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NamespaceProperties.
+     */
+    public static NamespaceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NamespaceProperties deserializedNamespaceProperties = new NamespaceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("privateEndpointConnections".equals(fieldName)) {
+                    List<PrivateEndpointConnectionInner> privateEndpointConnections
+                        = reader.readArray(reader1 -> PrivateEndpointConnectionInner.fromJson(reader1));
+                    deserializedNamespaceProperties.privateEndpointConnections = privateEndpointConnections;
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedNamespaceProperties.provisioningState
+                        = NamespaceProvisioningState.fromString(reader.getString());
+                } else if ("topicsConfiguration".equals(fieldName)) {
+                    deserializedNamespaceProperties.topicsConfiguration = TopicsConfiguration.fromJson(reader);
+                } else if ("topicSpacesConfiguration".equals(fieldName)) {
+                    deserializedNamespaceProperties.topicSpacesConfiguration
+                        = TopicSpacesConfiguration.fromJson(reader);
+                } else if ("isZoneRedundant".equals(fieldName)) {
+                    deserializedNamespaceProperties.isZoneRedundant = reader.getNullable(JsonReader::getBoolean);
+                } else if ("publicNetworkAccess".equals(fieldName)) {
+                    deserializedNamespaceProperties.publicNetworkAccess
+                        = PublicNetworkAccess.fromString(reader.getString());
+                } else if ("inboundIpRules".equals(fieldName)) {
+                    List<InboundIpRule> inboundIpRules = reader.readArray(reader1 -> InboundIpRule.fromJson(reader1));
+                    deserializedNamespaceProperties.inboundIpRules = inboundIpRules;
+                } else if ("minimumTlsVersionAllowed".equals(fieldName)) {
+                    deserializedNamespaceProperties.minimumTlsVersionAllowed
+                        = TlsVersion.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNamespaceProperties;
+        });
     }
 }

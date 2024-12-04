@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -122,7 +121,6 @@ public final class FilterOperatorType extends ExpandableStringEnum<FilterOperato
      * @param name a name to look for.
      * @return the corresponding FilterOperatorType.
      */
-    @JsonCreator
     public static FilterOperatorType fromString(String name) {
         return fromString(name, FilterOperatorType.class);
     }

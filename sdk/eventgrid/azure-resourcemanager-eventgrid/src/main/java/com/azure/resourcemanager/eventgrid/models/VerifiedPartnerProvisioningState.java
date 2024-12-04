@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -57,7 +56,6 @@ public final class VerifiedPartnerProvisioningState extends ExpandableStringEnum
      * @param name a name to look for.
      * @return the corresponding VerifiedPartnerProvisioningState.
      */
-    @JsonCreator
     public static VerifiedPartnerProvisioningState fromString(String name) {
         return fromString(name, VerifiedPartnerProvisioningState.class);
     }

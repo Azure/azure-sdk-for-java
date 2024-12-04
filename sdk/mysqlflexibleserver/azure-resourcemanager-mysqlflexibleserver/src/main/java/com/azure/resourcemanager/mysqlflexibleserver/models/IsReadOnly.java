@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.mysqlflexibleserver.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class IsReadOnly extends ExpandableStringEnum<IsReadOnly> {
      * @param name a name to look for.
      * @return the corresponding IsReadOnly.
      */
-    @JsonCreator
     public static IsReadOnly fromString(String name) {
         return fromString(name, IsReadOnly.class);
     }

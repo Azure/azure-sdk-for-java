@@ -5,41 +5,40 @@
 package com.azure.resourcemanager.nginx.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The NginxDeploymentUpdateProperties model.
  */
 @Fluent
-public final class NginxDeploymentUpdateProperties {
+public final class NginxDeploymentUpdateProperties implements JsonSerializable<NginxDeploymentUpdateProperties> {
     /*
      * The enableDiagnosticsSupport property.
      */
-    @JsonProperty(value = "enableDiagnosticsSupport")
     private Boolean enableDiagnosticsSupport;
 
     /*
      * The logging property.
      */
-    @JsonProperty(value = "logging")
     private NginxLogging logging;
 
     /*
      * Information on how the deployment will be scaled.
      */
-    @JsonProperty(value = "scalingProperties")
     private NginxDeploymentScalingProperties scalingProperties;
 
     /*
      * The userProfile property.
      */
-    @JsonProperty(value = "userProfile")
     private NginxDeploymentUserProfile userProfile;
 
     /*
      * Autoupgrade settings of a deployment.
      */
-    @JsonProperty(value = "autoUpgradeProfile")
     private AutoUpgradeProfile autoUpgradeProfile;
 
     /**
@@ -166,5 +165,58 @@ public final class NginxDeploymentUpdateProperties {
         if (autoUpgradeProfile() != null) {
             autoUpgradeProfile().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("enableDiagnosticsSupport", this.enableDiagnosticsSupport);
+        jsonWriter.writeJsonField("logging", this.logging);
+        jsonWriter.writeJsonField("scalingProperties", this.scalingProperties);
+        jsonWriter.writeJsonField("userProfile", this.userProfile);
+        jsonWriter.writeJsonField("autoUpgradeProfile", this.autoUpgradeProfile);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NginxDeploymentUpdateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NginxDeploymentUpdateProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NginxDeploymentUpdateProperties.
+     */
+    public static NginxDeploymentUpdateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NginxDeploymentUpdateProperties deserializedNginxDeploymentUpdateProperties
+                = new NginxDeploymentUpdateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("enableDiagnosticsSupport".equals(fieldName)) {
+                    deserializedNginxDeploymentUpdateProperties.enableDiagnosticsSupport
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("logging".equals(fieldName)) {
+                    deserializedNginxDeploymentUpdateProperties.logging = NginxLogging.fromJson(reader);
+                } else if ("scalingProperties".equals(fieldName)) {
+                    deserializedNginxDeploymentUpdateProperties.scalingProperties
+                        = NginxDeploymentScalingProperties.fromJson(reader);
+                } else if ("userProfile".equals(fieldName)) {
+                    deserializedNginxDeploymentUpdateProperties.userProfile
+                        = NginxDeploymentUserProfile.fromJson(reader);
+                } else if ("autoUpgradeProfile".equals(fieldName)) {
+                    deserializedNginxDeploymentUpdateProperties.autoUpgradeProfile
+                        = AutoUpgradeProfile.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNginxDeploymentUpdateProperties;
+        });
     }
 }
