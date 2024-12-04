@@ -40,7 +40,7 @@ public final class X509CertificateProperties implements JsonSerializable<X509Cer
      * Defines how the certificate's key may be used.
      */
     @Generated
-    private List<KeyUsageType> keyUsage;
+    private List<CertificateKeyUsage> keyUsage;
 
     /*
      * The duration that the certificate is valid in months.
@@ -127,7 +127,7 @@ public final class X509CertificateProperties implements JsonSerializable<X509Cer
      * @return the keyUsage value.
      */
     @Generated
-    public List<KeyUsageType> getKeyUsage() {
+    public List<CertificateKeyUsage> getKeyUsage() {
         return this.keyUsage;
     }
 
@@ -138,7 +138,7 @@ public final class X509CertificateProperties implements JsonSerializable<X509Cer
      * @return the X509CertificateProperties object itself.
      */
     @Generated
-    public X509CertificateProperties setKeyUsage(List<KeyUsageType> keyUsage) {
+    public X509CertificateProperties setKeyUsage(List<CertificateKeyUsage> keyUsage) {
         this.keyUsage = keyUsage;
         return this;
     }
@@ -205,8 +205,8 @@ public final class X509CertificateProperties implements JsonSerializable<X509Cer
                     deserializedX509CertificateProperties.subjectAlternativeNames
                         = SubjectAlternativeNames.fromJson(reader);
                 } else if ("key_usage".equals(fieldName)) {
-                    List<KeyUsageType> keyUsage
-                        = reader.readArray(reader1 -> KeyUsageType.fromString(reader1.getString()));
+                    List<CertificateKeyUsage> keyUsage
+                        = reader.readArray(reader1 -> CertificateKeyUsage.fromString(reader1.getString()));
                     deserializedX509CertificateProperties.keyUsage = keyUsage;
                 } else if ("validity_months".equals(fieldName)) {
                     deserializedX509CertificateProperties.validityInMonths = reader.getNullable(JsonReader::getInt);

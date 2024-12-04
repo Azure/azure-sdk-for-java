@@ -15,13 +15,13 @@ import java.io.IOException;
  * The contact information for the vault certificates.
  */
 @Fluent
-public final class Contact implements JsonSerializable<Contact> {
+public final class CertificateContact implements JsonSerializable<CertificateContact> {
 
     /*
      * Email address.
      */
     @Generated
-    private String emailAddress;
+    private String email;
 
     /*
      * Name.
@@ -36,31 +36,31 @@ public final class Contact implements JsonSerializable<Contact> {
     private String phone;
 
     /**
-     * Creates an instance of Contact class.
+     * Creates an instance of CertificateContact class.
      */
     @Generated
-    public Contact() {
+    public CertificateContact() {
     }
 
     /**
-     * Get the emailAddress property: Email address.
+     * Get the email property: Email address.
      *
-     * @return the emailAddress value.
+     * @return the email value.
      */
     @Generated
-    public String getEmailAddress() {
-        return this.emailAddress;
+    public String getEmail() {
+        return this.email;
     }
 
     /**
-     * Set the emailAddress property: Email address.
+     * Set the email property: Email address.
      *
-     * @param emailAddress the emailAddress value to set.
-     * @return the Contact object itself.
+     * @param email the email value to set.
+     * @return the CertificateContact object itself.
      */
     @Generated
-    public Contact setEmailAddress(String emailAddress) {
-        this.emailAddress = emailAddress;
+    public CertificateContact setEmail(String email) {
+        this.email = email;
         return this;
     }
 
@@ -78,10 +78,10 @@ public final class Contact implements JsonSerializable<Contact> {
      * Set the name property: Name.
      *
      * @param name the name value to set.
-     * @return the Contact object itself.
+     * @return the CertificateContact object itself.
      */
     @Generated
-    public Contact setName(String name) {
+    public CertificateContact setName(String name) {
         this.name = name;
         return this;
     }
@@ -100,10 +100,10 @@ public final class Contact implements JsonSerializable<Contact> {
      * Set the phone property: Phone number.
      *
      * @param phone the phone value to set.
-     * @return the Contact object itself.
+     * @return the CertificateContact object itself.
      */
     @Generated
-    public Contact setPhone(String phone) {
+    public CertificateContact setPhone(String phone) {
         this.phone = phone;
         return this;
     }
@@ -115,38 +115,38 @@ public final class Contact implements JsonSerializable<Contact> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("email", this.emailAddress);
+        jsonWriter.writeStringField("email", this.email);
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeStringField("phone", this.phone);
         return jsonWriter.writeEndObject();
     }
 
     /**
-     * Reads an instance of Contact from the JsonReader.
+     * Reads an instance of CertificateContact from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of Contact if the JsonReader was pointing to an instance of it, or null if it was pointing to
-     * JSON null.
-     * @throws IOException If an error occurs while reading the Contact.
+     * @return An instance of CertificateContact if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CertificateContact.
      */
     @Generated
-    public static Contact fromJson(JsonReader jsonReader) throws IOException {
+    public static CertificateContact fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            Contact deserializedContact = new Contact();
+            CertificateContact deserializedCertificateContact = new CertificateContact();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("email".equals(fieldName)) {
-                    deserializedContact.emailAddress = reader.getString();
+                    deserializedCertificateContact.email = reader.getString();
                 } else if ("name".equals(fieldName)) {
-                    deserializedContact.name = reader.getString();
+                    deserializedCertificateContact.name = reader.getString();
                 } else if ("phone".equals(fieldName)) {
-                    deserializedContact.phone = reader.getString();
+                    deserializedCertificateContact.phone = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
-            return deserializedContact;
+            return deserializedCertificateContact;
         });
     }
 }

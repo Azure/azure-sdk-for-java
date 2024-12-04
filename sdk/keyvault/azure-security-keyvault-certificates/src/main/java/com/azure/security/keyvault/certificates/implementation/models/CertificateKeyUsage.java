@@ -10,91 +10,91 @@ import java.util.Collection;
 /**
  * Supported usages of a certificate key.
  */
-public final class KeyUsageType extends ExpandableStringEnum<KeyUsageType> {
+public final class CertificateKeyUsage extends ExpandableStringEnum<CertificateKeyUsage> {
 
     /**
      * Indicates that the certificate key can be used as a digital signature.
      */
     @Generated
-    public static final KeyUsageType DIGITAL_SIGNATURE = fromString("digitalSignature");
+    public static final CertificateKeyUsage DIGITAL_SIGNATURE = fromString("digitalSignature");
 
     /**
      * Indicates that the certificate key can be used for authentication.
      */
     @Generated
-    public static final KeyUsageType NON_REPUDIATION = fromString("nonRepudiation");
+    public static final CertificateKeyUsage NON_REPUDIATION = fromString("nonRepudiation");
 
     /**
      * Indicates that the certificate key can be used for key encryption.
      */
     @Generated
-    public static final KeyUsageType KEY_ENCIPHERMENT = fromString("keyEncipherment");
+    public static final CertificateKeyUsage KEY_ENCIPHERMENT = fromString("keyEncipherment");
 
     /**
      * Indicates that the certificate key can be used for data encryption.
      */
     @Generated
-    public static final KeyUsageType DATA_ENCIPHERMENT = fromString("dataEncipherment");
+    public static final CertificateKeyUsage DATA_ENCIPHERMENT = fromString("dataEncipherment");
 
     /**
      * Indicates that the certificate key can be used to determine key agreement, such as a key created using the
      * Diffie-Hellman key agreement algorithm.
      */
     @Generated
-    public static final KeyUsageType KEY_AGREEMENT = fromString("keyAgreement");
+    public static final CertificateKeyUsage KEY_AGREEMENT = fromString("keyAgreement");
 
     /**
      * Indicates that the certificate key can be used to sign certificates.
      */
     @Generated
-    public static final KeyUsageType KEY_CERT_SIGN = fromString("keyCertSign");
+    public static final CertificateKeyUsage KEY_CERT_SIGN = fromString("keyCertSign");
 
     /**
      * Indicates that the certificate key can be used to sign a certificate revocation list.
      */
     @Generated
-    public static final KeyUsageType C_RLSIGN = fromString("cRLSign");
+    public static final CertificateKeyUsage C_RLSIGN = fromString("cRLSign");
 
     /**
      * Indicates that the certificate key can be used for encryption only.
      */
     @Generated
-    public static final KeyUsageType ENCIPHER_ONLY = fromString("encipherOnly");
+    public static final CertificateKeyUsage ENCIPHER_ONLY = fromString("encipherOnly");
 
     /**
      * Indicates that the certificate key can be used for decryption only.
      */
     @Generated
-    public static final KeyUsageType DECIPHER_ONLY = fromString("decipherOnly");
+    public static final CertificateKeyUsage DECIPHER_ONLY = fromString("decipherOnly");
 
     /**
-     * Creates a new instance of KeyUsageType value.
+     * Creates a new instance of CertificateKeyUsage value.
      *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Generated
     @Deprecated
-    public KeyUsageType() {
+    public CertificateKeyUsage() {
     }
 
     /**
-     * Creates or finds a KeyUsageType from its string representation.
+     * Creates or finds a CertificateKeyUsage from its string representation.
      *
      * @param name a name to look for.
-     * @return the corresponding KeyUsageType.
+     * @return the corresponding CertificateKeyUsage.
      */
     @Generated
-    public static KeyUsageType fromString(String name) {
-        return fromString(name, KeyUsageType.class);
+    public static CertificateKeyUsage fromString(String name) {
+        return fromString(name, CertificateKeyUsage.class);
     }
 
     /**
-     * Gets known KeyUsageType values.
+     * Gets known CertificateKeyUsage values.
      *
-     * @return known KeyUsageType values.
+     * @return known CertificateKeyUsage values.
      */
     @Generated
-    public static Collection<KeyUsageType> values() {
-        return values(KeyUsageType.class);
+    public static Collection<CertificateKeyUsage> values() {
+        return values(CertificateKeyUsage.class);
     }
 }

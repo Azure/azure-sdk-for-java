@@ -28,7 +28,7 @@ public final class Contacts implements JsonSerializable<Contacts> {
      * The contact list for the vault certificates.
      */
     @Generated
-    private List<Contact> contactList;
+    private List<CertificateContact> contactList;
 
     /**
      * Creates an instance of Contacts class.
@@ -53,7 +53,7 @@ public final class Contacts implements JsonSerializable<Contacts> {
      * @return the contactList value.
      */
     @Generated
-    public List<Contact> getContactList() {
+    public List<CertificateContact> getContactList() {
         return this.contactList;
     }
 
@@ -64,7 +64,7 @@ public final class Contacts implements JsonSerializable<Contacts> {
      * @return the Contacts object itself.
      */
     @Generated
-    public Contacts setContactList(List<Contact> contactList) {
+    public Contacts setContactList(List<CertificateContact> contactList) {
         this.contactList = contactList;
         return this;
     }
@@ -98,7 +98,8 @@ public final class Contacts implements JsonSerializable<Contacts> {
                 if ("id".equals(fieldName)) {
                     deserializedContacts.id = reader.getString();
                 } else if ("contacts".equals(fieldName)) {
-                    List<Contact> contactList = reader.readArray(reader1 -> Contact.fromJson(reader1));
+                    List<CertificateContact> contactList
+                        = reader.readArray(reader1 -> CertificateContact.fromJson(reader1));
                     deserializedContacts.contactList = contactList;
                 } else {
                     reader.skipChildren();

@@ -59,7 +59,7 @@ public final class CertificateOperation implements JsonSerializable<CertificateO
      * Error encountered, if any, during the certificate operation.
      */
     @Generated
-    private Error error;
+    private CertificateOperationError error;
 
     /*
      * Location which contains the result of the certificate operation.
@@ -147,7 +147,7 @@ public final class CertificateOperation implements JsonSerializable<CertificateO
      * @return the error value.
      */
     @Generated
-    public Error getError() {
+    public CertificateOperationError getError() {
         return this.error;
     }
 
@@ -217,7 +217,7 @@ public final class CertificateOperation implements JsonSerializable<CertificateO
                 } else if ("status_details".equals(fieldName)) {
                     deserializedCertificateOperation.statusDetails = reader.getString();
                 } else if ("error".equals(fieldName)) {
-                    deserializedCertificateOperation.error = Error.fromJson(reader);
+                    deserializedCertificateOperation.error = CertificateOperationError.fromJson(reader);
                 } else if ("target".equals(fieldName)) {
                     deserializedCertificateOperation.target = reader.getString();
                 } else if ("request_id".equals(fieldName)) {

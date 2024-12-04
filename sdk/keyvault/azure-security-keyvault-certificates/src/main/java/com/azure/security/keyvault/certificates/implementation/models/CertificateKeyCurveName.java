@@ -10,60 +10,60 @@ import java.util.Collection;
 /**
  * Elliptic curve name. For valid values, see JsonWebKeyCurveName.
  */
-public final class JsonWebKeyCurveName extends ExpandableStringEnum<JsonWebKeyCurveName> {
+public final class CertificateKeyCurveName extends ExpandableStringEnum<CertificateKeyCurveName> {
 
     /**
      * The NIST P-256 elliptic curve, AKA SECG curve SECP256R1.
      */
     @Generated
-    public static final JsonWebKeyCurveName P_256 = fromString("P-256");
+    public static final CertificateKeyCurveName P_256 = fromString("P-256");
 
     /**
      * The NIST P-384 elliptic curve, AKA SECG curve SECP384R1.
      */
     @Generated
-    public static final JsonWebKeyCurveName P_384 = fromString("P-384");
+    public static final CertificateKeyCurveName P_384 = fromString("P-384");
 
     /**
      * The NIST P-521 elliptic curve, AKA SECG curve SECP521R1.
      */
     @Generated
-    public static final JsonWebKeyCurveName P_521 = fromString("P-521");
+    public static final CertificateKeyCurveName P_521 = fromString("P-521");
 
     /**
      * The SECG SECP256K1 elliptic curve.
      */
     @Generated
-    public static final JsonWebKeyCurveName P_256K = fromString("P-256K");
+    public static final CertificateKeyCurveName P_256K = fromString("P-256K");
 
     /**
-     * Creates a new instance of JsonWebKeyCurveName value.
+     * Creates a new instance of CertificateKeyCurveName value.
      *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Generated
     @Deprecated
-    public JsonWebKeyCurveName() {
+    public CertificateKeyCurveName() {
     }
 
     /**
-     * Creates or finds a JsonWebKeyCurveName from its string representation.
+     * Creates or finds a CertificateKeyCurveName from its string representation.
      *
      * @param name a name to look for.
-     * @return the corresponding JsonWebKeyCurveName.
+     * @return the corresponding CertificateKeyCurveName.
      */
     @Generated
-    public static JsonWebKeyCurveName fromString(String name) {
-        return fromString(name, JsonWebKeyCurveName.class);
+    public static CertificateKeyCurveName fromString(String name) {
+        return fromString(name, CertificateKeyCurveName.class);
     }
 
     /**
-     * Gets known JsonWebKeyCurveName values.
+     * Gets known CertificateKeyCurveName values.
      *
-     * @return known JsonWebKeyCurveName values.
+     * @return known CertificateKeyCurveName values.
      */
     @Generated
-    public static Collection<JsonWebKeyCurveName> values() {
-        return values(JsonWebKeyCurveName.class);
+    public static Collection<CertificateKeyCurveName> values() {
+        return values(CertificateKeyCurveName.class);
     }
 }

@@ -28,7 +28,7 @@ public final class OrganizationDetails implements JsonSerializable<OrganizationD
      * Details of the organization administrator.
      */
     @Generated
-    private List<AdministratorDetails> adminDetails;
+    private List<AdministratorContact> adminDetails;
 
     /**
      * Creates an instance of OrganizationDetails class.
@@ -65,7 +65,7 @@ public final class OrganizationDetails implements JsonSerializable<OrganizationD
      * @return the adminDetails value.
      */
     @Generated
-    public List<AdministratorDetails> getAdminDetails() {
+    public List<AdministratorContact> getAdminDetails() {
         return this.adminDetails;
     }
 
@@ -76,7 +76,7 @@ public final class OrganizationDetails implements JsonSerializable<OrganizationD
      * @return the OrganizationDetails object itself.
      */
     @Generated
-    public OrganizationDetails setAdminDetails(List<AdministratorDetails> adminDetails) {
+    public OrganizationDetails setAdminDetails(List<AdministratorContact> adminDetails) {
         this.adminDetails = adminDetails;
         return this;
     }
@@ -111,8 +111,8 @@ public final class OrganizationDetails implements JsonSerializable<OrganizationD
                 if ("id".equals(fieldName)) {
                     deserializedOrganizationDetails.id = reader.getString();
                 } else if ("admin_details".equals(fieldName)) {
-                    List<AdministratorDetails> adminDetails
-                        = reader.readArray(reader1 -> AdministratorDetails.fromJson(reader1));
+                    List<AdministratorContact> adminDetails
+                        = reader.readArray(reader1 -> AdministratorContact.fromJson(reader1));
                     deserializedOrganizationDetails.adminDetails = adminDetails;
                 } else {
                     reader.skipChildren();

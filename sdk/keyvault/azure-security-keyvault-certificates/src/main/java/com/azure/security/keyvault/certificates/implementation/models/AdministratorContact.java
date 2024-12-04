@@ -15,7 +15,7 @@ import java.io.IOException;
  * Details of the organization administrator of the certificate issuer.
  */
 @Fluent
-public final class AdministratorDetails implements JsonSerializable<AdministratorDetails> {
+public final class AdministratorContact implements JsonSerializable<AdministratorContact> {
 
     /*
      * First name.
@@ -33,7 +33,7 @@ public final class AdministratorDetails implements JsonSerializable<Administrato
      * Email address.
      */
     @Generated
-    private String emailAddress;
+    private String email;
 
     /*
      * Phone number.
@@ -42,10 +42,10 @@ public final class AdministratorDetails implements JsonSerializable<Administrato
     private String phone;
 
     /**
-     * Creates an instance of AdministratorDetails class.
+     * Creates an instance of AdministratorContact class.
      */
     @Generated
-    public AdministratorDetails() {
+    public AdministratorContact() {
     }
 
     /**
@@ -62,10 +62,10 @@ public final class AdministratorDetails implements JsonSerializable<Administrato
      * Set the firstName property: First name.
      *
      * @param firstName the firstName value to set.
-     * @return the AdministratorDetails object itself.
+     * @return the AdministratorContact object itself.
      */
     @Generated
-    public AdministratorDetails setFirstName(String firstName) {
+    public AdministratorContact setFirstName(String firstName) {
         this.firstName = firstName;
         return this;
     }
@@ -84,33 +84,33 @@ public final class AdministratorDetails implements JsonSerializable<Administrato
      * Set the lastName property: Last name.
      *
      * @param lastName the lastName value to set.
-     * @return the AdministratorDetails object itself.
+     * @return the AdministratorContact object itself.
      */
     @Generated
-    public AdministratorDetails setLastName(String lastName) {
+    public AdministratorContact setLastName(String lastName) {
         this.lastName = lastName;
         return this;
     }
 
     /**
-     * Get the emailAddress property: Email address.
+     * Get the email property: Email address.
      *
-     * @return the emailAddress value.
+     * @return the email value.
      */
     @Generated
-    public String getEmailAddress() {
-        return this.emailAddress;
+    public String getEmail() {
+        return this.email;
     }
 
     /**
-     * Set the emailAddress property: Email address.
+     * Set the email property: Email address.
      *
-     * @param emailAddress the emailAddress value to set.
-     * @return the AdministratorDetails object itself.
+     * @param email the email value to set.
+     * @return the AdministratorContact object itself.
      */
     @Generated
-    public AdministratorDetails setEmailAddress(String emailAddress) {
-        this.emailAddress = emailAddress;
+    public AdministratorContact setEmail(String email) {
+        this.email = email;
         return this;
     }
 
@@ -128,10 +128,10 @@ public final class AdministratorDetails implements JsonSerializable<Administrato
      * Set the phone property: Phone number.
      *
      * @param phone the phone value to set.
-     * @return the AdministratorDetails object itself.
+     * @return the AdministratorContact object itself.
      */
     @Generated
-    public AdministratorDetails setPhone(String phone) {
+    public AdministratorContact setPhone(String phone) {
         this.phone = phone;
         return this;
     }
@@ -145,39 +145,39 @@ public final class AdministratorDetails implements JsonSerializable<Administrato
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("first_name", this.firstName);
         jsonWriter.writeStringField("last_name", this.lastName);
-        jsonWriter.writeStringField("email", this.emailAddress);
+        jsonWriter.writeStringField("email", this.email);
         jsonWriter.writeStringField("phone", this.phone);
         return jsonWriter.writeEndObject();
     }
 
     /**
-     * Reads an instance of AdministratorDetails from the JsonReader.
+     * Reads an instance of AdministratorContact from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of AdministratorDetails if the JsonReader was pointing to an instance of it, or null if it
+     * @return An instance of AdministratorContact if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the AdministratorDetails.
+     * @throws IOException If an error occurs while reading the AdministratorContact.
      */
     @Generated
-    public static AdministratorDetails fromJson(JsonReader jsonReader) throws IOException {
+    public static AdministratorContact fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            AdministratorDetails deserializedAdministratorDetails = new AdministratorDetails();
+            AdministratorContact deserializedAdministratorContact = new AdministratorContact();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("first_name".equals(fieldName)) {
-                    deserializedAdministratorDetails.firstName = reader.getString();
+                    deserializedAdministratorContact.firstName = reader.getString();
                 } else if ("last_name".equals(fieldName)) {
-                    deserializedAdministratorDetails.lastName = reader.getString();
+                    deserializedAdministratorContact.lastName = reader.getString();
                 } else if ("email".equals(fieldName)) {
-                    deserializedAdministratorDetails.emailAddress = reader.getString();
+                    deserializedAdministratorContact.email = reader.getString();
                 } else if ("phone".equals(fieldName)) {
-                    deserializedAdministratorDetails.phone = reader.getString();
+                    deserializedAdministratorContact.phone = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
-            return deserializedAdministratorDetails;
+            return deserializedAdministratorContact;
         });
     }
 }

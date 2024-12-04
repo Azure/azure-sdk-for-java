@@ -10,72 +10,72 @@ import java.util.Collection;
 /**
  * The type of key pair to be used for the certificate.
  */
-public final class JsonWebKeyType extends ExpandableStringEnum<JsonWebKeyType> {
+public final class CertificateKeyType extends ExpandableStringEnum<CertificateKeyType> {
 
     /**
      * Elliptic Curve.
      */
     @Generated
-    public static final JsonWebKeyType EC = fromString("EC");
+    public static final CertificateKeyType EC = fromString("EC");
 
     /**
      * Elliptic Curve with a private key which is not exportable from the HSM.
      */
     @Generated
-    public static final JsonWebKeyType EC_HSM = fromString("EC-HSM");
+    public static final CertificateKeyType EC_HSM = fromString("EC-HSM");
 
     /**
      * RSA (https://tools.ietf.org/html/rfc3447).
      */
     @Generated
-    public static final JsonWebKeyType RSA = fromString("RSA");
+    public static final CertificateKeyType RSA = fromString("RSA");
 
     /**
      * RSA with a private key which is not exportable from the HSM.
      */
     @Generated
-    public static final JsonWebKeyType RSA_HSM = fromString("RSA-HSM");
+    public static final CertificateKeyType RSA_HSM = fromString("RSA-HSM");
 
     /**
      * Octet sequence (used to represent symmetric keys).
      */
     @Generated
-    public static final JsonWebKeyType OCT = fromString("oct");
+    public static final CertificateKeyType OCT = fromString("oct");
 
     /**
      * Octet sequence with a private key which is not exportable from the HSM.
      */
     @Generated
-    public static final JsonWebKeyType OCT_HSM = fromString("oct-HSM");
+    public static final CertificateKeyType OCT_HSM = fromString("oct-HSM");
 
     /**
-     * Creates a new instance of JsonWebKeyType value.
+     * Creates a new instance of CertificateKeyType value.
      *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Generated
     @Deprecated
-    public JsonWebKeyType() {
+    public CertificateKeyType() {
     }
 
     /**
-     * Creates or finds a JsonWebKeyType from its string representation.
+     * Creates or finds a CertificateKeyType from its string representation.
      *
      * @param name a name to look for.
-     * @return the corresponding JsonWebKeyType.
+     * @return the corresponding CertificateKeyType.
      */
     @Generated
-    public static JsonWebKeyType fromString(String name) {
-        return fromString(name, JsonWebKeyType.class);
+    public static CertificateKeyType fromString(String name) {
+        return fromString(name, CertificateKeyType.class);
     }
 
     /**
-     * Gets known JsonWebKeyType values.
+     * Gets known CertificateKeyType values.
      *
-     * @return known JsonWebKeyType values.
+     * @return known CertificateKeyType values.
      */
     @Generated
-    public static Collection<JsonWebKeyType> values() {
-        return values(JsonWebKeyType.class);
+    public static Collection<CertificateKeyType> values() {
+        return values(CertificateKeyType.class);
     }
 }

@@ -30,12 +30,6 @@ public final class SubjectAlternativeNames implements JsonSerializable<SubjectAl
     @Generated
     private List<String> dnsNames;
 
-    /*
-     * User principal names.
-     */
-    @Generated
-    private List<String> upns;
-
     /**
      * Creates an instance of SubjectAlternativeNames class.
      */
@@ -88,28 +82,6 @@ public final class SubjectAlternativeNames implements JsonSerializable<SubjectAl
     }
 
     /**
-     * Get the upns property: User principal names.
-     *
-     * @return the upns value.
-     */
-    @Generated
-    public List<String> getUpns() {
-        return this.upns;
-    }
-
-    /**
-     * Set the upns property: User principal names.
-     *
-     * @param upns the upns value to set.
-     * @return the SubjectAlternativeNames object itself.
-     */
-    @Generated
-    public SubjectAlternativeNames setUpns(List<String> upns) {
-        this.upns = upns;
-        return this;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
@@ -118,7 +90,7 @@ public final class SubjectAlternativeNames implements JsonSerializable<SubjectAl
         jsonWriter.writeStartObject();
         jsonWriter.writeArrayField("emails", this.emails, (writer, element) -> writer.writeString(element));
         jsonWriter.writeArrayField("dns_names", this.dnsNames, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeArrayField("upns", this.upns, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("upns", this.userPrincipalNames, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -144,13 +116,41 @@ public final class SubjectAlternativeNames implements JsonSerializable<SubjectAl
                     List<String> dnsNames = reader.readArray(reader1 -> reader1.getString());
                     deserializedSubjectAlternativeNames.dnsNames = dnsNames;
                 } else if ("upns".equals(fieldName)) {
-                    List<String> upns = reader.readArray(reader1 -> reader1.getString());
-                    deserializedSubjectAlternativeNames.upns = upns;
+                    List<String> userPrincipalNames = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSubjectAlternativeNames.userPrincipalNames = userPrincipalNames;
                 } else {
                     reader.skipChildren();
                 }
             }
             return deserializedSubjectAlternativeNames;
         });
+    }
+
+    /*
+     * User principal names.
+     */
+    @Generated
+    private List<String> userPrincipalNames;
+
+    /**
+     * Get the userPrincipalNames property: User principal names.
+     *
+     * @return the userPrincipalNames value.
+     */
+    @Generated
+    public List<String> getUserPrincipalNames() {
+        return this.userPrincipalNames;
+    }
+
+    /**
+     * Set the userPrincipalNames property: User principal names.
+     *
+     * @param userPrincipalNames the userPrincipalNames value to set.
+     * @return the SubjectAlternativeNames object itself.
+     */
+    @Generated
+    public SubjectAlternativeNames setUserPrincipalNames(List<String> userPrincipalNames) {
+        this.userPrincipalNames = userPrincipalNames;
+        return this;
     }
 }

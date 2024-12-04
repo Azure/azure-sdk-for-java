@@ -28,7 +28,7 @@ public final class KeyProperties implements JsonSerializable<KeyProperties> {
      * The type of key pair to be used for the certificate.
      */
     @Generated
-    private JsonWebKeyType keyType;
+    private CertificateKeyType keyType;
 
     /*
      * The key size in bits. For example: 2048, 3072, or 4096 for RSA.
@@ -46,7 +46,7 @@ public final class KeyProperties implements JsonSerializable<KeyProperties> {
      * Elliptic curve name. For valid values, see JsonWebKeyCurveName.
      */
     @Generated
-    private JsonWebKeyCurveName curve;
+    private CertificateKeyCurveName curve;
 
     /**
      * Creates an instance of KeyProperties class.
@@ -85,20 +85,8 @@ public final class KeyProperties implements JsonSerializable<KeyProperties> {
      * @return the keyType value.
      */
     @Generated
-    public JsonWebKeyType getKeyType() {
+    public CertificateKeyType getKeyType() {
         return this.keyType;
-    }
-
-    /**
-     * Set the keyType property: The type of key pair to be used for the certificate.
-     *
-     * @param keyType the keyType value to set.
-     * @return the KeyProperties object itself.
-     */
-    @Generated
-    public KeyProperties setKeyType(JsonWebKeyType keyType) {
-        this.keyType = keyType;
-        return this;
     }
 
     /**
@@ -151,20 +139,8 @@ public final class KeyProperties implements JsonSerializable<KeyProperties> {
      * @return the curve value.
      */
     @Generated
-    public JsonWebKeyCurveName getCurve() {
+    public CertificateKeyCurveName getCurve() {
         return this.curve;
-    }
-
-    /**
-     * Set the curve property: Elliptic curve name. For valid values, see JsonWebKeyCurveName.
-     *
-     * @param curve the curve value to set.
-     * @return the KeyProperties object itself.
-     */
-    @Generated
-    public KeyProperties setCurve(JsonWebKeyCurveName curve) {
-        this.curve = curve;
-        return this;
     }
 
     /**
@@ -200,18 +176,42 @@ public final class KeyProperties implements JsonSerializable<KeyProperties> {
                 if ("exportable".equals(fieldName)) {
                     deserializedKeyProperties.exportable = reader.getNullable(JsonReader::getBoolean);
                 } else if ("kty".equals(fieldName)) {
-                    deserializedKeyProperties.keyType = JsonWebKeyType.fromString(reader.getString());
+                    deserializedKeyProperties.keyType = CertificateKeyType.fromString(reader.getString());
                 } else if ("key_size".equals(fieldName)) {
                     deserializedKeyProperties.keySize = reader.getNullable(JsonReader::getInt);
                 } else if ("reuse_key".equals(fieldName)) {
                     deserializedKeyProperties.reuseKey = reader.getNullable(JsonReader::getBoolean);
                 } else if ("crv".equals(fieldName)) {
-                    deserializedKeyProperties.curve = JsonWebKeyCurveName.fromString(reader.getString());
+                    deserializedKeyProperties.curve = CertificateKeyCurveName.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
             return deserializedKeyProperties;
         });
+    }
+
+    /**
+     * Set the keyType property: The type of key pair to be used for the certificate.
+     *
+     * @param keyType the keyType value to set.
+     * @return the KeyProperties object itself.
+     */
+    @Generated
+    public KeyProperties setKeyType(CertificateKeyType keyType) {
+        this.keyType = keyType;
+        return this;
+    }
+
+    /**
+     * Set the curve property: Elliptic curve name. For valid values, see JsonWebKeyCurveName.
+     *
+     * @param curve the curve value to set.
+     * @return the KeyProperties object itself.
+     */
+    @Generated
+    public KeyProperties setCurve(CertificateKeyCurveName curve) {
+        this.curve = curve;
+        return this;
     }
 }

@@ -57,15 +57,6 @@ public final class CertificateAttributes implements JsonSerializable<Certificate
     @Generated
     private Integer recoverableDays;
 
-    /*
-     * Reflects the deletion recovery level currently in effect for certificates in
-     * the current vault. If it contains 'Purgeable', the certificate can be
-     * permanently deleted by a privileged user; otherwise, only the system can purge
-     * the certificate, at the end of the retention interval.
-     */
-    @Generated
-    private String recoveryLevel;
-
     /**
      * Creates an instance of CertificateAttributes class.
      */
@@ -192,19 +183,6 @@ public final class CertificateAttributes implements JsonSerializable<Certificate
     }
 
     /**
-     * Get the recoveryLevel property: Reflects the deletion recovery level currently in effect for certificates in
-     * the current vault. If it contains 'Purgeable', the certificate can be
-     * permanently deleted by a privileged user; otherwise, only the system can purge
-     * the certificate, at the end of the retention interval.
-     *
-     * @return the recoveryLevel value.
-     */
-    @Generated
-    public String getRecoveryLevel() {
-        return this.recoveryLevel;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
@@ -245,12 +223,34 @@ public final class CertificateAttributes implements JsonSerializable<Certificate
                 } else if ("recoverableDays".equals(fieldName)) {
                     deserializedCertificateAttributes.recoverableDays = reader.getNullable(JsonReader::getInt);
                 } else if ("recoveryLevel".equals(fieldName)) {
-                    deserializedCertificateAttributes.recoveryLevel = reader.getString();
+                    deserializedCertificateAttributes.adminContacts = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
             return deserializedCertificateAttributes;
         });
+    }
+
+    /*
+     * Reflects the deletion recovery level currently in effect for certificates in
+     * the current vault. If it contains 'Purgeable', the certificate can be
+     * permanently deleted by a privileged user; otherwise, only the system can purge
+     * the certificate, at the end of the retention interval.
+     */
+    @Generated
+    private String adminContacts;
+
+    /**
+     * Get the adminContacts property: Reflects the deletion recovery level currently in effect for certificates in
+     * the current vault. If it contains 'Purgeable', the certificate can be
+     * permanently deleted by a privileged user; otherwise, only the system can purge
+     * the certificate, at the end of the retention interval.
+     *
+     * @return the adminContacts value.
+     */
+    @Generated
+    public String getAdminContacts() {
+        return this.adminContacts;
     }
 }

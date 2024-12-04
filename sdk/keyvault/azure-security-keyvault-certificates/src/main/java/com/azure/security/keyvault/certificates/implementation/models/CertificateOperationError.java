@@ -15,7 +15,7 @@ import java.io.IOException;
  * The key vault server error.
  */
 @Immutable
-public final class Error implements JsonSerializable<Error> {
+public final class CertificateOperationError implements JsonSerializable<CertificateOperationError> {
 
     /*
      * The error code.
@@ -33,13 +33,13 @@ public final class Error implements JsonSerializable<Error> {
      * The key vault server error.
      */
     @Generated
-    private Error innerError;
+    private CertificateOperationError innerError;
 
     /**
-     * Creates an instance of Error class.
+     * Creates an instance of CertificateOperationError class.
      */
     @Generated
-    private Error() {
+    private CertificateOperationError() {
     }
 
     /**
@@ -68,7 +68,7 @@ public final class Error implements JsonSerializable<Error> {
      * @return the innerError value.
      */
     @Generated
-    public Error getInnerError() {
+    public CertificateOperationError getInnerError() {
         return this.innerError;
     }
 
@@ -83,31 +83,31 @@ public final class Error implements JsonSerializable<Error> {
     }
 
     /**
-     * Reads an instance of Error from the JsonReader.
+     * Reads an instance of CertificateOperationError from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of Error if the JsonReader was pointing to an instance of it, or null if it was pointing to
-     * JSON null.
-     * @throws IOException If an error occurs while reading the Error.
+     * @return An instance of CertificateOperationError if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CertificateOperationError.
      */
     @Generated
-    public static Error fromJson(JsonReader jsonReader) throws IOException {
+    public static CertificateOperationError fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            Error deserializedError = new Error();
+            CertificateOperationError deserializedCertificateOperationError = new CertificateOperationError();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("code".equals(fieldName)) {
-                    deserializedError.code = reader.getString();
+                    deserializedCertificateOperationError.code = reader.getString();
                 } else if ("message".equals(fieldName)) {
-                    deserializedError.message = reader.getString();
+                    deserializedCertificateOperationError.message = reader.getString();
                 } else if ("innererror".equals(fieldName)) {
-                    deserializedError.innerError = Error.fromJson(reader);
+                    deserializedCertificateOperationError.innerError = CertificateOperationError.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
-            return deserializedError;
+            return deserializedCertificateOperationError;
         });
     }
 }
