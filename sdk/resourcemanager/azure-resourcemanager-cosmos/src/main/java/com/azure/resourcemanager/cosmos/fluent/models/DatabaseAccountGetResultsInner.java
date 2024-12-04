@@ -981,6 +981,32 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
     }
 
     /**
+     * Get the enablePerRegionPerPartitionAutoscale property: Flag to indicate enabling/disabling of
+     * PerRegionPerPartitionAutoscale feature on the account.
+     * 
+     * @return the enablePerRegionPerPartitionAutoscale value.
+     */
+    public Boolean enablePerRegionPerPartitionAutoscale() {
+        return this.innerProperties() == null ? null : this.innerProperties().enablePerRegionPerPartitionAutoscale();
+    }
+
+    /**
+     * Set the enablePerRegionPerPartitionAutoscale property: Flag to indicate enabling/disabling of
+     * PerRegionPerPartitionAutoscale feature on the account.
+     * 
+     * @param enablePerRegionPerPartitionAutoscale the enablePerRegionPerPartitionAutoscale value to set.
+     * @return the DatabaseAccountGetResultsInner object itself.
+     */
+    public DatabaseAccountGetResultsInner
+        withEnablePerRegionPerPartitionAutoscale(Boolean enablePerRegionPerPartitionAutoscale) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountGetProperties();
+        }
+        this.innerProperties().withEnablePerRegionPerPartitionAutoscale(enablePerRegionPerPartitionAutoscale);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
