@@ -3,11 +3,6 @@
 
 package com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering;
 
-import java.util.HashSet;
-import java.util.Set;
-
-import static java.util.Arrays.asList;
-
 public class KnownDependencyColumns {
     public static final String TARGET = "Target";
     public static final String DURATION = "Duration";
@@ -16,5 +11,4 @@ public class KnownDependencyColumns {
     public static final String TYPE = "Type";
     public static final String DATA = "Data";
     public static final String NAME = "Name";
-
 }

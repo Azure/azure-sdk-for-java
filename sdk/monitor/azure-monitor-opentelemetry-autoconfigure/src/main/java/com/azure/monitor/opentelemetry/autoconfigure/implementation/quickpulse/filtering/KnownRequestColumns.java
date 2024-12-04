@@ -3,16 +3,10 @@
 
 package com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering;
 
-import java.util.HashSet;
-import java.util.Set;
-
-import static java.util.Arrays.asList;
-
 public class KnownRequestColumns {
     public static final String URL = "Url";
     public static final String DURATION = "Duration";
     public static final String RESPONSE_CODE = "ResponseCode";
     public static final String SUCCESS = "Success";
     public static final String NAME = "Name";
-    
 }
