@@ -836,7 +836,6 @@ public final class OpenAIClient {
         ChatCompletionsOptions chatCompletionsOptions, ChatCompletionStreamOptions streamOptions) {
         ChatCompletionsOptionsAccessHelper.setStream(chatCompletionsOptions, true);
         ChatCompletionsOptionsAccessHelper.setStreamOptions(chatCompletionsOptions, streamOptions);
-
         RequestOptions requestOptions = new RequestOptions();
         Flux<ByteBuffer> responseStream = getChatCompletionsWithResponse(deploymentOrModelName,
             BinaryData.fromObject(chatCompletionsOptions), requestOptions).getValue().toFluxByteBuffer();

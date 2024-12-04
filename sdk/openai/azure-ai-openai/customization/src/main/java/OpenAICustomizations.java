@@ -22,6 +22,8 @@ public class OpenAICustomizations extends Customization {
         removeMultipartFormDataFiles(customization, logger);
         customizeEmbeddingEncodingFormatClass(customization, logger);
         customizeEmbeddingsOptions(customization, logger);
+        customizeCompletionsOptions(customization, logger);
+        customizeChatCompletionsOptions(customization, logger);
     }
 
     private void removeMultipartFormDataFiles(LibraryCustomization customization, Logger logger) {
@@ -42,6 +44,47 @@ public class OpenAICustomizations extends Customization {
         ClassCustomization embeddingsOptionsClass = customization.getPackage("com.azure.ai.openai.models").getClass("EmbeddingsOptions");
         embeddingsOptionsClass.getMethod("getEncodingFormat").setModifier(0);
         embeddingsOptionsClass.getMethod("setEncodingFormat").setModifier(0);
+    }
+
+    private void customizeCompletionsOptions(LibraryCustomization customization, Logger logger) {
+        logger.info("Customizing the CompletionOptions class");
+        ClassCustomization completionOptionsClass = customization.getPackage("com.azure.ai.openai.models").getClass("CompletionsOptions");
+        completionOptionsClass.addStaticBlock(
+            joinWithNewline(
+                "        CompletionsOptionsAccessHelper.setAccessor(new CompletionsOptionsAccessHelper.CompletionsOptionsAccessor() {",
+                "            @Override",
+                "            public void setStream(CompletionsOptions options, boolean stream) {",
+                "                options.setStream(stream);",
+                "            }",
+                "            @Override",
+                "            public void setStreamOptions(CompletionsOptions options, ChatCompletionStreamOptions streamOptions) {",
+                "                options.setStreamOptions(streamOptions);",
+                "            }",
+                "        });"
+
+            ),
+            Arrays.asList("com.azure.ai.openai.implementation.accesshelpers.CompletionsOptionsAccessHelper"));
+    }
+
+    private void customizeChatCompletionsOptions(LibraryCustomization customization, Logger logger) {
+        logger.info("Customizing the ChatCompletionsOptions class");
+        ClassCustomization chatCompletionOptionsClass = customization.getPackage("com.azure.ai.openai.models").getClass("ChatCompletionsOptions");
+        chatCompletionOptionsClass.addStaticBlock(
+            joinWithNewline(
+                "        ChatCompletionsOptionsAccessHelper",
+                "            .setAccessor(new ChatCompletionsOptionsAccessHelper.ChatCompletionsOptionsAccessor() {",
+                "                @Override",
+                "                public void setStream(ChatCompletionsOptions options, boolean stream) {",
+                "                    options.setStream(stream);",
+                "                }",
+                "                @Override",
+                "                public void setStreamOptions(ChatCompletionsOptions options,",
+                "                                              ChatCompletionStreamOptions streamOptions) {",
+                "                    options.setStreamOptions(streamOptions);",
+                "                }",
+                "            });"
+            ),
+            Arrays.asList("com.azure.ai.openai.implementation.accesshelpers.ChatCompletionsOptionsAccessHelper"));
     }
 
     private static String joinWithNewline(String... lines) {

@@ -21,19 +21,6 @@ import java.util.Map;
  */
 @Fluent
 public final class CompletionsOptions implements JsonSerializable<CompletionsOptions> {
-    static {
-        CompletionsOptionsAccessHelper.setAccessor(new CompletionsOptionsAccessHelper.CompletionsOptionsAccessor() {
-            @Override
-            public void setStream(CompletionsOptions options, boolean stream) {
-                options.setStream(stream);
-            }
-
-            @Override
-            public void setStreamOptions(CompletionsOptions options, ChatCompletionStreamOptions streamOptions) {
-                options.setStreamOptions(streamOptions);
-            }
-        });
-    }
 
     /*
      * The prompts to generate completions from.
@@ -778,5 +765,20 @@ public final class CompletionsOptions implements JsonSerializable<CompletionsOpt
     private CompletionsOptions setStreamOptions(ChatCompletionStreamOptions streamOptions) {
         this.streamOptions = streamOptions;
         return this;
+    }
+
+    static {
+        CompletionsOptionsAccessHelper.setAccessor(new CompletionsOptionsAccessHelper.CompletionsOptionsAccessor() {
+
+            @Override
+            public void setStream(CompletionsOptions options, boolean stream) {
+                options.setStream(stream);
+            }
+
+            @Override
+            public void setStreamOptions(CompletionsOptions options, ChatCompletionStreamOptions streamOptions) {
+                options.setStreamOptions(streamOptions);
+            }
+        });
     }
 }

@@ -23,21 +23,7 @@ import java.util.Map;
  */
 @Fluent
 public final class ChatCompletionsOptions implements JsonSerializable<ChatCompletionsOptions> {
-    static {
-        ChatCompletionsOptionsAccessHelper
-            .setAccessor(new ChatCompletionsOptionsAccessHelper.ChatCompletionsOptionsAccessor() {
-                @Override
-                public void setStream(ChatCompletionsOptions options, boolean stream) {
-                    options.setStream(stream);
-                }
 
-                @Override
-                public void setStreamOptions(ChatCompletionsOptions options,
-                    ChatCompletionStreamOptions streamOptions) {
-                    options.setStreamOptions(streamOptions);
-                }
-            });
-    }
     /*
      * The available tool definitions that the chat completions request can use, including caller-defined functions.
      */
@@ -1079,5 +1065,22 @@ public final class ChatCompletionsOptions implements JsonSerializable<ChatComple
             deserializedChatCompletionsOptions.parallelToolCalls = parallelToolCalls;
             return deserializedChatCompletionsOptions;
         });
+    }
+
+    static {
+        ChatCompletionsOptionsAccessHelper
+            .setAccessor(new ChatCompletionsOptionsAccessHelper.ChatCompletionsOptionsAccessor() {
+
+                @Override
+                public void setStream(ChatCompletionsOptions options, boolean stream) {
+                    options.setStream(stream);
+                }
+
+                @Override
+                public void setStreamOptions(ChatCompletionsOptions options,
+                    ChatCompletionStreamOptions streamOptions) {
+                    options.setStreamOptions(streamOptions);
+                }
+            });
     }
 }
