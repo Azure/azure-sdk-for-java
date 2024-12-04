@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.storagecache.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -67,7 +66,6 @@ public final class ArchiveStatusType extends ExpandableStringEnum<ArchiveStatusT
      * @param name a name to look for.
      * @return the corresponding ArchiveStatusType.
      */
-    @JsonCreator
     public static ArchiveStatusType fromString(String name) {
         return fromString(name, ArchiveStatusType.class);
     }

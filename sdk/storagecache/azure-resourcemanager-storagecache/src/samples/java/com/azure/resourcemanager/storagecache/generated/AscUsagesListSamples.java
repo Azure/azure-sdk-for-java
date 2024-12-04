@@ -9,7 +9,9 @@ package com.azure.resourcemanager.storagecache.generated;
  */
 public final class AscUsagesListSamples {
     /*
-     * x-ms-original-file: specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2024-03-01/examples/AscResourceUsages_Get.json
+     * x-ms-original-file:
+     * specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2024-03-01/examples/
+     * AscResourceUsages_Get.json
      */
     /**
      * Sample code: AscUsages_List.

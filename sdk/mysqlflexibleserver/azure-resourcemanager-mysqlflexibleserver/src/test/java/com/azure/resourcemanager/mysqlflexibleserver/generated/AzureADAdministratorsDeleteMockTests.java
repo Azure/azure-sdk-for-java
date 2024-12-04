@@ -29,7 +29,8 @@ public final class AzureADAdministratorsDeleteMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.azureADAdministrators()
-            .delete("sutrgjup", "uutpwoqhih", AdministratorName.ACTIVE_DIRECTORY, com.azure.core.util.Context.NONE);
+            .delete("tawfsdjpvkvp", "jxbkzbzkdvn", AdministratorName.ACTIVE_DIRECTORY,
+                com.azure.core.util.Context.NONE);
 
     }
 }

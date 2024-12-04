@@ -9,7 +9,8 @@ package com.azure.resourcemanager.devcenter.generated;
  */
 public final class CatalogsSyncSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2024-02-01/examples/Catalogs_Sync.json
+     * x-ms-original-file:
+     * specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2024-02-01/examples/Catalogs_Sync.json
      */
     /**
      * Sample code: Catalogs_Sync.

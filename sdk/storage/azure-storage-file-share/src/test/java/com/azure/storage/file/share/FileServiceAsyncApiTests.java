@@ -54,7 +54,7 @@ public class FileServiceAsyncApiTests extends FileShareTestBase {
     private static final Map<String, String> TEST_METADATA = Collections.singletonMap("testmetadata", "value");
     private static final String REALLY_LONG_STRING
         = "thisisareallylongstringthatexceedsthe64characterlimitallowedoncertainproperties";
-    private static final List<ShareCorsRule> TOO_MANY_RULES = new ArrayList<ShareCorsRule>();
+    private static final List<ShareCorsRule> TOO_MANY_RULES = new ArrayList<>();
     private static final List<ShareCorsRule> INVALID_ALLOWED_HEADER
         = Collections.singletonList(new ShareCorsRule().setAllowedHeaders(REALLY_LONG_STRING));
     private static final List<ShareCorsRule> INVALID_EXPOSED_HEADER

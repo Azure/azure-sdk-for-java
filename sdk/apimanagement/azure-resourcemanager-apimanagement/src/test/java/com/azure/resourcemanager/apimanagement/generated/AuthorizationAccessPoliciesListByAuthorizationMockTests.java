@@ -6,55 +6,36 @@ package com.azure.resourcemanager.apimanagement.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apimanagement.ApiManagementManager;
 import com.azure.resourcemanager.apimanagement.models.AuthorizationAccessPolicyContract;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class AuthorizationAccessPoliciesListByAuthorizationMockTests {
     @Test
     public void testListByAuthorization() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"value\":[{\"properties\":{\"tenantId\":\"xwjoqfzwand\",\"objectId\":\"duwd\"},\"id\":\"olxtqmric\",\"name\":\"s\",\"type\":\"lzbki\"}]}";
+            = "{\"value\":[{\"properties\":{\"tenantId\":\"ey\",\"objectId\":\"l\"},\"id\":\"fnflytfxu\",\"name\":\"uiqoomis\",\"type\":\"kqwopws\"}]}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApiManagementManager manager = ApiManagementManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<AuthorizationAccessPolicyContract> response = manager.authorizationAccessPolicies()
-            .listByAuthorization("vrq", "bxdoicqpkntl", "dprpensbmzjrituk", "ym", "bfex", 1849534829, 514767620,
+            .listByAuthorization("eyrqve", "rmd", "izhvks", "ojklwjpzw", "ncw", 1651508713, 334003709,
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("xwjoqfzwand", response.iterator().next().tenantId());
-        Assertions.assertEquals("duwd", response.iterator().next().objectId());
+        Assertions.assertEquals("ey", response.iterator().next().tenantId());
+        Assertions.assertEquals("l", response.iterator().next().objectId());
     }
 }

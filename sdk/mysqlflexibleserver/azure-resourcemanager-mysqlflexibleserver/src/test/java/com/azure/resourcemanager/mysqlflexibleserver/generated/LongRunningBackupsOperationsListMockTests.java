@@ -23,7 +23,7 @@ public final class LongRunningBackupsOperationsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"backupNameV2\":\"dtj\",\"backupType\":\"FULL\",\"completedTime\":\"2021-08-24T09:36:05Z\",\"source\":\"hxuuwhcjyxccybvp\",\"provisioningState\":\"Failed\"},\"id\":\"kudzpxgwj\",\"name\":\"lma\",\"type\":\"stcyohpfkyrkdbd\"}]}";
+            = "{\"value\":[{\"properties\":{\"backupNameV2\":\"xqtnq\",\"backupType\":\"FULL\",\"completedTime\":\"2021-05-14T16:05:17Z\",\"source\":\"fffiak\",\"provisioningState\":\"Canceled\"},\"id\":\"qmt\",\"name\":\"d\",\"type\":\"tmmjihyeozph\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,12 +33,12 @@ public final class LongRunningBackupsOperationsListMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<ServerBackupV2> response
-            = manager.longRunningBackupsOperations().list("ordilmywwtkgkxny", "dabg", com.azure.core.util.Context.NONE);
+            = manager.longRunningBackupsOperations().list("ibreb", "aays", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("dtj", response.iterator().next().backupNameV2());
+        Assertions.assertEquals("xqtnq", response.iterator().next().backupNameV2());
         Assertions.assertEquals(BackupType.FULL, response.iterator().next().backupType());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-24T09:36:05Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-14T16:05:17Z"),
             response.iterator().next().completedTime());
-        Assertions.assertEquals("hxuuwhcjyxccybvp", response.iterator().next().source());
+        Assertions.assertEquals("fffiak", response.iterator().next().source());
     }
 }

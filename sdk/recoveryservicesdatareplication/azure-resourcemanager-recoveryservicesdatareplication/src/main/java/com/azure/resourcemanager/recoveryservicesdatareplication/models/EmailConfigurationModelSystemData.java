@@ -5,51 +5,73 @@
 package com.azure.resourcemanager.recoveryservicesdatareplication.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** The EmailConfigurationModelSystemData model. */
+/**
+ * The EmailConfigurationModelSystemData model.
+ */
 @Fluent
 public final class EmailConfigurationModelSystemData extends SystemDataModel {
-    /** Creates an instance of EmailConfigurationModelSystemData class. */
+    /**
+     * Creates an instance of EmailConfigurationModelSystemData class.
+     */
     public EmailConfigurationModelSystemData() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EmailConfigurationModelSystemData withCreatedBy(String createdBy) {
         super.withCreatedBy(createdBy);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EmailConfigurationModelSystemData withCreatedByType(String createdByType) {
         super.withCreatedByType(createdByType);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EmailConfigurationModelSystemData withCreatedAt(OffsetDateTime createdAt) {
         super.withCreatedAt(createdAt);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EmailConfigurationModelSystemData withLastModifiedBy(String lastModifiedBy) {
         super.withLastModifiedBy(lastModifiedBy);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EmailConfigurationModelSystemData withLastModifiedByType(String lastModifiedByType) {
         super.withLastModifiedByType(lastModifiedByType);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EmailConfigurationModelSystemData withLastModifiedAt(OffsetDateTime lastModifiedAt) {
         super.withLastModifiedAt(lastModifiedAt);
@@ -58,11 +80,66 @@ public final class EmailConfigurationModelSystemData extends SystemDataModel {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("createdBy", createdBy());
+        jsonWriter.writeStringField("createdByType", createdByType());
+        jsonWriter.writeStringField("createdAt",
+            createdAt() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(createdAt()));
+        jsonWriter.writeStringField("lastModifiedBy", lastModifiedBy());
+        jsonWriter.writeStringField("lastModifiedByType", lastModifiedByType());
+        jsonWriter.writeStringField("lastModifiedAt",
+            lastModifiedAt() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(lastModifiedAt()));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EmailConfigurationModelSystemData from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EmailConfigurationModelSystemData if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EmailConfigurationModelSystemData.
+     */
+    public static EmailConfigurationModelSystemData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EmailConfigurationModelSystemData deserializedEmailConfigurationModelSystemData
+                = new EmailConfigurationModelSystemData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("createdBy".equals(fieldName)) {
+                    deserializedEmailConfigurationModelSystemData.withCreatedBy(reader.getString());
+                } else if ("createdByType".equals(fieldName)) {
+                    deserializedEmailConfigurationModelSystemData.withCreatedByType(reader.getString());
+                } else if ("createdAt".equals(fieldName)) {
+                    deserializedEmailConfigurationModelSystemData.withCreatedAt(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("lastModifiedBy".equals(fieldName)) {
+                    deserializedEmailConfigurationModelSystemData.withLastModifiedBy(reader.getString());
+                } else if ("lastModifiedByType".equals(fieldName)) {
+                    deserializedEmailConfigurationModelSystemData.withLastModifiedByType(reader.getString());
+                } else if ("lastModifiedAt".equals(fieldName)) {
+                    deserializedEmailConfigurationModelSystemData.withLastModifiedAt(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEmailConfigurationModelSystemData;
+        });
     }
 }

@@ -5,17 +5,20 @@
 package com.azure.resourcemanager.maintenance.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Response of scheduled event acknowledge.
  */
 @Fluent
-public final class ScheduledEventApproveResponseInner {
+public final class ScheduledEventApproveResponseInner implements JsonSerializable<ScheduledEventApproveResponseInner> {
     /*
      * Successfully Approved
      */
-    @JsonProperty(value = "value")
     private String value;
 
     /**
@@ -50,5 +53,42 @@ public final class ScheduledEventApproveResponseInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("value", this.value);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ScheduledEventApproveResponseInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ScheduledEventApproveResponseInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ScheduledEventApproveResponseInner.
+     */
+    public static ScheduledEventApproveResponseInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ScheduledEventApproveResponseInner deserializedScheduledEventApproveResponseInner
+                = new ScheduledEventApproveResponseInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    deserializedScheduledEventApproveResponseInner.value = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedScheduledEventApproveResponseInner;
+        });
     }
 }

@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-/** Samples for Logger Get. */
+/**
+ * Samples for Logger Get.
+ */
 public final class LoggerGetSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementGetLogger.json
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * ApiManagementGetLogger.json
      */
     /**
      * Sample code: ApiManagementGetLogger.
-     *
+     * 
      * @param manager Entry point to ApiManagementManager.
      */
     public static void apiManagementGetLogger(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {

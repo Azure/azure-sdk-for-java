@@ -13,11 +13,13 @@ import com.azure.resourcemanager.apimanagement.fluent.models.PortalConfigContrac
 import com.azure.resourcemanager.apimanagement.models.PortalConfigsGetEntityTagResponse;
 import com.azure.resourcemanager.apimanagement.models.PortalConfigsGetResponse;
 
-/** An instance of this class provides access to all the operations defined in PortalConfigsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in PortalConfigsClient.
+ */
 public interface PortalConfigsClient {
     /**
      * Lists the developer portal configurations.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param context The context to associate with this operation.
@@ -32,7 +34,7 @@ public interface PortalConfigsClient {
 
     /**
      * Lists the developer portal configurations.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -45,7 +47,7 @@ public interface PortalConfigsClient {
 
     /**
      * Gets the entity state (Etag) version of the developer portal configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param portalConfigId Portal configuration identifier.
@@ -61,7 +63,7 @@ public interface PortalConfigsClient {
 
     /**
      * Gets the entity state (Etag) version of the developer portal configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param portalConfigId Portal configuration identifier.
@@ -74,7 +76,7 @@ public interface PortalConfigsClient {
 
     /**
      * Get the developer portal configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param portalConfigId Portal configuration identifier.
@@ -90,7 +92,7 @@ public interface PortalConfigsClient {
 
     /**
      * Get the developer portal configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param portalConfigId Portal configuration identifier.
@@ -104,12 +106,12 @@ public interface PortalConfigsClient {
 
     /**
      * Update the developer portal configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param portalConfigId Portal configuration identifier.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param parameters Update the developer portal configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -123,12 +125,12 @@ public interface PortalConfigsClient {
 
     /**
      * Update the developer portal configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param portalConfigId Portal configuration identifier.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param parameters Update the developer portal configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -141,12 +143,12 @@ public interface PortalConfigsClient {
 
     /**
      * Create or update the developer portal configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param portalConfigId Portal configuration identifier.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param parameters Update the developer portal configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -160,12 +162,12 @@ public interface PortalConfigsClient {
 
     /**
      * Create or update the developer portal configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param portalConfigId Portal configuration identifier.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param parameters Update the developer portal configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

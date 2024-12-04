@@ -5,38 +5,43 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.apimanagement.fluent.models.ApiReleaseContractInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Paged ApiRelease list representation. */
+/**
+ * Paged ApiRelease list representation.
+ */
 @Fluent
-public final class ApiReleaseCollection {
+public final class ApiReleaseCollection implements JsonSerializable<ApiReleaseCollection> {
     /*
      * Page values.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<ApiReleaseContractInner> value;
 
     /*
      * Total record count number across all pages.
      */
-    @JsonProperty(value = "count")
     private Long count;
 
     /*
      * Next page link if any.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of ApiReleaseCollection class. */
+    /**
+     * Creates an instance of ApiReleaseCollection class.
+     */
     public ApiReleaseCollection() {
     }
 
     /**
      * Get the value property: Page values.
-     *
+     * 
      * @return the value value.
      */
     public List<ApiReleaseContractInner> value() {
@@ -45,7 +50,7 @@ public final class ApiReleaseCollection {
 
     /**
      * Get the count property: Total record count number across all pages.
-     *
+     * 
      * @return the count value.
      */
     public Long count() {
@@ -54,7 +59,7 @@ public final class ApiReleaseCollection {
 
     /**
      * Set the count property: Total record count number across all pages.
-     *
+     * 
      * @param count the count value to set.
      * @return the ApiReleaseCollection object itself.
      */
@@ -65,7 +70,7 @@ public final class ApiReleaseCollection {
 
     /**
      * Get the nextLink property: Next page link if any.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -74,12 +79,54 @@ public final class ApiReleaseCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("count", this.count);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApiReleaseCollection from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApiReleaseCollection if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApiReleaseCollection.
+     */
+    public static ApiReleaseCollection fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApiReleaseCollection deserializedApiReleaseCollection = new ApiReleaseCollection();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<ApiReleaseContractInner> value
+                        = reader.readArray(reader1 -> ApiReleaseContractInner.fromJson(reader1));
+                    deserializedApiReleaseCollection.value = value;
+                } else if ("count".equals(fieldName)) {
+                    deserializedApiReleaseCollection.count = reader.getNullable(JsonReader::getLong);
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedApiReleaseCollection.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApiReleaseCollection;
+        });
     }
 }

@@ -7,21 +7,21 @@ package com.azure.resourcemanager.apimanagement.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ApiIssueAttachmentsGetEntityTagHeaders model. */
+/**
+ * The ApiIssueAttachmentsGetEntityTagHeaders model.
+ */
 @Fluent
 public final class ApiIssueAttachmentsGetEntityTagHeaders {
     /*
      * The Etag property.
      */
-    @JsonProperty(value = "Etag")
     private String etag;
 
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of ApiIssueAttachmentsGetEntityTagHeaders class.
-     *
+     * 
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public ApiIssueAttachmentsGetEntityTagHeaders(HttpHeaders rawHeaders) {
@@ -30,7 +30,7 @@ public final class ApiIssueAttachmentsGetEntityTagHeaders {
 
     /**
      * Get the etag property: The Etag property.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -39,7 +39,7 @@ public final class ApiIssueAttachmentsGetEntityTagHeaders {
 
     /**
      * Set the etag property: The Etag property.
-     *
+     * 
      * @param etag the etag value to set.
      * @return the ApiIssueAttachmentsGetEntityTagHeaders object itself.
      */
@@ -50,7 +50,7 @@ public final class ApiIssueAttachmentsGetEntityTagHeaders {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for PolicyFragmentContentFormat. */
+/**
+ * Defines values for PolicyFragmentContentFormat.
+ */
 public final class PolicyFragmentContentFormat extends ExpandableStringEnum<PolicyFragmentContentFormat> {
-    /** Static value xml for PolicyFragmentContentFormat. */
+    /**
+     * Static value xml for PolicyFragmentContentFormat.
+     */
     public static final PolicyFragmentContentFormat XML = fromString("xml");
 
-    /** Static value rawxml for PolicyFragmentContentFormat. */
+    /**
+     * Static value rawxml for PolicyFragmentContentFormat.
+     */
     public static final PolicyFragmentContentFormat RAWXML = fromString("rawxml");
 
     /**
      * Creates a new instance of PolicyFragmentContentFormat value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class PolicyFragmentContentFormat extends ExpandableStringEnum<Poli
 
     /**
      * Creates or finds a PolicyFragmentContentFormat from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding PolicyFragmentContentFormat.
      */
-    @JsonCreator
     public static PolicyFragmentContentFormat fromString(String name) {
         return fromString(name, PolicyFragmentContentFormat.class);
     }
 
     /**
      * Gets known PolicyFragmentContentFormat values.
-     *
+     * 
      * @return known PolicyFragmentContentFormat values.
      */
     public static Collection<PolicyFragmentContentFormat> values() {

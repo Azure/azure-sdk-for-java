@@ -6,28 +6,49 @@ package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.apimanagement.models.AuthorizationError;
 import com.azure.resourcemanager.apimanagement.models.AuthorizationType;
 import com.azure.resourcemanager.apimanagement.models.OAuth2GrantType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** Authorization contract. */
+/**
+ * Authorization contract.
+ */
 @Fluent
 public final class AuthorizationContractInner extends ProxyResource {
     /*
      * Properties of the Authorization Contract.
      */
-    @JsonProperty(value = "properties")
     private AuthorizationContractProperties innerProperties;
 
-    /** Creates an instance of AuthorizationContractInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of AuthorizationContractInner class.
+     */
     public AuthorizationContractInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of the Authorization Contract.
-     *
+     * 
      * @return the innerProperties value.
      */
     private AuthorizationContractProperties innerProperties() {
@@ -35,8 +56,38 @@ public final class AuthorizationContractInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the authorizationType property: Authorization type options.
-     *
+     * 
      * @return the authorizationType value.
      */
     public AuthorizationType authorizationType() {
@@ -45,7 +96,7 @@ public final class AuthorizationContractInner extends ProxyResource {
 
     /**
      * Set the authorizationType property: Authorization type options.
-     *
+     * 
      * @param authorizationType the authorizationType value to set.
      * @return the AuthorizationContractInner object itself.
      */
@@ -59,7 +110,7 @@ public final class AuthorizationContractInner extends ProxyResource {
 
     /**
      * Get the oAuth2GrantType property: OAuth2 grant type options.
-     *
+     * 
      * @return the oAuth2GrantType value.
      */
     public OAuth2GrantType oAuth2GrantType() {
@@ -68,7 +119,7 @@ public final class AuthorizationContractInner extends ProxyResource {
 
     /**
      * Set the oAuth2GrantType property: OAuth2 grant type options.
-     *
+     * 
      * @param oAuth2GrantType the oAuth2GrantType value to set.
      * @return the AuthorizationContractInner object itself.
      */
@@ -82,7 +133,7 @@ public final class AuthorizationContractInner extends ProxyResource {
 
     /**
      * Get the parameters property: Authorization parameters.
-     *
+     * 
      * @return the parameters value.
      */
     public Map<String, String> parameters() {
@@ -91,7 +142,7 @@ public final class AuthorizationContractInner extends ProxyResource {
 
     /**
      * Set the parameters property: Authorization parameters.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the AuthorizationContractInner object itself.
      */
@@ -105,7 +156,7 @@ public final class AuthorizationContractInner extends ProxyResource {
 
     /**
      * Get the error property: Authorization error details.
-     *
+     * 
      * @return the error value.
      */
     public AuthorizationError error() {
@@ -114,7 +165,7 @@ public final class AuthorizationContractInner extends ProxyResource {
 
     /**
      * Set the error property: Authorization error details.
-     *
+     * 
      * @param error the error value to set.
      * @return the AuthorizationContractInner object itself.
      */
@@ -128,7 +179,7 @@ public final class AuthorizationContractInner extends ProxyResource {
 
     /**
      * Get the status property: Status of the Authorization.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -137,7 +188,7 @@ public final class AuthorizationContractInner extends ProxyResource {
 
     /**
      * Set the status property: Status of the Authorization.
-     *
+     * 
      * @param status the status value to set.
      * @return the AuthorizationContractInner object itself.
      */
@@ -151,12 +202,56 @@ public final class AuthorizationContractInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AuthorizationContractInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AuthorizationContractInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AuthorizationContractInner.
+     */
+    public static AuthorizationContractInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AuthorizationContractInner deserializedAuthorizationContractInner = new AuthorizationContractInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedAuthorizationContractInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedAuthorizationContractInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedAuthorizationContractInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedAuthorizationContractInner.innerProperties
+                        = AuthorizationContractProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAuthorizationContractInner;
+        });
     }
 }

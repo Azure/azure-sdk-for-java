@@ -9,12 +9,14 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.resourcemanager.apimanagement.fluent.models.AccessInformationContractInner;
 
-/** Contains all response data for the create operation. */
+/**
+ * Contains all response data for the create operation.
+ */
 public final class TenantAccessCreateResponse
     extends ResponseBase<TenantAccessCreateHeaders, AccessInformationContractInner> {
     /**
      * Creates an instance of TenantAccessCreateResponse.
-     *
+     * 
      * @param request the request which resulted in this TenantAccessCreateResponse.
      * @param statusCode the status code of the HTTP response.
      * @param rawHeaders the raw headers of the HTTP response.
@@ -28,7 +30,7 @@ public final class TenantAccessCreateResponse
 
     /**
      * Gets the deserialized response body.
-     *
+     * 
      * @return the deserialized response body.
      */
     @Override

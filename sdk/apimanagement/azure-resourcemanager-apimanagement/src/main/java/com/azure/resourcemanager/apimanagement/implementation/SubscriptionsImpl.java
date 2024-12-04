@@ -39,14 +39,14 @@ public final class SubscriptionsImpl implements Subscriptions {
 
     public PagedIterable<SubscriptionContract> list(String resourceGroupName, String serviceName) {
         PagedIterable<SubscriptionContractInner> inner = this.serviceClient().list(resourceGroupName, serviceName);
-        return Utils.mapPage(inner, inner1 -> new SubscriptionContractImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SubscriptionContractImpl(inner1, this.manager()));
     }
 
     public PagedIterable<SubscriptionContract> list(String resourceGroupName, String serviceName, String filter,
         Integer top, Integer skip, Context context) {
         PagedIterable<SubscriptionContractInner> inner
             = this.serviceClient().list(resourceGroupName, serviceName, filter, top, skip, context);
-        return Utils.mapPage(inner, inner1 -> new SubscriptionContractImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SubscriptionContractImpl(inner1, this.manager()));
     }
 
     public SubscriptionsGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,

@@ -6,42 +6,46 @@ package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Properties of the Cache contract. */
+/**
+ * Properties of the Cache contract.
+ */
 @Fluent
-public final class CacheContractProperties {
+public final class CacheContractProperties implements JsonSerializable<CacheContractProperties> {
     /*
      * Cache description
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * Runtime connection string to cache
      */
-    @JsonProperty(value = "connectionString", required = true)
     private String connectionString;
 
     /*
      * Location identifier to use cache from (should be either 'default' or valid Azure region identifier)
      */
-    @JsonProperty(value = "useFromLocation", required = true)
     private String useFromLocation;
 
     /*
      * Original uri of entity in external system cache points to
      */
-    @JsonProperty(value = "resourceId")
     private String resourceId;
 
-    /** Creates an instance of CacheContractProperties class. */
+    /**
+     * Creates an instance of CacheContractProperties class.
+     */
     public CacheContractProperties() {
     }
 
     /**
      * Get the description property: Cache description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -50,7 +54,7 @@ public final class CacheContractProperties {
 
     /**
      * Set the description property: Cache description.
-     *
+     * 
      * @param description the description value to set.
      * @return the CacheContractProperties object itself.
      */
@@ -61,7 +65,7 @@ public final class CacheContractProperties {
 
     /**
      * Get the connectionString property: Runtime connection string to cache.
-     *
+     * 
      * @return the connectionString value.
      */
     public String connectionString() {
@@ -70,7 +74,7 @@ public final class CacheContractProperties {
 
     /**
      * Set the connectionString property: Runtime connection string to cache.
-     *
+     * 
      * @param connectionString the connectionString value to set.
      * @return the CacheContractProperties object itself.
      */
@@ -82,7 +86,7 @@ public final class CacheContractProperties {
     /**
      * Get the useFromLocation property: Location identifier to use cache from (should be either 'default' or valid
      * Azure region identifier).
-     *
+     * 
      * @return the useFromLocation value.
      */
     public String useFromLocation() {
@@ -92,7 +96,7 @@ public final class CacheContractProperties {
     /**
      * Set the useFromLocation property: Location identifier to use cache from (should be either 'default' or valid
      * Azure region identifier).
-     *
+     * 
      * @param useFromLocation the useFromLocation value to set.
      * @return the CacheContractProperties object itself.
      */
@@ -103,7 +107,7 @@ public final class CacheContractProperties {
 
     /**
      * Get the resourceId property: Original uri of entity in external system cache points to.
-     *
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -112,7 +116,7 @@ public final class CacheContractProperties {
 
     /**
      * Set the resourceId property: Original uri of entity in external system cache points to.
-     *
+     * 
      * @param resourceId the resourceId value to set.
      * @return the CacheContractProperties object itself.
      */
@@ -123,19 +127,67 @@ public final class CacheContractProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (connectionString() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property connectionString in model CacheContractProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property connectionString in model CacheContractProperties"));
         }
         if (useFromLocation() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property useFromLocation in model CacheContractProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property useFromLocation in model CacheContractProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(CacheContractProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("connectionString", this.connectionString);
+        jsonWriter.writeStringField("useFromLocation", this.useFromLocation);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("resourceId", this.resourceId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CacheContractProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CacheContractProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CacheContractProperties.
+     */
+    public static CacheContractProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CacheContractProperties deserializedCacheContractProperties = new CacheContractProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("connectionString".equals(fieldName)) {
+                    deserializedCacheContractProperties.connectionString = reader.getString();
+                } else if ("useFromLocation".equals(fieldName)) {
+                    deserializedCacheContractProperties.useFromLocation = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedCacheContractProperties.description = reader.getString();
+                } else if ("resourceId".equals(fieldName)) {
+                    deserializedCacheContractProperties.resourceId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCacheContractProperties;
+        });
+    }
 }

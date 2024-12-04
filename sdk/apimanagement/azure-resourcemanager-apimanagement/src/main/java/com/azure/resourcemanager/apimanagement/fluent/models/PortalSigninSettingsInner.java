@@ -6,24 +6,45 @@ package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Sign-In settings for the Developer Portal. */
+/**
+ * Sign-In settings for the Developer Portal.
+ */
 @Fluent
 public final class PortalSigninSettingsInner extends ProxyResource {
     /*
      * Sign-in settings contract properties.
      */
-    @JsonProperty(value = "properties")
     private PortalSigninSettingProperties innerProperties;
 
-    /** Creates an instance of PortalSigninSettingsInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of PortalSigninSettingsInner class.
+     */
     public PortalSigninSettingsInner() {
     }
 
     /**
      * Get the innerProperties property: Sign-in settings contract properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private PortalSigninSettingProperties innerProperties() {
@@ -31,8 +52,38 @@ public final class PortalSigninSettingsInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the enabled property: Redirect Anonymous users to the Sign-In page.
-     *
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -41,7 +92,7 @@ public final class PortalSigninSettingsInner extends ProxyResource {
 
     /**
      * Set the enabled property: Redirect Anonymous users to the Sign-In page.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the PortalSigninSettingsInner object itself.
      */
@@ -55,12 +106,56 @@ public final class PortalSigninSettingsInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PortalSigninSettingsInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PortalSigninSettingsInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PortalSigninSettingsInner.
+     */
+    public static PortalSigninSettingsInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PortalSigninSettingsInner deserializedPortalSigninSettingsInner = new PortalSigninSettingsInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedPortalSigninSettingsInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedPortalSigninSettingsInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedPortalSigninSettingsInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedPortalSigninSettingsInner.innerProperties
+                        = PortalSigninSettingProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPortalSigninSettingsInner;
+        });
     }
 }

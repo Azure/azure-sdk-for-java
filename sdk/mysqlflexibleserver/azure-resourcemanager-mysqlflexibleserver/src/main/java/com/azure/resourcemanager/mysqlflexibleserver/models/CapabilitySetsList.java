@@ -5,25 +5,27 @@
 package com.azure.resourcemanager.mysqlflexibleserver.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.mysqlflexibleserver.fluent.models.CapabilityInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * location capability set.
  */
 @Immutable
-public final class CapabilitySetsList {
+public final class CapabilitySetsList implements JsonSerializable<CapabilitySetsList> {
     /*
      * A list of supported capability sets.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<CapabilityInner> value;
 
     /*
      * Link to retrieve next page of results.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
     /**
@@ -59,5 +61,43 @@ public final class CapabilitySetsList {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CapabilitySetsList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CapabilitySetsList if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CapabilitySetsList.
+     */
+    public static CapabilitySetsList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CapabilitySetsList deserializedCapabilitySetsList = new CapabilitySetsList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<CapabilityInner> value = reader.readArray(reader1 -> CapabilityInner.fromJson(reader1));
+                    deserializedCapabilitySetsList.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedCapabilitySetsList.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCapabilitySetsList;
+        });
     }
 }

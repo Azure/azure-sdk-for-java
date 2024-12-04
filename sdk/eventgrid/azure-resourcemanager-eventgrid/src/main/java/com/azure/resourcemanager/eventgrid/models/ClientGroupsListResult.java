@@ -5,25 +5,27 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.eventgrid.fluent.models.ClientGroupInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Result of the List Client Group operation.
  */
 @Fluent
-public final class ClientGroupsListResult {
+public final class ClientGroupsListResult implements JsonSerializable<ClientGroupsListResult> {
     /*
      * A collection of Client Group.
      */
-    @JsonProperty(value = "value")
     private List<ClientGroupInner> value;
 
     /*
      * A link for the next page of Client Group.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
@@ -81,5 +83,45 @@ public final class ClientGroupsListResult {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ClientGroupsListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ClientGroupsListResult if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ClientGroupsListResult.
+     */
+    public static ClientGroupsListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ClientGroupsListResult deserializedClientGroupsListResult = new ClientGroupsListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<ClientGroupInner> value = reader.readArray(reader1 -> ClientGroupInner.fromJson(reader1));
+                    deserializedClientGroupsListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedClientGroupsListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedClientGroupsListResult;
+        });
     }
 }

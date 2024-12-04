@@ -5,35 +5,36 @@
 package com.azure.resourcemanager.storagecache.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Properties pertaining to the BlobNfsTarget.
  */
 @Fluent
-public final class BlobNfsTarget {
+public final class BlobNfsTarget implements JsonSerializable<BlobNfsTarget> {
     /*
      * Resource ID of the storage container.
      */
-    @JsonProperty(value = "target")
     private String target;
 
     /*
      * Identifies the StorageCache usage model to be used for this storage target.
      */
-    @JsonProperty(value = "usageModel")
     private String usageModel;
 
     /*
      * Amount of time (in seconds) the cache waits before it checks the back-end storage for file updates.
      */
-    @JsonProperty(value = "verificationTimer")
     private Integer verificationTimer;
 
     /*
-     * Amount of time (in seconds) the cache waits after the last file change before it copies the changed file to back-end storage.
+     * Amount of time (in seconds) the cache waits after the last file change before it copies the changed file to
+     * back-end storage.
      */
-    @JsonProperty(value = "writeBackTimer")
     private Integer writeBackTimer;
 
     /**
@@ -132,5 +133,50 @@ public final class BlobNfsTarget {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("target", this.target);
+        jsonWriter.writeStringField("usageModel", this.usageModel);
+        jsonWriter.writeNumberField("verificationTimer", this.verificationTimer);
+        jsonWriter.writeNumberField("writeBackTimer", this.writeBackTimer);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BlobNfsTarget from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BlobNfsTarget if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BlobNfsTarget.
+     */
+    public static BlobNfsTarget fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BlobNfsTarget deserializedBlobNfsTarget = new BlobNfsTarget();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("target".equals(fieldName)) {
+                    deserializedBlobNfsTarget.target = reader.getString();
+                } else if ("usageModel".equals(fieldName)) {
+                    deserializedBlobNfsTarget.usageModel = reader.getString();
+                } else if ("verificationTimer".equals(fieldName)) {
+                    deserializedBlobNfsTarget.verificationTimer = reader.getNullable(JsonReader::getInt);
+                } else if ("writeBackTimer".equals(fieldName)) {
+                    deserializedBlobNfsTarget.writeBackTimer = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBlobNfsTarget;
+        });
     }
 }

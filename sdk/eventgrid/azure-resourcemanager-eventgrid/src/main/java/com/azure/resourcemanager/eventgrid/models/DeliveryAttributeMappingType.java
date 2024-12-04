@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class DeliveryAttributeMappingType extends ExpandableStringEnum<Del
      * @param name a name to look for.
      * @return the corresponding DeliveryAttributeMappingType.
      */
-    @JsonCreator
     public static DeliveryAttributeMappingType fromString(String name) {
         return fromString(name, DeliveryAttributeMappingType.class);
     }

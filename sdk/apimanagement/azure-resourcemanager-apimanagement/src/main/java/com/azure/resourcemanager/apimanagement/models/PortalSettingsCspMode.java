@@ -5,23 +5,30 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The mode of the developer portal Content Security Policy (CSP). */
+/**
+ * The mode of the developer portal Content Security Policy (CSP).
+ */
 public final class PortalSettingsCspMode extends ExpandableStringEnum<PortalSettingsCspMode> {
-    /** Static value enabled for PortalSettingsCspMode. */
+    /**
+     * Static value enabled for PortalSettingsCspMode.
+     */
     public static final PortalSettingsCspMode ENABLED = fromString("enabled");
 
-    /** Static value disabled for PortalSettingsCspMode. */
+    /**
+     * Static value disabled for PortalSettingsCspMode.
+     */
     public static final PortalSettingsCspMode DISABLED = fromString("disabled");
 
-    /** Static value reportOnly for PortalSettingsCspMode. */
+    /**
+     * Static value reportOnly for PortalSettingsCspMode.
+     */
     public static final PortalSettingsCspMode REPORT_ONLY = fromString("reportOnly");
 
     /**
      * Creates a new instance of PortalSettingsCspMode value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +37,17 @@ public final class PortalSettingsCspMode extends ExpandableStringEnum<PortalSett
 
     /**
      * Creates or finds a PortalSettingsCspMode from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding PortalSettingsCspMode.
      */
-    @JsonCreator
     public static PortalSettingsCspMode fromString(String name) {
         return fromString(name, PortalSettingsCspMode.class);
     }
 
     /**
      * Gets known PortalSettingsCspMode values.
-     *
+     * 
      * @return known PortalSettingsCspMode values.
      */
     public static Collection<PortalSettingsCspMode> values() {

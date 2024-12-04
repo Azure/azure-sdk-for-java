@@ -16,8 +16,8 @@ import com.azure.resourcemanager.eventgrid.fluent.models.NamespaceSharedAccessKe
 import com.azure.resourcemanager.eventgrid.models.CustomDomainOwnershipValidationResult;
 import com.azure.resourcemanager.eventgrid.models.Namespace;
 import com.azure.resourcemanager.eventgrid.models.NamespaceRegenerateKeyRequest;
-import com.azure.resourcemanager.eventgrid.models.Namespaces;
 import com.azure.resourcemanager.eventgrid.models.NamespaceSharedAccessKeys;
+import com.azure.resourcemanager.eventgrid.models.Namespaces;
 
 public final class NamespacesImpl implements Namespaces {
     private static final ClientLogger LOGGER = new ClientLogger(NamespacesImpl.class);

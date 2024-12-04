@@ -6,31 +6,38 @@ package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Parameters supplied to the Deploy Configuration operation. */
+/**
+ * Parameters supplied to the Deploy Configuration operation.
+ */
 @Fluent
-public final class DeployConfigurationParameterProperties {
+public final class DeployConfigurationParameterProperties
+    implements JsonSerializable<DeployConfigurationParameterProperties> {
     /*
      * The name of the Git branch from which the configuration is to be deployed to the configuration database.
      */
-    @JsonProperty(value = "branch", required = true)
     private String branch;
 
     /*
      * The value enforcing deleting subscriptions to products that are deleted in this update.
      */
-    @JsonProperty(value = "force")
     private Boolean force;
 
-    /** Creates an instance of DeployConfigurationParameterProperties class. */
+    /**
+     * Creates an instance of DeployConfigurationParameterProperties class.
+     */
     public DeployConfigurationParameterProperties() {
     }
 
     /**
      * Get the branch property: The name of the Git branch from which the configuration is to be deployed to the
      * configuration database.
-     *
+     * 
      * @return the branch value.
      */
     public String branch() {
@@ -40,7 +47,7 @@ public final class DeployConfigurationParameterProperties {
     /**
      * Set the branch property: The name of the Git branch from which the configuration is to be deployed to the
      * configuration database.
-     *
+     * 
      * @param branch the branch value to set.
      * @return the DeployConfigurationParameterProperties object itself.
      */
@@ -51,7 +58,7 @@ public final class DeployConfigurationParameterProperties {
 
     /**
      * Get the force property: The value enforcing deleting subscriptions to products that are deleted in this update.
-     *
+     * 
      * @return the force value.
      */
     public Boolean force() {
@@ -60,7 +67,7 @@ public final class DeployConfigurationParameterProperties {
 
     /**
      * Set the force property: The value enforcing deleting subscriptions to products that are deleted in this update.
-     *
+     * 
      * @param force the force value to set.
      * @return the DeployConfigurationParameterProperties object itself.
      */
@@ -71,15 +78,58 @@ public final class DeployConfigurationParameterProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (branch() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property branch in model DeployConfigurationParameterProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property branch in model DeployConfigurationParameterProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(DeployConfigurationParameterProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("branch", this.branch);
+        jsonWriter.writeBooleanField("force", this.force);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DeployConfigurationParameterProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DeployConfigurationParameterProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DeployConfigurationParameterProperties.
+     */
+    public static DeployConfigurationParameterProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DeployConfigurationParameterProperties deserializedDeployConfigurationParameterProperties
+                = new DeployConfigurationParameterProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("branch".equals(fieldName)) {
+                    deserializedDeployConfigurationParameterProperties.branch = reader.getString();
+                } else if ("force".equals(fieldName)) {
+                    deserializedDeployConfigurationParameterProperties.force
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDeployConfigurationParameterProperties;
+        });
+    }
 }

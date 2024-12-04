@@ -7,13 +7,15 @@ package com.azure.resourcemanager.recoveryservicesdatareplication.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of VaultOperationStatus. */
+/**
+ * Resource collection API of VaultOperationStatus.
+ */
 public interface VaultOperationStatus {
     /**
      * Gets the vault operation status.
-     *
-     * <p>Tracks the results of an asynchronous operation on the vault.
-     *
+     * 
+     * Tracks the results of an asynchronous operation on the vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param operationId The ID of an ongoing async operation.
@@ -28,9 +30,9 @@ public interface VaultOperationStatus {
 
     /**
      * Gets the vault operation status.
-     *
-     * <p>Tracks the results of an asynchronous operation on the vault.
-     *
+     * 
+     * Tracks the results of an asynchronous operation on the vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param operationId The ID of an ongoing async operation.

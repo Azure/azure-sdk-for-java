@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.storagecache.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -57,7 +56,6 @@ public final class ImportJobProvisioningStateType extends ExpandableStringEnum<I
      * @param name a name to look for.
      * @return the corresponding ImportJobProvisioningStateType.
      */
-    @JsonCreator
     public static ImportJobProvisioningStateType fromString(String name) {
         return fromString(name, ImportJobProvisioningStateType.class);
     }
