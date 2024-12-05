@@ -20,6 +20,12 @@ public final class ServerSentEvent {
     private Duration retryAfter;
 
     /**
+     * Creates a new instance of {@link ServerSentEvent}.
+     */
+    public ServerSentEvent() {
+    }
+
+    /**
      * Get event identifier.
      * <p>
      * Contains value of SSE {@code "id"} field. This field is optional and may return {@code null}, if the event

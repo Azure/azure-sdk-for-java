@@ -33,14 +33,14 @@ public final class ApiTagDescriptionsImpl implements ApiTagDescriptions {
         String apiId) {
         PagedIterable<TagDescriptionContractInner> inner
             = this.serviceClient().listByService(resourceGroupName, serviceName, apiId);
-        return Utils.mapPage(inner, inner1 -> new TagDescriptionContractImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new TagDescriptionContractImpl(inner1, this.manager()));
     }
 
     public PagedIterable<TagDescriptionContract> listByService(String resourceGroupName, String serviceName,
         String apiId, String filter, Integer top, Integer skip, Context context) {
         PagedIterable<TagDescriptionContractInner> inner
             = this.serviceClient().listByService(resourceGroupName, serviceName, apiId, filter, top, skip, context);
-        return Utils.mapPage(inner, inner1 -> new TagDescriptionContractImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new TagDescriptionContractImpl(inner1, this.manager()));
     }
 
     public ApiTagDescriptionsGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,
@@ -88,22 +88,22 @@ public final class ApiTagDescriptionsImpl implements ApiTagDescriptions {
     }
 
     public TagDescriptionContract getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String serviceName = Utils.getValueFromIdByName(id, "service");
+        String serviceName = ResourceManagerUtils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
-        String apiId = Utils.getValueFromIdByName(id, "apis");
+        String apiId = ResourceManagerUtils.getValueFromIdByName(id, "apis");
         if (apiId == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'apis'.", id)));
         }
-        String tagDescriptionId = Utils.getValueFromIdByName(id, "tagDescriptions");
+        String tagDescriptionId = ResourceManagerUtils.getValueFromIdByName(id, "tagDescriptions");
         if (tagDescriptionId == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'tagDescriptions'.", id)));
@@ -112,22 +112,22 @@ public final class ApiTagDescriptionsImpl implements ApiTagDescriptions {
     }
 
     public Response<TagDescriptionContract> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String serviceName = Utils.getValueFromIdByName(id, "service");
+        String serviceName = ResourceManagerUtils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
-        String apiId = Utils.getValueFromIdByName(id, "apis");
+        String apiId = ResourceManagerUtils.getValueFromIdByName(id, "apis");
         if (apiId == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'apis'.", id)));
         }
-        String tagDescriptionId = Utils.getValueFromIdByName(id, "tagDescriptions");
+        String tagDescriptionId = ResourceManagerUtils.getValueFromIdByName(id, "tagDescriptions");
         if (tagDescriptionId == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'tagDescriptions'.", id)));
@@ -136,22 +136,22 @@ public final class ApiTagDescriptionsImpl implements ApiTagDescriptions {
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String serviceName = Utils.getValueFromIdByName(id, "service");
+        String serviceName = ResourceManagerUtils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
-        String apiId = Utils.getValueFromIdByName(id, "apis");
+        String apiId = ResourceManagerUtils.getValueFromIdByName(id, "apis");
         if (apiId == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'apis'.", id)));
         }
-        String tagDescriptionId = Utils.getValueFromIdByName(id, "tagDescriptions");
+        String tagDescriptionId = ResourceManagerUtils.getValueFromIdByName(id, "tagDescriptions");
         if (tagDescriptionId == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'tagDescriptions'.", id)));
@@ -161,22 +161,22 @@ public final class ApiTagDescriptionsImpl implements ApiTagDescriptions {
     }
 
     public Response<Void> deleteByIdWithResponse(String id, String ifMatch, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String serviceName = Utils.getValueFromIdByName(id, "service");
+        String serviceName = ResourceManagerUtils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
-        String apiId = Utils.getValueFromIdByName(id, "apis");
+        String apiId = ResourceManagerUtils.getValueFromIdByName(id, "apis");
         if (apiId == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'apis'.", id)));
         }
-        String tagDescriptionId = Utils.getValueFromIdByName(id, "tagDescriptions");
+        String tagDescriptionId = ResourceManagerUtils.getValueFromIdByName(id, "tagDescriptions");
         if (tagDescriptionId == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'tagDescriptions'.", id)));

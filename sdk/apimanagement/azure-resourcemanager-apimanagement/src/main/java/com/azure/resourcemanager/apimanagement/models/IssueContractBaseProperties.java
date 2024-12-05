@@ -5,37 +5,44 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** Issue contract Base Properties. */
+/**
+ * Issue contract Base Properties.
+ */
 @Fluent
-public class IssueContractBaseProperties {
+public class IssueContractBaseProperties implements JsonSerializable<IssueContractBaseProperties> {
     /*
      * Date and time when the issue was created.
      */
-    @JsonProperty(value = "createdDate")
     private OffsetDateTime createdDate;
 
     /*
      * Status of the issue.
      */
-    @JsonProperty(value = "state")
     private State state;
 
     /*
      * A resource identifier for the API the issue was created for.
      */
-    @JsonProperty(value = "apiId")
     private String apiId;
 
-    /** Creates an instance of IssueContractBaseProperties class. */
+    /**
+     * Creates an instance of IssueContractBaseProperties class.
+     */
     public IssueContractBaseProperties() {
     }
 
     /**
      * Get the createdDate property: Date and time when the issue was created.
-     *
+     * 
      * @return the createdDate value.
      */
     public OffsetDateTime createdDate() {
@@ -44,7 +51,7 @@ public class IssueContractBaseProperties {
 
     /**
      * Set the createdDate property: Date and time when the issue was created.
-     *
+     * 
      * @param createdDate the createdDate value to set.
      * @return the IssueContractBaseProperties object itself.
      */
@@ -55,7 +62,7 @@ public class IssueContractBaseProperties {
 
     /**
      * Get the state property: Status of the issue.
-     *
+     * 
      * @return the state value.
      */
     public State state() {
@@ -64,7 +71,7 @@ public class IssueContractBaseProperties {
 
     /**
      * Set the state property: Status of the issue.
-     *
+     * 
      * @param state the state value to set.
      * @return the IssueContractBaseProperties object itself.
      */
@@ -75,7 +82,7 @@ public class IssueContractBaseProperties {
 
     /**
      * Get the apiId property: A resource identifier for the API the issue was created for.
-     *
+     * 
      * @return the apiId value.
      */
     public String apiId() {
@@ -84,7 +91,7 @@ public class IssueContractBaseProperties {
 
     /**
      * Set the apiId property: A resource identifier for the API the issue was created for.
-     *
+     * 
      * @param apiId the apiId value to set.
      * @return the IssueContractBaseProperties object itself.
      */
@@ -95,9 +102,53 @@ public class IssueContractBaseProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("createdDate",
+            this.createdDate == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.createdDate));
+        jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
+        jsonWriter.writeStringField("apiId", this.apiId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IssueContractBaseProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IssueContractBaseProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IssueContractBaseProperties.
+     */
+    public static IssueContractBaseProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IssueContractBaseProperties deserializedIssueContractBaseProperties = new IssueContractBaseProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("createdDate".equals(fieldName)) {
+                    deserializedIssueContractBaseProperties.createdDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("state".equals(fieldName)) {
+                    deserializedIssueContractBaseProperties.state = State.fromString(reader.getString());
+                } else if ("apiId".equals(fieldName)) {
+                    deserializedIssueContractBaseProperties.apiId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIssueContractBaseProperties;
+        });
     }
 }

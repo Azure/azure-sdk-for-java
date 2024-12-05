@@ -659,6 +659,9 @@
 # PRLabel: %OpenAI
 /sdk/openai/azure-ai-openai-assistants/              @brandom-msft @jpalvarezl @mssfang
 
+# PRLabel: %OpenAI
+/sdk/openai/azure-ai-openai-realtime/              @brandom-msft @jpalvarezl @mssfang
+
 # ServiceLabel: %Operational Insights
 # ServiceOwners:                                     @AzmonLogA
 

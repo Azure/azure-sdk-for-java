@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.devcenter.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -52,7 +51,6 @@ public final class ImageValidationStatus extends ExpandableStringEnum<ImageValid
      * @param name a name to look for.
      * @return the corresponding ImageValidationStatus.
      */
-    @JsonCreator
     public static ImageValidationStatus fromString(String name) {
         return fromString(name, ImageValidationStatus.class);
     }

@@ -19,8 +19,8 @@ import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
-import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
@@ -34,7 +34,6 @@ import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -56,7 +55,8 @@ public final class LiveMetricsRestAPIsForClientSDKsBuilder implements
     private static final String[] DEFAULT_SCOPES = new String[] { "https://monitor.azure.com/.default" };
 
     @Generated
-    private static final Map<String, String> PROPERTIES = new HashMap<>();
+    private static final Map<String, String> PROPERTIES
+        = CoreUtils.getProperties("azure-monitor-opentelemetry-autoconfigure.properties");
 
     @Generated
     private final List<HttpPipelinePolicy> pipelinePolicies;

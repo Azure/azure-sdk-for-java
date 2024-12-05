@@ -11,7 +11,7 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.quota.QuotaManager;
 import com.azure.resourcemanager.quota.models.CurrentQuotaLimitBase;
-import com.azure.resourcemanager.quota.models.LimitObject;
+import com.azure.resourcemanager.quota.models.LimitJsonObject;
 import com.azure.resourcemanager.quota.models.QuotaProperties;
 import com.azure.resourcemanager.quota.models.ResourceName;
 import java.nio.charset.StandardCharsets;
@@ -24,7 +24,7 @@ public final class QuotasCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"limit\":{\"limitObjectType\":\"LimitValue\"},\"unit\":\"nfd\",\"name\":{\"value\":\"akgtdlmkkzevdlh\",\"localizedValue\":\"pusdstt\"},\"resourceType\":\"ogvbbejdcngq\",\"quotaPeriod\":\"oakufgm\",\"isQuotaApplicable\":false,\"properties\":\"datardgrtw\"},\"id\":\"enuuzkopbm\",\"name\":\"nrfdw\",\"type\":\"yuhhziu\"}";
+            = "{\"properties\":{\"limit\":{\"limitObjectType\":\"LimitJsonObject\"},\"unit\":\"dsnfdsdoakgtdl\",\"name\":{\"value\":\"zev\",\"localizedValue\":\"hewpusdsttwv\"},\"resourceType\":\"vbbejdcng\",\"quotaPeriod\":\"m\",\"isQuotaApplicable\":false,\"properties\":\"datafgmjzrwrdgrt\"},\"id\":\"aenuuz\",\"name\":\"opbminrfdw\",\"type\":\"yuhhziu\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,15 +34,15 @@ public final class QuotasCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         CurrentQuotaLimitBase response = manager.quotas()
-            .define("qouicybxarzgsz")
-            .withExistingScope("foxciq")
-            .withProperties(new QuotaProperties().withLimit(new LimitObject())
-                .withName(new ResourceName().withValue("nlwntoe"))
-                .withResourceType("rvexztvb")
+            .define("pzfoqoui")
+            .withExistingScope("ybxarzgszu")
+            .withProperties(new QuotaProperties().withLimit(new LimitJsonObject())
+                .withName(new ResourceName().withValue("azxkhnzbonlwnto"))
+                .withResourceType("kszzcmrvexztv")
                 .withProperties("dataguxawqaldsyuuxi"))
             .create();
 
-        Assertions.assertEquals("akgtdlmkkzevdlh", response.properties().name().value());
-        Assertions.assertEquals("ogvbbejdcngq", response.properties().resourceType());
+        Assertions.assertEquals("zev", response.properties().name().value());
+        Assertions.assertEquals("vbbejdcng", response.properties().resourceType());
     }
 }

@@ -8,11 +8,13 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
 
-/** Contains all response data for the getEntityStateByProduct operation. */
+/**
+ * Contains all response data for the getEntityStateByProduct operation.
+ */
 public final class TagsGetEntityStateByProductResponse extends ResponseBase<TagsGetEntityStateByProductHeaders, Void> {
     /**
      * Creates an instance of TagsGetEntityStateByProductResponse.
-     *
+     * 
      * @param request the request which resulted in this TagsGetEntityStateByProductResponse.
      * @param statusCode the status code of the HTTP response.
      * @param rawHeaders the raw headers of the HTTP response.

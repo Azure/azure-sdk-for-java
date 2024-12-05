@@ -5,34 +5,27 @@
 package com.azure.resourcemanager.mysqlflexibleserver.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * ImportFromStorage Response Properties.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "objectType",
-    defaultImpl = ImportFromStorageResponseType.class,
-    visible = true)
-@JsonTypeName("ImportFromStorageResponse")
 @Fluent
 public final class ImportFromStorageResponseType extends OperationProgressResponseType {
     /*
      * Identifies the type of source operation
      */
-    @JsonTypeId
-    @JsonProperty(value = "objectType", required = true)
     private ObjectType objectType = ObjectType.IMPORT_FROM_STORAGE_RESPONSE;
 
     /*
      * The estimated time of operation completion.
      */
-    @JsonProperty(value = "estimatedCompletionTime")
     private OffsetDateTime estimatedCompletionTime;
 
     /**
@@ -78,6 +71,49 @@ public final class ImportFromStorageResponseType extends OperationProgressRespon
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("objectType", this.objectType == null ? null : this.objectType.toString());
+        jsonWriter.writeStringField("estimatedCompletionTime",
+            this.estimatedCompletionTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.estimatedCompletionTime));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ImportFromStorageResponseType from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ImportFromStorageResponseType if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ImportFromStorageResponseType.
+     */
+    public static ImportFromStorageResponseType fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ImportFromStorageResponseType deserializedImportFromStorageResponseType
+                = new ImportFromStorageResponseType();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("objectType".equals(fieldName)) {
+                    deserializedImportFromStorageResponseType.objectType = ObjectType.fromString(reader.getString());
+                } else if ("estimatedCompletionTime".equals(fieldName)) {
+                    deserializedImportFromStorageResponseType.estimatedCompletionTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedImportFromStorageResponseType;
+        });
     }
 }

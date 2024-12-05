@@ -21,7 +21,7 @@ public final class EnvironmentDefinitionsListByCatalogMockTests {
     @Test
     public void testListByCatalog() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"description\":\"zqn\",\"parameters\":[{\"id\":\"ql\",\"name\":\"zoibgsxg\",\"description\":\"fyq\",\"type\":\"number\",\"readOnly\":false,\"required\":false},{\"id\":\"dofdbxiqx\",\"name\":\"iqbi\",\"description\":\"tmwwi\",\"type\":\"boolean\",\"readOnly\":false,\"required\":false},{\"id\":\"fvwbcb\",\"name\":\"mbnkb\",\"description\":\"qvxkd\",\"type\":\"boolean\",\"readOnly\":false,\"required\":false},{\"id\":\"tswbzuwfmd\",\"name\":\"agegiz\",\"description\":\"jfelisdjubggbqig\",\"type\":\"string\",\"readOnly\":true,\"required\":true}],\"templatePath\":\"akgacyrcmjdm\",\"validationStatus\":\"Unknown\"},\"id\":\"apvu\",\"name\":\"rylniofrzg\",\"type\":\"zjedmstkvnlv\"}]}";
+            = "{\"value\":[{\"properties\":{\"description\":\"pyznuciqd\",\"parameters\":[{\"id\":\"iitdfuxt\",\"name\":\"siibmiybnnustgn\",\"description\":\"hnmgixhcm\",\"type\":\"string\",\"readOnly\":false,\"required\":false}],\"templatePath\":\"or\",\"validationStatus\":\"Succeeded\"},\"id\":\"yprotwyp\",\"name\":\"ndm\",\"type\":\"xhugcm\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,7 +31,7 @@ public final class EnvironmentDefinitionsListByCatalogMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<EnvironmentDefinition> response = manager.environmentDefinitions()
-            .listByCatalog("ryuzcbmqqv", "mv", "fgtayxonsup", 1417437720, com.azure.core.util.Context.NONE);
+            .listByCatalog("aoqltfaey", "inmfgvxirp", "hriypoqeyhlqhy", 1212152728, com.azure.core.util.Context.NONE);
 
     }
 }

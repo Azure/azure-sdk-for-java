@@ -16,15 +16,17 @@ import com.azure.resourcemanager.apimanagement.models.ApiPoliciesGetResponse;
 import com.azure.resourcemanager.apimanagement.models.PolicyExportFormat;
 import com.azure.resourcemanager.apimanagement.models.PolicyIdName;
 
-/** An instance of this class provides access to all the operations defined in ApiPoliciesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ApiPoliciesClient.
+ */
 public interface ApiPoliciesClient {
     /**
      * Get the policy configuration at the API level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -37,11 +39,11 @@ public interface ApiPoliciesClient {
 
     /**
      * Get the policy configuration at the API level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -52,11 +54,11 @@ public interface ApiPoliciesClient {
 
     /**
      * Gets the entity state (Etag) version of the API policy specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param policyId The identifier of the Policy.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -70,11 +72,11 @@ public interface ApiPoliciesClient {
 
     /**
      * Gets the entity state (Etag) version of the API policy specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param policyId The identifier of the Policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -85,11 +87,11 @@ public interface ApiPoliciesClient {
 
     /**
      * Get the policy configuration at the API level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param policyId The identifier of the Policy.
      * @param format Policy Export Format.
      * @param context The context to associate with this operation.
@@ -104,11 +106,11 @@ public interface ApiPoliciesClient {
 
     /**
      * Get the policy configuration at the API level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param policyId The identifier of the Policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -120,11 +122,11 @@ public interface ApiPoliciesClient {
 
     /**
      * Creates or updates policy configuration for the API.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param policyId The identifier of the Policy.
      * @param parameters The policy contents to apply.
      * @param ifMatch ETag of the Entity. Not required when creating an entity, but required when updating an entity.
@@ -140,11 +142,11 @@ public interface ApiPoliciesClient {
 
     /**
      * Creates or updates policy configuration for the API.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param policyId The identifier of the Policy.
      * @param parameters The policy contents to apply.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -158,14 +160,14 @@ public interface ApiPoliciesClient {
 
     /**
      * Deletes the policy configuration at the Api.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param policyId The identifier of the Policy.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -178,14 +180,14 @@ public interface ApiPoliciesClient {
 
     /**
      * Deletes the policy configuration at the Api.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param policyId The identifier of the Policy.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.

@@ -17,11 +17,13 @@ import com.azure.resourcemanager.apimanagement.models.GroupsGetEntityTagResponse
 import com.azure.resourcemanager.apimanagement.models.GroupsGetResponse;
 import com.azure.resourcemanager.apimanagement.models.GroupsUpdateResponse;
 
-/** An instance of this class provides access to all the operations defined in GroupsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in GroupsClient.
+ */
 public interface GroupsClient {
     /**
      * Lists a collection of groups defined within a service instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -34,14 +36,14 @@ public interface GroupsClient {
 
     /**
      * Lists a collection of groups defined within a service instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter | Field | Usage | Supported operators | Supported functions
-     *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq,
-     *     ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;| displayName | filter | ge, le, eq, ne,
-     *     gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;| description | filter | ge, le, eq, ne, gt,
-     *     lt | substringof, contains, startswith, endswith |&lt;/br&gt;| externalId | filter | eq | |&lt;/br&gt;.
+     * |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq, ne,
+     * gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;| displayName | filter | ge, le, eq, ne, gt, lt
+     * | substringof, contains, startswith, endswith |&lt;/br&gt;| description | filter | ge, le, eq, ne, gt, lt |
+     * substringof, contains, startswith, endswith |&lt;/br&gt;| externalId | filter | eq | |&lt;/br&gt;.
      * @param top Number of records to return.
      * @param skip Number of records to skip.
      * @param context The context to associate with this operation.
@@ -56,7 +58,7 @@ public interface GroupsClient {
 
     /**
      * Gets the entity state (Etag) version of the group specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param groupId Group identifier. Must be unique in the current API Management service instance.
@@ -72,7 +74,7 @@ public interface GroupsClient {
 
     /**
      * Gets the entity state (Etag) version of the group specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param groupId Group identifier. Must be unique in the current API Management service instance.
@@ -85,7 +87,7 @@ public interface GroupsClient {
 
     /**
      * Gets the details of the group specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param groupId Group identifier. Must be unique in the current API Management service instance.
@@ -100,7 +102,7 @@ public interface GroupsClient {
 
     /**
      * Gets the details of the group specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param groupId Group identifier. Must be unique in the current API Management service instance.
@@ -114,7 +116,7 @@ public interface GroupsClient {
 
     /**
      * Creates or Updates a group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param groupId Group identifier. Must be unique in the current API Management service instance.
@@ -132,7 +134,7 @@ public interface GroupsClient {
 
     /**
      * Creates or Updates a group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param groupId Group identifier. Must be unique in the current API Management service instance.
@@ -148,12 +150,12 @@ public interface GroupsClient {
 
     /**
      * Updates the details of the group specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param groupId Group identifier. Must be unique in the current API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param parameters Update parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -167,12 +169,12 @@ public interface GroupsClient {
 
     /**
      * Updates the details of the group specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param groupId Group identifier. Must be unique in the current API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param parameters Update parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -185,12 +187,12 @@ public interface GroupsClient {
 
     /**
      * Deletes specific group of the API Management service instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param groupId Group identifier. Must be unique in the current API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -203,12 +205,12 @@ public interface GroupsClient {
 
     /**
      * Deletes specific group of the API Management service instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param groupId Group identifier. Must be unique in the current API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.

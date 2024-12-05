@@ -5,44 +5,31 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Delivery attribute mapping details.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "type",
-    defaultImpl = DeliveryAttributeMapping.class,
-    visible = true)
-@JsonTypeName("DeliveryAttributeMapping")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "Static", value = StaticDeliveryAttributeMapping.class),
-    @JsonSubTypes.Type(name = "Dynamic", value = DynamicDeliveryAttributeMapping.class) })
 @Fluent
-public class DeliveryAttributeMapping {
+public class DeliveryAttributeMapping implements JsonSerializable<DeliveryAttributeMapping> {
     /*
      * Type of the delivery attribute or header name.
      */
-    @JsonTypeId
-    @JsonProperty(value = "type", required = true)
-    private DeliveryAttributeMappingType type;
+    private DeliveryAttributeMappingType type = DeliveryAttributeMappingType.fromString("DeliveryAttributeMapping");
 
     /*
      * Name of the delivery attribute or header.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /**
      * Creates an instance of DeliveryAttributeMapping class.
      */
     public DeliveryAttributeMapping() {
-        this.type = DeliveryAttributeMappingType.fromString("DeliveryAttributeMapping");
     }
 
     /**
@@ -80,5 +67,72 @@ public class DeliveryAttributeMapping {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("name", this.name);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DeliveryAttributeMapping from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DeliveryAttributeMapping if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DeliveryAttributeMapping.
+     */
+    public static DeliveryAttributeMapping fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("type".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("Static".equals(discriminatorValue)) {
+                    return StaticDeliveryAttributeMapping.fromJson(readerToUse.reset());
+                } else if ("Dynamic".equals(discriminatorValue)) {
+                    return DynamicDeliveryAttributeMapping.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static DeliveryAttributeMapping fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DeliveryAttributeMapping deserializedDeliveryAttributeMapping = new DeliveryAttributeMapping();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedDeliveryAttributeMapping.type
+                        = DeliveryAttributeMappingType.fromString(reader.getString());
+                } else if ("name".equals(fieldName)) {
+                    deserializedDeliveryAttributeMapping.name = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDeliveryAttributeMapping;
+        });
     }
 }

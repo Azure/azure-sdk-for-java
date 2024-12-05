@@ -5,41 +5,41 @@
 package com.azure.resourcemanager.devcenter.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Properties of network connection. These properties can be updated after the resource has been created.
  */
 @Fluent
-public class NetworkConnectionUpdateProperties {
+public class NetworkConnectionUpdateProperties implements JsonSerializable<NetworkConnectionUpdateProperties> {
     /*
      * The subnet to attach Virtual Machines to
      */
-    @JsonProperty(value = "subnetId")
     private String subnetId;
 
     /*
      * Active Directory domain name
      */
-    @JsonProperty(value = "domainName")
     private String domainName;
 
     /*
      * Active Directory domain Organization Unit (OU)
      */
-    @JsonProperty(value = "organizationUnit")
     private String organizationUnit;
 
     /*
-     * The username of an Active Directory account (user or service account) that has permissions to create computer objects in Active Directory. Required format: admin@contoso.com.
+     * The username of an Active Directory account (user or service account) that has permissions to create computer
+     * objects in Active Directory. Required format: admin@contoso.com.
      */
-    @JsonProperty(value = "domainUsername")
     private String domainUsername;
 
     /*
      * The password for the account used to join domain
      */
-    @JsonProperty(value = "domainPassword")
     private String domainPassword;
 
     /**
@@ -156,5 +156,54 @@ public class NetworkConnectionUpdateProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("subnetId", this.subnetId);
+        jsonWriter.writeStringField("domainName", this.domainName);
+        jsonWriter.writeStringField("organizationUnit", this.organizationUnit);
+        jsonWriter.writeStringField("domainUsername", this.domainUsername);
+        jsonWriter.writeStringField("domainPassword", this.domainPassword);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetworkConnectionUpdateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetworkConnectionUpdateProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NetworkConnectionUpdateProperties.
+     */
+    public static NetworkConnectionUpdateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetworkConnectionUpdateProperties deserializedNetworkConnectionUpdateProperties
+                = new NetworkConnectionUpdateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("subnetId".equals(fieldName)) {
+                    deserializedNetworkConnectionUpdateProperties.subnetId = reader.getString();
+                } else if ("domainName".equals(fieldName)) {
+                    deserializedNetworkConnectionUpdateProperties.domainName = reader.getString();
+                } else if ("organizationUnit".equals(fieldName)) {
+                    deserializedNetworkConnectionUpdateProperties.organizationUnit = reader.getString();
+                } else if ("domainUsername".equals(fieldName)) {
+                    deserializedNetworkConnectionUpdateProperties.domainUsername = reader.getString();
+                } else if ("domainPassword".equals(fieldName)) {
+                    deserializedNetworkConnectionUpdateProperties.domainPassword = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetworkConnectionUpdateProperties;
+        });
     }
 }

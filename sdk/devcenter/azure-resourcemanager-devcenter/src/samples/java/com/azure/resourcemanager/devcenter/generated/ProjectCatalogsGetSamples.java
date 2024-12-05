@@ -9,7 +9,8 @@ package com.azure.resourcemanager.devcenter.generated;
  */
 public final class ProjectCatalogsGetSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2024-02-01/examples/ProjectCatalogs_Get.json
+     * x-ms-original-file:
+     * specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2024-02-01/examples/ProjectCatalogs_Get.json
      */
     /**
      * Sample code: ProjectCatalogs_Get.

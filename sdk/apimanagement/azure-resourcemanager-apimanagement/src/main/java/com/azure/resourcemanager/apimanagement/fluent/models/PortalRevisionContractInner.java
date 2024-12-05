@@ -6,26 +6,47 @@ package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.apimanagement.models.PortalRevisionStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** Portal Revision's contract details. */
+/**
+ * Portal Revision's contract details.
+ */
 @Fluent
 public final class PortalRevisionContractInner extends ProxyResource {
     /*
      * Properties of the portal revisions.
      */
-    @JsonProperty(value = "properties")
     private PortalRevisionContractProperties innerProperties;
 
-    /** Creates an instance of PortalRevisionContractInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of PortalRevisionContractInner class.
+     */
     public PortalRevisionContractInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of the portal revisions.
-     *
+     * 
      * @return the innerProperties value.
      */
     private PortalRevisionContractProperties innerProperties() {
@@ -33,8 +54,38 @@ public final class PortalRevisionContractInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the description property: Portal revision description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -43,7 +94,7 @@ public final class PortalRevisionContractInner extends ProxyResource {
 
     /**
      * Set the description property: Portal revision description.
-     *
+     * 
      * @param description the description value to set.
      * @return the PortalRevisionContractInner object itself.
      */
@@ -57,7 +108,7 @@ public final class PortalRevisionContractInner extends ProxyResource {
 
     /**
      * Get the statusDetails property: Portal revision publishing status details.
-     *
+     * 
      * @return the statusDetails value.
      */
     public String statusDetails() {
@@ -66,7 +117,7 @@ public final class PortalRevisionContractInner extends ProxyResource {
 
     /**
      * Get the status property: Status of the portal's revision.
-     *
+     * 
      * @return the status value.
      */
     public PortalRevisionStatus status() {
@@ -75,7 +126,7 @@ public final class PortalRevisionContractInner extends ProxyResource {
 
     /**
      * Get the isCurrent property: Indicates if the portal's revision is public.
-     *
+     * 
      * @return the isCurrent value.
      */
     public Boolean isCurrent() {
@@ -84,7 +135,7 @@ public final class PortalRevisionContractInner extends ProxyResource {
 
     /**
      * Set the isCurrent property: Indicates if the portal's revision is public.
-     *
+     * 
      * @param isCurrent the isCurrent value to set.
      * @return the PortalRevisionContractInner object itself.
      */
@@ -98,7 +149,7 @@ public final class PortalRevisionContractInner extends ProxyResource {
 
     /**
      * Get the createdDateTime property: Portal's revision creation date and time.
-     *
+     * 
      * @return the createdDateTime value.
      */
     public OffsetDateTime createdDateTime() {
@@ -107,7 +158,7 @@ public final class PortalRevisionContractInner extends ProxyResource {
 
     /**
      * Get the updatedDateTime property: Last updated date and time.
-     *
+     * 
      * @return the updatedDateTime value.
      */
     public OffsetDateTime updatedDateTime() {
@@ -116,12 +167,56 @@ public final class PortalRevisionContractInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PortalRevisionContractInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PortalRevisionContractInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PortalRevisionContractInner.
+     */
+    public static PortalRevisionContractInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PortalRevisionContractInner deserializedPortalRevisionContractInner = new PortalRevisionContractInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedPortalRevisionContractInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedPortalRevisionContractInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedPortalRevisionContractInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedPortalRevisionContractInner.innerProperties
+                        = PortalRevisionContractProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPortalRevisionContractInner;
+        });
     }
 }

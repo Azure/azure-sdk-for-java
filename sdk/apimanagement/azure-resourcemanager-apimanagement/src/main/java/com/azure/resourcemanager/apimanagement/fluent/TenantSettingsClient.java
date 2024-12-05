@@ -12,11 +12,13 @@ import com.azure.resourcemanager.apimanagement.fluent.models.TenantSettingsContr
 import com.azure.resourcemanager.apimanagement.models.SettingsTypeName;
 import com.azure.resourcemanager.apimanagement.models.TenantSettingsGetResponse;
 
-/** An instance of this class provides access to all the operations defined in TenantSettingsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in TenantSettingsClient.
+ */
 public interface TenantSettingsClient {
     /**
      * Public settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -29,7 +31,7 @@ public interface TenantSettingsClient {
 
     /**
      * Public settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter Not used.
@@ -45,7 +47,7 @@ public interface TenantSettingsClient {
 
     /**
      * Get tenant settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param settingsType The identifier of the settings.
@@ -61,7 +63,7 @@ public interface TenantSettingsClient {
 
     /**
      * Get tenant settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param settingsType The identifier of the settings.

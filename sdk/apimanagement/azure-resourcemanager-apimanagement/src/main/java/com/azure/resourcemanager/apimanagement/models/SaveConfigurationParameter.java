@@ -5,25 +5,32 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.apimanagement.fluent.models.SaveConfigurationParameterProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Save Tenant Configuration Contract details. */
+/**
+ * Save Tenant Configuration Contract details.
+ */
 @Fluent
-public final class SaveConfigurationParameter {
+public final class SaveConfigurationParameter implements JsonSerializable<SaveConfigurationParameter> {
     /*
      * Properties of the Save Configuration Parameters.
      */
-    @JsonProperty(value = "properties")
     private SaveConfigurationParameterProperties innerProperties;
 
-    /** Creates an instance of SaveConfigurationParameter class. */
+    /**
+     * Creates an instance of SaveConfigurationParameter class.
+     */
     public SaveConfigurationParameter() {
     }
 
     /**
      * Get the innerProperties property: Properties of the Save Configuration Parameters.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SaveConfigurationParameterProperties innerProperties() {
@@ -32,7 +39,7 @@ public final class SaveConfigurationParameter {
 
     /**
      * Get the branch property: The name of the Git branch in which to commit the current configuration snapshot.
-     *
+     * 
      * @return the branch value.
      */
     public String branch() {
@@ -41,7 +48,7 @@ public final class SaveConfigurationParameter {
 
     /**
      * Set the branch property: The name of the Git branch in which to commit the current configuration snapshot.
-     *
+     * 
      * @param branch the branch value to set.
      * @return the SaveConfigurationParameter object itself.
      */
@@ -56,7 +63,7 @@ public final class SaveConfigurationParameter {
     /**
      * Get the force property: The value if true, the current configuration database is committed to the Git repository,
      * even if the Git repository has newer changes that would be overwritten.
-     *
+     * 
      * @return the force value.
      */
     public Boolean force() {
@@ -66,7 +73,7 @@ public final class SaveConfigurationParameter {
     /**
      * Set the force property: The value if true, the current configuration database is committed to the Git repository,
      * even if the Git repository has newer changes that would be overwritten.
-     *
+     * 
      * @param force the force value to set.
      * @return the SaveConfigurationParameter object itself.
      */
@@ -80,12 +87,49 @@ public final class SaveConfigurationParameter {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SaveConfigurationParameter from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SaveConfigurationParameter if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SaveConfigurationParameter.
+     */
+    public static SaveConfigurationParameter fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SaveConfigurationParameter deserializedSaveConfigurationParameter = new SaveConfigurationParameter();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedSaveConfigurationParameter.innerProperties
+                        = SaveConfigurationParameterProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSaveConfigurationParameter;
+        });
     }
 }

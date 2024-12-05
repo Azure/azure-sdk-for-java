@@ -8,32 +8,29 @@ import com.azure.resourcemanager.recoveryservicesdatareplication.fluent.models.D
 import com.azure.resourcemanager.recoveryservicesdatareplication.models.DeploymentPreflightResource;
 import java.util.Arrays;
 
-/** Samples for ResourceProvider DeploymentPreflight. */
+/**
+ * Samples for ResourceProvider DeploymentPreflight.
+ */
 public final class ResourceProviderDeploymentPreflightSam {
     /*
-     * x-ms-original-file: specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-preview/examples/DeploymentPreflight.json
+     * x-ms-original-file:
+     * specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-
+     * preview/examples/DeploymentPreflight.json
      */
     /**
      * Sample code: DeploymentPreflight.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void deploymentPreflight(
         com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
-        manager
-            .resourceProviders()
-            .deploymentPreflightWithResponse(
-                "rgrecoveryservicesdatareplication",
-                "kjoiahxljomjcmvabaobumg",
+        manager.resourceProviders()
+            .deploymentPreflightWithResponse("rgrecoveryservicesdatareplication", "kjoiahxljomjcmvabaobumg",
                 new DeploymentPreflightModelInner()
-                    .withResources(
-                        Arrays
-                            .asList(
-                                new DeploymentPreflightResource()
-                                    .withName("xtgugoflfc")
-                                    .withType("nsnaptduolqcxsikrewvgjbxqpt")
-                                    .withLocation("cbsgtxkjdzwbyp")
-                                    .withApiVersion("otihymhvzblycdoxo"))),
+                    .withResources(Arrays.asList(new DeploymentPreflightResource().withName("xtgugoflfc")
+                        .withType("nsnaptduolqcxsikrewvgjbxqpt")
+                        .withLocation("cbsgtxkjdzwbyp")
+                        .withApiVersion("otihymhvzblycdoxo"))),
                 com.azure.core.util.Context.NONE);
     }
 }

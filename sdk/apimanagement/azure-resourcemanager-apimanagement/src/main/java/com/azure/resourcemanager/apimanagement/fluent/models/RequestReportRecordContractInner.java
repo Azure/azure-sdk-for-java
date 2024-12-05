@@ -5,76 +5,73 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** Request Report data. */
+/**
+ * Request Report data.
+ */
 @Fluent
-public final class RequestReportRecordContractInner {
+public final class RequestReportRecordContractInner implements JsonSerializable<RequestReportRecordContractInner> {
     /*
      * API identifier path. /apis/{apiId}
      */
-    @JsonProperty(value = "apiId")
     private String apiId;
 
     /*
      * Operation identifier path. /apis/{apiId}/operations/{operationId}
      */
-    @JsonProperty(value = "operationId")
     private String operationId;
 
     /*
      * Product identifier path. /products/{productId}
      */
-    @JsonProperty(value = "productId", access = JsonProperty.Access.WRITE_ONLY)
     private String productId;
 
     /*
      * User identifier path. /users/{userId}
      */
-    @JsonProperty(value = "userId", access = JsonProperty.Access.WRITE_ONLY)
     private String userId;
 
     /*
      * The HTTP method associated with this request..
      */
-    @JsonProperty(value = "method")
     private String method;
 
     /*
      * The full URL associated with this request.
      */
-    @JsonProperty(value = "url")
     private String url;
 
     /*
      * The client IP address associated with this request.
      */
-    @JsonProperty(value = "ipAddress")
     private String ipAddress;
 
     /*
      * The HTTP status code received by the gateway as a result of forwarding this request to the backend.
      */
-    @JsonProperty(value = "backendResponseCode")
     private String backendResponseCode;
 
     /*
      * The HTTP status code returned by the gateway.
      */
-    @JsonProperty(value = "responseCode")
     private Integer responseCode;
 
     /*
      * The size of the response returned by the gateway.
      */
-    @JsonProperty(value = "responseSize")
     private Integer responseSize;
 
     /*
      * The date and time when this request was received by the gateway in ISO 8601 format.
      */
-    @JsonProperty(value = "timestamp")
     private OffsetDateTime timestamp;
 
     /*
@@ -82,52 +79,47 @@ public final class RequestReportRecordContractInner {
      * used. If the value is hit, cached response was returned. If the value is miss, the cache was used but lookup
      * resulted in a miss and request was fulfilled by the backend.
      */
-    @JsonProperty(value = "cache")
     private String cache;
 
     /*
      * The total time it took to process this request.
      */
-    @JsonProperty(value = "apiTime")
     private Double apiTime;
 
     /*
      * he time it took to forward this request to the backend and get the response back.
      */
-    @JsonProperty(value = "serviceTime")
     private Double serviceTime;
 
     /*
      * Azure region where the gateway that processed this request is located.
      */
-    @JsonProperty(value = "apiRegion")
     private String apiRegion;
 
     /*
      * Subscription identifier path. /subscriptions/{subscriptionId}
      */
-    @JsonProperty(value = "subscriptionId")
     private String subscriptionId;
 
     /*
      * Request Identifier.
      */
-    @JsonProperty(value = "requestId")
     private String requestId;
 
     /*
      * The size of this request..
      */
-    @JsonProperty(value = "requestSize")
     private Integer requestSize;
 
-    /** Creates an instance of RequestReportRecordContractInner class. */
+    /**
+     * Creates an instance of RequestReportRecordContractInner class.
+     */
     public RequestReportRecordContractInner() {
     }
 
     /**
      * Get the apiId property: API identifier path. /apis/{apiId}.
-     *
+     * 
      * @return the apiId value.
      */
     public String apiId() {
@@ -136,7 +128,7 @@ public final class RequestReportRecordContractInner {
 
     /**
      * Set the apiId property: API identifier path. /apis/{apiId}.
-     *
+     * 
      * @param apiId the apiId value to set.
      * @return the RequestReportRecordContractInner object itself.
      */
@@ -147,7 +139,7 @@ public final class RequestReportRecordContractInner {
 
     /**
      * Get the operationId property: Operation identifier path. /apis/{apiId}/operations/{operationId}.
-     *
+     * 
      * @return the operationId value.
      */
     public String operationId() {
@@ -156,7 +148,7 @@ public final class RequestReportRecordContractInner {
 
     /**
      * Set the operationId property: Operation identifier path. /apis/{apiId}/operations/{operationId}.
-     *
+     * 
      * @param operationId the operationId value to set.
      * @return the RequestReportRecordContractInner object itself.
      */
@@ -167,7 +159,7 @@ public final class RequestReportRecordContractInner {
 
     /**
      * Get the productId property: Product identifier path. /products/{productId}.
-     *
+     * 
      * @return the productId value.
      */
     public String productId() {
@@ -176,7 +168,7 @@ public final class RequestReportRecordContractInner {
 
     /**
      * Get the userId property: User identifier path. /users/{userId}.
-     *
+     * 
      * @return the userId value.
      */
     public String userId() {
@@ -185,7 +177,7 @@ public final class RequestReportRecordContractInner {
 
     /**
      * Get the method property: The HTTP method associated with this request..
-     *
+     * 
      * @return the method value.
      */
     public String method() {
@@ -194,7 +186,7 @@ public final class RequestReportRecordContractInner {
 
     /**
      * Set the method property: The HTTP method associated with this request..
-     *
+     * 
      * @param method the method value to set.
      * @return the RequestReportRecordContractInner object itself.
      */
@@ -205,7 +197,7 @@ public final class RequestReportRecordContractInner {
 
     /**
      * Get the url property: The full URL associated with this request.
-     *
+     * 
      * @return the url value.
      */
     public String url() {
@@ -214,7 +206,7 @@ public final class RequestReportRecordContractInner {
 
     /**
      * Set the url property: The full URL associated with this request.
-     *
+     * 
      * @param url the url value to set.
      * @return the RequestReportRecordContractInner object itself.
      */
@@ -225,7 +217,7 @@ public final class RequestReportRecordContractInner {
 
     /**
      * Get the ipAddress property: The client IP address associated with this request.
-     *
+     * 
      * @return the ipAddress value.
      */
     public String ipAddress() {
@@ -234,7 +226,7 @@ public final class RequestReportRecordContractInner {
 
     /**
      * Set the ipAddress property: The client IP address associated with this request.
-     *
+     * 
      * @param ipAddress the ipAddress value to set.
      * @return the RequestReportRecordContractInner object itself.
      */
@@ -246,7 +238,7 @@ public final class RequestReportRecordContractInner {
     /**
      * Get the backendResponseCode property: The HTTP status code received by the gateway as a result of forwarding this
      * request to the backend.
-     *
+     * 
      * @return the backendResponseCode value.
      */
     public String backendResponseCode() {
@@ -256,7 +248,7 @@ public final class RequestReportRecordContractInner {
     /**
      * Set the backendResponseCode property: The HTTP status code received by the gateway as a result of forwarding this
      * request to the backend.
-     *
+     * 
      * @param backendResponseCode the backendResponseCode value to set.
      * @return the RequestReportRecordContractInner object itself.
      */
@@ -267,7 +259,7 @@ public final class RequestReportRecordContractInner {
 
     /**
      * Get the responseCode property: The HTTP status code returned by the gateway.
-     *
+     * 
      * @return the responseCode value.
      */
     public Integer responseCode() {
@@ -276,7 +268,7 @@ public final class RequestReportRecordContractInner {
 
     /**
      * Set the responseCode property: The HTTP status code returned by the gateway.
-     *
+     * 
      * @param responseCode the responseCode value to set.
      * @return the RequestReportRecordContractInner object itself.
      */
@@ -287,7 +279,7 @@ public final class RequestReportRecordContractInner {
 
     /**
      * Get the responseSize property: The size of the response returned by the gateway.
-     *
+     * 
      * @return the responseSize value.
      */
     public Integer responseSize() {
@@ -296,7 +288,7 @@ public final class RequestReportRecordContractInner {
 
     /**
      * Set the responseSize property: The size of the response returned by the gateway.
-     *
+     * 
      * @param responseSize the responseSize value to set.
      * @return the RequestReportRecordContractInner object itself.
      */
@@ -307,7 +299,7 @@ public final class RequestReportRecordContractInner {
 
     /**
      * Get the timestamp property: The date and time when this request was received by the gateway in ISO 8601 format.
-     *
+     * 
      * @return the timestamp value.
      */
     public OffsetDateTime timestamp() {
@@ -316,7 +308,7 @@ public final class RequestReportRecordContractInner {
 
     /**
      * Set the timestamp property: The date and time when this request was received by the gateway in ISO 8601 format.
-     *
+     * 
      * @param timestamp the timestamp value to set.
      * @return the RequestReportRecordContractInner object itself.
      */
@@ -329,7 +321,7 @@ public final class RequestReportRecordContractInner {
      * Get the cache property: Specifies if response cache was involved in generating the response. If the value is
      * none, the cache was not used. If the value is hit, cached response was returned. If the value is miss, the cache
      * was used but lookup resulted in a miss and request was fulfilled by the backend.
-     *
+     * 
      * @return the cache value.
      */
     public String cache() {
@@ -340,7 +332,7 @@ public final class RequestReportRecordContractInner {
      * Set the cache property: Specifies if response cache was involved in generating the response. If the value is
      * none, the cache was not used. If the value is hit, cached response was returned. If the value is miss, the cache
      * was used but lookup resulted in a miss and request was fulfilled by the backend.
-     *
+     * 
      * @param cache the cache value to set.
      * @return the RequestReportRecordContractInner object itself.
      */
@@ -351,7 +343,7 @@ public final class RequestReportRecordContractInner {
 
     /**
      * Get the apiTime property: The total time it took to process this request.
-     *
+     * 
      * @return the apiTime value.
      */
     public Double apiTime() {
@@ -360,7 +352,7 @@ public final class RequestReportRecordContractInner {
 
     /**
      * Set the apiTime property: The total time it took to process this request.
-     *
+     * 
      * @param apiTime the apiTime value to set.
      * @return the RequestReportRecordContractInner object itself.
      */
@@ -371,7 +363,7 @@ public final class RequestReportRecordContractInner {
 
     /**
      * Get the serviceTime property: he time it took to forward this request to the backend and get the response back.
-     *
+     * 
      * @return the serviceTime value.
      */
     public Double serviceTime() {
@@ -380,7 +372,7 @@ public final class RequestReportRecordContractInner {
 
     /**
      * Set the serviceTime property: he time it took to forward this request to the backend and get the response back.
-     *
+     * 
      * @param serviceTime the serviceTime value to set.
      * @return the RequestReportRecordContractInner object itself.
      */
@@ -391,7 +383,7 @@ public final class RequestReportRecordContractInner {
 
     /**
      * Get the apiRegion property: Azure region where the gateway that processed this request is located.
-     *
+     * 
      * @return the apiRegion value.
      */
     public String apiRegion() {
@@ -400,7 +392,7 @@ public final class RequestReportRecordContractInner {
 
     /**
      * Set the apiRegion property: Azure region where the gateway that processed this request is located.
-     *
+     * 
      * @param apiRegion the apiRegion value to set.
      * @return the RequestReportRecordContractInner object itself.
      */
@@ -411,7 +403,7 @@ public final class RequestReportRecordContractInner {
 
     /**
      * Get the subscriptionId property: Subscription identifier path. /subscriptions/{subscriptionId}.
-     *
+     * 
      * @return the subscriptionId value.
      */
     public String subscriptionId() {
@@ -420,7 +412,7 @@ public final class RequestReportRecordContractInner {
 
     /**
      * Set the subscriptionId property: Subscription identifier path. /subscriptions/{subscriptionId}.
-     *
+     * 
      * @param subscriptionId the subscriptionId value to set.
      * @return the RequestReportRecordContractInner object itself.
      */
@@ -431,7 +423,7 @@ public final class RequestReportRecordContractInner {
 
     /**
      * Get the requestId property: Request Identifier.
-     *
+     * 
      * @return the requestId value.
      */
     public String requestId() {
@@ -440,7 +432,7 @@ public final class RequestReportRecordContractInner {
 
     /**
      * Set the requestId property: Request Identifier.
-     *
+     * 
      * @param requestId the requestId value to set.
      * @return the RequestReportRecordContractInner object itself.
      */
@@ -451,7 +443,7 @@ public final class RequestReportRecordContractInner {
 
     /**
      * Get the requestSize property: The size of this request..
-     *
+     * 
      * @return the requestSize value.
      */
     public Integer requestSize() {
@@ -460,7 +452,7 @@ public final class RequestReportRecordContractInner {
 
     /**
      * Set the requestSize property: The size of this request..
-     *
+     * 
      * @param requestSize the requestSize value to set.
      * @return the RequestReportRecordContractInner object itself.
      */
@@ -471,9 +463,98 @@ public final class RequestReportRecordContractInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("apiId", this.apiId);
+        jsonWriter.writeStringField("operationId", this.operationId);
+        jsonWriter.writeStringField("method", this.method);
+        jsonWriter.writeStringField("url", this.url);
+        jsonWriter.writeStringField("ipAddress", this.ipAddress);
+        jsonWriter.writeStringField("backendResponseCode", this.backendResponseCode);
+        jsonWriter.writeNumberField("responseCode", this.responseCode);
+        jsonWriter.writeNumberField("responseSize", this.responseSize);
+        jsonWriter.writeStringField("timestamp",
+            this.timestamp == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.timestamp));
+        jsonWriter.writeStringField("cache", this.cache);
+        jsonWriter.writeNumberField("apiTime", this.apiTime);
+        jsonWriter.writeNumberField("serviceTime", this.serviceTime);
+        jsonWriter.writeStringField("apiRegion", this.apiRegion);
+        jsonWriter.writeStringField("subscriptionId", this.subscriptionId);
+        jsonWriter.writeStringField("requestId", this.requestId);
+        jsonWriter.writeNumberField("requestSize", this.requestSize);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RequestReportRecordContractInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RequestReportRecordContractInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RequestReportRecordContractInner.
+     */
+    public static RequestReportRecordContractInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RequestReportRecordContractInner deserializedRequestReportRecordContractInner
+                = new RequestReportRecordContractInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("apiId".equals(fieldName)) {
+                    deserializedRequestReportRecordContractInner.apiId = reader.getString();
+                } else if ("operationId".equals(fieldName)) {
+                    deserializedRequestReportRecordContractInner.operationId = reader.getString();
+                } else if ("productId".equals(fieldName)) {
+                    deserializedRequestReportRecordContractInner.productId = reader.getString();
+                } else if ("userId".equals(fieldName)) {
+                    deserializedRequestReportRecordContractInner.userId = reader.getString();
+                } else if ("method".equals(fieldName)) {
+                    deserializedRequestReportRecordContractInner.method = reader.getString();
+                } else if ("url".equals(fieldName)) {
+                    deserializedRequestReportRecordContractInner.url = reader.getString();
+                } else if ("ipAddress".equals(fieldName)) {
+                    deserializedRequestReportRecordContractInner.ipAddress = reader.getString();
+                } else if ("backendResponseCode".equals(fieldName)) {
+                    deserializedRequestReportRecordContractInner.backendResponseCode = reader.getString();
+                } else if ("responseCode".equals(fieldName)) {
+                    deserializedRequestReportRecordContractInner.responseCode = reader.getNullable(JsonReader::getInt);
+                } else if ("responseSize".equals(fieldName)) {
+                    deserializedRequestReportRecordContractInner.responseSize = reader.getNullable(JsonReader::getInt);
+                } else if ("timestamp".equals(fieldName)) {
+                    deserializedRequestReportRecordContractInner.timestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("cache".equals(fieldName)) {
+                    deserializedRequestReportRecordContractInner.cache = reader.getString();
+                } else if ("apiTime".equals(fieldName)) {
+                    deserializedRequestReportRecordContractInner.apiTime = reader.getNullable(JsonReader::getDouble);
+                } else if ("serviceTime".equals(fieldName)) {
+                    deserializedRequestReportRecordContractInner.serviceTime
+                        = reader.getNullable(JsonReader::getDouble);
+                } else if ("apiRegion".equals(fieldName)) {
+                    deserializedRequestReportRecordContractInner.apiRegion = reader.getString();
+                } else if ("subscriptionId".equals(fieldName)) {
+                    deserializedRequestReportRecordContractInner.subscriptionId = reader.getString();
+                } else if ("requestId".equals(fieldName)) {
+                    deserializedRequestReportRecordContractInner.requestId = reader.getString();
+                } else if ("requestSize".equals(fieldName)) {
+                    deserializedRequestReportRecordContractInner.requestSize = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRequestReportRecordContractInner;
+        });
     }
 }

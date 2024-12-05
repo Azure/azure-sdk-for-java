@@ -9,7 +9,9 @@ package com.azure.resourcemanager.mysqlflexibleserver.generated;
  */
 public final class ConfigurationsListByServerSamples {
     /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/Configurations/preview/2023-06-01-preview/examples/ConfigurationsListByServer.json
+     * x-ms-original-file:
+     * specification/mysql/resource-manager/Microsoft.DBforMySQL/Configurations/preview/2023-06-01-preview/examples/
+     * ConfigurationsListByServer.json
      */
     /**
      * Sample code: List all configurations for a server.

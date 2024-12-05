@@ -9,12 +9,14 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.resourcemanager.apimanagement.fluent.models.TenantSettingsContractInner;
 
-/** Contains all response data for the get operation. */
+/**
+ * Contains all response data for the get operation.
+ */
 public final class TenantSettingsGetResponse
     extends ResponseBase<TenantSettingsGetHeaders, TenantSettingsContractInner> {
     /**
      * Creates an instance of TenantSettingsGetResponse.
-     *
+     * 
      * @param request the request which resulted in this TenantSettingsGetResponse.
      * @param statusCode the status code of the HTTP response.
      * @param rawHeaders the raw headers of the HTTP response.
@@ -28,7 +30,7 @@ public final class TenantSettingsGetResponse
 
     /**
      * Gets the deserialized response body.
-     *
+     * 
      * @return the deserialized response body.
      */
     @Override

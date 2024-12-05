@@ -27,7 +27,7 @@ public final class ServersStopMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.servers().stop("z", "zhokvbwnhh", com.azure.core.util.Context.NONE);
+        manager.servers().stop("bzevwrd", "hfuk", com.azure.core.util.Context.NONE);
 
     }
 }

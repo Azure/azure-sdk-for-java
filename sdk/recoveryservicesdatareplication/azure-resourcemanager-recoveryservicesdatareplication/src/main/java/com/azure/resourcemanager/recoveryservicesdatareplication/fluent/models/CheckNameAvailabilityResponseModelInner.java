@@ -5,36 +5,42 @@
 package com.azure.resourcemanager.recoveryservicesdatareplication.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Check name availability response model. */
+/**
+ * Check name availability response model.
+ */
 @Fluent
-public final class CheckNameAvailabilityResponseModelInner {
+public final class CheckNameAvailabilityResponseModelInner
+    implements JsonSerializable<CheckNameAvailabilityResponseModelInner> {
     /*
      * Gets or sets a value indicating whether resource name is available or not.
      */
-    @JsonProperty(value = "nameAvailable")
     private Boolean nameAvailable;
 
     /*
      * Gets or sets the reason for resource name unavailability.
      */
-    @JsonProperty(value = "reason")
     private String reason;
 
     /*
      * Gets or sets the message for resource name unavailability.
      */
-    @JsonProperty(value = "message")
     private String message;
 
-    /** Creates an instance of CheckNameAvailabilityResponseModelInner class. */
+    /**
+     * Creates an instance of CheckNameAvailabilityResponseModelInner class.
+     */
     public CheckNameAvailabilityResponseModelInner() {
     }
 
     /**
      * Get the nameAvailable property: Gets or sets a value indicating whether resource name is available or not.
-     *
+     * 
      * @return the nameAvailable value.
      */
     public Boolean nameAvailable() {
@@ -43,7 +49,7 @@ public final class CheckNameAvailabilityResponseModelInner {
 
     /**
      * Set the nameAvailable property: Gets or sets a value indicating whether resource name is available or not.
-     *
+     * 
      * @param nameAvailable the nameAvailable value to set.
      * @return the CheckNameAvailabilityResponseModelInner object itself.
      */
@@ -54,7 +60,7 @@ public final class CheckNameAvailabilityResponseModelInner {
 
     /**
      * Get the reason property: Gets or sets the reason for resource name unavailability.
-     *
+     * 
      * @return the reason value.
      */
     public String reason() {
@@ -63,7 +69,7 @@ public final class CheckNameAvailabilityResponseModelInner {
 
     /**
      * Set the reason property: Gets or sets the reason for resource name unavailability.
-     *
+     * 
      * @param reason the reason value to set.
      * @return the CheckNameAvailabilityResponseModelInner object itself.
      */
@@ -74,7 +80,7 @@ public final class CheckNameAvailabilityResponseModelInner {
 
     /**
      * Get the message property: Gets or sets the message for resource name unavailability.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -83,7 +89,7 @@ public final class CheckNameAvailabilityResponseModelInner {
 
     /**
      * Set the message property: Gets or sets the message for resource name unavailability.
-     *
+     * 
      * @param message the message value to set.
      * @return the CheckNameAvailabilityResponseModelInner object itself.
      */
@@ -94,9 +100,53 @@ public final class CheckNameAvailabilityResponseModelInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("nameAvailable", this.nameAvailable);
+        jsonWriter.writeStringField("reason", this.reason);
+        jsonWriter.writeStringField("message", this.message);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CheckNameAvailabilityResponseModelInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CheckNameAvailabilityResponseModelInner if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CheckNameAvailabilityResponseModelInner.
+     */
+    public static CheckNameAvailabilityResponseModelInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CheckNameAvailabilityResponseModelInner deserializedCheckNameAvailabilityResponseModelInner
+                = new CheckNameAvailabilityResponseModelInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("nameAvailable".equals(fieldName)) {
+                    deserializedCheckNameAvailabilityResponseModelInner.nameAvailable
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("reason".equals(fieldName)) {
+                    deserializedCheckNameAvailabilityResponseModelInner.reason = reader.getString();
+                } else if ("message".equals(fieldName)) {
+                    deserializedCheckNameAvailabilityResponseModelInner.message = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCheckNameAvailabilityResponseModelInner;
+        });
     }
 }

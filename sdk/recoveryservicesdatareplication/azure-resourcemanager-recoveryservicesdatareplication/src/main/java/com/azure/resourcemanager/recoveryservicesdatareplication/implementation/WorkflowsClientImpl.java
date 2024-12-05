@@ -30,17 +30,23 @@ import com.azure.resourcemanager.recoveryservicesdatareplication.fluent.models.W
 import com.azure.resourcemanager.recoveryservicesdatareplication.models.WorkflowModelCollection;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in WorkflowsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in WorkflowsClient.
+ */
 public final class WorkflowsClientImpl implements WorkflowsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final WorkflowsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final DataReplicationMgmtClientImpl client;
 
     /**
      * Initializes an instance of WorkflowsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     WorkflowsClientImpl(DataReplicationMgmtClientImpl client) {
@@ -86,9 +92,9 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
 
     /**
      * Gets the job (workflow).
-     *
-     * <p>Gets the details of the job.
-     *
+     * 
+     * Gets the details of the job.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param jobName The job (workflow) name.
@@ -127,9 +133,9 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
 
     /**
      * Gets the job (workflow).
-     *
-     * <p>Gets the details of the job.
-     *
+     * 
+     * Gets the details of the job.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param jobName The job (workflow) name.
@@ -168,9 +174,9 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
 
     /**
      * Gets the job (workflow).
-     *
-     * <p>Gets the details of the job.
-     *
+     * 
+     * Gets the details of the job.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param jobName The job (workflow) name.
@@ -187,9 +193,9 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
 
     /**
      * Gets the job (workflow).
-     *
-     * <p>Gets the details of the job.
-     *
+     * 
+     * Gets the details of the job.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param jobName The job (workflow) name.
@@ -207,9 +213,9 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
 
     /**
      * Gets the job (workflow).
-     *
-     * <p>Gets the details of the job.
-     *
+     * 
+     * Gets the details of the job.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param jobName The job (workflow) name.
@@ -225,9 +231,9 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
 
     /**
      * Lists the jobs (workflows).
-     *
-     * <p>Gets the list of jobs in the given vault.
-     *
+     * 
+     * Gets the list of jobs in the given vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param filter Filter string.
@@ -235,8 +241,8 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of jobs in the given vault along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the list of jobs in the given vault along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkflowModelInner>> listSinglePageAsync(String resourceGroupName, String vaultName,
@@ -267,9 +273,9 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
 
     /**
      * Lists the jobs (workflows).
-     *
-     * <p>Gets the list of jobs in the given vault.
-     *
+     * 
+     * Gets the list of jobs in the given vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param filter Filter string.
@@ -278,8 +284,8 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of jobs in the given vault along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the list of jobs in the given vault along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkflowModelInner>> listSinglePageAsync(String resourceGroupName, String vaultName,
@@ -310,9 +316,9 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
 
     /**
      * Lists the jobs (workflows).
-     *
-     * <p>Gets the list of jobs in the given vault.
-     *
+     * 
+     * Gets the list of jobs in the given vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param filter Filter string.
@@ -331,9 +337,9 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
 
     /**
      * Lists the jobs (workflows).
-     *
-     * <p>Gets the list of jobs in the given vault.
-     *
+     * 
+     * Gets the list of jobs in the given vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -351,9 +357,9 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
 
     /**
      * Lists the jobs (workflows).
-     *
-     * <p>Gets the list of jobs in the given vault.
-     *
+     * 
+     * Gets the list of jobs in the given vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param filter Filter string.
@@ -374,9 +380,9 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
 
     /**
      * Lists the jobs (workflows).
-     *
-     * <p>Gets the list of jobs in the given vault.
-     *
+     * 
+     * Gets the list of jobs in the given vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -393,9 +399,9 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
 
     /**
      * Lists the jobs (workflows).
-     *
-     * <p>Gets the list of jobs in the given vault.
-     *
+     * 
+     * Gets the list of jobs in the given vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param filter Filter string.
@@ -414,9 +420,8 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -440,9 +445,8 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

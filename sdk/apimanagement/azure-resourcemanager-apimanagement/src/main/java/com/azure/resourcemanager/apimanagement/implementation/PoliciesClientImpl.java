@@ -35,17 +35,23 @@ import com.azure.resourcemanager.apimanagement.models.PolicyExportFormat;
 import com.azure.resourcemanager.apimanagement.models.PolicyIdName;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in PoliciesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in PoliciesClient.
+ */
 public final class PoliciesClientImpl implements PoliciesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final PoliciesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ApiManagementClientImpl client;
 
     /**
      * Initializes an instance of PoliciesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     PoliciesClientImpl(ApiManagementClientImpl client) {
@@ -112,14 +118,14 @@ public final class PoliciesClientImpl implements PoliciesClient {
 
     /**
      * Lists all the Global Policy definitions of the Api Management service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the list policy operation along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the response of the list policy operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PolicyCollectionInner>> listByServiceWithResponseAsync(String resourceGroupName,
@@ -148,15 +154,15 @@ public final class PoliciesClientImpl implements PoliciesClient {
 
     /**
      * Lists all the Global Policy definitions of the Api Management service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the list policy operation along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the response of the list policy operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PolicyCollectionInner>> listByServiceWithResponseAsync(String resourceGroupName,
@@ -184,7 +190,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
 
     /**
      * Lists all the Global Policy definitions of the Api Management service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -200,7 +206,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
 
     /**
      * Lists all the Global Policy definitions of the Api Management service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param context The context to associate with this operation.
@@ -217,7 +223,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
 
     /**
      * Lists all the Global Policy definitions of the Api Management service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -232,7 +238,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
 
     /**
      * Gets the entity state (Etag) version of the Global policy definition in the Api Management service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param policyId The identifier of the Policy.
@@ -240,7 +246,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity state (Etag) version of the Global policy definition in the Api Management service on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PoliciesGetEntityTagResponse> getEntityTagWithResponseAsync(String resourceGroupName,
@@ -272,7 +278,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
 
     /**
      * Gets the entity state (Etag) version of the Global policy definition in the Api Management service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param policyId The identifier of the Policy.
@@ -281,7 +287,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity state (Etag) version of the Global policy definition in the Api Management service on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PoliciesGetEntityTagResponse> getEntityTagWithResponseAsync(String resourceGroupName,
@@ -312,7 +318,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
 
     /**
      * Gets the entity state (Etag) version of the Global policy definition in the Api Management service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param policyId The identifier of the Policy.
@@ -320,7 +326,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity state (Etag) version of the Global policy definition in the Api Management service on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> getEntityTagAsync(String resourceGroupName, String serviceName, PolicyIdName policyId) {
@@ -329,7 +335,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
 
     /**
      * Gets the entity state (Etag) version of the Global policy definition in the Api Management service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param policyId The identifier of the Policy.
@@ -347,7 +353,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
 
     /**
      * Gets the entity state (Etag) version of the Global policy definition in the Api Management service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param policyId The identifier of the Policy.
@@ -362,7 +368,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
 
     /**
      * Get the Global policy definition of the Api Management service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param policyId The identifier of the Policy.
@@ -402,7 +408,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
 
     /**
      * Get the Global policy definition of the Api Management service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param policyId The identifier of the Policy.
@@ -442,7 +448,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
 
     /**
      * Get the Global policy definition of the Api Management service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param policyId The identifier of the Policy.
@@ -460,7 +466,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
 
     /**
      * Get the Global policy definition of the Api Management service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param policyId The identifier of the Policy.
@@ -479,7 +485,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
 
     /**
      * Get the Global policy definition of the Api Management service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param policyId The identifier of the Policy.
@@ -496,7 +502,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
 
     /**
      * Creates or updates the global policy configuration of the Api Management service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param policyId The identifier of the Policy.
@@ -543,7 +549,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
 
     /**
      * Creates or updates the global policy configuration of the Api Management service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param policyId The identifier of the Policy.
@@ -589,7 +595,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
 
     /**
      * Creates or updates the global policy configuration of the Api Management service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param policyId The identifier of the Policy.
@@ -609,7 +615,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
 
     /**
      * Creates or updates the global policy configuration of the Api Management service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param policyId The identifier of the Policy.
@@ -630,7 +636,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
 
     /**
      * Creates or updates the global policy configuration of the Api Management service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param policyId The identifier of the Policy.
@@ -650,12 +656,12 @@ public final class PoliciesClientImpl implements PoliciesClient {
 
     /**
      * Deletes the global policy configuration of the Api Management Service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param policyId The identifier of the Policy.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -694,12 +700,12 @@ public final class PoliciesClientImpl implements PoliciesClient {
 
     /**
      * Deletes the global policy configuration of the Api Management Service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param policyId The identifier of the Policy.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -738,12 +744,12 @@ public final class PoliciesClientImpl implements PoliciesClient {
 
     /**
      * Deletes the global policy configuration of the Api Management Service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param policyId The identifier of the Policy.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -758,12 +764,12 @@ public final class PoliciesClientImpl implements PoliciesClient {
 
     /**
      * Deletes the global policy configuration of the Api Management Service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param policyId The identifier of the Policy.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -778,12 +784,12 @@ public final class PoliciesClientImpl implements PoliciesClient {
 
     /**
      * Deletes the global policy configuration of the Api Management Service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param policyId The identifier of the Policy.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.

@@ -39,17 +39,23 @@ import com.azure.resourcemanager.apimanagement.models.ApiReleasesGetResponse;
 import com.azure.resourcemanager.apimanagement.models.ApiReleasesUpdateResponse;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ApiReleasesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ApiReleasesClient.
+ */
 public final class ApiReleasesClientImpl implements ApiReleasesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ApiReleasesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ApiManagementClientImpl client;
 
     /**
      * Initializes an instance of ApiReleasesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ApiReleasesClientImpl(ApiManagementClientImpl client) {
@@ -142,20 +148,20 @@ public final class ApiReleasesClientImpl implements ApiReleasesClient {
      * Lists all releases of an API. An API release is created when making an API Revision current. Releases are also
      * used to rollback to previous revisions. Results will be paged and can be constrained by the $top and $skip
      * parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param filter | Field | Usage | Supported operators | Supported functions
-     *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| notes | filter | ge, le,
-     *     eq, ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;.
+     * |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| notes | filter | ge, le, eq,
+     * ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;.
      * @param top Number of records to return.
      * @param skip Number of records to skip.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged ApiRelease list representation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return paged ApiRelease list representation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ApiReleaseContractInner>> listByServiceSinglePageAsync(String resourceGroupName,
@@ -192,21 +198,21 @@ public final class ApiReleasesClientImpl implements ApiReleasesClient {
      * Lists all releases of an API. An API release is created when making an API Revision current. Releases are also
      * used to rollback to previous revisions. Results will be paged and can be constrained by the $top and $skip
      * parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param filter | Field | Usage | Supported operators | Supported functions
-     *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| notes | filter | ge, le,
-     *     eq, ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;.
+     * |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| notes | filter | ge, le, eq,
+     * ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;.
      * @param top Number of records to return.
      * @param skip Number of records to skip.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged ApiRelease list representation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return paged ApiRelease list representation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ApiReleaseContractInner>> listByServiceSinglePageAsync(String resourceGroupName,
@@ -242,13 +248,13 @@ public final class ApiReleasesClientImpl implements ApiReleasesClient {
      * Lists all releases of an API. An API release is created when making an API Revision current. Releases are also
      * used to rollback to previous revisions. Results will be paged and can be constrained by the $top and $skip
      * parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param filter | Field | Usage | Supported operators | Supported functions
-     *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| notes | filter | ge, le,
-     *     eq, ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;.
+     * |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| notes | filter | ge, le, eq,
+     * ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;.
      * @param top Number of records to return.
      * @param skip Number of records to skip.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -268,7 +274,7 @@ public final class ApiReleasesClientImpl implements ApiReleasesClient {
      * Lists all releases of an API. An API release is created when making an API Revision current. Releases are also
      * used to rollback to previous revisions. Results will be paged and can be constrained by the $top and $skip
      * parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
@@ -292,13 +298,13 @@ public final class ApiReleasesClientImpl implements ApiReleasesClient {
      * Lists all releases of an API. An API release is created when making an API Revision current. Releases are also
      * used to rollback to previous revisions. Results will be paged and can be constrained by the $top and $skip
      * parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param filter | Field | Usage | Supported operators | Supported functions
-     *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| notes | filter | ge, le,
-     *     eq, ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;.
+     * |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| notes | filter | ge, le, eq,
+     * ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;.
      * @param top Number of records to return.
      * @param skip Number of records to skip.
      * @param context The context to associate with this operation.
@@ -319,7 +325,7 @@ public final class ApiReleasesClientImpl implements ApiReleasesClient {
      * Lists all releases of an API. An API release is created when making an API Revision current. Releases are also
      * used to rollback to previous revisions. Results will be paged and can be constrained by the $top and $skip
      * parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
@@ -341,13 +347,13 @@ public final class ApiReleasesClientImpl implements ApiReleasesClient {
      * Lists all releases of an API. An API release is created when making an API Revision current. Releases are also
      * used to rollback to previous revisions. Results will be paged and can be constrained by the $top and $skip
      * parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param filter | Field | Usage | Supported operators | Supported functions
-     *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| notes | filter | ge, le,
-     *     eq, ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;.
+     * |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| notes | filter | ge, le, eq,
+     * ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;.
      * @param top Number of records to return.
      * @param skip Number of records to skip.
      * @param context The context to associate with this operation.
@@ -365,7 +371,7 @@ public final class ApiReleasesClientImpl implements ApiReleasesClient {
 
     /**
      * Returns the etag of an API release.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
@@ -408,7 +414,7 @@ public final class ApiReleasesClientImpl implements ApiReleasesClient {
 
     /**
      * Returns the etag of an API release.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
@@ -451,7 +457,7 @@ public final class ApiReleasesClientImpl implements ApiReleasesClient {
 
     /**
      * Returns the etag of an API release.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
@@ -469,7 +475,7 @@ public final class ApiReleasesClientImpl implements ApiReleasesClient {
 
     /**
      * Returns the etag of an API release.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
@@ -488,7 +494,7 @@ public final class ApiReleasesClientImpl implements ApiReleasesClient {
 
     /**
      * Returns the etag of an API release.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
@@ -504,7 +510,7 @@ public final class ApiReleasesClientImpl implements ApiReleasesClient {
 
     /**
      * Returns the details of an API release.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
@@ -547,7 +553,7 @@ public final class ApiReleasesClientImpl implements ApiReleasesClient {
 
     /**
      * Returns the details of an API release.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
@@ -590,7 +596,7 @@ public final class ApiReleasesClientImpl implements ApiReleasesClient {
 
     /**
      * Returns the details of an API release.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
@@ -609,7 +615,7 @@ public final class ApiReleasesClientImpl implements ApiReleasesClient {
 
     /**
      * Returns the details of an API release.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
@@ -628,7 +634,7 @@ public final class ApiReleasesClientImpl implements ApiReleasesClient {
 
     /**
      * Returns the details of an API release.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
@@ -645,7 +651,7 @@ public final class ApiReleasesClientImpl implements ApiReleasesClient {
 
     /**
      * Creates a new Release for the API.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
@@ -696,7 +702,7 @@ public final class ApiReleasesClientImpl implements ApiReleasesClient {
 
     /**
      * Creates a new Release for the API.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
@@ -747,7 +753,7 @@ public final class ApiReleasesClientImpl implements ApiReleasesClient {
 
     /**
      * Creates a new Release for the API.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
@@ -768,7 +774,7 @@ public final class ApiReleasesClientImpl implements ApiReleasesClient {
 
     /**
      * Creates a new Release for the API.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
@@ -790,7 +796,7 @@ public final class ApiReleasesClientImpl implements ApiReleasesClient {
 
     /**
      * Creates a new Release for the API.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
@@ -811,13 +817,13 @@ public final class ApiReleasesClientImpl implements ApiReleasesClient {
 
     /**
      * Updates the details of the release of the API specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param releaseId Release identifier within an API. Must be unique in the current API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param parameters API Release Update parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -866,13 +872,13 @@ public final class ApiReleasesClientImpl implements ApiReleasesClient {
 
     /**
      * Updates the details of the release of the API specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param releaseId Release identifier within an API. Must be unique in the current API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param parameters API Release Update parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -920,13 +926,13 @@ public final class ApiReleasesClientImpl implements ApiReleasesClient {
 
     /**
      * Updates the details of the release of the API specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param releaseId Release identifier within an API. Must be unique in the current API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param parameters API Release Update parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -942,13 +948,13 @@ public final class ApiReleasesClientImpl implements ApiReleasesClient {
 
     /**
      * Updates the details of the release of the API specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param releaseId Release identifier within an API. Must be unique in the current API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param parameters API Release Update parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -965,13 +971,13 @@ public final class ApiReleasesClientImpl implements ApiReleasesClient {
 
     /**
      * Updates the details of the release of the API specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param releaseId Release identifier within an API. Must be unique in the current API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param parameters API Release Update parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -987,13 +993,13 @@ public final class ApiReleasesClientImpl implements ApiReleasesClient {
 
     /**
      * Deletes the specified release in the API.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param releaseId Release identifier within an API. Must be unique in the current API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1035,13 +1041,13 @@ public final class ApiReleasesClientImpl implements ApiReleasesClient {
 
     /**
      * Deletes the specified release in the API.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param releaseId Release identifier within an API. Must be unique in the current API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1083,13 +1089,13 @@ public final class ApiReleasesClientImpl implements ApiReleasesClient {
 
     /**
      * Deletes the specified release in the API.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param releaseId Release identifier within an API. Must be unique in the current API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1104,13 +1110,13 @@ public final class ApiReleasesClientImpl implements ApiReleasesClient {
 
     /**
      * Deletes the specified release in the API.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param releaseId Release identifier within an API. Must be unique in the current API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1125,13 +1131,13 @@ public final class ApiReleasesClientImpl implements ApiReleasesClient {
 
     /**
      * Deletes the specified release in the API.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API identifier. Must be unique in the current API Management service instance.
      * @param releaseId Release identifier within an API. Must be unique in the current API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1143,14 +1149,13 @@ public final class ApiReleasesClientImpl implements ApiReleasesClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged ApiRelease list representation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return paged ApiRelease list representation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ApiReleaseContractInner>> listByServiceNextSinglePageAsync(String nextLink) {
@@ -1171,15 +1176,14 @@ public final class ApiReleasesClientImpl implements ApiReleasesClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged ApiRelease list representation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return paged ApiRelease list representation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ApiReleaseContractInner>> listByServiceNextSinglePageAsync(String nextLink,

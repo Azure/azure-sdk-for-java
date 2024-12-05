@@ -5,13 +5,17 @@
 package com.azure.resourcemanager.devcenter.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.devcenter.models.CatalogConnectionState;
 import com.azure.resourcemanager.devcenter.models.CatalogSyncState;
 import com.azure.resourcemanager.devcenter.models.CatalogSyncType;
 import com.azure.resourcemanager.devcenter.models.GitCatalog;
 import com.azure.resourcemanager.devcenter.models.ProvisioningState;
 import com.azure.resourcemanager.devcenter.models.SyncStats;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
@@ -23,37 +27,31 @@ public final class CatalogProperties extends CatalogUpdateProperties {
     /*
      * The provisioning state of the resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * The synchronization state of the catalog.
      */
-    @JsonProperty(value = "syncState", access = JsonProperty.Access.WRITE_ONLY)
     private CatalogSyncState syncState;
 
     /*
      * Stats of the latest synchronization.
      */
-    @JsonProperty(value = "lastSyncStats", access = JsonProperty.Access.WRITE_ONLY)
     private SyncStats lastSyncStats;
 
     /*
      * The connection state of the catalog.
      */
-    @JsonProperty(value = "connectionState", access = JsonProperty.Access.WRITE_ONLY)
     private CatalogConnectionState connectionState;
 
     /*
      * When the catalog was last connected.
      */
-    @JsonProperty(value = "lastConnectionTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastConnectionTime;
 
     /*
      * When the catalog was last synced.
      */
-    @JsonProperty(value = "lastSyncTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastSyncTime;
 
     /**
@@ -159,9 +157,75 @@ public final class CatalogProperties extends CatalogUpdateProperties {
      */
     @Override
     public void validate() {
-        super.validate();
         if (lastSyncStats() != null) {
             lastSyncStats().validate();
         }
+        if (gitHub() != null) {
+            gitHub().validate();
+        }
+        if (adoGit() != null) {
+            adoGit().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("gitHub", gitHub());
+        jsonWriter.writeJsonField("adoGit", adoGit());
+        jsonWriter.writeStringField("syncType", syncType() == null ? null : syncType().toString());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CatalogProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CatalogProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CatalogProperties.
+     */
+    public static CatalogProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CatalogProperties deserializedCatalogProperties = new CatalogProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("gitHub".equals(fieldName)) {
+                    deserializedCatalogProperties.withGitHub(GitCatalog.fromJson(reader));
+                } else if ("adoGit".equals(fieldName)) {
+                    deserializedCatalogProperties.withAdoGit(GitCatalog.fromJson(reader));
+                } else if ("syncType".equals(fieldName)) {
+                    deserializedCatalogProperties.withSyncType(CatalogSyncType.fromString(reader.getString()));
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedCatalogProperties.withTags(tags);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedCatalogProperties.provisioningState = ProvisioningState.fromString(reader.getString());
+                } else if ("syncState".equals(fieldName)) {
+                    deserializedCatalogProperties.syncState = CatalogSyncState.fromString(reader.getString());
+                } else if ("lastSyncStats".equals(fieldName)) {
+                    deserializedCatalogProperties.lastSyncStats = SyncStats.fromJson(reader);
+                } else if ("connectionState".equals(fieldName)) {
+                    deserializedCatalogProperties.connectionState
+                        = CatalogConnectionState.fromString(reader.getString());
+                } else if ("lastConnectionTime".equals(fieldName)) {
+                    deserializedCatalogProperties.lastConnectionTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastSyncTime".equals(fieldName)) {
+                    deserializedCatalogProperties.lastSyncTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCatalogProperties;
+        });
     }
 }

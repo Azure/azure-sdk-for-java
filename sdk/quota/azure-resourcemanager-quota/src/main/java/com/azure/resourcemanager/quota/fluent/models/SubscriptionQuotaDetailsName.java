@@ -5,24 +5,26 @@
 package com.azure.resourcemanager.quota.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Name of the resource provided by the resource provider. This property is already included in the request URI, so it
  * is a readonly property returned in the response.
  */
 @Immutable
-public final class SubscriptionQuotaDetailsName {
+public final class SubscriptionQuotaDetailsName implements JsonSerializable<SubscriptionQuotaDetailsName> {
     /*
      * Resource name.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private String value;
 
     /*
      * Resource display name.
      */
-    @JsonProperty(value = "localizedValue", access = JsonProperty.Access.WRITE_ONLY)
     private String localizedValue;
 
     /**
@@ -55,5 +57,42 @@ public final class SubscriptionQuotaDetailsName {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SubscriptionQuotaDetailsName from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SubscriptionQuotaDetailsName if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SubscriptionQuotaDetailsName.
+     */
+    public static SubscriptionQuotaDetailsName fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SubscriptionQuotaDetailsName deserializedSubscriptionQuotaDetailsName = new SubscriptionQuotaDetailsName();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    deserializedSubscriptionQuotaDetailsName.value = reader.getString();
+                } else if ("localizedValue".equals(fieldName)) {
+                    deserializedSubscriptionQuotaDetailsName.localizedValue = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSubscriptionQuotaDetailsName;
+        });
     }
 }

@@ -133,6 +133,7 @@
       <Class name="com.azure.communication.callautomation.models.CallMediaRecognizeOptions" />
       <Class name="com.azure.communication.callautomation.models.OutStreamingData" />
       <Class name="com.azure.communication.callautomation.models.events.CallTransferAccepted" />
+    </Or>
   </Match>
   <Match>
     <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR" />

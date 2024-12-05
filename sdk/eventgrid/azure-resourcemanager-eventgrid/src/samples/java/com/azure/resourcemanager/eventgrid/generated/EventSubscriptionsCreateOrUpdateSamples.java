@@ -20,7 +20,9 @@ import com.azure.resourcemanager.eventgrid.models.WebhookEventSubscriptionDestin
  */
 public final class EventSubscriptionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/EventSubscriptions_CreateOrUpdateForCustomTopic_WebhookDestination.json
+     * x-ms-original-file:
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/
+     * EventSubscriptions_CreateOrUpdateForCustomTopic_WebhookDestination.json
      */
     /**
      * Sample code: EventSubscriptions_CreateOrUpdateForCustomTopic_WebhookDestination.
@@ -42,7 +44,9 @@ public final class EventSubscriptionsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/EventSubscriptions_CreateOrUpdateForSubscription.json
+     * x-ms-original-file:
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/
+     * EventSubscriptions_CreateOrUpdateForSubscription.json
      */
     /**
      * Sample code: EventSubscriptions_CreateOrUpdateForSubscription.
@@ -61,7 +65,9 @@ public final class EventSubscriptionsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/EventSubscriptions_CreateOrUpdateForCustomTopic_ServiceBusTopicDestination.json
+     * x-ms-original-file:
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/
+     * EventSubscriptions_CreateOrUpdateForCustomTopic_ServiceBusTopicDestination.json
      */
     /**
      * Sample code: EventSubscriptions_CreateOrUpdateForCustomTopic_ServiceBusTopicDestination.
@@ -87,7 +93,9 @@ public final class EventSubscriptionsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/EventSubscriptions_CreateOrUpdateForResource.json
+     * x-ms-original-file:
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/
+     * EventSubscriptions_CreateOrUpdateForResource.json
      */
     /**
      * Sample code: EventSubscriptions_CreateOrUpdateForResource.
@@ -110,7 +118,9 @@ public final class EventSubscriptionsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/EventSubscriptions_CreateOrUpdateForCustomTopic.json
+     * x-ms-original-file:
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/
+     * EventSubscriptions_CreateOrUpdateForCustomTopic.json
      */
     /**
      * Sample code: EventSubscriptions_CreateOrUpdateForCustomTopic.
@@ -132,7 +142,9 @@ public final class EventSubscriptionsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/EventSubscriptions_CreateOrUpdateForResourceGroup.json
+     * x-ms-original-file:
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/
+     * EventSubscriptions_CreateOrUpdateForResourceGroup.json
      */
     /**
      * Sample code: EventSubscriptions_CreateOrUpdateForResourceGroup.
@@ -154,7 +166,9 @@ public final class EventSubscriptionsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/EventSubscriptions_CreateOrUpdateForCustomTopic_EventHubDestination.json
+     * x-ms-original-file:
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/
+     * EventSubscriptions_CreateOrUpdateForCustomTopic_EventHubDestination.json
      */
     /**
      * Sample code: EventSubscriptions_CreateOrUpdateForCustomTopic_EventHubDestination.
@@ -179,7 +193,9 @@ public final class EventSubscriptionsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/EventSubscriptions_CreateOrUpdateForCustomTopic_StorageQueueDestination.json
+     * x-ms-original-file:
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/
+     * EventSubscriptions_CreateOrUpdateForCustomTopic_StorageQueueDestination.json
      */
     /**
      * Sample code: EventSubscriptions_CreateOrUpdateForCustomTopic_StorageQueueDestination.
@@ -207,7 +223,9 @@ public final class EventSubscriptionsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/EventSubscriptions_CreateOrUpdateForCustomTopic_AzureFunctionDestination.json
+     * x-ms-original-file:
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/
+     * EventSubscriptions_CreateOrUpdateForCustomTopic_AzureFunctionDestination.json
      */
     /**
      * Sample code: EventSubscriptions_CreateOrUpdateForCustomTopic_AzureFunctionDestination.
@@ -233,7 +251,9 @@ public final class EventSubscriptionsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/EventSubscriptions_CreateOrUpdateForCustomTopic_HybridConnectionDestination.json
+     * x-ms-original-file:
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/
+     * EventSubscriptions_CreateOrUpdateForCustomTopic_HybridConnectionDestination.json
      */
     /**
      * Sample code: EventSubscriptions_CreateOrUpdateForCustomTopic_HybridConnectionDestination.
@@ -259,7 +279,9 @@ public final class EventSubscriptionsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/EventSubscriptions_CreateOrUpdateForCustomTopic_ServiceBusQueueDestination.json
+     * x-ms-original-file:
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/
+     * EventSubscriptions_CreateOrUpdateForCustomTopic_ServiceBusQueueDestination.json
      */
     /**
      * Sample code: EventSubscriptions_CreateOrUpdateForCustomTopic_ServiceBusQueueDestination.

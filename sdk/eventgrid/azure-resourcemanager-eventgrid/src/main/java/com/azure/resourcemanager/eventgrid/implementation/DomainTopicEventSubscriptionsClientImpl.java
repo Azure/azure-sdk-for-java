@@ -37,8 +37,8 @@ import com.azure.resourcemanager.eventgrid.fluent.DomainTopicEventSubscriptionsC
 import com.azure.resourcemanager.eventgrid.fluent.models.DeliveryAttributeListResultInner;
 import com.azure.resourcemanager.eventgrid.fluent.models.EventSubscriptionFullUrlInner;
 import com.azure.resourcemanager.eventgrid.fluent.models.EventSubscriptionInner;
-import com.azure.resourcemanager.eventgrid.models.EventSubscriptionsListResult;
 import com.azure.resourcemanager.eventgrid.models.EventSubscriptionUpdateParameters;
+import com.azure.resourcemanager.eventgrid.models.EventSubscriptionsListResult;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -1749,9 +1749,7 @@ public final class DomainTopicEventSubscriptionsClientImpl implements DomainTopi
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1777,9 +1775,7 @@ public final class DomainTopicEventSubscriptionsClientImpl implements DomainTopi
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

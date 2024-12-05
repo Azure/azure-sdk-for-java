@@ -16,4 +16,6 @@ module com.azure.core.test.perf {
     requires io.netty.codec.http;
     requires okhttp3;
     requires io.vertx.core;
+
+    exports com.azure.perf.test.core;
 }

@@ -35,17 +35,23 @@ import com.azure.resourcemanager.apimanagement.models.ProductPoliciesGetEntityTa
 import com.azure.resourcemanager.apimanagement.models.ProductPoliciesGetResponse;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ProductPoliciesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ProductPoliciesClient.
+ */
 public final class ProductPoliciesClientImpl implements ProductPoliciesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ProductPoliciesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ApiManagementClientImpl client;
 
     /**
      * Initializes an instance of ProductPoliciesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ProductPoliciesClientImpl(ApiManagementClientImpl client) {
@@ -115,7 +121,7 @@ public final class ProductPoliciesClientImpl implements ProductPoliciesClient {
 
     /**
      * Get the policy configuration at the Product level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
@@ -123,7 +129,7 @@ public final class ProductPoliciesClientImpl implements ProductPoliciesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the policy configuration at the Product level along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PolicyCollectionInner>> listByProductWithResponseAsync(String resourceGroupName,
@@ -155,7 +161,7 @@ public final class ProductPoliciesClientImpl implements ProductPoliciesClient {
 
     /**
      * Get the policy configuration at the Product level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
@@ -164,7 +170,7 @@ public final class ProductPoliciesClientImpl implements ProductPoliciesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the policy configuration at the Product level along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PolicyCollectionInner>> listByProductWithResponseAsync(String resourceGroupName,
@@ -195,7 +201,7 @@ public final class ProductPoliciesClientImpl implements ProductPoliciesClient {
 
     /**
      * Get the policy configuration at the Product level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
@@ -213,7 +219,7 @@ public final class ProductPoliciesClientImpl implements ProductPoliciesClient {
 
     /**
      * Get the policy configuration at the Product level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
@@ -231,7 +237,7 @@ public final class ProductPoliciesClientImpl implements ProductPoliciesClient {
 
     /**
      * Get the policy configuration at the Product level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
@@ -247,7 +253,7 @@ public final class ProductPoliciesClientImpl implements ProductPoliciesClient {
 
     /**
      * Get the ETag of the policy configuration at the Product level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
@@ -290,7 +296,7 @@ public final class ProductPoliciesClientImpl implements ProductPoliciesClient {
 
     /**
      * Get the ETag of the policy configuration at the Product level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
@@ -333,7 +339,7 @@ public final class ProductPoliciesClientImpl implements ProductPoliciesClient {
 
     /**
      * Get the ETag of the policy configuration at the Product level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
@@ -352,7 +358,7 @@ public final class ProductPoliciesClientImpl implements ProductPoliciesClient {
 
     /**
      * Get the ETag of the policy configuration at the Product level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
@@ -371,7 +377,7 @@ public final class ProductPoliciesClientImpl implements ProductPoliciesClient {
 
     /**
      * Get the ETag of the policy configuration at the Product level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
@@ -387,7 +393,7 @@ public final class ProductPoliciesClientImpl implements ProductPoliciesClient {
 
     /**
      * Get the policy configuration at the Product level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
@@ -431,7 +437,7 @@ public final class ProductPoliciesClientImpl implements ProductPoliciesClient {
 
     /**
      * Get the policy configuration at the Product level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
@@ -475,7 +481,7 @@ public final class ProductPoliciesClientImpl implements ProductPoliciesClient {
 
     /**
      * Get the policy configuration at the Product level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
@@ -495,7 +501,7 @@ public final class ProductPoliciesClientImpl implements ProductPoliciesClient {
 
     /**
      * Get the policy configuration at the Product level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
@@ -515,7 +521,7 @@ public final class ProductPoliciesClientImpl implements ProductPoliciesClient {
 
     /**
      * Get the policy configuration at the Product level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
@@ -534,7 +540,7 @@ public final class ProductPoliciesClientImpl implements ProductPoliciesClient {
 
     /**
      * Creates or updates policy configuration for the Product.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
@@ -585,7 +591,7 @@ public final class ProductPoliciesClientImpl implements ProductPoliciesClient {
 
     /**
      * Creates or updates policy configuration for the Product.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
@@ -636,7 +642,7 @@ public final class ProductPoliciesClientImpl implements ProductPoliciesClient {
 
     /**
      * Creates or updates policy configuration for the Product.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
@@ -657,7 +663,7 @@ public final class ProductPoliciesClientImpl implements ProductPoliciesClient {
 
     /**
      * Creates or updates policy configuration for the Product.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
@@ -680,7 +686,7 @@ public final class ProductPoliciesClientImpl implements ProductPoliciesClient {
 
     /**
      * Creates or updates policy configuration for the Product.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
@@ -701,13 +707,13 @@ public final class ProductPoliciesClientImpl implements ProductPoliciesClient {
 
     /**
      * Deletes the policy configuration at the Product.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
      * @param policyId The identifier of the Policy.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -749,13 +755,13 @@ public final class ProductPoliciesClientImpl implements ProductPoliciesClient {
 
     /**
      * Deletes the policy configuration at the Product.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
      * @param policyId The identifier of the Policy.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -797,13 +803,13 @@ public final class ProductPoliciesClientImpl implements ProductPoliciesClient {
 
     /**
      * Deletes the policy configuration at the Product.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
      * @param policyId The identifier of the Policy.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -818,13 +824,13 @@ public final class ProductPoliciesClientImpl implements ProductPoliciesClient {
 
     /**
      * Deletes the policy configuration at the Product.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
      * @param policyId The identifier of the Policy.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -839,13 +845,13 @@ public final class ProductPoliciesClientImpl implements ProductPoliciesClient {
 
     /**
      * Deletes the policy configuration at the Product.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
      * @param policyId The identifier of the Policy.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.

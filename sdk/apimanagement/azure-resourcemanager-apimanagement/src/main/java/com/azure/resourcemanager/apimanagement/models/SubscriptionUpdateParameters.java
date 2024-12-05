@@ -5,26 +5,33 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.apimanagement.fluent.models.SubscriptionUpdateParameterProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** Subscription update details. */
+/**
+ * Subscription update details.
+ */
 @Fluent
-public final class SubscriptionUpdateParameters {
+public final class SubscriptionUpdateParameters implements JsonSerializable<SubscriptionUpdateParameters> {
     /*
      * Subscription Update contract properties.
      */
-    @JsonProperty(value = "properties")
     private SubscriptionUpdateParameterProperties innerProperties;
 
-    /** Creates an instance of SubscriptionUpdateParameters class. */
+    /**
+     * Creates an instance of SubscriptionUpdateParameters class.
+     */
     public SubscriptionUpdateParameters() {
     }
 
     /**
      * Get the innerProperties property: Subscription Update contract properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SubscriptionUpdateParameterProperties innerProperties() {
@@ -33,7 +40,7 @@ public final class SubscriptionUpdateParameters {
 
     /**
      * Get the ownerId property: User identifier path: /users/{userId}.
-     *
+     * 
      * @return the ownerId value.
      */
     public String ownerId() {
@@ -42,7 +49,7 @@ public final class SubscriptionUpdateParameters {
 
     /**
      * Set the ownerId property: User identifier path: /users/{userId}.
-     *
+     * 
      * @param ownerId the ownerId value to set.
      * @return the SubscriptionUpdateParameters object itself.
      */
@@ -56,7 +63,7 @@ public final class SubscriptionUpdateParameters {
 
     /**
      * Get the scope property: Scope like /products/{productId} or /apis or /apis/{apiId}.
-     *
+     * 
      * @return the scope value.
      */
     public String scope() {
@@ -65,7 +72,7 @@ public final class SubscriptionUpdateParameters {
 
     /**
      * Set the scope property: Scope like /products/{productId} or /apis or /apis/{apiId}.
-     *
+     * 
      * @param scope the scope value to set.
      * @return the SubscriptionUpdateParameters object itself.
      */
@@ -82,7 +89,7 @@ public final class SubscriptionUpdateParameters {
      * subscription is not automatically expired. The subscription lifecycle can be managed by using the `state`
      * property. The date conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601
      * standard.
-     *
+     * 
      * @return the expirationDate value.
      */
     public OffsetDateTime expirationDate() {
@@ -94,7 +101,7 @@ public final class SubscriptionUpdateParameters {
      * subscription is not automatically expired. The subscription lifecycle can be managed by using the `state`
      * property. The date conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601
      * standard.
-     *
+     * 
      * @param expirationDate the expirationDate value to set.
      * @return the SubscriptionUpdateParameters object itself.
      */
@@ -108,7 +115,7 @@ public final class SubscriptionUpdateParameters {
 
     /**
      * Get the displayName property: Subscription name.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -117,7 +124,7 @@ public final class SubscriptionUpdateParameters {
 
     /**
      * Set the displayName property: Subscription name.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the SubscriptionUpdateParameters object itself.
      */
@@ -131,7 +138,7 @@ public final class SubscriptionUpdateParameters {
 
     /**
      * Get the primaryKey property: Primary subscription key.
-     *
+     * 
      * @return the primaryKey value.
      */
     public String primaryKey() {
@@ -140,7 +147,7 @@ public final class SubscriptionUpdateParameters {
 
     /**
      * Set the primaryKey property: Primary subscription key.
-     *
+     * 
      * @param primaryKey the primaryKey value to set.
      * @return the SubscriptionUpdateParameters object itself.
      */
@@ -154,7 +161,7 @@ public final class SubscriptionUpdateParameters {
 
     /**
      * Get the secondaryKey property: Secondary subscription key.
-     *
+     * 
      * @return the secondaryKey value.
      */
     public String secondaryKey() {
@@ -163,7 +170,7 @@ public final class SubscriptionUpdateParameters {
 
     /**
      * Set the secondaryKey property: Secondary subscription key.
-     *
+     * 
      * @param secondaryKey the secondaryKey value to set.
      * @return the SubscriptionUpdateParameters object itself.
      */
@@ -181,7 +188,7 @@ public final class SubscriptionUpdateParameters {
      * the subscription request has been made by the developer, but has not yet been approved or rejected, * rejected –
      * the subscription request has been denied by an administrator, * cancelled – the subscription has been cancelled
      * by the developer or administrator, * expired – the subscription reached its expiration date and was deactivated.
-     *
+     * 
      * @return the state value.
      */
     public SubscriptionState state() {
@@ -194,7 +201,7 @@ public final class SubscriptionUpdateParameters {
      * the subscription request has been made by the developer, but has not yet been approved or rejected, * rejected –
      * the subscription request has been denied by an administrator, * cancelled – the subscription has been cancelled
      * by the developer or administrator, * expired – the subscription reached its expiration date and was deactivated.
-     *
+     * 
      * @param state the state value to set.
      * @return the SubscriptionUpdateParameters object itself.
      */
@@ -209,7 +216,7 @@ public final class SubscriptionUpdateParameters {
     /**
      * Get the stateComment property: Comments describing subscription state change by the administrator when the state
      * is changed to the 'rejected'.
-     *
+     * 
      * @return the stateComment value.
      */
     public String stateComment() {
@@ -219,7 +226,7 @@ public final class SubscriptionUpdateParameters {
     /**
      * Set the stateComment property: Comments describing subscription state change by the administrator when the state
      * is changed to the 'rejected'.
-     *
+     * 
      * @param stateComment the stateComment value to set.
      * @return the SubscriptionUpdateParameters object itself.
      */
@@ -233,7 +240,7 @@ public final class SubscriptionUpdateParameters {
 
     /**
      * Get the allowTracing property: Determines whether tracing can be enabled.
-     *
+     * 
      * @return the allowTracing value.
      */
     public Boolean allowTracing() {
@@ -242,7 +249,7 @@ public final class SubscriptionUpdateParameters {
 
     /**
      * Set the allowTracing property: Determines whether tracing can be enabled.
-     *
+     * 
      * @param allowTracing the allowTracing value to set.
      * @return the SubscriptionUpdateParameters object itself.
      */
@@ -256,12 +263,49 @@ public final class SubscriptionUpdateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SubscriptionUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SubscriptionUpdateParameters if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SubscriptionUpdateParameters.
+     */
+    public static SubscriptionUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SubscriptionUpdateParameters deserializedSubscriptionUpdateParameters = new SubscriptionUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedSubscriptionUpdateParameters.innerProperties
+                        = SubscriptionUpdateParameterProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSubscriptionUpdateParameters;
+        });
     }
 }

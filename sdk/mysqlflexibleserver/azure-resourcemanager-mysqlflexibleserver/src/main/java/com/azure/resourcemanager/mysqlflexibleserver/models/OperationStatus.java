@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.mysqlflexibleserver.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * The operation status.
  */
@@ -56,7 +53,6 @@ public enum OperationStatus {
      * @param value the serialized value to parse.
      * @return the parsed OperationStatus object, or null if unable to parse.
      */
-    @JsonCreator
     public static OperationStatus fromString(String value) {
         if (value == null) {
             return null;
@@ -73,7 +69,6 @@ public enum OperationStatus {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

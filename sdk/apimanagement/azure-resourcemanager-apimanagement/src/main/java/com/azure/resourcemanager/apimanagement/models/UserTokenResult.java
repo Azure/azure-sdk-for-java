@@ -6,18 +6,20 @@ package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.resourcemanager.apimanagement.fluent.models.UserTokenResultInner;
 
-/** An immutable client-side representation of UserTokenResult. */
+/**
+ * An immutable client-side representation of UserTokenResult.
+ */
 public interface UserTokenResult {
     /**
      * Gets the value property: Shared Access Authorization token for the User.
-     *
+     * 
      * @return the value value.
      */
     String value();
 
     /**
      * Gets the inner com.azure.resourcemanager.apimanagement.fluent.models.UserTokenResultInner object.
-     *
+     * 
      * @return the inner object.
      */
     UserTokenResultInner innerModel();

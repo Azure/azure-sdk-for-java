@@ -8,80 +8,90 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.fluent.models.IssueCommentContractInner;
 import java.time.OffsetDateTime;
 
-/** An immutable client-side representation of IssueCommentContract. */
+/**
+ * An immutable client-side representation of IssueCommentContract.
+ */
 public interface IssueCommentContract {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the text property: Comment text.
-     *
+     * 
      * @return the text value.
      */
     String text();
 
     /**
      * Gets the createdDate property: Date and time when the comment was created.
-     *
+     * 
      * @return the createdDate value.
      */
     OffsetDateTime createdDate();
 
     /**
      * Gets the userId property: A resource identifier for the user who left the comment.
-     *
+     * 
      * @return the userId value.
      */
     String userId();
 
     /**
      * Gets the name of the resource group.
-     *
+     * 
      * @return the name of the resource group.
      */
     String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.apimanagement.fluent.models.IssueCommentContractInner object.
-     *
+     * 
      * @return the inner object.
      */
     IssueCommentContractInner innerModel();
 
-    /** The entirety of the IssueCommentContract definition. */
+    /**
+     * The entirety of the IssueCommentContract definition.
+     */
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
 
-    /** The IssueCommentContract definition stages. */
+    /**
+     * The IssueCommentContract definition stages.
+     */
     interface DefinitionStages {
-        /** The first stage of the IssueCommentContract definition. */
+        /**
+         * The first stage of the IssueCommentContract definition.
+         */
         interface Blank extends WithParentResource {
         }
 
-        /** The stage of the IssueCommentContract definition allowing to specify parent resource. */
+        /**
+         * The stage of the IssueCommentContract definition allowing to specify parent resource.
+         */
         interface WithParentResource {
             /**
              * Specifies resourceGroupName, serviceName, apiId, issueId.
-             *
+             * 
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @param serviceName The name of the API Management service.
              * @param apiId API identifier. Must be unique in the current API Management service instance.
@@ -99,61 +109,69 @@ public interface IssueCommentContract {
             DefinitionStages.WithUserId, DefinitionStages.WithIfMatch {
             /**
              * Executes the create request.
-             *
+             * 
              * @return the created resource.
              */
             IssueCommentContract create();
 
             /**
              * Executes the create request.
-             *
+             * 
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
             IssueCommentContract create(Context context);
         }
 
-        /** The stage of the IssueCommentContract definition allowing to specify text. */
+        /**
+         * The stage of the IssueCommentContract definition allowing to specify text.
+         */
         interface WithText {
             /**
              * Specifies the text property: Comment text..
-             *
+             * 
              * @param text Comment text.
              * @return the next definition stage.
              */
             WithCreate withText(String text);
         }
 
-        /** The stage of the IssueCommentContract definition allowing to specify createdDate. */
+        /**
+         * The stage of the IssueCommentContract definition allowing to specify createdDate.
+         */
         interface WithCreatedDate {
             /**
              * Specifies the createdDate property: Date and time when the comment was created..
-             *
+             * 
              * @param createdDate Date and time when the comment was created.
              * @return the next definition stage.
              */
             WithCreate withCreatedDate(OffsetDateTime createdDate);
         }
 
-        /** The stage of the IssueCommentContract definition allowing to specify userId. */
+        /**
+         * The stage of the IssueCommentContract definition allowing to specify userId.
+         */
         interface WithUserId {
             /**
              * Specifies the userId property: A resource identifier for the user who left the comment..
-             *
+             * 
              * @param userId A resource identifier for the user who left the comment.
              * @return the next definition stage.
              */
             WithCreate withUserId(String userId);
         }
 
-        /** The stage of the IssueCommentContract definition allowing to specify ifMatch. */
+        /**
+         * The stage of the IssueCommentContract definition allowing to specify ifMatch.
+         */
         interface WithIfMatch {
             /**
              * Specifies the ifMatch property: ETag of the Entity. Not required when creating an entity, but required
              * when updating an entity..
-             *
+             * 
              * @param ifMatch ETag of the Entity. Not required when creating an entity, but required when updating an
-             *     entity.
+             * entity.
              * @return the next definition stage.
              */
             WithCreate withIfMatch(String ifMatch);
@@ -162,73 +180,85 @@ public interface IssueCommentContract {
 
     /**
      * Begins update for the IssueCommentContract resource.
-     *
+     * 
      * @return the stage of resource update.
      */
     IssueCommentContract.Update update();
 
-    /** The template for IssueCommentContract update. */
+    /**
+     * The template for IssueCommentContract update.
+     */
     interface Update
         extends UpdateStages.WithText, UpdateStages.WithCreatedDate, UpdateStages.WithUserId, UpdateStages.WithIfMatch {
         /**
          * Executes the update request.
-         *
+         * 
          * @return the updated resource.
          */
         IssueCommentContract apply();
 
         /**
          * Executes the update request.
-         *
+         * 
          * @param context The context to associate with this operation.
          * @return the updated resource.
          */
         IssueCommentContract apply(Context context);
     }
 
-    /** The IssueCommentContract update stages. */
+    /**
+     * The IssueCommentContract update stages.
+     */
     interface UpdateStages {
-        /** The stage of the IssueCommentContract update allowing to specify text. */
+        /**
+         * The stage of the IssueCommentContract update allowing to specify text.
+         */
         interface WithText {
             /**
              * Specifies the text property: Comment text..
-             *
+             * 
              * @param text Comment text.
              * @return the next definition stage.
              */
             Update withText(String text);
         }
 
-        /** The stage of the IssueCommentContract update allowing to specify createdDate. */
+        /**
+         * The stage of the IssueCommentContract update allowing to specify createdDate.
+         */
         interface WithCreatedDate {
             /**
              * Specifies the createdDate property: Date and time when the comment was created..
-             *
+             * 
              * @param createdDate Date and time when the comment was created.
              * @return the next definition stage.
              */
             Update withCreatedDate(OffsetDateTime createdDate);
         }
 
-        /** The stage of the IssueCommentContract update allowing to specify userId. */
+        /**
+         * The stage of the IssueCommentContract update allowing to specify userId.
+         */
         interface WithUserId {
             /**
              * Specifies the userId property: A resource identifier for the user who left the comment..
-             *
+             * 
              * @param userId A resource identifier for the user who left the comment.
              * @return the next definition stage.
              */
             Update withUserId(String userId);
         }
 
-        /** The stage of the IssueCommentContract update allowing to specify ifMatch. */
+        /**
+         * The stage of the IssueCommentContract update allowing to specify ifMatch.
+         */
         interface WithIfMatch {
             /**
              * Specifies the ifMatch property: ETag of the Entity. Not required when creating an entity, but required
              * when updating an entity..
-             *
+             * 
              * @param ifMatch ETag of the Entity. Not required when creating an entity, but required when updating an
-             *     entity.
+             * entity.
              * @return the next definition stage.
              */
             Update withIfMatch(String ifMatch);
@@ -237,14 +267,14 @@ public interface IssueCommentContract {
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @return the refreshed resource.
      */
     IssueCommentContract refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */
