@@ -44,7 +44,7 @@ public class CosmosExceptionUtils {
             switch (cosmosException.getStatusCode()) {
                 case HttpConstants.StatusCodes.BADREQUEST -> throw new CosmosBadRequestException(message, cosmosException);
                 case HttpConstants.StatusCodes.CONFLICT -> throw new CosmosConflictException(message, cosmosException);
-                case HttpConstants.StatusCodes.FORBIDDEN -> throw new CosmosForbiddenException(message, unwrappedThrowable);
+                case HttpConstants.StatusCodes.FORBIDDEN -> throw new CosmosForbiddenException(message, cosmosException);
                 case HttpConstants.StatusCodes.GONE-> {
                     switch(cosmosException.getSubStatusCode()) {
                         case HttpConstants.SubStatusCodes.NAME_CACHE_IS_STALE -> throw new CosmosInvalidPartitionException(message, unwrappedThrowable);
