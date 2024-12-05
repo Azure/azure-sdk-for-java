@@ -93,11 +93,5 @@
       <version>1.14.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>com.knuddels</groupId>
-      <artifactId>jtokkit</artifactId>
-      <version>1.0.0</version> <!-- {x-version-update;com.knuddels:jtokkit;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
   </dependencies>
 </project>

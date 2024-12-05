@@ -28,7 +28,7 @@ public final class ContentFilterDetailedResults implements JsonSerializable<Cont
      * The collection of detailed blocklist result information.
      */
     @Generated
-    private List<ContentFilterBlocklistIdResult> details;
+    private final List<ContentFilterBlocklistIdResult> details;
 
     /**
      * Get the filtered property: A value indicating whether or not the content has been filtered.
@@ -87,10 +87,7 @@ public final class ContentFilterDetailedResults implements JsonSerializable<Cont
                     reader.skipChildren();
                 }
             }
-            ContentFilterDetailedResults deserializedContentFilterDetailedResults
-                = new ContentFilterDetailedResults(filtered);
-            deserializedContentFilterDetailedResults.details = details;
-            return deserializedContentFilterDetailedResults;
+            return new ContentFilterDetailedResults(filtered, details);
         });
     }
 
@@ -98,9 +95,11 @@ public final class ContentFilterDetailedResults implements JsonSerializable<Cont
      * Creates an instance of ContentFilterDetailedResults class.
      *
      * @param filtered the filtered value to set.
+     * @param details the details value to set.
      */
     @Generated
-    private ContentFilterDetailedResults(boolean filtered) {
+    private ContentFilterDetailedResults(boolean filtered, List<ContentFilterBlocklistIdResult> details) {
         this.filtered = filtered;
+        this.details = details;
     }
 }
