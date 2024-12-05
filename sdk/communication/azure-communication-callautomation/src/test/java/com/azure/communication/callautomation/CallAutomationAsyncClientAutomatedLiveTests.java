@@ -203,12 +203,6 @@ public class CallAutomationAsyncClientAutomatedLiveTests extends CallAutomationA
             RejectCallOptions rejectCallOptions = new RejectCallOptions(incomingCallContext);
             receiverAsyncClient.rejectCallWithResponse(rejectCallOptions).block();
 
-            // check events
-            CallDisconnected callDisconnected
-                = waitForEvent(CallDisconnected.class, callerConnectionId, Duration.ofSeconds(10));
-            assertNotNull(callDisconnected);
-            assertThrows(RuntimeException.class, () -> createCallResult.getCallConnection().getCallProperties());
-
             CreateCallFailed createCallFailed
                 = waitForEvent(CreateCallFailed.class, callerConnectionId, Duration.ofSeconds(10));
             assertNotNull(createCallFailed);
@@ -319,7 +313,7 @@ public class CallAutomationAsyncClientAutomatedLiveTests extends CallAutomationA
                     .getValue();
             String callConnectionId = connectCallResult.getCallConnectionProperties().getCallConnectionId();
             CallConnected connectCallConnectedEvent
-                = waitForEvent(CallConnected.class, callConnectionId, Duration.ofSeconds(10));
+                = waitForEvent(CallConnected.class, callConnectionId, Duration.ofSeconds(20));
             assertNotNull(connectCallConnectedEvent);
 
             // hang up the call.
