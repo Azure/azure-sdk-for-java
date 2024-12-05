@@ -11,6 +11,7 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.models.CustomMatcher;
@@ -28,12 +29,14 @@ import com.azure.storage.file.share.models.LeaseStateType;
 import com.azure.storage.file.share.models.ListSharesOptions;
 import com.azure.storage.file.share.models.ShareItem;
 import com.azure.storage.file.share.models.ShareSnapshotsDeleteOptionType;
+import com.azure.storage.file.share.models.ShareStorageException;
 import com.azure.storage.file.share.options.ShareAcquireLeaseOptions;
 import com.azure.storage.file.share.options.ShareBreakLeaseOptions;
 import com.azure.storage.file.share.options.ShareDeleteOptions;
 import com.azure.storage.file.share.specialized.ShareLeaseAsyncClient;
 import com.azure.storage.file.share.specialized.ShareLeaseClient;
 import com.azure.storage.file.share.specialized.ShareLeaseClientBuilder;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.URL;
@@ -475,6 +478,16 @@ public class FileShareTestBase extends TestProxyTestBase {
         }
         // Or handle the case when all retries are exhausted
         return null;
+    }
+
+    public Mono<Response<String>> retryAsync(Supplier<Mono<Response<String>>> action,
+        Predicate<ShareStorageException> retryPredicate, int times, Duration delay) {
+        return Flux.range(1, times).flatMap(attempt -> action.get().onErrorResume(ShareStorageException.class, e -> {
+            if (retryPredicate.test(e)) {
+                return Mono.delay(delay).then(Mono.empty());
+            }
+            return Mono.error(e);
+        })).next().switchIfEmpty(Mono.error(new RuntimeException("Retries exhausted")));
     }
 
     protected String getAuthToken() {

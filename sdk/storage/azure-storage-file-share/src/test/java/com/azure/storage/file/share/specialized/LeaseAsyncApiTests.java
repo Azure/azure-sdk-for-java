@@ -349,15 +349,13 @@ public class LeaseAsyncApiTests extends FileShareTestBase {
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2020-02-10")
     @Test
     public void acquireShareLeaseSnapshot() {
-        Mono<String> shareSnapshotMono = shareAsyncClient.createSnapshot().map(ShareSnapshotInfo::getSnapshot);
-        Mono<ShareAsyncClient> scMono = shareSnapshotMono
-            .map(snapshot -> shareBuilderHelper(shareAsyncClient.getShareName(), snapshot).buildAsyncClient());
-
-        StepVerifier.create(scMono.flatMap(sc -> {
+        Mono<Response<String>> response = shareAsyncClient.createSnapshot().flatMap(snapshotInfo -> {
+            ShareAsyncClient sc
+                = shareBuilderHelper(shareAsyncClient.getShareName(), snapshotInfo.getSnapshot()).buildAsyncClient();
             ShareLeaseAsyncClient leaseClient = createLeaseClient(sc);
 
             Supplier<Mono<Response<String>>> action
-                = () -> leaseClient.acquireLeaseWithResponse(new ShareAcquireLeaseOptions().setDuration(-1), null);
+                = () -> leaseClient.acquireLeaseWithResponse(new ShareAcquireLeaseOptions().setDuration(-1));
 
             Predicate<ShareStorageException> retryPredicate
                 = it -> it.getErrorCode() == ShareErrorCode.SHARE_SNAPSHOT_IN_PROGRESS;
@@ -365,16 +363,14 @@ public class LeaseAsyncApiTests extends FileShareTestBase {
             int times = 6;
             Duration delay = Duration.ofSeconds(10);
 
-            try {
-                return retry(action, retryPredicate, times, delay).flatMap(resp -> {
-                    assertNotNull(resp);
-                    assertEquals(201, resp.getStatusCode());
-                    return createLeaseClient(sc, resp.getValue()).releaseLeaseWithResponse(null).then(Mono.empty());
-                });
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-        })).verifyComplete();
+            return retryAsync(action, retryPredicate, times, delay)
+                .flatMap(resp -> createLeaseClient(sc, resp.getValue()).releaseLease().thenReturn(resp));
+        });
+
+        StepVerifier.create(response).assertNext(resp -> {
+            assertNotNull(resp);
+            assertEquals(201, resp.getStatusCode());
+        }).verifyComplete();
     }
 
     @Test
