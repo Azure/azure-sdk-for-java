@@ -183,6 +183,11 @@ public final class DatabaseAccountUpdateProperties implements JsonSerializable<D
      */
     private String customerManagedKeyStatus;
 
+    /*
+     * Flag to indicate enabling/disabling of PerRegionPerPartitionAutoscale feature on the account
+     */
+    private Boolean enablePerRegionPerPartitionAutoscale;
+
     /**
      * Creates an instance of DatabaseAccountUpdateProperties class.
      */
@@ -790,6 +795,29 @@ public final class DatabaseAccountUpdateProperties implements JsonSerializable<D
     }
 
     /**
+     * Get the enablePerRegionPerPartitionAutoscale property: Flag to indicate enabling/disabling of
+     * PerRegionPerPartitionAutoscale feature on the account.
+     * 
+     * @return the enablePerRegionPerPartitionAutoscale value.
+     */
+    public Boolean enablePerRegionPerPartitionAutoscale() {
+        return this.enablePerRegionPerPartitionAutoscale;
+    }
+
+    /**
+     * Set the enablePerRegionPerPartitionAutoscale property: Flag to indicate enabling/disabling of
+     * PerRegionPerPartitionAutoscale feature on the account.
+     * 
+     * @param enablePerRegionPerPartitionAutoscale the enablePerRegionPerPartitionAutoscale value to set.
+     * @return the DatabaseAccountUpdateProperties object itself.
+     */
+    public DatabaseAccountUpdateProperties
+        withEnablePerRegionPerPartitionAutoscale(Boolean enablePerRegionPerPartitionAutoscale) {
+        this.enablePerRegionPerPartitionAutoscale = enablePerRegionPerPartitionAutoscale;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -870,6 +898,7 @@ public final class DatabaseAccountUpdateProperties implements JsonSerializable<D
             this.minimalTlsVersion == null ? null : this.minimalTlsVersion.toString());
         jsonWriter.writeBooleanField("enableBurstCapacity", this.enableBurstCapacity);
         jsonWriter.writeStringField("customerManagedKeyStatus", this.customerManagedKeyStatus);
+        jsonWriter.writeBooleanField("enablePerRegionPerPartitionAutoscale", this.enablePerRegionPerPartitionAutoscale);
         return jsonWriter.writeEndObject();
     }
 
@@ -971,6 +1000,9 @@ public final class DatabaseAccountUpdateProperties implements JsonSerializable<D
                         = reader.getNullable(JsonReader::getBoolean);
                 } else if ("customerManagedKeyStatus".equals(fieldName)) {
                     deserializedDatabaseAccountUpdateProperties.customerManagedKeyStatus = reader.getString();
+                } else if ("enablePerRegionPerPartitionAutoscale".equals(fieldName)) {
+                    deserializedDatabaseAccountUpdateProperties.enablePerRegionPerPartitionAutoscale
+                        = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }
