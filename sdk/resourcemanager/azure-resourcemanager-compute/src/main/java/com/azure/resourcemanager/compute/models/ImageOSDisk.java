@@ -146,7 +146,6 @@ public final class ImageOSDisk extends ImageDisk {
      */
     @Override
     public void validate() {
-        super.validate();
         if (osType() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Missing required property osType in model ImageOSDisk"));
@@ -154,6 +153,9 @@ public final class ImageOSDisk extends ImageDisk {
         if (osState() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Missing required property osState in model ImageOSDisk"));
+        }
+        if (diskEncryptionSet() != null) {
+            diskEncryptionSet().validate();
         }
     }
 

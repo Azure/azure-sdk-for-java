@@ -16,6 +16,7 @@ import com.azure.resourcemanager.compute.models.GalleryImageVersionStorageProfil
 import com.azure.resourcemanager.compute.models.GalleryProvisioningState;
 import com.azure.resourcemanager.compute.models.ImageVersionSecurityProfile;
 import com.azure.resourcemanager.compute.models.ReplicationStatus;
+import com.azure.resourcemanager.compute.models.ValidationsProfile;
 import java.io.IOException;
 
 /**
@@ -52,6 +53,16 @@ public final class GalleryImageVersionProperties implements JsonSerializable<Gal
      * The security profile of a gallery image version
      */
     private ImageVersionSecurityProfile securityProfile;
+
+    /*
+     * Indicates if this is a soft-delete resource restoration request.
+     */
+    private Boolean restore;
+
+    /*
+     * This is the validations profile of a Gallery Image Version.
+     */
+    private ValidationsProfile validationsProfile;
 
     /**
      * Creates an instance of GalleryImageVersionProperties class.
@@ -158,6 +169,35 @@ public final class GalleryImageVersionProperties implements JsonSerializable<Gal
     }
 
     /**
+     * Get the restore property: Indicates if this is a soft-delete resource restoration request.
+     * 
+     * @return the restore value.
+     */
+    public Boolean restore() {
+        return this.restore;
+    }
+
+    /**
+     * Set the restore property: Indicates if this is a soft-delete resource restoration request.
+     * 
+     * @param restore the restore value to set.
+     * @return the GalleryImageVersionProperties object itself.
+     */
+    public GalleryImageVersionProperties withRestore(Boolean restore) {
+        this.restore = restore;
+        return this;
+    }
+
+    /**
+     * Get the validationsProfile property: This is the validations profile of a Gallery Image Version.
+     * 
+     * @return the validationsProfile value.
+     */
+    public ValidationsProfile validationsProfile() {
+        return this.validationsProfile;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -182,6 +222,9 @@ public final class GalleryImageVersionProperties implements JsonSerializable<Gal
         if (securityProfile() != null) {
             securityProfile().validate();
         }
+        if (validationsProfile() != null) {
+            validationsProfile().validate();
+        }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(GalleryImageVersionProperties.class);
@@ -196,6 +239,7 @@ public final class GalleryImageVersionProperties implements JsonSerializable<Gal
         jsonWriter.writeJsonField("publishingProfile", this.publishingProfile);
         jsonWriter.writeJsonField("safetyProfile", this.safetyProfile);
         jsonWriter.writeJsonField("securityProfile", this.securityProfile);
+        jsonWriter.writeBooleanField("restore", this.restore);
         return jsonWriter.writeEndObject();
     }
 
@@ -233,6 +277,10 @@ public final class GalleryImageVersionProperties implements JsonSerializable<Gal
                 } else if ("securityProfile".equals(fieldName)) {
                     deserializedGalleryImageVersionProperties.securityProfile
                         = ImageVersionSecurityProfile.fromJson(reader);
+                } else if ("restore".equals(fieldName)) {
+                    deserializedGalleryImageVersionProperties.restore = reader.getNullable(JsonReader::getBoolean);
+                } else if ("validationsProfile".equals(fieldName)) {
+                    deserializedGalleryImageVersionProperties.validationsProfile = ValidationsProfile.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

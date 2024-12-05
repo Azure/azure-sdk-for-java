@@ -418,7 +418,6 @@ public final class VirtualMachineScaleSetVMExtensionInner extends SubResourceRea
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }

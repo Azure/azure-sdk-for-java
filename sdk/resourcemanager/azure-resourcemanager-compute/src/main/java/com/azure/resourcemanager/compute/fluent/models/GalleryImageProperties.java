@@ -106,9 +106,14 @@ public final class GalleryImageProperties implements JsonSerializable<GalleryIma
     private List<GalleryImageFeature> features;
 
     /*
-     * The architecture of the image. Applicable to OS disks only.
+     * CPU architecture supported by an OS disk.
      */
     private Architecture architecture;
+
+    /*
+     * Optional. Must be set to true if the gallery image features are being updated.
+     */
+    private Boolean allowUpdateImage;
 
     /**
      * Creates an instance of GalleryImageProperties class.
@@ -398,7 +403,7 @@ public final class GalleryImageProperties implements JsonSerializable<GalleryIma
     }
 
     /**
-     * Get the architecture property: The architecture of the image. Applicable to OS disks only.
+     * Get the architecture property: CPU architecture supported by an OS disk.
      * 
      * @return the architecture value.
      */
@@ -407,13 +412,33 @@ public final class GalleryImageProperties implements JsonSerializable<GalleryIma
     }
 
     /**
-     * Set the architecture property: The architecture of the image. Applicable to OS disks only.
+     * Set the architecture property: CPU architecture supported by an OS disk.
      * 
      * @param architecture the architecture value to set.
      * @return the GalleryImageProperties object itself.
      */
     public GalleryImageProperties withArchitecture(Architecture architecture) {
         this.architecture = architecture;
+        return this;
+    }
+
+    /**
+     * Get the allowUpdateImage property: Optional. Must be set to true if the gallery image features are being updated.
+     * 
+     * @return the allowUpdateImage value.
+     */
+    public Boolean allowUpdateImage() {
+        return this.allowUpdateImage;
+    }
+
+    /**
+     * Set the allowUpdateImage property: Optional. Must be set to true if the gallery image features are being updated.
+     * 
+     * @param allowUpdateImage the allowUpdateImage value to set.
+     * @return the GalleryImageProperties object itself.
+     */
+    public GalleryImageProperties withAllowUpdateImage(Boolean allowUpdateImage) {
+        this.allowUpdateImage = allowUpdateImage;
         return this;
     }
 
@@ -476,6 +501,7 @@ public final class GalleryImageProperties implements JsonSerializable<GalleryIma
         jsonWriter.writeJsonField("purchasePlan", this.purchasePlan);
         jsonWriter.writeArrayField("features", this.features, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("architecture", this.architecture == null ? null : this.architecture.toString());
+        jsonWriter.writeBooleanField("allowUpdateImage", this.allowUpdateImage);
         return jsonWriter.writeEndObject();
     }
 
@@ -531,6 +557,8 @@ public final class GalleryImageProperties implements JsonSerializable<GalleryIma
                     deserializedGalleryImageProperties.features = features;
                 } else if ("architecture".equals(fieldName)) {
                     deserializedGalleryImageProperties.architecture = Architecture.fromString(reader.getString());
+                } else if ("allowUpdateImage".equals(fieldName)) {
+                    deserializedGalleryImageProperties.allowUpdateImage = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }

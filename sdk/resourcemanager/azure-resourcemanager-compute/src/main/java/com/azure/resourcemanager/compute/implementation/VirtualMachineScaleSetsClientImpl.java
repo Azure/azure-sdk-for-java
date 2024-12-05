@@ -41,6 +41,7 @@ import com.azure.resourcemanager.compute.fluent.models.VirtualMachineScaleSetSku
 import com.azure.resourcemanager.compute.models.ApiErrorException;
 import com.azure.resourcemanager.compute.models.ExpandTypesForGetVMScaleSets;
 import com.azure.resourcemanager.compute.models.OrchestrationServiceStateInput;
+import com.azure.resourcemanager.compute.models.VMScaleSetConvertToSinglePlacementGroupInput;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetListOSUpgradeHistory;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetListResult;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetListSkusResult;
@@ -49,7 +50,6 @@ import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetReimagePar
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetUpdate;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMInstanceIDs;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMInstanceRequiredIDs;
-import com.azure.resourcemanager.compute.models.VMScaleSetConvertToSinglePlacementGroupInput;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
@@ -2826,6 +2826,8 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
     /**
      * Power off (stop) one or more virtual machines in a VM scale set. Note that resources are still attached and you
      * are getting charged for the resources. Instead, use deallocate to release resources and avoid charges.
+     * Additionally, this operation is not allowed on virtual machines in a VM scale set that are being deallocated or
+     * have already been deallocated.
      * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
@@ -2869,6 +2871,8 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
     /**
      * Power off (stop) one or more virtual machines in a VM scale set. Note that resources are still attached and you
      * are getting charged for the resources. Instead, use deallocate to release resources and avoid charges.
+     * Additionally, this operation is not allowed on virtual machines in a VM scale set that are being deallocated or
+     * have already been deallocated.
      * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
@@ -2912,6 +2916,8 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
     /**
      * Power off (stop) one or more virtual machines in a VM scale set. Note that resources are still attached and you
      * are getting charged for the resources. Instead, use deallocate to release resources and avoid charges.
+     * Additionally, this operation is not allowed on virtual machines in a VM scale set that are being deallocated or
+     * have already been deallocated.
      * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
@@ -2935,6 +2941,8 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
     /**
      * Power off (stop) one or more virtual machines in a VM scale set. Note that resources are still attached and you
      * are getting charged for the resources. Instead, use deallocate to release resources and avoid charges.
+     * Additionally, this operation is not allowed on virtual machines in a VM scale set that are being deallocated or
+     * have already been deallocated.
      * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
@@ -2956,6 +2964,8 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
     /**
      * Power off (stop) one or more virtual machines in a VM scale set. Note that resources are still attached and you
      * are getting charged for the resources. Instead, use deallocate to release resources and avoid charges.
+     * Additionally, this operation is not allowed on virtual machines in a VM scale set that are being deallocated or
+     * have already been deallocated.
      * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
@@ -2981,6 +2991,8 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
     /**
      * Power off (stop) one or more virtual machines in a VM scale set. Note that resources are still attached and you
      * are getting charged for the resources. Instead, use deallocate to release resources and avoid charges.
+     * Additionally, this operation is not allowed on virtual machines in a VM scale set that are being deallocated or
+     * have already been deallocated.
      * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
@@ -2999,6 +3011,8 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
     /**
      * Power off (stop) one or more virtual machines in a VM scale set. Note that resources are still attached and you
      * are getting charged for the resources. Instead, use deallocate to release resources and avoid charges.
+     * Additionally, this operation is not allowed on virtual machines in a VM scale set that are being deallocated or
+     * have already been deallocated.
      * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
@@ -3021,6 +3035,8 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
     /**
      * Power off (stop) one or more virtual machines in a VM scale set. Note that resources are still attached and you
      * are getting charged for the resources. Instead, use deallocate to release resources and avoid charges.
+     * Additionally, this operation is not allowed on virtual machines in a VM scale set that are being deallocated or
+     * have already been deallocated.
      * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
@@ -3042,6 +3058,8 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
     /**
      * Power off (stop) one or more virtual machines in a VM scale set. Note that resources are still attached and you
      * are getting charged for the resources. Instead, use deallocate to release resources and avoid charges.
+     * Additionally, this operation is not allowed on virtual machines in a VM scale set that are being deallocated or
+     * have already been deallocated.
      * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
@@ -3061,6 +3079,8 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
     /**
      * Power off (stop) one or more virtual machines in a VM scale set. Note that resources are still attached and you
      * are getting charged for the resources. Instead, use deallocate to release resources and avoid charges.
+     * Additionally, this operation is not allowed on virtual machines in a VM scale set that are being deallocated or
+     * have already been deallocated.
      * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
@@ -3083,6 +3103,8 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
     /**
      * Power off (stop) one or more virtual machines in a VM scale set. Note that resources are still attached and you
      * are getting charged for the resources. Instead, use deallocate to release resources and avoid charges.
+     * Additionally, this operation is not allowed on virtual machines in a VM scale set that are being deallocated or
+     * have already been deallocated.
      * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
@@ -3100,6 +3122,8 @@ public final class VirtualMachineScaleSetsClientImpl implements InnerSupportsGet
     /**
      * Power off (stop) one or more virtual machines in a VM scale set. Note that resources are still attached and you
      * are getting charged for the resources. Instead, use deallocate to release resources and avoid charges.
+     * Additionally, this operation is not allowed on virtual machines in a VM scale set that are being deallocated or
+     * have already been deallocated.
      * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.

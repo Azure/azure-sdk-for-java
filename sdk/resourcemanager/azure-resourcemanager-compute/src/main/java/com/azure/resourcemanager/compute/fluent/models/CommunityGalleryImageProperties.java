@@ -81,7 +81,7 @@ public final class CommunityGalleryImageProperties implements JsonSerializable<C
     private ImagePurchasePlan purchasePlan;
 
     /*
-     * The architecture of the image. Applicable to OS disks only.
+     * CPU architecture supported by an OS disk.
      */
     private Architecture architecture;
 
@@ -302,7 +302,7 @@ public final class CommunityGalleryImageProperties implements JsonSerializable<C
     }
 
     /**
-     * Get the architecture property: The architecture of the image. Applicable to OS disks only.
+     * Get the architecture property: CPU architecture supported by an OS disk.
      * 
      * @return the architecture value.
      */
@@ -311,7 +311,7 @@ public final class CommunityGalleryImageProperties implements JsonSerializable<C
     }
 
     /**
-     * Set the architecture property: The architecture of the image. Applicable to OS disks only.
+     * Set the architecture property: CPU architecture supported by an OS disk.
      * 
      * @param architecture the architecture value to set.
      * @return the CommunityGalleryImageProperties object itself.

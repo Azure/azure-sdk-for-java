@@ -23,9 +23,9 @@ public final class SharedGalleryInner extends PirSharedGalleryResource {
     private SharedGalleryProperties innerProperties;
 
     /*
-     * Resource name
+     * The identifier information of shared gallery.
      */
-    private String name;
+    private SharedGalleryIdentifier innerIdentifier;
 
     /*
      * Resource location
@@ -33,9 +33,9 @@ public final class SharedGalleryInner extends PirSharedGalleryResource {
     private String location;
 
     /*
-     * The identifier information of shared gallery.
+     * Resource name
      */
-    private SharedGalleryIdentifier innerIdentifier;
+    private String name;
 
     /**
      * Creates an instance of SharedGalleryInner class.
@@ -53,13 +53,12 @@ public final class SharedGalleryInner extends PirSharedGalleryResource {
     }
 
     /**
-     * Get the name property: Resource name.
+     * Get the innerIdentifier property: The identifier information of shared gallery.
      * 
-     * @return the name value.
+     * @return the innerIdentifier value.
      */
-    @Override
-    public String name() {
-        return this.name;
+    private SharedGalleryIdentifier innerIdentifier() {
+        return this.innerIdentifier;
     }
 
     /**
@@ -73,12 +72,13 @@ public final class SharedGalleryInner extends PirSharedGalleryResource {
     }
 
     /**
-     * Get the innerIdentifier property: The identifier information of shared gallery.
+     * Get the name property: Resource name.
      * 
-     * @return the innerIdentifier value.
+     * @return the name value.
      */
-    private SharedGalleryIdentifier innerIdentifier() {
-        return this.innerIdentifier;
+    @Override
+    public String name() {
+        return this.name;
     }
 
     /**
@@ -120,9 +120,11 @@ public final class SharedGalleryInner extends PirSharedGalleryResource {
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
+        }
+        if (innerIdentifier() != null) {
+            innerIdentifier().validate();
         }
     }
 

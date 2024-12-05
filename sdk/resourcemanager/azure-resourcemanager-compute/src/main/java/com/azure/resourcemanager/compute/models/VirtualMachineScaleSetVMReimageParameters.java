@@ -83,7 +83,9 @@ public class VirtualMachineScaleSetVMReimageParameters extends VirtualMachineRei
      */
     @Override
     public void validate() {
-        super.validate();
+        if (osProfile() != null) {
+            osProfile().validate();
+        }
     }
 
     /**

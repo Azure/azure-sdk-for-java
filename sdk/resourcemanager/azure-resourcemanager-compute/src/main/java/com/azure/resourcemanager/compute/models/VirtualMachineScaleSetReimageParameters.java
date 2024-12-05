@@ -96,7 +96,9 @@ public final class VirtualMachineScaleSetReimageParameters extends VirtualMachin
      */
     @Override
     public void validate() {
-        super.validate();
+        if (osProfile() != null) {
+            osProfile().validate();
+        }
     }
 
     /**

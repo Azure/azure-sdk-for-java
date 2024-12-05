@@ -12,7 +12,7 @@ import com.azure.resourcemanager.compute.models.ReplicationStatusTypes;
 public final class GalleryImageVersionsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2023-07-03/examples/galleryExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2024-03-03/examples/galleryExamples/
      * GalleryImageVersion_Get_WithVhdAsSource.json
      */
     /**
@@ -31,7 +31,28 @@ public final class GalleryImageVersionsGetSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2023-07-03/examples/galleryExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2024-03-03/examples/galleryExamples/
+     * GalleryImageVersion_Get_WithValidationProfileAndReplicationStatus.json
+     */
+    /**
+     * Sample code: Get a gallery image version with validation profile and replication status.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void getAGalleryImageVersionWithValidationProfileAndReplicationStatus(
+        com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getGalleryImageVersions()
+            .getWithResponse("myResourceGroup", "myGalleryName", "myGalleryImageName", "1.0.0",
+                ReplicationStatusTypes.fromString("ValidationProfile,ReplicationStatus"),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2024-03-03/examples/galleryExamples/
      * GalleryImageVersion_Get.json
      */
     /**
@@ -50,7 +71,7 @@ public final class GalleryImageVersionsGetSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2023-07-03/examples/galleryExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2024-03-03/examples/galleryExamples/
      * GalleryImageVersion_Get_WithReplicationStatus.json
      */
     /**
@@ -70,7 +91,7 @@ public final class GalleryImageVersionsGetSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2023-07-03/examples/galleryExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2024-03-03/examples/galleryExamples/
      * GalleryImageVersion_Get_WithSnapshotsAsSource.json
      */
     /**
@@ -86,5 +107,25 @@ public final class GalleryImageVersionsGetSamples {
             .getGalleryImageVersions()
             .getWithResponse("myResourceGroup", "myGalleryName", "myGalleryImageName", "1.0.0", null,
                 com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2024-03-03/examples/galleryExamples/
+     * GalleryImageVersion_Get_WithValidationProfile.json
+     */
+    /**
+     * Sample code: Get a gallery image version with validation profile.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void
+        getAGalleryImageVersionWithValidationProfile(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getGalleryImageVersions()
+            .getWithResponse("myResourceGroup", "myGalleryName", "myGalleryImageName", "1.0.0",
+                ReplicationStatusTypes.fromString("ValidationProfile"), com.azure.core.util.Context.NONE);
     }
 }

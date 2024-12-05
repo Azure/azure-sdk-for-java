@@ -29,6 +29,11 @@ public final class GalleryList implements JsonSerializable<GalleryList> {
      */
     private String nextLink;
 
+    /*
+     * The security profile of a gallery image version
+     */
+    private ImageVersionSecurityProfile securityProfile;
+
     /**
      * Creates an instance of GalleryList class.
      */
@@ -78,6 +83,26 @@ public final class GalleryList implements JsonSerializable<GalleryList> {
     }
 
     /**
+     * Get the securityProfile property: The security profile of a gallery image version.
+     * 
+     * @return the securityProfile value.
+     */
+    public ImageVersionSecurityProfile securityProfile() {
+        return this.securityProfile;
+    }
+
+    /**
+     * Set the securityProfile property: The security profile of a gallery image version.
+     * 
+     * @param securityProfile the securityProfile value to set.
+     * @return the GalleryList object itself.
+     */
+    public GalleryList withSecurityProfile(ImageVersionSecurityProfile securityProfile) {
+        this.securityProfile = securityProfile;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -88,6 +113,9 @@ public final class GalleryList implements JsonSerializable<GalleryList> {
                 .log(new IllegalArgumentException("Missing required property value in model GalleryList"));
         } else {
             value().forEach(e -> e.validate());
+        }
+        if (securityProfile() != null) {
+            securityProfile().validate();
         }
     }
 
@@ -101,6 +129,7 @@ public final class GalleryList implements JsonSerializable<GalleryList> {
         jsonWriter.writeStartObject();
         jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("nextLink", this.nextLink);
+        jsonWriter.writeJsonField("securityProfile", this.securityProfile);
         return jsonWriter.writeEndObject();
     }
 
@@ -125,6 +154,8 @@ public final class GalleryList implements JsonSerializable<GalleryList> {
                     deserializedGalleryList.value = value;
                 } else if ("nextLink".equals(fieldName)) {
                     deserializedGalleryList.nextLink = reader.getString();
+                } else if ("securityProfile".equals(fieldName)) {
+                    deserializedGalleryList.securityProfile = ImageVersionSecurityProfile.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

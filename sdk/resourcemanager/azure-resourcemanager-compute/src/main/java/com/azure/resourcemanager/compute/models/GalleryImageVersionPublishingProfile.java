@@ -111,7 +111,12 @@ public final class GalleryImageVersionPublishingProfile extends GalleryArtifactP
      */
     @Override
     public void validate() {
-        super.validate();
+        if (targetRegions() != null) {
+            targetRegions().forEach(e -> e.validate());
+        }
+        if (targetExtendedLocations() != null) {
+            targetExtendedLocations().forEach(e -> e.validate());
+        }
     }
 
     /**

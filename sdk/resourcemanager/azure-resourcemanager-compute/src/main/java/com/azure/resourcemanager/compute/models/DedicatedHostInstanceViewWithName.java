@@ -78,7 +78,12 @@ public final class DedicatedHostInstanceViewWithName extends DedicatedHostInstan
      */
     @Override
     public void validate() {
-        super.validate();
+        if (availableCapacity() != null) {
+            availableCapacity().validate();
+        }
+        if (statuses() != null) {
+            statuses().forEach(e -> e.validate());
+        }
     }
 
     /**

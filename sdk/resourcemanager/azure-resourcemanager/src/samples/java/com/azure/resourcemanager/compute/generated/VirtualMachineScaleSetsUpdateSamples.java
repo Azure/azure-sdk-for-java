@@ -70,13 +70,13 @@ import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetUpdateOSPr
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetUpdatePublicIpAddressConfiguration;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetUpdateStorageProfile;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetUpdateVMProfile;
+import com.azure.resourcemanager.compute.models.WinRMConfiguration;
+import com.azure.resourcemanager.compute.models.WinRMListener;
 import com.azure.resourcemanager.compute.models.WindowsConfiguration;
 import com.azure.resourcemanager.compute.models.WindowsPatchAssessmentMode;
 import com.azure.resourcemanager.compute.models.WindowsVMGuestPatchAutomaticByPlatformRebootSetting;
 import com.azure.resourcemanager.compute.models.WindowsVMGuestPatchAutomaticByPlatformSettings;
 import com.azure.resourcemanager.compute.models.WindowsVMGuestPatchMode;
-import com.azure.resourcemanager.compute.models.WinRMConfiguration;
-import com.azure.resourcemanager.compute.models.WinRMListener;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;

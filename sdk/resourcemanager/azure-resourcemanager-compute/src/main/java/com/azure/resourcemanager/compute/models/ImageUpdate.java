@@ -138,7 +138,6 @@ public final class ImageUpdate extends UpdateResource {
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }

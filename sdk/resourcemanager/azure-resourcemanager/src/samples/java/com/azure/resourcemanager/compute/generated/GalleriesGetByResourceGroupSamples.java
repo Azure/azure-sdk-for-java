@@ -13,7 +13,7 @@ import com.azure.resourcemanager.compute.models.SelectPermissions;
 public final class GalleriesGetByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2023-07-03/examples/galleryExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2024-03-03/examples/galleryExamples/
      * CommunityGallery_Get.json
      */
     /**
@@ -32,7 +32,7 @@ public final class GalleriesGetByResourceGroupSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2023-07-03/examples/galleryExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2024-03-03/examples/galleryExamples/
      * Gallery_Get_WithSelectPermissions.json
      */
     /**
@@ -51,7 +51,7 @@ public final class GalleriesGetByResourceGroupSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2023-07-03/examples/galleryExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2024-03-03/examples/galleryExamples/
      * Gallery_Get.json
      */
     /**
@@ -70,7 +70,7 @@ public final class GalleriesGetByResourceGroupSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2023-07-03/examples/galleryExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2024-03-03/examples/galleryExamples/
      * Gallery_Get_WithExpandSharingProfileGroups.json
      */
     /**
@@ -85,5 +85,25 @@ public final class GalleriesGetByResourceGroupSamples {
             .getGalleries()
             .getByResourceGroupWithResponse("myResourceGroup", "myGalleryName", null,
                 GalleryExpandParams.SHARING_PROFILE_GROUPS, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2024-03-03/examples/galleryExamples/
+     * Gallery_Get_WithManagedIdentity.json
+     */
+    /**
+     * Sample code: Get a gallery with system-assigned and user-assigned managed identities.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void getAGalleryWithSystemAssignedAndUserAssignedManagedIdentities(
+        com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.virtualMachines()
+            .manager()
+            .serviceClient()
+            .getGalleries()
+            .getByResourceGroupWithResponse("myResourceGroup", "myGalleryName", null, null,
+                com.azure.core.util.Context.NONE);
     }
 }

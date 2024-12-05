@@ -16,7 +16,7 @@ import java.util.Arrays;
 public final class GallerySharingProfileUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2023-07-03/examples/galleryExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2024-03-03/examples/galleryExamples/
      * Gallery_EnableCommunityGallery.json
      */
     /**
@@ -36,7 +36,7 @@ public final class GallerySharingProfileUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2023-07-03/examples/galleryExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2024-03-03/examples/galleryExamples/
      * Gallery_ResetSharingProfile.json
      */
     /**
@@ -56,7 +56,7 @@ public final class GallerySharingProfileUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2023-07-03/examples/galleryExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2024-03-03/examples/galleryExamples/
      * Gallery_AddToSharingProfile.json
      */
     /**

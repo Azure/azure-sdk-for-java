@@ -129,11 +129,25 @@ public final class RequestRateByIntervalInput extends LogAnalyticsInputBase {
      */
     @Override
     public void validate() {
-        super.validate();
         if (intervalLength() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
                     "Missing required property intervalLength in model RequestRateByIntervalInput"));
+        }
+        if (blobContainerSasUri() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property blobContainerSasUri in model RequestRateByIntervalInput"));
+        }
+        if (fromTime() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property fromTime in model RequestRateByIntervalInput"));
+        }
+        if (toTime() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property toTime in model RequestRateByIntervalInput"));
         }
     }
 

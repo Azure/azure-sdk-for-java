@@ -271,7 +271,6 @@ public final class GalleryApplicationVersionPublishingProfile extends GalleryArt
      */
     @Override
     public void validate() {
-        super.validate();
         if (source() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
@@ -287,6 +286,12 @@ public final class GalleryApplicationVersionPublishingProfile extends GalleryArt
         }
         if (customActions() != null) {
             customActions().forEach(e -> e.validate());
+        }
+        if (targetRegions() != null) {
+            targetRegions().forEach(e -> e.validate());
+        }
+        if (targetExtendedLocations() != null) {
+            targetExtendedLocations().forEach(e -> e.validate());
         }
     }
 

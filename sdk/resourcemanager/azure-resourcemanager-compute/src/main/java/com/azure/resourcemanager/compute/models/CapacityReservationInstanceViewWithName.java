@@ -62,7 +62,12 @@ public final class CapacityReservationInstanceViewWithName extends CapacityReser
      */
     @Override
     public void validate() {
-        super.validate();
+        if (utilizationInfo() != null) {
+            utilizationInfo().validate();
+        }
+        if (statuses() != null) {
+            statuses().forEach(e -> e.validate());
+        }
     }
 
     /**
