@@ -59,7 +59,7 @@ public class CosmosExceptionUtils {
                 case HttpConstants.StatusCodes.NOTFOUND -> throw new CosmosNotFoundException(message, unwrappedThrowable);
                 case HttpConstants.StatusCodes.REQUEST_TIMEOUT -> {
                     if (((CosmosException) unwrappedThrowable).getSubStatusCode() == HttpConstants.SubStatusCodes.CLIENT_OPERATION_TIMEOUT) {
-                        throw new CosmosOperationCancelledException(message, unwrappedThrowable);
+                        throw new CosmosOperationCancelledException(message, cosmosException);
                     }
                     throw new CosmosRequestTimeoutException(message, unwrappedThrowable);
                 }
