@@ -19,7 +19,7 @@ public interface ContextualFeatureFilterAsync {
      *
      * @param context The context for whether or not the filter is passed.
      * @param appContext The internal app context
-     * @return True if the feature is enabled, false otherwise.
+     * @return true if the feature is enabled, false otherwise.
      */
     Mono<Boolean> evaluateAsync(FeatureFilterEvaluationContext context, Object appContext);
 
