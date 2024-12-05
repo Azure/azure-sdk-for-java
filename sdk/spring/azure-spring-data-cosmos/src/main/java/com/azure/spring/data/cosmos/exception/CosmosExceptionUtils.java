@@ -68,7 +68,7 @@ public class CosmosExceptionUtils {
                 case HttpConstants.StatusCodes.TOO_MANY_REQUESTS -> throw new CosmosRequestRateTooLargeException(message, cosmosException);
                 case HttpConstants.StatusCodes.RETRY_WITH -> throw new CosmosRetryWithException(message, cosmosException);
                 case HttpConstants.StatusCodes.SERVICE_UNAVAILABLE -> throw new CosmosServiceUnavailableException(message, cosmosException);
-                case HttpConstants.StatusCodes.UNAUTHORIZED -> throw new CosmosUnauthorizedException(message, unwrappedThrowable);
+                case HttpConstants.StatusCodes.UNAUTHORIZED -> throw new CosmosUnauthorizedException(message, cosmosException);
                 default -> throw new CosmosAccessException(message, cosmosException);
             }
 
