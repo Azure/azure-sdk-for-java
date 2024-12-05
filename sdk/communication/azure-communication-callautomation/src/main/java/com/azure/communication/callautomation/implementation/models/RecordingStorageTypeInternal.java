@@ -14,8 +14,7 @@ public final class RecordingStorageTypeInternal extends ExpandableStringEnum<Rec
     /**
      * Storage managed by Azure Communication Services.
      */
-    public static final RecordingStorageTypeInternal AZURE_COMMUNICATION_SERVICES
-        = fromString("AzureCommunicationServices");
+    public static final RecordingStorageTypeInternal ACS = fromString("AzureCommunicationServices");
 
     /**
      * Storage managed by provided Azure blob.

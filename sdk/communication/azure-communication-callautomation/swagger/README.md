@@ -45,6 +45,8 @@ models-subpackage: implementation.models
 sync-methods: all
 add-context-parameter: true
 context-client-method-parameter: true
+customization-class: src/main/java/CallautomationCustomizations.java
+stream-style-serialization: true
 title: Azure Communication Call Automation Service
 directive:
 - rename-model:
