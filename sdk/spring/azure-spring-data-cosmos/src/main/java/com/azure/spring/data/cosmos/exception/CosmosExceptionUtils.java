@@ -61,7 +61,7 @@ public class CosmosExceptionUtils {
                     if (((CosmosException) unwrappedThrowable).getSubStatusCode() == HttpConstants.SubStatusCodes.CLIENT_OPERATION_TIMEOUT) {
                         throw new CosmosOperationCancelledException(message, cosmosException);
                     }
-                    throw new CosmosRequestTimeoutException(message, unwrappedThrowable);
+                    throw new CosmosRequestTimeoutException(message, cosmosException);
                 }
                 case HttpConstants.StatusCodes.PRECONDITION_FAILED -> throw new CosmosPreconditionFailedException(message, unwrappedThrowable);
                 case HttpConstants.StatusCodes.REQUEST_ENTITY_TOO_LARGE -> throw new CosmosRequestEntityTooLargeException(message, unwrappedThrowable);
