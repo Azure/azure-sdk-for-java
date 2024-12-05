@@ -591,7 +591,7 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
 
     $xmlPomFile = New-Object xml
     $xmlPomFile.Load($pomFile)
-    if ($ValidParents -notcontains $xmlPomFile.project.parent.artifactId)
+    if ($ValidParents -notcontains $xmlPomFile.project.parent.artifactId -and $ValidParents -notcontains $xmlPomFile.project.artifactId)
     {
         if ($SpringSampleParents -contains $xmlPomFile.project.parent.artifactId)
         {
@@ -799,6 +799,64 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
             {
                 $hasError = $true
                 $potentialLogMessage = Join-With-NewLine $potentialLogMessage "Error: plugin version update tag for groupId=$($groupId), artifactId=$($artifactId) should be <!-- {x-version-update;$($groupId):$($artifactId);current|dependency|external_dependency<select one>} -->"
+            }
+            else
+            {
+                # verify the version tag and version are correct
+                $retVal = Test-Dependency-Tag-And-Version $libHash $extDepHash $versionNode.InnerText.Trim() $versionNode.NextSibling.Value
+                if ($retVal)
+                {
+                    $hasError = $true
+                    $potentialLogMessage = Join-With-NewLine $potentialLogMessage "$($retVal)"
+                }
+            }
+        }
+        else
+        {
+            $hasError = $true
+            $potentialLogMessage = Join-With-NewLine $potentialLogMessage "Error: Missing plugin version update tag for groupId=$($groupId), artifactId=$($artifactId). The tag should be <!-- {x-version-update;$($groupId):$($artifactId);current|dependency|external_dependency<select one>} -->"
+        }
+    }
+
+    foreach($signatureNode in $xmlPomFile.GetElementsByTagName("signature"))
+    {
+        $artifactId = $signatureNode.artifactId
+        $groupId = $signatureNode.groupId
+        # If the artifactId and groupId are both empty then check to see if this
+        # is part of a configuration entry.
+        if (!$artifactId -and !$groupId)
+        {
+            $isPartOfConfig = Confirm-Node-Is-Part-Of-Configuration $signatureNode
+            if (!$isPartOfConfig)
+            {
+                $hasError = $true
+                # Because this particular case is harder to track down, print the OuterXML which is effectively the entire tag
+                $potentialLogMessage = Join-With-NewLine $potentialLogMessage "Error: signature is missing version element and/or artifactId and groupId elements signatureNode=$($signatureNode.OuterXml)"
+            }
+            continue
+        }
+        # plugins should always have an artifact but may not have a groupId
+        if (!$groupId)
+        {
+            $hasError = $true
+            $potentialLogMessage = Join-With-NewLine $potentialLogMessage "Error: signature $($artifactId) is missing its groupId tag"
+            continue
+        }
+        $versionNode = $signatureNode.GetElementsByTagName("version")[0]
+        if (!$versionNode)
+        {
+            $hasError = $true
+            $potentialLogMessage = Join-With-NewLine $potentialLogMessage "Error: signature is missing version element for groupId=$($groupId), artifactId=$($artifactId) should be <version></version> <!-- {x-version-update;$($groupId):$($artifactId);current|dependency|external_dependency<select one>} -->"
+            continue
+        }
+        if ($versionNode.NextSibling -and $versionNode.NextSibling.NodeType -eq "Comment")
+        {
+            # unfortunately because there are POM exceptions we need to wildcard the group which may be
+            # something like <area>_groupId
+            if ($versionNode.NextSibling.Value.Trim() -notmatch "{x-version-update;(.+)?$($groupId):$($artifactId);\w+}")
+            {
+                $hasError = $true
+                $potentialLogMessage = Join-With-NewLine $potentialLogMessage "Error: signature version update tag for groupId=$($groupId), artifactId=$($artifactId) should be <!-- {x-version-update;$($groupId):$($artifactId);current|dependency|external_dependency<select one>} -->"
             }
             else
             {
