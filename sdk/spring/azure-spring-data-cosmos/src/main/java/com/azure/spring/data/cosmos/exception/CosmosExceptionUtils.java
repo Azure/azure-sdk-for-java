@@ -50,7 +50,7 @@ public class CosmosExceptionUtils {
                         case HttpConstants.SubStatusCodes.NAME_CACHE_IS_STALE -> throw new CosmosInvalidPartitionException(message, cosmosException);
                         case HttpConstants.SubStatusCodes.COMPLETING_PARTITION_MIGRATION -> throw new CosmosPartitionIsMigratingException(message, cosmosException);
                         case HttpConstants.SubStatusCodes.PARTITION_KEY_RANGE_GONE -> throw new CosmosPartitionKeyRangeGoneException(message, cosmosException);
-                        case HttpConstants.SubStatusCodes.COMPLETING_SPLIT_OR_MERGE -> throw new CosmosPartitionKeyRangeIsSplittingException(message, unwrappedThrowable);
+                        case HttpConstants.SubStatusCodes.COMPLETING_SPLIT_OR_MERGE -> throw new CosmosPartitionKeyRangeIsSplittingException(message, cosmosException);
                         default -> throw new CosmosGoneException(message, unwrappedThrowable);
                     }
                 }
