@@ -370,8 +370,9 @@ public abstract class ParserMinimalBase extends JsonParser {
             } else if (t == JsonToken.NOT_AVAILABLE) {
                 // Nothing much we can do except to either return `null` (which seems wrong),
                 // or, what we actually do, signal error
-                throw _constructError(String.format("Not enough content available for `skipChildren()`: non-blocking parser? (%s)",
-                    getClass().getName()));
+                throw _constructError(
+                    String.format("Not enough content available for `skipChildren()`: non-blocking parser? (%s)",
+                        getClass().getName()));
             }
         }
     }
@@ -561,7 +562,8 @@ public abstract class ParserMinimalBase extends JsonParser {
             _parseSlowFloat(expType);
             return;
         }
-        throw _constructError(String.format("Current token (%s) not numeric, can not use numeric value accessors", _currToken));
+        throw _constructError(
+            String.format("Current token (%s) not numeric, can not use numeric value accessors", _currToken));
     }
 
     // @since 2.6
