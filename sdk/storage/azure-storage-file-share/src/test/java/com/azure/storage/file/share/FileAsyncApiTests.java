@@ -13,7 +13,27 @@ import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 
-import com.azure.storage.file.share.models.*;
+import com.azure.storage.file.share.models.ClearRange;
+import com.azure.storage.file.share.models.CopyableFileSmbPropertiesList;
+import com.azure.storage.file.share.models.FilePermissionFormat;
+import com.azure.storage.file.share.models.FileRange;
+import com.azure.storage.file.share.models.NtfsFileAttributes;
+import com.azure.storage.file.share.models.PermissionCopyModeType;
+import com.azure.storage.file.share.models.ShareAudience;
+import com.azure.storage.file.share.models.ShareErrorCode;
+import com.azure.storage.file.share.models.ShareFileCopyInfo;
+import com.azure.storage.file.share.models.ShareFileDownloadHeaders;
+import com.azure.storage.file.share.models.ShareFileHttpHeaders;
+import com.azure.storage.file.share.models.ShareFileInfo;
+import com.azure.storage.file.share.models.ShareFilePermission;
+import com.azure.storage.file.share.models.ShareFileProperties;
+import com.azure.storage.file.share.models.ShareFileRange;
+import com.azure.storage.file.share.models.ShareFileUploadInfo;
+import com.azure.storage.file.share.models.ShareFileUploadRangeOptions;
+import com.azure.storage.file.share.models.ShareRequestConditions;
+import com.azure.storage.file.share.models.ShareSnapshotInfo;
+import com.azure.storage.file.share.models.ShareStorageException;
+import com.azure.storage.file.share.models.ShareTokenIntent;
 import com.azure.storage.file.share.options.ShareFileCopyOptions;
 import com.azure.storage.file.share.options.ShareFileCreateOptions;
 import com.azure.storage.file.share.options.ShareFileListRangesDiffOptions;
@@ -56,6 +76,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class FileAsyncApiTests extends FileShareTestBase {
@@ -251,27 +272,26 @@ public class FileAsyncApiTests extends FileShareTestBase {
         File file = FileShareTestHelper.getRandomFile(fileSize);
         assertNotNull(fileClient);
 
+        File outFile = new File(generatePathName() + ".txt");
+        if (outFile.exists()) {
+            assertTrue(outFile.delete());
+        }
+
         StepVerifier.create(fileClient.create(fileSize)
             .then(fileClient.uploadFromFile(file.toPath().toString()))
+            .then(fileClient.downloadToFile(outFile.toPath().toString()))
             .then(Mono.defer(() -> {
-                File outFile = new File(generatePathName() + ".txt");
-                if (outFile.exists()) {
-                    assertTrue(outFile.delete());
+                try {
+                    assertTrue(FileShareTestHelper.compareFiles(file, outFile, 0, fileSize));
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
                 }
-                return fileClient.downloadToFile(outFile.toPath().toString()).then(Mono.defer(() -> {
-                    try {
-                        assertTrue(FileShareTestHelper.compareFiles(file, outFile, 0, fileSize));
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                    return Mono.empty();
-                }));
+                return Mono.empty();
             }))
-            .then(shareServiceAsyncClient.deleteShare(shareName))
-            .doFinally(signalType -> {
-                new File(generatePathName() + ".txt").delete();
-                file.delete();
-            })).verifyComplete();
+            .then(shareServiceAsyncClient.deleteShare(shareName))).verifyComplete();
+
+        new File(generatePathName() + ".txt").delete();
+        file.delete();
     }
 
     @Test
@@ -410,8 +430,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
             .assertNext(it -> FileShareTestHelper.assertResponseStatusCode(it, 201))
             .verifyComplete();
 
-        StepVerifier
-            .create(createAndUpload.then(primaryFileAsyncClient.downloadWithResponse(new ShareFileRange(0, 6L), false)))
+        StepVerifier.create(primaryFileAsyncClient.downloadWithResponse(new ShareFileRange(0, 6L), false))
             .assertNext(it -> FluxUtil.collectBytesInByteBufferStream(it.getValue()).flatMap(data -> {
                 for (byte b : data) {
                     assertEquals(b, 0);
@@ -1155,6 +1174,34 @@ public class FileAsyncApiTests extends FileShareTestBase {
         })).expectNextCount(1).verifyComplete();
     }
 
+    @ParameterizedTest
+    @MethodSource("com.azure.storage.file.share.FileShareTestHelper#startCopyWithCopySourceFileErrorSupplier")
+    public void startCopyWithOptionsCopySourceFileError(boolean createdOn, boolean lastWrittenOn, boolean changedOn,
+        boolean fileAttributes) {
+        Mono<ShareFileInfo> createFileMono = primaryFileAsyncClient.create(1024);
+        String sourceURL = primaryFileAsyncClient.getFileUrl();
+        EnumSet<NtfsFileAttributes> ntfs = EnumSet.of(NtfsFileAttributes.READ_ONLY, NtfsFileAttributes.ARCHIVE);
+        CopyableFileSmbPropertiesList list = new CopyableFileSmbPropertiesList().setCreatedOn(createdOn)
+            .setLastWrittenOn(lastWrittenOn)
+            .setChangedOn(changedOn)
+            .setFileAttributes(fileAttributes);
+
+        smbProperties.setFileCreationTime(testResourceNamer.now())
+            .setFileLastWriteTime(testResourceNamer.now())
+            .setFileChangeTime(testResourceNamer.now())
+            .setNtfsFileAttributes(ntfs);
+
+        ShareFileCopyOptions options = new ShareFileCopyOptions().setSmbProperties(smbProperties)
+            .setFilePermission(FILE_PERMISSION)
+            .setPermissionCopyModeType(PermissionCopyModeType.OVERRIDE)
+            .setSmbPropertiesToCopy(list);
+
+        StepVerifier
+            .create(createFileMono.then(Mono.fromRunnable(
+                () -> setPlaybackPollerFluxPollInterval(primaryFileAsyncClient.beginCopy(sourceURL, options, null)))))
+            .verifyError(IllegalArgumentException.class);
+    }
+
     @Disabled("TODO: Need to find a way of mocking pending copy status")
     @Test
     public void abortCopy() {
@@ -1320,14 +1367,13 @@ public class FileAsyncApiTests extends FileShareTestBase {
 
     @Test
     public void setHttpHeadersFp() {
-        StepVerifier.create(primaryFileAsyncClient.createWithResponse(1024, null, null, null, null)
-            .then(shareAsyncClient.createPermission(FILE_PERMISSION))
-            .flatMap(filePermissionKey -> {
-                smbProperties.setFileCreationTime(testResourceNamer.now())
-                    .setFileLastWriteTime(testResourceNamer.now())
-                    .setFilePermissionKey(filePermissionKey);
-                return primaryFileAsyncClient.setPropertiesWithResponse(512, httpHeaders, smbProperties, null);
-            })).assertNext(it -> {
+        smbProperties.setFileCreationTime(testResourceNamer.now()).setFileLastWriteTime(testResourceNamer.now());
+        StepVerifier
+            .create(
+                primaryFileAsyncClient.createWithResponse(1024, null, null, null, null)
+                    .then(primaryFileAsyncClient.setPropertiesWithResponse(512, httpHeaders, smbProperties,
+                        FILE_PERMISSION)))
+            .assertNext(it -> {
                 FileShareTestHelper.assertResponseStatusCode(it, 200);
                 assertNotNull(it.getValue().getSmbProperties());
                 assertNotNull(it.getValue().getSmbProperties().getFilePermissionKey());
@@ -1337,7 +1383,8 @@ public class FileAsyncApiTests extends FileShareTestBase {
                 assertNotNull(it.getValue().getSmbProperties().getFileChangeTime());
                 assertNotNull(it.getValue().getSmbProperties().getParentId());
                 assertNotNull(it.getValue().getSmbProperties().getFileId());
-            }).verifyComplete();
+            })
+            .verifyComplete();
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
