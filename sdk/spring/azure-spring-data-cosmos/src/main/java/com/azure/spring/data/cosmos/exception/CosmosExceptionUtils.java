@@ -69,7 +69,7 @@ public class CosmosExceptionUtils {
                 case HttpConstants.StatusCodes.RETRY_WITH -> throw new CosmosRetryWithException(message, unwrappedThrowable);
                 case HttpConstants.StatusCodes.SERVICE_UNAVAILABLE -> throw new CosmosServiceUnavailableException(message, unwrappedThrowable);
                 case HttpConstants.StatusCodes.UNAUTHORIZED -> throw new CosmosUnauthorizedException(message, unwrappedThrowable);
-                default -> throw new CosmosAccessException(message, unwrappedThrowable);
+                default -> throw new CosmosAccessException(message, cosmosException);
             }
 
         }
