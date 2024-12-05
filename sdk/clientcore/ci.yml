@@ -26,10 +26,6 @@ parameters:
     displayName: 'core'
     type: boolean
     default: true
-  - name: release_clientcorehttpjdkhttpclient
-    displayName: 'http-jdk-httpclient'
-    type: boolean
-    default: false
   - name: release_clientcorehttpokhttp3
     displayName: 'http-okhttp3'
     type: boolean
@@ -43,15 +39,17 @@ extends:
   template: /eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: clientcore
+    MatrixConfigs:
+      - Name: clientcore_ci_test_base
+        Path: sdk/clientcore/platform-matrix.json
+        Selection: sparse
+        NonSparseParameters: Agent
+        GenerateVMJobs: true
     Artifacts:
       - name: core
         groupId: io.clientcore
         safeName: core
         releaseInBatch: ${{ parameters.release_core }}
-      - name: http-jdk-httpclient
-        groupId: io.clientcore
-        safeName: httpjdkhttpclient
-        releaseInBatch: ${{ parameters.release_clientcorehttpjdkhttpclient }}
       - name: http-okhttp3
         groupId: io.clientcore
         safeName: httpokhttp3

@@ -1,6 +1,6 @@
 ARG REGISTRY="azsdkengsys.azurecr.io"
-ARG JRE_VERSION="21"
-FROM ${REGISTRY}/java/jdk-mariner-mvn:jdk11-latest as builder
+ARG JRE_VERSION="17"
+FROM ${REGISTRY}/java/jdk-mariner-mvn:jdk17-latest as builder
 
 # Do not remove this line. Update ensures container images do not get flagged for out of date and vulnerable distro packages.
 RUN yum -y update
@@ -17,7 +17,7 @@ ADD ./sdk/parents /stress/sdk/parents
 ADD ./sdk/clientcore /stress/sdk/clientcore
 
 ARG SKIP_CHECKS="-Dcheckstyle.skip -Dgpg.skip -Dmaven.javadoc.skip -Drevapi.skip -Dspotbugs.skip -Djacoco.skip -DskipTests -Dcodesnippet.skip -Dspotless.skip"
-ARG MAVEN_ARGS="-B -V -U -Dhttp.keepAlive=true -Djdk.virtualThreadScheduler.parallelism=1"
+ARG MAVEN_ARGS="-B -V -U -Dhttp.keepAlive=true"
 
 # Build dependencies and stress tests
 RUN --mount=type=cache,target=/root/.m2 \

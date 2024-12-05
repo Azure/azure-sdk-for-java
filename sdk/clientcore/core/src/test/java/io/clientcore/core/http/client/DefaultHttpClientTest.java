@@ -197,12 +197,12 @@ public class DefaultHttpClientTest {
             HttpHeaders responseHeaders = response.getHeaders();
             HttpHeader singleValueHeader = responseHeaders.get(singleValueHeaderName);
 
-            assertEquals(singleValueHeaderName.getCaseSensitiveName(), singleValueHeader.getName().toString());
+            assertEquals(singleValueHeaderName.getCaseInsensitiveName(), singleValueHeader.getName().toString());
             assertEquals(singleValueHeaderValue, singleValueHeader.getValue());
 
             HttpHeader multiValueHeader = responseHeaders.get(multiValueHeaderName);
 
-            assertEquals(multiValueHeaderName.getCaseSensitiveName(), multiValueHeader.getName().toString());
+            assertEquals(multiValueHeaderName.getCaseInsensitiveName(), multiValueHeader.getName().toString());
             assertEquals(multiValueHeaderValue.size(), multiValueHeader.getValues().size());
             assertTrue(multiValueHeaderValue.containsAll(multiValueHeader.getValues()));
         }
@@ -248,7 +248,7 @@ public class DefaultHttpClientTest {
         // Initialize the SSL context with a trust manager that trusts all certificates.
         sslContext.init(null, new TrustManager[] { new InsecureTrustManager() }, null);
 
-        HttpClient httpClient = new DefaultHttpClientBuilder().sslSocketFactory(sslContext.getSocketFactory()).build();
+        HttpClient httpClient = new DefaultHttpClientBuilder().sslContext(sslContext).build();
 
         try (Response<?> response = httpClient.send(new HttpRequest(HttpMethod.GET, httpsUri(server, "/short")))) {
             TestUtils.assertArraysEqual(SHORT_BODY, response.getBody().toBytes());
