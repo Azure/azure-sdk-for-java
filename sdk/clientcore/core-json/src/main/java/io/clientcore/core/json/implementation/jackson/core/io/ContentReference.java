@@ -51,20 +51,6 @@ public class ContentReference
     protected final transient Object _rawContent;
 
     /**
-     * For static content, indicates offset from the beginning
-     * of static array.
-     * {@code -1} if not in use.
-     */
-    protected final int _offset;
-
-    /**
-     * For static content, indicates length of content in
-     * the static array.
-     * {@code -1} if not in use.
-     */
-    protected final int _length;
-
-    /**
      * Marker flag to indicate whether included content is textual or not:
      * this is taken to mean, by default, that a snippet of content may be
      * displayed for exception messages.
@@ -78,14 +64,8 @@ public class ContentReference
      */
 
     protected ContentReference(boolean isContentTextual, Object rawContent) {
-        this(isContentTextual, rawContent, -1, -1);
-    }
-
-    protected ContentReference(boolean isContentTextual, Object rawContent, int offset, int length) {
         _isContentTextual = isContentTextual;
         _rawContent = rawContent;
-        _offset = offset;
-        _length = length;
     }
 
     /**
@@ -99,36 +79,8 @@ public class ContentReference
         return UNKNOWN_CONTENT;
     }
 
-    public static ContentReference construct(boolean isContentTextual, Object rawContent) {
-        return new ContentReference(isContentTextual, rawContent);
-    }
-
-    public static ContentReference construct(boolean isContentTextual, Object rawContent, int offset, int length) {
-        return new ContentReference(isContentTextual, rawContent, offset, length);
-    }
-
-    /**
-     * Factory method for legacy code to use for constructing instances to
-     * content about which only minimal amount of information is available.
-     * Assumed not to contain textual content (no snippet displayed).
-     *
-     * @param isContentTextual Is raw content assumed to have textual content
-     *    ({@code true}) or binary ({@code false})
-     * @param rawContent Underlying raw content access
-     *
-     * @return Instance with minimal information about content (basically just
-     *    raw content reference without offsets
-     */
-    public static ContentReference rawReference(boolean isContentTextual, Object rawContent) {
-        // Just to avoid russian-doll-nesting, let's:
-        if (rawContent instanceof ContentReference) {
-            return (ContentReference) rawContent;
-        }
-        return new ContentReference(isContentTextual, rawContent);
-    }
-
-    public static ContentReference rawReference(Object rawContent) {
-        return rawReference(false, rawContent);
+    public static ContentReference construct(Object rawContent) {
+        return new ContentReference(true, rawContent);
     }
 
     /*
@@ -162,29 +114,6 @@ public class ContentReference
         return _isContentTextual;
     }
 
-    public Object getRawContent() {
-        return _rawContent;
-    }
-
-    public int contentOffset() {
-        return _offset;
-    }
-
-    public int contentLength() {
-        return _length;
-    }
-
-    /**
-     * Internal accessor, overridable, used for checking length (in units in
-     * which content is counted, either bytes or chars) to use for truncation
-     * (so as not to include full content for humongous sources or targets)
-     *
-     * @return Maximum content snippet to include before truncating
-     */
-    protected int maxContentSnippetLength() {
-        return DEFAULT_MAX_CONTENT_SNIPPET;
-    }
-
     /*
      * /**********************************************************************
      * /* Method for constructing descriptions
@@ -198,24 +127,12 @@ public class ContentReference
      * @return Description constructed
      */
     public String buildSourceDescription() {
-        return appendSourceDescription(new StringBuilder(200)).toString();
-    }
-
-    /**
-     * Method for appending a "source description" when content represented
-     * by this reference is read.
-     *
-     * @param sb StringBuilder to append description to
-     *
-     * @return StringBuilder passed as argument (for call chaining)
-     */
-    public StringBuilder appendSourceDescription(StringBuilder sb) {
-        final Object srcRef = getRawContent();
-
+        final Object srcRef = _rawContent;
         if (srcRef == null) {
-            sb.append("UNKNOWN");
-            return sb;
+            return "UNKNOWN";
         }
+
+        StringBuilder sb = new StringBuilder(200);
         // First, figure out what name to use as source type
         Class<?> srcType = (srcRef instanceof Class<?>) ? ((Class<?>) srcRef) : srcRef.getClass();
         String tn = srcType.getName();
@@ -236,15 +153,15 @@ public class ContentReference
             String trimmed;
 
             // poor man's tuple...
-            final int maxLen = maxContentSnippetLength();
-            int[] offsets = new int[] { contentOffset(), contentLength() };
+            final int maxLen = DEFAULT_MAX_CONTENT_SNIPPET;
+            int[] offsets = new int[] { -1, -1 };
 
             if (srcRef instanceof CharSequence) {
-                trimmed = _truncate((CharSequence) srcRef, offsets, maxLen);
+                trimmed = _truncate((CharSequence) srcRef, offsets);
             } else if (srcRef instanceof char[]) {
-                trimmed = _truncate((char[]) srcRef, offsets, maxLen);
+                trimmed = _truncate((char[]) srcRef, offsets);
             } else if (srcRef instanceof byte[]) {
-                trimmed = _truncate((byte[]) srcRef, offsets, maxLen);
+                trimmed = _truncate((byte[]) srcRef, offsets);
                 unitStr = " bytes";
             } else {
                 trimmed = null;
@@ -258,35 +175,30 @@ public class ContentReference
         } else {
             // What should we do with binary content? Indicate length, if possible
             if (srcRef instanceof byte[]) {
-                int length = contentLength();
-                // -1 is marker for "till the end" (should we consider offset then, too?)
-                if (length < 0) {
-                    length = ((byte[]) srcRef).length;
-                }
-                sb.append('[').append(length).append(" bytes]");
+                sb.append('[').append(((byte[]) srcRef).length).append(" bytes]");
             }
         }
-        return sb;
+        return sb.toString();
     }
 
-    protected String _truncate(CharSequence cs, int[] offsets, int maxSnippetLen) {
+    protected String _truncate(CharSequence cs, int[] offsets) {
         _truncateOffsets(offsets, cs.length());
         final int start = offsets[0];
-        final int length = Math.min(offsets[1], maxSnippetLen);
+        final int length = Math.min(offsets[1], 500);
         return cs.subSequence(start, start + length).toString();
     }
 
-    protected String _truncate(char[] cs, int[] offsets, int maxSnippetLen) {
+    protected String _truncate(char[] cs, int[] offsets) {
         _truncateOffsets(offsets, cs.length);
         final int start = offsets[0];
-        final int length = Math.min(offsets[1], maxSnippetLen);
+        final int length = Math.min(offsets[1], 500);
         return new String(cs, start, length);
     }
 
-    protected String _truncate(byte[] b, int[] offsets, int maxSnippetLen) {
+    protected String _truncate(byte[] b, int[] offsets) {
         _truncateOffsets(offsets, b.length);
         final int start = offsets[0];
-        final int length = Math.min(offsets[1], maxSnippetLen);
+        final int length = Math.min(offsets[1], 500);
         return new String(b, start, length, StandardCharsets.UTF_8);
     }
 
@@ -310,7 +222,7 @@ public class ContentReference
         }
     }
 
-    protected int _append(StringBuilder sb, String content) {
+    protected void _append(StringBuilder sb, String content) {
         sb.append('"');
         // [core#658]: make sure to escape non-printable
         for (int i = 0, end = content.length(); i < end; ++i) {
@@ -323,7 +235,6 @@ public class ContentReference
             }
         }
         sb.append('"');
-        return content.length();
     }
 
     protected boolean _appendEscaped(StringBuilder sb, int ctrlChar) {
@@ -358,11 +269,6 @@ public class ContentReference
         if (!(other instanceof ContentReference))
             return false;
         ContentReference otherSrc = (ContentReference) other;
-
-        // 16-Jan-2022, tatu: First ensure offset/length the same
-        if ((_offset != otherSrc._offset) || (_length != otherSrc._length)) {
-            return false;
-        }
 
         // 16-Jan-2022, tatu: As per [core#739] we'll want to consider some
         // but not all content cases with real equality: the concern here is

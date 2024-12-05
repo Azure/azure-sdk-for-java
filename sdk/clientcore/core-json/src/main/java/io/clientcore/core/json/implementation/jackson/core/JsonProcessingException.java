@@ -7,17 +7,16 @@
 
 package io.clientcore.core.json.implementation.jackson.core;
 
+import java.io.IOException;
+
 /**
  * Intermediate base class for all problems encountered when
  * processing (parsing, generating) JSON content
  * that are not pure I/O problems.
  * Regular {@link java.io.IOException}s will be passed through as is.
  * Sub-class of {@link java.io.IOException} for convenience.
- *<p>
- * Since Jackson 2.12 extends intermediate {@link JacksonException} type
- * instead of directly extending {@link java.io.IOException}.
  */
-public class JsonProcessingException extends JacksonException {
+public class JsonProcessingException extends IOException {
     private final static long serialVersionUID = 123; // eclipse complains otherwise
 
     protected JsonLocation _location;
@@ -27,29 +26,21 @@ public class JsonProcessingException extends JacksonException {
         _location = loc;
     }
 
-    protected JsonProcessingException(String msg) {
-        super(msg);
-    }
-
     protected JsonProcessingException(String msg, JsonLocation loc) {
         this(msg, loc, null);
     }
 
-    protected JsonProcessingException(String msg, Throwable rootCause) {
-        this(msg, null, rootCause);
-    }
-
-    protected JsonProcessingException(Throwable rootCause) {
-        this(null, null, rootCause);
-    }
-
-    /*
-     * /**********************************************************************
-     * /* Extended API
-     * /**********************************************************************
+    /**
+     * Accessor for location information related to position within input
+     * or output (depending on operation), if available; if not available
+     * may return {@code null}.
+     *<p>
+     * Accuracy of location information depends on backend (format) as well
+     * as (in some cases) operation being performed.
+     *
+     * @return Location in input or output that triggered the problem reported, if
+     *    available; {@code null} otherwise.
      */
-
-    @Override
     public JsonLocation getLocation() {
         return _location;
     }
@@ -68,7 +59,6 @@ public class JsonProcessingException extends JacksonException {
      *
      * @since 2.7
      */
-    @Override
     public Object getProcessor() {
         return null;
     }
@@ -120,7 +110,7 @@ public class JsonProcessingException extends JacksonException {
             if (loc != null) {
                 sb.append('\n');
                 sb.append(" at ");
-                sb.append(loc.toString());
+                sb.append(loc);
             }
             msg = sb.toString();
         }

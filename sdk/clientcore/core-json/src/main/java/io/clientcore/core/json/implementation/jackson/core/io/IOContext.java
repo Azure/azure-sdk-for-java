@@ -1,7 +1,6 @@
 // Original file from https://github.com/FasterXML/jackson-core under Apache-2.0 license.
 package io.clientcore.core.json.implementation.jackson.core.io;
 
-import io.clientcore.core.json.implementation.jackson.core.JsonEncoding;
 import io.clientcore.core.json.implementation.jackson.core.util.BufferRecycler;
 import io.clientcore.core.json.implementation.jackson.core.util.TextBuffer;
 
@@ -26,29 +25,6 @@ public class IOContext {
      */
     protected final ContentReference _contentReference;
 
-    /**
-     * Old, deprecated "raw" reference to input source.
-     *
-     * @deprecated Since 2.13, use {@link #_contentReference} instead
-     */
-    @Deprecated
-    protected final Object _sourceRef;
-
-    /**
-     * Encoding used by the underlying stream, if known.
-     */
-    protected JsonEncoding _encoding;
-
-    /**
-     * Flag that indicates whether underlying input/output source/target
-     * object is fully managed by the owner of this context (parser or
-     * generator). If true, it is, and is to be closed by parser/generator;
-     * if false, calling application has to do closing (unless auto-closing
-     * feature is enabled for the parser/generator in question; in which
-     * case it acts like the owner).
-     */
-    protected final boolean _managedResource;
-
     /*
      * /**********************************************************************
      * /* Buffer handling, recycling
@@ -59,24 +35,6 @@ public class IOContext {
      * Recycler used for actual allocation/deallocation/reuse
      */
     protected final BufferRecycler _bufferRecycler;
-
-    /**
-     * Reference to the allocated I/O buffer for low-level input reading,
-     * if any allocated.
-     */
-    protected byte[] _readIOBuffer;
-
-    /**
-     * Reference to the allocated I/O buffer used for low-level
-     * encoding-related buffering.
-     */
-    protected byte[] _writeEncodingBuffer;
-
-    /**
-     * Reference to the buffer allocated for temporary use with
-     * base64 encoding or decoding.
-     */
-    protected byte[] _base64Buffer;
 
     /**
      * Reference to the buffer allocated for tokenization purposes,
@@ -92,14 +50,6 @@ public class IOContext {
      */
     protected char[] _concatCBuffer;
 
-    /**
-     * Reference temporary buffer Parser instances need if calling
-     * app decides it wants to access name via 'getTextCharacters' method.
-     * Regular text buffer can not be used as it may contain textual
-     * representation of the value token.
-     */
-    protected char[] _nameCopyBuffer;
-
     /*
      * /**********************************************************************
      * /* Life-cycle
@@ -111,38 +61,11 @@ public class IOContext {
      *
      * @param br BufferRecycler to use, if any ({@code null} if none)
      * @param contentRef Input source reference for location reporting
-     * @param managedResource Whether input source is managed (owned) by Jackson library
-     *
      * @since 2.13
      */
-    public IOContext(BufferRecycler br, ContentReference contentRef, boolean managedResource) {
+    public IOContext(BufferRecycler br, ContentReference contentRef) {
         _bufferRecycler = br;
         _contentReference = contentRef;
-        _sourceRef = contentRef.getRawContent();
-        _managedResource = managedResource;
-    }
-
-    @Deprecated // since 2.13
-    public IOContext(BufferRecycler br, Object rawContent, boolean managedResource) {
-        this(br, ContentReference.rawReference(rawContent), managedResource);
-    }
-
-    public void setEncoding(JsonEncoding enc) {
-        _encoding = enc;
-    }
-
-    /*
-     * /**********************************************************************
-     * /* Public API, accessors
-     * /**********************************************************************
-     */
-
-    public JsonEncoding getEncoding() {
-        return _encoding;
-    }
-
-    public boolean isResourceManaged() {
-        return _managedResource;
     }
 
     /**
@@ -157,15 +80,6 @@ public class IOContext {
         return _contentReference;
     }
 
-    /**
-     * @deprecated Since 2.13, use {@link #contentReference()} instead
-     * @return "Raw" source reference
-     */
-    @Deprecated
-    public Object getSourceReference() {
-        return _sourceRef;
-    }
-
     /*
      * /**********************************************************************
      * /* Public API, buffer management
@@ -176,98 +90,14 @@ public class IOContext {
         return new TextBuffer(_bufferRecycler);
     }
 
-    /**
-     * Method for recycling or allocation byte buffer of "read I/O" type.
-     *<p>
-     * Note: the method can only be called once during its life cycle.
-     * This is to protect against accidental sharing.
-     *
-     * @return Allocated or recycled byte buffer
-     */
-    public byte[] allocReadIOBuffer() {
-        _verifyAlloc(_readIOBuffer);
-        return (_readIOBuffer = _bufferRecycler.allocByteBuffer(BufferRecycler.BYTE_READ_IO_BUFFER));
-    }
-
-    /**
-     * Method for recycling or allocation byte buffer of "write encoding" type.
-     *<p>
-     * Note: the method can only be called once during its life cycle.
-     * This is to protect against accidental sharing.
-     *
-     * @return Allocated or recycled byte buffer
-     */
-    public byte[] allocWriteEncodingBuffer() {
-        _verifyAlloc(_writeEncodingBuffer);
-        return (_writeEncodingBuffer = _bufferRecycler.allocByteBuffer(BufferRecycler.BYTE_WRITE_ENCODING_BUFFER));
-    }
-
-    /**
-     * Method for recycling or allocation byte buffer of "base 64 encode/decode" type.
-     *<p>
-     * Note: the method can only be called once during its life cycle.
-     * This is to protect against accidental sharing.
-     *
-     * @return Allocated or recycled byte buffer
-     */
-    public byte[] allocBase64Buffer() {
-        _verifyAlloc(_base64Buffer);
-        return (_base64Buffer = _bufferRecycler.allocByteBuffer(BufferRecycler.BYTE_BASE64_CODEC_BUFFER));
-    }
-
     public char[] allocTokenBuffer() {
         _verifyAlloc(_tokenCBuffer);
         return (_tokenCBuffer = _bufferRecycler.allocCharBuffer(BufferRecycler.CHAR_TOKEN_BUFFER));
     }
 
-    // @since 2.4
-    public char[] allocTokenBuffer(int minSize) {
-        _verifyAlloc(_tokenCBuffer);
-        return (_tokenCBuffer = _bufferRecycler.allocCharBuffer(BufferRecycler.CHAR_TOKEN_BUFFER, minSize));
-    }
-
     public char[] allocConcatBuffer() {
         _verifyAlloc(_concatCBuffer);
         return (_concatCBuffer = _bufferRecycler.allocCharBuffer(BufferRecycler.CHAR_CONCAT_BUFFER));
-    }
-
-    public char[] allocNameCopyBuffer(int minSize) {
-        _verifyAlloc(_nameCopyBuffer);
-        return (_nameCopyBuffer = _bufferRecycler.allocCharBuffer(BufferRecycler.CHAR_NAME_COPY_BUFFER, minSize));
-    }
-
-    /**
-     * Method to call when all the processing buffers can be safely
-     * recycled.
-     *
-     * @param buf Buffer instance to release (return for recycling)
-     */
-    public void releaseReadIOBuffer(byte[] buf) {
-        if (buf != null) {
-            // Let's do sanity checks to ensure once-and-only-once release,
-            // as well as avoiding trying to release buffers not owned
-            _verifyRelease(buf, _readIOBuffer);
-            _readIOBuffer = null;
-            _bufferRecycler.releaseByteBuffer(BufferRecycler.BYTE_READ_IO_BUFFER, buf);
-        }
-    }
-
-    public void releaseWriteEncodingBuffer(byte[] buf) {
-        if (buf != null) {
-            // Let's do sanity checks to ensure once-and-only-once release,
-            // as well as avoiding trying to release buffers not owned
-            _verifyRelease(buf, _writeEncodingBuffer);
-            _writeEncodingBuffer = null;
-            _bufferRecycler.releaseByteBuffer(BufferRecycler.BYTE_WRITE_ENCODING_BUFFER, buf);
-        }
-    }
-
-    public void releaseBase64Buffer(byte[] buf) {
-        if (buf != null) { // sanity checks, release once-and-only-once, must be one owned
-            _verifyRelease(buf, _base64Buffer);
-            _base64Buffer = null;
-            _bufferRecycler.releaseByteBuffer(BufferRecycler.BYTE_BASE64_CODEC_BUFFER, buf);
-        }
     }
 
     public void releaseTokenBuffer(char[] buf) {
@@ -287,15 +117,6 @@ public class IOContext {
         }
     }
 
-    public void releaseNameCopyBuffer(char[] buf) {
-        if (buf != null) {
-            // 14-Jan-2014, tatu: Let's actually allow upgrade of the original buffer.
-            _verifyRelease(buf, _nameCopyBuffer);
-            _nameCopyBuffer = null;
-            _bufferRecycler.releaseCharBuffer(BufferRecycler.CHAR_NAME_COPY_BUFFER, buf);
-        }
-    }
-
     /*
      * /**********************************************************************
      * /* Internal helpers
@@ -305,13 +126,6 @@ public class IOContext {
     protected final void _verifyAlloc(Object buffer) {
         if (buffer != null) {
             throw new IllegalStateException("Trying to call same allocXxx() method second time");
-        }
-    }
-
-    protected final void _verifyRelease(byte[] toRelease, byte[] src) {
-        // 07-Mar-2016, tatu: As per [core#255], only prevent shrinking of buffer
-        if ((toRelease != src) && (toRelease.length < src.length)) {
-            throw wrongBuf();
         }
     }
 

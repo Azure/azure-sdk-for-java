@@ -27,8 +27,6 @@ import java.util.Objects;
  * @see JsonProviders
  */
 public abstract class JsonReader implements Closeable {
-    private static final JsonStringEncoder ENCODER = JsonStringEncoder.getInstance();
-
     /**
      * Creates an instance of {@link JsonReader}.
      */
@@ -368,7 +366,7 @@ public abstract class JsonReader implements Closeable {
 
         if (token == JsonToken.FIELD_NAME) {
             buffer.append("{\"");
-            ENCODER.quoteAsString(getFieldName(), buffer);
+            JsonStringEncoder.quoteAsString(getFieldName(), buffer);
             buffer.append("\":");
             token = nextToken();
         }
@@ -421,11 +419,11 @@ public abstract class JsonReader implements Closeable {
         // Jackson can read text directly into a StringBuilder which removes a String copy.
         if (token == JsonToken.FIELD_NAME) {
             buffer.append("\"");
-            ENCODER.quoteAsString(getFieldName(), buffer);
+            JsonStringEncoder.quoteAsString(getFieldName(), buffer);
             buffer.append("\":");
         } else if (token == JsonToken.STRING) {
             buffer.append("\"");
-            ENCODER.quoteAsString(getString(), buffer);
+            JsonStringEncoder.quoteAsString(getString(), buffer);
             buffer.append("\"");
         } else {
             buffer.append(getText());
@@ -727,7 +725,9 @@ public abstract class JsonReader implements Closeable {
                 return "]";
 
             case FIELD_NAME:
-                return raw ? new String(ENCODER.quoteAsUTF8(getFieldName()), StandardCharsets.UTF_8) : getFieldName();
+                return raw
+                    ? new String(JsonStringEncoder.quoteAsUTF8(getFieldName()), StandardCharsets.UTF_8)
+                    : getFieldName();
 
             case BOOLEAN:
                 return String.valueOf(getBoolean());
@@ -736,7 +736,9 @@ public abstract class JsonReader implements Closeable {
                 return getString();
 
             case STRING:
-                return raw ? new String(ENCODER.quoteAsUTF8(getString()), StandardCharsets.UTF_8) : getString();
+                return raw
+                    ? new String(JsonStringEncoder.quoteAsUTF8(getString()), StandardCharsets.UTF_8)
+                    : getString();
 
             case NULL:
                 return "null";

@@ -6,12 +6,6 @@ import java.math.BigDecimal;
 @SuppressWarnings("fallthrough")
 public final class NumberInput {
     /**
-     * Textual representation of a double constant that can cause nasty problems
-     * with JDK (see http://www.exploringbinary.com/java-hangs-when-converting-2-2250738585072012e-308).
-     */
-    public final static String NASTY_SMALL_DOUBLE = "2.2250738585072012e-308";
-
-    /**
      * Constants needed for parsing longs from basic int parsing methods
      */
     final static long L_BILLION = 1000000000;
@@ -178,112 +172,6 @@ public final class NumberInput {
             }
         }
         return true;
-    }
-
-    public static int parseAsInt(String s, int def) {
-        if (s == null) {
-            return def;
-        }
-        s = s.trim();
-        int len = s.length();
-        if (len == 0) {
-            return def;
-        }
-        // One more thing: use integer parsing for 'simple'
-        int i = 0;
-        // skip leading sign, if any
-        final char sign = s.charAt(0);
-        if (sign == '+') { // for plus, actually physically remove
-            s = s.substring(1);
-            len = s.length();
-        } else if (sign == '-') { // minus, just skip for checks, must retain
-            i = 1;
-        }
-        for (; i < len; ++i) {
-            char c = s.charAt(i);
-            // if other symbols, parse as Double, coerce
-            if (c > '9' || c < '0') {
-                try {
-                    return (int) parseDouble(s);
-                } catch (NumberFormatException e) {
-                    return def;
-                }
-            }
-        }
-        try {
-            return Integer.parseInt(s);
-        } catch (NumberFormatException e) {
-        }
-        return def;
-    }
-
-    public static long parseAsLong(String s, long def) {
-        if (s == null) {
-            return def;
-        }
-        s = s.trim();
-        int len = s.length();
-        if (len == 0) {
-            return def;
-        }
-        // One more thing: use long parsing for 'simple'
-        int i = 0;
-        // skip leading sign, if any
-        final char sign = s.charAt(0);
-        if (sign == '+') { // for plus, actually physically remove
-            s = s.substring(1);
-            len = s.length();
-        } else if (sign == '-') { // minus, just skip for checks, must retain
-            i = 1;
-        }
-        for (; i < len; ++i) {
-            char c = s.charAt(i);
-            // if other symbols, parse as Double, coerce
-            if (c > '9' || c < '0') {
-                try {
-                    return (long) parseDouble(s);
-                } catch (NumberFormatException e) {
-                    return def;
-                }
-            }
-        }
-        try {
-            return Long.parseLong(s);
-        } catch (NumberFormatException e) {
-        }
-        return def;
-    }
-
-    public static double parseAsDouble(String s, double def) {
-        if (s == null) {
-            return def;
-        }
-        s = s.trim();
-        int len = s.length();
-        if (len == 0) {
-            return def;
-        }
-        try {
-            return parseDouble(s);
-        } catch (NumberFormatException e) {
-        }
-        return def;
-    }
-
-    public static double parseDouble(String s) throws NumberFormatException {
-        // [JACKSON-486]: avoid some nasty float representations... but should it be MIN_NORMAL or MIN_VALUE?
-        /*
-         * as per [JACKSON-827], let's use MIN_VALUE as it is available on all JDKs; normalized
-         * only in JDK 1.6. In practice, should not really matter.
-         */
-        if (NASTY_SMALL_DOUBLE.equals(s)) {
-            return Double.MIN_VALUE;
-        }
-        return Double.parseDouble(s);
-    }
-
-    public static BigDecimal parseBigDecimal(String s) throws NumberFormatException {
-        return BigDecimalParser.parse(s);
     }
 
     public static BigDecimal parseBigDecimal(char[] ch, int off, int len) throws NumberFormatException {

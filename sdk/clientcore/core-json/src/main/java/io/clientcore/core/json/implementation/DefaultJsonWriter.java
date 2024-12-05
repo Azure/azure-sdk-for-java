@@ -9,10 +9,10 @@ import io.clientcore.core.json.JsonWriteContext;
 import io.clientcore.core.json.JsonWriter;
 import io.clientcore.core.json.implementation.jackson.core.JsonFactory;
 import io.clientcore.core.json.implementation.jackson.core.JsonGenerator;
-import io.clientcore.core.json.implementation.jackson.core.json.JsonWriteFeature;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.Objects;
 
@@ -20,7 +20,7 @@ import java.util.Objects;
  * Default {@link JsonWriter} implementation.
  */
 public final class DefaultJsonWriter extends JsonWriter {
-    private static final JsonFactory FACTORY = JsonFactory.builder().build();
+    private static final JsonFactory FACTORY = new JsonFactory();
 
     private final JsonGenerator generator;
 
@@ -41,7 +41,7 @@ public final class DefaultJsonWriter extends JsonWriter {
      */
     public static JsonWriter toStream(OutputStream json, JsonOptions options) throws IOException {
         Objects.requireNonNull(json, "'json' cannot be null.");
-        return new DefaultJsonWriter(FACTORY.createGenerator(json), options);
+        return new DefaultJsonWriter(FACTORY.createGenerator(new OutputStreamWriter(json)), options);
     }
 
     /**
@@ -62,8 +62,7 @@ public final class DefaultJsonWriter extends JsonWriter {
     }
 
     private DefaultJsonWriter(JsonGenerator generator, JsonOptions options) {
-        this.generator = generator;
-        this.generator.configure(JsonWriteFeature.WRITE_NAN_AS_STRINGS.mappedFeature(),
+        this.generator = generator.configure(JsonGenerator.Feature.QUOTE_NON_NUMERIC_NUMBERS,
             options.isNonNumericNumbersSupported());
     }
 

@@ -366,10 +366,6 @@ public final class Base64Variant implements java.io.Serializable {
         return ((int) c <= 127) ? _asciiToBase64[c] : BASE64_VALUE_INVALID;
     }
 
-    public int decodeBase64Char(int ch) {
-        return (ch <= 127) ? _asciiToBase64[ch] : BASE64_VALUE_INVALID;
-    }
-
     /*
      * /**********************************************************
      * /* Encoding support
@@ -423,52 +419,6 @@ public final class Base64Variant implements java.io.Serializable {
         return outPtr;
     }
 
-    /**
-     * Method that encodes given right-aligned (LSB) 24-bit value
-     * into 4 base64 bytes (ascii), stored in given result buffer.
-     *
-     * @param b24 3-byte value to encode
-     * @param buffer Output buffer to append characters (as bytes) to
-     * @param outPtr Starting position within {@code buffer} to append encoded characters
-     *
-     * @return Pointer in output buffer after appending 4 encoded characters
-     */
-    public int encodeBase64Chunk(int b24, byte[] buffer, int outPtr) {
-        buffer[outPtr++] = _base64ToAsciiB[(b24 >> 18) & 0x3F];
-        buffer[outPtr++] = _base64ToAsciiB[(b24 >> 12) & 0x3F];
-        buffer[outPtr++] = _base64ToAsciiB[(b24 >> 6) & 0x3F];
-        buffer[outPtr++] = _base64ToAsciiB[b24 & 0x3F];
-        return outPtr;
-    }
-
-    /**
-     * Method that outputs partial chunk (which only encodes one
-     * or two bytes of data). Data given is still aligned same as if
-     * it as full data; that is, missing data is at the "right end"
-     * (LSB) of int.
-     *
-     * @param bits 24-bit chunk containing 1 or 2 bytes to encode
-     * @param outputBytes Number of input bytes to encode (either 1 or 2)
-     * @param buffer Output buffer to append characters to
-     * @param outPtr Starting position within {@code buffer} to append encoded characters
-     *
-     * @return Pointer in output buffer after appending encoded characters (2, 3 or 4)
-     */
-    public int encodeBase64Partial(int bits, int outputBytes, byte[] buffer, int outPtr) {
-        buffer[outPtr++] = _base64ToAsciiB[(bits >> 18) & 0x3F];
-        buffer[outPtr++] = _base64ToAsciiB[(bits >> 12) & 0x3F];
-        if (usesPadding()) {
-            byte pb = (byte) _paddingChar;
-            buffer[outPtr++] = (outputBytes == 2) ? _base64ToAsciiB[(bits >> 6) & 0x3F] : pb;
-            buffer[outPtr++] = pb;
-        } else {
-            if (outputBytes == 2) {
-                buffer[outPtr++] = _base64ToAsciiB[(bits >> 6) & 0x3F];
-            }
-        }
-        return outPtr;
-    }
-
     /*
      * /**********************************************************
      * /* Convenience conversion methods for String to/from bytes use case
@@ -487,7 +437,6 @@ public final class Base64Variant implements java.io.Serializable {
      *
      * @throws IllegalArgumentException if input is not valid base64 encoded data
      */
-    @SuppressWarnings("resource")
     public byte[] decode(String input) throws IllegalArgumentException {
         ByteArrayBuilder b = new ByteArrayBuilder();
         decode(input, b);

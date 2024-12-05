@@ -3,8 +3,6 @@ package io.clientcore.core.json.implementation.jackson.core.util;
 
 import io.clientcore.core.json.implementation.jackson.core.io.NumberInput;
 
-import java.io.IOException;
-import java.io.Writer;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -124,29 +122,6 @@ public final class TextBuffer {
 
     public TextBuffer(BufferRecycler allocator) {
         _allocator = allocator;
-    }
-
-    // @since 2.10
-    private TextBuffer(BufferRecycler allocator, char[] initialSegment) {
-        _allocator = allocator;
-        _currentSegment = initialSegment;
-        _currentSize = initialSegment.length;
-        _inputStart = -1;
-    }
-
-    /**
-     * Factory method for constructing an instance with no allocator, and
-     * with initial full segment.
-     *
-     * @param initialSegment Initial, full segment to use for creating buffer (buffer
-     *   {@link #size()} would return length of {@code initialSegment})
-     *
-     * @return TextBuffer constructed
-     *
-     * @since 2.10
-     */
-    public static TextBuffer fromInitial(char[] initialSegment) {
-        return new TextBuffer(null, initialSegment);
     }
 
     /**
@@ -419,7 +394,7 @@ public final class TextBuffer {
      * @throws NumberFormatException if contents are not a valid Java number
      */
     public double contentsAsDouble() throws NumberFormatException {
-        return NumberInput.parseDouble(contentsAsString());
+        return Double.parseDouble(contentsAsString());
     }
 
     /**
@@ -478,51 +453,6 @@ public final class TextBuffer {
         return NumberInput.parseLong(_currentSegment, 0, _currentSize);
     }
 
-    /**
-     * Accessor that will write buffered contents using given {@link Writer}.
-     *
-     * @param w Writer to use for writing out buffered content
-     *
-     * @return Number of characters written (same as {@link #size()})
-     *
-     * @throws IOException If write using {@link Writer} parameter fails
-     *
-     * @since 2.8
-     */
-    public int contentsToWriter(Writer w) throws IOException {
-        if (_resultArray != null) {
-            w.write(_resultArray);
-            return _resultArray.length;
-        }
-        if (_resultString != null) { // Can take a shortcut...
-            w.write(_resultString);
-            return _resultString.length();
-        }
-        // Do we use shared array?
-        if (_inputStart >= 0) {
-            final int len = _inputLen;
-            if (len > 0) {
-                w.write(_inputBuffer, _inputStart, len);
-            }
-            return len;
-        }
-        // nope, not shared
-        int total = 0;
-        if (_segments != null) {
-            for (char[] curr : _segments) {
-                int currLen = curr.length;
-                w.write(curr, 0, currLen);
-                total += currLen;
-            }
-        }
-        int len = _currentSize;
-        if (len > 0) {
-            w.write(_currentSegment, 0, len);
-            total += len;
-        }
-        return total;
-    }
-
     /*
      * /**********************************************************
      * /* Public mutators:
@@ -539,7 +469,7 @@ public final class TextBuffer {
         // Room in current segment?
         char[] curr = _currentSegment;
         if (_currentSize >= curr.length) {
-            expand(1);
+            expand();
             curr = _currentSegment;
         }
         curr[_currentSize++] = c;
@@ -571,7 +501,7 @@ public final class TextBuffer {
         // And then allocate new segment; we are guaranteed to now
         // have enough room in segment.
         do {
-            expand(len);
+            expand();
             int amount = Math.min(_currentSegment.length, len);
             System.arraycopy(c, start, _currentSegment, 0, amount);
             _currentSize += amount;
@@ -605,7 +535,7 @@ public final class TextBuffer {
         // And then allocate new segment; we are guaranteed to now
         // have enough room in segment.
         do {
-            expand(len);
+            expand();
             int amount = Math.min(_currentSegment.length, len);
             str.getChars(offset, offset + amount, _currentSegment, 0);
             _currentSize += amount;
@@ -634,7 +564,7 @@ public final class TextBuffer {
                 _currentSegment = buf(0);
             } else if (_currentSize >= curr.length) {
                 // Plus, we better have room for at least one more char
-                expand(1);
+                expand();
             }
         }
         return _currentSegment;
@@ -669,31 +599,6 @@ public final class TextBuffer {
         _currentSize = len;
     }
 
-    /**
-     * Convenience method that finishes the current active content segment
-     * (by specifying how many characters within consists of valid content)
-     * and aggregates and returns resulting contents (similar to a call
-     * to {@link #contentsAsString()}).
-     *
-     * @param len Length of content (in characters) of the current active segment
-     *
-     * @return String that contains all buffered content
-     *
-     * @since 2.6
-     */
-    public String setCurrentAndReturn(int len) {
-        _currentSize = len;
-        // We can simplify handling here compared to full `contentsAsString()`:
-        if (_segmentSize > 0) { // longer text; call main method
-            return contentsAsString();
-        }
-        // more common case: single segment
-        int currLen = _currentSize;
-        String str = (currLen == 0) ? "" : new String(_currentSegment, 0, currLen);
-        _resultString = str;
-        return str;
-    }
-
     public char[] finishCurrentSegment() {
         if (_segments == null) {
             _segments = new ArrayList<>();
@@ -714,26 +619,6 @@ public final class TextBuffer {
         char[] curr = carr(newLen);
         _currentSegment = curr;
         return curr;
-    }
-
-    /**
-     * Method called to expand size of the current segment, to
-     * accommodate for more contiguous content. Usually only
-     * used when parsing tokens like names if even then.
-     * Method will both expand the segment and return it
-     *
-     * @return Expanded current segment
-     */
-    public char[] expandCurrentSegment() {
-        final char[] curr = _currentSegment;
-        // Let's grow by 50% by default
-        final int len = curr.length;
-        int newLen = len + (len >> 1);
-        // but above intended maximum, slow to increase by 25%
-        if (newLen > MAX_SEGMENT_LEN) {
-            newLen = len + (len >> 2);
-        }
-        return (_currentSegment = Arrays.copyOf(curr, newLen));
     }
 
     /*
@@ -783,7 +668,7 @@ public final class TextBuffer {
     }
 
     // Method called when current segment is full, to allocate new segment.
-    private void expand(int minNewSegmentSize) {
+    private void expand() {
         // First, let's move current segment to segment list:
         if (_segments == null) {
             _segments = new ArrayList<>();

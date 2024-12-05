@@ -1,8 +1,6 @@
 // Original file from https://github.com/FasterXML/jackson-core under Apache-2.0 license.
 package io.clientcore.core.json.implementation.jackson.core.util;
 
-import io.clientcore.core.json.implementation.jackson.core.io.SegmentedStringWriter;
-
 import java.util.concurrent.atomic.AtomicReferenceArray;
 
 /**
@@ -17,30 +15,12 @@ import java.util.concurrent.atomic.AtomicReferenceArray;
  * to not rely on {@code ThreadLocal} access.
  */
 public class BufferRecycler {
-    /**
-     * Buffer used for reading byte-based input.
-     */
-    public final static int BYTE_READ_IO_BUFFER = 0;
-
-    /**
-     * Buffer used for temporarily storing encoded content; used
-     * for example by UTF-8 encoding writer
-     */
-    public final static int BYTE_WRITE_ENCODING_BUFFER = 1;
 
     /**
      * Buffer used for temporarily concatenating output; used for
      * example when requesting output as byte array.
      */
     public final static int BYTE_WRITE_CONCAT_BUFFER = 2;
-
-    /**
-     * Buffer used for concatenating binary data that is either being
-     * encoded as base64 output, or decoded from base64 input.
-     *
-     * @since 2.1
-     */
-    public final static int BYTE_BASE64_CODEC_BUFFER = 3;
 
     /**
      * Buffer used as input buffer for tokenization for character-based parsers.
@@ -55,23 +35,13 @@ public class BufferRecycler {
     public final static int CHAR_CONCAT_BUFFER = 1;
 
     /**
-     * Used through {@link TextBuffer}: directly by parsers (to concatenate
-     * String values)
-     *  and indirectly via
-     * {@link SegmentedStringWriter}
+     * Used through {@link TextBuffer}
      * when serializing (databind level {@code ObjectMapper} and
      * {@code ObjectWriter}). In both cases used as segments (and not for whole value),
      * but may result in retention of larger chunks for big content
      * (long text values during parsing; bigger output documents for generation).
      */
     public final static int CHAR_TEXT_BUFFER = 2;
-
-    /**
-     * For parsers, temporary buffer into which {@code char[]} for names is copied
-     * when requested as such; for {@code WriterBasedGenerator} used for buffering
-     * during {@code writeString(Reader)} operation (not commonly used).
-     */
-    public final static int CHAR_NAME_COPY_BUFFER = 3;
 
     // Buffer lengths
 
@@ -124,17 +94,10 @@ public class BufferRecycler {
      * @return Buffer allocated (possibly recycled)
      */
     public final byte[] allocByteBuffer(int ix) {
-        return allocByteBuffer(ix, 0);
-    }
-
-    public byte[] allocByteBuffer(int ix, int minSize) {
-        final int DEF_SIZE = byteBufferLength(ix);
-        if (minSize < DEF_SIZE) {
-            minSize = DEF_SIZE;
-        }
+        int minSize = BYTE_BUFFER_LENGTHS[ix];
         byte[] buffer = _byteBuffers.getAndSet(ix, null);
         if (buffer == null || buffer.length < minSize) {
-            buffer = balloc(minSize);
+            buffer = new byte[minSize];
         }
         return buffer;
     }
@@ -154,46 +117,18 @@ public class BufferRecycler {
     }
 
     public char[] allocCharBuffer(int ix, int minSize) {
-        final int DEF_SIZE = charBufferLength(ix);
+        final int DEF_SIZE = CHAR_BUFFER_LENGTHS[ix];
         if (minSize < DEF_SIZE) {
             minSize = DEF_SIZE;
         }
         char[] buffer = _charBuffers.getAndSet(ix, null);
         if (buffer == null || buffer.length < minSize) {
-            buffer = calloc(minSize);
+            buffer = new char[minSize];
         }
         return buffer;
     }
 
     public void releaseCharBuffer(int ix, char[] buffer) {
         _charBuffers.set(ix, buffer);
-    }
-
-    /*
-     * /**********************************************************
-     * /* Overridable helper methods
-     * /**********************************************************
-     */
-
-    protected int byteBufferLength(int ix) {
-        return BYTE_BUFFER_LENGTHS[ix];
-    }
-
-    protected int charBufferLength(int ix) {
-        return CHAR_BUFFER_LENGTHS[ix];
-    }
-
-    /*
-     * /**********************************************************
-     * /* Actual allocations separated for easier debugging/profiling
-     * /**********************************************************
-     */
-
-    protected byte[] balloc(int size) {
-        return new byte[size];
-    }
-
-    protected char[] calloc(int size) {
-        return new char[size];
     }
 }

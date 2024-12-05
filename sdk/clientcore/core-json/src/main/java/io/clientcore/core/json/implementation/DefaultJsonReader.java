@@ -9,21 +9,22 @@ import io.clientcore.core.json.JsonToken;
 import io.clientcore.core.json.JsonWriter;
 import io.clientcore.core.json.implementation.jackson.core.JsonFactory;
 import io.clientcore.core.json.implementation.jackson.core.JsonParser;
-import io.clientcore.core.json.implementation.jackson.core.json.JsonReadFeature;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.Reader;
+import java.io.StringReader;
 
 /**
  * Default {@link JsonReader} implementation.
  */
 public final class DefaultJsonReader extends JsonReader {
-    private static final JsonFactory FACTORY = JsonFactory.builder().build();
+    private static final JsonFactory FACTORY = new JsonFactory();
 
     private final JsonParser parser;
-    private final byte[] jsonBytes;
-    private final String jsonString;
+    private final Reader jsonReader;
     private final boolean resetSupported;
     private final boolean nonNumericNumbersSupported;
     private final boolean jsoncSupported;
@@ -39,7 +40,7 @@ public final class DefaultJsonReader extends JsonReader {
      * @throws IOException If a {@link JsonReader} could not be constructed from the JSON {@code byte[]}.
      */
     public static JsonReader fromBytes(byte[] json, JsonOptions options) throws IOException {
-        return new DefaultJsonReader(FACTORY.createParser(json), true, json, null, options);
+        return fromStream(new ByteArrayInputStream(json), options);
     }
 
     /**
@@ -51,7 +52,7 @@ public final class DefaultJsonReader extends JsonReader {
      * @throws IOException If a {@link JsonReader} could not be constructed from the JSON String.
      */
     public static JsonReader fromString(String json, JsonOptions options) throws IOException {
-        return new DefaultJsonReader(FACTORY.createParser(json), true, null, json, options);
+        return fromReader(new StringReader(json), options);
     }
 
     /**
@@ -63,7 +64,7 @@ public final class DefaultJsonReader extends JsonReader {
      * @throws IOException If a {@link JsonReader} could not be constructed from the JSON {@link InputStream}.
      */
     public static JsonReader fromStream(InputStream json, JsonOptions options) throws IOException {
-        return new DefaultJsonReader(FACTORY.createParser(json), json.markSupported(), null, null, options);
+        return fromReader(new InputStreamReader(json), options);
     }
 
     /**
@@ -75,23 +76,19 @@ public final class DefaultJsonReader extends JsonReader {
      * @throws IOException If a {@link DefaultJsonReader} could not be constructed from the JSON {@link Reader}.
      */
     public static JsonReader fromReader(Reader reader, JsonOptions options) throws IOException {
-        return new DefaultJsonReader(FACTORY.createParser(reader), reader.markSupported(), null, null, options);
+        return new DefaultJsonReader(FACTORY.createParser(reader), reader.markSupported(), reader, options);
     }
 
-    private DefaultJsonReader(JsonParser parser, boolean resetSupported, byte[] jsonBytes, String jsonString,
-        JsonOptions options) {
-        this(parser, resetSupported, jsonBytes, jsonString, options.isNonNumericNumbersSupported(),
-            options.isJsoncSupported());
+    private DefaultJsonReader(JsonParser parser, boolean resetSupported, Reader jsonReader, JsonOptions options) {
+        this(parser, resetSupported, jsonReader, options.isNonNumericNumbersSupported(), options.isJsoncSupported());
     }
 
-    private DefaultJsonReader(JsonParser parser, boolean resetSupported, byte[] jsonBytes, String jsonString,
+    private DefaultJsonReader(JsonParser parser, boolean resetSupported, Reader jsonReader,
         boolean nonNumericNumbersSupported, boolean jsoncSupported) {
-        this.parser = parser;
+        this.parser = parser.configure(JsonParser.Feature.ALLOW_NON_NUMERIC_NUMBERS, nonNumericNumbersSupported)
+            .configure(JsonParser.Feature.ALLOW_COMMENTS, jsoncSupported);
         this.resetSupported = resetSupported;
-        this.parser.configure(JsonReadFeature.ALLOW_NON_NUMERIC_NUMBERS.mappedFeature(), nonNumericNumbersSupported);
-        this.parser.configure(JsonParser.Feature.ALLOW_COMMENTS, jsoncSupported);
-        this.jsonBytes = jsonBytes;
-        this.jsonString = jsonString;
+        this.jsonReader = jsonReader;
         this.nonNumericNumbersSupported = nonNumericNumbersSupported;
         this.jsoncSupported = jsoncSupported;
     }
@@ -148,7 +145,7 @@ public final class DefaultJsonReader extends JsonReader {
 
     @Override
     public String getFieldName() throws IOException {
-        return parser.currentName();
+        return parser.getCurrentName();
     }
 
     @Override
@@ -160,9 +157,9 @@ public final class DefaultJsonReader extends JsonReader {
     public JsonReader bufferObject() throws IOException {
         JsonToken currentToken = currentToken();
         if (currentToken == JsonToken.START_OBJECT || currentToken == JsonToken.FIELD_NAME) {
-            String json = readRemainingFieldsAsJsonObject();
-            return new DefaultJsonReader(FACTORY.createParser(json), true, null, json, nonNumericNumbersSupported,
-                jsoncSupported);
+            Reader jsonReader = new StringReader(readRemainingFieldsAsJsonObject());
+            return new DefaultJsonReader(FACTORY.createParser(jsonReader), jsonReader.markSupported(), jsonReader,
+                nonNumericNumbersSupported, jsoncSupported);
         } else {
             throw new IllegalStateException("Cannot buffer a JSON object from a non-object, non-field name "
                 + "starting location. Starting location: " + currentToken());
@@ -180,13 +177,9 @@ public final class DefaultJsonReader extends JsonReader {
             throw new IllegalStateException("'reset' isn't supported by this JsonReader.");
         }
 
-        if (jsonBytes != null) {
-            return new DefaultJsonReader(FACTORY.createParser(jsonBytes), true, jsonBytes, null,
-                nonNumericNumbersSupported, jsoncSupported);
-        } else {
-            return new DefaultJsonReader(FACTORY.createParser(jsonString), true, null, jsonString,
-                nonNumericNumbersSupported, jsoncSupported);
-        }
+        jsonReader.reset();
+        return new DefaultJsonReader(FACTORY.createParser(jsonReader), true, jsonReader, nonNumericNumbersSupported,
+            jsoncSupported);
     }
 
     @Override
