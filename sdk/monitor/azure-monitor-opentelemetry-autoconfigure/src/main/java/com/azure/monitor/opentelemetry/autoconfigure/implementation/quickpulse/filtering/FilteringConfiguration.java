@@ -11,64 +11,57 @@ import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.s
 import java.util.Set;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.HashSet;
-
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
+import java.util.HashMap;
 
 public class FilteringConfiguration {
-    private final Set<String> seenMetricIds;
+    private final Set<String> seenMetricIds = new HashSet<>();
 
     // key is the telemetry type
-    private ConcurrentMap<String, List<DerivedMetricInfo>> validDerivedMetricInfos;
+    private final Map<String, List<DerivedMetricInfo>> validDerivedMetricInfos;
 
     // first key is the telemetry type, second key is the id associated with the document filters
-    private ConcurrentMap<String, ConcurrentMap<String, List<FilterConjunctionGroupInfo>>> validDocumentFilterConjunctionGroupInfos;
+    private final Map<String, Map<String, List<FilterConjunctionGroupInfo>>> validDocumentFilterConjunctionGroupInfos;
 
-    private volatile String etag;
+    private final String etag;
 
     public FilteringConfiguration() {
-        validDerivedMetricInfos = new ConcurrentHashMap<>();
-        validDocumentFilterConjunctionGroupInfos = new ConcurrentHashMap<>();
-        seenMetricIds = new HashSet<>();
+        validDerivedMetricInfos = new HashMap<>();
+        validDocumentFilterConjunctionGroupInfos = new HashMap<>();
         etag = "";
     }
 
-    public synchronized void updateConfiguration(CollectionConfigurationInfo configuration) {
+    public FilteringConfiguration(CollectionConfigurationInfo configuration) {
+        validDerivedMetricInfos = new HashMap<>();
+        validDocumentFilterConjunctionGroupInfos = new HashMap<>();
         etag = configuration.getETag();
-        seenMetricIds.clear();
         parseDocumentFilterConfiguration(configuration);
         parseMetricFilterConfiguration(configuration);
     }
 
-    public synchronized List<DerivedMetricInfo> fetchMetricConfigForTelemetryType(String telemetryType) {
-        List<DerivedMetricInfo> result;
+    public List<DerivedMetricInfo> fetchMetricConfigForTelemetryType(String telemetryType) {
         if (validDerivedMetricInfos.containsKey(telemetryType)) {
-            result = new ArrayList<>(validDerivedMetricInfos.get(telemetryType));
-        } else {
-            result = new ArrayList<>();
+            return new ArrayList<>(validDerivedMetricInfos.get(telemetryType));
         }
-        return result;
+        return new ArrayList<>();
     }
 
-    public synchronized ConcurrentMap<String, List<FilterConjunctionGroupInfo>>
-        fetchDocumentsConfigForTelemetryType(String telemetryType) {
-        ConcurrentMap<String, List<FilterConjunctionGroupInfo>> result;
+    public Map<String, List<FilterConjunctionGroupInfo>> fetchDocumentsConfigForTelemetryType(String telemetryType) {
+        Map<String, List<FilterConjunctionGroupInfo>> result;
         if (validDocumentFilterConjunctionGroupInfos.containsKey(telemetryType)) {
-            result = new ConcurrentHashMap<>(validDocumentFilterConjunctionGroupInfos.get(telemetryType));
+            result = new HashMap<>(validDocumentFilterConjunctionGroupInfos.get(telemetryType));
         } else {
-            result = new ConcurrentHashMap<>();
+            result = new HashMap<>();
         }
         return result;
     }
 
-    public synchronized String getETag() {
+    public String getETag() {
         return etag;
     }
 
     private void parseDocumentFilterConfiguration(CollectionConfigurationInfo configuration) {
-        ConcurrentMap<String, ConcurrentMap<String, List<FilterConjunctionGroupInfo>>> newValidDocumentsConfig
-            = new ConcurrentHashMap<>();
         for (DocumentStreamInfo documentStreamInfo : configuration.getDocumentStreams()) {
             String documentStreamId = documentStreamInfo.getId();
             for (DocumentFilterConjunctionGroupInfo documentFilterGroupInfo : documentStreamInfo
@@ -79,12 +72,12 @@ public class FilteringConfiguration {
                 // TODO (harskaur): In later PR, validate input before adding it to newValidDocumentsConfig
                 // TODO (harskaur): If any validator methods throw an exception, catch the exception and track the error for post request body
 
-                if (!newValidDocumentsConfig.containsKey(telemetryType)) {
-                    newValidDocumentsConfig.put(telemetryType, new ConcurrentHashMap<>());
+                if (!validDocumentFilterConjunctionGroupInfos.containsKey(telemetryType)) {
+                    validDocumentFilterConjunctionGroupInfos.put(telemetryType, new HashMap<>());
                 }
 
-                ConcurrentMap<String, List<FilterConjunctionGroupInfo>> innerMap
-                    = newValidDocumentsConfig.get(telemetryType);
+                Map<String, List<FilterConjunctionGroupInfo>> innerMap
+                    = validDocumentFilterConjunctionGroupInfos.get(telemetryType);
                 if (innerMap.containsKey(documentStreamId)) {
                     innerMap.get(documentStreamId).add(filterGroup);
                 } else {
@@ -94,11 +87,9 @@ public class FilteringConfiguration {
                 }
             }
         }
-        validDocumentFilterConjunctionGroupInfos = newValidDocumentsConfig;
     }
 
     private void parseMetricFilterConfiguration(CollectionConfigurationInfo configuration) {
-        ConcurrentMap<String, List<DerivedMetricInfo>> newValidConfig = new ConcurrentHashMap<>();
         for (DerivedMetricInfo derivedMetricInfo : configuration.getMetrics()) {
             String telemetryType = derivedMetricInfo.getTelemetryType();
             String id = derivedMetricInfo.getId();
@@ -107,16 +98,15 @@ public class FilteringConfiguration {
                 // TODO (harskaur): In later PR, validate input before adding it to newValidConfig
                 // TODO (harskaur): If any validator methods throw an exception, catch the exception and track the error for post request body
 
-                if (newValidConfig.containsKey(telemetryType)) {
-                    newValidConfig.get(telemetryType).add(derivedMetricInfo);
+                if (validDerivedMetricInfos.containsKey(telemetryType)) {
+                    validDerivedMetricInfos.get(telemetryType).add(derivedMetricInfo);
                 } else {
                     List<DerivedMetricInfo> infos = new ArrayList<>();
                     infos.add(derivedMetricInfo);
-                    newValidConfig.put(telemetryType, infos);
+                    validDerivedMetricInfos.put(telemetryType, infos);
                 }
             }
         }
-        validDerivedMetricInfos = newValidConfig;
     }
 
 }

@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 
 class QuickPulseDataSender implements Runnable {
@@ -41,11 +42,11 @@ class QuickPulseDataSender implements Runnable {
 
     private static final long TICKS_AT_EPOCH = 621355968000000000L;
 
-    private volatile FilteringConfiguration configuration;
+    private final AtomicReference<FilteringConfiguration> configuration;
 
     QuickPulseDataSender(LiveMetricsRestAPIsForClientSDKs liveMetricsRestAPIsForClientSDKs,
         ArrayBlockingQueue<MonitoringDataPoint> sendQueue, Supplier<URL> endpointUrl,
-        Supplier<String> instrumentationKey, FilteringConfiguration configuration) {
+        Supplier<String> instrumentationKey, AtomicReference<FilteringConfiguration> configuration) {
         this.sendQueue = sendQueue;
         this.liveMetricsRestAPIsForClientSDKs = liveMetricsRestAPIsForClientSDKs;
         this.endpointUrl = endpointUrl;
@@ -81,10 +82,10 @@ class QuickPulseDataSender implements Runnable {
             try {
                 // TODO (harskaur): remove logging when manual testing done
                 logger.verbose("Monitoring point: {}", point.toJsonString());
-                logger.verbose("etag: {}", configuration.getETag());
+                logger.verbose("etag: {}", configuration.get().getETag());
                 Response<CollectionConfigurationInfo> responseMono = liveMetricsRestAPIsForClientSDKs
                     .publishNoCustomHeadersWithResponseAsync(endpointPrefix, instrumentationKey.get(),
-                        configuration.getETag(), transmissionTimeInTicks, dataPointList)
+                        configuration.get().getETag(), transmissionTimeInTicks, dataPointList)
                     .block();
                 if (responseMono == null) {
                     // this shouldn't happen, the mono should complete with a response or a failure
@@ -104,8 +105,8 @@ class QuickPulseDataSender implements Runnable {
 
                 lastValidRequestTimeNs = sendTime;
                 CollectionConfigurationInfo body = responseMono.getValue();
-                if (body != null && !configuration.getETag().equals(body.getETag())) {
-                    configuration.updateConfiguration(body);
+                if (body != null && !configuration.get().getETag().equals(body.getETag())) {
+                    configuration.set(new FilteringConfiguration(body));
                 }
 
             } catch (RuntimeException | IOException e) { // this includes ServiceErrorException & RuntimeException thrown from quickpulse post api

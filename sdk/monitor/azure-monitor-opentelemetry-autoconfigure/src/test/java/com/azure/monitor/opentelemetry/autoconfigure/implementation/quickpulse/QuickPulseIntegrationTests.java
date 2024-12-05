@@ -21,6 +21,7 @@ import java.util.Date;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -31,7 +32,7 @@ public class QuickPulseIntegrationTests extends QuickPulseTestBase {
     private static final String instrumentationKey = "ikey123";
 
     private QuickPulsePingSender getQuickPulsePingSender() {
-        FilteringConfiguration configuration = new FilteringConfiguration();
+        AtomicReference<FilteringConfiguration> configuration = new AtomicReference<>(new FilteringConfiguration());
         LiveMetricsRestAPIsForClientSDKsBuilder builder = new LiveMetricsRestAPIsForClientSDKsBuilder();
         HttpPipeline httpPipeline = getHttpPipeline();
         LiveMetricsRestAPIsForClientSDKs liveMetricsRestAPIsForClientSDKs
@@ -42,7 +43,7 @@ public class QuickPulseIntegrationTests extends QuickPulseTestBase {
     }
 
     private QuickPulsePingSender getQuickPulsePingSenderWithAuthentication() {
-        FilteringConfiguration configuration = new FilteringConfiguration();
+        AtomicReference<FilteringConfiguration> configuration = new AtomicReference<>(new FilteringConfiguration());
         LiveMetricsRestAPIsForClientSDKsBuilder builder = new LiveMetricsRestAPIsForClientSDKsBuilder();
         HttpPipeline httpPipeline = getHttpPipelineWithAuthentication();
         LiveMetricsRestAPIsForClientSDKs liveMetricsRestAPIsForClientSDKs
@@ -53,7 +54,7 @@ public class QuickPulseIntegrationTests extends QuickPulseTestBase {
     }
 
     private QuickPulsePingSender getQuickPulsePingSenderWithValidator(HttpPipelinePolicy validator) {
-        FilteringConfiguration configuration = new FilteringConfiguration();
+        AtomicReference<FilteringConfiguration> configuration = new AtomicReference<>(new FilteringConfiguration());
         LiveMetricsRestAPIsForClientSDKsBuilder builder = new LiveMetricsRestAPIsForClientSDKsBuilder();
         HttpPipeline httpPipeline = getHttpPipeline(validator);
         LiveMetricsRestAPIsForClientSDKs liveMetricsRestAPIsForClientSDKs
@@ -69,7 +70,7 @@ public class QuickPulseIntegrationTests extends QuickPulseTestBase {
         HttpPipeline httpPipeline = getHttpPipeline(validator);
         LiveMetricsRestAPIsForClientSDKs liveMetricsRestAPIsForClientSDKs
             = builder.pipeline(httpPipeline).buildClient();
-        FilteringConfiguration configuration = new FilteringConfiguration();
+        AtomicReference<FilteringConfiguration> configuration = new AtomicReference<>(new FilteringConfiguration());
         return new QuickPulseDataSender(liveMetricsRestAPIsForClientSDKs, sendQueue, connectionString::getLiveEndpoint,
             connectionString::getInstrumentationKey, configuration);
     }
@@ -120,7 +121,7 @@ public class QuickPulseIntegrationTests extends QuickPulseTestBase {
             = getQuickPulsePingSenderWithValidator(new ValidationPolicy(pingCountDown, expectedPingRequestBody));
         IsSubscribedHeaders pingHeaders = pingSender.ping(null);
 
-        FilteringConfiguration configuration = new FilteringConfiguration();
+        AtomicReference<FilteringConfiguration> configuration = new AtomicReference<>(new FilteringConfiguration());
         QuickPulseDataSender dataSender = getQuickPulseDataSenderWithValidator(
             new ValidationPolicy(postCountDown, expectedPostRequestBody), sendQueue);
         QuickPulseDataCollector collector = new QuickPulseDataCollector(configuration);

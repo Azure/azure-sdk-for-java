@@ -40,7 +40,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
-import java.util.concurrent.ConcurrentMap;
 
 final class QuickPulseDataCollector {
 
@@ -59,9 +58,9 @@ final class QuickPulseDataCollector {
     private static final ClientLogger logger = new ClientLogger(QuickPulseDataCollector.class);
 
     // TODO (harskaur): Track projection (runtime) related errors in future PR
-    private volatile FilteringConfiguration configuration;
+    private final AtomicReference<FilteringConfiguration> configuration;
 
-    QuickPulseDataCollector(FilteringConfiguration configuration) {
+    QuickPulseDataCollector(AtomicReference<FilteringConfiguration> configuration) {
         this.configuration = configuration;
     }
 
@@ -151,8 +150,8 @@ final class QuickPulseDataCollector {
     private boolean matchesDocumentFilters(TelemetryColumns columns, String telemetryType) {
         // TODO (harskaur): In a future PR, check if the document matches any filter (using Filter class)
         // TODO (harskaur): when this PR is merged, remove logging (it is for manual testing & making sure the build does not complain about useless methods)
-        ConcurrentMap<String, List<FilterConjunctionGroupInfo>> documentsConfig
-            = configuration.fetchDocumentsConfigForTelemetryType(telemetryType);
+        Map<String, List<FilterConjunctionGroupInfo>> documentsConfig
+            = configuration.get().fetchDocumentsConfigForTelemetryType(telemetryType);
         try {
             for (Map.Entry<String, List<FilterConjunctionGroupInfo>> e2 : documentsConfig.entrySet()) {
                 logger.verbose(e2.getKey());
@@ -171,7 +170,7 @@ final class QuickPulseDataCollector {
         // TODO (harskaur): In a future PR, use Filter class to check if columns match any filter
         // TODO (harskaur): If columns matches a filter, then create/increment a derived metric
         // TODO (harskaur): when this PR is merged, remove logging (it is for manual testing & making sure the build does not complain about useless methods)
-        List<DerivedMetricInfo> metricsConfig = configuration.fetchMetricConfigForTelemetryType(telemetryType);
+        List<DerivedMetricInfo> metricsConfig = configuration.get().fetchMetricConfigForTelemetryType(telemetryType);
         try {
             for (DerivedMetricInfo dmi : metricsConfig) {
                 logger.verbose(dmi.toJsonString());

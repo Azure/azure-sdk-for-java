@@ -19,6 +19,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -39,7 +40,7 @@ class QuickPulseDataFetcherTests {
         LiveMetricsRestAPIsForClientSDKsBuilder builder = new LiveMetricsRestAPIsForClientSDKsBuilder();
         LiveMetricsRestAPIsForClientSDKs liveMetricsRestAPIsForClientSDKs
             = builder.pipeline(httpPipeline).buildClient();
-        FilteringConfiguration configuration = new FilteringConfiguration();
+        AtomicReference<FilteringConfiguration> configuration = new AtomicReference<>(new FilteringConfiguration());
         QuickPulsePingSender quickPulsePingSender = new QuickPulsePingSender(liveMetricsRestAPIsForClientSDKs,
             connectionString::getLiveEndpoint, connectionString::getInstrumentationKey, null, "instance1", "machine1",
             "qpid123", "testSdkVersion", configuration);

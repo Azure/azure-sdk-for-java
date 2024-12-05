@@ -19,6 +19,7 @@ import java.util.UUID;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 
 public class QuickPulse {
@@ -87,14 +88,15 @@ public class QuickPulse {
         }
 
         FilteringConfiguration configuration = new FilteringConfiguration();
+        AtomicReference<FilteringConfiguration> atomicConfig = new AtomicReference<>(configuration);
 
-        QuickPulseDataCollector collector = new QuickPulseDataCollector(configuration);
+        QuickPulseDataCollector collector = new QuickPulseDataCollector(atomicConfig);
 
         QuickPulsePingSender quickPulsePingSender
             = new QuickPulsePingSender(liveMetricsRestAPIsForClientSDKs, endpointUrl, instrumentationKey, roleName,
-                instanceName, machineName, quickPulseId, sdkVersion, configuration);
+                instanceName, machineName, quickPulseId, sdkVersion, atomicConfig);
         QuickPulseDataSender quickPulseDataSender = new QuickPulseDataSender(liveMetricsRestAPIsForClientSDKs,
-            sendQueue, endpointUrl, instrumentationKey, configuration);
+            sendQueue, endpointUrl, instrumentationKey, atomicConfig);
         QuickPulseDataFetcher quickPulseDataFetcher = new QuickPulseDataFetcher(collector, sendQueue, roleName,
             instanceName, machineName, quickPulseId, sdkVersion);
 

@@ -20,6 +20,7 @@ import reactor.util.annotation.Nullable;
 import java.net.URL;
 import java.util.Date;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 
 import static com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.AzureMonitorMsgId.QUICK_PULSE_PING_ERROR;
@@ -45,13 +46,13 @@ class QuickPulsePingSender {
     private final String quickPulseId;
     private long lastValidRequestTimeNs = System.nanoTime();
     private final String sdkVersion;
-    private volatile FilteringConfiguration configuration;
+    private final AtomicReference<FilteringConfiguration> configuration;
     private IsSubscribedHeaders responseHeaders;
     private static final HttpHeaderName QPS_STATUS_HEADER = HttpHeaderName.fromString("x-ms-qps-subscribed");
 
     QuickPulsePingSender(LiveMetricsRestAPIsForClientSDKs liveMetricsRestAPIsForClientSDKs, Supplier<URL> endpointUrl,
         Supplier<String> instrumentationKey, String roleName, String instanceName, String machineName,
-        String quickPulseId, String sdkVersion, FilteringConfiguration configuration) {
+        String quickPulseId, String sdkVersion, AtomicReference<FilteringConfiguration> configuration) {
         this.liveMetricsRestAPIsForClientSDKs = liveMetricsRestAPIsForClientSDKs;
         this.endpointUrl = endpointUrl;
         this.instrumentationKey = instrumentationKey;
@@ -102,8 +103,8 @@ class QuickPulsePingSender {
             }
 
             CollectionConfigurationInfo body = responseMono.getValue();
-            if (body != null && !configuration.getETag().equals(body.getETag())) {
-                configuration.updateConfiguration(body);
+            if (body != null && !configuration.get().getETag().equals(body.getETag())) {
+                configuration.set(new FilteringConfiguration(body));
             }
 
             return responseHeaders;

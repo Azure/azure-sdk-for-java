@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
 import java.util.Date;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.QuickPulseTestBase.createRemoteDependencyTelemetry;
 import static com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.QuickPulseTestBase.createRequestTelemetry;
@@ -24,13 +25,13 @@ class QuickPulseDataCollectorTests {
 
     @Test
     void initialStateIsDisabled() {
-        FilteringConfiguration configuration = new FilteringConfiguration();
+        AtomicReference<FilteringConfiguration> configuration = new AtomicReference<>(new FilteringConfiguration());
         assertThat(new QuickPulseDataCollector(configuration).peek()).isNull();
     }
 
     @Test
     void emptyCountsAndDurationsAfterEnable() {
-        FilteringConfiguration configuration = new FilteringConfiguration();
+        AtomicReference<FilteringConfiguration> configuration = new AtomicReference<>(new FilteringConfiguration());
         QuickPulseDataCollector collector = new QuickPulseDataCollector(configuration);
 
         collector.enable(FAKE_CONNECTION_STRING::getInstrumentationKey);
@@ -40,7 +41,7 @@ class QuickPulseDataCollectorTests {
 
     @Test
     void nullCountersAfterDisable() {
-        FilteringConfiguration configuration = new FilteringConfiguration();
+        AtomicReference<FilteringConfiguration> configuration = new AtomicReference<>(new FilteringConfiguration());
         QuickPulseDataCollector collector = new QuickPulseDataCollector(configuration);
 
         collector.enable(FAKE_CONNECTION_STRING::getInstrumentationKey);
@@ -50,7 +51,7 @@ class QuickPulseDataCollectorTests {
 
     @Test
     void requestTelemetryIsCounted_DurationIsSum() {
-        FilteringConfiguration configuration = new FilteringConfiguration();
+        AtomicReference<FilteringConfiguration> configuration = new AtomicReference<>(new FilteringConfiguration());
         QuickPulseDataCollector collector = new QuickPulseDataCollector(configuration);
 
         collector.setQuickPulseStatus(QuickPulseStatus.QP_IS_ON);
@@ -93,7 +94,7 @@ class QuickPulseDataCollectorTests {
 
     @Test
     void dependencyTelemetryIsCounted_DurationIsSum() {
-        FilteringConfiguration configuration = new FilteringConfiguration();
+        AtomicReference<FilteringConfiguration> configuration = new AtomicReference<>(new FilteringConfiguration());
         QuickPulseDataCollector collector = new QuickPulseDataCollector(configuration);
 
         collector.setQuickPulseStatus(QuickPulseStatus.QP_IS_ON);
@@ -136,7 +137,7 @@ class QuickPulseDataCollectorTests {
 
     @Test
     void exceptionTelemetryIsCounted() {
-        FilteringConfiguration configuration = new FilteringConfiguration();
+        AtomicReference<FilteringConfiguration> configuration = new AtomicReference<>(new FilteringConfiguration());
         QuickPulseDataCollector collector = new QuickPulseDataCollector(configuration);
 
         collector.setQuickPulseStatus(QuickPulseStatus.QP_IS_ON);
@@ -211,7 +212,7 @@ class QuickPulseDataCollectorTests {
 
     @Test
     void checkDocumentsListSize() {
-        FilteringConfiguration configuration = new FilteringConfiguration();
+        AtomicReference<FilteringConfiguration> configuration = new AtomicReference<>(new FilteringConfiguration());
         QuickPulseDataCollector collector = new QuickPulseDataCollector(configuration);
 
         collector.setQuickPulseStatus(QuickPulseStatus.QP_IS_ON);

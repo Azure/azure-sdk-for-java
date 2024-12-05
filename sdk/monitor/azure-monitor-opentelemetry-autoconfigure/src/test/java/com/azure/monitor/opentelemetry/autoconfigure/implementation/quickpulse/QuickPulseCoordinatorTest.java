@@ -11,6 +11,8 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import java.util.concurrent.atomic.AtomicReference;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
@@ -24,7 +26,7 @@ class QuickPulseCoordinatorTest {
 
     @Test
     void testOnlyPings() throws InterruptedException {
-        FilteringConfiguration configuration = new FilteringConfiguration();
+        AtomicReference<FilteringConfiguration> configuration = new AtomicReference<>(new FilteringConfiguration());
         QuickPulseDataFetcher mockFetcher = mock(QuickPulseDataFetcher.class);
         QuickPulseDataSender mockSender = mock(QuickPulseDataSender.class);
         QuickPulsePingSender mockPingSender = mock(QuickPulsePingSender.class);
@@ -65,7 +67,7 @@ class QuickPulseCoordinatorTest {
 
     @Test
     void testOnePingAndThenOnePost() throws InterruptedException {
-        FilteringConfiguration configuration = new FilteringConfiguration();
+        AtomicReference<FilteringConfiguration> configuration = new AtomicReference<>(new FilteringConfiguration());
         QuickPulseDataFetcher mockFetcher = mock(QuickPulseDataFetcher.class);
         QuickPulseDataSender mockSender = mock(QuickPulseDataSender.class);
         Mockito.doReturn(QuickPulseStatus.QP_IS_OFF).when(mockSender).getQuickPulseStatus();
@@ -112,7 +114,7 @@ class QuickPulseCoordinatorTest {
     @Disabled("sporadically failing on CI")
     @Test
     void testOnePingAndThenOnePostWithRedirectedLink() throws InterruptedException {
-        FilteringConfiguration configuration = new FilteringConfiguration();
+        AtomicReference<FilteringConfiguration> configuration = new AtomicReference<>(new FilteringConfiguration());
         QuickPulseDataFetcher mockFetcher = Mockito.mock(QuickPulseDataFetcher.class);
         QuickPulseDataSender mockSender = Mockito.mock(QuickPulseDataSender.class);
         QuickPulsePingSender mockPingSender = Mockito.mock(QuickPulsePingSender.class);

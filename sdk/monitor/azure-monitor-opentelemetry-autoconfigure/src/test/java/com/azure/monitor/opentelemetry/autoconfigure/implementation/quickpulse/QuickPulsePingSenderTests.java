@@ -18,6 +18,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -25,7 +26,7 @@ class QuickPulsePingSenderTests {
 
     @Test
     void endpointIsFormattedCorrectlyWhenUsingConnectionString() {
-        FilteringConfiguration configuration = new FilteringConfiguration();
+        AtomicReference<FilteringConfiguration> configuration = new AtomicReference<>(new FilteringConfiguration());
         ConnectionString connectionString = ConnectionString.parse("InstrumentationKey=testing-123");
         QuickPulsePingSender quickPulsePingSender = new QuickPulsePingSender(null, connectionString::getLiveEndpoint,
             connectionString::getInstrumentationKey, null, null, null, null, null, configuration);
@@ -37,7 +38,7 @@ class QuickPulsePingSenderTests {
 
     @Test
     void endpointIsFormattedCorrectlyWhenUsingInstrumentationKey() {
-        FilteringConfiguration configuration = new FilteringConfiguration();
+        AtomicReference<FilteringConfiguration> configuration = new AtomicReference<>(new FilteringConfiguration());
         ConnectionString connectionString = ConnectionString.parse("InstrumentationKey=A-test-instrumentation-key");
         QuickPulsePingSender quickPulsePingSender = new QuickPulsePingSender(null, connectionString::getLiveEndpoint,
             connectionString::getInstrumentationKey, null, null, null, null, null, configuration);
@@ -49,7 +50,7 @@ class QuickPulsePingSenderTests {
 
     @Test
     void endpointChangesWithRedirectHeaderAndGetNewPingInterval() {
-        FilteringConfiguration configuration = new FilteringConfiguration();
+        AtomicReference<FilteringConfiguration> configuration = new AtomicReference<>(new FilteringConfiguration());
         Map<String, String> headers = new HashMap<>();
         headers.put("x-ms-qps-service-polling-interval-hint", "1000");
         headers.put("x-ms-qps-service-endpoint-redirect-v2", "https://new.endpoint.com");
