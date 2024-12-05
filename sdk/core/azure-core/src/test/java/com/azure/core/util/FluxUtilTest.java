@@ -230,10 +230,9 @@ public class FluxUtilTest {
             stream.write(initialContent.getBytes(StandardCharsets.UTF_8));
         }
 
-        // Handle error
         Mono.fromCallable(() -> AsynchronousFileChannel.open(file.toPath(), StandardOpenOption.WRITE))
-            .flatMap(channel -> FluxUtil.writeFile(firstBody, channel, 6)
-                .then(FluxUtil.writeFile(secondBody, channel, 10))
+            .flatMap(channel -> FluxUtil.writeFile(firstBody, channel, 6) // write "test" -> "hello test"
+                .then(FluxUtil.writeFile(secondBody, channel, 10)) // write "again" -> "hello testagain"
                 .then(Mono.fromCallable(() -> Files.readAllBytes(file.toPath())).doFinally(signalType -> {
                     try {
                         channel.close();
