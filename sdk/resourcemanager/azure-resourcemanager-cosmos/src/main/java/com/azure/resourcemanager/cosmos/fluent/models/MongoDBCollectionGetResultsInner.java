@@ -9,6 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cosmos.models.ArmResourceProperties;
+import com.azure.resourcemanager.cosmos.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.cosmos.models.MongoDBCollectionGetPropertiesOptions;
 import com.azure.resourcemanager.cosmos.models.MongoDBCollectionGetPropertiesResource;
 import java.io.IOException;
@@ -88,6 +89,15 @@ public final class MongoDBCollectionGetResultsInner extends ArmResourcePropertie
      * {@inheritDoc}
      */
     @Override
+    public MongoDBCollectionGetResultsInner withIdentity(ManagedServiceIdentity identity) {
+        super.withIdentity(identity);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public MongoDBCollectionGetResultsInner withLocation(String location) {
         super.withLocation(location);
         return this;
@@ -158,6 +168,9 @@ public final class MongoDBCollectionGetResultsInner extends ArmResourcePropertie
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+        if (identity() != null) {
+            identity().validate();
+        }
     }
 
     /**
@@ -168,6 +181,7 @@ public final class MongoDBCollectionGetResultsInner extends ArmResourcePropertie
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("location", location());
         jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("identity", identity());
         jsonWriter.writeJsonField("properties", this.innerProperties);
         return jsonWriter.writeEndObject();
     }
@@ -200,6 +214,8 @@ public final class MongoDBCollectionGetResultsInner extends ArmResourcePropertie
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedMongoDBCollectionGetResultsInner.withTags(tags);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedMongoDBCollectionGetResultsInner.withIdentity(ManagedServiceIdentity.fromJson(reader));
                 } else if ("properties".equals(fieldName)) {
                     deserializedMongoDBCollectionGetResultsInner.innerProperties
                         = MongoDBCollectionGetProperties.fromJson(reader);

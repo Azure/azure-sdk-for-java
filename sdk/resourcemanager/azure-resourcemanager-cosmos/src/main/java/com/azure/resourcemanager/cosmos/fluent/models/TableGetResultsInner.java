@@ -9,6 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cosmos.models.ArmResourceProperties;
+import com.azure.resourcemanager.cosmos.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.cosmos.models.TableGetPropertiesOptions;
 import com.azure.resourcemanager.cosmos.models.TableGetPropertiesResource;
 import java.io.IOException;
@@ -88,6 +89,15 @@ public final class TableGetResultsInner extends ArmResourceProperties {
      * {@inheritDoc}
      */
     @Override
+    public TableGetResultsInner withIdentity(ManagedServiceIdentity identity) {
+        super.withIdentity(identity);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public TableGetResultsInner withLocation(String location) {
         super.withLocation(location);
         return this;
@@ -158,6 +168,9 @@ public final class TableGetResultsInner extends ArmResourceProperties {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+        if (identity() != null) {
+            identity().validate();
+        }
     }
 
     /**
@@ -168,6 +181,7 @@ public final class TableGetResultsInner extends ArmResourceProperties {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("location", location());
         jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("identity", identity());
         jsonWriter.writeJsonField("properties", this.innerProperties);
         return jsonWriter.writeEndObject();
     }
@@ -199,6 +213,8 @@ public final class TableGetResultsInner extends ArmResourceProperties {
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedTableGetResultsInner.withTags(tags);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedTableGetResultsInner.withIdentity(ManagedServiceIdentity.fromJson(reader));
                 } else if ("properties".equals(fieldName)) {
                     deserializedTableGetResultsInner.innerProperties = TableGetProperties.fromJson(reader);
                 } else {

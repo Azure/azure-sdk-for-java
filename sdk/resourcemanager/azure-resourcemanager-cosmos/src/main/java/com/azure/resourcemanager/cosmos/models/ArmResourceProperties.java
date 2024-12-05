@@ -18,6 +18,11 @@ import java.util.Map;
 @Fluent
 public class ArmResourceProperties extends Resource {
     /*
+     * Identity for the resource.
+     */
+    private ManagedServiceIdentity identity;
+
+    /*
      * The type of the resource.
      */
     private String type;
@@ -36,6 +41,26 @@ public class ArmResourceProperties extends Resource {
      * Creates an instance of ArmResourceProperties class.
      */
     public ArmResourceProperties() {
+    }
+
+    /**
+     * Get the identity property: Identity for the resource.
+     * 
+     * @return the identity value.
+     */
+    public ManagedServiceIdentity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: Identity for the resource.
+     * 
+     * @param identity the identity value to set.
+     * @return the ArmResourceProperties object itself.
+     */
+    public ArmResourceProperties withIdentity(ManagedServiceIdentity identity) {
+        this.identity = identity;
+        return this;
     }
 
     /**
@@ -92,6 +117,9 @@ public class ArmResourceProperties extends Resource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (identity() != null) {
+            identity().validate();
+        }
     }
 
     /**
@@ -102,6 +130,7 @@ public class ArmResourceProperties extends Resource {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("location", location());
         jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("identity", this.identity);
         return jsonWriter.writeEndObject();
     }
 
@@ -132,6 +161,8 @@ public class ArmResourceProperties extends Resource {
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedArmResourceProperties.withTags(tags);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedArmResourceProperties.identity = ManagedServiceIdentity.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

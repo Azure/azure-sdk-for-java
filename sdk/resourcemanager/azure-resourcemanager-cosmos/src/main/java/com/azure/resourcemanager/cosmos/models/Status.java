@@ -37,6 +37,26 @@ public final class Status extends ExpandableStringEnum<Status> {
     public static final Status DELETING = fromString("Deleting");
 
     /**
+     * Static value Succeeded for Status.
+     */
+    public static final Status SUCCEEDED = fromString("Succeeded");
+
+    /**
+     * Static value Failed for Status.
+     */
+    public static final Status FAILED = fromString("Failed");
+
+    /**
+     * Static value Canceled for Status.
+     */
+    public static final Status CANCELED = fromString("Canceled");
+
+    /**
+     * Static value Updating for Status.
+     */
+    public static final Status UPDATING = fromString("Updating");
+
+    /**
      * Creates a new instance of Status value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

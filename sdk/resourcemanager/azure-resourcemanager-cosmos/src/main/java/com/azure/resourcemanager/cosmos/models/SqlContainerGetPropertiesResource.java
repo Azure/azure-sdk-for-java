@@ -161,8 +161,27 @@ public final class SqlContainerGetPropertiesResource extends SqlContainerResourc
      * {@inheritDoc}
      */
     @Override
+    public SqlContainerGetPropertiesResource
+        withMaterializedViewDefinition(MaterializedViewDefinition materializedViewDefinition) {
+        super.withMaterializedViewDefinition(materializedViewDefinition);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public SqlContainerGetPropertiesResource withComputedProperties(List<ComputedProperty> computedProperties) {
         super.withComputedProperties(computedProperties);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public SqlContainerGetPropertiesResource withVectorEmbeddingPolicy(VectorEmbeddingPolicy vectorEmbeddingPolicy) {
+        super.withVectorEmbeddingPolicy(vectorEmbeddingPolicy);
         return this;
     }
 
@@ -196,8 +215,14 @@ public final class SqlContainerGetPropertiesResource extends SqlContainerResourc
         if (restoreParameters() != null) {
             restoreParameters().validate();
         }
+        if (materializedViewDefinition() != null) {
+            materializedViewDefinition().validate();
+        }
         if (computedProperties() != null) {
             computedProperties().forEach(e -> e.validate());
+        }
+        if (vectorEmbeddingPolicy() != null) {
+            vectorEmbeddingPolicy().validate();
         }
     }
 
@@ -219,8 +244,10 @@ public final class SqlContainerGetPropertiesResource extends SqlContainerResourc
         jsonWriter.writeNumberField("analyticalStorageTtl", analyticalStorageTtl());
         jsonWriter.writeJsonField("restoreParameters", restoreParameters());
         jsonWriter.writeStringField("createMode", createMode() == null ? null : createMode().toString());
+        jsonWriter.writeJsonField("materializedViewDefinition", materializedViewDefinition());
         jsonWriter.writeArrayField("computedProperties", computedProperties(),
             (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("vectorEmbeddingPolicy", vectorEmbeddingPolicy());
         return jsonWriter.writeEndObject();
     }
 
@@ -268,10 +295,16 @@ public final class SqlContainerGetPropertiesResource extends SqlContainerResourc
                 } else if ("createMode".equals(fieldName)) {
                     deserializedSqlContainerGetPropertiesResource
                         .withCreateMode(CreateMode.fromString(reader.getString()));
+                } else if ("materializedViewDefinition".equals(fieldName)) {
+                    deserializedSqlContainerGetPropertiesResource
+                        .withMaterializedViewDefinition(MaterializedViewDefinition.fromJson(reader));
                 } else if ("computedProperties".equals(fieldName)) {
                     List<ComputedProperty> computedProperties
                         = reader.readArray(reader1 -> ComputedProperty.fromJson(reader1));
                     deserializedSqlContainerGetPropertiesResource.withComputedProperties(computedProperties);
+                } else if ("vectorEmbeddingPolicy".equals(fieldName)) {
+                    deserializedSqlContainerGetPropertiesResource
+                        .withVectorEmbeddingPolicy(VectorEmbeddingPolicy.fromJson(reader));
                 } else if ("_rid".equals(fieldName)) {
                     deserializedSqlContainerGetPropertiesResource.rid = reader.getString();
                 } else if ("_ts".equals(fieldName)) {

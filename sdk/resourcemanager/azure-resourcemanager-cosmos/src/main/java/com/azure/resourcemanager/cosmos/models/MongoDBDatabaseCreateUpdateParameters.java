@@ -87,6 +87,15 @@ public final class MongoDBDatabaseCreateUpdateParameters extends ArmResourceProp
      * {@inheritDoc}
      */
     @Override
+    public MongoDBDatabaseCreateUpdateParameters withIdentity(ManagedServiceIdentity identity) {
+        super.withIdentity(identity);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public MongoDBDatabaseCreateUpdateParameters withLocation(String location) {
         super.withLocation(location);
         return this;
@@ -163,6 +172,9 @@ public final class MongoDBDatabaseCreateUpdateParameters extends ArmResourceProp
         } else {
             innerProperties().validate();
         }
+        if (identity() != null) {
+            identity().validate();
+        }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(MongoDBDatabaseCreateUpdateParameters.class);
@@ -175,6 +187,7 @@ public final class MongoDBDatabaseCreateUpdateParameters extends ArmResourceProp
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("location", location());
         jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("identity", identity());
         jsonWriter.writeJsonField("properties", this.innerProperties);
         return jsonWriter.writeEndObject();
     }
@@ -207,6 +220,9 @@ public final class MongoDBDatabaseCreateUpdateParameters extends ArmResourceProp
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedMongoDBDatabaseCreateUpdateParameters.withTags(tags);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedMongoDBDatabaseCreateUpdateParameters
+                        .withIdentity(ManagedServiceIdentity.fromJson(reader));
                 } else if ("properties".equals(fieldName)) {
                     deserializedMongoDBDatabaseCreateUpdateParameters.innerProperties
                         = MongoDBDatabaseCreateUpdateProperties.fromJson(reader);

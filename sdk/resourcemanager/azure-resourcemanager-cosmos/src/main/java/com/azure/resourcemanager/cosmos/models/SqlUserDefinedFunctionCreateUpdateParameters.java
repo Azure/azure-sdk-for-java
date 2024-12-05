@@ -88,6 +88,15 @@ public final class SqlUserDefinedFunctionCreateUpdateParameters extends ArmResou
      * {@inheritDoc}
      */
     @Override
+    public SqlUserDefinedFunctionCreateUpdateParameters withIdentity(ManagedServiceIdentity identity) {
+        super.withIdentity(identity);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public SqlUserDefinedFunctionCreateUpdateParameters withLocation(String location) {
         super.withLocation(location);
         return this;
@@ -164,6 +173,9 @@ public final class SqlUserDefinedFunctionCreateUpdateParameters extends ArmResou
         } else {
             innerProperties().validate();
         }
+        if (identity() != null) {
+            identity().validate();
+        }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SqlUserDefinedFunctionCreateUpdateParameters.class);
@@ -176,6 +188,7 @@ public final class SqlUserDefinedFunctionCreateUpdateParameters extends ArmResou
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("location", location());
         jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("identity", identity());
         jsonWriter.writeJsonField("properties", this.innerProperties);
         return jsonWriter.writeEndObject();
     }
@@ -208,6 +221,9 @@ public final class SqlUserDefinedFunctionCreateUpdateParameters extends ArmResou
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedSqlUserDefinedFunctionCreateUpdateParameters.withTags(tags);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedSqlUserDefinedFunctionCreateUpdateParameters
+                        .withIdentity(ManagedServiceIdentity.fromJson(reader));
                 } else if ("properties".equals(fieldName)) {
                     deserializedSqlUserDefinedFunctionCreateUpdateParameters.innerProperties
                         = SqlUserDefinedFunctionCreateUpdateProperties.fromJson(reader);
