@@ -60,9 +60,13 @@ SecretClient secretClient = new SecretClientBuilder()
 > NOTE: For using an asynchronous client use `SecretAsyncClient` instead of `SecretClient` and call `buildAsyncClient()`.
 
 
-## Key concepts and Examples
+## Key concepts
 
-Key concepts, code examples, and usage instructions for this library are discussed in great detail in the [Key Vault ref docs][api_documentation]. Additionally, there are more comprehensive code samples available from the following links:
+Key concepts, code examples, and usage instructions for this library are discussed in great detail in the [Key Vault ref docs][api_documentation].
+
+## Examples
+
+There are comprehensive code samples available from the following links:
 
 - [Create a secret][sample_create_secret]
 - [Retrieve a secret][sample_retrieve_secret]
@@ -81,7 +85,13 @@ See our [Key Vault Secrets troubleshooting guide](TROUBLESHOOTING.md) f for deta
 * Detailed reference docs and usage examples for the API in this library are provided [here][api_documentation].
 
 
-<!-- LINKS -->
+## Contributing
+This project welcomes contributions and suggestions. Most contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, visit https://cla.microsoft.com.
+
+When you submit a pull request, a CLA-bot will automatically determine whether you need to provide a CLA and decorate the PR appropriately (e.g., label, comment). Simply follow the instructions provided by the bot. You will only need to do this once across all repos using our CLA.
+
+This project has adopted the [Microsoft Open Source Code of Conduct][microsoft_code_of_conduct]. For more information see the Code of Conduct FAQ or contact <opencode@microsoft.com> with any additional questions or comments.
+
 
 <!-- LINKS -->
 [api_documentation]: https://learn.microsoft.com/en-us/java/api/com.azure.security.keyvault.secrets
@@ -94,16 +104,17 @@ See our [Key Vault Secrets troubleshooting guide](TROUBLESHOOTING.md) f for deta
 [changelog]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-secrets/CHANGELOG.md
 [maven_build_tool]: https://learn.microsoft.com/azure/developer/java/sdk/get-started-maven#use-the-azure-sdk-for-java-build-tool
 [maven_package]: https://central.sonatype.com/artifact/com.azure/azure-security-keyvault-secrets
+[microsoft_code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
 [product_docs]: https://docs.microsoft.com/azure/key-vault/
 [source_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-secrets/src
 [spring_quickstart]: https://learn.microsoft.com/azure/developer/java/spring-framework/configure-spring-boot-starter-java-app-with-azure-key-vault
 [troubleshooting-guide]: ../other/TROUBLESHOOTING.md
 
-[samples]: #key-concepts-and-examples
-[sample_create_secret]:
-[sample_retrieve_secret]:
-[sample_update_existing_secret]: 
-[sample_delete_secret]: 
-[sample_list_secrets]: 
+[samples]: #examples
+[sample_create_secret]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-secrets/src/samples/java/com/azure/security/keyvault/secrets/ReadmeSamples.java#L36
+[sample_retrieve_secret]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-secrets/src/samples/java/com/azure/security/keyvault/secrets/ReadmeSamples.java#L43
+[sample_update_existing_secret]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-secrets/src/samples/java/com/azure/security/keyvault/secrets/ReadmeSamples.java#L50
+[sample_delete_secret]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-secrets/src/samples/java/com/azure/security/keyvault/secrets/ReadmeSamples.java#L61
+[sample_list_secrets]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-secrets/src/samples/java/com/azure/security/keyvault/secrets/ReadmeSamples.java#L76
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fkeyvault%2Fazure-security-keyvault-secrets%2FREADME.png)
