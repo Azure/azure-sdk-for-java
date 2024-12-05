@@ -7,11 +7,13 @@ package com.azure.resourcemanager.apimanagement.models;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 
-/** Resource collection API of UserIdentities. */
+/**
+ * Resource collection API of UserIdentities.
+ */
 public interface UserIdentities {
     /**
      * List of all user identities.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param userId User identifier. Must be unique in the current API Management service instance.
@@ -24,7 +26,7 @@ public interface UserIdentities {
 
     /**
      * List of all user identities.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param userId User identifier. Must be unique in the current API Management service instance.

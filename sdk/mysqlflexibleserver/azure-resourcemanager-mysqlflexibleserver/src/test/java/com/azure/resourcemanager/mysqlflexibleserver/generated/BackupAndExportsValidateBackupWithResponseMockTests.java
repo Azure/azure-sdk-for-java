@@ -20,7 +20,7 @@ import reactor.core.publisher.Mono;
 public final class BackupAndExportsValidateBackupWithResponseMockTests {
     @Test
     public void testValidateBackupWithResponse() throws Exception {
-        String responseStr = "{\"properties\":{\"numberOfContainers\":1296747978}}";
+        String responseStr = "{\"properties\":{\"numberOfContainers\":488471027}}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,9 +30,9 @@ public final class BackupAndExportsValidateBackupWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         ValidateBackupResponse response = manager.backupAndExports()
-            .validateBackupWithResponse("bywdxsmicc", "rwfscjfnynszquj", com.azure.core.util.Context.NONE)
+            .validateBackupWithResponse("wz", "bnhlmc", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(1296747978, response.numberOfContainers());
+        Assertions.assertEquals(488471027, response.numberOfContainers());
     }
 }

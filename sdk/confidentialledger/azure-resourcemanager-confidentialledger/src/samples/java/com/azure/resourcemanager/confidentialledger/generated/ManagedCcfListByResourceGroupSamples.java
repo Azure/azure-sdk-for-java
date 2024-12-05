@@ -9,7 +9,9 @@ package com.azure.resourcemanager.confidentialledger.generated;
  */
 public final class ManagedCcfListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/confidentialledger/resource-manager/Microsoft.ConfidentialLedger/preview/2023-06-28-preview/examples/ManagedCCF_List.json
+     * x-ms-original-file:
+     * specification/confidentialledger/resource-manager/Microsoft.ConfidentialLedger/preview/2023-06-28-preview/
+     * examples/ManagedCCF_List.json
      */
     /**
      * Sample code: ManagedCCFList.

@@ -9,12 +9,14 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.resourcemanager.apimanagement.fluent.models.AccessInformationSecretsContractInner;
 
-/** Contains all response data for the listSecrets operation. */
+/**
+ * Contains all response data for the listSecrets operation.
+ */
 public final class TenantAccessListSecretsResponse
     extends ResponseBase<TenantAccessListSecretsHeaders, AccessInformationSecretsContractInner> {
     /**
      * Creates an instance of TenantAccessListSecretsResponse.
-     *
+     * 
      * @param request the request which resulted in this TenantAccessListSecretsResponse.
      * @param statusCode the status code of the HTTP response.
      * @param rawHeaders the raw headers of the HTTP response.
@@ -28,7 +30,7 @@ public final class TenantAccessListSecretsResponse
 
     /**
      * Gets the deserialized response body.
-     *
+     * 
      * @return the deserialized response body.
      */
     @Override

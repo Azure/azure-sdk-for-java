@@ -41,17 +41,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in GlobalSchemasClient. */
+/**
+ * An instance of this class provides access to all the operations defined in GlobalSchemasClient.
+ */
 public final class GlobalSchemasClientImpl implements GlobalSchemasClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final GlobalSchemasService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ApiManagementClientImpl client;
 
     /**
      * Initializes an instance of GlobalSchemasClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     GlobalSchemasClientImpl(ApiManagementClientImpl client) {
@@ -127,19 +133,19 @@ public final class GlobalSchemasClientImpl implements GlobalSchemasClient {
 
     /**
      * Lists a collection of schemas registered with service instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter | Field | Usage | Supported operators | Supported functions
-     *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq,
-     *     ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;.
+     * |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq, ne,
+     * gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;.
      * @param top Number of records to return.
      * @param skip Number of records to skip.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of the list schema operation along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<GlobalSchemaContractInner>> listByServiceSinglePageAsync(String resourceGroupName,
@@ -170,12 +176,12 @@ public final class GlobalSchemasClientImpl implements GlobalSchemasClient {
 
     /**
      * Lists a collection of schemas registered with service instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter | Field | Usage | Supported operators | Supported functions
-     *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq,
-     *     ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;.
+     * |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq, ne,
+     * gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;.
      * @param top Number of records to return.
      * @param skip Number of records to skip.
      * @param context The context to associate with this operation.
@@ -183,7 +189,7 @@ public final class GlobalSchemasClientImpl implements GlobalSchemasClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of the list schema operation along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<GlobalSchemaContractInner>> listByServiceSinglePageAsync(String resourceGroupName,
@@ -214,12 +220,12 @@ public final class GlobalSchemasClientImpl implements GlobalSchemasClient {
 
     /**
      * Lists a collection of schemas registered with service instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter | Field | Usage | Supported operators | Supported functions
-     *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq,
-     *     ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;.
+     * |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq, ne,
+     * gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;.
      * @param top Number of records to return.
      * @param skip Number of records to skip.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -236,7 +242,7 @@ public final class GlobalSchemasClientImpl implements GlobalSchemasClient {
 
     /**
      * Lists a collection of schemas registered with service instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -255,12 +261,12 @@ public final class GlobalSchemasClientImpl implements GlobalSchemasClient {
 
     /**
      * Lists a collection of schemas registered with service instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter | Field | Usage | Supported operators | Supported functions
-     *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq,
-     *     ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;.
+     * |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq, ne,
+     * gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;.
      * @param top Number of records to return.
      * @param skip Number of records to skip.
      * @param context The context to associate with this operation.
@@ -279,7 +285,7 @@ public final class GlobalSchemasClientImpl implements GlobalSchemasClient {
 
     /**
      * Lists a collection of schemas registered with service instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -297,12 +303,12 @@ public final class GlobalSchemasClientImpl implements GlobalSchemasClient {
 
     /**
      * Lists a collection of schemas registered with service instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter | Field | Usage | Supported operators | Supported functions
-     *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq,
-     *     ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;.
+     * |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq, ne,
+     * gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;.
      * @param top Number of records to return.
      * @param skip Number of records to skip.
      * @param context The context to associate with this operation.
@@ -319,7 +325,7 @@ public final class GlobalSchemasClientImpl implements GlobalSchemasClient {
 
     /**
      * Gets the entity state (Etag) version of the Schema specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param schemaId Schema id identifier. Must be unique in the current API Management service instance.
@@ -327,7 +333,7 @@ public final class GlobalSchemasClientImpl implements GlobalSchemasClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity state (Etag) version of the Schema specified by its identifier on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<GlobalSchemasGetEntityTagResponse> getEntityTagWithResponseAsync(String resourceGroupName,
@@ -359,7 +365,7 @@ public final class GlobalSchemasClientImpl implements GlobalSchemasClient {
 
     /**
      * Gets the entity state (Etag) version of the Schema specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param schemaId Schema id identifier. Must be unique in the current API Management service instance.
@@ -368,7 +374,7 @@ public final class GlobalSchemasClientImpl implements GlobalSchemasClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity state (Etag) version of the Schema specified by its identifier on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<GlobalSchemasGetEntityTagResponse> getEntityTagWithResponseAsync(String resourceGroupName,
@@ -399,7 +405,7 @@ public final class GlobalSchemasClientImpl implements GlobalSchemasClient {
 
     /**
      * Gets the entity state (Etag) version of the Schema specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param schemaId Schema id identifier. Must be unique in the current API Management service instance.
@@ -407,7 +413,7 @@ public final class GlobalSchemasClientImpl implements GlobalSchemasClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity state (Etag) version of the Schema specified by its identifier on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> getEntityTagAsync(String resourceGroupName, String serviceName, String schemaId) {
@@ -416,7 +422,7 @@ public final class GlobalSchemasClientImpl implements GlobalSchemasClient {
 
     /**
      * Gets the entity state (Etag) version of the Schema specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param schemaId Schema id identifier. Must be unique in the current API Management service instance.
@@ -434,7 +440,7 @@ public final class GlobalSchemasClientImpl implements GlobalSchemasClient {
 
     /**
      * Gets the entity state (Etag) version of the Schema specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param schemaId Schema id identifier. Must be unique in the current API Management service instance.
@@ -449,7 +455,7 @@ public final class GlobalSchemasClientImpl implements GlobalSchemasClient {
 
     /**
      * Gets the details of the Schema specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param schemaId Schema id identifier. Must be unique in the current API Management service instance.
@@ -488,7 +494,7 @@ public final class GlobalSchemasClientImpl implements GlobalSchemasClient {
 
     /**
      * Gets the details of the Schema specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param schemaId Schema id identifier. Must be unique in the current API Management service instance.
@@ -527,7 +533,7 @@ public final class GlobalSchemasClientImpl implements GlobalSchemasClient {
 
     /**
      * Gets the details of the Schema specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param schemaId Schema id identifier. Must be unique in the current API Management service instance.
@@ -544,7 +550,7 @@ public final class GlobalSchemasClientImpl implements GlobalSchemasClient {
 
     /**
      * Gets the details of the Schema specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param schemaId Schema id identifier. Must be unique in the current API Management service instance.
@@ -562,7 +568,7 @@ public final class GlobalSchemasClientImpl implements GlobalSchemasClient {
 
     /**
      * Gets the details of the Schema specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param schemaId Schema id identifier. Must be unique in the current API Management service instance.
@@ -578,7 +584,7 @@ public final class GlobalSchemasClientImpl implements GlobalSchemasClient {
 
     /**
      * Creates new or updates existing specified Schema of the API Management service instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param schemaId Schema id identifier. Must be unique in the current API Management service instance.
@@ -625,7 +631,7 @@ public final class GlobalSchemasClientImpl implements GlobalSchemasClient {
 
     /**
      * Creates new or updates existing specified Schema of the API Management service instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param schemaId Schema id identifier. Must be unique in the current API Management service instance.
@@ -671,7 +677,7 @@ public final class GlobalSchemasClientImpl implements GlobalSchemasClient {
 
     /**
      * Creates new or updates existing specified Schema of the API Management service instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param schemaId Schema id identifier. Must be unique in the current API Management service instance.
@@ -695,7 +701,7 @@ public final class GlobalSchemasClientImpl implements GlobalSchemasClient {
 
     /**
      * Creates new or updates existing specified Schema of the API Management service instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param schemaId Schema id identifier. Must be unique in the current API Management service instance.
@@ -718,7 +724,7 @@ public final class GlobalSchemasClientImpl implements GlobalSchemasClient {
 
     /**
      * Creates new or updates existing specified Schema of the API Management service instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param schemaId Schema id identifier. Must be unique in the current API Management service instance.
@@ -743,7 +749,7 @@ public final class GlobalSchemasClientImpl implements GlobalSchemasClient {
 
     /**
      * Creates new or updates existing specified Schema of the API Management service instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param schemaId Schema id identifier. Must be unique in the current API Management service instance.
@@ -763,7 +769,7 @@ public final class GlobalSchemasClientImpl implements GlobalSchemasClient {
 
     /**
      * Creates new or updates existing specified Schema of the API Management service instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param schemaId Schema id identifier. Must be unique in the current API Management service instance.
@@ -785,7 +791,7 @@ public final class GlobalSchemasClientImpl implements GlobalSchemasClient {
 
     /**
      * Creates new or updates existing specified Schema of the API Management service instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param schemaId Schema id identifier. Must be unique in the current API Management service instance.
@@ -805,7 +811,7 @@ public final class GlobalSchemasClientImpl implements GlobalSchemasClient {
 
     /**
      * Creates new or updates existing specified Schema of the API Management service instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param schemaId Schema id identifier. Must be unique in the current API Management service instance.
@@ -825,7 +831,7 @@ public final class GlobalSchemasClientImpl implements GlobalSchemasClient {
 
     /**
      * Creates new or updates existing specified Schema of the API Management service instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param schemaId Schema id identifier. Must be unique in the current API Management service instance.
@@ -846,7 +852,7 @@ public final class GlobalSchemasClientImpl implements GlobalSchemasClient {
 
     /**
      * Creates new or updates existing specified Schema of the API Management service instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param schemaId Schema id identifier. Must be unique in the current API Management service instance.
@@ -865,7 +871,7 @@ public final class GlobalSchemasClientImpl implements GlobalSchemasClient {
 
     /**
      * Creates new or updates existing specified Schema of the API Management service instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param schemaId Schema id identifier. Must be unique in the current API Management service instance.
@@ -885,12 +891,12 @@ public final class GlobalSchemasClientImpl implements GlobalSchemasClient {
 
     /**
      * Deletes specific Schema.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param schemaId Schema id identifier. Must be unique in the current API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -929,12 +935,12 @@ public final class GlobalSchemasClientImpl implements GlobalSchemasClient {
 
     /**
      * Deletes specific Schema.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param schemaId Schema id identifier. Must be unique in the current API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -973,12 +979,12 @@ public final class GlobalSchemasClientImpl implements GlobalSchemasClient {
 
     /**
      * Deletes specific Schema.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param schemaId Schema id identifier. Must be unique in the current API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -992,12 +998,12 @@ public final class GlobalSchemasClientImpl implements GlobalSchemasClient {
 
     /**
      * Deletes specific Schema.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param schemaId Schema id identifier. Must be unique in the current API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1012,12 +1018,12 @@ public final class GlobalSchemasClientImpl implements GlobalSchemasClient {
 
     /**
      * Deletes specific Schema.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param schemaId Schema id identifier. Must be unique in the current API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1029,14 +1035,13 @@ public final class GlobalSchemasClientImpl implements GlobalSchemasClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of the list schema operation along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<GlobalSchemaContractInner>> listByServiceNextSinglePageAsync(String nextLink) {
@@ -1057,15 +1062,14 @@ public final class GlobalSchemasClientImpl implements GlobalSchemasClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of the list schema operation along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<GlobalSchemaContractInner>> listByServiceNextSinglePageAsync(String nextLink,

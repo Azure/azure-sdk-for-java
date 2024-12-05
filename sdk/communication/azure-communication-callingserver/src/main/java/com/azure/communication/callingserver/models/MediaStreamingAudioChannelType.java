@@ -36,7 +36,10 @@ public final class MediaStreamingAudioChannelType extends ExpandableStringEnum<M
         return fromString(name, MediaStreamingAudioChannelType.class);
     }
 
-    /** @return known MediaStreamingAudioChannelType values. */
+    /**
+     * Get the collection of MediaStreamingAudioChannelType values.
+     * @return known MediaStreamingAudioChannelType values.
+     */
     public static Collection<MediaStreamingAudioChannelType> values() {
         return values(MediaStreamingAudioChannelType.class);
     }

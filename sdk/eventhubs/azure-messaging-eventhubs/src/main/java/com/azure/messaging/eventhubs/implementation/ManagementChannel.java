@@ -23,9 +23,8 @@ import org.apache.qpid.proton.message.Message;
 import reactor.core.Disposable;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
-import reactor.core.publisher.ReplayProcessor;
+import reactor.core.publisher.Sinks;
 import reactor.core.scheduler.Scheduler;
 
 import java.util.HashMap;
@@ -66,9 +65,7 @@ public class ManagementChannel implements EventHubManagementNode {
     private final String eventHubName;
     private final MessageSerializer messageSerializer;
     private final TokenManagerProvider tokenManagerProvider;
-    private final ReplayProcessor<AmqpEndpointState> endpointStateProcessor = ReplayProcessor.cacheLast();
-    private final FluxSink<AmqpEndpointState> endpointStateSink
-        = endpointStateProcessor.sink(FluxSink.OverflowStrategy.BUFFER);
+    private final Sinks.Many<AmqpEndpointState> endpointStates = Sinks.many().replay().latest();
     private final Disposable subscription;
 
     private volatile boolean isDisposed;
@@ -95,17 +92,17 @@ public class ManagementChannel implements EventHubManagementNode {
 
         //@formatter:off
         this.subscription = channelCache.get()
-            .flatMapMany(e -> e.getEndpointStates().distinctUntilChanged())
-            .subscribe(e -> {
-                LOGGER.info("Management endpoint state: {}", e);
-                endpointStateSink.next(e);
+            .flatMapMany(channel -> channel.getEndpointStates().distinctUntilChanged())
+            .subscribe(s -> {
+                LOGGER.info("Management endpoint state: {}", s);
+                endpointStates.emitNext(s, Sinks.EmitFailureHandler.FAIL_FAST);
             }, error -> {
                     LOGGER.error("Exception occurred:", error);
-                    endpointStateSink.error(error);
+                    endpointStates.emitError(error, Sinks.EmitFailureHandler.FAIL_FAST);
                     close();
                 }, () -> {
                     LOGGER.info("Complete.");
-                    endpointStateSink.complete();
+                    endpointStates.emitComplete(Sinks.EmitFailureHandler.FAIL_FAST);
                     close();
                 });
         //@formatter:on
@@ -118,7 +115,7 @@ public class ManagementChannel implements EventHubManagementNode {
      */
     @Override
     public Flux<AmqpEndpointState> getEndpointStates() {
-        return endpointStateProcessor;
+        return endpointStates.asFlux();
     }
 
     /**

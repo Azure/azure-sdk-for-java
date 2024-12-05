@@ -5,29 +5,40 @@
 package com.azure.resourcemanager.networkcloud.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The indicator of how this network will be utilized by the Kubernetes cluster. */
+/**
+ * The indicator of how this network will be utilized by the Kubernetes cluster.
+ */
 public final class KubernetesPluginType extends ExpandableStringEnum<KubernetesPluginType> {
-    /** Static value DPDK for KubernetesPluginType. */
+    /**
+     * Static value DPDK for KubernetesPluginType.
+     */
     public static final KubernetesPluginType DPDK = fromString("DPDK");
 
-    /** Static value SRIOV for KubernetesPluginType. */
+    /**
+     * Static value SRIOV for KubernetesPluginType.
+     */
     public static final KubernetesPluginType SRIOV = fromString("SRIOV");
 
-    /** Static value OSDevice for KubernetesPluginType. */
+    /**
+     * Static value OSDevice for KubernetesPluginType.
+     */
     public static final KubernetesPluginType OSDEVICE = fromString("OSDevice");
 
-    /** Static value MACVLAN for KubernetesPluginType. */
+    /**
+     * Static value MACVLAN for KubernetesPluginType.
+     */
     public static final KubernetesPluginType MACVLAN = fromString("MACVLAN");
 
-    /** Static value IPVLAN for KubernetesPluginType. */
+    /**
+     * Static value IPVLAN for KubernetesPluginType.
+     */
     public static final KubernetesPluginType IPVLAN = fromString("IPVLAN");
 
     /**
      * Creates a new instance of KubernetesPluginType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -36,18 +47,17 @@ public final class KubernetesPluginType extends ExpandableStringEnum<KubernetesP
 
     /**
      * Creates or finds a KubernetesPluginType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding KubernetesPluginType.
      */
-    @JsonCreator
     public static KubernetesPluginType fromString(String name) {
         return fromString(name, KubernetesPluginType.class);
     }
 
     /**
      * Gets known KubernetesPluginType values.
-     *
+     * 
      * @return known KubernetesPluginType values.
      */
     public static Collection<KubernetesPluginType> values() {

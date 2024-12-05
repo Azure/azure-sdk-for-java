@@ -25,17 +25,23 @@ import com.azure.resourcemanager.recoveryservicesdatareplication.fluent.VaultOpe
 import com.azure.resourcemanager.recoveryservicesdatareplication.fluent.models.OperationStatusInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in VaultOperationStatusClient. */
+/**
+ * An instance of this class provides access to all the operations defined in VaultOperationStatusClient.
+ */
 public final class VaultOperationStatusClientImpl implements VaultOperationStatusClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final VaultOperationStatusService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final DataReplicationMgmtClientImpl client;
 
     /**
      * Initializes an instance of VaultOperationStatusClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     VaultOperationStatusClientImpl(DataReplicationMgmtClientImpl client) {
@@ -64,9 +70,9 @@ public final class VaultOperationStatusClientImpl implements VaultOperationStatu
 
     /**
      * Gets the vault operation status.
-     *
-     * <p>Tracks the results of an asynchronous operation on the vault.
-     *
+     * 
+     * Tracks the results of an asynchronous operation on the vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param operationId The ID of an ongoing async operation.
@@ -105,9 +111,9 @@ public final class VaultOperationStatusClientImpl implements VaultOperationStatu
 
     /**
      * Gets the vault operation status.
-     *
-     * <p>Tracks the results of an asynchronous operation on the vault.
-     *
+     * 
+     * Tracks the results of an asynchronous operation on the vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param operationId The ID of an ongoing async operation.
@@ -146,9 +152,9 @@ public final class VaultOperationStatusClientImpl implements VaultOperationStatu
 
     /**
      * Gets the vault operation status.
-     *
-     * <p>Tracks the results of an asynchronous operation on the vault.
-     *
+     * 
+     * Tracks the results of an asynchronous operation on the vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param operationId The ID of an ongoing async operation.
@@ -165,9 +171,9 @@ public final class VaultOperationStatusClientImpl implements VaultOperationStatu
 
     /**
      * Gets the vault operation status.
-     *
-     * <p>Tracks the results of an asynchronous operation on the vault.
-     *
+     * 
+     * Tracks the results of an asynchronous operation on the vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param operationId The ID of an ongoing async operation.
@@ -185,9 +191,9 @@ public final class VaultOperationStatusClientImpl implements VaultOperationStatu
 
     /**
      * Gets the vault operation status.
-     *
-     * <p>Tracks the results of an asynchronous operation on the vault.
-     *
+     * 
+     * Tracks the results of an asynchronous operation on the vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param operationId The ID of an ongoing async operation.

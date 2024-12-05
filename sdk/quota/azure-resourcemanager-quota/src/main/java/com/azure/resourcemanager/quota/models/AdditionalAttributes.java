@@ -6,23 +6,25 @@ package com.azure.resourcemanager.quota.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Additional attribute or filter to allow subscriptions meeting the requirements to be part of the GroupQuota.
  */
 @Fluent
-public final class AdditionalAttributes {
+public final class AdditionalAttributes implements JsonSerializable<AdditionalAttributes> {
     /*
-     * The grouping Id for the group quota. It can be Billing Id or ServiceTreeId if applicable. 
+     * The grouping Id for the group quota. It can be Billing Id or ServiceTreeId if applicable.
      */
-    @JsonProperty(value = "groupId", required = true)
     private GroupingId groupId;
 
     /*
      * Environment name.
      */
-    @JsonProperty(value = "environment")
     private EnvironmentType environment;
 
     /**
@@ -88,4 +90,44 @@ public final class AdditionalAttributes {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AdditionalAttributes.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("groupId", this.groupId);
+        jsonWriter.writeStringField("environment", this.environment == null ? null : this.environment.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AdditionalAttributes from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AdditionalAttributes if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AdditionalAttributes.
+     */
+    public static AdditionalAttributes fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AdditionalAttributes deserializedAdditionalAttributes = new AdditionalAttributes();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("groupId".equals(fieldName)) {
+                    deserializedAdditionalAttributes.groupId = GroupingId.fromJson(reader);
+                } else if ("environment".equals(fieldName)) {
+                    deserializedAdditionalAttributes.environment = EnvironmentType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAdditionalAttributes;
+        });
+    }
 }

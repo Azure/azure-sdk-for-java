@@ -5,54 +5,57 @@
 package com.azure.resourcemanager.recoveryservicesdatareplication.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** HyperVToAzStackHCI NIC properties. */
+/**
+ * HyperVToAzStackHCI NIC properties.
+ */
 @Immutable
-public final class HyperVToAzStackHciProtectedNicProperties {
+public final class HyperVToAzStackHciProtectedNicProperties
+    implements JsonSerializable<HyperVToAzStackHciProtectedNicProperties> {
     /*
      * Gets or sets the NIC Id.
      */
-    @JsonProperty(value = "nicId", access = JsonProperty.Access.WRITE_ONLY)
     private String nicId;
 
     /*
      * Gets or sets the NIC mac address.
      */
-    @JsonProperty(value = "macAddress", access = JsonProperty.Access.WRITE_ONLY)
     private String macAddress;
 
     /*
      * Gets or sets the network name.
      */
-    @JsonProperty(value = "networkName", access = JsonProperty.Access.WRITE_ONLY)
     private String networkName;
 
     /*
      * Gets or sets the target network Id within AzStackHCI Cluster.
      */
-    @JsonProperty(value = "targetNetworkId", access = JsonProperty.Access.WRITE_ONLY)
     private String targetNetworkId;
 
     /*
      * Gets or sets the target test network Id within AzStackHCI Cluster.
      */
-    @JsonProperty(value = "testNetworkId", access = JsonProperty.Access.WRITE_ONLY)
     private String testNetworkId;
 
     /*
      * Gets or sets the selection type of the NIC.
      */
-    @JsonProperty(value = "selectionTypeForFailover", access = JsonProperty.Access.WRITE_ONLY)
     private VMNicSelection selectionTypeForFailover;
 
-    /** Creates an instance of HyperVToAzStackHciProtectedNicProperties class. */
+    /**
+     * Creates an instance of HyperVToAzStackHciProtectedNicProperties class.
+     */
     public HyperVToAzStackHciProtectedNicProperties() {
     }
 
     /**
      * Get the nicId property: Gets or sets the NIC Id.
-     *
+     * 
      * @return the nicId value.
      */
     public String nicId() {
@@ -61,7 +64,7 @@ public final class HyperVToAzStackHciProtectedNicProperties {
 
     /**
      * Get the macAddress property: Gets or sets the NIC mac address.
-     *
+     * 
      * @return the macAddress value.
      */
     public String macAddress() {
@@ -70,7 +73,7 @@ public final class HyperVToAzStackHciProtectedNicProperties {
 
     /**
      * Get the networkName property: Gets or sets the network name.
-     *
+     * 
      * @return the networkName value.
      */
     public String networkName() {
@@ -79,7 +82,7 @@ public final class HyperVToAzStackHciProtectedNicProperties {
 
     /**
      * Get the targetNetworkId property: Gets or sets the target network Id within AzStackHCI Cluster.
-     *
+     * 
      * @return the targetNetworkId value.
      */
     public String targetNetworkId() {
@@ -88,7 +91,7 @@ public final class HyperVToAzStackHciProtectedNicProperties {
 
     /**
      * Get the testNetworkId property: Gets or sets the target test network Id within AzStackHCI Cluster.
-     *
+     * 
      * @return the testNetworkId value.
      */
     public String testNetworkId() {
@@ -97,7 +100,7 @@ public final class HyperVToAzStackHciProtectedNicProperties {
 
     /**
      * Get the selectionTypeForFailover property: Gets or sets the selection type of the NIC.
-     *
+     * 
      * @return the selectionTypeForFailover value.
      */
     public VMNicSelection selectionTypeForFailover() {
@@ -106,9 +109,56 @@ public final class HyperVToAzStackHciProtectedNicProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HyperVToAzStackHciProtectedNicProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HyperVToAzStackHciProtectedNicProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the HyperVToAzStackHciProtectedNicProperties.
+     */
+    public static HyperVToAzStackHciProtectedNicProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HyperVToAzStackHciProtectedNicProperties deserializedHyperVToAzStackHciProtectedNicProperties
+                = new HyperVToAzStackHciProtectedNicProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("nicId".equals(fieldName)) {
+                    deserializedHyperVToAzStackHciProtectedNicProperties.nicId = reader.getString();
+                } else if ("macAddress".equals(fieldName)) {
+                    deserializedHyperVToAzStackHciProtectedNicProperties.macAddress = reader.getString();
+                } else if ("networkName".equals(fieldName)) {
+                    deserializedHyperVToAzStackHciProtectedNicProperties.networkName = reader.getString();
+                } else if ("targetNetworkId".equals(fieldName)) {
+                    deserializedHyperVToAzStackHciProtectedNicProperties.targetNetworkId = reader.getString();
+                } else if ("testNetworkId".equals(fieldName)) {
+                    deserializedHyperVToAzStackHciProtectedNicProperties.testNetworkId = reader.getString();
+                } else if ("selectionTypeForFailover".equals(fieldName)) {
+                    deserializedHyperVToAzStackHciProtectedNicProperties.selectionTypeForFailover
+                        = VMNicSelection.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHyperVToAzStackHciProtectedNicProperties;
+        });
     }
 }

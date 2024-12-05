@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.confidentialledger.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -52,7 +51,6 @@ public final class RunningState extends ExpandableStringEnum<RunningState> {
      * @param name a name to look for.
      * @return the corresponding RunningState.
      */
-    @JsonCreator
     public static RunningState fromString(String name) {
         return fromString(name, RunningState.class);
     }

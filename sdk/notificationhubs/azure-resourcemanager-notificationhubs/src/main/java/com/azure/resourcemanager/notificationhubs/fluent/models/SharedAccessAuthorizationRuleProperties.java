@@ -5,9 +5,14 @@
 package com.azure.resourcemanager.notificationhubs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.notificationhubs.models.AccessRights;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
@@ -15,61 +20,53 @@ import java.util.List;
  * SharedAccessAuthorizationRule properties.
  */
 @Fluent
-public final class SharedAccessAuthorizationRuleProperties {
+public final class SharedAccessAuthorizationRuleProperties
+    implements JsonSerializable<SharedAccessAuthorizationRuleProperties> {
     /*
      * Gets or sets the rights associated with the rule.
      */
-    @JsonProperty(value = "rights", required = true)
     private List<AccessRights> rights;
 
     /*
      * Gets a base64-encoded 256-bit primary key for signing and
      * validating the SAS token.
      */
-    @JsonProperty(value = "primaryKey")
     private String primaryKey;
 
     /*
      * Gets a base64-encoded 256-bit primary key for signing and
      * validating the SAS token.
      */
-    @JsonProperty(value = "secondaryKey")
     private String secondaryKey;
 
     /*
      * Gets a string that describes the authorization rule.
      */
-    @JsonProperty(value = "keyName", access = JsonProperty.Access.WRITE_ONLY)
     private String keyName;
 
     /*
      * Gets the last modified time for this rule
      */
-    @JsonProperty(value = "modifiedTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime modifiedTime;
 
     /*
      * Gets the created time for this rule
      */
-    @JsonProperty(value = "createdTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime createdTime;
 
     /*
      * Gets a string that describes the claim type
      */
-    @JsonProperty(value = "claimType", access = JsonProperty.Access.WRITE_ONLY)
     private String claimType;
 
     /*
      * Gets a string that describes the claim value
      */
-    @JsonProperty(value = "claimValue", access = JsonProperty.Access.WRITE_ONLY)
     private String claimValue;
 
     /*
      * Gets the revision number for the rule
      */
-    @JsonProperty(value = "revision", access = JsonProperty.Access.WRITE_ONLY)
     private Integer revision;
 
     /**
@@ -203,10 +200,73 @@ public final class SharedAccessAuthorizationRuleProperties {
      */
     public void validate() {
         if (rights() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property rights in model SharedAccessAuthorizationRuleProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property rights in model SharedAccessAuthorizationRuleProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SharedAccessAuthorizationRuleProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("rights", this.rights,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeStringField("primaryKey", this.primaryKey);
+        jsonWriter.writeStringField("secondaryKey", this.secondaryKey);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SharedAccessAuthorizationRuleProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SharedAccessAuthorizationRuleProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SharedAccessAuthorizationRuleProperties.
+     */
+    public static SharedAccessAuthorizationRuleProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SharedAccessAuthorizationRuleProperties deserializedSharedAccessAuthorizationRuleProperties
+                = new SharedAccessAuthorizationRuleProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("rights".equals(fieldName)) {
+                    List<AccessRights> rights
+                        = reader.readArray(reader1 -> AccessRights.fromString(reader1.getString()));
+                    deserializedSharedAccessAuthorizationRuleProperties.rights = rights;
+                } else if ("primaryKey".equals(fieldName)) {
+                    deserializedSharedAccessAuthorizationRuleProperties.primaryKey = reader.getString();
+                } else if ("secondaryKey".equals(fieldName)) {
+                    deserializedSharedAccessAuthorizationRuleProperties.secondaryKey = reader.getString();
+                } else if ("keyName".equals(fieldName)) {
+                    deserializedSharedAccessAuthorizationRuleProperties.keyName = reader.getString();
+                } else if ("modifiedTime".equals(fieldName)) {
+                    deserializedSharedAccessAuthorizationRuleProperties.modifiedTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("createdTime".equals(fieldName)) {
+                    deserializedSharedAccessAuthorizationRuleProperties.createdTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("claimType".equals(fieldName)) {
+                    deserializedSharedAccessAuthorizationRuleProperties.claimType = reader.getString();
+                } else if ("claimValue".equals(fieldName)) {
+                    deserializedSharedAccessAuthorizationRuleProperties.claimValue = reader.getString();
+                } else if ("revision".equals(fieldName)) {
+                    deserializedSharedAccessAuthorizationRuleProperties.revision
+                        = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSharedAccessAuthorizationRuleProperties;
+        });
+    }
 }

@@ -39,7 +39,10 @@ import com.azure.storage.file.share.specialized.ShareLeaseClientBuilder;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
+import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collections;
@@ -154,6 +157,18 @@ public class FileShareTestBase extends TestProxyTestBase {
 
     byte[] getRandomByteArray(int size) {
         return StorageCommonTestUtils.getRandomByteArray(size, testResourceNamer);
+    }
+
+    ByteBuffer getRandomByteBuffer(int size) {
+        return StorageCommonTestUtils.getRandomData(size, testResourceNamer);
+    }
+
+    java.io.File getRandomFile(int size) throws IOException {
+        return StorageCommonTestUtils.getRandomFile(size, testResourceNamer);
+    }
+
+    boolean compareFiles(File file1, File file2, long offset, long count) throws IOException {
+        return StorageCommonTestUtils.compareFiles(file1, file2, offset, count);
     }
 
     protected ShareServiceClientBuilder getServiceClientBuilder(TestAccount account) {
@@ -276,6 +291,15 @@ public class FileShareTestBase extends TestProxyTestBase {
         }
         if (allowSourceTrailingDot != null) {
             builder.allowSourceTrailingDot(allowSourceTrailingDot);
+        }
+        return builder.buildFileAsyncClient();
+    }
+
+    protected ShareFileAsyncClient getFileAsyncClient(StorageSharedKeyCredential credential, String endpoint,
+        HttpPipelinePolicy... policies) {
+        ShareFileClientBuilder builder = getFileClientBuilder(endpoint, policies);
+        if (credential != null) {
+            builder.credential(credential);
         }
         return builder.buildFileAsyncClient();
     }

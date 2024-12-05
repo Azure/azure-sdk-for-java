@@ -9,12 +9,14 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.resourcemanager.apimanagement.fluent.models.OperationContractInner;
 
-/** Contains all response data for the update operation. */
+/**
+ * Contains all response data for the update operation.
+ */
 public final class ApiOperationsUpdateResponse
     extends ResponseBase<ApiOperationsUpdateHeaders, OperationContractInner> {
     /**
      * Creates an instance of ApiOperationsUpdateResponse.
-     *
+     * 
      * @param request the request which resulted in this ApiOperationsUpdateResponse.
      * @param statusCode the status code of the HTTP response.
      * @param rawHeaders the raw headers of the HTTP response.
@@ -28,7 +30,7 @@ public final class ApiOperationsUpdateResponse
 
     /**
      * Gets the deserialized response body.
-     *
+     * 
      * @return the deserialized response body.
      */
     @Override

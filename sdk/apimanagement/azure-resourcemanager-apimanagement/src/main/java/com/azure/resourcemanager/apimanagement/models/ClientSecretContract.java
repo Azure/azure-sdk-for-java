@@ -6,18 +6,20 @@ package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.resourcemanager.apimanagement.fluent.models.ClientSecretContractInner;
 
-/** An immutable client-side representation of ClientSecretContract. */
+/**
+ * An immutable client-side representation of ClientSecretContract.
+ */
 public interface ClientSecretContract {
     /**
      * Gets the clientSecret property: Client or app secret used in IdentityProviders, Aad, OpenID or OAuth.
-     *
+     * 
      * @return the clientSecret value.
      */
     String clientSecret();
 
     /**
      * Gets the inner com.azure.resourcemanager.apimanagement.fluent.models.ClientSecretContractInner object.
-     *
+     * 
      * @return the inner object.
      */
     ClientSecretContractInner innerModel();

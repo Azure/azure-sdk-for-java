@@ -20,11 +20,13 @@ import com.azure.resourcemanager.apimanagement.models.GatewaysGetResponse;
 import com.azure.resourcemanager.apimanagement.models.GatewaysListKeysResponse;
 import com.azure.resourcemanager.apimanagement.models.GatewaysUpdateResponse;
 
-/** An instance of this class provides access to all the operations defined in GatewaysClient. */
+/**
+ * An instance of this class provides access to all the operations defined in GatewaysClient.
+ */
 public interface GatewaysClient {
     /**
      * Lists a collection of gateways registered with service instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -37,14 +39,14 @@ public interface GatewaysClient {
 
     /**
      * Lists a collection of gateways registered with service instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter | Field | Usage | Supported operators | Supported functions
-     *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq,
-     *     ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;| region | filter | ge, le, eq, ne, gt,
-     *     lt | substringof, contains, startswith, endswith |&lt;/br&gt;| description | filter | ge, le, eq, ne, gt, lt
-     *     | substringof, contains, startswith, endswith |&lt;/br&gt;.
+     * |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq, ne,
+     * gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;| region | filter | ge, le, eq, ne, gt, lt |
+     * substringof, contains, startswith, endswith |&lt;/br&gt;| description | filter | ge, le, eq, ne, gt, lt |
+     * substringof, contains, startswith, endswith |&lt;/br&gt;.
      * @param top Number of records to return.
      * @param skip Number of records to skip.
      * @param context The context to associate with this operation.
@@ -59,11 +61,11 @@ public interface GatewaysClient {
 
     /**
      * Gets the entity state (Etag) version of the Gateway specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param gatewayId Gateway entity identifier. Must be unique in the current API Management service instance. Must
-     *     not have value 'managed'.
+     * not have value 'managed'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -76,11 +78,11 @@ public interface GatewaysClient {
 
     /**
      * Gets the entity state (Etag) version of the Gateway specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param gatewayId Gateway entity identifier. Must be unique in the current API Management service instance. Must
-     *     not have value 'managed'.
+     * not have value 'managed'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -90,11 +92,11 @@ public interface GatewaysClient {
 
     /**
      * Gets the details of the Gateway specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param gatewayId Gateway entity identifier. Must be unique in the current API Management service instance. Must
-     *     not have value 'managed'.
+     * not have value 'managed'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -107,11 +109,11 @@ public interface GatewaysClient {
 
     /**
      * Gets the details of the Gateway specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param gatewayId Gateway entity identifier. Must be unique in the current API Management service instance. Must
-     *     not have value 'managed'.
+     * not have value 'managed'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -122,12 +124,12 @@ public interface GatewaysClient {
 
     /**
      * Creates or updates a Gateway to be used in Api Management instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param gatewayId Gateway entity identifier. Must be unique in the current API Management service instance. Must
-     *     not have value 'managed'.
-     * @param parameters Gateway details.
+     * not have value 'managed'.
+     * @param parameters The parameters parameter.
      * @param ifMatch ETag of the Entity. Not required when creating an entity, but required when updating an entity.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -141,12 +143,12 @@ public interface GatewaysClient {
 
     /**
      * Creates or updates a Gateway to be used in Api Management instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param gatewayId Gateway entity identifier. Must be unique in the current API Management service instance. Must
-     *     not have value 'managed'.
-     * @param parameters Gateway details.
+     * not have value 'managed'.
+     * @param parameters The parameters parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -158,14 +160,14 @@ public interface GatewaysClient {
 
     /**
      * Updates the details of the gateway specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param gatewayId Gateway entity identifier. Must be unique in the current API Management service instance. Must
-     *     not have value 'managed'.
+     * not have value 'managed'.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
-     * @param parameters Gateway details.
+     * request or it should be * for unconditional update.
+     * @param parameters The parameters parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -178,14 +180,14 @@ public interface GatewaysClient {
 
     /**
      * Updates the details of the gateway specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param gatewayId Gateway entity identifier. Must be unique in the current API Management service instance. Must
-     *     not have value 'managed'.
+     * not have value 'managed'.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
-     * @param parameters Gateway details.
+     * request or it should be * for unconditional update.
+     * @param parameters The parameters parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -197,13 +199,13 @@ public interface GatewaysClient {
 
     /**
      * Deletes specific Gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param gatewayId Gateway entity identifier. Must be unique in the current API Management service instance. Must
-     *     not have value 'managed'.
+     * not have value 'managed'.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -216,13 +218,13 @@ public interface GatewaysClient {
 
     /**
      * Deletes specific Gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param gatewayId Gateway entity identifier. Must be unique in the current API Management service instance. Must
-     *     not have value 'managed'.
+     * not have value 'managed'.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -232,11 +234,11 @@ public interface GatewaysClient {
 
     /**
      * Retrieves gateway keys.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param gatewayId Gateway entity identifier. Must be unique in the current API Management service instance. Must
-     *     not have value 'managed'.
+     * not have value 'managed'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -249,11 +251,11 @@ public interface GatewaysClient {
 
     /**
      * Retrieves gateway keys.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param gatewayId Gateway entity identifier. Must be unique in the current API Management service instance. Must
-     *     not have value 'managed'.
+     * not have value 'managed'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -264,12 +266,12 @@ public interface GatewaysClient {
 
     /**
      * Regenerates specified gateway key invalidating any tokens created with it.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param gatewayId Gateway entity identifier. Must be unique in the current API Management service instance. Must
-     *     not have value 'managed'.
-     * @param parameters Gateway key regeneration request contract properties.
+     * not have value 'managed'.
+     * @param parameters The parameters parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -282,12 +284,12 @@ public interface GatewaysClient {
 
     /**
      * Regenerates specified gateway key invalidating any tokens created with it.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param gatewayId Gateway entity identifier. Must be unique in the current API Management service instance. Must
-     *     not have value 'managed'.
-     * @param parameters Gateway key regeneration request contract properties.
+     * not have value 'managed'.
+     * @param parameters The parameters parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -298,12 +300,12 @@ public interface GatewaysClient {
 
     /**
      * Gets the Shared Access Authorization Token for the gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param gatewayId Gateway entity identifier. Must be unique in the current API Management service instance. Must
-     *     not have value 'managed'.
-     * @param parameters Gateway token request contract properties.
+     * not have value 'managed'.
+     * @param parameters The parameters parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -316,12 +318,12 @@ public interface GatewaysClient {
 
     /**
      * Gets the Shared Access Authorization Token for the gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param gatewayId Gateway entity identifier. Must be unique in the current API Management service instance. Must
-     *     not have value 'managed'.
-     * @param parameters Gateway token request contract properties.
+     * not have value 'managed'.
+     * @param parameters The parameters parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.

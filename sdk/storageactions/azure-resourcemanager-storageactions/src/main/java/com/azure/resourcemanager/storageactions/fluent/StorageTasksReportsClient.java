@@ -34,8 +34,8 @@ public interface StorageTasksReportsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageTaskName The name of the storage task within the specified resource group. Storage task names must
      * be between 3 and 18 characters in length and use numbers and lower-case letters only.
-     * @param maxpagesize Optional, specifies the maximum number of storage task assignment Ids to be included in the
-     * list response.
+     * @param maxpagesize Optional, specifies the maximum number of Storage Task Assignment Resource IDs to be included
+     * in the list response.
      * @param filter Optional. When specified, it can be used to query using reporting properties.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -45,5 +45,5 @@ public interface StorageTasksReportsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<StorageTaskReportInstanceInner> list(String resourceGroupName, String storageTaskName,
-        String maxpagesize, String filter, Context context);
+        Integer maxpagesize, String filter, Context context);
 }

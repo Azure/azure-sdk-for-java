@@ -23,7 +23,7 @@ public final class AzureADAdministratorsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"administratorType\":\"ActiveDirectory\",\"login\":\"dlwwqfbumlkxt\",\"sid\":\"jfsmlmbtxhwgfwsr\",\"tenantId\":\"wcoezbrhub\",\"identityResourceId\":\"hud\"},\"id\":\"oookkqfq\",\"name\":\"bvleorfmluiqtqzf\",\"type\":\"vyvnqqyb\"}";
+            = "{\"properties\":{\"administratorType\":\"ActiveDirectory\",\"login\":\"qhhahhxvrhmzkwpj\",\"sid\":\"wspughftqsxhqx\",\"tenantId\":\"xukndxdigr\",\"identityResourceId\":\"uufzdmsyqtfihw\"},\"id\":\"otzi\",\"name\":\"gamv\",\"type\":\"phoszqz\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,18 +34,18 @@ public final class AzureADAdministratorsCreateOrUpdateMockTests {
 
         AzureADAdministrator response = manager.azureADAdministrators()
             .define(AdministratorName.ACTIVE_DIRECTORY)
-            .withExistingFlexibleServer("vpkjpr", "kwcf")
+            .withExistingFlexibleServer("irgzp", "rlazszrnw")
             .withAdministratorType(AdministratorType.ACTIVE_DIRECTORY)
-            .withLogin("gtczheydb")
-            .withSid("shmkxmaehvbbxur")
-            .withTenantId("ltfnhtbaxkgx")
-            .withIdentityResourceId("rc")
+            .withLogin("pwp")
+            .withSid("lwbtlhf")
+            .withTenantId("jcdh")
+            .withIdentityResourceId("fjvfbgofeljagr")
             .create();
 
         Assertions.assertEquals(AdministratorType.ACTIVE_DIRECTORY, response.administratorType());
-        Assertions.assertEquals("dlwwqfbumlkxt", response.login());
-        Assertions.assertEquals("jfsmlmbtxhwgfwsr", response.sid());
-        Assertions.assertEquals("wcoezbrhub", response.tenantId());
-        Assertions.assertEquals("hud", response.identityResourceId());
+        Assertions.assertEquals("qhhahhxvrhmzkwpj", response.login());
+        Assertions.assertEquals("wspughftqsxhqx", response.sid());
+        Assertions.assertEquals("xukndxdigr", response.tenantId());
+        Assertions.assertEquals("uufzdmsyqtfihw", response.identityResourceId());
     }
 }

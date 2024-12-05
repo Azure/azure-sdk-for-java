@@ -20,7 +20,8 @@ public final class NotificationHubsGetAuthorizationRuleSamples {
      */
     public static void notificationHubsGetAuthorizationRule(
         com.azure.resourcemanager.notificationhubs.NotificationHubsManager manager) {
-        manager.notificationHubs().getAuthorizationRuleWithResponse("5ktrial", "nh-sdk-ns", "nh-sdk-hub",
-            "DefaultListenSharedAccessSignature", com.azure.core.util.Context.NONE);
+        manager.notificationHubs()
+            .getAuthorizationRuleWithResponse("5ktrial", "nh-sdk-ns", "nh-sdk-hub",
+                "DefaultListenSharedAccessSignature", com.azure.core.util.Context.NONE);
     }
 }

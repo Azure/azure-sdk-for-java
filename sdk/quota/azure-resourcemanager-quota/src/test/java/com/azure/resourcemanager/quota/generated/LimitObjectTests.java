@@ -13,17 +13,17 @@ public final class LimitObjectTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LimitObject model = BinaryData
-            .fromString("{\"limitObjectType\":\"LimitValue\",\"value\":236193588,\"limitType\":\"Independent\"}")
+            .fromString("{\"limitObjectType\":\"LimitValue\",\"value\":1353933533,\"limitType\":\"Independent\"}")
             .toObject(LimitObject.class);
-        Assertions.assertEquals(236193588, model.value());
+        Assertions.assertEquals(1353933533, model.value());
         Assertions.assertEquals(QuotaLimitTypes.INDEPENDENT, model.limitType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LimitObject model = new LimitObject().withValue(236193588).withLimitType(QuotaLimitTypes.INDEPENDENT);
+        LimitObject model = new LimitObject().withValue(1353933533).withLimitType(QuotaLimitTypes.INDEPENDENT);
         model = BinaryData.fromObject(model).toObject(LimitObject.class);
-        Assertions.assertEquals(236193588, model.value());
+        Assertions.assertEquals(1353933533, model.value());
         Assertions.assertEquals(QuotaLimitTypes.INDEPENDENT, model.limitType());
     }
 }

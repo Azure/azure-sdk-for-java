@@ -5,32 +5,107 @@
 package com.azure.resourcemanager.recoveryservicesdatareplication.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Fabric model custom properties. */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "instanceType",
-    defaultImpl = FabricModelCustomProperties.class)
-@JsonTypeName("FabricModelCustomProperties")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "AzStackHCI", value = AzStackHciFabricModelCustomProperties.class),
-    @JsonSubTypes.Type(name = "HyperVMigrate", value = HyperVMigrateFabricModelCustomProperties.class),
-    @JsonSubTypes.Type(name = "VMwareMigrate", value = VMwareMigrateFabricModelCustomProperties.class) })
+/**
+ * Fabric model custom properties.
+ */
 @Immutable
-public class FabricModelCustomProperties {
-    /** Creates an instance of FabricModelCustomProperties class. */
+public class FabricModelCustomProperties implements JsonSerializable<FabricModelCustomProperties> {
+    /*
+     * Gets or sets the instance type.
+     */
+    private String instanceType = "FabricModelCustomProperties";
+
+    /**
+     * Creates an instance of FabricModelCustomProperties class.
+     */
     public FabricModelCustomProperties() {
     }
 
     /**
+     * Get the instanceType property: Gets or sets the instance type.
+     * 
+     * @return the instanceType value.
+     */
+    public String instanceType() {
+        return this.instanceType;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("instanceType", this.instanceType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FabricModelCustomProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FabricModelCustomProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FabricModelCustomProperties.
+     */
+    public static FabricModelCustomProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("instanceType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("AzStackHCI".equals(discriminatorValue)) {
+                    return AzStackHciFabricModelCustomProperties.fromJson(readerToUse.reset());
+                } else if ("HyperVMigrate".equals(discriminatorValue)) {
+                    return HyperVMigrateFabricModelCustomProperties.fromJson(readerToUse.reset());
+                } else if ("VMwareMigrate".equals(discriminatorValue)) {
+                    return VMwareMigrateFabricModelCustomProperties.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static FabricModelCustomProperties fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FabricModelCustomProperties deserializedFabricModelCustomProperties = new FabricModelCustomProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("instanceType".equals(fieldName)) {
+                    deserializedFabricModelCustomProperties.instanceType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFabricModelCustomProperties;
+        });
     }
 }

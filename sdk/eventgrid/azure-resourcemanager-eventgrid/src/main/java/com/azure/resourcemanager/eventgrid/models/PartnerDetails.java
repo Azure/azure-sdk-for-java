@@ -5,30 +5,32 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Information about the partner.
  */
 @Fluent
-public final class PartnerDetails {
+public final class PartnerDetails implements JsonSerializable<PartnerDetails> {
     /*
      * This is short description about the partner. The length of this description should not exceed 256 characters.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
-     * Long description for the partner's scenarios and integration.Length of this description should not exceed 2048 characters.
+     * Long description for the partner's scenarios and integration.Length of this description should not exceed 2048
+     * characters.
      */
-    @JsonProperty(value = "longDescription")
     private String longDescription;
 
     /*
      * URI of the partner website that can be used by Azure customers to setup Event Grid
      * integration on an event source.
      */
-    @JsonProperty(value = "setupUri")
     private String setupUri;
 
     /**
@@ -109,5 +111,47 @@ public final class PartnerDetails {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("longDescription", this.longDescription);
+        jsonWriter.writeStringField("setupUri", this.setupUri);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PartnerDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PartnerDetails if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PartnerDetails.
+     */
+    public static PartnerDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PartnerDetails deserializedPartnerDetails = new PartnerDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("description".equals(fieldName)) {
+                    deserializedPartnerDetails.description = reader.getString();
+                } else if ("longDescription".equals(fieldName)) {
+                    deserializedPartnerDetails.longDescription = reader.getString();
+                } else if ("setupUri".equals(fieldName)) {
+                    deserializedPartnerDetails.setupUri = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPartnerDetails;
+        });
     }
 }

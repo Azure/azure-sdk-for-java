@@ -27,13 +27,13 @@ public final class RegionsImpl implements Regions {
 
     public PagedIterable<RegionContract> listByService(String resourceGroupName, String serviceName) {
         PagedIterable<RegionContractInner> inner = this.serviceClient().listByService(resourceGroupName, serviceName);
-        return Utils.mapPage(inner, inner1 -> new RegionContractImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new RegionContractImpl(inner1, this.manager()));
     }
 
     public PagedIterable<RegionContract> listByService(String resourceGroupName, String serviceName, Context context) {
         PagedIterable<RegionContractInner> inner
             = this.serviceClient().listByService(resourceGroupName, serviceName, context);
-        return Utils.mapPage(inner, inner1 -> new RegionContractImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new RegionContractImpl(inner1, this.manager()));
     }
 
     private RegionsClient serviceClient() {

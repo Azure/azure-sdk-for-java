@@ -6,36 +6,41 @@ package com.azure.resourcemanager.networkcloud.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** ValidationThreshold indicates allowed machine and node hardware and deployment failures. */
+/**
+ * ValidationThreshold indicates allowed machine and node hardware and deployment failures.
+ */
 @Fluent
-public final class ValidationThreshold {
+public final class ValidationThreshold implements JsonSerializable<ValidationThreshold> {
     /*
      * Selection of how the type evaluation is applied to the cluster calculation.
      */
-    @JsonProperty(value = "grouping", required = true)
     private ValidationThresholdGrouping grouping;
 
     /*
      * Selection of how the threshold should be evaluated.
      */
-    @JsonProperty(value = "type", required = true)
     private ValidationThresholdType type;
 
     /*
      * The numeric threshold value.
      */
-    @JsonProperty(value = "value", required = true)
     private long value;
 
-    /** Creates an instance of ValidationThreshold class. */
+    /**
+     * Creates an instance of ValidationThreshold class.
+     */
     public ValidationThreshold() {
     }
 
     /**
      * Get the grouping property: Selection of how the type evaluation is applied to the cluster calculation.
-     *
+     * 
      * @return the grouping value.
      */
     public ValidationThresholdGrouping grouping() {
@@ -44,7 +49,7 @@ public final class ValidationThreshold {
 
     /**
      * Set the grouping property: Selection of how the type evaluation is applied to the cluster calculation.
-     *
+     * 
      * @param grouping the grouping value to set.
      * @return the ValidationThreshold object itself.
      */
@@ -55,7 +60,7 @@ public final class ValidationThreshold {
 
     /**
      * Get the type property: Selection of how the threshold should be evaluated.
-     *
+     * 
      * @return the type value.
      */
     public ValidationThresholdType type() {
@@ -64,7 +69,7 @@ public final class ValidationThreshold {
 
     /**
      * Set the type property: Selection of how the threshold should be evaluated.
-     *
+     * 
      * @param type the type value to set.
      * @return the ValidationThreshold object itself.
      */
@@ -75,7 +80,7 @@ public final class ValidationThreshold {
 
     /**
      * Get the value property: The numeric threshold value.
-     *
+     * 
      * @return the value value.
      */
     public long value() {
@@ -84,7 +89,7 @@ public final class ValidationThreshold {
 
     /**
      * Set the value property: The numeric threshold value.
-     *
+     * 
      * @param value the value value to set.
      * @return the ValidationThreshold object itself.
      */
@@ -95,19 +100,63 @@ public final class ValidationThreshold {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (grouping() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property grouping in model ValidationThreshold"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property grouping in model ValidationThreshold"));
         }
         if (type() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property type in model ValidationThreshold"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property type in model ValidationThreshold"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ValidationThreshold.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("grouping", this.grouping == null ? null : this.grouping.toString());
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeLongField("value", this.value);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ValidationThreshold from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ValidationThreshold if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ValidationThreshold.
+     */
+    public static ValidationThreshold fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ValidationThreshold deserializedValidationThreshold = new ValidationThreshold();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("grouping".equals(fieldName)) {
+                    deserializedValidationThreshold.grouping
+                        = ValidationThresholdGrouping.fromString(reader.getString());
+                } else if ("type".equals(fieldName)) {
+                    deserializedValidationThreshold.type = ValidationThresholdType.fromString(reader.getString());
+                } else if ("value".equals(fieldName)) {
+                    deserializedValidationThreshold.value = reader.getLong();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedValidationThreshold;
+        });
+    }
 }

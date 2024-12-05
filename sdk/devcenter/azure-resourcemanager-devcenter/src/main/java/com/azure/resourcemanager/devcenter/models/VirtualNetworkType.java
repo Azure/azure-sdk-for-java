@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.devcenter.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class VirtualNetworkType extends ExpandableStringEnum<VirtualNetwor
      * @param name a name to look for.
      * @return the corresponding VirtualNetworkType.
      */
-    @JsonCreator
     public static VirtualNetworkType fromString(String name) {
         return fromString(name, VirtualNetworkType.class);
     }

@@ -14,11 +14,13 @@ import com.azure.resourcemanager.apimanagement.models.ContentItemsCreateOrUpdate
 import com.azure.resourcemanager.apimanagement.models.ContentItemsGetEntityTagResponse;
 import com.azure.resourcemanager.apimanagement.models.ContentItemsGetResponse;
 
-/** An instance of this class provides access to all the operations defined in ContentItemsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ContentItemsClient.
+ */
 public interface ContentItemsClient {
     /**
      * Lists developer portal's content items specified by the provided content type.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param contentTypeId Content type identifier.
@@ -33,7 +35,7 @@ public interface ContentItemsClient {
 
     /**
      * Lists developer portal's content items specified by the provided content type.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param contentTypeId Content type identifier.
@@ -49,7 +51,7 @@ public interface ContentItemsClient {
 
     /**
      * Returns the entity state (ETag) version of the developer portal's content item specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param contentTypeId Content type identifier.
@@ -66,7 +68,7 @@ public interface ContentItemsClient {
 
     /**
      * Returns the entity state (ETag) version of the developer portal's content item specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param contentTypeId Content type identifier.
@@ -80,7 +82,7 @@ public interface ContentItemsClient {
 
     /**
      * Returns the developer portal's content item specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param contentTypeId Content type identifier.
@@ -97,7 +99,7 @@ public interface ContentItemsClient {
 
     /**
      * Returns the developer portal's content item specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param contentTypeId Content type identifier.
@@ -113,7 +115,7 @@ public interface ContentItemsClient {
 
     /**
      * Creates a new developer portal's content item specified by the provided content type.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param contentTypeId Content type identifier.
@@ -133,7 +135,7 @@ public interface ContentItemsClient {
 
     /**
      * Creates a new developer portal's content item specified by the provided content type.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param contentTypeId Content type identifier.
@@ -150,13 +152,13 @@ public interface ContentItemsClient {
 
     /**
      * Removes the specified developer portal's content item.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param contentTypeId Content type identifier.
      * @param contentItemId Content item identifier.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -169,13 +171,13 @@ public interface ContentItemsClient {
 
     /**
      * Removes the specified developer portal's content item.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param contentTypeId Content type identifier.
      * @param contentItemId Content item identifier.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.

@@ -85,8 +85,7 @@ public class ShareApiTests extends FileShareTestBase {
         primaryFileServiceClient = fileServiceBuilderHelper().buildClient();
         primaryShareClient = primaryFileServiceClient.getShareClient(shareName);
         testMetadata = Collections.singletonMap("testmetadata", "value");
-        smbProperties
-            = new FileSmbProperties().setNtfsFileAttributes(EnumSet.<NtfsFileAttributes>of(NtfsFileAttributes.NORMAL));
+        smbProperties = new FileSmbProperties().setNtfsFileAttributes(EnumSet.of(NtfsFileAttributes.NORMAL));
     }
 
     @Test
@@ -256,8 +255,8 @@ public class ShareApiTests extends FileShareTestBase {
             }
         }
 
-        assertEquals(foundDirectories.size(), 1);
-        assertEquals(foundFiles.size(), 1);
+        assertEquals(1, foundDirectories.size());
+        assertEquals(1, foundFiles.size());
         if (allowTrailingDot) {
             assertEquals(foundDirectories.get(0), dirNameWithDot);
             assertEquals(foundFiles.get(0), fileNameWithDot);
@@ -306,8 +305,8 @@ public class ShareApiTests extends FileShareTestBase {
         Response<ShareInfo> initialResponse
             = client.createIfNotExistsWithResponse(new ShareCreateOptions(), null, null);
         Response<ShareInfo> secondResponse = client.createIfNotExistsWithResponse(new ShareCreateOptions(), null, null);
-        assertEquals(initialResponse.getStatusCode(), 201);
-        assertEquals(secondResponse.getStatusCode(), 409);
+        assertEquals(201, initialResponse.getStatusCode());
+        assertEquals(409, secondResponse.getStatusCode());
 
         //cleanup
         client.delete();
@@ -521,7 +520,7 @@ public class ShareApiTests extends FileShareTestBase {
 
         FileShareTestHelper.assertResponseStatusCode(getPropertiesResponse, 200);
         assertEquals(testMetadata, getPropertiesResponse.getValue().getMetadata());
-        assertEquals(getPropertiesResponse.getValue().getQuota(), 1);
+        assertEquals(1, getPropertiesResponse.getValue().getQuota());
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
@@ -536,7 +535,7 @@ public class ShareApiTests extends FileShareTestBase {
 
         FileShareTestHelper.assertResponseStatusCode(getPropertiesResponse, 200);
         assertEquals(testMetadata, getPropertiesResponse.getValue().getMetadata());
-        assertEquals(getPropertiesResponse.getValue().getQuota(), 1);
+        assertEquals(1, getPropertiesResponse.getValue().getQuota());
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2020-02-10")
@@ -621,7 +620,7 @@ public class ShareApiTests extends FileShareTestBase {
 
         List<ShareSignedIdentifier> ids = Arrays.asList(identifier);
         primaryShareClient.setAccessPolicy(ids);
-        assertEquals(primaryShareClient.getAccessPolicy().iterator().next().getId(), "0000");
+        assertEquals("0000", primaryShareClient.getAccessPolicy().iterator().next().getId());
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
@@ -641,7 +640,7 @@ public class ShareApiTests extends FileShareTestBase {
 
         List<ShareSignedIdentifier> ids = Arrays.asList(identifier);
         shareClient.setAccessPolicy(ids);
-        assertEquals(shareClient.getAccessPolicy().iterator().next().getId(), "0000");
+        assertEquals("0000", shareClient.getAccessPolicy().iterator().next().getId());
     }
 
     @Test
@@ -780,9 +779,9 @@ public class ShareApiTests extends FileShareTestBase {
         Response<ShareInfo> setQuotaResponse = primaryShareClient.setQuotaWithResponse(2, null, null);
         ShareProperties getQuotaAfterResponse = primaryShareClient.getProperties();
 
-        assertEquals(getQuotaBeforeResponse.getQuota(), 1);
+        assertEquals(1, getQuotaBeforeResponse.getQuota());
         FileShareTestHelper.assertResponseStatusCode(setQuotaResponse, 200);
-        assertEquals(getQuotaAfterResponse.getQuota(), 2);
+        assertEquals(2, getQuotaAfterResponse.getQuota());
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2019-12-12")
@@ -803,7 +802,7 @@ public class ShareApiTests extends FileShareTestBase {
         assertTrue(getAccessTierAfterResponse.getAccessTierChangeTime().isEqual(time)
             || getAccessTierAfterResponse.getAccessTierChangeTime().isAfter(time.minusSeconds(1)));
         assertTrue(getAccessTierAfterResponse.getAccessTierChangeTime().isBefore(time.plusMinutes(1)));
-        assertEquals(getAccessTierAfterResponse.getAccessTierTransitionState(), "pending-from-hot");
+        assertEquals("pending-from-hot", getAccessTierAfterResponse.getAccessTierTransitionState());
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2019-12-12")
@@ -1251,7 +1250,7 @@ public class ShareApiTests extends FileShareTestBase {
         primaryShareClient.create();
         String permissionKey = primaryShareClient.createPermission(FILE_PERMISSION);
         String permission = primaryShareClient.getPermission(permissionKey);
-        assertEquals(permission, FILE_PERMISSION);
+        assertEquals(FILE_PERMISSION, permission);
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2021-04-10")
@@ -1263,7 +1262,7 @@ public class ShareApiTests extends FileShareTestBase {
         ShareClient shareClient = oAuthServiceClient.getShareClient(shareName);
         String permissionKey = shareClient.createPermission(FILE_PERMISSION);
         String permission = shareClient.getPermission(permissionKey);
-        assertEquals(permission, FILE_PERMISSION);
+        assertEquals(FILE_PERMISSION, permission);
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
@@ -1308,7 +1307,7 @@ public class ShareApiTests extends FileShareTestBase {
 
         assertEquals(snapClient.getSnapshotId(), snapshotId);
         assertTrue(snapClient.getShareUrl().contains("sharesnapshot="));
-        assertEquals(primaryShareClient.getSnapshotId(), null);
+        assertEquals(null, primaryShareClient.getSnapshotId());
     }
 
     @Test
@@ -1334,7 +1333,7 @@ public class ShareApiTests extends FileShareTestBase {
             = shareBuilderHelper(primaryShareClient.getShareName()).addPolicy(getPerCallVersionPolicy()).buildClient();
 
         Response<ShareProperties> response = shareClient.getPropertiesWithResponse(null, null);
-        assertEquals(response.getHeaders().getValue(X_MS_VERSION), "2017-11-09");
+        assertEquals("2017-11-09", response.getHeaders().getValue(X_MS_VERSION));
     }
 
     @Test

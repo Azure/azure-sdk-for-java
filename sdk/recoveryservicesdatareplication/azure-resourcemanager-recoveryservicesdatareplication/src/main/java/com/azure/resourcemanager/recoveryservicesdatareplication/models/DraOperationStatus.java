@@ -7,13 +7,15 @@ package com.azure.resourcemanager.recoveryservicesdatareplication.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of DraOperationStatus. */
+/**
+ * Resource collection API of DraOperationStatus.
+ */
 public interface DraOperationStatus {
     /**
      * Gets the fabric agent (Dra) operation status.
-     *
-     * <p>Tracks the results of an asynchronous operation on the fabric agent.
-     *
+     * 
+     * Tracks the results of an asynchronous operation on the fabric agent.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fabricName The fabric name.
      * @param fabricAgentName The fabric agent (Dra) name.
@@ -29,9 +31,9 @@ public interface DraOperationStatus {
 
     /**
      * Gets the fabric agent (Dra) operation status.
-     *
-     * <p>Tracks the results of an asynchronous operation on the fabric agent.
-     *
+     * 
+     * Tracks the results of an asynchronous operation on the fabric agent.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fabricName The fabric name.
      * @param fabricAgentName The fabric agent (Dra) name.

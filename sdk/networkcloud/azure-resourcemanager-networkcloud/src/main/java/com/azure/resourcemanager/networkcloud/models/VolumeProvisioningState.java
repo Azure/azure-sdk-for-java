@@ -5,29 +5,40 @@
 package com.azure.resourcemanager.networkcloud.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The provisioning state of the volume. */
+/**
+ * The provisioning state of the volume.
+ */
 public final class VolumeProvisioningState extends ExpandableStringEnum<VolumeProvisioningState> {
-    /** Static value Succeeded for VolumeProvisioningState. */
+    /**
+     * Static value Succeeded for VolumeProvisioningState.
+     */
     public static final VolumeProvisioningState SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Failed for VolumeProvisioningState. */
+    /**
+     * Static value Failed for VolumeProvisioningState.
+     */
     public static final VolumeProvisioningState FAILED = fromString("Failed");
 
-    /** Static value Canceled for VolumeProvisioningState. */
+    /**
+     * Static value Canceled for VolumeProvisioningState.
+     */
     public static final VolumeProvisioningState CANCELED = fromString("Canceled");
 
-    /** Static value Provisioning for VolumeProvisioningState. */
+    /**
+     * Static value Provisioning for VolumeProvisioningState.
+     */
     public static final VolumeProvisioningState PROVISIONING = fromString("Provisioning");
 
-    /** Static value Accepted for VolumeProvisioningState. */
+    /**
+     * Static value Accepted for VolumeProvisioningState.
+     */
     public static final VolumeProvisioningState ACCEPTED = fromString("Accepted");
 
     /**
      * Creates a new instance of VolumeProvisioningState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -36,18 +47,17 @@ public final class VolumeProvisioningState extends ExpandableStringEnum<VolumePr
 
     /**
      * Creates or finds a VolumeProvisioningState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding VolumeProvisioningState.
      */
-    @JsonCreator
     public static VolumeProvisioningState fromString(String name) {
         return fromString(name, VolumeProvisioningState.class);
     }
 
     /**
      * Gets known VolumeProvisioningState values.
-     *
+     * 
      * @return known VolumeProvisioningState values.
      */
     public static Collection<VolumeProvisioningState> values() {

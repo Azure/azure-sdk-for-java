@@ -20,7 +20,7 @@ public final class LocationBasedCapabilitySetsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"supportedGeoBackupRegions\":[\"xynqnz\",\"dpsovwxznptgo\"],\"supportedFlexibleServerEditions\":[{\"name\":\"b\",\"defaultSku\":\"pfhvfslk\",\"defaultStorageSize\":774606511,\"supportedStorageEditions\":[{},{},{}],\"supportedSkus\":[{},{},{}]},{\"name\":\"jkskyr\",\"defaultSku\":\"ovzidsx\",\"defaultStorageSize\":2100581785,\"supportedStorageEditions\":[{}],\"supportedSkus\":[{},{}]},{\"name\":\"rygznmmaxriz\",\"defaultSku\":\"obgop\",\"defaultStorageSize\":840646010,\"supportedStorageEditions\":[{},{},{}],\"supportedSkus\":[{},{},{},{}]}],\"supportedServerVersions\":[{\"name\":\"eixynllxecwcroj\"},{\"name\":\"slhcawjutifd\"},{\"name\":\"mvi\"}]},\"id\":\"rqjb\",\"name\":\"tzh\",\"type\":\"aglkafhon\"}";
+            = "{\"properties\":{\"supportedGeoBackupRegions\":[\"etoge\",\"joxslhvnhla\",\"rqnkkzjcjbtr\"],\"supportedFlexibleServerEditions\":[{\"name\":\"vvib\",\"defaultSku\":\"jj\",\"defaultStorageSize\":564299595,\"supportedStorageEditions\":[{},{}],\"supportedSkus\":[{}]},{\"name\":\"pkxztmoobkl\",\"defaultSku\":\"idgfc\",\"defaultStorageSize\":1491349609,\"supportedStorageEditions\":[{}],\"supportedSkus\":[{},{},{}]}],\"supportedServerVersions\":[{\"name\":\"hemjy\"},{\"name\":\"hujswtwkozzwcul\"}]},\"id\":\"awpfajnjwltlwtjj\",\"name\":\"uktalhsnvkcdmxz\",\"type\":\"poaimlnwiaaomyl\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class LocationBasedCapabilitySetsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         Capability response = manager.locationBasedCapabilitySets()
-            .getWithResponse("fh", "l", com.azure.core.util.Context.NONE)
+            .getWithResponse("z", "seypxiutcxapz", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

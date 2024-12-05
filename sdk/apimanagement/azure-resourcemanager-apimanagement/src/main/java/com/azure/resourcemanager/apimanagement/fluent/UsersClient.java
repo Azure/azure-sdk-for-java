@@ -21,11 +21,13 @@ import com.azure.resourcemanager.apimanagement.models.UsersGetEntityTagResponse;
 import com.azure.resourcemanager.apimanagement.models.UsersGetResponse;
 import com.azure.resourcemanager.apimanagement.models.UsersUpdateResponse;
 
-/** An instance of this class provides access to all the operations defined in UsersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in UsersClient.
+ */
 public interface UsersClient {
     /**
      * Lists a collection of registered users in the specified service instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -38,17 +40,17 @@ public interface UsersClient {
 
     /**
      * Lists a collection of registered users in the specified service instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter | Field | Usage | Supported operators | Supported functions
-     *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq,
-     *     ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;| firstName | filter | ge, le, eq, ne,
-     *     gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;| lastName | filter | ge, le, eq, ne, gt, lt
-     *     | substringof, contains, startswith, endswith |&lt;/br&gt;| email | filter | ge, le, eq, ne, gt, lt |
-     *     substringof, contains, startswith, endswith |&lt;/br&gt;| state | filter | eq | |&lt;/br&gt;|
-     *     registrationDate | filter | ge, le, eq, ne, gt, lt | |&lt;/br&gt;| note | filter | ge, le, eq, ne, gt, lt |
-     *     substringof, contains, startswith, endswith |&lt;/br&gt;| groups | expand | | |&lt;/br&gt;.
+     * |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq, ne,
+     * gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;| firstName | filter | ge, le, eq, ne, gt, lt |
+     * substringof, contains, startswith, endswith |&lt;/br&gt;| lastName | filter | ge, le, eq, ne, gt, lt |
+     * substringof, contains, startswith, endswith |&lt;/br&gt;| email | filter | ge, le, eq, ne, gt, lt | substringof,
+     * contains, startswith, endswith |&lt;/br&gt;| state | filter | eq | |&lt;/br&gt;| registrationDate | filter | ge,
+     * le, eq, ne, gt, lt | |&lt;/br&gt;| note | filter | ge, le, eq, ne, gt, lt | substringof, contains, startswith,
+     * endswith |&lt;/br&gt;| groups | expand | | |&lt;/br&gt;.
      * @param top Number of records to return.
      * @param skip Number of records to skip.
      * @param expandGroups Detailed Group in response.
@@ -64,7 +66,7 @@ public interface UsersClient {
 
     /**
      * Gets the entity state (Etag) version of the user specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param userId User identifier. Must be unique in the current API Management service instance.
@@ -80,7 +82,7 @@ public interface UsersClient {
 
     /**
      * Gets the entity state (Etag) version of the user specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param userId User identifier. Must be unique in the current API Management service instance.
@@ -93,7 +95,7 @@ public interface UsersClient {
 
     /**
      * Gets the details of the user specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param userId User identifier. Must be unique in the current API Management service instance.
@@ -108,7 +110,7 @@ public interface UsersClient {
 
     /**
      * Gets the details of the user specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param userId User identifier. Must be unique in the current API Management service instance.
@@ -122,7 +124,7 @@ public interface UsersClient {
 
     /**
      * Creates or Updates a user.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param userId User identifier. Must be unique in the current API Management service instance.
@@ -141,7 +143,7 @@ public interface UsersClient {
 
     /**
      * Creates or Updates a user.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param userId User identifier. Must be unique in the current API Management service instance.
@@ -157,12 +159,12 @@ public interface UsersClient {
 
     /**
      * Updates the details of the user specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param userId User identifier. Must be unique in the current API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param parameters Update parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -176,12 +178,12 @@ public interface UsersClient {
 
     /**
      * Updates the details of the user specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param userId User identifier. Must be unique in the current API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param parameters Update parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -194,16 +196,16 @@ public interface UsersClient {
 
     /**
      * Deletes specific user.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param userId User identifier. Must be unique in the current API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param deleteSubscriptions Whether to delete user's subscription or not.
      * @param notify Send an Account Closed Email notification to the User.
      * @param appType Determines the type of application which send the create user request. Default is legacy publisher
-     *     portal.
+     * portal.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -216,12 +218,12 @@ public interface UsersClient {
 
     /**
      * Deletes specific user.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param userId User identifier. Must be unique in the current API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -232,7 +234,7 @@ public interface UsersClient {
     /**
      * Retrieves a redirection URL containing an authentication token for signing a given user into the developer
      * portal.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param userId User identifier. Must be unique in the current API Management service instance.
@@ -249,7 +251,7 @@ public interface UsersClient {
     /**
      * Retrieves a redirection URL containing an authentication token for signing a given user into the developer
      * portal.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param userId User identifier. Must be unique in the current API Management service instance.
@@ -263,7 +265,7 @@ public interface UsersClient {
 
     /**
      * Gets the Shared Access Authorization Token for the User.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param userId User identifier. Must be unique in the current API Management service instance.
@@ -280,7 +282,7 @@ public interface UsersClient {
 
     /**
      * Gets the Shared Access Authorization Token for the User.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param userId User identifier. Must be unique in the current API Management service instance.

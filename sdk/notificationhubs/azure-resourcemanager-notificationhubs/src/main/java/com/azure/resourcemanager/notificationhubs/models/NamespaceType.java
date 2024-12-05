@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.notificationhubs.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class NamespaceType extends ExpandableStringEnum<NamespaceType> {
      * @param name a name to look for.
      * @return the corresponding NamespaceType.
      */
-    @JsonCreator
     public static NamespaceType fromString(String name) {
         return fromString(name, NamespaceType.class);
     }

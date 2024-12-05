@@ -4,7 +4,9 @@ package com.azure.resourcemanager.network.implementation;
 
 import com.azure.core.management.Region;
 import com.azure.core.management.SubResource;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.models.IpAddressAvailabilityResultInner;
 import com.azure.resourcemanager.network.fluent.models.IpConfigurationInner;
 import com.azure.resourcemanager.network.fluent.models.NetworkSecurityGroupInner;
@@ -41,6 +43,8 @@ import java.util.TreeSet;
 class SubnetImpl extends ChildResourceImpl<SubnetInner, NetworkImpl, Network>
     implements Subnet, Subnet.Definition<Network.DefinitionStages.WithCreateAndSubnet>,
     Subnet.UpdateDefinition<Network.Update>, Subnet.Update {
+
+    private static final ClientLogger LOGGER = new ClientLogger(SubnetImpl.class);
 
     SubnetImpl(SubnetInner inner, NetworkImpl parent) {
         super(inner, parent);
@@ -253,7 +257,20 @@ class SubnetImpl extends ChildResourceImpl<SubnetInner, NetworkImpl, Network>
             NetworkInterface nic = nics.get(nicID);
             if (nic == null) {
                 //  NIC not previously found, so ask Azure for it
-                nic = this.parent().manager().networkInterfaces().getById(nicID);
+                String resourceType = ResourceUtils.resourceTypeFromResourceId(nicID);
+                if ("networkInterfaces".equalsIgnoreCase(resourceType)) {
+                    // skip other resource types like "bastionHosts"
+                    try {
+                        nic = this.parent().manager().networkInterfaces().getById(nicID);
+                    } catch (ManagementException e) {
+                        if (e.getResponse().getStatusCode() == 404) {
+                            // NIC not found, ignore this ipConfigRef
+                            LOGGER.warning("Network interface not found '{}'", nicID);
+                        } else {
+                            throw LOGGER.logExceptionAsError(e);
+                        }
+                    }
+                }
             }
 
             if (nic == null) {

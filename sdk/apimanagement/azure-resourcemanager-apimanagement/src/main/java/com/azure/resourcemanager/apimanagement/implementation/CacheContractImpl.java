@@ -123,9 +123,9 @@ public final class CacheContractImpl implements CacheContract, CacheContract.Def
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.serviceName = Utils.getValueFromIdByName(innerObject.id(), "service");
-        this.cacheId = Utils.getValueFromIdByName(innerObject.id(), "caches");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.serviceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "service");
+        this.cacheId = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "caches");
     }
 
     public CacheContract refresh() {

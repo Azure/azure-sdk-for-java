@@ -5,32 +5,31 @@
 package com.azure.resourcemanager.astro.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
 /**
  * The type used for update operations of the OrganizationResource.
  */
 @Fluent
-public final class OrganizationResourceUpdate {
+public final class OrganizationResourceUpdate implements JsonSerializable<OrganizationResourceUpdate> {
     /*
      * The managed service identities assigned to this resource.
      */
-    @JsonProperty(value = "identity")
     private ManagedServiceIdentity identity;
 
     /*
      * Resource tags.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
-     * The updatable properties of the OrganizationResource.
+     * The resource-specific properties for this resource.
      */
-    @JsonProperty(value = "properties")
     private OrganizationResourceUpdateProperties properties;
 
     /**
@@ -80,7 +79,7 @@ public final class OrganizationResourceUpdate {
     }
 
     /**
-     * Get the properties property: The updatable properties of the OrganizationResource.
+     * Get the properties property: The resource-specific properties for this resource.
      * 
      * @return the properties value.
      */
@@ -89,7 +88,7 @@ public final class OrganizationResourceUpdate {
     }
 
     /**
-     * Set the properties property: The updatable properties of the OrganizationResource.
+     * Set the properties property: The resource-specific properties for this resource.
      * 
      * @param properties the properties value to set.
      * @return the OrganizationResourceUpdate object itself.
@@ -111,5 +110,49 @@ public final class OrganizationResourceUpdate {
         if (properties() != null) {
             properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("identity", this.identity);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OrganizationResourceUpdate from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OrganizationResourceUpdate if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OrganizationResourceUpdate.
+     */
+    public static OrganizationResourceUpdate fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OrganizationResourceUpdate deserializedOrganizationResourceUpdate = new OrganizationResourceUpdate();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("identity".equals(fieldName)) {
+                    deserializedOrganizationResourceUpdate.identity = ManagedServiceIdentity.fromJson(reader);
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedOrganizationResourceUpdate.tags = tags;
+                } else if ("properties".equals(fieldName)) {
+                    deserializedOrganizationResourceUpdate.properties
+                        = OrganizationResourceUpdateProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOrganizationResourceUpdate;
+        });
     }
 }

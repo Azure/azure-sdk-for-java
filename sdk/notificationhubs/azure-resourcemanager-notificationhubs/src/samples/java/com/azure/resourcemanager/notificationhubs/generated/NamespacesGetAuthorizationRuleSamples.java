@@ -20,7 +20,8 @@ public final class NamespacesGetAuthorizationRuleSamples {
      */
     public static void
         namespacesGetAuthorizationRule(com.azure.resourcemanager.notificationhubs.NotificationHubsManager manager) {
-        manager.namespaces().getAuthorizationRuleWithResponse("5ktrial", "nh-sdk-ns", "RootManageSharedAccessKey",
-            com.azure.core.util.Context.NONE);
+        manager.namespaces()
+            .getAuthorizationRuleWithResponse("5ktrial", "nh-sdk-ns", "RootManageSharedAccessKey",
+                com.azure.core.util.Context.NONE);
     }
 }

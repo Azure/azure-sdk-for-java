@@ -14,9 +14,9 @@ public final class PrivateLinkResourceListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PrivateLinkResourceListResult model = BinaryData.fromString(
-            "{\"value\":[{\"id\":\"hrdxwzywqsmbs\",\"name\":\"exim\",\"type\":\"yocf\",\"properties\":{\"groupId\":\"s\",\"requiredMembers\":[],\"requiredZoneNames\":[]}},{\"id\":\"ys\",\"name\":\"i\",\"type\":\"xhqyudxorrqnb\",\"properties\":{\"groupId\":\"zvyifqrvkdvj\",\"requiredMembers\":[],\"requiredZoneNames\":[]}},{\"id\":\"mvvd\",\"name\":\"atkpnp\",\"type\":\"exxbczwtr\",\"properties\":{\"groupId\":\"qzbqjvsov\",\"requiredMembers\":[],\"requiredZoneNames\":[]}},{\"id\":\"acspkwl\",\"name\":\"dobpxjmflbvvn\",\"type\":\"rkcciwwzjuqk\",\"properties\":{\"groupId\":\"ajiwkuo\",\"requiredMembers\":[],\"requiredZoneNames\":[]}}],\"nextLink\":\"ghsauuimjmvxied\"}")
+            "{\"value\":[{\"id\":\"xnkjzkdesl\",\"name\":\"lopwiyig\",\"type\":\"pkdwzbai\",\"properties\":{\"groupId\":\"baumnyqupedeoj\",\"requiredMembers\":[\"ckhsmtxpsieb\",\"fhvpesaps\",\"rdqmhjjdhtldwkyz\"],\"requiredZoneNames\":[\"tkncwsc\",\"svlxotogtwrup\"]}},{\"id\":\"xvnmicykvceov\",\"name\":\"lo\",\"type\":\"oty\",\"properties\":{\"groupId\":\"cnjbkcnxdhbt\",\"requiredMembers\":[\"h\",\"wpn\"],\"requiredZoneNames\":[\"oqnermclfpl\"]}},{\"id\":\"oxuscrpabgyepsbj\",\"name\":\"zq\",\"type\":\"xywpmueefjzwfqkq\",\"properties\":{\"groupId\":\"dsuyonobgla\",\"requiredMembers\":[\"xtccmg\",\"udxytlmoyrx\",\"wfudwpzntxhdzhl\"],\"requiredZoneNames\":[\"bh\",\"kfrlhrxsbky\",\"pycanuzbpz\"]}},{\"id\":\"fkuwbcrnwbmehhse\",\"name\":\"jusrtslhspk\",\"type\":\"emaofmxagkvt\",\"properties\":{\"groupId\":\"mqkrhahvljuahaqu\",\"requiredMembers\":[\"hmdua\",\"aex\"],\"requiredZoneNames\":[\"fadmws\",\"crgvxpvgom\"]}}],\"nextLink\":\"fmisg\"}")
             .toObject(PrivateLinkResourceListResult.class);
-        Assertions.assertEquals("ghsauuimjmvxied", model.nextLink());
+        Assertions.assertEquals("fmisg", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
@@ -24,8 +24,8 @@ public final class PrivateLinkResourceListResultTests {
         PrivateLinkResourceListResult model = new PrivateLinkResourceListResult()
             .withValue(Arrays.asList(new PrivateLinkResourceInner(), new PrivateLinkResourceInner(),
                 new PrivateLinkResourceInner(), new PrivateLinkResourceInner()))
-            .withNextLink("ghsauuimjmvxied");
+            .withNextLink("fmisg");
         model = BinaryData.fromObject(model).toObject(PrivateLinkResourceListResult.class);
-        Assertions.assertEquals("ghsauuimjmvxied", model.nextLink());
+        Assertions.assertEquals("fmisg", model.nextLink());
     }
 }

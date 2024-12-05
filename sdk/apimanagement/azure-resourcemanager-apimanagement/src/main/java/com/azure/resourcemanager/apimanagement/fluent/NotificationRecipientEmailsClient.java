@@ -12,11 +12,13 @@ import com.azure.resourcemanager.apimanagement.fluent.models.RecipientEmailColle
 import com.azure.resourcemanager.apimanagement.fluent.models.RecipientEmailContractInner;
 import com.azure.resourcemanager.apimanagement.models.NotificationName;
 
-/** An instance of this class provides access to all the operations defined in NotificationRecipientEmailsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in NotificationRecipientEmailsClient.
+ */
 public interface NotificationRecipientEmailsClient {
     /**
      * Gets the list of the Notification Recipient Emails subscribed to a notification.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param notificationName Notification Name Identifier.
@@ -32,7 +34,7 @@ public interface NotificationRecipientEmailsClient {
 
     /**
      * Gets the list of the Notification Recipient Emails subscribed to a notification.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param notificationName Notification Name Identifier.
@@ -47,7 +49,7 @@ public interface NotificationRecipientEmailsClient {
 
     /**
      * Determine if Notification Recipient Email subscribed to the notification.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param notificationName Notification Name Identifier.
@@ -64,7 +66,7 @@ public interface NotificationRecipientEmailsClient {
 
     /**
      * Determine if Notification Recipient Email subscribed to the notification.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param notificationName Notification Name Identifier.
@@ -80,7 +82,7 @@ public interface NotificationRecipientEmailsClient {
 
     /**
      * Adds the Email address to the list of Recipients for the Notification.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param notificationName Notification Name Identifier.
@@ -97,7 +99,7 @@ public interface NotificationRecipientEmailsClient {
 
     /**
      * Adds the Email address to the list of Recipients for the Notification.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param notificationName Notification Name Identifier.
@@ -113,7 +115,7 @@ public interface NotificationRecipientEmailsClient {
 
     /**
      * Removes the email from the list of Notification.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param notificationName Notification Name Identifier.
@@ -130,7 +132,7 @@ public interface NotificationRecipientEmailsClient {
 
     /**
      * Removes the email from the list of Notification.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param notificationName Notification Name Identifier.

@@ -138,9 +138,9 @@ public final class NamedValueContractImpl
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.serviceName = Utils.getValueFromIdByName(innerObject.id(), "service");
-        this.namedValueId = Utils.getValueFromIdByName(innerObject.id(), "namedValues");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.serviceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "service");
+        this.namedValueId = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "namedValues");
     }
 
     public NamedValueContract refresh() {

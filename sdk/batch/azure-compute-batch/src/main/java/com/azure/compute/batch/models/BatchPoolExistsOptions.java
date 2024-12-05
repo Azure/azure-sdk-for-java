@@ -6,5 +6,9 @@ package com.azure.compute.batch.models;
  * Optional parameters regarding whether a Batch pool exists.
  */
 public class BatchPoolExistsOptions extends BatchExistsOptions {
-
+    /**
+     * Creates an instance of {@link BatchPoolExistsOptions}.
+     */
+    public BatchPoolExistsOptions() {
+    }
 }

@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.apimanagement.fluent.models.ContentTypeContractInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Paged list of content types. */
+/**
+ * Paged list of content types.
+ */
 @Immutable
-public final class ContentTypeCollection {
+public final class ContentTypeCollection implements JsonSerializable<ContentTypeCollection> {
     /*
      * Collection of content types.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<ContentTypeContractInner> value;
 
     /*
      * Next page link, if any.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of ContentTypeCollection class. */
+    /**
+     * Creates an instance of ContentTypeCollection class.
+     */
     public ContentTypeCollection() {
     }
 
     /**
      * Get the value property: Collection of content types.
-     *
+     * 
      * @return the value value.
      */
     public List<ContentTypeContractInner> value() {
@@ -39,7 +45,7 @@ public final class ContentTypeCollection {
 
     /**
      * Get the nextLink property: Next page link, if any.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,12 +54,51 @@ public final class ContentTypeCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ContentTypeCollection from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ContentTypeCollection if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ContentTypeCollection.
+     */
+    public static ContentTypeCollection fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ContentTypeCollection deserializedContentTypeCollection = new ContentTypeCollection();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<ContentTypeContractInner> value
+                        = reader.readArray(reader1 -> ContentTypeContractInner.fromJson(reader1));
+                    deserializedContentTypeCollection.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedContentTypeCollection.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedContentTypeCollection;
+        });
     }
 }

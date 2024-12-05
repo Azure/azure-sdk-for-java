@@ -21,7 +21,7 @@ public final class ImageVersionsListByImageMockTests {
     @Test
     public void testListByImage() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"name\":\"ygjbmzyospspsh\",\"publishedDate\":\"2021-11-10T17:31:52Z\",\"excludeFromLatest\":true,\"osDiskImageSizeInGb\":594488875,\"provisioningState\":\"Accepted\"},\"id\":\"bpssdfp\",\"name\":\"yogtieyujtvczkcn\",\"type\":\"xrx\"}]}";
+            = "{\"value\":[{\"properties\":{\"name\":\"zelfwyfwl\",\"publishedDate\":\"2021-05-12T13:23:41Z\",\"excludeFromLatest\":true,\"osDiskImageSizeInGb\":228143723,\"provisioningState\":\"MovingResources\"},\"id\":\"hclafzvaylptrs\",\"name\":\"qwztcmwqkc\",\"type\":\"cxwaxfewz\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,7 +31,8 @@ public final class ImageVersionsListByImageMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<ImageVersion> response = manager.imageVersions()
-            .listByImage("amowaziynknlqwzd", "piwhxqs", "dtmaa", "quhuxylrj", com.azure.core.util.Context.NONE);
+            .listByImage("nktwfansnvpdibmi", "ostbzbkiwb", "qnyophzfyls", "crpfbcunez",
+                com.azure.core.util.Context.NONE);
 
     }
 }

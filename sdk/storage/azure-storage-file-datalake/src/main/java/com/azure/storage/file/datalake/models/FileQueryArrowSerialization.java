@@ -10,8 +10,13 @@ import java.util.List;
  * Defines the output arrow serialization for a file quick query request.
  */
 public class FileQueryArrowSerialization implements FileQuerySerialization {
-
     private List<FileQueryArrowField> schema;
+
+    /**
+     * Creates a new instance of {@link FileQueryArrowSerialization}.
+     */
+    public FileQueryArrowSerialization() {
+    }
 
     /**
      * Gets the arrow fields.

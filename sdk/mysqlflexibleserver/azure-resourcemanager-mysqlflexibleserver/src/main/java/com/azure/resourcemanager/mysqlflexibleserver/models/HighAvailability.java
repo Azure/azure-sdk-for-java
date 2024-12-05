@@ -5,29 +5,30 @@
 package com.azure.resourcemanager.mysqlflexibleserver.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * High availability properties of a server.
  */
 @Fluent
-public final class HighAvailability {
+public final class HighAvailability implements JsonSerializable<HighAvailability> {
     /*
      * High availability mode for a server.
      */
-    @JsonProperty(value = "mode")
     private HighAvailabilityMode mode;
 
     /*
      * The state of server high availability.
      */
-    @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
     private HighAvailabilityState state;
 
     /*
      * Availability zone of the standby server.
      */
-    @JsonProperty(value = "standbyAvailabilityZone")
     private String standbyAvailabilityZone;
 
     /**
@@ -91,5 +92,46 @@ public final class HighAvailability {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("mode", this.mode == null ? null : this.mode.toString());
+        jsonWriter.writeStringField("standbyAvailabilityZone", this.standbyAvailabilityZone);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HighAvailability from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HighAvailability if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the HighAvailability.
+     */
+    public static HighAvailability fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HighAvailability deserializedHighAvailability = new HighAvailability();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("mode".equals(fieldName)) {
+                    deserializedHighAvailability.mode = HighAvailabilityMode.fromString(reader.getString());
+                } else if ("state".equals(fieldName)) {
+                    deserializedHighAvailability.state = HighAvailabilityState.fromString(reader.getString());
+                } else if ("standbyAvailabilityZone".equals(fieldName)) {
+                    deserializedHighAvailability.standbyAvailabilityZone = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHighAvailability;
+        });
     }
 }

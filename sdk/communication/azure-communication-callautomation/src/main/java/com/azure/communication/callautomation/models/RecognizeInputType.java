@@ -4,6 +4,7 @@
 package com.azure.communication.callautomation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
+
 import java.util.Collection;
 
 /** Defines values for RecognizeInputTypeInternal. */
@@ -21,6 +22,15 @@ public final class RecognizeInputType extends ExpandableStringEnum<RecognizeInpu
     public static final RecognizeInputType SPEECH_OR_DTMF = fromString("speechordtmf");
 
     /**
+     * Creates an instance of {@link RecognizeInputType} with no string value.
+     *
+     * @deprecated Please use {@link #fromString(String)} to create an instance of RecognizeInputType.
+     */
+    @Deprecated
+    public RecognizeInputType() {
+    }
+
+    /**
      * Creates or finds a RecognizeInputTypeInternal from its string representation.
      *
      * @param name a name to look for.
@@ -30,7 +40,10 @@ public final class RecognizeInputType extends ExpandableStringEnum<RecognizeInpu
         return fromString(name, RecognizeInputType.class);
     }
 
-    /** @return known RecognizeInputTypeInternal values. */
+    /**
+     * Get the collection of RecognizeInputTypeInternal values.
+     * @return known RecognizeInputTypeInternal values.
+     */
     public static Collection<RecognizeInputType> values() {
         return values(RecognizeInputType.class);
     }

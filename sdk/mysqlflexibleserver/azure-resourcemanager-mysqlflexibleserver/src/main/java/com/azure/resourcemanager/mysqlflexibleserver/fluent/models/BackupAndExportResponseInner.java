@@ -8,9 +8,14 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
 import com.azure.core.management.exception.ManagementError;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.mysqlflexibleserver.models.OperationStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Represents BackupAndExport API Response.
@@ -20,44 +25,52 @@ public final class BackupAndExportResponseInner extends ProxyResource {
     /*
      * The operation status
      */
-    @JsonProperty(value = "status")
     private OperationStatus status;
 
     /*
      * Start time
      */
-    @JsonProperty(value = "startTime")
     private OffsetDateTime startTime;
 
     /*
      * End time
      */
-    @JsonProperty(value = "endTime")
     private OffsetDateTime endTime;
 
     /*
      * Operation progress (0-100).
      */
-    @JsonProperty(value = "percentComplete")
     private Double percentComplete;
 
     /*
      * The response properties of a backup and export operation.
      */
-    @JsonProperty(value = "properties")
     private BackupAndExportResponseProperties innerProperties;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
     /*
      * The error object.
      */
-    @JsonProperty(value = "error")
     private ManagementError error;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
 
     /**
      * Creates an instance of BackupAndExportResponseInner class.
@@ -184,6 +197,36 @@ public final class BackupAndExportResponseInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the datasourceSizeInBytes property: Size of datasource in bytes.
      * 
      * @return the datasourceSizeInBytes value.
@@ -263,5 +306,71 @@ public final class BackupAndExportResponseInner extends ProxyResource {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        jsonWriter.writeStringField("startTime",
+            this.startTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startTime));
+        jsonWriter.writeStringField("endTime",
+            this.endTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endTime));
+        jsonWriter.writeNumberField("percentComplete", this.percentComplete);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeJsonField("error", this.error);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BackupAndExportResponseInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BackupAndExportResponseInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the BackupAndExportResponseInner.
+     */
+    public static BackupAndExportResponseInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BackupAndExportResponseInner deserializedBackupAndExportResponseInner = new BackupAndExportResponseInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedBackupAndExportResponseInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedBackupAndExportResponseInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedBackupAndExportResponseInner.type = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedBackupAndExportResponseInner.status = OperationStatus.fromString(reader.getString());
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedBackupAndExportResponseInner.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("endTime".equals(fieldName)) {
+                    deserializedBackupAndExportResponseInner.endTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("percentComplete".equals(fieldName)) {
+                    deserializedBackupAndExportResponseInner.percentComplete
+                        = reader.getNullable(JsonReader::getDouble);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedBackupAndExportResponseInner.innerProperties
+                        = BackupAndExportResponseProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedBackupAndExportResponseInner.systemData = SystemData.fromJson(reader);
+                } else if ("error".equals(fieldName)) {
+                    deserializedBackupAndExportResponseInner.error = ManagementError.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBackupAndExportResponseInner;
+        });
     }
 }

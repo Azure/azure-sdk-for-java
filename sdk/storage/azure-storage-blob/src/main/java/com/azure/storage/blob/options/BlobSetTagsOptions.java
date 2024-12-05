@@ -15,12 +15,14 @@ import java.util.Map;
  */
 @Fluent
 public class BlobSetTagsOptions {
-
     private final Map<String, String> tags;
     private BlobRequestConditions requestConditions;
 
     /**
+     * Creates a new instance of {@link BlobSetTagsOptions}.
+     *
      * @param tags Tags to associate with the blob.
+     * @throws NullPointerException If {@code tags} is null.
      */
     public BlobSetTagsOptions(Map<String, String> tags) {
         StorageImplUtils.assertNotNull("tags", tags);
@@ -28,6 +30,8 @@ public class BlobSetTagsOptions {
     }
 
     /**
+     * Gets the tags to associate with the blob.
+     *
      * @return The tags to associate with the blob.
      */
     public Map<String, String> getTags() {
@@ -35,6 +39,8 @@ public class BlobSetTagsOptions {
     }
 
     /**
+     * Gets the {@link BlobRequestConditions}.
+     *
      * @return {@link BlobRequestConditions}
      */
     public BlobRequestConditions getRequestConditions() {
@@ -42,6 +48,8 @@ public class BlobSetTagsOptions {
     }
 
     /**
+     * Sets the {@link BlobRequestConditions}.
+     *
      * @param requestConditions {@link BlobRequestConditions}
      * @return The updated options.
      */

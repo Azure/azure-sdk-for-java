@@ -5,23 +5,30 @@
 package com.azure.resourcemanager.recoveryservicesdatareplication.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Gets or sets the fabric health. */
+/**
+ * Gets or sets the fabric health.
+ */
 public final class HealthStatus extends ExpandableStringEnum<HealthStatus> {
-    /** Static value Normal for HealthStatus. */
+    /**
+     * Static value Normal for HealthStatus.
+     */
     public static final HealthStatus NORMAL = fromString("Normal");
 
-    /** Static value Warning for HealthStatus. */
+    /**
+     * Static value Warning for HealthStatus.
+     */
     public static final HealthStatus WARNING = fromString("Warning");
 
-    /** Static value Critical for HealthStatus. */
+    /**
+     * Static value Critical for HealthStatus.
+     */
     public static final HealthStatus CRITICAL = fromString("Critical");
 
     /**
      * Creates a new instance of HealthStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +37,17 @@ public final class HealthStatus extends ExpandableStringEnum<HealthStatus> {
 
     /**
      * Creates or finds a HealthStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding HealthStatus.
      */
-    @JsonCreator
     public static HealthStatus fromString(String name) {
         return fromString(name, HealthStatus.class);
     }
 
     /**
      * Gets known HealthStatus values.
-     *
+     * 
      * @return known HealthStatus values.
      */
     public static Collection<HealthStatus> values() {

@@ -30,17 +30,23 @@ import com.azure.resourcemanager.apimanagement.fluent.models.RecipientEmailContr
 import com.azure.resourcemanager.apimanagement.models.NotificationName;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in NotificationRecipientEmailsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in NotificationRecipientEmailsClient.
+ */
 public final class NotificationRecipientEmailsClientImpl implements NotificationRecipientEmailsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final NotificationRecipientEmailsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ApiManagementClientImpl client;
 
     /**
      * Initializes an instance of NotificationRecipientEmailsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     NotificationRecipientEmailsClientImpl(ApiManagementClientImpl client) {
@@ -99,7 +105,7 @@ public final class NotificationRecipientEmailsClientImpl implements Notification
 
     /**
      * Gets the list of the Notification Recipient Emails subscribed to a notification.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param notificationName Notification Name Identifier.
@@ -107,7 +113,7 @@ public final class NotificationRecipientEmailsClientImpl implements Notification
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of the Notification Recipient Emails subscribed to a notification along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RecipientEmailCollectionInner>> listByNotificationWithResponseAsync(String resourceGroupName,
@@ -141,7 +147,7 @@ public final class NotificationRecipientEmailsClientImpl implements Notification
 
     /**
      * Gets the list of the Notification Recipient Emails subscribed to a notification.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param notificationName Notification Name Identifier.
@@ -150,7 +156,7 @@ public final class NotificationRecipientEmailsClientImpl implements Notification
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of the Notification Recipient Emails subscribed to a notification along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RecipientEmailCollectionInner>> listByNotificationWithResponseAsync(String resourceGroupName,
@@ -182,7 +188,7 @@ public final class NotificationRecipientEmailsClientImpl implements Notification
 
     /**
      * Gets the list of the Notification Recipient Emails subscribed to a notification.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param notificationName Notification Name Identifier.
@@ -190,7 +196,7 @@ public final class NotificationRecipientEmailsClientImpl implements Notification
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of the Notification Recipient Emails subscribed to a notification on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<RecipientEmailCollectionInner> listByNotificationAsync(String resourceGroupName, String serviceName,
@@ -201,7 +207,7 @@ public final class NotificationRecipientEmailsClientImpl implements Notification
 
     /**
      * Gets the list of the Notification Recipient Emails subscribed to a notification.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param notificationName Notification Name Identifier.
@@ -219,7 +225,7 @@ public final class NotificationRecipientEmailsClientImpl implements Notification
 
     /**
      * Gets the list of the Notification Recipient Emails subscribed to a notification.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param notificationName Notification Name Identifier.
@@ -237,7 +243,7 @@ public final class NotificationRecipientEmailsClientImpl implements Notification
 
     /**
      * Determine if Notification Recipient Email subscribed to the notification.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param notificationName Notification Name Identifier.
@@ -281,7 +287,7 @@ public final class NotificationRecipientEmailsClientImpl implements Notification
 
     /**
      * Determine if Notification Recipient Email subscribed to the notification.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param notificationName Notification Name Identifier.
@@ -325,7 +331,7 @@ public final class NotificationRecipientEmailsClientImpl implements Notification
 
     /**
      * Determine if Notification Recipient Email subscribed to the notification.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param notificationName Notification Name Identifier.
@@ -344,7 +350,7 @@ public final class NotificationRecipientEmailsClientImpl implements Notification
 
     /**
      * Determine if Notification Recipient Email subscribed to the notification.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param notificationName Notification Name Identifier.
@@ -364,7 +370,7 @@ public final class NotificationRecipientEmailsClientImpl implements Notification
 
     /**
      * Determine if Notification Recipient Email subscribed to the notification.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param notificationName Notification Name Identifier.
@@ -383,7 +389,7 @@ public final class NotificationRecipientEmailsClientImpl implements Notification
 
     /**
      * Adds the Email address to the list of Recipients for the Notification.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param notificationName Notification Name Identifier.
@@ -427,7 +433,7 @@ public final class NotificationRecipientEmailsClientImpl implements Notification
 
     /**
      * Adds the Email address to the list of Recipients for the Notification.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param notificationName Notification Name Identifier.
@@ -471,7 +477,7 @@ public final class NotificationRecipientEmailsClientImpl implements Notification
 
     /**
      * Adds the Email address to the list of Recipients for the Notification.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param notificationName Notification Name Identifier.
@@ -490,7 +496,7 @@ public final class NotificationRecipientEmailsClientImpl implements Notification
 
     /**
      * Adds the Email address to the list of Recipients for the Notification.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param notificationName Notification Name Identifier.
@@ -510,7 +516,7 @@ public final class NotificationRecipientEmailsClientImpl implements Notification
 
     /**
      * Adds the Email address to the list of Recipients for the Notification.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param notificationName Notification Name Identifier.
@@ -529,7 +535,7 @@ public final class NotificationRecipientEmailsClientImpl implements Notification
 
     /**
      * Removes the email from the list of Notification.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param notificationName Notification Name Identifier.
@@ -573,7 +579,7 @@ public final class NotificationRecipientEmailsClientImpl implements Notification
 
     /**
      * Removes the email from the list of Notification.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param notificationName Notification Name Identifier.
@@ -617,7 +623,7 @@ public final class NotificationRecipientEmailsClientImpl implements Notification
 
     /**
      * Removes the email from the list of Notification.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param notificationName Notification Name Identifier.
@@ -636,7 +642,7 @@ public final class NotificationRecipientEmailsClientImpl implements Notification
 
     /**
      * Removes the email from the list of Notification.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param notificationName Notification Name Identifier.
@@ -655,7 +661,7 @@ public final class NotificationRecipientEmailsClientImpl implements Notification
 
     /**
      * Removes the email from the list of Notification.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param notificationName Notification Name Identifier.

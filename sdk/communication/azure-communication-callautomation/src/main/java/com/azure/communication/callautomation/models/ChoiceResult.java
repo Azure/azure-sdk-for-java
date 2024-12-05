@@ -26,6 +26,12 @@ public final class ChoiceResult extends RecognizeResult {
     private String recognizedPhrase;
 
     /**
+     * Creates an instance of {@link ChoiceResult}.
+     */
+    public ChoiceResult() {
+    }
+
+    /**
      * Get the label property: Label is the primary identifier for the choice detected.
      *
      * @return the label value.

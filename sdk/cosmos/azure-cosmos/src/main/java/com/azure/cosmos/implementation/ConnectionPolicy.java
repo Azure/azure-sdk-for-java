@@ -53,6 +53,7 @@ public final class ConnectionPolicy {
     private int minConnectionPoolSizePerEndpoint;
     private int openConnectionsConcurrency;
     private int aggressiveWarmupConcurrency;
+    private boolean serverCertValidationDisabled = false;
 
     /**
      * Constructor.
@@ -610,6 +611,28 @@ public final class ConnectionPolicy {
             return excludedRegions.toString();
         }
         return "[]";
+    }
+
+    /***
+     * Flag to indicate whether disable server cert validation.
+     * Should only be used in local develop or test environment against emulator.
+     *
+     * @param serverCertValidationDisabled flag to indicate whether disable server cert verification.
+     * @return the ConnectionPolicy.
+     */
+    public ConnectionPolicy setServerCertValidationDisabled(boolean serverCertValidationDisabled) {
+        this.serverCertValidationDisabled = serverCertValidationDisabled;
+        return this;
+    }
+
+    /**
+     * Get the value to indicate whether disable server cert verification.
+     * Should only be used in local develop or test environment.
+     *
+     * @return {@code true} if server cert verification is disabled; {@code false} otherwise.
+     */
+    public boolean isServerCertValidationDisabled() {
+        return this.serverCertValidationDisabled;
     }
 
     @Override
