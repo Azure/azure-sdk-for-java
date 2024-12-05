@@ -42,7 +42,7 @@ public class CosmosExceptionUtils {
             CosmosUtils.fillAndProcessCosmosExceptionDiagnostics(responseDiagnosticsProcessor, cosmosException);
 
             switch (cosmosException.getStatusCode()) {
-                case HttpConstants.StatusCodes.BADREQUEST -> throw new CosmosBadRequestException(message, unwrappedThrowable);
+                case HttpConstants.StatusCodes.BADREQUEST -> throw new CosmosBadRequestException(message, cosmosException);
                 case HttpConstants.StatusCodes.CONFLICT -> throw new CosmosConflictException(message, unwrappedThrowable);
                 case HttpConstants.StatusCodes.FORBIDDEN -> throw new CosmosForbiddenException(message, unwrappedThrowable);
                 case HttpConstants.StatusCodes.GONE-> {
