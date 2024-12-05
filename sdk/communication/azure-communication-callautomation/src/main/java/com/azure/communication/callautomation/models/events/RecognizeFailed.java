@@ -27,6 +27,15 @@ public final class RecognizeFailed extends CallAutomationEventBaseWithReasonCode
     }
 
     /**
+     * Get the failedPlaySourceIndex property: Contains the index of the failed play source.
+     * 
+     * @return the failedPlaySourceIndex value.
+     */
+    public Integer getFailedPlaySourceIndex() {
+        return this.failedPlaySourceIndex;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
