@@ -51,7 +51,7 @@ public class CosmosExceptionUtils {
                         case HttpConstants.SubStatusCodes.COMPLETING_PARTITION_MIGRATION -> throw new CosmosPartitionIsMigratingException(message, cosmosException);
                         case HttpConstants.SubStatusCodes.PARTITION_KEY_RANGE_GONE -> throw new CosmosPartitionKeyRangeGoneException(message, cosmosException);
                         case HttpConstants.SubStatusCodes.COMPLETING_SPLIT_OR_MERGE -> throw new CosmosPartitionKeyRangeIsSplittingException(message, cosmosException);
-                        default -> throw new CosmosGoneException(message, unwrappedThrowable);
+                        default -> throw new CosmosGoneException(message, cosmosException);
                     }
                 }
                 case HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR -> throw new CosmosInternalServerErrorException(message, unwrappedThrowable);
