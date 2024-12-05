@@ -55,7 +55,7 @@ public class CosmosExceptionUtils {
                     }
                 }
                 case HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR -> throw new CosmosInternalServerErrorException(message, cosmosException);
-                case HttpConstants.StatusCodes.METHOD_NOT_ALLOWED -> throw new CosmosMethodNotAllowedException(message, unwrappedThrowable);
+                case HttpConstants.StatusCodes.METHOD_NOT_ALLOWED -> throw new CosmosMethodNotAllowedException(message, cosmosException);
                 case HttpConstants.StatusCodes.NOTFOUND -> throw new CosmosNotFoundException(message, unwrappedThrowable);
                 case HttpConstants.StatusCodes.REQUEST_TIMEOUT -> {
                     if (((CosmosException) unwrappedThrowable).getSubStatusCode() == HttpConstants.SubStatusCodes.CLIENT_OPERATION_TIMEOUT) {
